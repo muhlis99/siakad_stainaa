@@ -5,6 +5,7 @@ module.exports = {
         await registrasi.findAll().
             then(all => {
                 res.status(200).json({
+                    message : "Data Berhasil",
                     data : all
                 })
             }).
