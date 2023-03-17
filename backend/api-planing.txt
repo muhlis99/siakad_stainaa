@@ -1,0 +1,43 @@
+Standar API
+
+{root.api}/{version}/{grouping}/{endpoint}
+sample :
+http://ponpes-api.ac.id/v1/auth/login
+
+Standar Status Response
+
+200 --> OK                      ==> Call API success
+201 --> CREATED                 ==> Post success
+400 --> BAD REQUEST             ==> Error on client side (Bisa input yang salah DLL)
+401 --> UNAUTHORIZED            ==> User not authorized to the request
+403 --> FORBIDEN                ==> User not allowed to access
+404 --> NOT FOUND               ==> Request endpoint not found
+500 --> INTERNAL SERVER ERROR   ==> Error on server side
+502 --> BAD GATEWAY             ==> Invalid response from antoher request
+
+
+[1] -- response dan request
+
+req : 
+{
+    "name"  : "muhlis",
+    "email" : "muhlis@gamil.com",
+    "password" : "123456"
+}
+
+res : 
+{
+    "message" : "Register success",
+    "data" : {
+            "id"    : "1",
+            "name"  : "muhlis",
+            "email" : "muhlis@gamil.com",
+            "password" : "123456"
+    }
+}
+
+
+penjelasan 
+1. per_page : Pembagian per Page
+2. current_page : page pada saat ini
+3. total_data : data keseluruhan

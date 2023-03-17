@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes} = require('sequelize')
 const db = require('../config/database.js')
 
-const registrasiModel = db.define('login',{
+const loginModel = db.define('login',{
     'id' : {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -30,4 +30,4 @@ const registrasiModel = db.define('login',{
     paranoid: true,
 })
 
-module.exports = registrasiModel
+module.exports = loginModel
