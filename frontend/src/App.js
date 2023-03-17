@@ -1,8 +1,17 @@
+import "./index.css"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Welcome from "./components/Welcome";
+import Login from "./components/Login";
 
 function App() {
   return (
-    <div className="text-3xl font-bold underline">
-      DICOBA DENGAN Tailwindcss
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Welcome />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
