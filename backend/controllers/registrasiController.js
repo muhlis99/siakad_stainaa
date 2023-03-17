@@ -54,9 +54,6 @@ module.exports = {
 
     post : async(req, res, next) => {
             const {name, email, password, confirmPassword, role} = req.body
-            if(password !== confirmPassword) return res.status(404).json({
-                message:"Password dan Confirm Password Salah"
-            })
             const hashPassword = await argon.hash(password)
             await registrasi.create({
                 name : name,
@@ -75,4 +72,64 @@ module.exports = {
                 next(err)
             })
     },
+
+    put : async(req, res, next ) => {
+        const id = req.params.id
+        const registrasiUse = await registrasi.findOne({
+            where : {
+                id : id
+            }
+        })
+        if (!registrasiUse) return res.status(401).json({message : "user tidak ditemukan"})
+        const {name, email, password, confirmPassword, role} = req.body
+        let hashPassword
+        if (password === "" || password === null) {
+            hashPassword = registrasiUse.password
+        } else {
+            hashPassword = await argon.hash(password)
+        }
+        try {
+            await registrasi.update({
+                name : name,
+                email : email,
+                password : hashPassword,
+                role : role
+            },{
+                where : {
+                    id : id
+                }
+            }).
+            then(result => {
+                res.status(201).json({
+                    message : "Data success diupdate"
+                })  
+            })
+        } catch (err) {
+            next(err)
+        }
+    },
+
+    delete : async(req, res, next) => {
+        const id = req.params.id
+        const registrasiUse = await registrasi.findOne({
+            where : {
+                id : id
+            }
+        })
+        if(!registrasiUse) return res.status(401).json({message:"user tidak ditemukan"})
+        try {
+            await registrasi.destroy({
+                where : {
+                    id : registrasiUse.id
+                }
+            }).
+            then(result => {
+                res.status(201).json({
+                    message:"data success dihapus",
+                })
+            })
+        } catch (err) {
+            next(err)
+        }
+    }
 }
