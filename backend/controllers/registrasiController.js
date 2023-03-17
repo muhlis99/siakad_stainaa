@@ -1,4 +1,4 @@
-const registrasi = require('../models/loginModel.js')
+const registrasi = require('../models/registrasiModel.js')
 const argon = require('argon2')
 
 module.exports = {
