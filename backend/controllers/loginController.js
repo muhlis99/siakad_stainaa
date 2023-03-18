@@ -1,5 +1,6 @@
 const user = require('../models/loginModel.js')
 const argon = require('argon2')
+const nodemailer = require('nodemailer')
 
 module.exports = {
     login : async (req, res, next) => {
@@ -47,5 +48,74 @@ module.exports = {
         } catch (err) {
             next(err)
         }
+    },
+
+    forgot : async (req, res, nest) => {
+        const email = req.body.email
+        let randomNumber = Math.floor(Math.random() * 1000000)
+        const emailUse = await user.findOne({
+            where : {
+                email : email
+            }
+        })
+        if (!emailUse) return res.status(404).json({message:"Tidak dapat menemukan akun email anda"})
+        let testAccount = await nodemailer.createTestAccount()
+        let transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "muhammadbwi13@gmail.com",
+                pass: "xzhltcpsznbllacw",
+            }
+        })
+
+        try {
+            await user.update({
+                verify_code : randomNumber,
+            },{
+                where : {
+                    email : email
+                }
+            }).
+            then(result => {
+                res.status(201).json({
+                    message : "Email >>>>>> ????"
+                })
+            })
+
+            await transporter.sendMail({
+                from: 'muhammadbwi13@gmail.com',
+                to: `${email}`,
+                subject: "kode verivikasi anda",
+                text: 'jangan disebarakan pada orang lain',
+                html: `<div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title"> Ini Kode verifikasi anda ${email}</h5>
+                                <p class="card-text">${randomNumber}</p>
+                            </div>
+                        </div>`
+            })
+
+        } catch (err) {
+            next(err)
+        }
+    },
+
+    verifyCode : async (req, res, next) => {
+        const code = req.body.code
+        const codeUse = await user.findOne({
+            where : {
+                verify_code : code
+            }
+        })
+        if (!codeUse) return res.status(404).json({message:"data tidak ditemukan"})
+        req.session.userId = codeUse.id
+        const id = codeUse.id
+        const name = codeUse.name
+        const email = codeUse.email
+        const role = codeUse.role
+        res.status(200).json({
+            message:"login suksess && ganti password berhasil",
+            id,name,email,role
+        })
     }
 }
