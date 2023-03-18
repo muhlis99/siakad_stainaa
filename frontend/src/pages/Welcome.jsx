@@ -17,7 +17,7 @@ const Welcome = () => {
                 Log in
               </Link>
               <Link className="items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 rounded-lg sm:w-auto focus:ring-4 border border-[#2d8659] hover:bg-[#2d8659] hover:text-white">
-                Register
+                Informasi
               </Link>
             </div>
           </div>

@@ -19,7 +19,7 @@ const Login = () => {
                                 <input type="password" placeholder='Password Anda' className='border border-[#2d8659] py-2 px-2 w-full rounded-xl' />
                             </div>
                             <div className="mt-2 mb-4 float-right">
-                                <Link className='text-gray-500'>Forgot Password</Link>
+                                <Link to="/forgot" className='text-gray-500'>Forgot Password</Link>
                             </div>
                             <div className="mt-5">
                                 <button type='button' className='bg-[#2d8659] py-2 px-2 w-full rounded-xl text-white font-bold'>LOGIN</button>
