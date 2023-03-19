@@ -108,14 +108,26 @@ module.exports = {
             }
         })
         if (!codeUse) return res.status(404).json({message:"data tidak ditemukan"})
-        req.session.userId = codeUse.id
-        const id = codeUse.id
-        const name = codeUse.name
-        const email = codeUse.email
-        const role = codeUse.role
-        res.status(200).json({
-            message:"login suksess && ganti password berhasil",
-            id,name,email,role
-        })
+        try {
+            await user.update({
+                verify_code : ""
+            }, {
+                where : {
+                    id : codeUse.id
+                }
+            })
+            req.session.userId = codeUse.id
+            const id = codeUse.id
+            const name = codeUse.name
+            const email = codeUse.email
+            const role = codeUse.role
+            res.status(200).json({
+                message:"login suksess && ganti password berhasil",
+                id,name,email,role
+            })
+        } catch (err) {
+            next(err)
+        }
+
     }
 }
