@@ -33,8 +33,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // ROUTER
 const login = require('./router/loginRouter.js')
 const registrasi = require('./router/registrasiRoute.js')
+const jenjangPendidikan = require('./router/jenjangPendidikanRoute.js')
 app.use('/v1/login', login)
 app.use('/v1/registrasi', registrasi)
+app.use('/v1/jenjangPendidikan', jenjangPendidikan)
 
 // default index
 app.get('/', (req, res) => {
