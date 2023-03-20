@@ -1,22 +1,59 @@
 const registrasi = require('../models/loginModel.js')
 const argon = require('argon2')
+const {Op} = require('sequelize')
 
 module.exports = {
-    all : async (req, res, next) => {
-        const currentPage = req.query.page || 1
+    get : async (req, res, next) => {
+        const currentPage = parseInt(req.query.page) || 1
         const perPage = req.query.perPage || 10
-        let totalItems
-        await registrasi.findAndCountAll().
+        const search = req.query.search || ""
+        await registrasi.findAndCountAll({
+                where : {
+                    [Op.or] : [
+                        {id : {
+                            [Op.like] : `%${search}%`
+                        }},
+                        {name : {
+                            [Op.like] :  `%${search}%`
+                        }},
+                        {email : {
+                            [Op.like] :  `%${search}%`
+                        }},
+                        {role : {
+                            [Op.like] :  `%${search}%`
+                        }}
+                    ]
+                }
+            }).
             then(all => {
                 totalItems = all.count
                 return registrasi.findAll({
-                    offset : (parseInt(currentPage) - 1) * parseInt(perPage),
-                    limit : parseInt(perPage)
+                    where : {
+                        [Op.or] : [
+                            {id : {
+                                [Op.like] : `%${search}%`
+                            }},
+                            {name : {
+                                [Op.like] :  `%${search}%`
+                            }},
+                            {email : {
+                                [Op.like] :  `%${search}%`
+                            }},
+                            {role : {
+                                [Op.like] :  `%${search}%`
+                            }}
+                        ]
+                    },
+                    offset : (currentPage - 1) * parseInt(perPage),
+                    limit : parseInt(perPage),
+                    order : [
+                        ["id", "DESC"]
+                    ]
                 })
             }).
             then(result => {
                 res.status(200).json({
-                    message : "Get All Registrasi Success",
+                    message : "Get All Jenjang Pendidikan Success",
                     data : result,
                     total_data : totalItems,
                     per_page : perPage,
