@@ -5,8 +5,14 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    container: {
+      padding: '1rem',
+    },
   },
   plugins: [
-
+    require("daisyui"),
   ],
+  daisyui: {
+    themes: ["light"]
+  },
 }
