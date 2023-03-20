@@ -65,7 +65,8 @@ module.exports = {
         const id = req.params.id
         await jejangPendidikan.findOne({
             where : {
-                id_jenjang_pendidikan : id
+                id_jenjang_pendidikan : id,
+                status : "aktif"
             }
         }).
         then(getById => {
@@ -87,8 +88,8 @@ module.exports = {
 
     post : async (req, res, next) => {
         const {nama_jenjang_pendidikan} = req.body
-        const date = new Date().getFullYear()
-        const code = "S1"+date
+        // const date = new Date().getFullYear()
+        const code = "S1"
         await jejangPendidikan.create({
                 code_jenjang_pendidikan : code,
                 nama_jenjang_pendidikan : nama_jenjang_pendidikan,
@@ -108,8 +109,8 @@ module.exports = {
     put : async (req, res, next) => {
         const id = req.params.id
         const {nama_jenjang_pendidikan} = req.body
-        const date = new Date().getFullYear()
-        const code = "S1"+date
+        // const date = new Date().getFullYear()
+        const code = "S1"
         const jejangPendidikanUse = await jejangPendidikan.findOne({
             where : {
                 id_jenjang_pendidikan : id
