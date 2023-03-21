@@ -113,7 +113,8 @@ module.exports = {
         const code = "S1"
         const jejangPendidikanUse = await jejangPendidikan.findOne({
             where : {
-                id_jenjang_pendidikan : id
+                id_jenjang_pendidikan : id,
+                status : "aktif"
             }
         })
         if (!jejangPendidikanUse) return res.status(401).json({message : "Data jejang Pendidikan tidak ditemukan"})
@@ -139,7 +140,8 @@ module.exports = {
         const id = req.params.id
         const jejangPendidikanUse = await jejangPendidikan.findOne({
             where : {
-                id_jenjang_pendidikan : id
+                id_jenjang_pendidikan : id,
+                status : "aktif"
             }
         })
         if (!jejangPendidikanUse) return res.status(401).json({message : "Data jejang Pendidikan tidak ditemukan"})
