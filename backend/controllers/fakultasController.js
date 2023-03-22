@@ -102,11 +102,12 @@ module.exports = {
     },
 
     post : async (req, res, next) => {
-        const {code_jenjang_pendidikan, nama_fakultas} = req.body
+        const {code_jenjang_pendidikan,code_dikti_fakultas, nama_fakultas} = req.body
         const codefakultas = code_jenjang_pendidikan + "TH"
         await fakultas.create({
                 code_jenjang_pendidikan : code_jenjang_pendidikan,
                 code_fakultas : codefakultas,
+                code_dikti_fakultas : code_dikti_fakultas,
                 nama_fakultas : nama_fakultas,
                 status : "aktif"
         }).
@@ -123,7 +124,7 @@ module.exports = {
 
     put : async (req, res, next) => {
         const id = req.params.id
-        const {code_jenjang_pendidikan, nama_fakultas} = req.body
+        const {code_jenjang_pendidikan,code_dikti_fakultas, nama_fakultas} = req.body
         const codefakultas = code_jenjang_pendidikan + "TH"
         const fakultasUse = await fakultas.findOne({
             include : [{
@@ -140,6 +141,7 @@ module.exports = {
         await fakultas.update({
             code_jenjang_pendidikan : code_jenjang_pendidikan,
             code_fakultas : codefakultas,
+            code_dikti_fakultas : code_dikti_fakultas,
             nama_fakultas : nama_fakultas
         },{
             where : {

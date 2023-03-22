@@ -126,12 +126,13 @@ module.exports = {
     },
 
     post : async (req, res, next) => {
-        const {code_jenjang_pendidikan, code_fakultas, nama_prodi} = req.body
+        const {code_jenjang_pendidikan, code_fakultas,code_dikti_prodi, nama_prodi} = req.body
         const codeProdi = code_jenjang_pendidikan+code_fakultas+"JH"
         await prodi.create({
                 code_jenjang_pendidikan : code_jenjang_pendidikan,
                 code_fakultas : code_fakultas,
                 code_prodi : codeProdi,
+                code_dikti_prodi : code_dikti_prodi,
                 nama_prodi : nama_prodi,
                 status : "aktif"
         }).
@@ -148,7 +149,7 @@ module.exports = {
 
     put : async (req, res, next) => {
         const id = req.params.id
-        const {code_jenjang_pendidikan, code_fakultas, nama_prodi} = req.body
+        const {code_jenjang_pendidikan, code_fakultas,code_dikti_prodi ,nama_prodi} = req.body
         const codeProdi = code_jenjang_pendidikan+code_fakultas+"JH"
         const prodiUse = await prodi.findOne({
             include : [{
@@ -170,6 +171,7 @@ module.exports = {
                 code_jenjang_pendidikan : code_jenjang_pendidikan,
                 code_fakultas : code_fakultas,
                 code_prodi : codeProdi,
+                code_dikti_prodi : code_dikti_prodi,
                 nama_prodi : nama_prodi,
         },{
             where : {
