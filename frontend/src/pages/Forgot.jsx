@@ -4,7 +4,7 @@ import stainaa from "../assets/img/stainaa.png";
 const Forgot = () => {
     return (
         <div>
-            <div className="w-full h-40 bg-[#2d8659] rounded-b-3xl pt-5">
+            <div className="w-full h-40 bg-[#2D7F5F] rounded-b-3xl pt-5">
                 <div className="w-1/3 mx-auto flex gap-4 justify-center">
                     <img src={stainaa} alt="" className='w-24 relative' />
                     <div className="pt-1">
@@ -22,7 +22,7 @@ const Forgot = () => {
                         <input type="email" id='email' className='shadow-md border border-gray-400 w-1/2 h-10 rounded-lg ml-4' />
                     </div>
                     <div className="relative mx-auto w-1/2 mt-5 bg-black">
-                        <button className='bg-[#2d8659] rounded-md text-white p-1 h-9 w-28 text-lg font-bold absolute left-14 '>Kirim</button>
+                        <button className='bg-[#2D7F5F] rounded-md text-white p-1 h-9 w-28 text-lg font-bold absolute left-14 '>Kirim</button>
                         <button className='bg-[#ff0000] rounded-md text-white p-1 h-9 w-28 text-lg font-bold absolute right-0'>Batal</button>
                     </div>
                 </div>

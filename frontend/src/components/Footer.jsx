@@ -2,9 +2,9 @@ import React from 'react'
 
 const Footer = () => {
     return (
-        <footer className="w-full p-4 bg-base-200 text-base-content fixed bottom-0">
-            <div className='w-full text-center'>
-                <p>Copyright © 2023 -</p>
+        <footer className="footer items-center p-4 bg-[#F5F5F5] fixed bottom-0">
+            <div className="items-center grid-flow-col">
+                <p>Copyright © STAINAA 2023 - All right reserved --By. Free Coding</p>
             </div>
         </footer>
     )
