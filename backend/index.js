@@ -34,9 +34,15 @@ app.use(bodyParser.urlencoded({ extended: true }))
 const login = require('./router/loginRouter.js')
 const registrasi = require('./router/registrasiRoute.js')
 const jenjangPendidikan = require('./router/jenjangPendidikanRoute.js')
+const fakultas = require('./router/fakultasRoute.js')
+const prodi = require('./router/prodiRoute.js')
+const mahasiswa = require('./router/mahasiswaRoute.js')
 app.use('/v1/login', login)
 app.use('/v1/registrasi', registrasi)
 app.use('/v1/jenjangPendidikan', jenjangPendidikan)
+app.use('/v1/fakultas', fakultas)
+app.use('/v1/prodi', prodi)
+app.use('/v1/mahasiswa', mahasiswa)
 
 // default index
 app.get('/', (req, res) => {

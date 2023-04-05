@@ -13,10 +13,10 @@ const Welcome = () => {
               Sekolah Tinggi Agama Islam Nurul Abror Al-Robbaniyin <br /> Jl. KH. Agus Salim 165 Alasbuluh Wongosrejo Banyuwangi
             </p>
             <div className="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-              <Link to="/login" className="items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 rounded-lg sm:w-auto focus:ring-4 border border-[#2d8659] hover:bg-[#2d8659] hover:text-white">
+              <Link to="/login" className="items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 rounded-lg sm:w-auto focus:ring-4 border border-[#2D7F5F] hover:bg-[#2D7F5F] hover:text-white">
                 Log in
               </Link>
-              <Link className="items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 rounded-lg sm:w-auto focus:ring-4 border border-[#2d8659] hover:bg-[#2d8659] hover:text-white">
+              <Link className="items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 rounded-lg sm:w-auto focus:ring-4 border border-[#2D7F5F] hover:bg-[#2D7F5F] hover:text-white">
                 Informasi
               </Link>
             </div>
