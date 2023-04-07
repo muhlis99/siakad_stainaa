@@ -219,5 +219,42 @@ module.exports = {
             })
     },
 
-
+    createForm1: async (req, res, next) => {
+        const { nik, nama, no_kk, jenis_kelamin, tempat_lahir, tanggal, bulan, tahun, email, no_hp,
+            no_telepon, nisn, penerima_kps, no_kps, npwp,
+            jalur_pendaftaran, jenis_pendaftaran } = req.body
+        const id = req.params.id
+        const tanggal_lahir = tahun + "-" + bulan + "-" + tanggal
+        const mahasiswaUse = await mahasiswa.findOne()
+        if (!mahasiswaUse) return res.status(401).json({ message: "Data Mahasiswa tidak ditemukan" })
+        await mahasiswa.update({
+            nik: nik,
+            nama: nama,
+            no_kk: no_kk,
+            jenis_kelamin: jenis_kelamin,
+            tempat_lahir: tempat_lahir,
+            tanggal_lahir: tanggal_lahir,
+            email: email,
+            no_hp: no_hp,
+            no_telepon: no_telepon,
+            nisn: nisn,
+            penerima_kps: penerima_kps,
+            no_kps: no_kps,
+            npwp: npwp,
+            jalur_pendaftaran: jalur_pendaftaran,
+            jenis_pendaftaran: jenis_pendaftaran
+        }, {
+            where: {
+                id_mahasiswa: id
+            }
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "Data Mahasiswa success di tambahkan form 1"
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    }
 }
