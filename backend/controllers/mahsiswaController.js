@@ -3,7 +3,9 @@ const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const { desa, kecamatan, kabupaten, provinsi, negara } = require('../models/alat_alatMahasiswaModel.js')
-const { Op, DataTypes, Sequelize, NUMBER } = require('sequelize')
+const { Op, DataTypes } = require('sequelize')
+const multer = require('multer')
+
 
 module.exports = {
     get: async (req, res, next) => {
@@ -411,4 +413,14 @@ module.exports = {
                 next(err)
             })
     },
+
+    createFile: async (req, res, next) => {
+        const id = req.params.id
+        const mahasiswaUse = await mahasiswa.findOne({
+            where: {
+                id_mahasiswa: id
+            }
+        })
+        if (!mahasiswaUse) return res.status(401).json({ message: "Data Mahasiswa tidak ditemukan" })
+    }
 }
