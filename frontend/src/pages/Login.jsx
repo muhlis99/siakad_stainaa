@@ -64,7 +64,6 @@ const Login = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder='Password Anda'
                                 />
-                                <input type="text" placeholder='Username Anda' className='border border-[#2D7F5F] py-2 px-2 w-full rounded-xl' />
                             </div>
                             <div className="mt-2 mb-4 float-right">
                                 <Link to="/forgot" className='text-gray-500'>Forgot Password</Link>
