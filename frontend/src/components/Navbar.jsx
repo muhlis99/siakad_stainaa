@@ -1,7 +1,19 @@
 import React from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Avatar from "../assets/img/avatar.png"
+import { LogOut, reset } from "../features/authSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { user } = useSelector((state) => state.auth);
+
+  const logOut = () => {
+    dispatch(LogOut())
+    dispatch(reset())
+    navigate("/login")
+  }
   return (
     <div className="navbar bg-[#F5F5F5] shadow-md">
       <div className="flex-none lg:hidden">
@@ -10,7 +22,7 @@ const Navbar = () => {
         </label>
       </div>
       <div className="flex-1">
-        <span className="normal-case text-xl">daisyUI</span>
+        <span className="normal-case text-lg font-bold text-[#2d8659]">Hello {user && user.data.name}, Welcome Back !</span>
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
@@ -33,7 +45,7 @@ const Navbar = () => {
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
-              <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              <img src={Avatar} />
             </div>
           </label>
           <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
@@ -44,7 +56,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li><Link>Settings</Link></li>
-            <li><Link>Logout</Link></li>
+            <li><button onClick={logOut}>Logout</button></li>
           </ul>
         </div>
       </div>

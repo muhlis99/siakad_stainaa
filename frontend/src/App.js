@@ -4,6 +4,7 @@ import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
 import Forgot from "./pages/Forgot";
 import Dashboard from "./pages/Dashboard";
+import Jenjang from "./pages/Jenjang";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/jenjang" element={<Jenjang />} />
         </Routes>
       </BrowserRouter>
     </div>
