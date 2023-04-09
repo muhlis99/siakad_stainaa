@@ -3,6 +3,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const dotenv = require('dotenv')
+const fileUpload = require('express-fileupload')
 const sequelizeStore = require('connect-session-sequelize')
 const db = require('./config/database.js')
 
@@ -10,19 +11,20 @@ const db = require('./config/database.js')
 dotenv.config()
 const app = express()
 const sessionStore = sequelizeStore(session.Store)
-const store =  new sessionStore({
-    db : db
+const store = new sessionStore({
+    db: db
 })
+app.use(fileUpload())
 app.use(cors({
-    credentials : true,
-    origin : process.env.APP_ORIGIN,
+    credentials: true,
+    origin: process.env.APP_ORIGIN,
 }))
 app.use(session({
-    secret : process.env.SESS_SECRET,
+    secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
-    store : store,
-    cookie: { 
+    store: store,
+    cookie: {
         secure: 'auto'
     }
 }))

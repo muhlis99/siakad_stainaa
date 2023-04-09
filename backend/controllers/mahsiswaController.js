@@ -4,8 +4,8 @@ const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const { desa, kecamatan, kabupaten, provinsi, negara } = require('../models/alat_alatMahasiswaModel.js')
 const { Op, DataTypes } = require('sequelize')
-const multer = require('multer')
-
+const path = require('path')
+const fs = require('fs')
 
 module.exports = {
     get: async (req, res, next) => {
@@ -416,11 +416,178 @@ module.exports = {
 
     createFile: async (req, res, next) => {
         const id = req.params.id
+        // const { foto_diri, foto_kk, foto_ktp, foto_ijazah, foto_kip } = req.body
         const mahasiswaUse = await mahasiswa.findOne({
             where: {
                 id_mahasiswa: id
             }
         })
         if (!mahasiswaUse) return res.status(401).json({ message: "Data Mahasiswa tidak ditemukan" })
+
+        // ----------- foto diri ------------- //
+        let fileNameFotoDiri = ""
+        if (mahasiswaUse.foto_diri === "") {
+            const file = req.files.foto_diri
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoDiri = "foto_diri" + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
+            file.mv(`./tmp/mhs/${fileNameFotoDiri}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        } else {
+            const file = req.files.foto_diri
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoDiri = "foto_diri" + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ message: "file yang anda upload tidak boleh lebih dari 5 mb" })
+            const filepath = `./tmp/mhs/${mahasiswaUse.foto_diri}`
+            fs.unlinkSync(filepath)
+            file.mv(`./tmp/mhs/${fileNameFotoDiri}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        }
+        // ---------------- end foto diri --------------//
+
+
+        // ----------- foto kk ------------- //
+        let fileNameFotoKK = ""
+        if (mahasiswaUse.foto_kk === "") {
+            const file = req.files.foto_kk
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoKK = "foto_kk" + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
+            file.mv(`./tmp/kk/${fileNameFotoKK}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        } else {
+            const file = req.files.foto_kk
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoKK = "foto_kk" + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ message: "file yang anda upload tidak boleh lebih dari 5 mb" })
+            const filepath = `./tmp/kk/${mahasiswaUse.foto_kk}`
+            fs.unlinkSync(filepath)
+            file.mv(`./tmp/kk/${fileNameFotoKK}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        }
+        // ---------------- end foto kk --------------//
+
+        //----------- foto ktp------------- //
+        let fileNameFotoKtp = ""
+        if (mahasiswaUse.foto_ktp === "") {
+            const file = req.files.foto_ktp
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoKtp = "foto_ktp" + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
+            file.mv(`./tmp/ktp/${fileNameFotoKtp}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        } else {
+            const file = req.files.foto_ktp
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoKtp = "foto_ktp" + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ message: "file yang anda upload tidak boleh lebih dari 5 mb" })
+            const filepath = `./tmp/ktp/${mahasiswaUse.foto_ktp}`
+            fs.unlinkSync(filepath)
+            file.mv(`./tmp/ktp/${fileNameFotoKtp}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        }
+        // ---------------- end foto ktp --------------//
+
+        //----------- foto ijazah------------- //
+        let fileNameFotoIjazah = ""
+        if (mahasiswaUse.foto_ijazah === "") {
+            const file = req.files.foto_ijazah
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoIjazah = "foto_ijazah" + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
+            file.mv(`./tmp/ijazah/${fileNameFotoIjazah}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        } else {
+            const file = req.files.foto_ijazah
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoIjazah = "foto_ijazah" + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ message: "file yang anda upload tidak boleh lebih dari 5 mb" })
+            const filepath = `./tmp/ijazah/${mahasiswaUse.foto_ijazah}`
+            fs.unlinkSync(filepath)
+            file.mv(`./tmp/ijazah/${fileNameFotoIjazah}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        }
+        // ---------------- end foto ijazah --------------//
+
+        //----------- foto kip------------- //
+        let fileNameFotoKip = ""
+        if (mahasiswaUse.foto_kip === "") {
+            const file = req.files.foto_kip
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoKip = "foto_kip" + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
+            file.mv(`./tmp/kip/${fileNameFotoKip}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        } else {
+            const file = req.files.foto_kip
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoKip = "foto_kip" + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ message: "file yang anda upload tidak boleh lebih dari 5 mb" })
+            const filepath = `./tmp/kip/${mahasiswaUse.foto_kip}`
+            fs.unlinkSync(filepath)
+            file.mv(`./tmp/kip/${fileNameFotoKip}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        }
+        // ---------------- end foto kip --------------//
+
+        try {
+            await mahasiswa.update({
+                foto_diri: fileNameFotoDiri,
+                foto_kk: fileNameFotoKK,
+                foto_ktp: fileNameFotoKtp,
+                foto_ijazah: fileNameFotoIjazah,
+                foto_kip: fileNameFotoKip,
+            }, {
+                where: {
+                    id_mahasiswa: id
+                }
+            })
+                .then(result => {
+                    res.status(200).json({ message: "Data file mahasiswa berhasil ditambahkan" })
+                })
+        } catch (error) {
+            next(error)
+        }
+
     }
 }
