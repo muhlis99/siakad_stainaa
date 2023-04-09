@@ -5,10 +5,10 @@ const { Op } = require('sequelize')
 
 module.exports = {
     get: async (req, res, next) => {
-        const currentPage = parseInt(req.query.page) || 0
+        const currentPage = parseInt(req.query.page) || 1
         const perPage = parseInt(req.query.perPage) || 10
         const search = req.query.search || ""
-        const offset = perPage * currentPage
+        const offset = (currentPage - 1) * perPage
         const totalPage = await fakultas.count({
             include: [{
                 model: jenjangPendidikan,

@@ -8,7 +8,7 @@ module.exports = {
         const currentPage = parseInt(req.query.page) || 0
         const perPage = parseInt(req.query.perPage) || 10
         const search = req.query.search || ""
-        const offset = perPage * currentPage
+        const offset = (currentPage - 1) * perPage
         const totalPage = await prodi.count({
             include: [{
                 model: jenjangPendidikanModel,
