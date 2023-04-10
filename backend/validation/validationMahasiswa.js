@@ -226,21 +226,3 @@ exports.validationForm4 = [
         .notEmpty()
         .withMessage('mulai semester tidak boleh kosong'),
 ]
-
-exports.validationCreateFile = [
-    check('foto_diri')
-        .notEmpty()
-        .withMessage('foto diri tidak boleh kosong'),
-    check('foto_kk')
-        .notEmpty()
-        .withMessage('foto kk tidak boleh kosong'),
-    check('foto_ktp')
-        .notEmpty()
-        .withMessage('foto ktp tidak boleh kosong'),
-    check('foto_ijazah')
-        .notEmpty()
-        .withMessage('foto ijazah tidak boleh kosong'),
-    check('foto_kip')
-        .notEmpty()
-        .withMessage('foto kip tidak boleh kosong'),
-]

@@ -3,6 +3,7 @@ const router = express.Router()
 const mahasiswaController = require('../controllers/mahsiswaController.js')
 const { validationForm1, validationForm2, validationForm3, validationForm4, validationCreateFile } = require('../validation/validationMahasiswa.js')
 const { validationRequest } = require('../validation/validationRequest.js')
+const path = require('path')
 
 router.get('/all', mahasiswaController.get)
 router.get('/getById/:id', mahasiswaController.getById)
@@ -11,9 +12,13 @@ router.put('/createForm1/:id', validationForm1, validationRequest, mahasiswaCont
 router.put('/createForm2/:id', validationForm2, validationRequest, mahasiswaController.createForm2)
 router.put('/createForm3/:id', validationForm3, validationRequest, mahasiswaController.createForm3)
 router.put('/createForm4/:id', validationForm4, validationRequest, mahasiswaController.createForm4)
-router.put('/createFile/:id', validationCreateFile, validationRequest, mahasiswaController.createFile)
+router.put('/createFile/:id', mahasiswaController.createFile)
 router.put('/nonAktif/:id', mahasiswaController.nonAktif)
 router.delete('/delete/:id', mahasiswaController.delete)
-
+router.use('/public/seeImage/mahasiswa/ijazah', express.static(path.join(__dirname, '../tmp/mahasiswa/ijazah')))
+router.use('/public/seeImage/mahasiswa/kip', express.static(path.join(__dirname, '../tmp/mahasiswa/kip')))
+router.use('/public/seeImage/mahasiswa/kk', express.static(path.join(__dirname, '../tmp/mahasiswa/kk')))
+router.use('/public/seeImage/mahasiswa/ktp', express.static(path.join(__dirname, '../tmp/mahasiswa/ktp')))
+router.use('/public/seeImage/mahasiswa/diri', express.static(path.join(__dirname, '../tmp/mahasiswa/diri')))
 
 module.exports = router
