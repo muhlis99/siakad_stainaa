@@ -128,4 +128,168 @@ kabupaten.hasMany(provinsi, { sourceKey: 'code_provinsi', foreignKey: 'code_prov
 negara.belongsTo(provinsi, { foreignKey: 'code_negara' })
 provinsi.hasMany(negara, { sourceKey: 'code_negara', foreignKey: 'code_negara' })
 
-module.exports = { desa, kecamatan, kabupaten, provinsi, negara }
+
+// ----------------------------------------------------------------------------------------------- //
+const alatTransportasi = db.define('alat_transportasi', {
+    'id_alat_transportasi': {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    'code_alat_transportasi': {
+        type: DataTypes.TEXT,
+    },
+    'nama_alat_transportasi': {
+        type: DataTypes.TEXT
+    }
+}, {
+    tableName: 'tb_alat_transportasi',
+    freezeTableName: true,
+    timestamps: false,
+    underscored: true,
+    paranoid: true,
+})
+
+const agama = db.define('agama', {
+    'id_agama': {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    'code_agama': {
+        type: DataTypes.TEXT,
+    },
+    'nama_agama': {
+        type: DataTypes.TEXT
+    }
+}, {
+    tableName: 'tb_agama',
+    freezeTableName: true,
+    timestamps: false,
+    underscored: true,
+    paranoid: true,
+})
+
+const jalurPendaftaran = db.define('jalur_pendaftaran', {
+    'id_jalur_pendaftaran': {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    'code_jalur_pendaftaran': {
+        type: DataTypes.TEXT,
+    },
+    'nama_jalur_pendaftaran': {
+        type: DataTypes.TEXT
+    }
+}, {
+    tableName: 'tb_jalur_pendaftaran',
+    freezeTableName: true,
+    timestamps: false,
+    underscored: true,
+    paranoid: true,
+})
+
+const jenisPendaftaran = db.define('jenis_pendaftaran', {
+    'id_jenis_pendaftaran': {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    'code_jenis_pendaftaran': {
+        type: DataTypes.TEXT,
+    },
+    'nama_jenis_pendaftaran': {
+        type: DataTypes.TEXT
+    }
+}, {
+    tableName: 'tb_jenis_pendaftaran',
+    freezeTableName: true,
+    timestamps: false,
+    underscored: true,
+    paranoid: true,
+})
+
+const jenisTinggal = db.define('jenis_tinggal', {
+    'id_jenis_tinggal': {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    'code_jenis_tinggal': {
+        type: DataTypes.TEXT,
+    },
+    'nama_jenis_tinggal': {
+        type: DataTypes.TEXT
+    }
+}, {
+    tableName: 'tb_jenis_tinggal',
+    freezeTableName: true,
+    timestamps: false,
+    underscored: true,
+    paranoid: true,
+})
+
+const pekerjaan = db.define('pekerjaan', {
+    'id_pekerjaan': {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    'code_pekerjaan': {
+        type: DataTypes.TEXT,
+    },
+    'nama_pekerjaan': {
+        type: DataTypes.TEXT
+    }
+}, {
+    tableName: 'tb_pekerjaan',
+    freezeTableName: true,
+    timestamps: false,
+    underscored: true,
+    paranoid: true,
+})
+
+const pendidikan = db.define('pendidikan', {
+    'id_pendidikan': {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    'code_pendidikan': {
+        type: DataTypes.TEXT,
+    },
+    'nama_pendidikan': {
+        type: DataTypes.TEXT
+    }
+}, {
+    tableName: 'tb_pendidikan',
+    freezeTableName: true,
+    timestamps: false,
+    underscored: true,
+    paranoid: true,
+})
+
+const penghasilan = db.define('penghasilan', {
+    'id_penghasilan': {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    'code_penghasilan': {
+        type: DataTypes.TEXT,
+    },
+    'nama_penghasilan': {
+        type: DataTypes.TEXT
+    }
+}, {
+    tableName: 'tb_penghasilan',
+    freezeTableName: true,
+    timestamps: false,
+    underscored: true,
+    paranoid: true,
+})
+module.exports = {
+    desa, kecamatan, kabupaten, provinsi, negara, alatTransportasi,
+    agama, jalurPendaftaran, jenisPendaftaran, jenisTinggal, pekerjaan, pendidikan, penghasilan
+}

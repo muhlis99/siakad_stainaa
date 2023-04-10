@@ -39,12 +39,14 @@ const jenjangPendidikan = require('./router/jenjangPendidikanRoute.js')
 const fakultas = require('./router/fakultasRoute.js')
 const prodi = require('./router/prodiRoute.js')
 const mahasiswa = require('./router/mahasiswaRoute.js')
+const equipmentDsnMhs = require('./router/equipmentDsnMhsRoute.js')
 app.use('/v1/login', login)
 app.use('/v1/registrasi', registrasi)
 app.use('/v1/jenjangPendidikan', jenjangPendidikan)
 app.use('/v1/fakultas', fakultas)
 app.use('/v1/prodi', prodi)
 app.use('/v1/mahasiswa', mahasiswa)
+app.use('/v1/equipmentDsnMhs', equipmentDsnMhs)
 
 // default index
 app.get('/', (req, res) => {
@@ -52,7 +54,6 @@ app.get('/', (req, res) => {
 })
 
 // store.sync()
-
 app.listen(process.env.APP_PORT, (req, res) => {
     console.log(`APP IS RUNNING`)
 })

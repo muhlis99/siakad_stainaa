@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const mahasiswaController = require('../controllers/mahsiswaController.js')
-const { validationForm1, validationForm2, validationForm3, validationForm4, validationCreateFile } = require('../validation/validationMahasiswa.js')
+const { validationForm1, validationForm2, validationForm3, validationForm4 } = require('../validation/validationMahasiswa.js')
 const { validationRequest } = require('../validation/validationRequest.js')
 const path = require('path')
 
