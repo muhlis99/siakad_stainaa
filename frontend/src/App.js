@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Forgot from "./pages/Forgot";
 import Dashboard from "./pages/Dashboard";
 import Jenjang from "./pages/Jenjang";
+import AddJenjang from "./pages/AddJenjang";
+import EditJenjang from "./pages/EditJenjang";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/jenjang" element={<Jenjang />} />
+          <Route path="/jenjang/add" element={<AddJenjang />} />
+          <Route path="/jenjang/edit/:id" element={<EditJenjang />} />
         </Routes>
       </BrowserRouter>
     </div>
