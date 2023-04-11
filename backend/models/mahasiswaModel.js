@@ -3,7 +3,7 @@ const db = require('../config/database.js')
 const jenjangPendidikanModel = require('./jenjangPendidikanModel.js')
 const fakultasModel = require('./fakultasModel.js')
 const prodiModel = require('./prodiModel.js')
-const { desa, kecamatan, kabupaten, provinsi, negara } = require('../models/alat_alatMahasiswaModel.js')
+const { desa, kecamatan, kabupaten, provinsi, negara } = require('./equipmentDsnMhsModel.js')
 
 
 const mahasiswaModel = db.define('mahasiswa', {

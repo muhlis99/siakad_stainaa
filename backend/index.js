@@ -3,6 +3,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const dotenv = require('dotenv')
+const fileUpload = require('express-fileupload')
 const sequelizeStore = require('connect-session-sequelize')
 const db = require('./config/database.js')
 
@@ -10,19 +11,20 @@ const db = require('./config/database.js')
 dotenv.config()
 const app = express()
 const sessionStore = sequelizeStore(session.Store)
-const store =  new sessionStore({
-    db : db
+const store = new sessionStore({
+    db: db
 })
+app.use(fileUpload())
 app.use(cors({
-    credentials : true,
-    origin : process.env.APP_ORIGIN,
+    credentials: true,
+    origin: process.env.APP_ORIGIN,
 }))
 app.use(session({
-    secret : process.env.SESS_SECRET,
+    secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
-    store : store,
-    cookie: { 
+    store: store,
+    cookie: {
         secure: 'auto'
     }
 }))
@@ -37,12 +39,14 @@ const jenjangPendidikan = require('./router/jenjangPendidikanRoute.js')
 const fakultas = require('./router/fakultasRoute.js')
 const prodi = require('./router/prodiRoute.js')
 const mahasiswa = require('./router/mahasiswaRoute.js')
+const equipmentDsnMhs = require('./router/equipmentDsnMhsRoute.js')
 app.use('/v1/login', login)
 app.use('/v1/registrasi', registrasi)
 app.use('/v1/jenjangPendidikan', jenjangPendidikan)
 app.use('/v1/fakultas', fakultas)
 app.use('/v1/prodi', prodi)
 app.use('/v1/mahasiswa', mahasiswa)
+app.use('/v1/equipmentDsnMhs', equipmentDsnMhs)
 
 // default index
 app.get('/', (req, res) => {
@@ -50,7 +54,6 @@ app.get('/', (req, res) => {
 })
 
 // store.sync()
-
 app.listen(process.env.APP_PORT, (req, res) => {
     console.log(`APP IS RUNNING`)
 })
