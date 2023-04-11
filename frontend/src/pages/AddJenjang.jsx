@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import Layout from './Layout'
-import ListJenjang from '../components/ListJenjang';
+import Layout from "./Layout";
+import FormAddJenjang from '../components/FormAddJenjang';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe } from "../features/authSlice";
 
-const Jenjang = () => {
+const AddJenjang = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isError, isSuccess, message } = useSelector((state) => state.auth)
@@ -22,9 +22,9 @@ const Jenjang = () => {
 
     return (
         <Layout>
-            <ListJenjang />
+            <FormAddJenjang />
         </Layout>
     )
 }
 
-export default Jenjang
+export default AddJenjang
