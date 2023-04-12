@@ -152,13 +152,13 @@ const ListJenjang = () => {
                         `v1/jenjangPendidikan/deleteStatus/${jenjangId}`
                     ).then((response) => {
                         console.log(response.data)
-                        // Swal.fire({
-                        //     title: "",
-                        //     text: "File Anda telah dihapus.",
-                        //     icon: "success"
-                        // }).then(() => {
-                        //     getMasuk()
-                        // });
+                        Swal.fire({
+                            title: "Terhapus",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            getJenjang()
+                        });
                     })
 
                 } catch (error) {
