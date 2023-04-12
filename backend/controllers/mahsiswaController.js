@@ -6,6 +6,7 @@ const { desa, kecamatan, kabupaten, provinsi, negara } = require('../models/equi
 const { Op, DataTypes } = require('sequelize')
 const path = require('path')
 const fs = require('fs')
+const readXlsxFile = require('read-excel-file/node')
 
 module.exports = {
     get: async (req, res, next) => {
@@ -660,5 +661,26 @@ module.exports = {
             })
     },
 
+    importEcxel: async (req, res, next) => {
+        const file = req.files.import_excel
+        if (!file) return res.status(400).json({ message: "foto diri tidak boleh kosong" })
+        const fileSize = file.data.length
+        const ext = path.extname(file.name)
+        fileExcel = file.md5 + ext
+        const allowedType = ['.csv', '.xls', '.xlsx']
+        if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+        // if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
+        file.mv(`./tmp/mahasiswa/diri/${fileExcel}`, (err) => {
+            if (err) return res.status(500).json({ message: err.message })
+        })
+
+        const pathFileExcel = `../tmp/mahasiswa/diri/${fileExcel}`
+        readXlsxFile(pathFileExcel).then((rows) => {
+            rows.map(row => ({
+                // await mahasiswa.bulkCreate({
+                // })
+            }))
+        })
+    }
 
 }
