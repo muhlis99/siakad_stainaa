@@ -674,6 +674,12 @@ module.exports = {
         })
 
         const pathFileExcel = path.join(__dirname, `../tmp/excel/${fileExcel}`)
+        const schema = {
+            'tanggal_lahir': {
+                prop: 'date',
+                type: Date
+            }
+        }
         readXlsxFile(pathFileExcel).then(rows => {
             rows.shift()
             const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
@@ -736,17 +742,15 @@ module.exports = {
                     foto_ktp: "",
                     foto_ijazah: "",
                     foto_kip: "",
+                    returning: true
                 }])
-                // .then((result) => {
-                //     res.status(201).json({
-                //         message: "Data Prodi success Ditambahkan",
-                //         data: result
-                //     })
-                // }).catch((err) => {
-                //     res.status(400).json({
-                //         message: err
-                //     })
-                // })
+                    .then((result) => {
+                        res.json({
+                            data: result
+                        })
+                    }).catch((err) => {
+
+                    })
             ))
         })
     }
