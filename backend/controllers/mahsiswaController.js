@@ -4,6 +4,7 @@ const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const { desa, kecamatan, kabupaten, provinsi, negara } = require('../models/equipmentDsnMhsModel.js')
 const { Op, DataTypes } = require('sequelize')
+const Sequelize = require('../config/database.js')
 const path = require('path')
 const fs = require('fs')
 const readXlsxFile = require('read-excel-file/node')
@@ -680,7 +681,7 @@ module.exports = {
                 type: Date
             }
         }
-        readXlsxFile(pathFileExcel).then(rows => {
+        const a = readXlsxFile(pathFileExcel).then(rows => {
             rows.shift()
             const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
             rows.map(row => (
@@ -742,17 +743,55 @@ module.exports = {
                     foto_ktp: "",
                     foto_ijazah: "",
                     foto_kip: "",
-                    returning: true
+                    individualHooks: true
                 }])
-                    .then((result) => {
-                        res.json({
-                            data: result
-                        })
-                    }).catch((err) => {
+                // .then((result) => {
+                //     res.json({
+                //         message: "Data berhasil disimpan"
+                //     })
+                // }).catch((err) => {
 
-                    })
+                // })
             ))
         })
+        // const b = readXlsxFile(pathFileExcel).then(cells => {
+        //     cells.shift()
+        //     const dateNew = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+        //     const i = cells.map(cell => (
+        //         cell[1]
+        //     ))
+        //     mahasiswa.findAll({
+        //         attributes: ['nik'],
+        //         where: {
+        //             nik: i
+        //         }
+        //     }).then(results => {
+        //         const cb = results.map(all => (
+        //             all.nik
+        //         ))
+        //         const date_nim = new Date()
+        //         mahasiswa.count({
+        //             where: {
+        //                 nik: cb,
+        //                 // tanggal_masuk_kuliah: {
+        //                 //     [Op.substring]: date_nim.getFullYear()
+        //                 // },
+
+        //             }
+        //         }).then(k => {
+        //             res.json({
+        //                 j: k
+        //             })
+        //         })
+
+        //     })
+        // })
+
+        // Sequelize.query("SELECT @no:=@no+1 AS nomor, nik FROM tb_mahasiswa JOIN (SELECT @no:=0) r")
+        //     .then(all => (
+        //         console.log(all)
+        //     ))
+
     }
 
 }
