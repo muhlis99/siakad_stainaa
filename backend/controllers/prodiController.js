@@ -146,6 +146,40 @@ module.exports = {
             })
     },
 
+    getProdiByFakultas: async (req, res, next) => {
+        const code = req.params.code
+        const prodiUse = await prodi.findAll({
+            include: [{
+                model: jenjangPendidikanModel,
+                attributes: ["id_jenjang_pendidikan", "code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                attributes: ["id_fakultas", "code_jenjang_pendidikan", "code_fakultas", "nama_fakultas"],
+                where: { status: "aktif" }
+            }],
+            where: {
+                code_fakultas: code,
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                if (!result) {
+                    return res.status(404).json({
+                        message: "Data Prodi Tidak Ditemukan",
+                        data: []
+                    })
+                }
+                res.status(201).json({
+                    message: "Data Prodi Ditemukan",
+                    data: result
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     post: async (req, res, next) => {
         const { code_jenjang_pendidikan, code_fakultas, code_dikti_prodi, nama_prodi } = req.body
         const codeProdi = code_jenjang_pendidikan + code_fakultas + "JH"

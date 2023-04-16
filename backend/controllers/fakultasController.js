@@ -114,6 +114,36 @@ module.exports = {
             })
     },
 
+    getFakulatsByJenjang: async (req, res, next) => {
+        const code = req.params.code
+        const fakultasUse = await fakultas.findAll({
+            include: [{
+                model: jenjangPendidikan,
+                attributes: ["id_jenjang_pendidikan", "code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
+                where: { status: "aktif" }
+            }],
+            where: {
+                code_jenjang_pendidikan: code,
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                if (!result) {
+                    return res.status(404).json({
+                        message: "Data fakultas Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data fakultas Ditemukan",
+                    data: result
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     post: async (req, res, next) => {
         const { code_jenjang_pendidikan, code_dikti_fakultas, nama_fakultas } = req.body
         const codefakultas = code_jenjang_pendidikan + "TH"
