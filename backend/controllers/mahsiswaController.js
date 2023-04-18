@@ -4,6 +4,7 @@ const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const { desa, kecamatan, kabupaten, provinsi, negara } = require('../models/equipmentDsnMhsModel.js')
 const { Op, DataTypes } = require('sequelize')
+const Sequelize = require('../config/database.js')
 const path = require('path')
 const fs = require('fs')
 const readXlsxFile = require('read-excel-file/node')
@@ -663,24 +664,134 @@ module.exports = {
 
     importEcxel: async (req, res, next) => {
         const file = req.files.import_excel
-        if (!file) return res.status(400).json({ message: "foto diri tidak boleh kosong" })
+        if (!file) return res.status(400).json({ message: "file tidak boleh kosong" })
         const fileSize = file.data.length
         const ext = path.extname(file.name)
         fileExcel = file.md5 + ext
         const allowedType = ['.csv', '.xls', '.xlsx']
         if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
-        // if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
-        file.mv(`./tmp/mahasiswa/diri/${fileExcel}`, (err) => {
+        file.mv(`./tmp/excel/${fileExcel}`, (err) => {
             if (err) return res.status(500).json({ message: err.message })
         })
 
-        const pathFileExcel = `../tmp/mahasiswa/diri/${fileExcel}`
-        readXlsxFile(pathFileExcel).then((rows) => {
-            rows.map(row => ({
-                // await mahasiswa.bulkCreate({
+        const pathFileExcel = path.join(__dirname, `../tmp/excel/${fileExcel}`)
+        const schema = {
+            'tanggal_lahir': {
+                prop: 'date',
+                type: Date
+            }
+        }
+        const a = readXlsxFile(pathFileExcel).then(rows => {
+            rows.shift()
+            const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+            rows.map(row => (
+                mahasiswa.bulkCreate([{
+                    nim: "",
+                    nik: row[1],
+                    no_kk: row[2],
+                    no_kps: row[3],
+                    nisn: row[4],
+                    npwp: row[5],
+                    nama: row[6],
+                    tanggal_lahir: row[7],
+                    tempat_lahir: row[8],
+                    jenis_kelamin: row[9],
+                    jalan: row[10],
+                    dusun: row[11],
+                    rt: row[12],
+                    rw: row[13],
+                    kode_pos: row[14],
+                    desa: row[15],
+                    kecamatan: row[16],
+                    kabupaten: row[17],
+                    provinsi: row[18],
+                    negara: row[19],
+                    alat_transportasi: row[20],
+                    jalur_pendaftaran: row[21],
+                    jenis_pendaftaran: row[22],
+                    jenis_tinggal: row[23],
+                    penerima_kps: row[24],
+                    mulai_semester: row[25],
+                    email: row[26],
+                    no_hp: row[27],
+                    no_telepon: row[28],
+                    nik_ayah: row[29],
+                    nama_ayah: row[30],
+                    tanggal_lahir_ayah: row[31],
+                    pekerjaan_ayah: row[32],
+                    penghasilan_ayah: row[33],
+                    pendidikan_ayah: row[34],
+                    nik_ibu: row[35],
+                    nama_ibu: row[36],
+                    tanggal_lahir_ibu: row[37],
+                    pekerjaan_ibu: row[38],
+                    penghasilan_ibu: row[39],
+                    pendidikan_ibu: row[40],
+                    nik_wali: row[41],
+                    nama_wali: row[42],
+                    tanggal_lahir_wali: row[43],
+                    pekerjaan_wali: row[44],
+                    penghasilan_wali: row[45],
+                    pendidikan_wali: row[46],
+                    code_jenjang_pendidikan: row[47],
+                    code_fakultas: row[48],
+                    code_prodi: row[49],
+                    tanggal_masuk_kuliah: date,
+                    status: "aktif",
+                    foto_diri: "",
+                    foto_kk: "",
+                    foto_ktp: "",
+                    foto_ijazah: "",
+                    foto_kip: "",
+                    individualHooks: true
+                }])
+                // .then((result) => {
+                //     res.json({
+                //         message: "Data berhasil disimpan"
+                //     })
+                // }).catch((err) => {
+
                 // })
-            }))
+            ))
         })
+        // const b = readXlsxFile(pathFileExcel).then(cells => {
+        //     cells.shift()
+        //     const dateNew = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+        //     const i = cells.map(cell => (
+        //         cell[1]
+        //     ))
+        //     mahasiswa.findAll({
+        //         attributes: ['nik'],
+        //         where: {
+        //             nik: i
+        //         }
+        //     }).then(results => {
+        //         const cb = results.map(all => (
+        //             all.nik
+        //         ))
+        //         const date_nim = new Date()
+        //         mahasiswa.count({
+        //             where: {
+        //                 nik: cb,
+        //                 // tanggal_masuk_kuliah: {
+        //                 //     [Op.substring]: date_nim.getFullYear()
+        //                 // },
+
+        //             }
+        //         }).then(k => {
+        //             res.json({
+        //                 j: k
+        //             })
+        //         })
+
+        //     })
+        // })
+
+        // Sequelize.query("SELECT @no:=@no+1 AS nomor, nik FROM tb_mahasiswa JOIN (SELECT @no:=0) r")
+        //     .then(all => (
+        //         console.log(all)
+        //     ))
+
     }
 
 }

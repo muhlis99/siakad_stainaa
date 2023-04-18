@@ -5,7 +5,7 @@ const { Op } = require('sequelize')
 
 module.exports = {
     get: async (req, res, next) => {
-        const currentPage = parseInt(req.query.page) || 0
+        const currentPage = parseInt(req.query.page) || 1
         const perPage = parseInt(req.query.perPage) || 10
         const search = req.query.search || ""
         const offset = (currentPage - 1) * perPage
@@ -126,6 +126,40 @@ module.exports = {
             }],
             where: {
                 id_prodi: id,
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                if (!result) {
+                    return res.status(404).json({
+                        message: "Data Prodi Tidak Ditemukan",
+                        data: []
+                    })
+                }
+                res.status(201).json({
+                    message: "Data Prodi Ditemukan",
+                    data: result
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    getProdiByFakultas: async (req, res, next) => {
+        const code = req.params.code
+        const prodiUse = await prodi.findAll({
+            include: [{
+                model: jenjangPendidikanModel,
+                attributes: ["id_jenjang_pendidikan", "code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                attributes: ["id_fakultas", "code_jenjang_pendidikan", "code_fakultas", "nama_fakultas"],
+                where: { status: "aktif" }
+            }],
+            where: {
+                code_fakultas: code,
                 status: "aktif"
             }
         }).
