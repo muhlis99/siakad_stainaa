@@ -745,13 +745,13 @@ module.exports = {
                     foto_kip: "",
                     individualHooks: true
                 }])
-                // .then((result) => {
-                //     res.json({
-                //         message: "Data berhasil disimpan"
-                //     })
-                // }).catch((err) => {
+                    .then((result) => {
+                        res.json({
+                            message: "Data berhasil disimpan"
+                        })
+                    }).catch((err) => {
 
-                // })
+                    })
             ))
         })
         // const b = readXlsxFile(pathFileExcel).then(cells => {
