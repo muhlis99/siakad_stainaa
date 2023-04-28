@@ -92,6 +92,7 @@ const ListJenjang = () => {
         try {
             const response = await axios.get(`v1/jenjangPendidikan/getById/${e}`);
             setNama(response.data.data.nama_jenjang_pendidikan)
+            setId(e)
             document.getElementById('my-modal-edit').checked = true;
         } catch (error) {
         }
@@ -230,7 +231,7 @@ const ListJenjang = () => {
                             }
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">simpan</button>
+                            <button type='submit' className="btn btn-sm btn-default">update</button>
                         </div>
                     </form>
                 </div>
@@ -240,7 +241,7 @@ const ListJenjang = () => {
                 <h1 className='text-2xl font-bold'>Jenjang Pendidikan</h1>
             </section>
             <section>
-                <div className="card card-bordered bg-base-100 shadow-xl mb-36">
+                <div className="card card-bordered bg-base-100 shadow-md mb-36">
                     <div className="card-body">
                         <div className="flex">
                             <div className="flex-1">
@@ -270,6 +271,7 @@ const ListJenjang = () => {
                                         <th scope="col" className="px-6 py-3">#</th>
                                         <th scope="col" className="px-6 py-3">Kode Jenjang</th>
                                         <th scope="col" className="px-6 py-3">Nama Jenjang Pendidikan</th>
+                                        <th scope="col" className='px-6 py-3'>Status</th>
                                         <th scope="col" className="px-6 py-3" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
@@ -281,6 +283,7 @@ const ListJenjang = () => {
                                             </th>
                                             <td className='px-6 py-4'>{jenj.code_jenjang_pendidikan}</td>
                                             <td className='px-6 py-4'>{jenj.nama_jenjang_pendidikan}</td>
+                                            <td className='px-6 py-4'>{jenj.status == "aktif" ? <span className="badge btn-default badge-md">Aktif</span> : <span className="badge badge-error badge-md">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-4' align='center'>
                                                 <div className="btn-group">
                                                     <button className="btn btn-sm text-white btn-warning" onClick={() => modalEditOpen(jenj.id_jenjang_pendidikan)} title='Edit'><BiEdit /></button>
@@ -294,7 +297,7 @@ const ListJenjang = () => {
                         </div>
                         <div>
                             <span>Total Data : {rows} page: {rows ? page : 0} of {pages}</span>
-                            <span className='text-sm text-red-700'>{msg}</span>
+                            <p className='text-sm text-red-700'>{msg}</p>
                         </div>
                         <div className="mt-3 justify-center btn-group" key={rows} aria-label='pagination'>
                             <ReactPaginate

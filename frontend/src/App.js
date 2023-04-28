@@ -4,7 +4,9 @@ import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
 import Forgot from "./pages/Forgot";
 import Dashboard from "./pages/Dashboard";
-import Jenjang from "./pages/Jenjang";
+import Jenjang from "./pages/jenjangPendidikan/Jenjang";
+import Fakultas from "./pages/fakultas/Fakultas";
+import Prodi from "./pages/prodi/Prodi";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/jenjang" element={<Jenjang />} />
+          <Route path="/fakultas" element={<Fakultas />} />
+          <Route path="/prodi" element={<Prodi />} />
         </Routes>
       </BrowserRouter>
     </div>
