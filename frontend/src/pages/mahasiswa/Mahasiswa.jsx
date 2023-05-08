@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import Layout from '../Layout'
-import FakultasList from '../../components/fakultas/FakultasList'
+import Layout from "../Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe } from "../../features/authSlice";
+import ListMahasiswa from '../../components/mahasiswa/ListMahasiswa';
 
-const Fakultas = () => {
+const Mahasiswa = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isError, isSuccess } = useSelector((state) => state.auth)
@@ -21,8 +21,10 @@ const Fakultas = () => {
     }, [isError, navigate])
 
     return (
-        <Layout><FakultasList /></Layout>
+        <Layout>
+            <ListMahasiswa />
+        </Layout>
     )
 }
 
-export default Fakultas
+export default Mahasiswa

@@ -175,9 +175,9 @@ const ListJenjang = () => {
             <input type="checkbox" id="my-modal-add" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
+                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
                     <form onSubmit={simpanJenjang}>
-                        <h3 className="font-bold text-xl">Tambah Jenjang Pendidikan</h3>
+                        <h3 className="font-bold text-xl">Tambah</h3>
                         <div className="py-4">
                             <label className=' uppercase font-bold'>Nama Jenjang Pendidikan</label>
                             <div className="form-control w-full ">
@@ -198,7 +198,7 @@ const ListJenjang = () => {
                             }
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">simpan</button>
+                            <button type='submit' className="btn btn-xs btn-default">simpan</button>
                         </div>
                     </form>
                 </div>
@@ -208,9 +208,9 @@ const ListJenjang = () => {
             <input type="checkbox" id="my-modal-edit" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
+                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
                     <form onSubmit={updateJenjang}>
-                        <h3 className="font-bold text-xl">Edit Jenjang Pendidikan</h3>
+                        <h3 className="font-bold text-xl">Edit</h3>
                         <div className="py-4">
                             <label className=' uppercase font-bold'>Nama Jenjang Pendidikan</label>
                             <div className="form-control w-full ">
@@ -231,63 +231,65 @@ const ListJenjang = () => {
                             }
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">update</button>
+                            <button type='submit' className="btn btn-xs btn-default">update</button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <section className='mb-7'>
-                <h1 className='text-2xl font-bold'>Jenjang Pendidikan</h1>
+            <section className='mb-5'>
+                <h1 className='text-xl font-bold'>Jenjang Pendidikan</h1>
             </section>
             <section>
                 <div className="card card-bordered bg-base-100 shadow-md mb-36">
-                    <div className="card-body">
-                        <div className="flex">
-                            <div className="flex-1">
-                                <label htmlFor="my-modal-add" className="btn btn-default btn-sm"><FaPlus /> tambah data</label>
+                    <div className="card-body p-4">
+                        <div className="grid grid-flow-col">
+                            <div>
+                                <label htmlFor="my-modal-add" className="btn btn-default btn-xs"><FaPlus /> tambah data</label>
+                            </div>
+                            <div>
+                                <form onSubmit={cariData} className='mb-1'>
+                                    <div className="form-control">
+                                        <div className="input-group justify-end">
+                                            <input
+                                                type="text"
+                                                value={query}
+                                                onChange={(e) => setQuery(e.target.value)}
+                                                className="input input-xs input-bordered input-success"
+                                                placeholder='Cari'
+                                            />
+                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                                <FaSearch />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <form onSubmit={cariData} className='mb-1'>
-                            <div className="form-control">
-                                <div className="input-group justify-end">
-                                    <input
-                                        type="text"
-                                        value={query}
-                                        onChange={(e) => setQuery(e.target.value)}
-                                        className="input input-sm input-bordered input-success"
-                                        placeholder='Cari'
-                                    />
-                                    <button type='submit' className="btn btn-sm btn-square btn-default">
-                                        <FaSearch />
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className='text-gray-700 bg-[#F2F2F2]'>
                                     <tr>
-                                        <th scope="col" className="px-6 py-3">#</th>
-                                        <th scope="col" className="px-6 py-3">Kode Jenjang</th>
-                                        <th scope="col" className="px-6 py-3">Nama Jenjang Pendidikan</th>
-                                        <th scope="col" className='px-6 py-3'>Status</th>
-                                        <th scope="col" className="px-6 py-3" align='center'>Aksi</th>
+                                        <th scope="col" className="px-6 py-2">#</th>
+                                        <th scope="col" className="px-6 py-2">Kode Jenjang</th>
+                                        <th scope="col" className="px-6 py-2">Nama Jenjang Pendidikan</th>
+                                        <th scope="col" className='px-6 py-2'>Status</th>
+                                        <th scope="col" className="px-6 py-2" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Jenjang.map((jenj, index) => (
                                         <tr key={jenj.id_jenjang_pendidikan} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap">
+                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">
                                                 {index + 1}
                                             </th>
-                                            <td className='px-6 py-4'>{jenj.code_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-4'>{jenj.nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-4'>{jenj.status == "aktif" ? <span className="badge btn-default badge-md">Aktif</span> : <span className="badge badge-error badge-md">Tidak Aktif</span>}</td>
-                                            <td className='px-6 py-4' align='center'>
+                                            <td className='px-6 py-2'>{jenj.code_jenjang_pendidikan}</td>
+                                            <td className='px-6 py-2'>{jenj.nama_jenjang_pendidikan}</td>
+                                            <td className='px-6 py-2'>{jenj.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                            <td className='px-6 py-2' align='center'>
                                                 <div className="btn-group">
-                                                    <button className="btn btn-sm text-white btn-warning" onClick={() => modalEditOpen(jenj.id_jenjang_pendidikan)} title='Edit'><BiEdit /></button>
-                                                    <button className="btn btn-sm text-white btn-danger" onClick={() => nonaktifkan(jenj.id_jenjang_pendidikan)} title='Hapus'><FaTrash /></button>
+                                                    <button className="btn btn-xs text-white btn-warning" onClick={() => modalEditOpen(jenj.id_jenjang_pendidikan)} title='Edit'><BiEdit /></button>
+                                                    <button className="btn btn-xs text-white btn-danger" onClick={() => nonaktifkan(jenj.id_jenjang_pendidikan)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -296,10 +298,10 @@ const ListJenjang = () => {
                             </table>
                         </div>
                         <div>
-                            <span>Total Data : {rows} page: {rows ? page : 0} of {pages}</span>
+                            <span className='text-sm'>Total Data : {rows} page: {rows ? page : 0} of {pages}</span>
                             <p className='text-sm text-red-700'>{msg}</p>
                         </div>
-                        <div className="mt-3 justify-center btn-group" key={rows} aria-label='pagination'>
+                        <div className="mt-2 justify-center btn-group" key={rows} aria-label='pagination'>
                             <ReactPaginate
                                 className='justify-center btn-group'
                                 breakLabel={<SlOptions />}
@@ -307,12 +309,12 @@ const ListJenjang = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-sm btn-primary btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-sm btn-primary btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-sm btn-primary btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-sm btn-primary btn-circle btn-active"}
-                                pageLinkClassName={"btn btn-sm btn-primary btn-outline btn-circle ml-1"}
-                                disabledLinkClassName={"btn btn-sm btn-circle btn-outline btn-disabled"}
+                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
+                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>
                     </div>
