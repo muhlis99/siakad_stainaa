@@ -9,16 +9,16 @@ module.exports = {
                 name: req.body.name
             }
         })
-        if (!userUse) return res.status(401).json({ msg: "data tidak ditemukan" })
+        if (!userUse) return res.status(401).json({ message: "data tidak ditemukan" })
         const verfiyPass = await argon.verify(userUse.password, req.body.password)
-        if (!verfiyPass) return res.status(400).json({ msg: "password salah" })
+        if (!verfiyPass) return res.status(400).json({ message: "password salah" })
         req.session.userId = userUse.id
         const id = userUse.id
         const name = userUse.name
         const email = userUse.email
         const role = userUse.role
         res.status(200).json({
-            msg: "login suksess",
+            message: "login suksess",
             id, name, email, role
         })
     },
@@ -26,7 +26,7 @@ module.exports = {
     me: async (req, res, next) => {
         if (!req.session.userId) {
             return res.status(401).json({
-                msg: "Mohon login menggunakan akun anda"
+                message: "Mohon login menggunakan akun anda"
             })
         }
         const userUse = await user.findOne({
@@ -35,15 +35,15 @@ module.exports = {
                 id: req.session.userId
             }
         })
-        if (!userUse) return res.status(404).json({ msg: "user tidak ditemukan" })
-        res.status(200).json({ msg: "selamat datang", data: userUse })
+        if (!userUse) return res.status(404).json({ message: "user tidak ditemukan" })
+        res.status(200).json({ message: "selamat datang", data: userUse })
     },
 
     logout: async (req, res, next) => {
         try {
             req.session.destroy((err) => {
-                if (err) return res.status(400).json({ msg: "Tidak dapat logout" })
-                res.status(200).json({ msg: "Anda telah logout" })
+                if (err) return res.status(400).json({ message: "Tidak dapat logout" })
+                res.status(200).json({ message: "Anda telah logout" })
             })
         } catch (err) {
             next(err)
@@ -58,7 +58,7 @@ module.exports = {
                 email: email
             }
         })
-        if (!emailUse) return res.status(404).json({ msg: "Tidak dapat menemukan akun email anda" })
+        if (!emailUse) return res.status(404).json({ message: "Tidak dapat menemukan akun email anda" })
         let testAccount = await nodemailer.createTestAccount()
         let transporter = nodemailer.createTransport({
             service: "gmail",
@@ -78,7 +78,7 @@ module.exports = {
             }).
                 then(result => {
                     res.status(201).json({
-                        msg: "Email >>>>>> ????"
+                        message: "Email >>>>>> ????"
                     })
                 })
 
@@ -107,7 +107,7 @@ module.exports = {
                 verify_code: code
             }
         })
-        if (!codeUse) return res.status(404).json({ msg: "data tidak ditemukan" })
+        if (!codeUse) return res.status(404).json({ message: "data tidak ditemukan" })
         try {
             await user.update({
                 verify_code: ""
@@ -122,7 +122,7 @@ module.exports = {
             const email = codeUse.email
             const role = codeUse.role
             res.status(200).json({
-                msg: "login suksess && ganti password berhasil",
+                message: "login suksess && ganti password berhasil",
                 id, name, email, role
             })
         } catch (err) {
