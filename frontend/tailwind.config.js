@@ -33,6 +33,14 @@ module.exports = {
             'background-color': '#215E47',
             'border-color': '#215E47',
           },
+          '.btn-default-activ': {
+            'background-color': '#215E47',
+            'border-color': '#215E47',
+            'color': '#FFFFFF',
+          },
+          '.btn-default-outline': {
+            'border-color': '#215E47',
+          },
         },
       },
     ],

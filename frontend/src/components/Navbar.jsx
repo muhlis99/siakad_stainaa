@@ -1,13 +1,13 @@
 import React from 'react'
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
 import Avatar from "../assets/img/avatar.png"
-import { LogOut, reset } from "../features/authSlice";
+import { LogOut, reset } from "../features/authSlice"
 
 const Navbar = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth)
 
   const logOut = () => {
     dispatch(LogOut())

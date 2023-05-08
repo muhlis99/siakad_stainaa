@@ -201,7 +201,7 @@ const FakultasList = () => {
                 <div className="modal-box relative">
                     <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
                     <form onSubmit={simpanFakultas}>
-                        <h3 className="font-bold text-xl">Tambah Fakultas</h3>
+                        <h3 className="font-bold text-xl">Tambah</h3>
                         <div className="py-4">
                             <div className="form-control w-full ">
                                 <label className='text-sm uppercase font-bold mb-1'>Nama Jenjang Pendidikan</label>
@@ -210,9 +210,9 @@ const FakultasList = () => {
                                     value={kodeJenjang}
                                     onChange={(e) => setKodeJenjang(e.target.value)}
                                 >
-                                    <option selected disabled value={""}>-Pilih Jenjang Pendidikan-</option>
+                                    <option disabled value={""}>-Pilih Jenjang Pendidikan-</option>
                                     {Jenjang.map((jenj) => (
-                                        <option value={jenj.code_jenjang_pendidikan}>{jenj.nama_jenjang_pendidikan}</option>
+                                        <option key={jenj.code_jenjang_pendidikan} value={jenj.code_jenjang_pendidikan}>{jenj.nama_jenjang_pendidikan}</option>
                                     ))}
 
                                 </select>
@@ -240,7 +240,7 @@ const FakultasList = () => {
                                     value={namaFak}
                                     onChange={(e) => setNamaFak(e.target.value)}
                                 >
-                                    <option selected disabled value={""}>-Pilih Fakultas-</option>
+                                    <option disabled value={""}>-Pilih Fakultas-</option>
                                     <option>Agama Islam</option>
                                     <option>Akuntansi</option>
                                     <option>Hukum</option>
@@ -266,7 +266,7 @@ const FakultasList = () => {
                 <div className="modal-box relative">
                     <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
                     <form onSubmit={updateFakultas}>
-                        <h3 className="font-bold text-xl">Edit Fakultas</h3>
+                        <h3 className="font-bold text-xl">Edit</h3>
                         <div className="py-4">
                             <div className="form-control w-full ">
                                 <label className='text-sm uppercase font-bold mb-1'>Nama Jenjang Pendidikan</label>
@@ -275,9 +275,9 @@ const FakultasList = () => {
                                     value={kodeJenjang}
                                     onChange={(e) => setKodeJenjang(e.target.value)}
                                 >
-                                    <option selected disabled value={""}>-Pilih Jenjang Pendidikan-</option>
+                                    <option disabled value={""}>-Pilih Jenjang Pendidikan-</option>
                                     {Jenjang.map((jenj) => (
-                                        <option value={jenj.code_jenjang_pendidikan}>{jenj.nama_jenjang_pendidikan}</option>
+                                        <option key={jenj.code_jenjang_pendidikan} value={jenj.code_jenjang_pendidikan}>{jenj.nama_jenjang_pendidikan}</option>
                                     ))}
 
                                 </select>
@@ -305,7 +305,7 @@ const FakultasList = () => {
                                     value={namaFak}
                                     onChange={(e) => setNamaFak(e.target.value)}
                                 >
-                                    <option selected disabled value={""}>-Pilih Fakultas-</option>
+                                    <option disabled value={""}>-Pilih Fakultas-</option>
                                     <option>Agama Islam</option>
                                     <option>Akuntansi</option>
                                     <option>Hukum</option>
@@ -325,33 +325,35 @@ const FakultasList = () => {
                 </div>
             </div>
 
-            <section className='mb-7'>
-                <h1 className='text-2xl font-bold'>Fakultas</h1>
+            <section className='mb-5'>
+                <h1 className='text-xl font-bold'>Fakultas</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
-                    <div className="card-body">
-                        <div className="flex">
-                            <div className="flex-1">
-                                <label htmlFor="my-modal-add" className="btn btn-default btn-sm"><FaPlus /> tambah data</label>
+                    <div className="card-body p-4">
+                        <div className="grid grid-flow-col">
+                            <div>
+                                <label htmlFor="my-modal-add" className="btn btn-default btn-xs"><FaPlus /> tambah data</label>
+                            </div>
+                            <div>
+                                <form onSubmit={cariData} className='mb-1'>
+                                    <div className="form-control">
+                                        <div className="input-group justify-end">
+                                            <input
+                                                type="text"
+                                                value={query}
+                                                onChange={(e) => setQuery(e.target.value)}
+                                                className="input input-xs input-bordered input-success"
+                                                placeholder='Cari'
+                                            />
+                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                                <FaSearch />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <form onSubmit={cariData} className='mb-1'>
-                            <div className="form-control">
-                                <div className="input-group justify-end">
-                                    <input
-                                        type="text"
-                                        value={query}
-                                        onChange={(e) => setQuery(e.target.value)}
-                                        className="input input-sm input-bordered input-success"
-                                        placeholder='Cari'
-                                    />
-                                    <button type='submit' className="btn btn-sm btn-square btn-default">
-                                        <FaSearch />
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className='text-gray-700 bg-[#F2F2F2]'>
@@ -367,17 +369,17 @@ const FakultasList = () => {
                                 <tbody>
                                     {Fakultas.map((faks, index) => (
                                         <tr key={faks.id_fakultas} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap">
+                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">
                                                 {index + 1}
                                             </th>
-                                            <td className='px-6 py-4'>{faks.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-4'>{faks.code_fakultas}</td>
-                                            <td className='px-6 py-4'>{faks.nama_fakultas}</td>
-                                            <td className='px-6 py-4'>{faks.status == "aktif" ? <span className="badge btn-default badge-md">Aktif</span> : <span className="badge badge-error badge-md">Tidak Aktif</span>}</td>
-                                            <td className='px-6 py-4' align='center'>
+                                            <td className='px-6 py-2'>{faks.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                            <td className='px-6 py-2'>{faks.code_fakultas}</td>
+                                            <td className='px-6 py-2'>{faks.nama_fakultas}</td>
+                                            <td className='px-6 py-2'>{faks.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                            <td className='px-6 py-2' align='center'>
                                                 <div className="btn-group">
-                                                    <button className="btn btn-sm text-white btn-warning" onClick={() => modalEditOpen(faks.id_fakultas)} title='Edit'><BiEdit /></button>
-                                                    <button className="btn btn-sm text-white btn-danger" onClick={() => nonaktifkan(faks.id_fakultas)} title='Hapus'><FaTrash /></button>
+                                                    <button className="btn btn-xs text-white btn-warning" onClick={() => modalEditOpen(faks.id_fakultas)} title='Edit'><BiEdit /></button>
+                                                    <button className="btn btn-xs text-white btn-danger" onClick={() => nonaktifkan(faks.id_fakultas)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -386,10 +388,10 @@ const FakultasList = () => {
                             </table>
                         </div>
                         <div>
-                            <span>Total Data : {rows} page: {page} of {pages}</span>
+                            <span className='text-sm'>Total Data : {rows} page: {page} of {pages}</span>
                             <p className='text-sm text-red-700'>{msg}</p>
                         </div>
-                        <div className="mt-3 justify-center btn-group" key={rows} aria-label='pagination'>
+                        <div className="mt-2 justify-center btn-group" key={rows} aria-label='pagination'>
                             <ReactPaginate
                                 className='justify-center btn-group'
                                 breakLabel={<SlOptions />}
@@ -397,12 +399,12 @@ const FakultasList = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-sm btn-primary btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-sm btn-primary btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-sm btn-primary btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-sm btn-primary btn-circle btn-active"}
-                                pageLinkClassName={"btn btn-sm btn-primary btn-outline btn-circle ml-1"}
-                                disabledLinkClassName={"btn btn-sm btn-circle btn-outline btn-disabled"}
+                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
+                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>
                     </div>
