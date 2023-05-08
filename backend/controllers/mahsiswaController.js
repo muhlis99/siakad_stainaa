@@ -434,7 +434,7 @@ module.exports = {
             if (!file) return res.status(400).json({ message: "foto diri tidak boleh kosong" })
             const fileSize = file.data.length
             const ext = path.extname(file.name)
-            fileNameFotoDiri = "foto_diri" + file.md5 + ext
+            fileNameFotoDiri = "foto_diri" + id + file.md5 + ext
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
@@ -446,7 +446,7 @@ module.exports = {
             if (!file) return res.status(400).json({ message: "foto diri tidak boleh kosong" })
             const fileSize = file.data.length
             const ext = path.extname(file.name)
-            fileNameFotoDiri = "foto_diri" + file.md5 + ext
+            fileNameFotoDiri = "foto_diri" + id + file.md5 + ext
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file yang anda upload tidak boleh lebih dari 5 mb" })
@@ -466,7 +466,7 @@ module.exports = {
             if (!file) return res.status(400).json({ message: "foto kk tidak boleh kosong" })
             const fileSize = file.data.length
             const ext = path.extname(file.name)
-            fileNameFotoKK = "foto_kk" + file.md5 + ext
+            fileNameFotoKK = "foto_kk" + id + file.md5 + ext
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
@@ -478,7 +478,7 @@ module.exports = {
             if (!file) return res.status(400).json({ message: "foto kk tidak boleh kosong" })
             const fileSize = file.data.length
             const ext = path.extname(file.name)
-            fileNameFotoKK = "foto_kk" + file.md5 + ext
+            fileNameFotoKK = "foto_kk" + id + file.md5 + ext
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file yang anda upload tidak boleh lebih dari 5 mb" })
@@ -497,7 +497,7 @@ module.exports = {
             if (!file) return res.status(400).json({ message: "foto ktp tidak boleh kosong" })
             const fileSize = file.data.length
             const ext = path.extname(file.name)
-            fileNameFotoKtp = "foto_ktp" + file.md5 + ext
+            fileNameFotoKtp = "foto_ktp" + id + file.md5 + ext
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
@@ -509,7 +509,7 @@ module.exports = {
             if (!file) return res.status(400).json({ message: "foto ktp tidak boleh kosong" })
             const fileSize = file.data.length
             const ext = path.extname(file.name)
-            fileNameFotoKtp = "foto_ktp" + file.md5 + ext
+            fileNameFotoKtp = "foto_ktp" + id + file.md5 + ext
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file yang anda upload tidak boleh lebih dari 5 mb" })
@@ -528,7 +528,7 @@ module.exports = {
             if (!file) return res.status(400).json({ message: "foto ijazah tidak boleh kosong" })
             const fileSize = file.data.length
             const ext = path.extname(file.name)
-            fileNameFotoIjazah = "foto_ijazah" + file.md5 + ext
+            fileNameFotoIjazah = "foto_ijazah" + id + file.md5 + ext
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
@@ -540,7 +540,7 @@ module.exports = {
             if (!file) return res.status(400).json({ message: "foto ijazah tidak boleh kosong" })
             const fileSize = file.data.length
             const ext = path.extname(file.name)
-            fileNameFotoIjazah = "foto_ijazah" + file.md5 + ext
+            fileNameFotoIjazah = "foto_ijazah" + id + file.md5 + ext
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file yang anda upload tidak boleh lebih dari 5 mb" })
@@ -559,7 +559,7 @@ module.exports = {
             if (!file) return res.status(400).json({ message: "foto kip tidak boleh kosong" })
             const fileSize = file.data.length
             const ext = path.extname(file.name)
-            fileNameFotoKip = "foto_kip" + file.md5 + ext
+            fileNameFotoKip = "foto_kip" + id + file.md5 + ext
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file yang anda upload tidak boleh lebih dari 5 mb" })
@@ -571,7 +571,7 @@ module.exports = {
             if (!file) return res.status(400).json({ message: "foto kip tidak boleh kosong" })
             const fileSize = file.data.length
             const ext = path.extname(file.name)
-            fileNameFotoKip = "foto_kip" + file.md5 + ext
+            fileNameFotoKip = "foto_kip" + id + file.md5 + ext
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file yang anda upload tidak boleh lebih dari 5 mb" })
@@ -750,48 +750,9 @@ module.exports = {
                             message: "Data berhasil disimpan"
                         })
                     }).catch((err) => {
-
                     })
             ))
         })
-        // const b = readXlsxFile(pathFileExcel).then(cells => {
-        //     cells.shift()
-        //     const dateNew = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
-        //     const i = cells.map(cell => (
-        //         cell[1]
-        //     ))
-        //     mahasiswa.findAll({
-        //         attributes: ['nik'],
-        //         where: {
-        //             nik: i
-        //         }
-        //     }).then(results => {
-        //         const cb = results.map(all => (
-        //             all.nik
-        //         ))
-        //         const date_nim = new Date()
-        //         mahasiswa.count({
-        //             where: {
-        //                 nik: cb,
-        //                 // tanggal_masuk_kuliah: {
-        //                 //     [Op.substring]: date_nim.getFullYear()
-        //                 // },
-
-        //             }
-        //         }).then(k => {
-        //             res.json({
-        //                 j: k
-        //             })
-        //         })
-
-        //     })
-        // })
-
-        // Sequelize.query("SELECT @no:=@no+1 AS nomor, nik FROM tb_mahasiswa JOIN (SELECT @no:=0) r")
-        //     .then(all => (
-        //         console.log(all)
-        //     ))
-
     }
 
 }

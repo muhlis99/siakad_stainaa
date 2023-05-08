@@ -3,62 +3,62 @@ const argon = require('argon2')
 const nodemailer = require('nodemailer')
 
 module.exports = {
-    login : async (req, res, next) => {
+    login: async (req, res, next) => {
         const userUse = await user.findOne({
-            where : {
-                name : req.body.name
+            where: {
+                name: req.body.name
             }
         })
-        if(!userUse) return res.status(401).json({message : "data tidak ditemukan"})
+        if (!userUse) return res.status(401).json({ msg: "data tidak ditemukan" })
         const verfiyPass = await argon.verify(userUse.password, req.body.password)
-        if(!verfiyPass) return res.status(400).json({message : "password salah"})
+        if (!verfiyPass) return res.status(400).json({ msg: "password salah" })
         req.session.userId = userUse.id
         const id = userUse.id
         const name = userUse.name
         const email = userUse.email
         const role = userUse.role
         res.status(200).json({
-            message:"login suksess",
-            id,name,email,role
+            msg: "login suksess",
+            id, name, email, role
         })
     },
 
-    me : async (req, res, next) => {
-        if(!req.session.userId) {
+    me: async (req, res, next) => {
+        if (!req.session.userId) {
             return res.status(401).json({
-                message : "Mohon login menggunakan akun anda"
+                msg: "Mohon login menggunakan akun anda"
             })
         }
         const userUse = await user.findOne({
-            attributes : ["id","name","email","role"],
-            where : {
-                id : req.session.userId
+            attributes: ["id", "name", "email", "role"],
+            where: {
+                id: req.session.userId
             }
         })
-        if (!userUse) return res.status(404).json({message:"user tidak ditemukan"})
-        res.status(200).json({message : "selamat datang", data:userUse})
+        if (!userUse) return res.status(404).json({ msg: "user tidak ditemukan" })
+        res.status(200).json({ msg: "selamat datang", data: userUse })
     },
 
-    logout : async (req, res, next) => {
+    logout: async (req, res, next) => {
         try {
             req.session.destroy((err) => {
-                if(err) return res.status(400).json({message:"Tidak dapat logout"})
-                res.status(200).json({message:"Anda telah logout"})
+                if (err) return res.status(400).json({ msg: "Tidak dapat logout" })
+                res.status(200).json({ msg: "Anda telah logout" })
             })
         } catch (err) {
             next(err)
         }
     },
 
-    forgot : async (req, res, nest) => {
+    forgot: async (req, res, nest) => {
         const email = req.body.email
         let randomNumber = Math.floor(Math.random() * 1000000)
         const emailUse = await user.findOne({
-            where : {
-                email : email
+            where: {
+                email: email
             }
         })
-        if (!emailUse) return res.status(404).json({message:"Tidak dapat menemukan akun email anda"})
+        if (!emailUse) return res.status(404).json({ msg: "Tidak dapat menemukan akun email anda" })
         let testAccount = await nodemailer.createTestAccount()
         let transporter = nodemailer.createTransport({
             service: "gmail",
@@ -70,17 +70,17 @@ module.exports = {
 
         try {
             await user.update({
-                verify_code : randomNumber,
-            },{
-                where : {
-                    email : email
+                verify_code: randomNumber,
+            }, {
+                where: {
+                    email: email
                 }
             }).
-            then(result => {
-                res.status(201).json({
-                    message : "Email >>>>>> ????"
+                then(result => {
+                    res.status(201).json({
+                        msg: "Email >>>>>> ????"
+                    })
                 })
-            })
 
             await transporter.sendMail({
                 from: 'muhammadbwi13@gmail.com',
@@ -100,20 +100,20 @@ module.exports = {
         }
     },
 
-    verifyCode : async (req, res, next) => {
+    verifyCode: async (req, res, next) => {
         const code = req.body.code
         const codeUse = await user.findOne({
-            where : {
-                verify_code : code
+            where: {
+                verify_code: code
             }
         })
-        if (!codeUse) return res.status(404).json({message:"data tidak ditemukan"})
+        if (!codeUse) return res.status(404).json({ msg: "data tidak ditemukan" })
         try {
             await user.update({
-                verify_code : ""
+                verify_code: ""
             }, {
-                where : {
-                    id : codeUse.id
+                where: {
+                    id: codeUse.id
                 }
             })
             req.session.userId = codeUse.id
@@ -122,8 +122,8 @@ module.exports = {
             const email = codeUse.email
             const role = codeUse.role
             res.status(200).json({
-                message:"login suksess && ganti password berhasil",
-                id,name,email,role
+                msg: "login suksess && ganti password berhasil",
+                id, name, email, role
             })
         } catch (err) {
             next(err)

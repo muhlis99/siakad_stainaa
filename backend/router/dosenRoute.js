@@ -1,6 +1,8 @@
 const express = require('express')
-const router = express.Router()
+const route = express.Router()
 const dosenController = require('../controllers/dosenController.js')
-router.get('/all', dosenController.getAll)
 
-module.exports = router
+route.get('/all', dosenController.getAll)
+route.get('/getById/:id', dosenController.getById)
+
+module.exports = route

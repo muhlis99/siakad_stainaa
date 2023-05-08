@@ -1,4 +1,5 @@
 const dosen = require('../models/dosenModel.js')
+const { pendidikan, alatTransportasi } = require('../models/equipmentDsnMhsModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
@@ -9,43 +10,37 @@ module.exports = {
         let totalItems
         await dosen.findAndCountAll({
             where: {
-                [Op.or]: [
-                    {
-                        id_jenjang_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_jenjang_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama_jenjang_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    }
-                ],
                 status: "aktif"
             }
         }).
             then(all => {
                 totalItems = all.count
-                return jejangPendidikan.findAll({
+                return dosen.findAll({
+                    include: [{
+                        model: pendidikan
+                    }, {
+                        model: alatTransportasi
+                    }],
+                    attributes: ["id_dosen", "nama", "nidn", "jenis_kelamin", "status"],
                     where: {
                         [Op.or]: [
                             {
-                                id_jenjang_pendidikan: {
+                                nama: {
                                     [Op.like]: `%${search}%`
                                 }
                             },
                             {
-                                code_jenjang_pendidikan: {
+                                nidn: {
                                     [Op.like]: `%${search}%`
                                 }
                             },
                             {
-                                nama_jenjang_pendidikan: {
+                                jenis_kelamin: {
+                                    [Op.like]: `%${search}%`
+                                }
+                            },
+                            {
+                                status: {
                                     [Op.like]: `%${search}%`
                                 }
                             }
@@ -55,19 +50,52 @@ module.exports = {
                     offset: (currentPage - 1) * perPage,
                     limit: perPage,
                     order: [
-                        ["id_jenjang_pendidikan", "DESC"]
+                        ["id_dosen", "DESC"]
                     ]
                 })
             }).
             then(result => {
                 const totalPage = Math.ceil(totalItems / perPage)
                 res.status(200).json({
-                    message: "Get All Jenjang Pendidikan Success",
+                    message: "Get All Dosen Success",
                     data: result,
                     total_data: totalItems,
                     per_page: perPage,
                     current_page: currentPage,
                     total_page: totalPage
+                })
+            }).
+            catch(err => {
+                // next(err)
+                res.status(404).json({
+                    data: err
+                })
+            })
+    },
+
+    getById: async (req, res, next) => {
+        const id = req.params.id
+        await dosen.findOne({
+            include: [{
+                model: pendidikan
+            }, {
+                model: alatTransportasi
+            }],
+            where: {
+                id_dosen: id,
+                status: 'aktif'
+            }
+        }).
+            then(getById => {
+                if (!getById) {
+                    return res.status(404).json({
+                        message: "Data dosen Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data dosen Ditemukan",
+                    data: getById
                 })
             }).
             catch(err => {
