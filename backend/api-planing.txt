@@ -41,3 +41,14 @@ penjelasan
 1. per_page : Pembagian per Page
 2. current_page : page pada saat ini
 3. total_data : data keseluruhan
+
+< ---------------- pesan errors dan success ---------------- >
+=> menggunakan yang sudah berjalan tidak merubah ke
+    1. menjadikan seluruh pesan errors menjadi {msg : "......."} atau
+    2. {
+        errors : [
+            {
+                msg : "........"
+            }
+        ]
+    }
