@@ -7,7 +7,7 @@ const tahunAjaranModel = db.define('tahunAjaran', {
         autoIncrement: true,
         primaryKey: true
     },
-    'kode_tahun_ajaran': {
+    'code_tahun_ajaran': {
         type: DataTypes.TEXT,
     },
     'tahun_ajaran': {

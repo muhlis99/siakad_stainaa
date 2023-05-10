@@ -15,7 +15,7 @@ module.exports = {
                         }
                     },
                     {
-                        kode_tahun_ajaran: {
+                        code_tahun_ajaran: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -49,7 +49,7 @@ module.exports = {
                                 }
                             },
                             {
-                                kode_tahun_ajaran: {
+                                code_tahun_ajaran: {
                                     [Op.like]: `%${search}%`
                                 }
                             },
@@ -121,16 +121,16 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { dari_tahun, sampai_tahun, keterangan } = req.body
-        const kode_tahun_ajaran = dari_tahun.substr(2, 4) + sampai_tahun.substr(2, 4)
+        const code_tahun_ajaran = dari_tahun.substr(2, 4) + sampai_tahun.substr(2, 4)
         const tahun_ajaran = dari_tahun + "/" + sampai_tahun
         const tahunAjaranUse = await tahunAjaran.findOne({
             where: {
-                kode_tahun_ajaran: kode_tahun_ajaran
+                code_tahun_ajaran: code_tahun_ajaran
             }
         })
         if (tahunAjaranUse) return res.status(401).json({ message: "Data Tahun Ajaran sudah ada" })
         await tahunAjaran.create({
-            kode_tahun_ajaran: kode_tahun_ajaran,
+            code_tahun_ajaran: code_tahun_ajaran,
             tahun_ajaran: tahun_ajaran,
             keterangan: keterangan,
             status: "aktif",

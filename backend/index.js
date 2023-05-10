@@ -42,6 +42,7 @@ const mahasiswa = require('./router/mahasiswaRoute.js')
 const equipmentDsnMhs = require('./router/equipmentDsnMhsRoute.js')
 const dosen = require('./router/dosenRoute.js')
 const tahunAjaran = require('./router/tahunAjaranRoute.js')
+const semester = require('./router/semesterRoute.js')
 app.use('/v1/login', login)
 app.use('/v1/registrasi', registrasi)
 app.use('/v1/jenjangPendidikan', jenjangPendidikan)
@@ -51,6 +52,7 @@ app.use('/v1/mahasiswa', mahasiswa)
 app.use('/v1/equipmentDsnMhs', equipmentDsnMhs)
 app.use('/v1/dosen', dosen)
 app.use('/v1/tahunAjaran', tahunAjaran)
+app.use('/v1/semester', semester)
 
 // default index
 app.get('/', (req, res) => {
