@@ -142,12 +142,14 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { code_tahun_ajaran, semester, tanggal_aktif, keterangan } = req.body
-        const tahunAjaranUse = await tahunAjaran.findOne({
+        const codeSemester = code_tahun_ajaran + semester
+        const semesterModelUse = await semesterModel.findOne({
             where: {
-                code_tahun_ajaran: code_tahun_ajaran
+                code_semester: codeSemester,
+                semester: semester
             }
         })
-        const codeSemester = tahunAjaranUse.code_tahun_ajaran + semester
+        if (semesterModelUse) return res.status(401).json({ message: "data semester sudah ada" })
         // const tglAktif = date.format((new Date(tanggal_aktif)), 'YYYY-MM-DD')
         await semesterModel.create({
             code_semester: codeSemester,
@@ -170,7 +172,6 @@ module.exports = {
 
     put: async (req, res, next) => {
         const id = req.params.id
-        const { code_tahun_ajaran, semester, tanggal_aktif, keterangan } = req.body
         const semesterModelUse = await semesterModel.findOne({
             where: {
                 id_semester: id,
@@ -178,12 +179,17 @@ module.exports = {
             }
         })
         if (!semesterModelUse) return res.status(401).json({ message: "Data semester tidak ditemukan" })
-        const tahunAjaranUse = await tahunAjaran.findOne({
+        const { code_tahun_ajaran, semester, tanggal_aktif, keterangan } = req.body
+        const codeSemester = code_tahun_ajaran + semester
+        const semesterModelDuplicate = await semesterModel.findOne({
             where: {
-                code_tahun_ajaran: code_tahun_ajaran
+                code_semester: codeSemester,
+                semester: semester,
+                tanggal_aktif: tanggal_aktif,
+                keterangan: keterangan
             }
         })
-        const codeSemester = tahunAjaranUse.code_tahun_ajaran + semester
+        if (semesterModelDuplicate) return res.status(401).json({ message: "data semester sudah ada" })
         // const tglAktif = date.format((new Date(tanggal_aktif)), 'YYYY-MM-DD')
         await semesterModel.update({
             code_semester: codeSemester,
@@ -192,7 +198,6 @@ module.exports = {
             tanggal_aktif: tanggal_aktif,
             tanggal_non_aktif: "",
             keterangan: keterangan,
-            status: "aktif",
         }, {
             where: {
                 id_semester: id
