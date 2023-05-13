@@ -7,6 +7,7 @@ const path = require('path')
 
 router.get('/all', mahasiswaController.get)
 router.get('/getById/:id', mahasiswaController.getById)
+router.get('/getByCreateFirst/:id', mahasiswaController.getByCreateFirst)
 router.post('/createFirst', mahasiswaController.createFirst)
 router.post('/importEcxel', mahasiswaController.importEcxel)
 router.put('/createForm1/:id', validationForm1, validationRequest, mahasiswaController.createForm1)
