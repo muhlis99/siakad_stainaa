@@ -12,30 +12,32 @@ const Login = () => {
     const [errors, setError] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { user, isError, isSuccess, isLoading, message } = useSelector(
-        (state) => state.auth
-    );
+    const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
 
     useEffect(() => {
         if (user || isSuccess) {
-            Swal.fire({
-                title: user.message,
-                icon: "success"
-            }).then(() => {
-                navigate("/dashboard");
-            });
+            if (user.message == "selamat datang") {
+                navigate("/dashboard")
+            } else {
+                Swal.fire({
+                    title: user.message,
+                    icon: "success"
+                }).then(() => {
+                    navigate("/dashboard")
+                })
+            }
         }
-        dispatch(reset());
+        dispatch(reset())
         if (isError) {
             Swal.fire({
                 title: message,
                 icon: 'error'
             })
         }
-    }, [user, isSuccess, isError, dispatch, navigate])
+    }, [user, isSuccess, navigate, message, isError, dispatch])
 
     const Auth = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         if (name.length == 0 || password.length == 0) {
             setError(true)
         } else {

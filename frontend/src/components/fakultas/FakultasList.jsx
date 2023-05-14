@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaTrash, FaPlus, FaSearch, FaArrowRight, FaArrowLeft, FaTimes } from "react-icons/fa";
-import { BiEdit } from "react-icons/bi";
+import { FaTrash, FaPlus, FaSearch, FaArrowRight, FaArrowLeft, FaTimes, FaEdit } from "react-icons/fa";
 import { SlOptions } from "react-icons/sl";
 import axios from 'axios';
 import ReactPaginate from "react-paginate";
@@ -378,7 +377,7 @@ const FakultasList = () => {
                                             <td className='px-6 py-2'>{faks.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div className="btn-group">
-                                                    <button className="btn btn-xs text-white btn-warning" onClick={() => modalEditOpen(faks.id_fakultas)} title='Edit'><BiEdit /></button>
+                                                    <button className="btn btn-xs text-white btn-warning" onClick={() => modalEditOpen(faks.id_fakultas)} title='Edit'><FaEdit /></button>
                                                     <button className="btn btn-xs text-white btn-danger" onClick={() => nonaktifkan(faks.id_fakultas)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>

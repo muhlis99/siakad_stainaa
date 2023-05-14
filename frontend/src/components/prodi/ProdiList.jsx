@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaPlus, FaSearch, FaTrash, FaArrowLeft, FaArrowRight, FaTimes } from "react-icons/fa";
-import { BiEdit } from "react-icons/bi";
+import { FaPlus, FaSearch, FaTrash, FaArrowLeft, FaArrowRight, FaTimes, FaEdit } from "react-icons/fa";
 import { SlOptions } from "react-icons/sl";
 import axios from 'axios';
 import ReactPaginate from "react-paginate";
@@ -370,7 +369,7 @@ const ProdiList = () => {
                 </div>
             </div>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Program Studi</h1>
+                <h1 className='text-xl font-bold'>Prodi</h1>
             </section>
             <section>
                 <div className="card card-bordered bg-base-100 shadow-md mb-36">
@@ -424,7 +423,7 @@ const ProdiList = () => {
                                             <td className='px-6 py-2'>{prod.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div className="btn-group">
-                                                    <button className="btn btn-xs text-white btn-warning" title='Edit' onClick={() => modalEditOpen(prod.id_prodi)}><BiEdit /></button>
+                                                    <button className="btn btn-xs text-white btn-warning" title='Edit' onClick={() => modalEditOpen(prod.id_prodi)}><FaEdit /></button>
                                                     <button className="btn btn-xs text-white btn-danger" title='Hapus' onClick={() => nonaktifkan(prod.id_prodi)}><FaTrash /></button>
                                                 </div>
                                             </td>
