@@ -1,9 +1,7 @@
+const plotingKelasModel = require('../models/plotingKelasModel.js')
 const kelasModel = require('../models/kelasModel.js')
-const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
-const fakultasModel = require('../models/fakultasModel.js')
-const prodiModel = require('../models/prodiModel.js')
 const ruangModel = require('../models/ruangModel.js')
-const dosenModel = require('../models/dosenModel.js')
+const mahasiswaModel = require('../models/mahasiswaModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
@@ -12,27 +10,33 @@ module.exports = {
         const perPage = parseInt(req.query.perPage) || 10
         const search = req.query.search || ""
         const offset = (currentPage - 1) * perPage
-        const totalPage = await kelasModel.count({
+        const totalPage = await plotingKelasModel.count({
             include: [{
-                model: jenjangPendidikanModel,
+                model: mahasiswaModel,
+                attributes: ['id_mahasiswa', 'nim', 'no_kk', 'nik', 'nisn', 'nama', 'status'],
                 where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
+            },
+            {
                 model: ruangModel,
                 where: { status: "aktif" }
             }, {
-                model: dosenModel,
+                model: kelasModel,
                 where: { status: "aktif" }
             }],
             where: {
                 [Op.or]: [
                     {
-                        id_kelas: {
+                        id_ploting_kelas: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_ploting_kelas: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        nim: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -42,32 +46,7 @@ module.exports = {
                         }
                     },
                     {
-                        nama_kelas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_jenjang_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_fakultas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_prodi: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
                         code_ruang: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        dosen_wali: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -81,27 +60,33 @@ module.exports = {
             }
         })
         const totalItems = Math.ceil(totalPage / perPage)
-        await kelasModel.findAll({
+        await plotingKelasModel.findAll({
             include: [{
-                model: jenjangPendidikanModel,
+                model: mahasiswaModel,
+                attributes: ['id_mahasiswa', 'nim', 'no_kk', 'nik', 'nisn', 'nama', 'status'],
                 where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
+            },
+            {
                 model: ruangModel,
                 where: { status: "aktif" }
             }, {
-                model: dosenModel,
+                model: kelasModel,
                 where: { status: "aktif" }
             }],
             where: {
                 [Op.or]: [
                     {
-                        id_kelas: {
+                        id_ploting_kelas: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_ploting_kelas: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        nim: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -111,32 +96,7 @@ module.exports = {
                         }
                     },
                     {
-                        nama_kelas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_jenjang_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_fakultas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_prodi: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
                         code_ruang: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        dosen_wali: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -151,12 +111,12 @@ module.exports = {
             offset: offset,
             limit: perPage,
             order: [
-                ["id_kelas", "DESC"]
+                ["id_ploting_kelas", "DESC"]
             ]
         }).
             then(result => {
                 res.status(200).json({
-                    message: "Get All kelas Success",
+                    message: "Get All ploting Kelas Success",
                     data: result,
                     total_data: totalPage,
                     per_page: perPage,
@@ -171,46 +131,33 @@ module.exports = {
 
     getById: async (req, res, next) => {
         const id = req.params.id
-        await kelasModel.findOne({
+        await plotingKelasModel.findOne({
             include: [{
-                model: jenjangPendidikanModel,
+                model: mahasiswaModel,
+                attributes: ['id_mahasiswa', 'nim', 'no_kk', 'nik', 'nisn', 'nama', 'status'],
                 where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
+            },
+            {
                 model: ruangModel,
                 where: { status: "aktif" }
             }, {
-                model: dosenModel,
-                where: { status: "aktif" }
-            }], include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
+                model: kelasModel,
                 where: { status: "aktif" }
             }],
             where: {
-                id_kelas: id,
+                id_ploting_Kelas: id,
                 status: "aktif"
             }
         }).
             then(getById => {
                 if (!getById) {
                     return res.status(404).json({
-                        message: "Data kelas Tidak Ditemukan",
+                        message: "Data ploting Kelas Tidak Ditemukan",
                         data: null
                     })
                 }
                 res.status(201).json({
-                    message: "Data kelas Ditemukan",
+                    message: "Data ploting Kelas Ditemukan",
                     data: getById
                 })
             }).
@@ -220,40 +167,42 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { nama_kelas, identy_kelas, code_ruang, code_jenjang_pendidikan, code_fakultas, code_prodi, dosen_wali } = req.body
-        const namaKelas = nama_kelas + identy_kelas
-        const codeKelas = code_ruang + identy_kelas.replace(/ /g, '')
-        const kelasUse = await kelasModel.findOne({
-            where: {
-                code_kelas: codeKelas,
-                nama_kelas: namaKelas,
-                dosen_wali: dosen_wali
-            }
+        const data = req.body
+        const datas = data.map(record => {
+            return record.nim
         })
-        if (kelasUse) return res.status(401).json({ message: "data kelas sudah ada" })
-        await kelasModel.create({
-            code_kelas: codeKelas,
-            nama_kelas: namaKelas,
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: code_fakultas,
-            code_prodi: code_prodi,
-            code_ruang: code_ruang,
-            dosen_wali: dosen_wali,
-            status: "aktif",
-        }).
-            then(result => {
-                res.status(201).json({
-                    message: "Data kelas success Ditambahkan",
-                })
-            }).
-            catch(err => {
-                next(err)
-            })
+        console.log(datas);
+        // const codePlotingKelas = code_kelas + nim
+        // const codePlotingKelas = code_kelas + nim.substr(6, 10)
+        // const plotingKelasUse = await plotingKelasModel.findAll({
+        //     where: {
+        //         [Op.and]: [{ nim: nim }]
+        //     },
+        // })
+        // if (plotingKelasUse) return res.status(401).json({ message: "data ploting Kelas sudah ada" })
+        // await plotingKelasModel.create({
+        //     code_plotingKelas: codeplotingKelas,
+        //     nama_plotingKelas: namaplotingKelas,
+        //     code_jenjang_pendidikan: code_jenjang_pendidikan,
+        //     code_fakultas: code_fakultas,
+        //     code_prodi: code_prodi,
+        //     code_ruang: code_ruang,
+        //     dosen_wali: dosen_wali,
+        //     status: "aktif",
+        // }).
+        //     then(result => {
+        //         res.status(201).json({
+        //             message: "Data plotingKelas success Ditambahkan",
+        //         })
+        //     }).
+        //     catch(err => {
+        //         next(err)
+        //     })
     },
 
     put: async (req, res, next) => {
         const id = req.params.id
-        const kelasUseOne = await kelasModel.findOne({
+        const plotingKelasUseOne = await plotingKelasModel.findOne({
             include: [{
                 model: jenjangPendidikanModel,
                 where: { status: "aktif" }
@@ -280,25 +229,25 @@ module.exports = {
                 where: { status: "aktif" }
             }],
             where: {
-                id_kelas: id,
+                id_plotingKelas: id,
                 status: "aktif"
             }
         })
-        if (!kelasUseOne) return res.status(401).json({ message: "data kelas tidak ditemukan" })
-        const { nama_kelas, identy_kelas, code_ruang, code_jenjang_pendidikan, code_fakultas, code_prodi, dosen_wali } = req.body
-        const namaKelas = nama_kelas + identy_kelas
-        const codeKelas = code_ruang + identy_kelas.replace(/ /g, '')
-        const kelasUse = await kelasModel.findOne({
+        if (!plotingKelasUseOne) return res.status(401).json({ message: "data plotingKelas tidak ditemukan" })
+        const { nama_plotingKelas, identy_plotingKelas, code_ruang, code_jenjang_pendidikan, code_fakultas, code_prodi, dosen_wali } = req.body
+        const namaplotingKelas = nama_plotingKelas + identy_plotingKelas
+        const codeplotingKelas = code_prodi + identy_plotingKelas.replace(/ /g, '')
+        const plotingKelasUse = await plotingKelasModel.findOne({
             where: {
-                code_kelas: codeKelas,
-                nama_kelas: namaKelas,
+                code_plotingKelas: codeplotingKelas,
+                nama_plotingKelas: namaplotingKelas,
                 dosen_wali: dosen_wali
             }
         })
-        if (kelasUse) return res.status(401).json({ message: "data kelas sudah ada" })
-        await kelasModel.update({
-            code_kelas: codeKelas,
-            nama_kelas: namaKelas,
+        if (plotingKelasUse) return res.status(401).json({ message: "data plotingKelas sudah ada" })
+        await plotingKelasModel.update({
+            code_plotingKelas: codeplotingKelas,
+            nama_plotingKelas: namaplotingKelas,
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
@@ -306,12 +255,12 @@ module.exports = {
             dosen_wali: dosen_wali,
         }, {
             where: {
-                id_kelas: id
+                id_plotingKelas: id
             }
         }).
             then(result => {
                 res.status(201).json({
-                    message: "Data kelas success Diupdate",
+                    message: "Data plotingKelas success Diupdate",
                 })
             }).
             catch(err => {
@@ -321,7 +270,7 @@ module.exports = {
 
     delete: async (req, res, next) => {
         const id = req.params.id
-        const kelasModelUse = await kelasModel.findOne({
+        const plotingKelasModelUse = await plotingKelasModel.findOne({
             include: [{
                 model: jenjangPendidikanModel,
                 where: { status: "aktif" }
@@ -348,21 +297,21 @@ module.exports = {
                 where: { status: "aktif" }
             }],
             where: {
-                id_kelas: id,
+                id_plotingKelas: id,
                 status: "aktif"
             }
         })
-        if (!kelasModelUse) return res.status(401).json({ message: "Data kelas tidak ditemukan" })
-        await kelasModel.update({
+        if (!plotingKelasModelUse) return res.status(401).json({ message: "Data plotingKelas tidak ditemukan" })
+        await plotingKelasModel.update({
             status: "tidak",
         }, {
             where: {
-                id_kelas: id
+                id_plotingKelas: id
             }
         }).
             then(result => {
                 res.status(201).json({
-                    message: "data kelas succes dihapus"
+                    message: "data plotingKelas succes dihapus"
                 })
             }).
             catch(err => {
