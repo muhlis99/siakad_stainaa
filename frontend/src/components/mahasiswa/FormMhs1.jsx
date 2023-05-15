@@ -39,32 +39,55 @@ const FormMhs1 = () => {
     useEffect(() => {
         const getMhsById = async () => {
             try {
-                const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
-                let tglLahir = response.data.data.tanggal_lahir
-                const tgArray = tglLahir.split("-");
-                setNik(response.data.data.nik)
-                setNamanya(response.data.data.nama)
-                setTmp(response.data.data.tempat_lahir)
-                setTgl(tgArray[2])
-                setBln(tgArray[1])
-                setThn(tgArray[0])
-                setKk(response.data.data.no_kk)
-                setJenkel(response.data.data.jenis_kelamin)
-                setEmail(response.data.data.email)
-                setNohp(response.data.data.no_hp)
-                setNotelp(response.data.data.no_telepon)
-                setNisn(response.data.data.nisn)
-                setPkps(response.data.data.penerima_kps)
-                setNokps(response.data.data.no_kps)
-                setNpwp(response.data.data.npwp)
-                setJalurp(response.data.data.jalur_pendaftaran)
-                setJenisp(response.data.data.jenis_pendaftaran)
+                if (stat === "edit") {
+                    const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
+                    let tglLahir = response.data.data.tanggal_lahir
+                    const tgArray = tglLahir.split("-")
+                    setNik(response.data.data.nik)
+                    setNamanya(response.data.data.nama)
+                    setTmp(response.data.data.tempat_lahir)
+                    setTgl(tgArray[2])
+                    setBln(tgArray[1])
+                    setThn(tgArray[0])
+                    setKk(response.data.data.no_kk)
+                    setJenkel(response.data.data.jenis_kelamin)
+                    setEmail(response.data.data.email)
+                    setNohp(response.data.data.no_hp)
+                    setNotelp(response.data.data.no_telepon)
+                    setNisn(response.data.data.nisn)
+                    setPkps(response.data.data.penerima_kps)
+                    setNokps(response.data.data.no_kps)
+                    setNpwp(response.data.data.npwp)
+                    setJalurp(response.data.data.jalur_pendaftaran)
+                    setJenisp(response.data.data.jenis_pendaftaran)
+                } else {
+                    const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
+                    let tglLahir = response.data.data.tanggal_lahir
+                    const tgArray = tglLahir.split("-")
+                    setNik(response.data.data.nik)
+                    setNamanya(response.data.data.nama)
+                    setTmp(response.data.data.tempat_lahir)
+                    setTgl(tgArray[2])
+                    setBln(tgArray[1])
+                    setThn(tgArray[0])
+                    setKk(response.data.data.no_kk)
+                    setJenkel(response.data.data.jenis_kelamin)
+                    setEmail(response.data.data.email)
+                    setNohp(response.data.data.no_hp)
+                    setNotelp(response.data.data.no_telepon)
+                    setNisn(response.data.data.nisn)
+                    setPkps(response.data.data.penerima_kps)
+                    setNokps(response.data.data.no_kps)
+                    setNpwp(response.data.data.npwp)
+                    setJalurp(response.data.data.jalur_pendaftaran)
+                    setJenisp(response.data.data.jenis_pendaftaran)
+                }
             } catch (error) {
 
             }
         }
         getMhsById()
-    }, [idMhs]);
+    }, [idMhs, stat]);
 
     const getJalur = async () => {
         const response = await axios.get('v1/equipmentDsnMhs/jalurPendaftaran/all')
@@ -289,7 +312,7 @@ const FormMhs1 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" || stat == "adds" ? <button type='button' className='btn btn-sm btn-danger'><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
+                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-danger'><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
                                 </div>
                                 <div>
                                     <div className='float-right'>
