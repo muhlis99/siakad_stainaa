@@ -352,8 +352,8 @@ module.exports = {
             nik_ibu, nama_ibu, pekerjaan_ibu, penghasilan_ibu, pendidikan_ibu, tanggal_b, bulan_b, tahun_b
         } = req.body
         const id = req.params.id
-        const tanggal_lahir_ayah = tahun_a + "- " + bulan_a + " - " + tanggal_a
-        const tanggal_lahir_ibu = tahun_b + "- " + bulan_b + " - " + tanggal_b
+        const tanggal_lahir_ayah = tahun_a + "-" + bulan_a + "-" + tanggal_a
+        const tanggal_lahir_ibu = tahun_b + "-" + bulan_b + "-" + tanggal_b
 
         const mahasiswaUse = await mahasiswa.findOne({
             where: {
