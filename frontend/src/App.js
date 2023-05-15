@@ -26,10 +26,10 @@ function App() {
           <Route path="/fakultas" element={<Fakultas />} />
           <Route path="/prodi" element={<Prodi />} />
           <Route path="/mahasiswa" element={<Mahasiswa />} />
-          <Route path="mahasiswa/form1/:stat/:idMhs" element={<Form1 />} />
+          <Route path="/mahasiswa/form1/:stat/:idMhs" element={<Form1 />} />
           <Route path="/mahasiswa/form2/:stat/:idMhs" element={<Form2 />} />
-          <Route path="mahasiswa/form3/:stat/:idMhs" element={<Form3 />} />
-          <Route path="mahasiswa/form4/:stat/:idMhs" element={<Form4 />} />
+          <Route path="/mahasiswa/form3/:stat/:idMhs" element={<Form3 />} />
+          <Route path="/mahasiswa/form4/:stat/:idMhs" element={<Form4 />} />
         </Routes>
       </BrowserRouter>
     </div>
