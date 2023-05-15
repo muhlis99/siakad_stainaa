@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios";
-import { BiEdit } from "react-icons/bi";
-import { FaTimes, FaSearch, FaTrash, FaArrowLeft, FaArrowRight, FaPlus } from "react-icons/fa";
+import { FaTimes, FaSearch, FaTrash, FaArrowLeft, FaArrowRight, FaPlus, FaEdit } from "react-icons/fa";
 import { SlOptions } from "react-icons/sl";
 import ReactPaginate from "react-paginate";
 import Swal from "sweetalert2";
@@ -288,7 +287,7 @@ const ListJenjang = () => {
                                             <td className='px-6 py-2'>{jenj.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div className="btn-group">
-                                                    <button className="btn btn-xs text-white btn-warning" onClick={() => modalEditOpen(jenj.id_jenjang_pendidikan)} title='Edit'><BiEdit /></button>
+                                                    <button className="btn btn-xs text-white btn-warning" onClick={() => modalEditOpen(jenj.id_jenjang_pendidikan)} title='Edit'><FaEdit /></button>
                                                     <button className="btn btn-xs text-white btn-danger" onClick={() => nonaktifkan(jenj.id_jenjang_pendidikan)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>

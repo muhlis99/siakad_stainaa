@@ -41,6 +41,14 @@ module.exports = {
           '.btn-default-outline': {
             'border-color': '#215E47',
           },
+          '.btn-blue': {
+            'background-color': '#0D6EFD',
+            'border-color': '#0D6EFD',
+          },
+          '.btn-blue:hover': {
+            'background-color': '#025ce3',
+            'border-color': '#025ce3',
+          },
         },
       },
     ],

@@ -14,11 +14,9 @@ const Mahasiswa = () => {
         dispatch(getMe())
     }, [dispatch]);
 
-    useEffect(() => {
-        if (isError) {
-            navigate("/login")
-        }
-    }, [isError, navigate])
+    if (isError) {
+        return navigate("/login")
+    }
 
     return (
         <Layout>
