@@ -394,7 +394,7 @@ module.exports = {
             code_jenjang_pendidikan, code_fakultas, code_prodi, mulai_semester
         } = req.body
         const id = req.params.id
-        const tanggal_lahir_wali = tahun_w + "- " + bulan_w + " - " + tanggal_w
+        const tanggal_lahir_wali = tahun_w + "-" + bulan_w + "-" + tanggal_w
         const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
         const mahasiswaUse = await mahasiswa.findOne({
             where: {
