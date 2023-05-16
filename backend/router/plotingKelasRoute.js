@@ -7,7 +7,7 @@ const plotingKelasController = require('../controllers/plotingKelasController.js
 route.get('/all', plotingKelasController.getAll)
 route.get('/getById/:id', plotingKelasController.getById)
 route.post('/create', plotingKelasController.post)
-// route.put('/update/:id', validationplotingKelas, validationRequest, plotingKelasController.put)
-// route.put('/delete/:id', plotingKelasController.delete)
+route.put('/update/:id', plotingKelasController.put)
+route.put('/delete/:id', plotingKelasController.delete)
 
 module.exports = route

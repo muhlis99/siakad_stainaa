@@ -17,6 +17,9 @@ const plotingKelasModel = db.define('plotingKelas', {
     'nim': {
         type: DataTypes.TEXT
     },
+    'code_makul': {
+        type: DataTypes.TEXT
+    },
     'code_kelas': {
         type: DataTypes.TEXT
     },
@@ -36,7 +39,7 @@ const plotingKelasModel = db.define('plotingKelas', {
 })
 
 
-// kelas 
+// mahasiswa 
 mahasiswaModel.belongsTo(plotingKelasModel, { foreignKey: 'nim' })
 plotingKelasModel.hasMany(mahasiswaModel, { sourceKey: 'nim', foreignKey: 'nim' })
 // kelas 
