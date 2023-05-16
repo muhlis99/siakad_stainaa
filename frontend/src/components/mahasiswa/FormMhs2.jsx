@@ -19,10 +19,10 @@ const FormMhs2 = () => {
     const [kecamatannya, setKecamatannya] = useState("")
     const [desanya, setDesanya] = useState("")
     const [kodepos, setKodePos] = useState("")
-    const [dusun, setDusun] = useState("")
-    const [rt, setRt] = useState("")
-    const [rw, setRw] = useState("")
-    const [jalan, setJalan] = useState("")
+    const [dusunnya, setDusun] = useState("")
+    const [rtnya, setRt] = useState("")
+    const [rwnya, setRw] = useState("")
+    const [jalannya, setJalan] = useState("")
     const [jenting, setJenting] = useState("")
     const [alat, setAlat] = useState("")
     const navigate = useNavigate()
@@ -39,7 +39,7 @@ const FormMhs2 = () => {
                     setProvinsinya(response.data.data.provinsis[0].code_provinsi)
                     setKabupatennya(response.data.data.kabupatens[0].code_kabupaten)
                     setKecamatannya(response.data.data.kecamatans[0].code_kecamatan)
-                    setDesanya(response.data.data.desas[0].code_desa)
+                    setDesanya(response.data.data.desa)
                     setKodePos(response.data.data.kode_pos)
                     setDusun(response.data.data.dusun)
                     setRt(response.data.data.rt)
@@ -142,10 +142,10 @@ const FormMhs2 = () => {
         e.preventDefault()
         try {
             await axios.put(`v1/mahasiswa/createForm2/${idMhs}`, {
-                jalan: jalan,
-                dusun: dusun,
-                rt: rt,
-                rw: rw,
+                jalan: jalannya,
+                dusun: dusunnya,
+                rt: rtnya,
+                rw: rwnya,
                 kode_pos: kodepos,
                 negara: negaranya,
                 provinsi: provinsinya,
@@ -170,6 +170,39 @@ const FormMhs2 = () => {
                 })
             }
         }
+    }
+
+    const batal = (mhsId) => {
+        Swal.fire({
+            title: "Batalkan ini?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, batalkan!',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.delete(
+                        `v1/mahasiswa/delete/${mhsId}`
+                    ).then((response) => {
+                        console.log(response.data)
+                        Swal.fire({
+                            title: "Dibatalkan",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            navigate("/mahasiswa")
+                        });
+                    })
+
+                } catch (error) {
+
+                }
+            }
+        })
     }
 
     return (
@@ -256,7 +289,7 @@ const FormMhs2 = () => {
                                     <input
                                         type="text"
                                         placeholder="Masukkan Dusun"
-                                        value={dusun}
+                                        value={dusunnya}
                                         onChange={(e) => setDusun(e.target.value)}
                                         className="input input-sm input-bordered w-full"
                                     />
@@ -270,7 +303,7 @@ const FormMhs2 = () => {
                                             <input
                                                 type="number"
                                                 placeholder="Masukkan RT"
-                                                value={rt}
+                                                value={rtnya}
                                                 onChange={(e) => setRt(e.target.value)}
                                                 className="input input-sm input-bordered w-full"
                                             />
@@ -282,7 +315,7 @@ const FormMhs2 = () => {
                                             <input
                                                 type="number"
                                                 placeholder="Masukkan RW"
-                                                value={rw}
+                                                value={rwnya}
                                                 onChange={(e) => setRw(e.target.value)}
                                                 className="input input-sm input-bordered w-full"
                                             />
@@ -296,7 +329,7 @@ const FormMhs2 = () => {
                                     <textarea
                                         className="textarea textarea-bordered w-full"
                                         placeholder="Masukkan Jalan"
-                                        value={jalan}
+                                        value={jalannya}
                                         onChange={(e) => setJalan(e.target.value)}
                                     ></textarea>
                                 </div>
@@ -336,7 +369,7 @@ const FormMhs2 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type="button" className='btn btn-sm btn-danger'><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
+                                    {stat == "add" ? <button type="button" className='btn btn-sm btn-danger' onClick={() => batal(idMhs)}><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>

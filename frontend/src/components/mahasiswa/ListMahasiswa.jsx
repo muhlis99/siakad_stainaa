@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, Navigate } from "react-router-dom"
-import { FaPlus, FaSearch, FaTrash, FaInfo, FaEdit } from "react-icons/fa"
+import { FaPlus, FaSearch, FaTrash, FaInfo, FaEdit, FaImages } from "react-icons/fa"
 import axios from 'axios'
 import ReactPaginate from "react-paginate"
 import Swal from "sweetalert2"
@@ -25,6 +25,38 @@ const ListMahasiswa = () => {
         setStat("add")
     }
 
+    const nonaktifkan = (mhsId) => {
+        Swal.fire({
+            title: "Hapus data ini?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.put(
+                        `v1/mahasiswa/nonAktif/${mhsId}`
+                    ).then((response) => {
+                        console.log(response.data)
+                        Swal.fire({
+                            title: "Terhapus",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            getMahasiwa()
+                        });
+                    })
+
+                } catch (error) {
+
+                }
+            }
+        })
+    }
 
     return (
         <div className='mt-2 container'>
@@ -81,10 +113,11 @@ const ListMahasiswa = () => {
                                             <td className='px-6 py-2'>{mhs.fakultas[0].nama_fakultas}</td>
                                             <td className='px-6 py-2'>{mhs.prodis[0].nama_prodi}</td>
                                             <td className='px-6 py-2'>
-                                                <div className="btn-group">
-                                                    <button className="btn btn-xs text-white btn-info" title='Edit'><FaInfo /></button>
-                                                    <Link to={`/mahasiswa/form1/edit/${mhs.id_mahasiswa}`} className="btn btn-xs text-white btn-warning" title='Edit'><FaEdit /></Link>
-                                                    <button className="btn btn-xs text-white btn-danger" title='Hapus'><FaTrash /></button>
+                                                <div className='grid grid-flow-col'>
+                                                    <Link to={`/mahasiswa/detail/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
+                                                    <Link to={`/mahasiswa/form1/edit/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                    <Link to={`/mahasiswa/upload/berkas/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-blue" title='Upload Berkas'><FaImages /></Link>
+                                                    <button onClick={() => nonaktifkan(mhs.id_mahasiswa)} className="btn btn-xs btn-circle text-white btn-danger" title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>

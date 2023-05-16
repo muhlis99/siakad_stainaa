@@ -49,6 +49,16 @@ module.exports = {
             'background-color': '#025ce3',
             'border-color': '#025ce3',
           },
+          '.file-input-default': {
+            'border-color': '#2D7F5F',
+          },
+          '.btn-default:focus': {
+            'outline': '2px solid #2D7F5F'
+          },
+          '.file-input-default::file-selector-button': {
+            'background': '#2D7F5F',
+            'border-color': '#2D7F5F',
+          },
         },
       },
     ],

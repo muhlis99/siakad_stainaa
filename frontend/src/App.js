@@ -12,6 +12,8 @@ import Form1 from "./pages/mahasiswa/Form1"
 import Form2 from "./pages/mahasiswa/Form2"
 import Form3 from "./pages/mahasiswa/Form3"
 import Form4 from "./pages/mahasiswa/Form4"
+import Upload from "./pages/mahasiswa/Upload"
+import Detail from "./pages/mahasiswa/Detail"
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
           <Route path="/mahasiswa/form2/:stat/:idMhs" element={<Form2 />} />
           <Route path="/mahasiswa/form3/:stat/:idMhs" element={<Form3 />} />
           <Route path="/mahasiswa/form4/:stat/:idMhs" element={<Form4 />} />
+          <Route path="/mahasiswa/upload/:stat/:idMhs" element={<Upload />} />
+          <Route path="/mahasiswa/detail/:idMhs" element={<Detail />} />
         </Routes>
       </BrowserRouter>
     </div>
