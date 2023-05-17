@@ -220,6 +220,90 @@ const FormMhs4 = () => {
         })
     }
 
+    const salinAyah = async () => {
+        try {
+            if (stat === "edit") {
+                const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
+                let tglLahirAyah = response.data.data.tanggal_lahir_ayah
+                const tglAyah = tglLahirAyah.split("-")
+                // let tglLahirIbu = response.data.data.tanggal_lahir_ibu
+                // const tglIbu = tglLahirIbu.split("-")
+                setNikWali(response.data.data.nik_ayah)
+                setNamaWali(response.data.data.nama_ayah)
+                setTgWali(tglAyah[2])
+                setBlWali(tglAyah[1])
+                setThWali(tglAyah[0])
+                setPkrjnWali(response.data.data.pekerjaan_ayah)
+                setPndptWali(response.data.data.penghasilan_ayah)
+                setPndknWali(response.data.data.pendidikan_ayah)
+                // setNikIbu(response.data.data.nik_ibu)
+                // setNamaIbu(response.data.data.nama_ibu)
+                // setTgIbu(tglIbu[2])
+                // setBlIbu(tglIbu[1])
+                // setThIbu(tglIbu[0])
+                // setPkrjnIbu(response.data.data.pekerjaan_ibu)
+                // setPndptIbu(response.data.data.penghasilan_ibu)
+                // setPndknIbu(response.data.data.pendidikan_ibu)
+            } else {
+                const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
+                let tglLahirAyah = response.data.data.tanggal_lahir_ayah
+                const tglAyah = tglLahirAyah.split("-")
+                // let tglLahirIbu = response.data.data.tanggal_lahir_ibu
+                // const tglIbu = tglLahirIbu.split("-")
+                setNikWali(response.data.data.nik_ayah)
+                setNamaWali(response.data.data.nama_ayah)
+                setTgWali(tglAyah[2])
+                setBlWali(tglAyah[1])
+                setThWali(tglAyah[0])
+                setPkrjnWali(response.data.data.pekerjaan_ayah)
+                setPndptWali(response.data.data.penghasilan_ayah)
+                setPndknWali(response.data.data.pendidikan_ayah)
+                // setNikIbu(response.data.data.nik_ibu)
+                // setNamaIbu(response.data.data.nama_ibu)
+                // setTgIbu(tglIbu[2])
+                // setBlIbu(tglIbu[1])
+                // setThIbu(tglIbu[0])
+                // setPkrjnIbu(response.data.data.pekerjaan_ibu)
+                // setPndptIbu(response.data.data.penghasilan_ibu)
+                // setPndknIbu(response.data.data.pendidikan_ibu)
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const salinIbu = async () => {
+        try {
+            if (stat === "edit") {
+                const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
+                let tglLahirIbu = response.data.data.tanggal_lahir_ibu
+                const tglIbu = tglLahirIbu.split("-")
+                setNikWali(response.data.data.nik_ibu)
+                setNamaWali(response.data.data.nama_ibu)
+                setTgWali(tglIbu[2])
+                setBlWali(tglIbu[1])
+                setThWali(tglIbu[0])
+                setPkrjnWali(response.data.data.pekerjaan_ibu)
+                setPndptWali(response.data.data.penghasilan_ibu)
+                setPndknWali(response.data.data.pendidikan_ibu)
+            } else {
+                const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
+                let tglLahirIbu = response.data.data.tanggal_lahir_ibu
+                const tglIbu = tglLahirIbu.split("-")
+                setNikWali(response.data.data.nik_ibu)
+                setNamaWali(response.data.data.nama_ibu)
+                setTgWali(tglIbu[2])
+                setBlWali(tglIbu[1])
+                setThWali(tglIbu[0])
+                setPkrjnWali(response.data.data.pekerjaan_ibu)
+                setPndptWali(response.data.data.penghasilan_ibu)
+                setPndknWali(response.data.data.pendidikan_ibu)
+            }
+        } catch (error) {
+
+        }
+    }
+
     return (
         <div>
             <div className='container mt-2'>
@@ -232,8 +316,8 @@ const FormMhs4 = () => {
                             <form onSubmit={simpanMhs}>
                                 <div className='grid lg:grid-cols-3 gap-4'>
                                     <div className='lg:col-span-3'>
-                                        <button type='button' className='btn btn-default btn-sm mr-1'><FaMale /><span> salin data ayah</span></button>
-                                        <button type='button' className='btn btn-default btn-sm'><FaFemale /><span> salin data ibu</span></button>
+                                        <button type='button' onClick={salinAyah} className='btn btn-default btn-sm mr-1'><FaMale /><span> salin data ayah</span></button>
+                                        <button type='button' onClick={salinIbu} className='btn btn-default btn-sm'><FaFemale /><span> salin data ibu</span></button>
                                     </div>
                                     <div>
                                         <label className="label">

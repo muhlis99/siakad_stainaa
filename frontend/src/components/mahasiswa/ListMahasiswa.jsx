@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, Navigate } from "react-router-dom"
-import { FaPlus, FaSearch, FaTrash, FaInfo, FaEdit, FaImages } from "react-icons/fa"
+import { FaPlus, FaSearch, FaTrash, FaInfo, FaEdit, FaImages, FaPrint } from "react-icons/fa"
 import axios from 'axios'
 import ReactPaginate from "react-paginate"
 import Swal from "sweetalert2"
@@ -117,6 +117,7 @@ const ListMahasiswa = () => {
                                                     <Link to={`/mahasiswa/detail/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
                                                     <Link to={`/mahasiswa/form1/edit/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
                                                     <Link to={`/mahasiswa/upload/berkas/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-blue" title='Upload Berkas'><FaImages /></Link>
+                                                    <Link to={`/mahasiswa/print/${mhs.id_mahasiswa}`} target='_blank' className="btn btn-xs btn-circle text-white btn-info" title='Print Berkas'><FaPrint /></Link>
                                                     <button onClick={() => nonaktifkan(mhs.id_mahasiswa)} className="btn btn-xs btn-circle text-white btn-danger" title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>

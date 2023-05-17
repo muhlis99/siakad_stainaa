@@ -14,6 +14,7 @@ import Form3 from "./pages/mahasiswa/Form3"
 import Form4 from "./pages/mahasiswa/Form4"
 import Upload from "./pages/mahasiswa/Upload"
 import Detail from "./pages/mahasiswa/Detail"
+import PrintMhs from "./components/mahasiswa/PrintMhs"
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/mahasiswa/form4/:stat/:idMhs" element={<Form4 />} />
           <Route path="/mahasiswa/upload/:stat/:idMhs" element={<Upload />} />
           <Route path="/mahasiswa/detail/:idMhs" element={<Detail />} />
+          <Route path="/mahasiswa/print/:idMhs" element={<PrintMhs />} />
         </Routes>
       </BrowserRouter>
     </div>
