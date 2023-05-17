@@ -171,6 +171,39 @@ const FormMhs3 = () => {
         }
     }
 
+    const batal = (mhsId) => {
+        Swal.fire({
+            title: "Batalkan ini?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, batalkan!',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.delete(
+                        `v1/mahasiswa/delete/${mhsId}`
+                    ).then((response) => {
+                        console.log(response.data)
+                        Swal.fire({
+                            title: "Dibatalkan",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            navigate("/mahasiswa")
+                        });
+                    })
+
+                } catch (error) {
+
+                }
+            }
+        })
+    }
+
     return (
         <div className='container mt-2'>
             <section className='mb-5'>
@@ -334,7 +367,7 @@ const FormMhs3 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-danger'><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
+                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-danger' onClick={() => batal(idMhs)}><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>

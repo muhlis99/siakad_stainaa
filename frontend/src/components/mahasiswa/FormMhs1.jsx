@@ -87,7 +87,7 @@ const FormMhs1 = () => {
             }
         }
         getMhsById()
-    }, [idMhs, stat]);
+    }, [idMhs, stat])
 
     const getJalur = async () => {
         const response = await axios.get('v1/equipmentDsnMhs/jalurPendaftaran/all')
@@ -163,14 +163,43 @@ const FormMhs1 = () => {
         }
     }
 
+    const batal = (mhsId) => {
+        Swal.fire({
+            title: "Batalkan ini?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, batalkan!',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.delete(
+                        `v1/mahasiswa/delete/${mhsId}`
+                    ).then((response) => {
+                        console.log(response.data)
+                        Swal.fire({
+                            title: "Dibatalkan",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            navigate("/mahasiswa")
+                        });
+                    })
 
+                } catch (error) {
+
+                }
+            }
+        })
+    }
 
     return (
         <div className='container mt-2'>
-            {/* {id && <Navigate to={`form2/${stat}/${idMhs}`} replace={true} />} */}
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Identitas Diri {namanya && <span>Ananda <span className='text-red-500'>{namanya}</span></span>}</h1>
-
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
@@ -312,7 +341,7 @@ const FormMhs1 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-danger'><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
+                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-danger' onClick={() => batal(idMhs)}><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
                                 </div>
                                 <div>
                                     <div className='float-right'>
