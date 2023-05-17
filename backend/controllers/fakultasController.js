@@ -146,7 +146,27 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { code_jenjang_pendidikan, code_dikti_fakultas, nama_fakultas } = req.body
-        const codefakultas = code_jenjang_pendidikan + "TH"
+        let code = ""
+        if (nama_fakultas === "AGAMA ISLAM") {
+            code = "AI"
+        } else if (nama_fakultas === "AKUNTANSI") {
+            code = "AK"
+        } else if (nama_fakultas === "TEKNOLOGI INFORMASI") {
+            code = "TI"
+        } else if (nama_fakultas === "KOMUNIKASI") {
+            code = "KM"
+        } else if (nama_fakultas === "PSIKOLOGI") {
+            code = "PS"
+        } else {
+            code = ""
+        }
+        const codefakultas = code_jenjang_pendidikan + code
+        const duplicateData = await fakultas.findOne({
+            where: {
+                code_fakultas: codefakultas
+            }
+        })
+        if (duplicateData) return res.status(401).json({ message: "Data fakultas sudah ada" })
         await fakultas.create({
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: codefakultas,
@@ -157,7 +177,6 @@ module.exports = {
             then(result => {
                 res.status(201).json({
                     message: "Data Fakultas success Ditambahkan",
-                    data: result
                 })
             }).
             catch(err => {
@@ -168,7 +187,6 @@ module.exports = {
     put: async (req, res, next) => {
         const id = req.params.id
         const { code_jenjang_pendidikan, code_dikti_fakultas, nama_fakultas } = req.body
-        const codefakultas = code_jenjang_pendidikan + "TH"
         const fakultasUse = await fakultas.findOne({
             include: [{
                 model: jenjangPendidikan,
@@ -181,6 +199,27 @@ module.exports = {
             }
         })
         if (!fakultasUse) return res.status(401).json({ message: "Data Fakultas tidak ditemukan" })
+        let code = ""
+        if (nama_fakultas === "AGAMA ISLAM") {
+            code = "AI"
+        } else if (nama_fakultas === "AKUNTANSI") {
+            code = "AK"
+        } else if (nama_fakultas === "TEKNOLOGI INFORMASI") {
+            code = "TI"
+        } else if (nama_fakultas === "KOMUNIKASI") {
+            code = "KM"
+        } else if (nama_fakultas === "PSIKOLOGI") {
+            code = "PS"
+        } else {
+            code = ""
+        }
+        const codefakultas = code_jenjang_pendidikan + code
+        const duplicateData = await fakultas.findOne({
+            where: {
+                code_fakultas: codefakultas
+            }
+        })
+        if (duplicateData) return res.status(401).json({ message: "Data fakultas sudah ada" })
         await fakultas.update({
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: codefakultas,

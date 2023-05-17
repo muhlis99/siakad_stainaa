@@ -3,6 +3,7 @@ const db = require('../config/database.js')
 const mahasiswaModel = require('./mahasiswaModel.js')
 const kelasModel = require('./kelasModel.js')
 const ruangModel = require('./ruangModel.js')
+const mataKuliahModel = require('./mataKuliahModel.js')
 
 
 const plotingKelasModel = db.define('plotingKelas', {
@@ -17,7 +18,7 @@ const plotingKelasModel = db.define('plotingKelas', {
     'nim': {
         type: DataTypes.TEXT
     },
-    'code_makul': {
+    'code_mata_kuliah': {
         type: DataTypes.TEXT
     },
     'code_kelas': {
@@ -48,6 +49,9 @@ plotingKelasModel.hasMany(kelasModel, { sourceKey: 'code_kelas', foreignKey: 'co
 // ruang 
 ruangModel.belongsTo(plotingKelasModel, { foreignKey: 'code_ruang' })
 plotingKelasModel.hasMany(ruangModel, { sourceKey: 'code_ruang', foreignKey: 'code_ruang' })
+// mata kuliah 
+mataKuliahModel.belongsTo(plotingKelasModel, { foreignKey: 'code_mata_kuliah' })
+plotingKelasModel.hasMany(mataKuliahModel, { sourceKey: 'code_mata_kuliah', foreignKey: 'code_mata_kuliah' })
 
 
 module.exports = plotingKelasModel

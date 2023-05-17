@@ -1,10 +1,8 @@
-// mata kuliah belum di joinkna dengan ploting kelas 
-// karena belum ada database nya
-
 const plotingKelasModel = require('../models/plotingKelasModel.js')
 const kelasModel = require('../models/kelasModel.js')
 const ruangModel = require('../models/ruangModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
+const mataKuliahModel = require('../models/mataKuliahModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
@@ -24,6 +22,9 @@ module.exports = {
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
+                where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
                 where: { status: "aktif" }
             }],
             where: {
@@ -74,6 +75,9 @@ module.exports = {
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
+                where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
                 where: { status: "aktif" }
             }],
             where: {
@@ -139,12 +143,14 @@ module.exports = {
                 model: mahasiswaModel,
                 attributes: ['id_mahasiswa', 'nim', 'no_kk', 'nik', 'nisn', 'nama', 'status'],
                 where: { status: "aktif" }
-            },
-            {
+            }, {
                 model: ruangModel,
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
+                where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
                 where: { status: "aktif" }
             }],
             where: {
@@ -184,7 +190,7 @@ module.exports = {
         const data_body = data.map(record => {
             let datas = {
                 code_ploting_kelas: record.nim.substr(6, 10) + record.code_kelas,
-                code_makul: record.code_makul,
+                code_mata_kuliah: record.code_mata_kuliah,
                 nim: record.nim,
                 code_kelas: record.code_kelas,
                 code_ruang: record.code_ruang,
@@ -216,6 +222,9 @@ module.exports = {
             }, {
                 model: kelasModel,
                 where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
+                where: { status: "aktif" }
             }],
             where: {
                 id_ploting_Kelas: id,
@@ -223,7 +232,7 @@ module.exports = {
             }
         })
         if (!plotingKelasUseOne) return res.status(401).json({ message: "data ploting Kelas tidak ditemukan" })
-        const { nim, code_makul, code_kelas, code_ruang } = req.body
+        const { nim, code_mata_kuliah, code_kelas, code_ruang } = req.body
         const codeplotingKelas = nim.substr(6, 10) + code_kelas
         const plotingKelasUse = await plotingKelasModel.findOne({
             where: {
@@ -236,7 +245,7 @@ module.exports = {
         await plotingKelasModel.update({
             code_ploting_kelas: codeplotingKelas,
             nim: nim,
-            code_makul: code_makul,
+            code_mata_kuliah: code_mata_kuliah,
             code_kelas: code_kelas,
             code_ruang: code_ruang,
         }, {
@@ -266,6 +275,9 @@ module.exports = {
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
+                where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
                 where: { status: "aktif" }
             }],
             where: {

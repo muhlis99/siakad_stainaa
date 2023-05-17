@@ -182,7 +182,27 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { code_jenjang_pendidikan, code_fakultas, code_dikti_prodi, nama_prodi } = req.body
-        const codeProdi = code_jenjang_pendidikan + code_fakultas + "JH"
+        let code = ""
+        if (nama_prodi === "TEKNIK ELECTRO") {
+            code = "TE"
+        } else if (nama_prodi === "PERBANKKAN SYARI'AH") {
+            code = "PS"
+        } else if (nama_prodi === "TEKNIK INFORMATIKA") {
+            code = "TIK"
+        } else if (nama_prodi === "HUKUM EKONOMI SYARI'AH") {
+            code = "HES"
+        } else if (nama_prodi === " PENDIDIKAN AGAMA ISLAM") {
+            code = "PAI"
+        } else {
+            code = ""
+        }
+        const codeProdi = code_fakultas + code
+        const duplicateData = await prodi.findOne({
+            where: {
+                code_prodi: codeProdi
+            }
+        })
+        if (duplicateData) return res.status(401).json({ message: "Data Prodi sudah ada" })
         await prodi.create({
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
@@ -194,7 +214,6 @@ module.exports = {
             then(result => {
                 res.status(201).json({
                     message: "Data Prodi success Ditambahkan",
-                    data: result
                 })
             }).
             catch(err => {
@@ -205,7 +224,6 @@ module.exports = {
     put: async (req, res, next) => {
         const id = req.params.id
         const { code_jenjang_pendidikan, code_fakultas, code_dikti_prodi, nama_prodi } = req.body
-        const codeProdi = code_jenjang_pendidikan + code_fakultas + "JH"
         const prodiUse = await prodi.findOne({
             include: [{
                 model: jenjangPendidikanModel,
@@ -222,6 +240,27 @@ module.exports = {
             }
         })
         if (!prodiUse) return res.status(401).json({ message: "Data Prodi tidak ditemukan" })
+        let code = ""
+        if (nama_prodi === "TEKNIK ELECTRO") {
+            code = "TE"
+        } else if (nama_prodi === "PERBANKKAN SYARI'AH") {
+            code = "PS"
+        } else if (nama_prodi === "TEKNIK INFORMATIKA") {
+            code = "TIK"
+        } else if (nama_prodi === "HUKUM EKONOMI SYARI'AH") {
+            code = "HES"
+        } else if (nama_prodi === " PENDIDIKAN AGAMA ISLAM") {
+            code = "PAI"
+        } else {
+            code = ""
+        }
+        const codeProdi = code_fakultas + code
+        const duplicateData = await prodi.findOne({
+            where: {
+                code_prodi: codeProdi
+            }
+        })
+        if (duplicateData) return res.status(401).json({ message: "Data Prodi sudah ada" })
         await prodi.update({
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
