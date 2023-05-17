@@ -1,3 +1,4 @@
+const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const jejangPendidikan = require('../models/jenjangPendidikanModel.js')
 const { Op } = require("sequelize")
 
@@ -102,8 +103,24 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { nama_jenjang_pendidikan } = req.body
-        // const date = new Date().getFullYear()
-        const code = "S1"
+        let code = ""
+        if (nama_jenjang_pendidikan === "DIPLOMA") {
+            code = "D1"
+        } else if (nama_jenjang_pendidikan === "SARJANA") {
+            code = "S1"
+        } else if (nama_jenjang_pendidikan === "MAGISTER") {
+            code = "S2"
+        } else if (nama_jenjang_pendidikan === "DOCTOR") {
+            code = "S3"
+        } else {
+            code = ""
+        }
+        const duplicateData = await jenjangPendidikanModel.findOne({
+            where: {
+                code_jenjang_pendidikan: code
+            }
+        })
+        if (duplicateData) return res.status(401).json({ message: "Data jejang Pendidikan sudah ada" })
         await jejangPendidikan.create({
             code_jenjang_pendidikan: code,
             nama_jenjang_pendidikan: nama_jenjang_pendidikan,
@@ -112,7 +129,6 @@ module.exports = {
             then(result => {
                 res.status(201).json({
                     message: "Data Jenjang pendidikan success Ditambahkan",
-                    data: result
                 })
             }).
             catch(err => {
@@ -123,8 +139,6 @@ module.exports = {
     put: async (req, res, next) => {
         const id = req.params.id
         const { nama_jenjang_pendidikan } = req.body
-        // const date = new Date().getFullYear()
-        const code = "S1"
         const jejangPendidikanUse = await jejangPendidikan.findOne({
             where: {
                 id_jenjang_pendidikan: id,
@@ -132,9 +146,27 @@ module.exports = {
             }
         })
         if (!jejangPendidikanUse) return res.status(401).json({ message: "Data jejang Pendidikan tidak ditemukan" })
+        let code = ""
+        if (nama_jenjang_pendidikan === "DIPLOMA") {
+            code = "D1"
+        } else if (nama_jenjang_pendidikan === "SARJANA") {
+            code = "S1"
+        } else if (nama_jenjang_pendidikan === "MAGISTER") {
+            code = "S2"
+        } else if (nama_jenjang_pendidikan === "DOCTOR") {
+            code = "S3"
+        } else {
+            code = ""
+        }
+        const duplicateData = await jenjangPendidikanModel.findOne({
+            where: {
+                code_jenjang_pendidikan: code
+            }
+        })
+        if (duplicateData) return res.status(401).json({ message: "Data jejang Pendidikan sudah ada" })
         await jejangPendidikan.update({
             nama_jenjang_pendidikan: nama_jenjang_pendidikan,
-            code: code
+            code_jenjang_pendidikan: code
         }, {
             where: {
                 id_jenjang_pendidikan: id
