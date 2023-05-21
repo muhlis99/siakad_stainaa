@@ -106,6 +106,35 @@ module.exports = {
             })
     },
 
+    getByCreateFirst: async (req, res, next) => {
+        const id = req.params.id
+        await dosen.findOne({
+            include: [{
+                model: pendidikan
+            }, {
+                model: alatTransportasi
+            }],
+            where: {
+                id_dosen: id,
+            }
+        }).
+            then(getById => {
+                if (!getById) {
+                    return res.status(404).json({
+                        message: "Data dosen Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data dosen Ditemukan",
+                    data: getById
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     createFirts: async (req, res, next) => {
         await dosen.create({
             nama: "",
