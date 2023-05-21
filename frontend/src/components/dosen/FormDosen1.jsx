@@ -22,19 +22,21 @@ const FormDosen1 = () => {
     useEffect(() => {
         const getDosenById = async () => {
             try {
-                const response = await axios.get(`v1/dosen/getById/${idDsn}`)
-                setNidn(response.data.data.nidn)
-                setNamanya(response.data.data.nama)
-                setTmp(response.data.data.tempat_lahir)
-                let tglLahir = response.data.data.tanggal_lahir
-                const tgArray = tglLahir.split("-")
-                setTgl(tgArray[2])
-                setBln(tgArray[1])
-                setThn(tgArray[0])
-                setJenkel(response.data.data.jenis_kelamin)
-                setEmail(response.data.data.email)
-                setNohp(response.data.data.no_hp)
-                setNotelp(response.data.data.no_telepon)
+                if (stat == "edit") {
+                    const response = await axios.get(`v1/dosen/getById/${idDsn}`)
+                    setNidn(response.data.data.nidn)
+                    setNamanya(response.data.data.nama)
+                    setTmp(response.data.data.tempat_lahir)
+                    let tglLahir = response.data.data.tanggal_lahir
+                    const tgArray = tglLahir.split("-")
+                    setTgl(tgArray[2])
+                    setBln(tgArray[1])
+                    setThn(tgArray[0])
+                    setJenkel(response.data.data.jenis_kelamin)
+                    setEmail(response.data.data.email)
+                    setNohp(response.data.data.no_hp)
+                    setNotelp(response.data.data.no_telepon)
+                }
             } catch (error) {
 
             }
