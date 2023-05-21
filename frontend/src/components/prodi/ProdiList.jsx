@@ -270,11 +270,11 @@ const ProdiList = () => {
                                     onChange={(e) => setNamaProdi(e.target.value)}
                                 >
                                     <option disabled value={""}>-Pilih Prodi-</option>
-                                    <option>Teknik Informatika</option>
-                                    <option>Teknik Elektro</option>
-                                    <option>Perbankan Syariah</option>
-                                    <option>Hukum Ekonomi Syariah</option>
-                                    <option>Pendidikan Agama Islam</option>
+                                    <option>TEKNIK INFORMATIKA</option>
+                                    <option>TEKNIK ELECTRO</option>
+                                    <option>PERBANKAN SYARI'AH</option>
+                                    <option>HUKUM EKONOMI SYARI'AH</option>
+                                    <option>PENDIDIKAN AGAMA ISLAM</option>
                                 </select>
                             </div>
                             {errors && namaProdi.length <= 0 ?

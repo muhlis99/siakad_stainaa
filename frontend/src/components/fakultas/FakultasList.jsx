@@ -240,12 +240,12 @@ const FakultasList = () => {
                                     onChange={(e) => setNamaFak(e.target.value)}
                                 >
                                     <option disabled value={""}>-Pilih Fakultas-</option>
-                                    <option>Agama Islam</option>
-                                    <option>Akuntansi</option>
-                                    <option>Hukum</option>
-                                    <option>Teknologi Informasi</option>
-                                    <option>Komunikasi</option>
-                                    <option>Psikologi</option>
+                                    <option>AGAMA ISLAM</option>
+                                    <option>AKUNTANSI</option>
+                                    <option>HUKUM</option>
+                                    <option>TEKNOLOGI INFORMASI</option>
+                                    <option>KOMUNIKASI</option>
+                                    <option>PSIKOLOGI</option>
                                 </select>
                             </div>
                             {errors && namaFak.length <= 0 ?
@@ -305,12 +305,12 @@ const FakultasList = () => {
                                     onChange={(e) => setNamaFak(e.target.value)}
                                 >
                                     <option disabled value={""}>-Pilih Fakultas-</option>
-                                    <option>Agama Islam</option>
-                                    <option>Akuntansi</option>
-                                    <option>Hukum</option>
-                                    <option>Teknologi Informasi</option>
-                                    <option>Komunikasi</option>
-                                    <option>Psikologi</option>
+                                    <option>AGAMA ISLAM</option>
+                                    <option>AKUNTANSI</option>
+                                    <option>HUKUM</option>
+                                    <option>TEKNOLOGI INFORMASI</option>
+                                    <option>KOMUNIKASI</option>
+                                    <option>PSIKOLOGI</option>
                                 </select>
                             </div>
                             {errors && namaFak.length <= 0 ?

@@ -54,7 +54,7 @@ const FormMhs2 = () => {
                     setProvinsinya(response.data.data.provinsis[0].code_provinsi)
                     setKabupatennya(response.data.data.kabupatens[0].code_kabupaten)
                     setKecamatannya(response.data.data.kecamatans[0].code_kecamatan)
-                    setDesanya(response.data.data.desas[0].code_desa)
+                    setDesanya(response.data.data.desa)
                     setKodePos(response.data.data.kode_pos)
                     setDusun(response.data.data.dusun)
                     setRt(response.data.data.rt)
