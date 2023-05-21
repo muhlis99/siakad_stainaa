@@ -5,70 +5,86 @@ const { Op } = require('sequelize')
 
 module.exports = {
     // alat Transportasi
+    // alatTransportasiAll: async (req, res, next) => {
+    //     const currentPage = parseInt(req.query.page) || 1
+    //     const perPage = parseInt(req.query.perPage) || 10
+    //     const search = req.query.search || ""
+    //     let totalItems
+    //     await alatTransportasi.findAndCountAll({
+    //         where: {
+    //             [Op.or]: [
+    //                 {
+    //                     id_alat_transportasi: {
+    //                         [Op.like]: `%${search}%`
+    //                     }
+    //                 },
+    //                 {
+    //                     code_alat_transportasi: {
+    //                         [Op.like]: `%${search}%`
+    //                     }
+    //                 },
+    //                 {
+    //                     nama_alat_transportasi: {
+    //                         [Op.like]: `%${search}%`
+    //                     }
+    //                 }
+    //             ]
+    //         }
+    //     }).
+    //         then(all => {
+    //             totalItems = all.count
+    //             return alatTransportasi.findAll({
+    //                 where: {
+    //                     [Op.or]: [
+    //                         {
+    //                             id_alat_transportasi: {
+    //                                 [Op.like]: `%${search}%`
+    //                             }
+    //                         },
+    //                         {
+    //                             code_alat_transportasi: {
+    //                                 [Op.like]: `%${search}%`
+    //                             }
+    //                         },
+    //                         {
+    //                             nama_alat_transportasi: {
+    //                                 [Op.like]: `%${search}%`
+    //                             }
+    //                         }
+    //                     ]
+    //                 },
+    //                 offset: (currentPage - 1) * perPage,
+    //                 limit: perPage,
+    //                 order: [
+    //                     ["id_alat_transportasi", "DESC"]
+    //                 ]
+    //             })
+    //         }).
+    //         then(result => {
+    //             const totalPage = Math.ceil(totalItems / perPage)
+    //             res.status(200).json({
+    //                 message: "Get All alat transportasi Success",
+    //                 data: result,
+    //                 total_data: totalItems,
+    //                 per_page: perPage,
+    //                 current_page: currentPage,
+    //                 total_page: totalPage
+    //             })
+    //         }).
+    //         catch(err => {
+    //             next(err)
+    //         })
+    // },
     alatTransportasiAll: async (req, res, next) => {
-        const currentPage = parseInt(req.query.page) || 1
-        const perPage = parseInt(req.query.perPage) || 10
-        const search = req.query.search || ""
-        let totalItems
-        await alatTransportasi.findAndCountAll({
-            where: {
-                [Op.or]: [
-                    {
-                        id_alat_transportasi: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_alat_transportasi: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama_alat_transportasi: {
-                            [Op.like]: `%${search}%`
-                        }
-                    }
-                ]
-            }
+        await alatTransportasi.findAll({
+            order: [
+                ["id_alat_transportasi", "DESC"]
+            ]
         }).
-            then(all => {
-                totalItems = all.count
-                return alatTransportasi.findAll({
-                    where: {
-                        [Op.or]: [
-                            {
-                                id_alat_transportasi: {
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                            {
-                                code_alat_transportasi: {
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                            {
-                                nama_alat_transportasi: {
-                                    [Op.like]: `%${search}%`
-                                }
-                            }
-                        ]
-                    },
-                    offset: (currentPage - 1) * perPage,
-                    limit: perPage,
-                    order: [
-                        ["id_alat_transportasi", "DESC"]
-                    ]
-                })
-            }).
             then(result => {
-                const totalPage = Math.ceil(totalItems / perPage)
                 res.status(200).json({
                     message: "Get All alat transportasi Success",
                     data: result,
-                    total_data: totalItems,
-                    per_page: perPage,
-                    current_page: currentPage,
-                    total_page: totalPage
                 })
             }).
             catch(err => {
@@ -93,6 +109,31 @@ module.exports = {
                 res.status(201).json({
                     message: "Data alat transportasi Ditemukan",
                     data: getById
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+
+    alatTransportasiGetByCode: async (req, res, next) => {
+        const code = req.params.code
+        await alatTransportasi.findOne({
+            where: {
+                code_alat_transportasi: code
+            }
+        }).
+            then(getByCode => {
+                if (!getByCode) {
+                    return res.status(404).json({
+                        message: "Data alat transportasi Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data alat transportasi Ditemukan",
+                    data: getByCode
                 })
             }).
             catch(err => {
@@ -292,6 +333,30 @@ module.exports = {
             })
     },
 
+    jalurPendaftaranGetByCode: async (req, res, next) => {
+        const code = req.params.code
+        await jalurPendaftaran.findOne({
+            where: {
+                code_jalur_pendaftaran: code
+            }
+        }).
+            then(getByCode => {
+                if (!getByCode) {
+                    return res.status(404).json({
+                        message: "Data jalur pendaftaran Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data jalur pendaftaran Ditemukan",
+                    data: getByCode
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     // jenis_pendaftaran
     jenisPendaftaranAll: async (req, res, next) => {
         const currentPage = parseInt(req.query.page) || 1
@@ -381,6 +446,30 @@ module.exports = {
                 res.status(201).json({
                     message: "Data jenis pendaftaran Ditemukan",
                     data: getById
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    jenisPendaftaranGetByCode: async (req, res, next) => {
+        const code = req.params.code
+        await jenisPendaftaran.findOne({
+            where: {
+                code_jenis_pendaftaran: code
+            }
+        }).
+            then(getByCode => {
+                if (!getByCode) {
+                    return res.status(404).json({
+                        message: "Data jenis pendaftaran Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data jenis pendaftaran Ditemukan",
+                    data: getByCode
                 })
             }).
             catch(err => {
@@ -484,71 +573,111 @@ module.exports = {
             })
     },
 
-    // pekerjaan
-    pekerjaanAll: async (req, res, next) => {
-        const currentPage = parseInt(req.query.page) || 1
-        const perPage = parseInt(req.query.perPage) || 10
-        const search = req.query.search || ""
-        let totalItems
-        await pekerjaan.findAndCountAll({
+    jenisTinggalGetByCode: async (req, res, next) => {
+        const code = req.params.code
+        await jenisTinggal.findOne({
             where: {
-                [Op.or]: [
-                    {
-                        id_pekerjaan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_pekerjaan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama_pekerjaan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    }
-                ]
+                code_jenis_tinggal: code
             }
         }).
-            then(all => {
-                totalItems = all.count
-                return pekerjaan.findAll({
-                    where: {
-                        [Op.or]: [
-                            {
-                                id_pekerjaan: {
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                            {
-                                code_pekerjaan: {
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                            {
-                                nama_pekerjaan: {
-                                    [Op.like]: `%${search}%`
-                                }
-                            }
-                        ]
-                    },
-                    offset: (currentPage - 1) * perPage,
-                    limit: perPage,
-                    order: [
-                        ["id_pekerjaan", "DESC"]
-                    ]
+            then(getByCode => {
+                if (!getByCode) {
+                    return res.status(404).json({
+                        message: "Data jenis tinggal Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data jenis tinggal Ditemukan",
+                    data: getByCode
                 })
             }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    // pekerjaan
+    // pekerjaanAll: async (req, res, next) => {
+    //     const currentPage = parseInt(req.query.page) || 1
+    //     const perPage = parseInt(req.query.perPage) || 10
+    //     const search = req.query.search || ""
+    //     let totalItems
+    //     await pekerjaan.findAndCountAll({
+    //         where: {
+    //             [Op.or]: [
+    //                 {
+    //                     id_pekerjaan: {
+    //                         [Op.like]: `%${search}%`
+    //                     }
+    //                 },
+    //                 {
+    //                     code_pekerjaan: {
+    //                         [Op.like]: `%${search}%`
+    //                     }
+    //                 },
+    //                 {
+    //                     nama_pekerjaan: {
+    //                         [Op.like]: `%${search}%`
+    //                     }
+    //                 }
+    //             ]
+    //         }
+    //     }).
+    //         then(all => {
+    //             totalItems = all.count
+    //             return pekerjaan.findAll({
+    //                 where: {
+    //                     [Op.or]: [
+    //                         {
+    //                             id_pekerjaan: {
+    //                                 [Op.like]: `%${search}%`
+    //                             }
+    //                         },
+    //                         {
+    //                             code_pekerjaan: {
+    //                                 [Op.like]: `%${search}%`
+    //                             }
+    //                         },
+    //                         {
+    //                             nama_pekerjaan: {
+    //                                 [Op.like]: `%${search}%`
+    //                             }
+    //                         }
+    //                     ]
+    //                 },
+    //                 offset: (currentPage - 1) * perPage,
+    //                 limit: perPage,
+    //                 order: [
+    //                     ["id_pekerjaan", "DESC"]
+    //                 ]
+    //             })
+    //         }).
+    //         then(result => {
+    //             const totalPage = Math.ceil(totalItems / perPage)
+    //             res.status(200).json({
+    //                 message: "Get All pekerjaan Success",
+    //                 data: result,
+    //                 total_data: totalItems,
+    //                 per_page: perPage,
+    //                 current_page: currentPage,
+    //                 total_page: totalPage
+    //             })
+    //         }).
+    //         catch(err => {
+    //             next(err)
+    //         })
+    // },
+    pekerjaanAll: async (req, res, next) => {
+        await pekerjaan.findAll({
+            order: [
+                ["id_pekerjaan", "DESC"]
+            ]
+        }).
             then(result => {
-                const totalPage = Math.ceil(totalItems / perPage)
                 res.status(200).json({
-                    message: "Get All pekerjaan Success",
+                    message: "Get All Pekerjaan Success",
                     data: result,
-                    total_data: totalItems,
-                    per_page: perPage,
-                    current_page: currentPage,
-                    total_page: totalPage
                 })
             }).
             catch(err => {
@@ -580,71 +709,112 @@ module.exports = {
             })
     },
 
-    // pendidikan
-    pendidikanAll: async (req, res, next) => {
-        const currentPage = parseInt(req.query.page) || 1
-        const perPage = parseInt(req.query.perPage) || 10
-        const search = req.query.search || ""
-        let totalItems
-        await pendidikan.findAndCountAll({
+    pekerjaanGetByCode: async (req, res, next) => {
+        const code = req.params.code
+        await pekerjaan.findOne({
             where: {
-                [Op.or]: [
-                    {
-                        id_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    }
-                ]
+                code_pekerjaan: code
             }
         }).
-            then(all => {
-                totalItems = all.count
-                return pendidikan.findAll({
-                    where: {
-                        [Op.or]: [
-                            {
-                                id_pendidikan: {
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                            {
-                                code_pendidikan: {
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                            {
-                                nama_pendidikan: {
-                                    [Op.like]: `%${search}%`
-                                }
-                            }
-                        ]
-                    },
-                    offset: (currentPage - 1) * perPage,
-                    limit: perPage,
-                    order: [
-                        ["id_pendidikan", "DESC"]
-                    ]
+            then(getByCode => {
+                if (!getByCode) {
+                    return res.status(404).json({
+                        message: "Data pekerjaan Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data pekerjaan Ditemukan",
+                    data: getByCode
                 })
             }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    // pendidikan
+    // pendidikanAll: async (req, res, next) => {
+    //     const currentPage = parseInt(req.query.page) || 1
+    //     const perPage = parseInt(req.query.perPage) || 10
+    //     const search = req.query.search || ""
+    //     let totalItems
+    //     await pendidikan.findAndCountAll({
+    //         where: {
+    //             [Op.or]: [
+    //                 {
+    //                     id_pendidikan: {
+    //                         [Op.like]: `%${search}%`
+    //                     }
+    //                 },
+    //                 {
+    //                     code_pendidikan: {
+    //                         [Op.like]: `%${search}%`
+    //                     }
+    //                 },
+    //                 {
+    //                     nama_pendidikan: {
+    //                         [Op.like]: `%${search}%`
+    //                     }
+    //                 }
+    //             ]
+    //         }
+    //     }).
+    //         then(all => {
+    //             totalItems = all.count
+    //             return pendidikan.findAll({
+    //                 where: {
+    //                     [Op.or]: [
+    //                         {
+    //                             id_pendidikan: {
+    //                                 [Op.like]: `%${search}%`
+    //                             }
+    //                         },
+    //                         {
+    //                             code_pendidikan: {
+    //                                 [Op.like]: `%${search}%`
+    //                             }
+    //                         },
+    //                         {
+    //                             nama_pendidikan: {
+    //                                 [Op.like]: `%${search}%`
+    //                             }
+    //                         }
+    //                     ]
+    //                 },
+    //                 offset: (currentPage - 1) * perPage,
+    //                 limit: perPage,
+    //                 order: [
+    //                     ["id_pendidikan", "DESC"]
+    //                 ]
+    //             })
+    //         }).
+    //         then(result => {
+    //             const totalPage = Math.ceil(totalItems / perPage)
+    //             res.status(200).json({
+    //                 message: "Get All pendidikan Success",
+    //                 data: result,
+    //                 total_data: totalItems,
+    //                 per_page: perPage,
+    //                 current_page: currentPage,
+    //                 total_page: totalPage
+    //             })
+    //         }).
+    //         catch(err => {
+    //             next(err)
+    //         })
+    // },
+
+    pendidikanAll: async (req, res, next) => {
+        await pendidikan.findAll({
+            order: [
+                ["id_pendidikan", "DESC"]
+            ]
+        }).
             then(result => {
-                const totalPage = Math.ceil(totalItems / perPage)
                 res.status(200).json({
-                    message: "Get All pendidikan Success",
+                    message: "Get All alat transportasi Success",
                     data: result,
-                    total_data: totalItems,
-                    per_page: perPage,
-                    current_page: currentPage,
-                    total_page: totalPage
                 })
             }).
             catch(err => {
@@ -669,6 +839,30 @@ module.exports = {
                 res.status(201).json({
                     message: "Data pendidikan Ditemukan",
                     data: getById
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    pendidikanGetByCode: async (req, res, next) => {
+        const code = req.params.code
+        await pendidikan.findOne({
+            where: {
+                code_pendidikan: code
+            }
+        }).
+            then(getByCode => {
+                if (!getByCode) {
+                    return res.status(404).json({
+                        message: "Data pendidikan Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data pendidikan Ditemukan",
+                    data: getByCode
                 })
             }).
             catch(err => {
@@ -765,6 +959,30 @@ module.exports = {
                 res.status(201).json({
                     message: "Data penghasilan Ditemukan",
                     data: getById
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    penghasilanGetByCode: async (req, res, next) => {
+        const code = req.params.code
+        await penghasilan.findOne({
+            where: {
+                code_penghasilan: code
+            }
+        }).
+            then(getByCode => {
+                if (!getByCode) {
+                    return res.status(404).json({
+                        message: "Data penghasilan Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data penghasilan Ditemukan",
+                    data: getByCode
                 })
             }).
             catch(err => {
