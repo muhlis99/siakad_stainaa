@@ -72,6 +72,8 @@ const DetailMhs = () => {
     const [pkrjnWali, setPkrjnWali] = useState("")
     const [pndptWali, setPndptWali] = useState("")
     const [pndknWali, setPndknWali] = useState("")
+    const [modal, setModal] = useState("")
+    const [nameFile, setNameFile] = useState("")
 
 
     const { idMhs } = useParams()
@@ -110,7 +112,7 @@ const DetailMhs = () => {
                 setProvinsinya(response.data.data.provinsis[0].nama_provinsi)
                 setKabupatennya(response.data.data.kabupatens[0].nama_kabupaten)
                 setKecamatannya(response.data.data.kecamatans[0].nama_kecamatan)
-                setDesanya(response.data.data.desa)
+                setDesanya(response.data.data.desas[0].nama_desa)
                 setKodePos(response.data.data.kode_pos)
                 setDusun(response.data.data.dusun)
                 setRt(response.data.data.rt)
@@ -179,7 +181,7 @@ const DetailMhs = () => {
                             ''
                         )
                     )
-                    setPrevFoto(`data:;base64,${base64}`)
+                    setPrevFoto(base64)
                 })
 
             }
@@ -200,7 +202,7 @@ const DetailMhs = () => {
                             ''
                         )
                     )
-                    setPrevKk(`data:;base64,${base64}`)
+                    setPrevKk(base64)
                 })
 
             }
@@ -221,7 +223,7 @@ const DetailMhs = () => {
                             ''
                         )
                     )
-                    setPrevKtp(`data:;base64,${base64}`)
+                    setPrevKtp(base64)
                 })
 
             }
@@ -242,7 +244,7 @@ const DetailMhs = () => {
                             ''
                         )
                     )
-                    setPrevIjazah(`data:;base64,${base64}`)
+                    setPrevIjazah(base64)
                 })
 
             }
@@ -263,7 +265,7 @@ const DetailMhs = () => {
                             ''
                         )
                     )
-                    setPrevKip(`data:;base64,${base64}`)
+                    setPrevKip(base64)
                 })
 
             }
@@ -272,8 +274,40 @@ const DetailMhs = () => {
         }
     }
 
+    function randomNumberInRange(length) {
+        let result = ''
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        const charactersLength = characters.length
+        let counter = 0
+        while (counter < length) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength))
+            counter += 1
+        }
+        return result
+    }
+
+    const openImage = (img) => {
+        document.getElementById('my-modal').checked = true
+        setModal(img)
+        setNameFile(randomNumberInRange(15))
+    }
+
     return (
         <div className="container mt-3">
+            <input type="checkbox" id="my-modal" className="modal-toggle" />
+            <label htmlFor="my-modal" className="modal cursor-pointer">
+                <label className="modal-box relative" htmlFor="">
+                    <div className='w-full'>
+                        <a className='btn btn-sm btn-blue w-full mb-2' download={nameFile} href={`data:image/png;base64,${modal}`}>download</a>
+                    </div>
+                    <div className='avatar'>
+                        <div className="w-full  rounded ring ring-[#2D7F5F]">
+                            <img src={`data:;base64,${modal}`} alt="" />
+                        </div>
+                    </div>
+                </label>
+            </label>
+
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
                     <div className="card-body p-4">
@@ -432,7 +466,7 @@ const DetailMhs = () => {
                                         <tr>
                                             <td className='py-1'><span className='text-md font-bold uppercase'>desa</span></td>
                                             <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{desanya}</span></td>
+                                            <td className='py-1'><span className='text-md font-bold uppercase'>{desanya}</span></td>
                                         </tr>
                                         <tr>
                                             <td className='py-1'><span className='text-md font-bold uppercase'>kecamatan</span></td>
@@ -590,46 +624,66 @@ const DetailMhs = () => {
                         <hr className='w-full' />
                         <div className="grid lg:grid-cols-3 gap-4">
                             <div>
+                                <label className="label">
+                                    <span className="text-base label-text uppercase font-bold">foto mahasiswa</span>
+                                </label>
+                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevFoto)}>Detail</button>
                                 <div className="avatar">
-                                    <div className="w-full rounded ring ring-[#2D7F5F]">
+                                    <div className="w-full  rounded ring ring-[#2D7F5F]">
                                         {prevFoto ? (
-                                            <img src={prevFoto} className='border-black' />
+                                            <img src={`data:;base64,${prevFoto}`} />
                                         ) : ("")}
                                     </div>
                                 </div>
                             </div>
                             <div>
+                                <label className="label">
+                                    <span className="text-base label-text uppercase font-bold">scan kartu keluarga</span>
+                                </label>
+                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevKk)}>Detail</button>
                                 <div className="avatar">
                                     <div className="w-full rounded ring ring-[#2D7F5F]">
                                         {prevKk ? (
-                                            <img src={prevKk} className='border-black' />
+                                            <img src={`data:;base64,${prevKk}`} />
                                         ) : ("")}
                                     </div>
                                 </div>
                             </div>
                             <div>
+                                <label className="label">
+                                    <span className="text-base label-text uppercase font-bold">scan ktp</span>
+                                </label>
+                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevKtp)}>Detail</button>
                                 <div className="avatar">
                                     <div className="w-full rounded ring ring-[#2D7F5F]">
                                         {prevKtp ? (
-                                            <img src={prevKtp} className='border-black' />
+                                            <img src={`data:;base64,${prevKtp}`} />
                                         ) : ("")}
                                     </div>
                                 </div>
                             </div>
                             <div>
+                                <label className="label">
+                                    <span className="text-base label-text uppercase font-bold">scan ijazah</span>
+                                </label>
+                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevIjazah)}>Detail</button>
                                 <div className="avatar">
                                     <div className="w-full rounded ring ring-[#2D7F5F]">
                                         {prevIjazah ? (
-                                            <img src={prevIjazah} className='border-black' />
+                                            <img src={`data:;base64,${prevIjazah}`} />
                                         ) : ("")}
                                     </div>
                                 </div>
                             </div>
                             <div>
+                                <label className="label">
+                                    <span className="text-base label-text uppercase font-bold">scan kip</span>
+                                </label>
+                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevKip)}>Detail</button>
                                 <div className="avatar">
                                     <div className="w-full rounded ring ring-[#2D7F5F]">
                                         {prevKip ? (
-                                            <img src={prevKip} className='border-black' />
+                                            <img src={`data:;base64,${prevKip}`} />
                                         ) : ("")}
                                     </div>
                                 </div>
