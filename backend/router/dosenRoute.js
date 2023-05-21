@@ -8,6 +8,7 @@ const path = require('path')
 
 route.get('/all', dosenController.getAll)
 route.get('/getById/:id', dosenController.getById)
+route.get('/getByCreateFirst/:id', dosenController.getByCreateFirst)
 route.post('/createFirts', dosenController.createFirts)
 route.put('/createForm1/:id', validationForm1, validationRequest, dosenController.createForm1)
 route.put('/createForm2/:id', validationForm2, validationRequest, dosenController.createForm2)
