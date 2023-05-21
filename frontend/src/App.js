@@ -15,6 +15,11 @@ import Form4 from "./pages/mahasiswa/Form4"
 import Upload from "./pages/mahasiswa/Upload"
 import Detail from "./pages/mahasiswa/Detail"
 import PrintMhs from "./components/mahasiswa/PrintMhs"
+import Dosen from "./pages/dosen/Dosen"
+import FormDs1 from "./pages/dosen/FormDs1"
+import FormDs2 from "./pages/dosen/FormDs2"
+import Upload1 from "./pages/dosen/Upload1"
+import Upload2 from "./pages/dosen/Upload2"
 
 function App() {
   return (
@@ -36,6 +41,11 @@ function App() {
           <Route path="/mahasiswa/upload/:stat/:idMhs" element={<Upload />} />
           <Route path="/mahasiswa/detail/:idMhs" element={<Detail />} />
           <Route path="/mahasiswa/print/:idMhs" element={<PrintMhs />} />
+          <Route path="/dosen" element={<Dosen />} />
+          <Route path="/dosen/form1/:stat/:idDsn" element={<FormDs1 />} />
+          <Route path="/dosen/form2/:stat/:idDsn" element={<FormDs2 />} />
+          <Route path="/dosen/upload1/:idDsn" element={<Upload1 />} />
+          <Route path="/dosen/upload2/:idDsn" element={<Upload2 />} />
         </Routes>
       </BrowserRouter>
     </div>

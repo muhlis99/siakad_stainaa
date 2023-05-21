@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import Layout from "../Layout"
-import ListDosen from '../../components/dosen/ListDosen'
+import FormUpload2 from '../../components/dosen/FormUpload2'
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { getMe } from "../../features/authSlice"
 
-const Dosen = () => {
+const Upload2 = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { isError, isSuccess } = useSelector((state) => state.auth)
@@ -19,10 +19,8 @@ const Dosen = () => {
     }
 
     return (
-        <Layout>
-            <ListDosen />
-        </Layout>
+        <Layout><FormUpload2 /></Layout>
     )
 }
 
-export default Dosen
+export default Upload2

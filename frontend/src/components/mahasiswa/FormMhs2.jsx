@@ -275,7 +275,7 @@ const FormMhs2 = () => {
                                         <span className="text-base label-text">Kode Pos</span>
                                     </label>
                                     <input
-                                        type="text"
+                                        type="number"
                                         value={kodepos}
                                         onChange={(e) => setKodePos(e.target.value)}
                                         placeholder="Masukkan Kode Pos"
