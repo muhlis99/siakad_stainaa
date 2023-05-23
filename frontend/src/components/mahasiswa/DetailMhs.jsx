@@ -74,8 +74,19 @@ const DetailMhs = () => {
     const [pndknWali, setPndknWali] = useState("")
     const [modal, setModal] = useState("")
     const [nameFile, setNameFile] = useState("")
-
-
+    const [jalurPendaftaran, setJalurPendaftaran] = useState("")
+    const [jenisPendaftaran, setJenisPendaftaran] = useState("")
+    const [jenisTinggal, setJenisTinggal] = useState("")
+    const [alatTransportasi, setAlatTransportasi] = useState("")
+    const [pekerjaanAyah, setPekerjaanAyah] = useState("")
+    const [penghasilanAyah, setPenghasilanAyah] = useState("")
+    const [pendidikanAyah, setPendidikanAyah] = useState("")
+    const [pekerjaanIbu, setPekerjaanIbu] = useState("")
+    const [penghasilanIbu, setPenghasilanIbu] = useState("")
+    const [pendidikanIbu, setPendidikanIbu] = useState("")
+    const [pekerjaanWali, setPekerjaanWali] = useState("")
+    const [penghasilanWali, setPenghasilanWali] = useState("")
+    const [pendidikanWali, setPendidikanWali] = useState("")
     const { idMhs } = useParams()
 
     useEffect(() => {
@@ -168,6 +179,25 @@ const DetailMhs = () => {
         fotoIjazah()
         fotoKip()
     }, [fotos, kks, ktps, ijazahs, kips])
+
+    useEffect(() => {
+        jalurPendaftaranByCode()
+        jenisPendaftaranByCode()
+        jenisTinggalByCode()
+        alatTransportasiByCode()
+    }, [jalurp, jenisp, jenting, alat])
+
+    useEffect(() => {
+        pekerjaanAyahByCode()
+        pendidikanAyahByCode()
+        penghasilanAyahByCode()
+        pekerjaanIbuByCode()
+        pendidikanIbuByCode()
+        penghasilanIbuByCode()
+        pekerjaanWaliByCode()
+        pendidikanWaliByCode()
+        penghasilanWaliByCode()
+    }, [pkrjnAyah, pndknAyah, pndptAyah, pkrjnIbu, pndknIbu, pndptIbu, pkrjnWali, pndknWali, pndptWali])
 
     const fotoDiri = async () => {
         try {
@@ -292,6 +322,71 @@ const DetailMhs = () => {
         setNameFile(randomNumberInRange(15))
     }
 
+    const jalurPendaftaranByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/jalurPendaftaran/getByCode/${jalurp}`)
+        setJalurPendaftaran(response.data.data.nama_jalur_pendaftaran)
+    }
+
+    const jenisPendaftaranByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/jenisPendaftaran/getByCode/${jenisp}`)
+        setJenisPendaftaran(response.data.data.nama_jenis_pendaftaran)
+    }
+
+    const jenisTinggalByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/jenisTinggal/getByCode/${jenting}`)
+        setJenisTinggal(response.data.data.nama_jenis_tinggal)
+    }
+
+    const alatTransportasiByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/alatTransportasi/getByCode/${alat}`)
+        setAlatTransportasi(response.data.data.nama_alat_transportasi)
+    }
+
+    const pekerjaanAyahByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnAyah}`)
+        setPekerjaanAyah(response.data.data.nama_pekerjaan)
+    }
+
+    const pendidikanAyahByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknAyah}`)
+        setPendidikanAyah(response.data.data.nama_pendidikan)
+    }
+
+    const penghasilanAyahByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptAyah}`)
+        setPenghasilanAyah(response.data.data.nama_penghasilan)
+    }
+
+    const pekerjaanIbuByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnIbu}`)
+        setPekerjaanIbu(response.data.data.nama_pekerjaan)
+    }
+
+    const pendidikanIbuByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknIbu}`)
+        setPendidikanIbu(response.data.data.nama_pendidikan)
+    }
+
+    const penghasilanIbuByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptIbu}`)
+        setPenghasilanIbu(response.data.data.nama_penghasilan)
+    }
+
+    const pekerjaanWaliByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnWali}`)
+        setPekerjaanWali(response.data.data.nama_pekerjaan)
+    }
+
+    const pendidikanWaliByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknWali}`)
+        setPendidikanWali(response.data.data.nama_pendidikan)
+    }
+
+    const penghasilanWaliByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptWali}`)
+        setPenghasilanWali(response.data.data.nama_penghasilan)
+    }
+
     return (
         <div className="container mt-3">
             <input type="checkbox" id="my-modal" className="modal-toggle" />
@@ -317,54 +412,54 @@ const DetailMhs = () => {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>NIm</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{nim}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>NIm</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{nim}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>NIK</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{nik}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>NIK</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{nik}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>NO KK</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{kk}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>NO KK</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{kk}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>NAMA</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{namanya}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>NAMA</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{namanya}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>tempat lahir</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{tmp}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>tempat lahir</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{tmp}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>tanggal lahir</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{tgl + "-" + bln + "-" + thn}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>tanggal lahir</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{tgl + "-" + bln + "-" + thn}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>jenis kelamin</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{jenkel == "l" ? "laki-laki" : "perempuan"}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>jenis kelamin</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{jenkel == "l" ? "laki-laki" : "perempuan"}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>email</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>{email}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>email</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>{email}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>no hp</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>{nohp}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>no hp</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>{nohp}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>No telepon</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>{notelp}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>No telepon</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>{notelp}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -373,89 +468,89 @@ const DetailMhs = () => {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>nisn</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{nisn}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>nisn</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{nisn}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>Penerima KPS</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{pkps}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>Penerima KPS</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{pkps}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>no kps</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{nokps}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>no kps</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{nokps}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>npwp</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{npwp}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>npwp</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{npwp}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>Jalur Pendaftaran</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{jalurp}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>Jalur Pendaftaran</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{jalurPendaftaran}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>jenis pendaftaran</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{jenisp}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>jenis pendaftaran</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{jenisPendaftaran}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>jenjang pendidikan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{jenjangnya}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>jenjang pendidikan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{jenjangnya}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>fakultas</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{fakultasnya}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>fakultas</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{fakultasnya}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>prodi</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{prodinya}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>prodi</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{prodinya}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>mulai semester</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{semester}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>mulai semester</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{semester}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div className='mt-2'><h1 className='uppercase font-bold text-3xl '>detail alamat</h1></div>
+                        <div className='mt-2'><h1 className='uppercase font-bold text-xl '>detail alamat</h1></div>
                         <hr className='w-full' />
                         <div className="grid lg:grid-cols-2">
                             <div>
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>jalan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{jalan}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>jalan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{jalan}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>Dusun</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{dusun} {"rt " + rt}/{"rw " + rw}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>Dusun</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{dusun} {"rt " + rt}/{"rw " + rw}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>kode pos</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{kodepos}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>kode pos</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{kodepos}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>Jenis tinggal</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{jenting}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>Jenis tinggal</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{jenisTinggal}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>alat transportasi</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{alat}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>alat transportasi</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{alatTransportasi}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -464,72 +559,69 @@ const DetailMhs = () => {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>desa</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{desanya}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>desa</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{desanya}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>kecamatan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{kecamatannya}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>kecamatan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{kecamatannya}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>Kabupaten</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{kabupatennya}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>Kabupaten</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{kabupatennya}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>provinsi</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{provinsinya}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>provinsi</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{provinsinya}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>negara</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{negaranya}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>negara</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{negaranya}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div className='mt-2'><h1 className='uppercase font-bold text-3xl '>detail orang tua</h1></div>
+                        <div className='mt-2'><h1 className='uppercase font-bold text-xl '>detail orang tua</h1></div>
                         <hr className='w-full' />
                         <div className="grid lg:grid-cols-2">
                             <div>
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td colSpan={3} className='text-center'><span className='text-md font-bold uppercase'>data ayah</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>nik </span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{nikAyah}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>nik </span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{nikAyah}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>nama ayah</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{namaAyah}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>nama </span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{namaAyah}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>tanggal lahir</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{tgAyah + "-" + blAyah + "-" + thAyah}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>tanggal lahir</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{tgAyah + "-" + blAyah + "-" + thAyah}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>pekerjaan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{pekerjaanAyah}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>pekerjaan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{pkrjnAyah}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>penghasilan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{penghasilanAyah}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>penghasilan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{pndptAyah}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>pendidikan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{pndknAyah}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>pendidikan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{pendidikanAyah}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -538,62 +630,59 @@ const DetailMhs = () => {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td colSpan={3} className='text-center'><span className='text-md font-bold uppercase'>data ibu</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>nik </span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{nikIbu}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>nik </span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{nikIbu}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>nama Ibu</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{namaIbu}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>nama </span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{namaIbu}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>tanggal lahir</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{tgIbu + "-" + blIbu + "-" + thIbu}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>tanggal lahir</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{tgIbu + "-" + blIbu + "-" + thIbu}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>pekerjaan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{pekerjaanIbu}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>pekerjaan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{pkrjnIbu}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>penghasilan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{penghasilanIbu}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>penghasilan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{pndptIbu}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>pendidikan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{pndknIbu}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>pendidikan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{pendidikanIbu}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div className='mt-2'><h1 className='uppercase font-bold text-3xl '>detail wali</h1></div>
+                        <div className='mt-2'><h1 className='uppercase font-bold text-xl '>detail wali</h1></div>
                         <hr className='w-full' />
                         <div className="grid lg:grid-cols-2">
                             <div>
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>nik </span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{nikWali}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>nik </span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{nikWali}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>nama </span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{namaWali}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>nama </span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{namaWali}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>tanggal lahir</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>{tgWali + "-" + blWali + "-" + thWali}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>tanggal lahir</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{tgWali + "-" + blWali + "-" + thWali}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -602,25 +691,25 @@ const DetailMhs = () => {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>pekerjaan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{pkrjnWali}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>pekerjaan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{pekerjaanWali}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>penghasilan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{pndptWali}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>penghasilan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{penghasilanWali}</span></td>
                                         </tr>
                                         <tr>
-                                            <td className='py-1'><span className='text-md font-bold uppercase'>pendidikan</span></td>
-                                            <td className='py-1'><span className='text-md font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-md font-bold uppercase text-red-500'>{pndknWali}</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>pendidikan</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{pendidikanWali}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div className='mt-2'><h1 className='uppercase font-bold text-3xl '>detail berkas</h1></div>
+                        <div className='mt-2'><h1 className='uppercase font-bold text-xl '>detail berkas</h1></div>
                         <hr className='w-full' />
                         <div className="grid lg:grid-cols-3 gap-4">
                             <div>
@@ -628,13 +717,13 @@ const DetailMhs = () => {
                                     <span className="text-base label-text uppercase font-bold">foto mahasiswa</span>
                                 </label>
                                 <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevFoto)}>Detail</button>
-                                <div className="avatar">
-                                    <div className="w-full  rounded ring ring-[#2D7F5F]">
-                                        {prevFoto ? (
+                                {prevFoto ? (
+                                    <div className="avatar">
+                                        <div className="w-full  rounded ring ring-[#2D7F5F]">
                                             <img src={`data:;base64,${prevFoto}`} />
-                                        ) : ("")}
+                                        </div>
                                     </div>
-                                </div>
+                                ) : (<span>File Tidak Ada</span>)}
                             </div>
                             <div>
                                 <label className="label">
@@ -642,11 +731,11 @@ const DetailMhs = () => {
                                 </label>
                                 <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevKk)}>Detail</button>
                                 <div className="avatar">
-                                    <div className="w-full rounded ring ring-[#2D7F5F]">
-                                        {prevKk ? (
+                                    {prevKk ? (
+                                        <div className="w-full rounded ring ring-[#2D7F5F]">
                                             <img src={`data:;base64,${prevKk}`} />
-                                        ) : ("")}
-                                    </div>
+                                        </div>
+                                    ) : (<span>File Tidak Ada</span>)}
                                 </div>
                             </div>
                             <div>
@@ -655,11 +744,11 @@ const DetailMhs = () => {
                                 </label>
                                 <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevKtp)}>Detail</button>
                                 <div className="avatar">
-                                    <div className="w-full rounded ring ring-[#2D7F5F]">
-                                        {prevKtp ? (
+                                    {prevKtp ? (
+                                        <div className="w-full rounded ring ring-[#2D7F5F]">
                                             <img src={`data:;base64,${prevKtp}`} />
-                                        ) : ("")}
-                                    </div>
+                                        </div>
+                                    ) : (<span>File Tidak Ada</span>)}
                                 </div>
                             </div>
                             <div>
@@ -668,11 +757,11 @@ const DetailMhs = () => {
                                 </label>
                                 <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevIjazah)}>Detail</button>
                                 <div className="avatar">
-                                    <div className="w-full rounded ring ring-[#2D7F5F]">
-                                        {prevIjazah ? (
+                                    {prevIjazah ? (
+                                        <div className="w-full rounded ring ring-[#2D7F5F]">
                                             <img src={`data:;base64,${prevIjazah}`} />
-                                        ) : ("")}
-                                    </div>
+                                        </div>
+                                    ) : (<span>File Tidak Ada</span>)}
                                 </div>
                             </div>
                             <div>
@@ -681,11 +770,11 @@ const DetailMhs = () => {
                                 </label>
                                 <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevKip)}>Detail</button>
                                 <div className="avatar">
-                                    <div className="w-full rounded ring ring-[#2D7F5F]">
-                                        {prevKip ? (
+                                    {prevKip ? (
+                                        <div className="w-full rounded ring ring-[#2D7F5F]">
                                             <img src={`data:;base64,${prevKip}`} />
-                                        ) : ("")}
-                                    </div>
+                                        </div>
+                                    ) : (<span>File Tidak Ada</span>)}
                                 </div>
                             </div>
                         </div>

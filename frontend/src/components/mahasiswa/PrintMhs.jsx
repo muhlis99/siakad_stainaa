@@ -63,6 +63,19 @@ const PrintMhs = () => {
     const [pkrjnWali, setPkrjnWali] = useState("")
     const [pndptWali, setPndptWali] = useState("")
     const [pndknWali, setPndknWali] = useState("")
+    const [jalurPendaftaran, setJalurPendaftaran] = useState("")
+    const [jenisPendaftaran, setJenisPendaftaran] = useState("")
+    const [jenisTinggal, setJenisTinggal] = useState("")
+    const [alatTransportasi, setAlatTransportasi] = useState("")
+    const [pekerjaanAyah, setPekerjaanAyah] = useState("")
+    const [penghasilanAyah, setPenghasilanAyah] = useState("")
+    const [pendidikanAyah, setPendidikanAyah] = useState("")
+    const [pekerjaanIbu, setPekerjaanIbu] = useState("")
+    const [penghasilanIbu, setPenghasilanIbu] = useState("")
+    const [pendidikanIbu, setPendidikanIbu] = useState("")
+    const [pekerjaanWali, setPekerjaanWali] = useState("")
+    const [penghasilanWali, setPenghasilanWali] = useState("")
+    const [pendidikanWali, setPendidikanWali] = useState("")
     const { idMhs } = useParams()
     let componentRef = useRef(null)
 
@@ -100,7 +113,7 @@ const PrintMhs = () => {
                 setProvinsinya(response.data.data.provinsis[0].nama_provinsi)
                 setKabupatennya(response.data.data.kabupatens[0].nama_kabupaten)
                 setKecamatannya(response.data.data.kecamatans[0].nama_kecamatan)
-                setDesanya(response.data.data.desa)
+                setDesanya(response.data.data.desas[0].nama_desa)
                 setKodePos(response.data.data.kode_pos)
                 setDusun(response.data.data.dusun)
                 setRt(response.data.data.rt)
@@ -145,11 +158,95 @@ const PrintMhs = () => {
         print()
     }, [idMhs])
 
+    useEffect(() => {
+        jalurPendaftaranByCode()
+        jenisPendaftaranByCode()
+        jenisTinggalByCode()
+        alatTransportasiByCode()
+    }, [jalurp, jenisp, jenting, alat])
+
+    useEffect(() => {
+        pekerjaanAyahByCode()
+        pendidikanAyahByCode()
+        penghasilanAyahByCode()
+        pekerjaanIbuByCode()
+        pendidikanIbuByCode()
+        penghasilanIbuByCode()
+        pekerjaanWaliByCode()
+        pendidikanWaliByCode()
+        penghasilanWaliByCode()
+    }, [pkrjnAyah, pndknAyah, pndptAyah, pkrjnIbu, pndknIbu, pndptIbu, pkrjnWali, pndknWali, pndptWali])
+
+    const jalurPendaftaranByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/jalurPendaftaran/getByCode/${jalurp}`)
+        setJalurPendaftaran(response.data.data.nama_jalur_pendaftaran)
+    }
+
+    const jenisPendaftaranByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/jenisPendaftaran/getByCode/${jenisp}`)
+        setJenisPendaftaran(response.data.data.nama_jenis_pendaftaran)
+    }
+
+    const jenisTinggalByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/jenisTinggal/getByCode/${jenting}`)
+        setJenisTinggal(response.data.data.nama_jenis_tinggal)
+    }
+
+    const alatTransportasiByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/alatTransportasi/getByCode/${alat}`)
+        setAlatTransportasi(response.data.data.nama_alat_transportasi)
+    }
+
+    const pekerjaanAyahByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnAyah}`)
+        setPekerjaanAyah(response.data.data.nama_pekerjaan)
+    }
+
+    const pendidikanAyahByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknAyah}`)
+        setPendidikanAyah(response.data.data.nama_pendidikan)
+    }
+
+    const penghasilanAyahByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptAyah}`)
+        setPenghasilanAyah(response.data.data.nama_penghasilan)
+    }
+
+    const pekerjaanIbuByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnIbu}`)
+        setPekerjaanIbu(response.data.data.nama_pekerjaan)
+    }
+
+    const pendidikanIbuByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknIbu}`)
+        setPendidikanIbu(response.data.data.nama_pendidikan)
+    }
+
+    const penghasilanIbuByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptIbu}`)
+        setPenghasilanIbu(response.data.data.nama_penghasilan)
+    }
+
+    const pekerjaanWaliByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnWali}`)
+        setPekerjaanWali(response.data.data.nama_pekerjaan)
+    }
+
+    const pendidikanWaliByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknWali}`)
+        setPendidikanWali(response.data.data.nama_pendidikan)
+    }
+
+    const penghasilanWaliByCode = async () => {
+        const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptWali}`)
+        setPenghasilanWali(response.data.data.nama_penghasilan)
+    }
+
     const print = () => componentRef
 
 
     return (
-        <div className="container mt-3">
+        <div className="container mt-3 font-sans">
             <ReactToPrint
                 trigger={() => {
                     return <button className='btn'>print</button>
@@ -162,11 +259,12 @@ const PrintMhs = () => {
                     <div className="card-body p-4">
                         <div className="flex gap-3 w-full ">
                             <div className="avatar mt-1 rounded-full h-12 ">
-                                <div className="w-12 h-12 rounded-full">
+                                <div className="w-16 h-16 rounded-full">
                                     <img src={stainaa} />
                                 </div>
                             </div>
                             <div>
+                                <p className='text-xs font-bold'>YAYASAN NURUL ABROR AL-ROBBANIYIN</p>
                                 <p className='text-xs font-bold'>SEKOLAH TINGGI AGAMA ISLAM NURUL ABROR AL-ROBBANIYIN</p>
                                 <p className='text-xs font-bold uppercase'>alasbuluh wongsorejo banyuwangi</p>
                                 <p className='text-xs font-bold '>FORMULIR MAHASISWA</p>
@@ -174,7 +272,7 @@ const PrintMhs = () => {
                         </div>
                         <hr className='w-full' />
                         <div className='grid lg:grid-cols-2'>
-                            <div className='col-span-2 text-center'><h1 className='uppercase'>Identitas Diri </h1></div>
+                            <div className='col-span-2'><h1 className='uppercase'>Identitas Diri </h1></div>
                             <div>
                                 <table>
                                     <tbody>
@@ -257,12 +355,12 @@ const PrintMhs = () => {
                                         <tr>
                                             <td><span className='text-xs  uppercase'>Jalur Pendaftaran</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{jalurp}</span></td>
+                                            <td><span className='text-xs  uppercase'>{jalurPendaftaran}</span></td>
                                         </tr>
                                         <tr>
                                             <td><span className='text-xs  uppercase'>jenis pendaftaran</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{jenisp}</span></td>
+                                            <td><span className='text-xs  uppercase'>{jenisPendaftaran}</span></td>
                                         </tr>
                                         <tr>
                                             <td><span className='text-xs  uppercase'>jenjang pendidikan</span></td>
@@ -311,12 +409,12 @@ const PrintMhs = () => {
                                         <tr>
                                             <td><span className='text-xs  uppercase'>Jenis tinggal</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{jenting}</span></td>
+                                            <td><span className='text-xs  uppercase'>{jenisTinggal}</span></td>
                                         </tr>
                                         <tr>
                                             <td><span className='text-xs  uppercase'>alat transportsi</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{alat}</span></td>
+                                            <td><span className='text-xs  uppercase'>{alatTransportasi}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -327,7 +425,7 @@ const PrintMhs = () => {
                                         <tr>
                                             <td><span className='text-xs  uppercase'>desa</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{desanya}</span></td>
+                                            <td><span className='text-xs  uppercase'>{desanya}</span></td>
                                         </tr>
                                         <tr>
                                             <td><span className='text-xs  uppercase'>kecamatan</span></td>
@@ -359,15 +457,12 @@ const PrintMhs = () => {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td colSpan={3} className='text-center'><span className='text-xs  uppercase'>data ayah</span></td>
-                                        </tr>
-                                        <tr>
                                             <td><span className='text-xs  uppercase'>nik </span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
                                             <td><span className='text-xs  uppercase'>{nikAyah}</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span className='text-xs  uppercase'>nama </span></td>
+                                            <td><span className='text-xs  uppercase'>nama Ayah</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
                                             <td><span className='text-xs  uppercase'>{namaAyah}</span></td>
                                         </tr>
@@ -379,17 +474,17 @@ const PrintMhs = () => {
                                         <tr>
                                             <td><span className='text-xs  uppercase'>pekerjaan</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{pkrjnAyah}</span></td>
+                                            <td><span className='text-xs  uppercase'>{pekerjaanAyah}</span></td>
                                         </tr>
                                         <tr>
                                             <td><span className='text-xs  uppercase'>penghasilan</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{pndptAyah}</span></td>
+                                            <td><span className='text-xs  uppercase'>{penghasilanAyah}</span></td>
                                         </tr>
                                         <tr>
                                             <td><span className='text-xs  uppercase'>pendidikan</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{pndknAyah}</span></td>
+                                            <td><span className='text-xs  uppercase'>{pendidikanAyah}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -398,15 +493,12 @@ const PrintMhs = () => {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td colSpan={3} className='text-center'><span className='text-xs  uppercase'>data ibu</span></td>
-                                        </tr>
-                                        <tr>
                                             <td><span className='text-xs  uppercase'>nik </span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
                                             <td><span className='text-xs  uppercase'>{nikIbu}</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span className='text-xs  uppercase'>nama </span></td>
+                                            <td><span className='text-xs  uppercase'>nama Ibu</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
                                             <td><span className='text-xs  uppercase'>{namaIbu}</span></td>
                                         </tr>
@@ -418,17 +510,17 @@ const PrintMhs = () => {
                                         <tr>
                                             <td><span className='text-xs  uppercase'>pekerjaan</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{pkrjnIbu}</span></td>
+                                            <td><span className='text-xs  uppercase'>{pekerjaanIbu}</span></td>
                                         </tr>
                                         <tr>
                                             <td><span className='text-xs  uppercase'>penghasilan</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{pndptIbu}</span></td>
+                                            <td><span className='text-xs  uppercase'>{penghasilanIbu}</span></td>
                                         </tr>
                                         <tr>
                                             <td><span className='text-xs  uppercase'>pendidikan</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{pndknIbu}</span></td>
+                                            <td><span className='text-xs  uppercase'>{pendidikanIbu}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -445,7 +537,7 @@ const PrintMhs = () => {
                                             <td><span className='text-xs  uppercase'>{nikWali}</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span className='text-xs  uppercase'>nama </span></td>
+                                            <td><span className='text-xs  uppercase'>nama Wali</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
                                             <td><span className='text-xs  uppercase'>{namaWali}</span></td>
                                         </tr>
@@ -463,17 +555,17 @@ const PrintMhs = () => {
                                         <tr>
                                             <td><span className='text-xs  uppercase'>pekerjaan</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{pkrjnWali}</span></td>
+                                            <td><span className='text-xs  uppercase'>{pekerjaanWali}</span></td>
                                         </tr>
                                         <tr>
                                             <td><span className='text-xs  uppercase'>penghasilan</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{pndptWali}</span></td>
+                                            <td><span className='text-xs  uppercase'>{penghasilanWali}</span></td>
                                         </tr>
                                         <tr>
                                             <td><span className='text-xs  uppercase'>pendidikan</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase text-red-500'>{pndknWali}</span></td>
+                                            <td><span className='text-xs  uppercase'>{pendidikanWali}</span></td>
                                         </tr>
                                     </tbody>
                                 </table>

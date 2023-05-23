@@ -43,6 +43,19 @@ const FormDosen2 = () => {
                     setAlat(response.data.data.alat_transportasi)
                     setPndkn(response.data.data.pendidikan_terakhir)
                     setStatusPg(response.data.data.status_kepegawaian)
+                } else {
+                    const response = await axios.get(`v1/dosen/getByCreateFirst/${idDsn}`)
+                    setNamanya(response.data.data.nama)
+                    setNegaranya(response.data.data.negara)
+                    setProvinsinya(response.data.data.provinsi)
+                    setKabupatennya(response.data.data.kabupaten)
+                    setKecamatannya(response.data.data.kecamatan)
+                    setDesanya(response.data.data.desa)
+                    setKodePos(response.data.data.kode_pos)
+                    setAlamat(response.data.data.alamat_lengkap)
+                    setAlat(response.data.data.alat_transportasi)
+                    setPndkn(response.data.data.pendidikan_terakhir)
+                    setStatusPg(response.data.data.status_kepegawaian)
                 }
             } catch (error) {
 
@@ -147,6 +160,39 @@ const FormDosen2 = () => {
                 })
             }
         }
+    }
+
+    const batal = (dsnId) => {
+        Swal.fire({
+            title: "Batalkan ini?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, batalkan!',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.delete(
+                        `v1/dosen/delete/${dsnId}`
+                    ).then((response) => {
+                        console.log(response.data)
+                        Swal.fire({
+                            title: "Dibatalkan",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            navigate("/dosen")
+                        });
+                    })
+
+                } catch (error) {
+
+                }
+            }
+        })
     }
 
     return (
@@ -269,7 +315,7 @@ const FormDosen2 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type="button" className='btn btn-sm btn-danger'><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/dosen" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>}
+                                    {stat == "add" ? <button type="button" onClick={() => batal(idDsn)} className='btn btn-sm btn-danger'><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/dosen" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>}
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>

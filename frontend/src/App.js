@@ -20,6 +20,8 @@ import FormDs1 from "./pages/dosen/FormDs1"
 import FormDs2 from "./pages/dosen/FormDs2"
 import Upload1 from "./pages/dosen/Upload1"
 import Upload2 from "./pages/dosen/Upload2"
+import DetailDsn from "./pages/dosen/DetailDsn"
+import PrintDosen from "./components/dosen/PrintDosen"
 
 function App() {
   return (
@@ -46,6 +48,8 @@ function App() {
           <Route path="/dosen/form2/:stat/:idDsn" element={<FormDs2 />} />
           <Route path="/dosen/upload1/:idDsn" element={<Upload1 />} />
           <Route path="/dosen/upload2/:idDsn" element={<Upload2 />} />
+          <Route path="/dosen/detail/:idDsn" element={<DetailDsn />} />
+          <Route path="/dosen/print/:idDsn" element={<PrintDosen />} />
         </Routes>
       </BrowserRouter>
     </div>
