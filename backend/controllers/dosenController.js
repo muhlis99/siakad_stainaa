@@ -1,5 +1,6 @@
 const dosen = require('../models/dosenModel.js')
 const { pendidikan, alatTransportasi } = require('../models/equipmentDsnMhsModel.js')
+const { desa, kecamatan, kabupaten, provinsi, negara } = require('../models/equipmentDsnMhsModel.js')
 const { Op } = require('sequelize')
 const path = require('path')
 const fs = require('fs')
@@ -83,6 +84,16 @@ module.exports = {
                 model: pendidikan
             }, {
                 model: alatTransportasi
+            }, {
+                model: negara
+            }, {
+                model: provinsi
+            }, {
+                model: kabupaten
+            }, {
+                model: kecamatan
+            }, {
+                model: desa
             }],
             where: {
                 id_dosen: id,
