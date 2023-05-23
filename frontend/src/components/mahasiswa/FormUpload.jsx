@@ -198,18 +198,45 @@ const FormUpload = () => {
         formData.append("foto_ijazah", ijazah)
         formData.append("foto_kip", kip)
         try {
-            await axios.put(`v1/mahasiswa/createFile/${idMhs}`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            }).then(function (response) {
+            if (foto == fotos) {
                 Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    navigate("/mahasiswa")
-                });
-            })
+                    title: "Foto Tidak Boleh Kosong",
+                    icon: "warning"
+                })
+            } else if (kk == kks) {
+                Swal.fire({
+                    title: "Scan Kartu Keluarga Tidak Boleh Kosong",
+                    icon: "warning"
+                })
+            } else if (ktp == ktps) {
+                Swal.fire({
+                    title: "Scan KTP Tidak Boleh Kosong",
+                    icon: "warning"
+                })
+            } else if (ijazah == ijazahs) {
+                Swal.fire({
+                    title: "Scan Ijazah Tidak Boleh Kosong",
+                    icon: "warning"
+                })
+            } else if (kip == kips) {
+                Swal.fire({
+                    title: "Scan KIP Tidak Boleh Kosong",
+                    icon: "warning"
+                })
+            } else {
+                await axios.put(`v1/mahasiswa/createFile/${idMhs}`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }).then(function (response) {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        navigate("/mahasiswa")
+                    });
+                })
+            }
         } catch (error) {
             if (error.response) {
                 Swal.fire({

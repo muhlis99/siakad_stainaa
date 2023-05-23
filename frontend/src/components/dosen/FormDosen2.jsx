@@ -30,18 +30,20 @@ const FormDosen2 = () => {
     useEffect(() => {
         const getDosenById = async () => {
             try {
-                const response = await axios.get(`v1/dosen/getById/${idDsn}`)
-                setNamanya(response.data.data.nama)
-                setNegaranya(response.data.data.negara)
-                setProvinsinya(response.data.data.provinsi)
-                setKabupatennya(response.data.data.kabupaten)
-                setKecamatannya(response.data.data.kecamatan)
-                setDesanya(response.data.data.desa)
-                setKodePos(response.data.data.kode_pos)
-                setAlamat(response.data.data.alamat_lengkap)
-                setAlat(response.data.data.alat_transportasi)
-                setPndkn(response.data.data.pendidikan_terakhir)
-                setStatusPg(response.data.data.status_kepegawaian)
+                if (stat = "edit") {
+                    const response = await axios.get(`v1/dosen/getById/${idDsn}`)
+                    setNamanya(response.data.data.nama)
+                    setNegaranya(response.data.data.negara)
+                    setProvinsinya(response.data.data.provinsi)
+                    setKabupatennya(response.data.data.kabupaten)
+                    setKecamatannya(response.data.data.kecamatan)
+                    setDesanya(response.data.data.desa)
+                    setKodePos(response.data.data.kode_pos)
+                    setAlamat(response.data.data.alamat_lengkap)
+                    setAlat(response.data.data.alat_transportasi)
+                    setPndkn(response.data.data.pendidikan_terakhir)
+                    setStatusPg(response.data.data.status_kepegawaian)
+                }
             } catch (error) {
 
             }
