@@ -1,5 +1,5 @@
 import "./index.css"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { HashRouter, Routes, Route } from "react-router-dom"
 import Welcome from "./pages/Welcome"
 import Login from "./pages/Login"
 import Forgot from "./pages/Forgot"
@@ -26,7 +26,7 @@ import PrintDosen from "./components/dosen/PrintDosen"
 function App() {
   return (
     <div>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/login" element={<Login />} />
@@ -51,7 +51,7 @@ function App() {
           <Route path="/dosen/detail/:idDsn" element={<DetailDsn />} />
           <Route path="/dosen/print/:idDsn" element={<PrintDosen />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }

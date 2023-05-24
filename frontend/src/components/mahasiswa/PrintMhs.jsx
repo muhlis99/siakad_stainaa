@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from "react-router-dom"
 import axios from 'axios'
 import ReactToPrint from "react-to-print"
-import stainaa from "../../assets/img/stainaa.png";
+import stainaa from "../../assets/img/stainaa.png"
 
 const PrintMhs = () => {
     const [nik, setNik] = useState("")
@@ -178,68 +178,94 @@ const PrintMhs = () => {
     }, [pkrjnAyah, pndknAyah, pndptAyah, pkrjnIbu, pndknIbu, pndptIbu, pkrjnWali, pndknWali, pndptWali])
 
     const jalurPendaftaranByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/jalurPendaftaran/getByCode/${jalurp}`)
-        setJalurPendaftaran(response.data.data.nama_jalur_pendaftaran)
+        if (jalurp != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/jalurPendaftaran/getByCode/${jalurp}`)
+            setJalurPendaftaran(response.data.data.nama_jalur_pendaftaran)
+        }
     }
 
     const jenisPendaftaranByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/jenisPendaftaran/getByCode/${jenisp}`)
-        setJenisPendaftaran(response.data.data.nama_jenis_pendaftaran)
+        if (jenisp != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/jenisPendaftaran/getByCode/${jenisp}`)
+            setJenisPendaftaran(response.data.data.nama_jenis_pendaftaran)
+        }
     }
 
     const jenisTinggalByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/jenisTinggal/getByCode/${jenting}`)
-        setJenisTinggal(response.data.data.nama_jenis_tinggal)
+        if (jenting != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/jenisTinggal/getByCode/${jenting}`)
+            setJenisTinggal(response.data.data.nama_jenis_tinggal)
+        }
     }
 
     const alatTransportasiByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/alatTransportasi/getByCode/${alat}`)
-        setAlatTransportasi(response.data.data.nama_alat_transportasi)
+        if (alat != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/alatTransportasi/getByCode/${alat}`)
+            setAlatTransportasi(response.data.data.nama_alat_transportasi)
+        }
     }
 
     const pekerjaanAyahByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnAyah}`)
-        setPekerjaanAyah(response.data.data.nama_pekerjaan)
+        if (pkrjnAyah != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnAyah}`)
+            setPekerjaanAyah(response.data.data.nama_pekerjaan)
+        }
     }
 
     const pendidikanAyahByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknAyah}`)
-        setPendidikanAyah(response.data.data.nama_pendidikan)
+        if (pndknAyah != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknAyah}`)
+            setPendidikanAyah(response.data.data.nama_pendidikan)
+        }
     }
 
     const penghasilanAyahByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptAyah}`)
-        setPenghasilanAyah(response.data.data.nama_penghasilan)
+        if (pndptAyah != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptAyah}`)
+            setPenghasilanAyah(response.data.data.nama_penghasilan)
+        }
     }
 
     const pekerjaanIbuByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnIbu}`)
-        setPekerjaanIbu(response.data.data.nama_pekerjaan)
+        if (pkrjnIbu != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnIbu}`)
+            setPekerjaanIbu(response.data.data.nama_pekerjaan)
+        }
     }
 
     const pendidikanIbuByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknIbu}`)
-        setPendidikanIbu(response.data.data.nama_pendidikan)
+        if (pndknIbu != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknIbu}`)
+            setPendidikanIbu(response.data.data.nama_pendidikan)
+        }
     }
 
     const penghasilanIbuByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptIbu}`)
-        setPenghasilanIbu(response.data.data.nama_penghasilan)
+        if (pndptIbu != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptIbu}`)
+            setPenghasilanIbu(response.data.data.nama_penghasilan)
+        }
     }
 
     const pekerjaanWaliByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnWali}`)
-        setPekerjaanWali(response.data.data.nama_pekerjaan)
+        if (pkrjnWali != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${pkrjnWali}`)
+            setPekerjaanWali(response.data.data.nama_pekerjaan)
+        }
     }
 
     const pendidikanWaliByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknWali}`)
-        setPendidikanWali(response.data.data.nama_pendidikan)
+        if (pndknWali != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${pndknWali}`)
+            setPendidikanWali(response.data.data.nama_pendidikan)
+        }
     }
 
     const penghasilanWaliByCode = async () => {
-        const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptWali}`)
-        setPenghasilanWali(response.data.data.nama_penghasilan)
+        if (pndptWali != 0) {
+            const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${pndptWali}`)
+            setPenghasilanWali(response.data.data.nama_penghasilan)
+        }
     }
 
     const print = () => componentRef

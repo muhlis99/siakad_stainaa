@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, Navigate } from "react-router-dom"
 import { FaPlus, FaSearch, FaTrash, FaInfo, FaEdit, FaImages, FaPrint, FaArrowLeft, FaArrowRight } from "react-icons/fa"
-import { SlOptions } from "react-icons/sl";
+import { SlOptions } from "react-icons/sl"
 import axios from 'axios'
 import ReactPaginate from "react-paginate"
 import Swal from "sweetalert2"

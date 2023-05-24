@@ -1,27 +1,58 @@
 import React, { useState, useEffect } from 'react'
-import { FaPlus, FaSearch, FaInfo, FaEdit, FaImages, FaPrint, FaTrash } from "react-icons/fa"
+import { FaPlus, FaSearch, FaTrash, FaInfo, FaEdit, FaImages, FaPrint, FaArrowLeft, FaArrowRight } from "react-icons/fa"
+import { SlOptions } from "react-icons/sl"
 import { Link, Navigate } from "react-router-dom"
+import ReactPaginate from "react-paginate"
 import axios from 'axios'
 import Swal from "sweetalert2"
 
 const ListDosen = () => {
     const [Dosen, setDosen] = useState([])
+    const [page, setPage] = useState(0)
+    const [perPage, setperPage] = useState(0)
+    const [pages, setPages] = useState(0)
+    const [rows, setrows] = useState(0)
+    const [keyword, setKeyword] = useState("")
+    const [query, setQuery] = useState("")
+    const [msg, setMsg] = useState("")
     const [idDsn, setIdDsn] = useState("")
     const [stat, setStat] = useState("")
 
     useEffect(() => {
         getDosen()
-    }, [])
+    }, [page, keyword])
 
     const getDosen = async () => {
-        const response = await axios.get(`v1/dosen/all`)
+        const response = await axios.get(`v1/dosen/all?page=${page}&search=${keyword}`)
         setDosen(response.data.data)
+        setPage(response.data.current_page)
+        setrows(response.data.total_data)
+        setPages(response.data.total_page)
+        setperPage(response.data.per_page)
     }
 
     const tambahDosen = async () => {
         const response = await axios.post('v1/dosen/createFirts')
         setIdDsn(response.data.data)
         setStat("add")
+    }
+
+    const pageCount = Math.ceil(rows / perPage)
+
+    const changePage = (event) => {
+        const newOffset = (event.selected + 1);
+        setPage(newOffset);
+        if (event.selected === 9) {
+            setMsg("Jika tidak menemukan data yang dicari, maka lakukan pencarian data secara spesifik!")
+        } else {
+            setMsg("")
+        }
+    }
+
+    const cariData = (e) => {
+        e.preventDefault();
+        setPage(0)
+        setKeyword(query)
     }
 
     const nonaktifkan = (dsnId) => {
@@ -71,11 +102,13 @@ const ListDosen = () => {
                                 <button className="btn btn-default btn-xs" onClick={tambahDosen}><FaPlus /> tambah data</button>
                             </div>
                             <div>
-                                <form className='mb-1'>
+                                <form onSubmit={cariData} className='mb-1'>
                                     <div className="form-control">
                                         <div className="input-group justify-end">
                                             <input
                                                 type="text"
+                                                value={query}
+                                                onChange={(e) => setQuery(e.target.value)}
                                                 className="input input-xs input-bordered input-success"
                                                 placeholder='Cari'
                                             />
@@ -122,6 +155,26 @@ const ListDosen = () => {
                                     ))}
                                 </tbody>
                             </table>
+                        </div>
+                        <div>
+                            <span className='text-sm'>Total Data : {rows} page: {rows ? page : 0} of {pages}</span>
+                            <p className='text-sm text-red-700'>{msg}</p>
+                        </div>
+                        <div className="mt-2 justify-center btn-group" key={rows} aria-label='pagination'>
+                            <ReactPaginate
+                                className='justify-center btn-group'
+                                breakLabel={<SlOptions />}
+                                previousLabel={<FaArrowLeft />}
+                                pageCount={Math.min(10, pageCount)}
+                                onPageChange={changePage}
+                                nextLabel={<FaArrowRight />}
+                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
+                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
+                            />
                         </div>
                     </div>
                 </div>
