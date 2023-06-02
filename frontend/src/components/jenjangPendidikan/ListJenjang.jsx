@@ -286,9 +286,9 @@ const ListJenjang = () => {
                                             <td className='px-6 py-2'>{jenj.nama_jenjang_pendidikan}</td>
                                             <td className='px-6 py-2'>{jenj.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
-                                                <div className="btn-group">
-                                                    <button className="btn btn-xs text-white btn-warning" onClick={() => modalEditOpen(jenj.id_jenjang_pendidikan)} title='Edit'><FaEdit /></button>
-                                                    <button className="btn btn-xs text-white btn-danger" onClick={() => nonaktifkan(jenj.id_jenjang_pendidikan)} title='Hapus'><FaTrash /></button>
+                                                <div>
+                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalEditOpen(jenj.id_jenjang_pendidikan)} title='Edit'><FaEdit /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(jenj.id_jenjang_pendidikan)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>

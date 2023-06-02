@@ -351,11 +351,11 @@ const ProdiList = () => {
                                     onChange={(e) => setNamaProdi(e.target.value)}
                                 >
                                     <option disabled value={""}>-Pilih Prodi-</option>
-                                    <option>Teknik Informatika</option>
-                                    <option>Teknik Elektro</option>
-                                    <option>Perbankan Syariah</option>
-                                    <option>Hukum Ekonomi Syariah</option>
-                                    <option>Pendidikan Agama Islam</option>
+                                    <option>TEKNIK INFORMATIKA</option>
+                                    <option>TEKNIK ELECTRO</option>
+                                    <option>PERBANKAN SYARI'AH</option>
+                                    <option>HUKUM EKONOMI SYARI'AH</option>
+                                    <option>PENDIDIKAN AGAMA ISLAM</option>
                                 </select>
                             </div>
                             {errors && namaProdi.length <= 0 ?
@@ -403,7 +403,7 @@ const ProdiList = () => {
                                     <tr>
                                         <th scope="col" className="px-6 py-3">#</th>
                                         <th scope="col" className="px-6 py-3">Jenjang</th>
-                                        <th scope="col" className="px-6 py-3">Kode Fakultas</th>
+                                        <th scope="col" className="px-6 py-3">Fakultas</th>
                                         <th scope="col" className="px-6 py-3">Kode Prodi</th>
                                         <th scope="col" className="px-6 py-3">Nama Prodi</th>
                                         <th scope="col" className='px-6 py-3'>Status</th>
@@ -417,14 +417,14 @@ const ProdiList = () => {
                                                 {index + 1}
                                             </th>
                                             <td className='px-6 py-2'>{prod.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-2'>{prod.code_fakultas}</td>
+                                            <td className='px-6 py-2'>{prod.fakultas[0].nama_fakultas}</td>
                                             <td className='px-6 py-2'>{prod.code_prodi}</td>
                                             <td className='px-6 py-2'>{prod.nama_prodi}</td>
                                             <td className='px-6 py-2'>{prod.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
-                                                <div className="btn-group">
-                                                    <button className="btn btn-xs text-white btn-warning" title='Edit' onClick={() => modalEditOpen(prod.id_prodi)}><FaEdit /></button>
-                                                    <button className="btn btn-xs text-white btn-danger" title='Hapus' onClick={() => nonaktifkan(prod.id_prodi)}><FaTrash /></button>
+                                                <div>
+                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(prod.id_prodi)}><FaEdit /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-danger" title='Hapus' onClick={() => nonaktifkan(prod.id_prodi)}><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
