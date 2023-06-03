@@ -18,9 +18,6 @@ const kelasModel = db.define('kelas', {
     'nama_kelas': {
         type: DataTypes.TEXT
     },
-    'code_ruang': {
-        type: DataTypes.TEXT
-    },
     'code_jenjang_pendidikan': {
         type: DataTypes.TEXT,
     },
@@ -54,9 +51,7 @@ kelasModel.hasMany(fakultasModel, { sourceKey: 'code_fakultas', foreignKey: 'cod
 // prodi
 prodiModel.belongsTo(kelasModel, { foreignKey: 'code_prodi' })
 kelasModel.hasMany(prodiModel, { sourceKey: 'code_prodi', foreignKey: 'code_prodi' })
-// ruang
-ruangModel.belongsTo(kelasModel, { foreignKey: 'code_ruang' })
-kelasModel.hasMany(ruangModel, { sourceKey: 'code_ruang', foreignKey: 'code_ruang' })
+
 // dosen
 dosenModel.belongsTo(kelasModel, { foreignKey: 'nidn' })
 kelasModel.hasMany(dosenModel, { sourceKey: 'dosen_wali', foreignKey: 'nidn' })
