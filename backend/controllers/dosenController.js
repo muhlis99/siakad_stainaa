@@ -39,6 +39,11 @@ module.exports = {
                                 }
                             },
                             {
+                                nip_ynaa: {
+                                    [Op.like]: `%${search}%`
+                                }
+                            },
+                            {
                                 jenis_kelamin: {
                                     [Op.like]: `%${search}%`
                                 }
@@ -150,6 +155,7 @@ module.exports = {
         await dosen.create({
             nama: "",
             nidn: "",
+            nip_ynaa: "",
             tempat_lahir: "",
             tanggal_lahir: "",
             jenis_kelamin: "",
@@ -192,7 +198,7 @@ module.exports = {
 
     createForm1: async (req, res, next) => {
         const id = req.params.id
-        const { nama, nidn, tempat_lahir,
+        const { nama, nidn, nip_ynaa, tempat_lahir,
             tahun, bulan, tanggal, jenis_kelamin,
             email, no_hp, no_telepon } = req.body
         const dosenUse = await dosen.findOne({
@@ -205,6 +211,7 @@ module.exports = {
         await dosen.update({
             nidn: nidn,
             nama: nama,
+            nip_ynaa: nip_ynaa,
             jenis_kelamin: jenis_kelamin,
             tempat_lahir: tempat_lahir,
             tanggal_lahir: tanggal_lahir,
