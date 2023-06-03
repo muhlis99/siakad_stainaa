@@ -78,7 +78,7 @@ module.exports = {
             }).
                 then(result => {
                     res.status(201).json({
-                        message: "Email >>>>>> ????"
+                        message: "code verifikasi telah terkirim"
                     })
                 })
 
@@ -122,12 +122,30 @@ module.exports = {
             const email = codeUse.email
             const role = codeUse.role
             res.status(200).json({
-                message: "login suksess && ganti password berhasil",
+                message: "................",
                 id, name, email, role
             })
         } catch (err) {
             next(err)
         }
+    },
 
+    resetPasswordByForgot: async (req, res, next) => {
+        const id = req.params.id
+        const { newPassword, confirmNewPassword } = req.body
+        if (newPassword != confirmNewPassword) return res.status(400).json({ message: "Password yang anda masukkan salah" })
+        const hashPassword = await argon.hash(newPassword)
+        await user.update({
+            password: hashPassword,
+        }, {
+            where: {
+                id: id
+            }
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "...........>>>>>>>>>>>>"
+                })
+            })
     }
 }

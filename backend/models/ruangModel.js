@@ -3,6 +3,7 @@ const db = require('../config/database.js')
 const jenjangPendidikanModel = require('./jenjangPendidikanModel.js')
 const fakultasModel = require('./fakultasModel.js')
 const prodiModel = require('./prodiModel.js')
+const kelasModel = require('./kelasModel.js')
 
 const ruangModel = db.define('ruang', {
     'id_ruang': {
@@ -23,6 +24,9 @@ const ruangModel = db.define('ruang', {
         type: DataTypes.TEXT
     },
     'code_prodi': {
+        type: DataTypes.TEXT
+    },
+    'code_kelas': {
         type: DataTypes.TEXT
     },
     'status': {
@@ -46,5 +50,8 @@ ruangModel.hasMany(fakultasModel, { sourceKey: 'code_fakultas', foreignKey: 'cod
 // prodi
 prodiModel.belongsTo(ruangModel, { foreignKey: 'code_prodi' })
 ruangModel.hasMany(prodiModel, { sourceKey: 'code_prodi', foreignKey: 'code_prodi' })
+// kelas
+kelasModel.belongsTo(ruangModel, { foreignKey: 'code_kelas' })
+ruangModel.hasMany(kelasModel, { sourceKey: 'code_kelas', foreignKey: 'code_kelas' })
 
 module.exports = ruangModel

@@ -2,6 +2,7 @@ const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const ruangModel = require('../models/ruangModel.js')
+const kelasModel = require('../models/kelasModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
@@ -19,6 +20,9 @@ module.exports = {
                 where: { status: "aktif" }
             }, {
                 model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                model: kelasModel,
                 where: { status: "aktif" }
             }],
             where: {
@@ -50,6 +54,11 @@ module.exports = {
                     },
                     {
                         code_prodi: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_kelas: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -73,6 +82,9 @@ module.exports = {
             }, {
                 model: prodiModel,
                 where: { status: "aktif" }
+            }, {
+                model: kelasModel,
+                where: { status: "aktif" }
             }],
             where: {
                 [Op.or]: [
@@ -103,6 +115,11 @@ module.exports = {
                     },
                     {
                         code_prodi: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_kelas: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -147,6 +164,9 @@ module.exports = {
             }, {
                 model: prodiModel,
                 where: { status: "aktif" }
+            }, {
+                model: kelasModel,
+                where: { status: "aktif" }
             }],
             where: {
                 id_ruang: id,
@@ -171,8 +191,8 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { nama_ruang, identy_ruang, code_jenjang_pendidikan, code_fakultas, code_prodi } = req.body
-        const codeRuang = code_prodi + identy_ruang.replace(/ /g, '')
+        const { nama_ruang, identy_ruang, code_jenjang_pendidikan, code_fakultas, code_prodi, code_kelas } = req.body
+        const codeRuang = code_kelas + identy_ruang.replace(/ /g, '')
         const namaRuang = nama_ruang + identy_ruang
         const ruangUse = await ruangModel.findOne({
             where: {
@@ -187,6 +207,7 @@ module.exports = {
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
             code_ruang: codeRuang,
+            code_kelas: code_kelas,
             status: "aktif",
         }).
             then(result => {
@@ -211,6 +232,9 @@ module.exports = {
             }, {
                 model: prodiModel,
                 where: { status: "aktif" }
+            }, {
+                model: kelasModel,
+                where: { status: "aktif" }
             }],
             where: {
                 id_ruang: id,
@@ -218,8 +242,8 @@ module.exports = {
             }
         })
         if (!ruangUseOne) return res.status(401).json({ message: "data ruang tidak ditemukan" })
-        const { nama_ruang, identy_ruang, code_jenjang_pendidikan, code_fakultas, code_prodi } = req.body
-        const codeRuang = code_prodi + identy_ruang.replace(/ /g, '')
+        const { nama_ruang, identy_ruang, code_jenjang_pendidikan, code_fakultas, code_prodi, code_kelas } = req.body
+        const codeRuang = code_kelas + identy_ruang.replace(/ /g, '')
         const namaRuang = nama_ruang + identy_ruang
         const ruangUse = await ruangModel.findOne({
             where: {
@@ -233,6 +257,7 @@ module.exports = {
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
+            code_kelas: code_kelas,
             code_ruang: codeRuang,
         }, {
             where: {
@@ -260,6 +285,9 @@ module.exports = {
                 where: { status: "aktif" }
             }, {
                 model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                model: kelasModel,
                 where: { status: "aktif" }
             }],
             where: {

@@ -13,6 +13,9 @@ const dosenModel = db.define('dosen', {
     'nidn': {
         type: DataTypes.TEXT,
     },
+    'nip_ynaa': {
+        type: DataTypes.TEXT,
+    },
     'nama': {
         type: DataTypes.TEXT
     },
