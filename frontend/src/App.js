@@ -1,8 +1,10 @@
 import "./index.css"
-import { HashRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Welcome from "./pages/Welcome"
 import Login from "./pages/Login"
 import Forgot from "./pages/Forgot"
+import VerifiCode from "./pages/VerifiCode"
+import ChangePass from "./pages/user/ChangePass"
 import Dashboard from "./pages/Dashboard"
 import Jenjang from "./pages/jenjangPendidikan/Jenjang"
 import Fakultas from "./pages/fakultas/Fakultas"
@@ -26,15 +28,18 @@ import Ruang from "./pages/ruang/Ruang"
 import Kelas from "./pages/kelas/Kelas"
 import AddKelas from "./pages/kelas/AddKelas"
 import EditKelas from "./pages/kelas/EditKelas"
+import Tahun from "./pages/tahunAjaran/Tahun"
 
 function App() {
   return (
     <div>
-      <HashRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot" element={<Forgot />} />
+          <Route path="/verification" element={<VerifiCode />} />
+          <Route path="/changepass" element={<ChangePass />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/jenjang" element={<Jenjang />} />
           <Route path="/fakultas" element={<Fakultas />} />
@@ -57,9 +62,10 @@ function App() {
           <Route path="/ruang" element={<Ruang />} />
           <Route path="/kelas" element={<Kelas />} />
           <Route path="/kelas/add" element={<AddKelas />} />
-          <Route path="/kelas/edit/:idkls" element={<EditKelas />} />
+          <Route path="/kelas/edit/:idKls" element={<EditKelas />} />
+          <Route path="/tahun" element={<Tahun />} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </div>
   );
 }

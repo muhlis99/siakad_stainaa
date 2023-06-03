@@ -92,6 +92,29 @@ const FormAddKelas = () => {
         }
     }
 
+    const batalkan = () => {
+        Swal.fire({
+            title: "Yakin untuk membatalkan?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, batalkan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Dibatalkan",
+                    text: "Input Kelas dibatalkan",
+                    icon: "success"
+                }).then(() => {
+                    navigate('/kelas')
+                });
+            }
+        })
+    }
+
     return (
         <div className="mt-2 container">
             <section className='mb-5'>
@@ -165,7 +188,7 @@ const FormAddKelas = () => {
                                     <select className='select select-bordered select-sm w-full' value={dosennya} onChange={(e) => setDosennya(e.target.value)}>
                                         <option value="">Dosen</option>
                                         {Dosen.map((item) => (
-                                            <option key={item.id_dosen} value={item.id_dosen}>{item.nama}</option>
+                                            <option key={item.id_dosen} value={item.nidn}>{item.nama}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -175,7 +198,7 @@ const FormAddKelas = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    <button type='button' className='btn btn-sm btn-danger'><FaTimes /> <span className="ml-1">Batal</span></button>
+                                    <button type='button' onClick={batalkan} className='btn btn-sm btn-danger'><FaTimes /> <span className="ml-1">Batal</span></button>
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>

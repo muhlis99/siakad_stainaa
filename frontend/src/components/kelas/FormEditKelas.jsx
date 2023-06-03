@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FaReply, FaSave } from "react-icons/fa"
-import { Link } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import Swal from "sweetalert2"
 
@@ -17,6 +17,25 @@ const FormEditKelas = () => {
     const [prodinya, setProdinya] = useState("")
     const [ruangnya, setRuangnya] = useState("")
     const [dosennya, setDosennya] = useState("")
+    const { idKls } = useParams()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const getKelasById = async () => {
+            try {
+                const response = await axios.get(`v1/kelas/getById/${idKls}`)
+                setNamaKelas(response.data.data.nama_kelas)
+                setJenjangnya(response.data.data.code_jenjang_pendidikan)
+                setFakultasnya(response.data.data.code_fakultas)
+                setProdinya(response.data.data.code_prodi)
+                setRuangnya(response.data.data.code_ruang)
+                setDosennya(response.data.data.dosen_wali)
+            } catch (error) {
+
+            }
+        }
+        getKelasById()
+    }, [idKls])
 
     useEffect(() => {
         getJenjangPendidikan()
@@ -61,6 +80,36 @@ const FormEditKelas = () => {
         setDosen(response.data.data)
     }
 
+    const simpanKls = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.put(`v1/kelas/update/${idKls}`, {
+                nama_kelas: namaKelas,
+                identy_kelas: identitas,
+                code_jenjang_pendidikan: jenjangnya,
+                code_fakultas: fakultasnya,
+                code_prodi: prodinya,
+                code_ruang: ruangnya,
+                dosen_wali: dosennya
+
+            }).then(function (response) {
+                Swal.fire({
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    navigate("/kelas")
+                });
+            })
+        } catch (error) {
+            if (error.response) {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
+        }
+    }
+
     return (
         <div className="mt-2 container">
             <section className='mb-5'>
@@ -69,90 +118,92 @@ const FormEditKelas = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
                     <div className="card-body p-4">
-                        <div className="grid lg:grid-cols-4 gap-4">
-                            <div className='col-span-2'>
-                                <label className="label">
-                                    <span className="text-base label-text">Nama Kelas</span>
-                                </label>
-                                <input type="text" placeholder="Masukkan Nama Kelas" className="input input-sm input-bordered w-full" value={namaKelas} onChange={(e) => setNamaKelas(e.target.value)} />
+                        <form onSubmit={simpanKls}>
+                            <div className="grid lg:grid-cols-4 gap-4">
+                                <div className='col-span-2'>
+                                    <label className="label">
+                                        <span className="text-base label-text">Nama Kelas</span>
+                                    </label>
+                                    <input type="text" placeholder="Masukkan Nama Kelas" className="input input-sm input-bordered w-full" value={namaKelas} onChange={(e) => setNamaKelas(e.target.value)} />
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Identitas Kelas</span>
+                                    </label>
+                                    <input type="text" placeholder="Masukkan Identitas Kelas" className="input input-sm input-bordered w-full" value={identitas} onChange={(e) => setIdentitas(e.target.value)} />
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Jenjang Pendidikan </span>
+                                    </label>
+                                    <select className='select select-bordered select-sm w-full' value={jenjangnya} onChange={(e) => setJenjangnya(e.target.value)}>
+                                        <option value="">Jenjang Pendidikan</option>
+                                        {Jenjang.map((item) => (
+                                            <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Fakultas Yang akan ditempuh</span>
+                                    </label>
+                                    <select className='select select-bordered select-sm w-full' value={fakultasnya} onChange={(e) => setFakultasnya(e.target.value)}>
+                                        <option value="">Fakultas</option>
+                                        {Fakultas.map((item) => (
+                                            <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Prodi Yang akan ditempuh</span>
+                                    </label>
+                                    <select className='select select-bordered select-sm w-full' value={prodinya} onChange={(e) => setProdinya(e.target.value)}>
+                                        <option value="">Prodi</option>
+                                        {Prodi.map((item) => (
+                                            <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Ruang</span>
+                                    </label>
+                                    <select className='select select-bordered select-sm w-full' value={ruangnya} onChange={(e) => setRuangnya(e.target.value)}>
+                                        <option value="">Ruang</option>
+                                        {Ruang.map((item) => (
+                                            <option key={item.id_ruang} value={item.code_ruang}>{item.nama_ruang}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Dosen Wali</span>
+                                    </label>
+                                    <select className='select select-bordered select-sm w-full' value={dosennya} onChange={(e) => setDosennya(e.target.value)}>
+                                        <option value="">Dosen</option>
+                                        {Dosen.map((item) => (
+                                            <option key={item.id_dosen} value={item.nidn}>{item.nama}</option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Identitas Kelas</span>
-                                </label>
-                                <input type="text" placeholder="Masukkan Identitas Kelas" className="input input-sm input-bordered w-full" value={identitas} onChange={(e) => setIdentitas(e.target.value)} />
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Jenjang Pendidikan </span>
-                                </label>
-                                <select className='select select-bordered select-sm w-full' value={jenjangnya} onChange={(e) => setJenjangnya(e.target.value)}>
-                                    <option value="">Jenjang Pendidikan</option>
-                                    {Jenjang.map((item) => (
-                                        <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Fakultas Yang akan ditempuh</span>
-                                </label>
-                                <select className='select select-bordered select-sm w-full' value={fakultasnya} onChange={(e) => setFakultasnya(e.target.value)}>
-                                    <option value="">Fakultas</option>
-                                    {Fakultas.map((item) => (
-                                        <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Prodi Yang akan ditempuh</span>
-                                </label>
-                                <select className='select select-bordered select-sm w-full' value={prodinya} onChange={(e) => setProdinya(e.target.value)}>
-                                    <option value="">Prodi</option>
-                                    {Prodi.map((item) => (
-                                        <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Ruang</span>
-                                </label>
-                                <select className='select select-bordered select-sm w-full' value={ruangnya} onChange={(e) => setRuangnya(e.target.value)}>
-                                    <option value="">Ruang</option>
-                                    {Ruang.map((item) => (
-                                        <option key={item.id_ruang} value={item.code_ruang}>{item.nama_ruang}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Dosen Wali</span>
-                                </label>
-                                <select className='select select-bordered select-sm w-full' value={dosennya} onChange={(e) => setDosennya(e.target.value)}>
-                                    <option value="">Dosen</option>
-                                    {Dosen.map((item) => (
-                                        <option key={item.id_dosen} value={item.id_dosen}>{item.nama}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className='mt-5 grid lg:grid-cols-2'>
-                            <div className='col-span-2 mb-5'>
-                                <hr />
-                            </div>
-                            <div>
-                                <Link to='/kelas' className='btn btn-sm btn-danger'><FaReply /> <span className="ml-1">Kembali</span></Link>
-                            </div>
-                            <div>
-                                <div className='grid lg:grid-flow-col gap-1 float-right'>
-                                    <div className='lg:pl-1'>
-                                        <button className='btn btn-sm btn-blue w-full'><FaSave /><span className="ml-1">Simpan </span></button>
+                            <div className='mt-5 grid lg:grid-cols-2'>
+                                <div className='col-span-2 mb-5'>
+                                    <hr />
+                                </div>
+                                <div>
+                                    <Link to='/kelas' className='btn btn-sm btn-danger'><FaReply /> <span className="ml-1">Kembali</span></Link>
+                                </div>
+                                <div>
+                                    <div className='grid lg:grid-flow-col gap-1 float-right'>
+                                        <div className='lg:pl-1'>
+                                            <button className='btn btn-sm btn-blue w-full'><FaSave /><span className="ml-1">Simpan </span></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </section>

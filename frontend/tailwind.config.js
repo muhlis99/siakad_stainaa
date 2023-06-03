@@ -59,7 +59,7 @@ module.exports = {
             'background': '#2D7F5F',
             'border-color': '#2D7F5F',
           },
-        },
+        }
       },
     ],
   },

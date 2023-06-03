@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import stainaa from "../assets/img/stainaa.png";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { LoginUser, reset } from "../features/authSlice";
-import Swal from "sweetalert2";
+import stainaa from "../assets/img/stainaa.png"
+import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { LoginUser, reset } from "../features/authSlice"
+import Swal from "sweetalert2"
 
 const Login = () => {
-    const [name, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [errors, setError] = useState("");
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const [name, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
 
     useEffect(() => {
@@ -38,11 +37,7 @@ const Login = () => {
 
     const Auth = (e) => {
         e.preventDefault()
-        if (name.length == 0 || password.length == 0) {
-            setError(true)
-        } else {
-            dispatch(LoginUser({ name, password }))
-        }
+        dispatch(LoginUser({ name, password }))
     }
 
     return (
@@ -63,7 +58,6 @@ const Login = () => {
                                     placeholder='Username Anda'
                                 />
                             </div>
-                            {errors && name.length <= 0 ? <p className='text-xs text-red-600'>Username tidak boleh kosong</p> : ""}
                             <div className="mt-5">
                                 <input
                                     type="password"
@@ -73,7 +67,6 @@ const Login = () => {
                                     placeholder='Password Anda'
                                 />
                             </div>
-                            {errors && password.length <= 0 ? <p className='text-xs text-red-600'>Password tidak boleh kosong</p> : ""}
                             <div className="mt-2 mb-4 float-right">
                                 <Link to="/forgot" className='text-gray-500'>Forgot Password</Link>
                             </div>

@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "axios"
 
 const initialState = {
     user: null,
@@ -17,23 +17,42 @@ export const LoginUser = createAsyncThunk("User/LoginUser", async (user, thunkAP
         })
         return response.data
     } catch (error) {
-        if (error.response.data) {
-            console.log(error.response.data)
-            const message = error.response.data.message;
-            return thunkAPI.rejectWithValue(message);
+        if (error.response.data.message) {
+            const message = error.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        } else {
+            const message = error.response.data.errors[0].msg
+            return thunkAPI.rejectWithValue(message)
         }
     }
-});
+})
 
 export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
     try {
         const response = await axios.get('v1/login/me')
-        return response.data;
+        return response.data
     } catch (error) {
         if (error.response) {
             // console.log(error.response)
-            const message = error.response.data.message;
-            return thunkAPI.rejectWithValue(message);
+            const message = error.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+})
+
+export const VerifyCode = createAsyncThunk("user/VerifyCode", async (user, thunkAPI) => {
+    try {
+        const response = await axios.post('v1/login/verify', {
+            code: user.code
+        })
+        return response.data
+    } catch (error) {
+        if (error.response.data.message) {
+            const message = error.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        } else {
+            const message = error.response.data.errors[0].msg
+            return thunkAPI.rejectWithValue(message)
         }
     }
 })
@@ -50,35 +69,49 @@ export const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(LoginUser.pending, (state) => {
-            state.isLoading = true;
-        });
+            state.isLoading = true
+        })
         builder.addCase(LoginUser.fulfilled, (state, action) => {
-            state.isLoading = false;
-            state.isSuccess = true;
-            state.user = action.payload;
-        });
+            state.isLoading = false
+            state.isSuccess = true
+            state.user = action.payload
+        })
         builder.addCase(LoginUser.rejected, (state, action) => {
-            state.isLoading = false;
-            state.isError = true;
-            state.message = action.payload;
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
         })
 
         // get user login
         builder.addCase(getMe.pending, (state) => {
-            state.isLoading = true;
-        });
+            state.isLoading = true
+        })
         builder.addCase(getMe.fulfilled, (state, action) => {
-            state.isLoading = false;
-            state.isSuccess = true;
-            state.user = action.payload;
-        });
+            state.isLoading = false
+            state.isSuccess = true
+            state.user = action.payload
+        })
         builder.addCase(getMe.rejected, (state, action) => {
-            state.isLoading = false;
-            state.isError = true;
-            state.message = action.payload;
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+        })
+
+        builder.addCase(VerifyCode.pending, (state) => {
+            state.isLoading = true
+        })
+        builder.addCase(VerifyCode.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.user = action.payload
+        })
+        builder.addCase(VerifyCode.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
         })
     }
-});
+})
 
-export const { reset } = authSlice.actions;
-export default authSlice.reducer;
+export const { reset } = authSlice.actions
+export default authSlice.reducer
