@@ -1,41 +1,43 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import stainaa from "../assets/img/stainaa.png"
 import { Link, useNavigate } from "react-router-dom"
-import axios from 'axios'
+import { useDispatch, useSelector } from "react-redux"
+import { VerifyCode, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
 
-const Forgot = () => {
-    const [email, setEmail] = useState("")
+const VerifiCode = () => {
+    const [code, setCode] = useState("")
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
 
-    const kirimEmail = async (e) => {
-        e.preventDefault()
-        try {
-            await axios.post('v1/login/forgot', {
-                email: email
-
-            }).then(function (response) {
-                Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    navigate('/verification')
-                });
-            })
-        } catch (error) {
-            if (error.response.data.message) {
-                Swal.fire({
-                    title: error.response.data.message,
-                    icon: "error"
-                })
+    useEffect(() => {
+        if (user || isSuccess) {
+            if (user.message == "selamat datang") {
+                navigate("/dashboard")
             } else {
                 Swal.fire({
-                    title: error.response.data.errors[0].msg,
-                    icon: "error"
+                    title: user.message,
+                    icon: "success"
+                }).then(() => {
+                    navigate("/changepass")
                 })
             }
         }
+        dispatch(reset())
+        if (isError) {
+            Swal.fire({
+                title: message,
+                icon: 'error'
+            })
+        }
+    }, [user, isSuccess, navigate, message, isError, dispatch])
+
+    const Auth = (e) => {
+        e.preventDefault()
+        dispatch(VerifyCode({ code }))
     }
+
 
     return (
         <div>
@@ -51,18 +53,16 @@ const Forgot = () => {
             <div className='w-full flex justify-center relative mx-auto -top-10'>
                 <div className="card w-[500px] bg-base-100 shadow-xl rounded-[30px]">
                     <div className="card-body text-center">
-                        <form onSubmit={kirimEmail}>
-                            <p className='text-lg'>Untuk Mengganti Password</p>
-                            <p className='text-lg mt-2'>Silakan Masukkan Email Aktif Anda</p>
+                        <form onSubmit={Auth}>
+                            <p className='text-lg'>Kode Verifikasi telah dikirim ke Email anda</p>
                             <div className="w-full mt-6">
-                                <label htmlFor="email" className='text-xl'>Email</label>
+                                <label htmlFor="number" className='text-xl'>Kode</label>
                                 <input
-                                    type="email"
-                                    id='email'
-                                    placeholder='example@gmail.com'
+                                    type="number"
+                                    id='number'
                                     className='ml-2 input input-md input-bordered w-80'
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={code}
+                                    onChange={(e) => setCode(e.target.value)}
                                 />
                             </div>
                             <div className="card-actions justify-center gap-5 mt-9">
@@ -77,4 +77,4 @@ const Forgot = () => {
     )
 }
 
-export default Forgot
+export default VerifiCode

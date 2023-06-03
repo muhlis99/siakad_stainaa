@@ -1,8 +1,20 @@
-import React from 'react'
-import { FaPlus, FaSearch } from "react-icons/fa"
+import React, { useState, useEffect } from 'react'
+import { FaPlus, FaSearch, FaEdit } from "react-icons/fa"
 import { Link } from "react-router-dom"
+import axios from 'axios'
 
 const ListKelas = () => {
+    const [Kelas, setKelas] = useState([])
+
+    useEffect(() => {
+        getKelas()
+    }, [])
+
+    const getKelas = async () => {
+        const response = await axios.get(`v1/kelas/all`)
+        setKelas(response.data.data)
+    }
+
     return (
         <div className="mt-2 container">
             <section className='mb-5'>
@@ -39,21 +51,34 @@ const ListKelas = () => {
                                 <thead className='text-gray-700 bg-[#F2F2F2]'>
                                     <tr>
                                         <th scope="col" className="px-6 py-3">#</th>
-                                        <th scope="col" className="px-6 py-3">NIM</th>
-                                        <th scope="col" className="px-6 py-3">Nama</th>
+                                        <th scope="col" className="px-6 py-3">Kode Kelas</th>
+                                        <th scope="col" className="px-6 py-3">Nama Kelas</th>
                                         <th scope="col" className="px-6 py-3">Jenjang</th>
                                         <th scope="col" className="px-6 py-3">Fakultas</th>
                                         <th scope="col" className='px-6 py-3'>Prodi</th>
+                                        <th scope="col" className='px-6 py-3'>Ruang</th>
                                         <th scope="col" className="px-6 py-3" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className='bg-white border-b text-gray-500'>
-                                        <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">
-
-                                        </th>
-                                        <td className='px-6 py-2'></td>
-                                    </tr>
+                                    {Kelas.map((kls, index) => (
+                                        <tr key={kls.id_kelas} className='bg-white border-b text-gray-500'>
+                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">
+                                                {index + 1}
+                                            </th>
+                                            <td className='px-6 py-2'>{kls.code_kelas}</td>
+                                            <td className='px-6 py-2'>{kls.nama_kelas}</td>
+                                            <td className='px-6 py-2'>{kls.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                            <td className='px-6 py-2'>{kls.fakultas[0].nama_fakultas}</td>
+                                            <td className='px-6 py-2'>{kls.prodis[0].nama_prodi}</td>
+                                            <td className='px-6 py-2'>{kls.ruangs[0].nama_ruang}</td>
+                                            <td className='px-6 py-2' align='center'>
+                                                <div>
+                                                    <Link to={`/kelas/edit/${kls.id_kelas}`} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>

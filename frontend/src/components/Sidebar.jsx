@@ -28,7 +28,7 @@ const Sidebar = () => {
         <li><Link to="/dosen" className='text-white'><span className='font-bold text-sm'>Dosen</span></Link></li>
         <li><Link to="/ruang" className='text-white'><span className='font-bold text-sm'>Ruang</span></Link></li>
         <li><Link to="/kelas" className='text-white'><span className='font-bold text-sm'>Kelas</span></Link></li>
-        <li><Link className='text-white'><span className='font-bold text-sm'>Tahun Ajaran</span></Link></li>
+        <li><Link to='/tahun' className='text-white'><span className='font-bold text-sm'>Tahun Ajaran</span></Link></li>
         <li><Link className='text-white'><span className='font-bold text-sm'>Semester</span></Link></li>
         <li><Link className='text-white'><span className='font-bold text-sm'>Kategori Nilai</span></Link></li>
         <li><Link className='text-white'><span className='font-bold text-sm'>Penjadwalan</span></Link></li>
