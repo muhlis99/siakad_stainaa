@@ -10,10 +10,16 @@ const kategoriNilaiModel = db.define('kategoriNilai', {
     'code_kategori_nilai': {
         type: DataTypes.TEXT,
     },
-    'angka': {
+    'nilai_angka': {
         type: DataTypes.TEXT,
     },
-    'predikat': {
+    'nilai_huruf': {
+        type: DataTypes.TEXT
+    },
+    'interfal_skor': {
+        type: DataTypes.TEXT
+    },
+    'kategori': {
         type: DataTypes.TEXT
     },
     'keterangan': {

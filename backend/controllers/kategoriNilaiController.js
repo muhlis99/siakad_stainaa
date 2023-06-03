@@ -21,12 +21,12 @@ module.exports = {
                         }
                     },
                     {
-                        angka: {
+                        nilai_angka: {
                             [Op.like]: `%${search}%`
                         }
                     },
                     {
-                        predikat: {
+                        nilai_huruf: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -59,12 +59,12 @@ module.exports = {
                         }
                     },
                     {
-                        angka: {
+                        nilai_angka: {
                             [Op.like]: `%${search}%`
                         }
                     },
                     {
-                        predikat: {
+                        nilai_huruf: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -128,20 +128,23 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { angka, predikat, keterangan } = req.body
-        const codekategoriNilai = angka.replace(/ [^\w\s]/g, '') + predikat.replace(/[^\w\s]/g, '')
+        const { nilai_angka, nilai_huruf, interfal_skor, kategori, keterangan } = req.body
+        const codekategoriNilai = nilai_huruf.replace(/[^\w\s]/g, '') + nilai_angka.replace(/[^\w\s]/g, '')
         const kategoriNilaiModelUse = await kategoriNilaiModel.findOne({
             where: {
                 code_kategori_nilai: codekategoriNilai,
-                angka: angka,
-                predikat: predikat
+                nilai_angka: nilai_angka,
+                nilai_huruf: nilai_huruf,
+                interfal_skor: interfal_skor,
             }
         })
         if (kategoriNilaiModelUse) return res.status(401).json({ message: "data kategori Nilai sudah ada" })
         await kategoriNilaiModel.create({
             code_kategori_nilai: codekategoriNilai,
-            angka: angka,
-            predikat: predikat,
+            nilai_angka: nilai_angka,
+            nilai_huruf: nilai_huruf,
+            interfal_skor: interfal_skor,
+            kategori: kategori,
             keterangan: keterangan,
             status: "aktif",
         }).
@@ -164,20 +167,23 @@ module.exports = {
             }
         })
         if (!kategoriNilaiModelUse) return res.status(401).json({ message: "Data kategori Nilai tidak ditemukan" })
-        const { angka, predikat, keterangan } = req.body
-        const codekategoriNilai = angka.replace(/ [^\w\s]/g, '') + predikat.replace(/[^\w\s]/g, '')
+        const { nilai_angka, nilai_huruf, interfal_skor, kategori, keterangan } = req.body
+        const codekategoriNilai = nilai_huruf.replace(/[^\w\s]/g, '') + nilai_angka.replace(/[^\w\s]/g, '')
         const kategoriNilaiModelDuplicate = await kategoriNilaiModel.findOne({
             where: {
                 code_kategori_nilai: codekategoriNilai,
-                angka: angka,
-                predikat: predikat
+                nilai_angka: nilai_angka,
+                nilai_huruf: nilai_huruf,
+                interfal_skor: interfal_skor,
             }
         })
         if (kategoriNilaiModelDuplicate) return res.status(401).json({ message: "data kategori Nilai sudah ada" })
         await kategoriNilaiModel.update({
             code_kategori_nilai: codekategoriNilai,
-            angka: angka,
-            predikat: predikat,
+            nilai_angka: nilai_angka,
+            nilai_huruf: nilai_huruf,
+            interfal_skor: interfal_skor,
+            kategori: kategori,
             keterangan: keterangan,
         }, {
             where: {
