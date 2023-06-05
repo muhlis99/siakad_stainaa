@@ -1,41 +1,39 @@
 import React, { useState, useEffect } from 'react'
 import stainaa from "../assets/img/stainaa.png"
 import { Link, useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { VerifyCode, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
+import axios from 'axios'
 
 const VerifiCode = () => {
     const [code, setCode] = useState("")
-    const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
 
-    useEffect(() => {
-        if (user || isSuccess) {
-            if (user.message == "selamat datang") {
-                navigate("/dashboard")
-            } else {
+    const Auth = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.post('v1/login/verify', {
+                code: code,
+            }).then(function (response) {
                 Swal.fire({
-                    title: user.message,
+                    title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate("/changepass")
+                    navigate("/changepass", { state: { id: response.data.id } })
+                });
+            })
+        } catch (error) {
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
+            } else {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
                 })
             }
         }
-        dispatch(reset())
-        if (isError) {
-            Swal.fire({
-                title: message,
-                icon: 'error'
-            })
-        }
-    }, [user, isSuccess, navigate, message, isError, dispatch])
-
-    const Auth = (e) => {
-        e.preventDefault()
-        dispatch(VerifyCode({ code }))
     }
 
 
