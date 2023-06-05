@@ -1,5 +1,7 @@
 const dosenModel = require('../models/dosenModel.js')
 const semesterModel = require('../models/semesterModel.js')
+const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
+const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
@@ -14,12 +16,15 @@ module.exports = {
         const totalPage = await mataKuliahModel.count({
             include: [
                 {
-                    model: dosenModel,
-                    attributes: ["id_dosen", "nidn", "nama", "tempat_lahir", "tanggal_lahir", "alamat_lengkap", "status"],
+                    model: semesterModel,
                     where: { status: "aktif" }
                 },
                 {
-                    model: semesterModel,
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: fakultasModel,
                     where: { status: "aktif" }
                 },
                 {
@@ -66,12 +71,15 @@ module.exports = {
         await mataKuliahModel.findAll({
             include: [
                 {
-                    model: dosenModel,
-                    attributes: ["id_dosen", "nidn", "nama", "tempat_lahir", "tanggal_lahir", "alamat_lengkap", "status"],
+                    model: semesterModel,
                     where: { status: "aktif" }
                 },
                 {
-                    model: semesterModel,
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: fakultasModel,
                     where: { status: "aktif" }
                 },
                 {
@@ -139,12 +147,15 @@ module.exports = {
         await mataKuliahModel.findOne({
             include: [
                 {
-                    model: dosenModel,
-                    attributes: ["id_dosen", "nidn", "nama", "tempat_lahir", "tanggal_lahir", "alamat_lengkap", "status"],
+                    model: semesterModel,
                     where: { status: "aktif" }
                 },
                 {
-                    model: semesterModel,
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: fakultasModel,
                     where: { status: "aktif" }
                 },
                 {
@@ -177,5 +188,219 @@ module.exports = {
                 next(err)
             })
     },
+
+    post: async (req, res, next) => {
+        const { nama_mata_kuliah, jenis_mata_kuliah, code_semester, code_jenjang_pendidikan, code_fakultas,
+            code_prodi, code_tahun_ajaran, sks, sks_praktek, sks_prak_lapangan,
+            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif } = req.body
+        const no_urut_makul_terakhir = await mataKuliahModel.count({
+            where: {
+                code_prodi: code_prodi,
+                code_semester: code_semester
+            }
+        })
+        var no_urut_makul
+        if (no_urut_makul_terakhir == null) {
+            no_urut_makul = "0001"
+        } else {
+            const code = "0000"
+            const a = no_urut_makul_terakhir.toString()
+            const panjang = a.length
+            const nomor = code.slice(panjang)
+            const b = no_urut_makul_terakhir + 1
+            no_urut_makul = nomor + b
+        }
+        const no_semester = await semesterModel.findOne({
+            where: {
+                code_semester: code_semester
+            }
+        })
+        const codeMataKuliah = code_prodi + no_urut_makul + "-" + no_semester.semester
+        const mataKuliahUse = await mataKuliahModel.findOne({
+            where: {
+                nama_mata_kuliah: nama_mata_kuliah,
+                // code_mata_kuliah: codeMataKuliah,
+                jenis_mata_kuliah: jenis_mata_kuliah,
+                code_semester: code_semester,
+                code_prodi: code_prodi,
+                status: "aktif"
+            }
+        })
+        if (mataKuliahUse) return res.status(401).json({ message: "data mata kuliah sudah ada" })
+        await mataKuliahModel.create({
+            code_mata_kuliah: codeMataKuliah,
+            nama_mata_kuliah: nama_mata_kuliah,
+            jenis_mata_kuliah: jenis_mata_kuliah,
+            code_semester: code_semester,
+            code_jenjang_pendidikan: code_jenjang_pendidikan,
+            code_fakultas: code_fakultas,
+            code_prodi: code_prodi,
+            code_tahun_ajaran: code_tahun_ajaran,
+            sks: sks,
+            sks_praktek: sks_praktek,
+            sks_prak_lapangan: sks_prak_lapangan,
+            sks_simulasi: sks_simulasi,
+            metode_pembelajaran: metode_pembelajaran,
+            tanggal_aktif: tanggal_aktif,
+            tanggal_non_aktif: tanggal_non_aktif,
+            status: "aktif"
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "Data mata kuliah success Ditambahkan",
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    put: async (req, res, next) => {
+        const id = req.params.id
+        const mataKuliahUse = await mataKuliahModel.findOne({
+            include: [
+                {
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: fakultasModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            where: {
+                id_mata_kuliah: id,
+                status: "aktif"
+            }
+        })
+        if (!mataKuliahUse) return res.status(401).json({ message: "Data Mata Kuliah tidak ditemukan" })
+        const { nama_mata_kuliah, jenis_mata_kuliah, code_semester, code_jenjang_pendidikan, code_fakultas,
+            code_prodi, code_tahun_ajaran, sks, sks_praktek, sks_prak_lapangan,
+            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif } = req.body
+        const mataKuliahDuplicate = await mataKuliahModel.findOne({
+            where: {
+                nama_mata_kuliah: nama_mata_kuliah,
+                // code_mata_kuliah: codeMataKuliah,
+                jenis_mata_kuliah: jenis_mata_kuliah,
+                code_semester: code_semester,
+                code_prodi: code_prodi,
+                status: "aktif"
+            }
+        })
+        if (mataKuliahDuplicate) return res.status(401).json({ message: "data mata kuliah sudah ada" })
+        const no_urut_makul_terakhir = await mataKuliahModel.count({
+            where: {
+                code_prodi: code_prodi,
+                code_semester: code_semester
+            }
+        })
+        var no_urut_makul
+        if (no_urut_makul_terakhir == null) {
+            no_urut_makul = "0001"
+        } else {
+            const code = "0000"
+            const a = no_urut_makul_terakhir.toString()
+            const panjang = a.length
+            const nomor = code.slice(panjang)
+            const b = no_urut_makul_terakhir + 1
+            no_urut_makul = nomor + b
+        }
+        const no_semester = await semesterModel.findOne({
+            where: {
+                code_semester: code_semester
+            }
+        })
+        const codeMataKuliah = code_prodi + no_urut_makul + "-" + no_semester.semester
+        await mataKuliahModel.update({
+            code_mata_kuliah: codeMataKuliah,
+            nama_mata_kuliah: nama_mata_kuliah,
+            jenis_mata_kuliah: jenis_mata_kuliah,
+            code_semester: code_semester,
+            code_jenjang_pendidikan: code_jenjang_pendidikan,
+            code_fakultas: code_fakultas,
+            code_prodi: code_prodi,
+            code_tahun_ajaran: code_tahun_ajaran,
+            sks: sks,
+            sks_praktek: sks_praktek,
+            sks_prak_lapangan: sks_prak_lapangan,
+            sks_simulasi: sks_simulasi,
+            metode_pembelajaran: metode_pembelajaran,
+            tanggal_aktif: tanggal_aktif,
+            tanggal_non_aktif: tanggal_non_aktif,
+            status: "aktif"
+        }, {
+            where: {
+                id_mata_kuliah: id
+            }
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "Data mata kuliah success Diupdate",
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    delete: async (req, res, next) => {
+        const id = req.params.id
+        const mataKuliahUse = await mataKuliahModel.findOne({
+            include: [
+                {
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: fakultasModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            where: {
+                id_mata_kuliah: id,
+                status: "aktif"
+            }
+        })
+        if (!mataKuliahUse) return res.status(401).json({ message: "Data mata kuliah tidak ditemukan" })
+        await mataKuliahModel.update({
+            status: "tidak"
+        }, {
+            where: {
+                id_mata_kuliah: id
+            }
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "data mata kuliah succes dihapus"
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    }
 
 }
