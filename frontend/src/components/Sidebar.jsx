@@ -4,18 +4,18 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <div className="drawer-side">
+    <div className="drawer-side scrollbar-thin scrollbar-thumb-emerald-800 scrollbar-track-gray-100">
       <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
       <ul className="menu w-60 bg-[#2D7F5F]">
-        <div className="flex gap-3 w-full h-16 mb-2 pt-1 justify-center shadow-md">
-          <div className="avatar mt-1 rounded-full shadow-lg h-12 ">
-            <div className="w-12 h-12 rounded-full">
+        <div className="flex gap-1 w-full h-14 mb-2 py-1 justify-center shadow-md">
+          <div className="avatar mt-1 rounded-full shadow-lg h-10 ">
+            <div className="w-10 h-10 rounded-full">
               <img src={stainaa} />
             </div>
           </div>
           <div className="text-center text-white">
             <Link to="/dashboard">
-              <p className='text-2xl font-bold '>SIAKAD</p>
+              <p className='text-xl font-bold mt-1'>SIAKAD</p>
               <p className='text-[8px]'>STAI NURUL ABROR AL-ROBBANIYIN</p>
             </Link>
           </div>
@@ -29,10 +29,10 @@ const Sidebar = () => {
         <li><Link to="/ruang" className='text-white'><span className='font-bold text-sm'>Ruang</span></Link></li>
         <li><Link to="/kelas" className='text-white'><span className='font-bold text-sm'>Kelas</span></Link></li>
         <li><Link to='/tahun' className='text-white'><span className='font-bold text-sm'>Tahun Ajaran</span></Link></li>
-        <li><Link className='text-white'><span className='font-bold text-sm'>Semester</span></Link></li>
-        <li><Link className='text-white'><span className='font-bold text-sm'>Kategori Nilai</span></Link></li>
-        <li><Link className='text-white'><span className='font-bold text-sm'>Penjadwalan</span></Link></li>
+        <li><Link to="/semester" className='text-white'><span className='font-bold text-sm'>Semester</span></Link></li>
+        <li><Link to="/kategorinilai" className='text-white'><span className='font-bold text-sm'>Kategori Nilai</span></Link></li>
         <li><Link className='text-white'><span className='font-bold text-sm'>KRS</span></Link></li>
+        <li><Link className='text-white'><span className='font-bold text-sm'>Penjadwalan</span></Link></li>
         <li><Link className='text-white'><span className='font-bold text-sm'>KHS</span></Link></li>
         <li><Link className='text-white'><span className='font-bold text-sm'>Ploting Kelas</span></Link></li>
         <li><Link className='text-white'><span className='font-bold text-sm'>Users</span></Link></li>

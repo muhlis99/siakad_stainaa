@@ -40,10 +40,11 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
     }
 })
 
-export const VerifyCode = createAsyncThunk("user/VerifyCode", async (user, thunkAPI) => {
+export const ResetPass = createAsyncThunk("user/ResetPass", async (user, thunkAPI) => {
     try {
-        const response = await axios.post('v1/login/verify', {
-            code: user.code
+        const response = await axios.put(`v1/login/resetPasswordByForgot/${user.id}`, {
+            newPassword: user.newPass,
+            confirmNewPassword: user.confirmPass
         })
         return response.data
     } catch (error) {
@@ -97,15 +98,15 @@ export const authSlice = createSlice({
             state.message = action.payload
         })
 
-        builder.addCase(VerifyCode.pending, (state) => {
+        builder.addCase(ResetPass.pending, (state) => {
             state.isLoading = true
         })
-        builder.addCase(VerifyCode.fulfilled, (state, action) => {
+        builder.addCase(ResetPass.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
             state.user = action.payload
         })
-        builder.addCase(VerifyCode.rejected, (state, action) => {
+        builder.addCase(ResetPass.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload

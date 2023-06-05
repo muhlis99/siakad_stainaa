@@ -29,6 +29,8 @@ import Kelas from "./pages/kelas/Kelas"
 import AddKelas from "./pages/kelas/AddKelas"
 import EditKelas from "./pages/kelas/EditKelas"
 import Tahun from "./pages/tahunAjaran/Tahun"
+import Semester from "./pages/semester/Semester"
+import KategoriNilai from "./pages/kategoriNilai/KategoriNilai"
 
 function App() {
   return (
@@ -64,6 +66,8 @@ function App() {
           <Route path="/kelas/add" element={<AddKelas />} />
           <Route path="/kelas/edit/:idKls" element={<EditKelas />} />
           <Route path="/tahun" element={<Tahun />} />
+          <Route path="/semester" element={<Semester />} />
+          <Route path="/kategorinilai" element={<KategoriNilai />} />
         </Routes>
       </BrowserRouter>
     </div>

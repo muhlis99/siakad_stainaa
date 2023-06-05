@@ -8,9 +8,17 @@ module.exports = {
     container: {
       padding: '1rem',
     },
+    backgroundSize: {
+      'auto': 'auto',
+      'cover': 'cover',
+      'contain': 'contain',
+      '50%': '50%',
+      '16': '4rem',
+    }
   },
   plugins: [
     require("daisyui"),
+    require('tailwind-scrollbar-daisyui'),
   ],
   daisyui: {
     themes: [
