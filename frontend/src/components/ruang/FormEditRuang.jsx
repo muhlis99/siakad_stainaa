@@ -1,42 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import { FaReply, FaSave } from "react-icons/fa"
-import { Link, useParams, useNavigate } from "react-router-dom"
+import { useNavigate, useParams, Link } from "react-router-dom"
 import axios from 'axios'
 import Swal from "sweetalert2"
 
-const FormEditKelas = () => {
+const FormEditRuang = () => {
     const [Jenjang, setJenjang] = useState([])
     const [Fakultas, setFakultas] = useState([])
     const [Prodi, setProdi] = useState([])
-    const [Dosen, setDosen] = useState([])
-    const [namaKelas, setNamaKelas] = useState("")
+    const [Kelas, setKelas] = useState([])
+    const [namaRuang, setNamaRuang] = useState("")
     const [identitas, setIdentitas] = useState("")
     const [jenjangnya, setJenjangnya] = useState("")
     const [fakultasnya, setFakultasnya] = useState("")
     const [prodinya, setProdinya] = useState("")
-    const [dosennya, setDosennya] = useState("")
-    const { idKls } = useParams()
+    const [kelasnya, setKelasnya] = useState("")
     const navigate = useNavigate()
+    const { idRng } = useParams()
 
     useEffect(() => {
-        const getKelasById = async () => {
+        const getRuangById = async () => {
             try {
-                const response = await axios.get(`v1/kelas/getById/${idKls}`)
-                setNamaKelas(response.data.data.nama_kelas)
+                const response = await axios.get(`v1/ruang/getById/${idRng}`)
+                setNamaRuang(response.data.data.nama_ruang)
                 setJenjangnya(response.data.data.code_jenjang_pendidikan)
                 setFakultasnya(response.data.data.code_fakultas)
                 setProdinya(response.data.data.code_prodi)
-                setDosennya(response.data.data.dosen_wali)
+                setKelasnya(response.data.data.code_kelas)
             } catch (error) {
 
             }
         }
-        getKelasById()
-    }, [idKls])
+        getRuangById()
+    }, [idRng])
 
     useEffect(() => {
         getJenjangPendidikan()
-        getDosen()
     }, [])
 
     useEffect(() => {
@@ -46,6 +45,10 @@ const FormEditKelas = () => {
     useEffect(() => {
         getProdiByFakultas()
     }, [fakultasnya])
+
+    useEffect(() => {
+        getKelas()
+    }, [])
 
     const getJenjangPendidikan = async () => {
         const response = await axios.get('v1/jenjangPendidikan/all')
@@ -66,29 +69,29 @@ const FormEditKelas = () => {
         }
     }
 
-    const getDosen = async () => {
-        const response = await axios.get('v1/dosen/all')
-        setDosen(response.data.data)
+    const getKelas = async () => {
+        const response = await axios.get(`v1/kelas/all`)
+        setKelas(response.data.data)
     }
 
-    const simpanKls = async (e) => {
+    const updateDataRuang = async (e) => {
         e.preventDefault()
         try {
-            await axios.put(`v1/kelas/update/${idKls}`, {
-                nama_kelas: namaKelas,
-                identy_kelas: identitas,
+            await axios.put(`v1/ruang/update/${idRng}`, {
+                nama_ruang: namaRuang,
+                identy_ruang: identitas,
                 code_jenjang_pendidikan: jenjangnya,
                 code_fakultas: fakultasnya,
                 code_prodi: prodinya,
-                dosen_wali: dosennya
-
+                code_kelas: kelasnya
             }).then(function (response) {
                 Swal.fire({
-                    title: response.data.message,
+                    title: "Berhasil",
+                    text: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate("/kelas")
-                });
+                    navigate("/ruang")
+                })
             })
         } catch (error) {
             if (error.response) {
@@ -103,28 +106,34 @@ const FormEditKelas = () => {
     return (
         <div className="mt-2 container">
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Edit Kelas</h1>
+                <h1 className='text-xl font-bold'>Edit Ruang</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
                     <div className="card-body p-4">
-                        <form onSubmit={simpanKls}>
-                            <div className="grid lg:grid-cols-3 gap-4">
+                        <form onSubmit={updateDataRuang}>
+                            <div className="grid grid-cols-3 gap-4">
                                 <div>
                                     <label className="label">
-                                        <span className="text-base label-text">Nama Kelas</span>
+                                        <span className="text-base label-text">Nama Ruang</span>
                                     </label>
-                                    <input type="text" placeholder="Masukkan Nama Kelas" className="input input-sm input-bordered w-full" value={namaKelas} onChange={(e) => setNamaKelas(e.target.value)} />
+                                    <input
+                                        type="text"
+                                        value={namaRuang}
+                                        onChange={(e) => setNamaRuang(e.target.value)}
+                                        placeholder="Nama Ruang"
+                                        className="input input-sm input-bordered w-full"
+                                    />
                                 </div>
                                 <div>
                                     <label className="label">
-                                        <span className="text-base label-text">Identitas Kelas</span>
+                                        <span className="text-base label-text">Identitas Ruang</span>
                                     </label>
-                                    <input type="text" placeholder="Masukkan Identitas Kelas" className="input input-sm input-bordered w-full" value={identitas} onChange={(e) => setIdentitas(e.target.value)} />
+                                    <input type="text" value={identitas} onChange={(e) => setIdentitas(e.target.value)} placeholder="Identitas Ruang" className="input input-sm input-bordered w-full" />
                                 </div>
                                 <div>
                                     <label className="label">
-                                        <span className="text-base label-text">Jenjang Pendidikan </span>
+                                        <span className="text-base label-text">Jenjang Pendidikan</span>
                                     </label>
                                     <select className='select select-bordered select-sm w-full' value={jenjangnya} onChange={(e) => setJenjangnya(e.target.value)}>
                                         <option value="">Jenjang Pendidikan</option>
@@ -135,7 +144,7 @@ const FormEditKelas = () => {
                                 </div>
                                 <div>
                                     <label className="label">
-                                        <span className="text-base label-text">Fakultas Yang akan ditempuh</span>
+                                        <span className="text-base label-text">Fakultas</span>
                                     </label>
                                     <select className='select select-bordered select-sm w-full' value={fakultasnya} onChange={(e) => setFakultasnya(e.target.value)}>
                                         <option value="">Fakultas</option>
@@ -146,7 +155,7 @@ const FormEditKelas = () => {
                                 </div>
                                 <div>
                                     <label className="label">
-                                        <span className="text-base label-text">Prodi Yang akan ditempuh</span>
+                                        <span className="text-base label-text">Prodi</span>
                                     </label>
                                     <select className='select select-bordered select-sm w-full' value={prodinya} onChange={(e) => setProdinya(e.target.value)}>
                                         <option value="">Prodi</option>
@@ -157,12 +166,12 @@ const FormEditKelas = () => {
                                 </div>
                                 <div>
                                     <label className="label">
-                                        <span className="text-base label-text">Dosen Wali</span>
+                                        <span className="text-base label-text">Kelas</span>
                                     </label>
-                                    <select className='select select-bordered select-sm w-full' value={dosennya} onChange={(e) => setDosennya(e.target.value)}>
-                                        <option value="">Dosen</option>
-                                        {Dosen.map((item) => (
-                                            <option key={item.id_dosen} value={item.nidn}>{item.nama}</option>
+                                    <select className='select select-bordered select-sm w-full' value={kelasnya} onChange={(e) => setKelasnya(e.target.value)}>
+                                        <option value="">Kelas</option>
+                                        {Kelas.map((item) => (
+                                            <option key={item.id_kelas} value={item.code_kelas}>{item.nama_kelas}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -172,7 +181,7 @@ const FormEditKelas = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    <Link to='/kelas' className='btn btn-sm btn-danger'><FaReply /> <span className="ml-1">Kembali</span></Link>
+                                    <Link to="/ruang" className='btn btn-sm btn-danger'><FaReply /> <span className="ml-1">Kembali</span></Link>
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
@@ -190,4 +199,4 @@ const FormEditKelas = () => {
     )
 }
 
-export default FormEditKelas
+export default FormEditRuang

@@ -4,6 +4,7 @@ import { SlOptions } from "react-icons/sl"
 import axios from 'axios'
 import Swal from "sweetalert2"
 import ReactPaginate from "react-paginate"
+import { Link } from "react-router-dom"
 
 const ListRuang = () => {
     const [RuangList, setListRuang] = useState([])
@@ -28,18 +29,6 @@ const ListRuang = () => {
     useEffect(() => {
         getDataRuang()
     }, [page, keyword])
-
-    useEffect(() => {
-        getJenjangPendidikan()
-    }, [])
-
-    useEffect(() => {
-        getFakultasByJenjang()
-    }, [jenjangnya])
-
-    useEffect(() => {
-        getProdiByFakultas()
-    }, [fakultasnya])
 
 
     const getDataRuang = async () => {
@@ -67,134 +56,6 @@ const ListRuang = () => {
         e.preventDefault();
         setPage(0)
         setKeyword(query)
-    }
-
-    const getJenjangPendidikan = async () => {
-        const response = await axios.get('v1/jenjangPendidikan/all')
-        setJenjang(response.data.data)
-    }
-
-    const getFakultasByJenjang = async () => {
-        if (jenjangnya != 0) {
-            const response = await axios.get(`v1/fakultas/getFakulatsByJenjang/${jenjangnya}`)
-            setFakultas(response.data.data)
-        }
-    }
-
-    const getProdiByFakultas = async () => {
-        if (fakultasnya != 0) {
-            const response = await axios.get(`v1/prodi/getProdiByFakultas/${fakultasnya}`)
-            setProdi(response.data.data)
-        }
-    }
-
-    const modalAddClose = (e) => {
-        e.preventDefault()
-        document.getElementById('my-modal-add').checked = false
-        setRuang("")
-        setIdentitas("")
-        setJenjangnya("")
-        setFakultasnya("")
-        setProdinya("")
-    }
-
-    const modalAddOpen = (e) => {
-        e.preventDefault()
-        document.getElementById('my-modal-add').checked = true
-        setRuang("Ruang ")
-        document.getElementById("namanya").defaultValue = "Ruang "
-    }
-
-    const simpanDataRuang = async (e) => {
-        e.preventDefault()
-        try {
-            await axios.post('v1/ruang/create', {
-                nama_ruang: ruang,
-                identy_ruang: identitas,
-                code_jenjang_pendidikan: jenjangnya,
-                code_fakultas: fakultasnya,
-                code_prodi: prodinya
-            }).then(function (response) {
-                document.getElementById('my-modal-add').checked = false
-                Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    getDataRuang()
-                    setRuang("")
-                    setIdentitas("")
-                    setJenjangnya("")
-                    setFakultasnya("")
-                    setProdinya("")
-                })
-            })
-        } catch (error) {
-            if (error.response) {
-                Swal.fire({
-                    title: error.response.data.errors[0].msg,
-                    icon: "error"
-                })
-            }
-        }
-    }
-
-    const modalEditOpen = async (e) => {
-        try {
-            const response = await axios.get(`v1/ruang/getById/${e}`)
-            setId(response.data.data.id_ruang)
-            setRuang(response.data.data.nama_ruang)
-            setIdentitas('')
-            setJenjangnya(response.data.data.code_jenjang_pendidikan)
-            setFakultasnya(response.data.data.code_fakultas)
-            setProdinya(response.data.data.code_prodi)
-            document.getElementById('my-modal-edit').checked = true
-        } catch (error) {
-
-        }
-    }
-
-    const modalEditClose = (e) => {
-        e.preventDefault()
-        document.getElementById('my-modal-edit').checked = false
-        setRuang("")
-        setIdentitas("")
-        setJenjangnya("")
-        setFakultasnya("")
-        setProdinya("")
-    }
-
-    const updateDataRuang = async (e) => {
-        e.preventDefault()
-        try {
-            await axios.put(`v1/ruang/update/${id}`, {
-                nama_ruang: ruang,
-                identy_ruang: identitas,
-                code_jenjang_pendidikan: jenjangnya,
-                code_fakultas: fakultasnya,
-                code_prodi: prodinya
-            }).then(function (response) {
-                document.getElementById('my-modal-edit').checked = false
-                Swal.fire({
-                    title: "Berhasil",
-                    text: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    getDataRuang()
-                    setRuang("")
-                    setIdentitas("")
-                    setJenjangnya("")
-                    setFakultasnya("")
-                    setProdinya("")
-                })
-            })
-        } catch (error) {
-            if (error.response) {
-                Swal.fire({
-                    title: error.response.data.errors[0].msg,
-                    icon: "error"
-                })
-            }
-        }
     }
 
     const nonaktifkan = (ruangId) => {
@@ -232,142 +93,6 @@ const ListRuang = () => {
 
     return (
         <div className='mt-2 container'>
-            {/* Modal untuk tambah data */}
-            <input type="checkbox" id="my-modal-add" className="modal-toggle" />
-            <div className="modal">
-                <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
-                    <form onSubmit={simpanDataRuang}>
-                        <h3 className="font-bold text-xl">Tambah</h3>
-                        <div className="grid">
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Nama Ruang</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    id='namanya'
-                                    // value={namaRuang}
-                                    // onChange={
-                                    //     function (e) {
-                                    //         const i = e.target.value
-                                    //         const y = i.substring(0, ruang.length)
-                                    //         if (y != ruang) {
-                                    //             setNamaRuang(e.target.value)
-                                    //         }
-                                    //     }
-
-                                    // }
-                                    placeholder="Nama Ruang"
-                                    className="input input-sm input-bordered w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Identitas Ruang</span>
-                                </label>
-                                <input type="text" value={identitas} onChange={(e) => setIdentitas(e.target.value)} placeholder="Identitas Ruang" className="input input-sm input-bordered w-full" />
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Jenjang Pendidikan</span>
-                                </label>
-                                <select className='select select-bordered select-sm w-full' value={jenjangnya} onChange={(e) => setJenjangnya(e.target.value)}>
-                                    <option value="">Jenjang Pendidikan</option>
-                                    {Jenjang.map((item) => (
-                                        <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Fakultas Yang akan ditempuh</span>
-                                </label>
-                                <select className='select select-bordered select-sm w-full' value={fakultasnya} onChange={(e) => setFakultasnya(e.target.value)}>
-                                    <option value="">Fakultas</option>
-                                    {Fakultas.map((item) => (
-                                        <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Prodi Yang akan ditempuh</span>
-                                </label>
-                                <select className='select select-bordered select-sm w-full' value={prodinya} onChange={(e) => setProdinya(e.target.value)}>
-                                    <option value="">Prodi</option>
-                                    {Prodi.map((item) => (
-                                        <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <input type="checkbox" id="my-modal-edit" className="modal-toggle" />
-            <div className="modal">
-                <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
-                    <form onSubmit={updateDataRuang}>
-                        <h3 className="font-bold text-xl">Edit</h3>
-                        <div className="grid">
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Nama Ruang</span>
-                                </label>
-                                <input type="text" value={ruang} onChange={(e) => setRuang(e.target.value)} placeholder="Nama Ruang" className="input input-sm input-bordered w-full" />
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Identitas Ruang</span>
-                                </label>
-                                <input type="text" value={identitas} onChange={(e) => setIdentitas(e.target.value)} placeholder="Identitas Ruang" className="input input-sm input-bordered w-full" />
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Jenjang Pendidikan</span>
-                                </label>
-                                <select className='select select-bordered select-sm w-full' value={jenjangnya} onChange={(e) => setJenjangnya(e.target.value)}>
-                                    <option value="">Jenjang Pendidikan</option>
-                                    {Jenjang.map((item) => (
-                                        <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Fakultas Yang akan ditempuh</span>
-                                </label>
-                                <select className='select select-bordered select-sm w-full' value={fakultasnya} onChange={(e) => setFakultasnya(e.target.value)}>
-                                    <option value="">Fakultas</option>
-                                    {Fakultas.map((item) => (
-                                        <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Prodi Yang akan ditempuh</span>
-                                </label>
-                                <select className='select select-bordered select-sm w-full' value={prodinya} onChange={(e) => setProdinya(e.target.value)}>
-                                    <option value="">Prodi</option>
-                                    {Prodi.map((item) => (
-                                        <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Ruang</h1>
             </section>
@@ -376,7 +101,7 @@ const ListRuang = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button className="btn btn-default btn-xs" onClick={modalAddOpen}><FaPlus /> tambah data</button>
+                                <Link to="/ruang/add" className="btn btn-default btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
                             </div>
                             <div>
                                 <form className='mb-1' onSubmit={cariData}>
@@ -423,7 +148,7 @@ const ListRuang = () => {
                                             <td className='px-6 py-2'>{rng.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
-                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalEditOpen(rng.id_ruang)} title='Edit'><FaEdit /></button>
+                                                    <Link to={`/ruang/edit/${rng.id_ruang}`} className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit'><FaEdit /></Link>
                                                     <button className="btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(rng.id_ruang)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>

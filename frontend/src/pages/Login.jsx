@@ -44,7 +44,7 @@ const Login = () => {
         <div className="min-h-screen py-24">
             <div className="container mx-auto">
                 <div className="flex flex-col lg:flex-row w-3/5 mx-auto overflow-hidden">
-                    <div className="w-full lg:w-1/2 flex flex-col bg-no-repeat bg-contain bg-50% bg-center" style={{ backgroundImage: `url(${stainaa})` }}></div>
+                    <div className="w-full lg:w-1/2 flex flex-col bg-no-repeat bg-50% bg-center" style={{ backgroundImage: `url(${stainaa})` }}></div>
                     <div className="w-full lg:w-1/2 py-16 px-12">
                         <h2 className='text-3xl mb-3 text-[#2D7F5F] font-bold'>WELCOME BACK</h2>
                         <p className='text-gray-500'>Sistem Akademik Sekolah Tinggi <br />Agama Islam Nurul Abror Al-Robbaniyin</p>
