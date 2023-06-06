@@ -3,6 +3,8 @@ const db = require('../config/database.js')
 const dosenModel = require('./dosenModel.js')
 const semesterModel = require('./semesterModel.js')
 const prodiModel = require('./prodiModel.js')
+const fakultasModel = require('./fakultasModel.js')
+const jenjangPendidikanModel = require('./jenjangPendidikanModel.js')
 const tahunAjaranModel = require('./tahunAjaranModel.js')
 
 
@@ -21,10 +23,13 @@ const mataKuliahModel = db.define('mataKuliah', {
     'jenis_mata_kuliah': {
         type: DataTypes.TEXT
     },
-    'code_dosen': {
-        type: DataTypes.TEXT
-    },
     'code_semester': {
+        type: DataTypes.TEXT,
+    },
+    'code_jenjang_pendidikan': {
+        type: DataTypes.TEXT,
+    },
+    'code_fakultas': {
         type: DataTypes.TEXT,
     },
     'code_prodi': {
@@ -67,12 +72,15 @@ const mataKuliahModel = db.define('mataKuliah', {
 })
 
 
-// dosen 
-dosenModel.belongsTo(mataKuliahModel, { foreignKey: 'nidn' })
-mataKuliahModel.hasMany(dosenModel, { sourceKey: 'code_dosen', foreignKey: 'nidn' })
 // semester 
 semesterModel.belongsTo(mataKuliahModel, { foreignKey: 'code_semester' })
 mataKuliahModel.hasMany(semesterModel, { sourceKey: 'code_semester', foreignKey: 'code_semester' })
+// jenjangPendidikan 
+jenjangPendidikanModel.belongsTo(mataKuliahModel, { foreignKey: 'code_jenjang_pendidikan' })
+mataKuliahModel.hasMany(jenjangPendidikanModel, { sourceKey: 'code_jenjang_pendidikan', foreignKey: 'code_jenjang_pendidikan' })
+// fakultas
+fakultasModel.belongsTo(mataKuliahModel, { foreignKey: 'code_fakultas' })
+mataKuliahModel.hasMany(fakultasModel, { sourceKey: 'code_fakultas', foreignKey: 'code_fakultas' })
 // prodi 
 prodiModel.belongsTo(mataKuliahModel, { foreignKey: 'code_prodi' })
 mataKuliahModel.hasMany(prodiModel, { sourceKey: 'code_prodi', foreignKey: 'code_prodi' })

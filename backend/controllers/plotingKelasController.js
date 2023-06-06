@@ -2,7 +2,6 @@ const plotingKelasModel = require('../models/plotingKelasModel.js')
 const kelasModel = require('../models/kelasModel.js')
 const ruangModel = require('../models/ruangModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
-const mataKuliahModel = require('../models/mataKuliahModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
@@ -19,12 +18,11 @@ module.exports = {
             },
             {
                 model: ruangModel,
+                attributes: ['id_ruang', 'code_ruang', 'nama_ruang', 'code_prodi',],
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
-                where: { status: "aktif" }
-            }, {
-                model: mataKuliahModel,
+                attributes: ['id_kelas', 'code_kelas', 'nama_kelas', 'code_prodi',],
                 where: { status: "aktif" }
             }],
             where: {
@@ -72,12 +70,11 @@ module.exports = {
             },
             {
                 model: ruangModel,
+                attributes: ['id_ruang', 'code_ruang', 'nama_ruang', 'code_prodi',],
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
-                where: { status: "aktif" }
-            }, {
-                model: mataKuliahModel,
+                attributes: ['id_kelas', 'code_kelas', 'nama_kelas', 'code_prodi',],
                 where: { status: "aktif" }
             }],
             where: {
@@ -143,14 +140,14 @@ module.exports = {
                 model: mahasiswaModel,
                 attributes: ['id_mahasiswa', 'nim', 'no_kk', 'nik', 'nisn', 'nama', 'status'],
                 where: { status: "aktif" }
-            }, {
+            },
+            {
                 model: ruangModel,
+                attributes: ['id_ruang', 'code_ruang', 'nama_ruang', 'code_prodi',],
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
-                where: { status: "aktif" }
-            }, {
-                model: mataKuliahModel,
+                attributes: ['id_kelas', 'code_kelas', 'nama_kelas', 'code_prodi',],
                 where: { status: "aktif" }
             }],
             where: {
@@ -190,7 +187,6 @@ module.exports = {
         const data_body = data.map(record => {
             let datas = {
                 code_ploting_kelas: record.nim.substr(6, 10) + record.code_kelas,
-                code_mata_kuliah: record.code_mata_kuliah,
                 nim: record.nim,
                 code_kelas: record.code_kelas,
                 code_ruang: record.code_ruang,
@@ -214,16 +210,16 @@ module.exports = {
         const plotingKelasUseOne = await plotingKelasModel.findOne({
             include: [{
                 model: mahasiswaModel,
+                attributes: ['id_mahasiswa', 'nim', 'no_kk', 'nik', 'nisn', 'nama', 'status'],
                 where: { status: "aktif" }
             },
             {
                 model: ruangModel,
+                attributes: ['id_ruang', 'code_ruang', 'nama_ruang', 'code_prodi',],
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
-                where: { status: "aktif" }
-            }, {
-                model: mataKuliahModel,
+                attributes: ['id_kelas', 'code_kelas', 'nama_kelas', 'code_prodi',],
                 where: { status: "aktif" }
             }],
             where: {
@@ -245,7 +241,6 @@ module.exports = {
         await plotingKelasModel.update({
             code_ploting_kelas: codeplotingKelas,
             nim: nim,
-            code_mata_kuliah: code_mata_kuliah,
             code_kelas: code_kelas,
             code_ruang: code_ruang,
         }, {
@@ -268,16 +263,16 @@ module.exports = {
         const plotingKelasModelUse = await plotingKelasModel.findOne({
             include: [{
                 model: mahasiswaModel,
+                attributes: ['id_mahasiswa', 'nim', 'no_kk', 'nik', 'nisn', 'nama', 'status'],
                 where: { status: "aktif" }
             },
             {
                 model: ruangModel,
+                attributes: ['id_ruang', 'code_ruang', 'nama_ruang', 'code_prodi',],
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
-                where: { status: "aktif" }
-            }, {
-                model: mataKuliahModel,
+                attributes: ['id_kelas', 'code_kelas', 'nama_kelas', 'code_prodi',],
                 where: { status: "aktif" }
             }],
             where: {

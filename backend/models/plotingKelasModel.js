@@ -18,9 +18,6 @@ const plotingKelasModel = db.define('plotingKelas', {
     'nim': {
         type: DataTypes.TEXT
     },
-    'code_mata_kuliah': {
-        type: DataTypes.TEXT
-    },
     'code_kelas': {
         type: DataTypes.TEXT
     },
@@ -49,9 +46,6 @@ plotingKelasModel.hasMany(kelasModel, { sourceKey: 'code_kelas', foreignKey: 'co
 // ruang 
 ruangModel.belongsTo(plotingKelasModel, { foreignKey: 'code_ruang' })
 plotingKelasModel.hasMany(ruangModel, { sourceKey: 'code_ruang', foreignKey: 'code_ruang' })
-// mata kuliah 
-mataKuliahModel.belongsTo(plotingKelasModel, { foreignKey: 'code_mata_kuliah' })
-plotingKelasModel.hasMany(mataKuliahModel, { sourceKey: 'code_mata_kuliah', foreignKey: 'code_mata_kuliah' })
 
 
 module.exports = plotingKelasModel

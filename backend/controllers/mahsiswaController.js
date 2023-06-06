@@ -406,9 +406,13 @@ module.exports = {
         const t_nim = date_nim.getFullYear().toString().substr(-2)
         const b_nim = ("0" + (date_nim.getMonth() + 1)).slice(-2)
         var kode_prodi_nim
-        if (code_prodi == "S1S1THJH") {
+        if (code_prodi == "S1AIPAI") {
             kode_prodi_nim = "01"
-        } else {
+        }
+        //  else if (code_prodi == "S1") {
+
+        // } 
+        else {
             kode_prodi_nim = "02"
         }
         const no_urut_mhs_terakhir = await mahasiswa.count({
