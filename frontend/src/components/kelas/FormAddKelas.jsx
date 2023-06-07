@@ -15,7 +15,6 @@ const FormAddKelas = () => {
     const [jenjangnya, setJenjangnya] = useState("")
     const [fakultasnya, setFakultasnya] = useState("")
     const [prodinya, setProdinya] = useState("")
-    const [ruangnya, setRuangnya] = useState("")
     const [dosennya, setDosennya] = useState("")
     const navigate = useNavigate()
 
@@ -71,7 +70,6 @@ const FormAddKelas = () => {
                 code_jenjang_pendidikan: jenjangnya,
                 code_fakultas: fakultasnya,
                 code_prodi: prodinya,
-                code_ruang: ruangnya,
                 dosen_wali: dosennya
 
             }).then(function (response) {
@@ -124,8 +122,8 @@ const FormAddKelas = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
                     <div className="card-body p-4">
                         <form onSubmit={simpanKls}>
-                            <div className="grid lg:grid-cols-4 gap-4">
-                                <div className='col-span-2'>
+                            <div className="grid lg:grid-cols-3 gap-4">
+                                <div>
                                     <label className="label">
                                         <span className="text-base label-text">Nama Kelas</span>
                                     </label>
@@ -167,17 +165,6 @@ const FormAddKelas = () => {
                                         <option value="">Prodi</option>
                                         {Prodi.map((item) => (
                                             <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Ruang</span>
-                                    </label>
-                                    <select className='select select-bordered select-sm w-full' value={ruangnya} onChange={(e) => setRuangnya(e.target.value)}>
-                                        <option value="">Ruang</option>
-                                        {Ruang.map((item) => (
-                                            <option key={item.id_ruang} value={item.code_ruang}>{item.nama_ruang}</option>
                                         ))}
                                     </select>
                                 </div>
