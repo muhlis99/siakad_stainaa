@@ -1,6 +1,7 @@
 const plotingKelasModel = require('../models/plotingKelasModel.js')
 const kelasModel = require('../models/kelasModel.js')
 const ruangModel = require('../models/ruangModel.js')
+const semesterModel = require('../models/semesterModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
 const { Op } = require('sequelize')
 
@@ -23,6 +24,10 @@ module.exports = {
             }, {
                 model: kelasModel,
                 attributes: ['id_kelas', 'code_kelas', 'nama_kelas', 'code_prodi',],
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                attributes: ['id_semester', 'code_semester', 'semester',],
                 where: { status: "aktif" }
             }],
             where: {
@@ -75,6 +80,10 @@ module.exports = {
             }, {
                 model: kelasModel,
                 attributes: ['id_kelas', 'code_kelas', 'nama_kelas', 'code_prodi',],
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                attributes: ['id_semester', 'code_semester', 'semester',],
                 where: { status: "aktif" }
             }],
             where: {
@@ -149,6 +158,10 @@ module.exports = {
                 model: kelasModel,
                 attributes: ['id_kelas', 'code_kelas', 'nama_kelas', 'code_prodi',],
                 where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                attributes: ['id_semester', 'code_semester', 'semester',],
+                where: { status: "aktif" }
             }],
             where: {
                 id_ploting_Kelas: id,
@@ -174,13 +187,16 @@ module.exports = {
 
     post: async (req, res, next) => {
         const data = req.body
-        const dataDuplicate = data.map(y => {
+        const dataDuplicateCode = data.map(y => {
             return y.nim.substr(6, 10) + y.code_kelas
         })
-        console.log(dataDuplicate)
+        const dataDuplicateSemester = data.map(y => {
+            return y.code_semester
+        })
         const plotingKelasUse = await plotingKelasModel.findOne({
             where: {
-                code_ploting_kelas: dataDuplicate
+                code_ploting_kelas: dataDuplicateCode,
+                code_semester: dataDuplicateSemester
             },
         })
         if (plotingKelasUse) return res.status(401).json({ message: "data ploting Kelas sudah ada" })
@@ -190,6 +206,7 @@ module.exports = {
                 nim: record.nim,
                 code_kelas: record.code_kelas,
                 code_ruang: record.code_ruang,
+                code_semester: record.code_semester,
                 status: "aktif",
             }
             return datas
@@ -221,6 +238,10 @@ module.exports = {
                 model: kelasModel,
                 attributes: ['id_kelas', 'code_kelas', 'nama_kelas', 'code_prodi',],
                 where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                attributes: ['id_semester', 'code_semester', 'semester',],
+                where: { status: "aktif" }
             }],
             where: {
                 id_ploting_Kelas: id,
@@ -228,21 +249,23 @@ module.exports = {
             }
         })
         if (!plotingKelasUseOne) return res.status(401).json({ message: "data ploting Kelas tidak ditemukan" })
-        const { nim, code_mata_kuliah, code_kelas, code_ruang } = req.body
+        const { nim, code_semester, code_kelas, code_ruang } = req.body
         const codeplotingKelas = nim.substr(6, 10) + code_kelas
         const plotingKelasUse = await plotingKelasModel.findOne({
             where: {
                 code_ploting_kelas: codeplotingKelas,
                 code_kelas: code_kelas,
-                code_ruang: code_ruang
+                code_ruang: code_ruang,
+                code_semester: code_semester
             }
         })
         if (plotingKelasUse) return res.status(401).json({ message: "data ploting Kelas sudah ada" })
         await plotingKelasModel.update({
-            code_ploting_kelas: codeplotingKelas,
+            // code_ploting_kelas: codeplotingKelas,
             nim: nim,
             code_kelas: code_kelas,
             code_ruang: code_ruang,
+            code_semester: code_semester
         }, {
             where: {
                 id_ploting_kelas: id
@@ -273,6 +296,10 @@ module.exports = {
             }, {
                 model: kelasModel,
                 attributes: ['id_kelas', 'code_kelas', 'nama_kelas', 'code_prodi',],
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                attributes: ['id_semester', 'code_semester', 'semester',],
                 where: { status: "aktif" }
             }],
             where: {

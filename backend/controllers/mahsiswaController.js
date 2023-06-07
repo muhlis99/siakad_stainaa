@@ -2,6 +2,7 @@ const mahasiswa = require('../models/mahasiswaModel.js')
 const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
+const historyMahasiswa = require('../models/historyMahasiswaModel.js')
 const { desa, kecamatan, kabupaten, provinsi, negara } = require('../models/equipmentDsnMhsModel.js')
 const { Op, DataTypes } = require('sequelize')
 const Sequelize = require('../config/database.js')
@@ -391,7 +392,7 @@ module.exports = {
 
     createForm4: async (req, res, next) => {
         const { nik_wali, nama_wali, pekerjaan_wali, penghasilan_wali, pendidikan_wali, tanggal_w, bulan_w, tahun_w,
-            code_jenjang_pendidikan, code_fakultas, code_prodi, mulai_semester
+            code_jenjang_pendidikan, code_fakultas, code_prodi, mulai_semester, code_tahun_ajaran
         } = req.body
         const id = req.params.id
         const tanggal_lahir_wali = tahun_w + "-" + bulan_w + "-" + tanggal_w
@@ -461,6 +462,17 @@ module.exports = {
             catch(err => {
                 next(err)
             })
+        try {
+            await historyMahasiswa.create({
+                nim: mahasiswaUse.nim,
+                code_semester: mulai_semester,
+                code_tahun_ajaran: code_tahun_ajaran,
+                code_prodi: code_prodi,
+                status: "aktif"
+            })
+        } catch (error) {
+            next(error)
+        }
     },
 
     createFile: async (req, res, next) => {
