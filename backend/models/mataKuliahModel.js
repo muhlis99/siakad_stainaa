@@ -59,6 +59,14 @@ const mataKuliahModel = db.define('mataKuliah', {
     'tanggal_non_aktif': {
         type: DataTypes.TEXT,
     },
+    'status_bobot_makul': {
+        type: DataTypes.ENUM,
+        values: ['paket', 'pilih_sendiri']
+    },
+    'status_makul': {
+        type: DataTypes.ENUM,
+        values: ['wajib', 'tidak_wajib']
+    },
     'status': {
         type: DataTypes.ENUM,
         values: ['aktif', 'tidak']

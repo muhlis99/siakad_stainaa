@@ -192,7 +192,8 @@ module.exports = {
     post: async (req, res, next) => {
         const { nama_mata_kuliah, jenis_mata_kuliah, code_semester, code_jenjang_pendidikan, code_fakultas,
             code_prodi, code_tahun_ajaran, sks, sks_praktek, sks_prak_lapangan,
-            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif } = req.body
+            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif, status_bobot_makul,
+            status_makul } = req.body
         const no_urut_makul_terakhir = await mataKuliahModel.count({
             where: {
                 code_prodi: code_prodi,
@@ -243,6 +244,8 @@ module.exports = {
             metode_pembelajaran: metode_pembelajaran,
             tanggal_aktif: tanggal_aktif,
             tanggal_non_aktif: tanggal_non_aktif,
+            status_bobot_makul: status_bobot_makul,
+            status_makul: status_makul,
             status: "aktif"
         }).
             then(result => {
@@ -288,7 +291,8 @@ module.exports = {
         if (!mataKuliahUse) return res.status(401).json({ message: "Data Mata Kuliah tidak ditemukan" })
         const { nama_mata_kuliah, jenis_mata_kuliah, code_semester, code_jenjang_pendidikan, code_fakultas,
             code_prodi, code_tahun_ajaran, sks, sks_praktek, sks_prak_lapangan,
-            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif } = req.body
+            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif, status_bobot_makul,
+            status_makul } = req.body
         const mataKuliahDuplicate = await mataKuliahModel.findOne({
             where: {
                 nama_mata_kuliah: nama_mata_kuliah,
@@ -323,6 +327,7 @@ module.exports = {
             }
         })
         const codeMataKuliah = code_prodi + no_urut_makul + "-" + no_semester.semester
+
         await mataKuliahModel.update({
             code_mata_kuliah: codeMataKuliah,
             nama_mata_kuliah: nama_mata_kuliah,
@@ -339,6 +344,8 @@ module.exports = {
             metode_pembelajaran: metode_pembelajaran,
             tanggal_aktif: tanggal_aktif,
             tanggal_non_aktif: tanggal_non_aktif,
+            status_bobot_makul: status_bobot_makul,
+            status_makul: status_makul,
             status: "aktif"
         }, {
             where: {
