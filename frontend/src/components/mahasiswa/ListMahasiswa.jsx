@@ -44,7 +44,7 @@ const ListMahasiswa = () => {
     }
 
     const cariData = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         setPage(0)
         setKeyword(query)
     }

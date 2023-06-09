@@ -7,7 +7,7 @@ const Sidebar = () => {
     <div className="drawer-side scrollbar-thin scrollbar-thumb-emerald-800 scrollbar-track-gray-100">
       <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
       <ul className="menu w-60 bg-[#2D7F5F]">
-        <div className="flex gap-1 w-full h-14 mb-2 py-1 justify-center shadow-md">
+        <div className="flex gap-1 w-full h-14 mb-2 py-1 justify-center shadow-md  sticky top-0 z-50 bg-[#2D7F5F]">
           <div className="avatar mt-1 rounded-full shadow-lg h-10 ">
             <div className="w-10 h-10 rounded-full">
               <img src={stainaa} />
@@ -30,10 +30,11 @@ const Sidebar = () => {
         <li><Link to="/ruang" className='text-white'><span className='font-bold text-sm'>Ruang</span></Link></li>
         <li><Link to='/tahun' className='text-white'><span className='font-bold text-sm'>Tahun Ajaran</span></Link></li>
         <li><Link to="/semester" className='text-white'><span className='font-bold text-sm'>Semester</span></Link></li>
+        <li><Link className='text-white'><span className='font-bold text-sm'>Mata Kuliah</span></Link></li>
         <li><Link to="/kategorinilai" className='text-white'><span className='font-bold text-sm'>Kategori Nilai</span></Link></li>
-        <li><Link to="/ploting" className='text-white'><span className='font-bold text-sm'>Ploting Kelas</span></Link></li>
         <li><Link className='text-white'><span className='font-bold text-sm'>KRS</span></Link></li>
         <li><Link className='text-white'><span className='font-bold text-sm'>Penjadwalan</span></Link></li>
+        <li><Link to="/ploting" className='text-white'><span className='font-bold text-sm'>Ploting Kelas</span></Link></li>
         <li><Link className='text-white'><span className='font-bold text-sm'>KHS</span></Link></li>
         <li><Link className='text-white'><span className='font-bold text-sm'>Users</span></Link></li>
       </ul>

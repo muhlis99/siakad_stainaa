@@ -34,6 +34,7 @@ import Tahun from "./pages/tahunAjaran/Tahun"
 import Semester from "./pages/semester/Semester"
 import KategoriNilai from "./pages/kategoriNilai/KategoriNilai"
 import PlotingKelas from "./pages/plotingKelas/PlotingKelas"
+import AddPloting from "./pages/plotingKelas/AddPloting"
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
           <Route path="/semester" element={<Semester />} />
           <Route path="/kategorinilai" element={<KategoriNilai />} />
           <Route path="/ploting" element={<PlotingKelas />} />
+          <Route path="/ploting/add" element={<AddPloting />} />
         </Routes>
       </BrowserRouter>
     </div>

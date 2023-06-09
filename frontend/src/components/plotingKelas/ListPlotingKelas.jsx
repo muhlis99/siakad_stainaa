@@ -13,7 +13,7 @@ const ListPlotingKelas = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <Link to='/kelas/add' className="btn btn-default btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
+                                <Link to="/ploting/add" className="btn btn-default btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
                             </div>
                         </div>
                     </div>
