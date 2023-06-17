@@ -7,6 +7,7 @@ import Swal from "sweetalert2"
 const FormDosen1 = () => {
     const [nidn, setNidn] = useState("")
     const [namanya, setNamanya] = useState("")
+    const [nipy, setNipy] = useState("")
     const [tmp, setTmp] = useState("")
     const [tgl, setTgl] = useState("")
     const [bln, setBln] = useState("")
@@ -25,6 +26,7 @@ const FormDosen1 = () => {
                 if (stat == "edit") {
                     const response = await axios.get(`v1/dosen/getById/${idDsn}`)
                     setNidn(response.data.data.nidn)
+                    setNipy(response.data.data.nip_ynaa)
                     setNamanya(response.data.data.nama)
                     setTmp(response.data.data.tempat_lahir)
                     let tglLahir = response.data.data.tanggal_lahir
@@ -39,6 +41,7 @@ const FormDosen1 = () => {
                 } else {
                     const response = await axios.get(`v1/dosen/getByCreateFirst/${idDsn}`)
                     setNidn(response.data.data.nidn)
+                    setNipy(response.data.data.nip_ynaa)
                     setNamanya(response.data.data.nama)
                     setTmp(response.data.data.tempat_lahir)
                     let tglLahir = response.data.data.tanggal_lahir
@@ -91,6 +94,7 @@ const FormDosen1 = () => {
             await axios.put(`v1/dosen/createForm1/${idDsn}`, {
                 nama: namanya,
                 nidn: nidn,
+                nip_ynaa: nipy,
                 tempat_lahir: tmp,
                 tahun: thn,
                 bulan: bln,
@@ -166,7 +170,13 @@ const FormDosen1 = () => {
                                     </label>
                                     <input type="number" placeholder="Masukkan NIDN" className="input input-sm input-bordered w-full" value={nidn} onChange={(e) => setNidn(e.target.value)} />
                                 </div>
-                                <div className='lg:col-span-3'>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">NIPY</span>
+                                    </label>
+                                    <input type="number" placeholder="Masukkan NIDN" className="input input-sm input-bordered w-full" value={nipy} onChange={(e) => setNipy(e.target.value)} />
+                                </div>
+                                <div className='lg:col-span-2'>
                                     <label className="label">
                                         <span className="text-base label-text">Nama</span>
                                     </label>

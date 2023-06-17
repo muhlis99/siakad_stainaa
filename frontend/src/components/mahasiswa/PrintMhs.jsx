@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from "react-router-dom"
 import axios from 'axios'
-import ReactToPrint from "react-to-print"
+import { useReactToPrint } from "react-to-print"
 import stainaa from "../../assets/img/stainaa.png"
 
 const PrintMhs = () => {
@@ -77,6 +77,7 @@ const PrintMhs = () => {
     const [penghasilanWali, setPenghasilanWali] = useState("")
     const [pendidikanWali, setPendidikanWali] = useState("")
     const { idMhs } = useParams()
+    const [inPrintPreview, setInPrintPreview] = useState(false)
     let componentRef = useRef(null)
 
     useEffect(() => {
@@ -155,7 +156,6 @@ const PrintMhs = () => {
             }
         }
         getMhsById()
-        print()
     }, [idMhs])
 
     useEffect(() => {
@@ -176,6 +176,10 @@ const PrintMhs = () => {
         pendidikanWaliByCode()
         penghasilanWaliByCode()
     }, [pkrjnAyah, pndknAyah, pndptAyah, pkrjnIbu, pndknIbu, pndptIbu, pkrjnWali, pndknWali, pndptWali])
+
+    useEffect(() => {
+        handlePrint()
+    })
 
     const jalurPendaftaranByCode = async () => {
         if (jalurp != 0) {
@@ -268,18 +272,15 @@ const PrintMhs = () => {
         }
     }
 
-    const print = () => componentRef
+    const handlePrint = useReactToPrint({
+        content: () => componentRef,
+        onAfterPrint: () => setInPrintPreview(window.close())
+    })
+
 
 
     return (
         <div className="container mt-3 font-sans">
-            <ReactToPrint
-                trigger={() => {
-                    return <button className='btn'>print</button>
-                }}
-
-                content={() => componentRef}
-            />
             <section ref={el => (componentRef = el)}>
                 <div className="card">
                     <div className="card-body p-4">
