@@ -6,6 +6,7 @@ const prodiModel = require('./prodiModel.js')
 const fakultasModel = require('./fakultasModel.js')
 const jenjangPendidikanModel = require('./jenjangPendidikanModel.js')
 const tahunAjaranModel = require('./tahunAjaranModel.js')
+const kategoriNilaiModel = require('./kategoriNilaiModel.js')
 
 
 const mataKuliahModel = db.define('mataKuliah', {
@@ -36,6 +37,9 @@ const mataKuliahModel = db.define('mataKuliah', {
         type: DataTypes.TEXT,
     },
     'code_tahun_ajaran': {
+        type: DataTypes.TEXT,
+    },
+    'code_kategori_nilai': {
         type: DataTypes.TEXT,
     },
     'sks': {
@@ -95,6 +99,8 @@ mataKuliahModel.hasMany(prodiModel, { sourceKey: 'code_prodi', foreignKey: 'code
 // tahunAjaran 
 tahunAjaranModel.belongsTo(mataKuliahModel, { foreignKey: 'code_tahun_ajaran' })
 mataKuliahModel.hasMany(tahunAjaranModel, { sourceKey: 'code_tahun_ajaran', foreignKey: 'code_tahun_ajaran' })
-
+// tahunAjaran 
+kategoriNilaiModel.belongsTo(mataKuliahModel, { foreignKey: 'code_kategori_nilai' })
+mataKuliahModel.hasMany(kategoriNilaiModel, { sourceKey: 'code_kategori_nilai', foreignKey: 'code_kategori_nilai' })
 
 module.exports = mataKuliahModel

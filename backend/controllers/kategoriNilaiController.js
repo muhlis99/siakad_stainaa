@@ -1,5 +1,6 @@
 const kategoriNilaiModel = require('../models/kategoriNilaiModel.js')
 const { Op } = require('sequelize')
+const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 
 module.exports = {
     getAll: async (req, res, next) => {
@@ -8,6 +9,10 @@ module.exports = {
         const search = req.query.search || ""
         const offset = (currentPage - 1) * perPage
         const totalPage = await kategoriNilaiModel.count({
+            include: [{
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }],
             where: {
                 [Op.or]: [
                     {
@@ -46,6 +51,10 @@ module.exports = {
         })
         const totalItems = Math.ceil(totalPage / perPage)
         await kategoriNilaiModel.findAll({
+            include: [{
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }],
             where: {
                 [Op.or]: [
                     {
@@ -105,6 +114,10 @@ module.exports = {
     getById: async (req, res, next) => {
         const id = req.params.id
         await kategoriNilaiModel.findOne({
+            include: [{
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }],
             where: {
                 id_kategori_nilai: id,
                 status: "aktif"
@@ -128,10 +141,11 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { nilai_angka, nilai_huruf, interfal_skor, kategori, keterangan } = req.body
+        const { code_tahun_ajaran, nilai_angka, nilai_huruf, interfal_skor, kategori, keterangan } = req.body
         const codekategoriNilai = nilai_huruf.replace(/[^\w\s]/g, '') + nilai_angka.replace(/[^\w\s]/g, '')
         const kategoriNilaiModelUse = await kategoriNilaiModel.findOne({
             where: {
+                code_tahun_ajaran: code_tahun_ajaran,
                 code_kategori_nilai: codekategoriNilai,
                 nilai_angka: nilai_angka,
                 nilai_huruf: nilai_huruf,
@@ -140,6 +154,7 @@ module.exports = {
         })
         if (kategoriNilaiModelUse) return res.status(401).json({ message: "data kategori Nilai sudah ada" })
         await kategoriNilaiModel.create({
+            code_tahun_ajaran: code_tahun_ajaran,
             code_kategori_nilai: codekategoriNilai,
             nilai_angka: nilai_angka,
             nilai_huruf: nilai_huruf,
@@ -167,10 +182,11 @@ module.exports = {
             }
         })
         if (!kategoriNilaiModelUse) return res.status(401).json({ message: "Data kategori Nilai tidak ditemukan" })
-        const { nilai_angka, nilai_huruf, interfal_skor, kategori, keterangan } = req.body
+        const { code_tahun_ajaran, nilai_angka, nilai_huruf, interfal_skor, kategori, keterangan } = req.body
         const codekategoriNilai = nilai_huruf.replace(/[^\w\s]/g, '') + nilai_angka.replace(/[^\w\s]/g, '')
         const kategoriNilaiModelDuplicate = await kategoriNilaiModel.findOne({
             where: {
+                code_tahun_ajaran: code_tahun_ajaran,
                 code_kategori_nilai: codekategoriNilai,
                 nilai_angka: nilai_angka,
                 nilai_huruf: nilai_huruf,
@@ -179,6 +195,7 @@ module.exports = {
         })
         if (kategoriNilaiModelDuplicate) return res.status(401).json({ message: "data kategori Nilai sudah ada" })
         await kategoriNilaiModel.update({
+            code_tahun_ajaran: code_tahun_ajaran,
             code_kategori_nilai: codekategoriNilai,
             nilai_angka: nilai_angka,
             nilai_huruf: nilai_huruf,
