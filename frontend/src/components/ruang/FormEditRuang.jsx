@@ -5,9 +5,6 @@ import axios from 'axios'
 import Swal from "sweetalert2"
 
 const FormEditRuang = () => {
-    const [Jenjang, setJenjang] = useState([])
-    const [Fakultas, setFakultas] = useState([])
-    const [Prodi, setProdi] = useState([])
     const [Kelas, setKelas] = useState([])
     const [namaRuang, setNamaRuang] = useState("")
     const [identitas, setIdentitas] = useState("")
@@ -15,6 +12,7 @@ const FormEditRuang = () => {
     const [fakultasnya, setFakultasnya] = useState("")
     const [prodinya, setProdinya] = useState("")
     const [kelasnya, setKelasnya] = useState("")
+    const [kelase, setKelase] = useState("")
     const navigate = useNavigate()
     const { idRng } = useParams()
 
@@ -26,7 +24,8 @@ const FormEditRuang = () => {
                 setJenjangnya(response.data.data.code_jenjang_pendidikan)
                 setFakultasnya(response.data.data.code_fakultas)
                 setProdinya(response.data.data.code_prodi)
-                setKelasnya(response.data.data.code_kelas)
+                setKelase(response.data.data.code_kelas)
+                setKelasnya(response.data.data.kelas[0].id_kelas)
             } catch (error) {
 
             }
@@ -35,43 +34,26 @@ const FormEditRuang = () => {
     }, [idRng])
 
     useEffect(() => {
-        getJenjangPendidikan()
-    }, [])
-
-    useEffect(() => {
-        getFakultasByJenjang()
-    }, [jenjangnya])
-
-    useEffect(() => {
-        getProdiByFakultas()
-    }, [fakultasnya])
-
-    useEffect(() => {
         getKelas()
     }, [])
 
-    const getJenjangPendidikan = async () => {
-        const response = await axios.get('v1/jenjangPendidikan/all')
-        setJenjang(response.data.data)
-    }
-
-    const getFakultasByJenjang = async () => {
-        if (jenjangnya != 0) {
-            const response = await axios.get(`v1/fakultas/getFakulatsByJenjang/${jenjangnya}`)
-            setFakultas(response.data.data)
-        }
-    }
-
-    const getProdiByFakultas = async () => {
-        if (fakultasnya != 0) {
-            const response = await axios.get(`v1/prodi/getProdiByFakultas/${fakultasnya}`)
-            setProdi(response.data.data)
-        }
-    }
+    useEffect(() => {
+        getKelasById()
+    }, [kelasnya])
 
     const getKelas = async () => {
         const response = await axios.get(`v1/kelas/all`)
         setKelas(response.data.data)
+    }
+
+    const getKelasById = async () => {
+        if (kelasnya != 0) {
+            const response = await axios.get(`v1/kelas/getById/${kelasnya}`)
+            setKelase(response.data.data.code_kelas)
+            setJenjangnya(response.data.data.code_jenjang_pendidikan)
+            setFakultasnya(response.data.data.code_fakultas)
+            setProdinya(response.data.data.code_prodi)
+        }
     }
 
     const updateDataRuang = async (e) => {
@@ -83,7 +65,7 @@ const FormEditRuang = () => {
                 code_jenjang_pendidikan: jenjangnya,
                 code_fakultas: fakultasnya,
                 code_prodi: prodinya,
-                code_kelas: kelasnya
+                code_kelas: kelase
             }).then(function (response) {
                 Swal.fire({
                     title: "Berhasil",
@@ -133,45 +115,12 @@ const FormEditRuang = () => {
                                 </div>
                                 <div>
                                     <label className="label">
-                                        <span className="text-base label-text">Jenjang Pendidikan</span>
-                                    </label>
-                                    <select className='select select-bordered select-sm w-full' value={jenjangnya} onChange={(e) => setJenjangnya(e.target.value)}>
-                                        <option value="">Jenjang Pendidikan</option>
-                                        {Jenjang.map((item) => (
-                                            <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Fakultas</span>
-                                    </label>
-                                    <select className='select select-bordered select-sm w-full' value={fakultasnya} onChange={(e) => setFakultasnya(e.target.value)}>
-                                        <option value="">Fakultas</option>
-                                        {Fakultas.map((item) => (
-                                            <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Prodi</span>
-                                    </label>
-                                    <select className='select select-bordered select-sm w-full' value={prodinya} onChange={(e) => setProdinya(e.target.value)}>
-                                        <option value="">Prodi</option>
-                                        {Prodi.map((item) => (
-                                            <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="label">
                                         <span className="text-base label-text">Kelas</span>
                                     </label>
                                     <select className='select select-bordered select-sm w-full' value={kelasnya} onChange={(e) => setKelasnya(e.target.value)}>
                                         <option value="">Kelas</option>
                                         {Kelas.map((item) => (
-                                            <option key={item.id_kelas} value={item.code_kelas}>{item.nama_kelas}</option>
+                                            <option key={item.id_kelas} value={item.id_kelas}>{item.nama_kelas}</option>
                                         ))}
                                     </select>
                                 </div>

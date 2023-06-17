@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import Layout from "../Layout"
-import ProdiList from '../../components/prodi/ProdiList'
+import Layout from '../Layout'
+import FormAddPloting from '../../components/plotingKelas/FormAddPloting'
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { getMe } from "../../features/authSlice"
 
-const Prodi = () => {
+const AddPloting = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { isError, isSuccess, message } = useSelector((state) => state.auth)
@@ -22,9 +22,9 @@ const Prodi = () => {
 
     return (
         <Layout>
-            <ProdiList />
+            <FormAddPloting />
         </Layout>
     )
 }
 
-export default Prodi
+export default AddPloting
