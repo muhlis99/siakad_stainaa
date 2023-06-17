@@ -281,7 +281,6 @@ const ListTahunAjaran = () => {
                     </form>
                 </div>
             </div>
-
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Tahun Ajaran</h1>
             </section>

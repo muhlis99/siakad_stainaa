@@ -35,6 +35,9 @@ import Semester from "./pages/semester/Semester"
 import KategoriNilai from "./pages/kategoriNilai/KategoriNilai"
 import PlotingKelas from "./pages/plotingKelas/PlotingKelas"
 import AddPloting from "./pages/plotingKelas/AddPloting"
+import MataKuliah from "./pages/mataKuliah/MataKuliah"
+import AddMataKuliah from "./pages/mataKuliah/AddMataKuliah"
+import EditMataKuliah from "./pages/mataKuliah/EditMataKuliah"
 
 function App() {
   return (
@@ -76,6 +79,9 @@ function App() {
           <Route path="/kategorinilai" element={<KategoriNilai />} />
           <Route path="/ploting" element={<PlotingKelas />} />
           <Route path="/ploting/add" element={<AddPloting />} />
+          <Route path="/matakuliah" element={<MataKuliah />} />
+          <Route path="/matakuliah/add" element={<AddMataKuliah />} />
+          <Route path="/matakuliah/edit/:idMakul" element={<EditMataKuliah />} />
         </Routes>
       </BrowserRouter>
     </div>

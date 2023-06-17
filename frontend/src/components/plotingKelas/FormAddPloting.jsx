@@ -58,24 +58,27 @@ const FormAddPloting = () => {
         } else {
             setChecked(checked.filter((item) => item !== c.nim))
         }
-        console.log(checked)
     }
 
     const simpanPlotKelas = async (e) => {
         e.preventDefault()
+        // var i = checked.map(item => ({
+        //     nim: item,
+        //     code_kelas: kelas,
+        //     code_ruang: ruang,
+        //     code_semester: semester
+        // }))
+        // console.log(i);
         try {
-            await axios.post('v1/plotingKelas/create', [
-                checked.map((item) =>
-                    [
-                        {
-                            nim: item,
-                            code_kelas: kelas,
-                            code_ruang: ruang,
-                            code_semester: semester
-                        }
-                    ]
-                )
-            ]).then(function (response) {
+            await axios.post('v1/plotingKelas/create',
+                checked.map(item => ({
+                    nim: item,
+                    code_kelas: kelas,
+                    code_ruang: ruang,
+                    code_semester: semester
+                }))
+            ).then(function (response) {
+                console.log(response)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
