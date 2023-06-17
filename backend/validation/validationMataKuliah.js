@@ -7,9 +7,6 @@ exports.validationMataKuliah = [
     check('jenis_mata_kuliah')
         .notEmpty()
         .withMessage('jenis mata kuliah tidak boleh kosong'),
-    check('code_semester')
-        .notEmpty()
-        .withMessage(' semester tidak boleh kosong'),
     check('code_jenjang_pendidikan')
         .notEmpty()
         .withMessage('jenjang pendidikan tidak boleh kosong'),

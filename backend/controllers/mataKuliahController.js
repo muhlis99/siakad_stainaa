@@ -1,5 +1,4 @@
-const dosenModel = require('../models/dosenModel.js')
-const semesterModel = require('../models/semesterModel.js')
+// const dosenModel = require('../models/dosenModel.js')
 const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
@@ -15,10 +14,6 @@ module.exports = {
         const offset = (currentPage - 1) * perPage
         const totalPage = await mataKuliahModel.count({
             include: [
-                {
-                    model: semesterModel,
-                    where: { status: "aktif" }
-                },
                 {
                     model: jenjangPendidikanModel,
                     where: { status: "aktif" }
@@ -71,10 +66,6 @@ module.exports = {
         await mataKuliahModel.findAll({
             include: [
                 {
-                    model: semesterModel,
-                    where: { status: "aktif" }
-                },
-                {
                     model: jenjangPendidikanModel,
                     where: { status: "aktif" }
                 },
@@ -89,7 +80,7 @@ module.exports = {
                 {
                     model: tahunAjaranModel,
                     where: { status: "aktif" }
-                }
+                },
             ],
             where: {
                 [Op.or]: [
@@ -147,10 +138,6 @@ module.exports = {
         await mataKuliahModel.findOne({
             include: [
                 {
-                    model: semesterModel,
-                    where: { status: "aktif" }
-                },
-                {
                     model: jenjangPendidikanModel,
                     where: { status: "aktif" }
                 },
@@ -165,7 +152,7 @@ module.exports = {
                 {
                     model: tahunAjaranModel,
                     where: { status: "aktif" }
-                }
+                },
             ],
             where: {
                 id_mata_kuliah: id,
@@ -190,14 +177,13 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { nama_mata_kuliah, jenis_mata_kuliah, code_semester, code_jenjang_pendidikan, code_fakultas,
+        const { nama_mata_kuliah, jenis_mata_kuliah, code_jenjang_pendidikan, code_fakultas,
             code_prodi, code_tahun_ajaran, sks, sks_praktek, sks_prak_lapangan,
-            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif, status_bobot_makul,
-            status_makul } = req.body
+            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif } = req.body
         const no_urut_makul_terakhir = await mataKuliahModel.count({
             where: {
                 code_prodi: code_prodi,
-                code_semester: code_semester
+                code_tahun_ajaran: code_tahun_ajaran
             }
         })
         var no_urut_makul
@@ -211,18 +197,12 @@ module.exports = {
             const b = no_urut_makul_terakhir + 1
             no_urut_makul = nomor + b
         }
-        const no_semester = await semesterModel.findOne({
-            where: {
-                code_semester: code_semester
-            }
-        })
-        const codeMataKuliah = code_prodi + no_urut_makul + "-" + no_semester.semester
+        const codeMataKuliah = code_prodi + no_urut_makul
         const mataKuliahUse = await mataKuliahModel.findOne({
             where: {
                 nama_mata_kuliah: nama_mata_kuliah,
-                // code_mata_kuliah: codeMataKuliah,
+                code_mata_kuliah: codeMataKuliah,
                 jenis_mata_kuliah: jenis_mata_kuliah,
-                code_semester: code_semester,
                 code_prodi: code_prodi,
                 status: "aktif"
             }
@@ -232,11 +212,11 @@ module.exports = {
             code_mata_kuliah: codeMataKuliah,
             nama_mata_kuliah: nama_mata_kuliah,
             jenis_mata_kuliah: jenis_mata_kuliah,
-            code_semester: code_semester,
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
             code_tahun_ajaran: code_tahun_ajaran,
+            code_kategori_nilai: "",
             sks: sks,
             sks_praktek: sks_praktek,
             sks_prak_lapangan: sks_prak_lapangan,
@@ -244,8 +224,8 @@ module.exports = {
             metode_pembelajaran: metode_pembelajaran,
             tanggal_aktif: tanggal_aktif,
             tanggal_non_aktif: tanggal_non_aktif,
-            status_bobot_makul: status_bobot_makul,
-            status_makul: status_makul,
+            status_bobot_makul: "",
+            status_makul: "",
             status: "aktif"
         }).
             then(result => {
@@ -262,10 +242,6 @@ module.exports = {
         const id = req.params.id
         const mataKuliahUse = await mataKuliahModel.findOne({
             include: [
-                {
-                    model: semesterModel,
-                    where: { status: "aktif" }
-                },
                 {
                     model: jenjangPendidikanModel,
                     where: { status: "aktif" }
@@ -289,16 +265,13 @@ module.exports = {
             }
         })
         if (!mataKuliahUse) return res.status(401).json({ message: "Data Mata Kuliah tidak ditemukan" })
-        const { nama_mata_kuliah, jenis_mata_kuliah, code_semester, code_jenjang_pendidikan, code_fakultas,
+        const { nama_mata_kuliah, jenis_mata_kuliah, code_jenjang_pendidikan, code_fakultas,
             code_prodi, code_tahun_ajaran, sks, sks_praktek, sks_prak_lapangan,
-            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif, status_bobot_makul,
-            status_makul } = req.body
+            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif } = req.body
         const mataKuliahDuplicate = await mataKuliahModel.findOne({
             where: {
                 nama_mata_kuliah: nama_mata_kuliah,
-                // code_mata_kuliah: codeMataKuliah,
                 jenis_mata_kuliah: jenis_mata_kuliah,
-                code_semester: code_semester,
                 code_prodi: code_prodi,
                 status: "aktif"
             }
@@ -307,7 +280,6 @@ module.exports = {
         const no_urut_makul_terakhir = await mataKuliahModel.count({
             where: {
                 code_prodi: code_prodi,
-                code_semester: code_semester
             }
         })
         var no_urut_makul
@@ -321,22 +293,16 @@ module.exports = {
             const b = no_urut_makul_terakhir + 1
             no_urut_makul = nomor + b
         }
-        const no_semester = await semesterModel.findOne({
-            where: {
-                code_semester: code_semester
-            }
-        })
-        const codeMataKuliah = code_prodi + no_urut_makul + "-" + no_semester.semester
-
+        const codeMataKuliah = code_prodi + no_urut_makul
         await mataKuliahModel.update({
             code_mata_kuliah: codeMataKuliah,
             nama_mata_kuliah: nama_mata_kuliah,
             jenis_mata_kuliah: jenis_mata_kuliah,
-            code_semester: code_semester,
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
             code_tahun_ajaran: code_tahun_ajaran,
+            code_kategori_nilai: "",
             sks: sks,
             sks_praktek: sks_praktek,
             sks_prak_lapangan: sks_prak_lapangan,
@@ -344,8 +310,8 @@ module.exports = {
             metode_pembelajaran: metode_pembelajaran,
             tanggal_aktif: tanggal_aktif,
             tanggal_non_aktif: tanggal_non_aktif,
-            status_bobot_makul: status_bobot_makul,
-            status_makul: status_makul,
+            status_bobot_makul: "",
+            status_makul: "",
             status: "aktif"
         }, {
             where: {
