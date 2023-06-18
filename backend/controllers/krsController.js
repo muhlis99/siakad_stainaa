@@ -1,136 +1,13 @@
-// const dosenModel = require('../models/dosenModel.js')
-const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
-const fakultasModel = require('../models/fakultasModel.js')
-const prodiModel = require('../models/prodiModel.js')
-const tahunAjaranModel = require('../models/tahunAjaranModel.js')
+const krsModel = require('../models/krsModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
     getAll: async (req, res, next) => {
-        const currentPage = parseInt(req.query.page) || 1
-        const perPage = parseInt(req.query.perPage) || 10
-        const search = req.query.search || ""
-        const offset = (currentPage - 1) * perPage
-        const totalPage = await mataKuliahModel.count({
-            include: [
-                {
-                    model: jenjangPendidikanModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: fakultasModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: prodiModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: tahunAjaranModel,
-                    where: { status: "aktif" }
-                }
-            ],
-            where: {
-                [Op.or]: [
-                    {
-                        id_mata_kuliah: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_mata_kuliah: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama_mata_kuliah: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        sks: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        status: {
-                            [Op.like]: `%${search}%`
-                        }
-                    }
-                ],
-                status: "aktif"
-            }
-        })
-        const totalItems = Math.ceil(totalPage / perPage)
-        await mataKuliahModel.findAll({
-            include: [
-                {
-                    model: jenjangPendidikanModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: fakultasModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: prodiModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: tahunAjaranModel,
-                    where: { status: "aktif" }
-                },
-            ],
-            where: {
-                [Op.or]: [
-                    {
-                        id_mata_kuliah: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_mata_kuliah: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama_mata_kuliah: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        sks: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        status: {
-                            [Op.like]: `%${search}%`
-                        }
-                    }
-                ],
-                status: "aktif"
-            },
-            offset: offset,
-            limit: perPage,
-            order: [
-                ["id_mata_kuliah", "DESC"]
-            ]
-        }).
-            then(result => {
-                res.status(200).json({
-                    message: "Get All Mata Kuliah Success",
-                    data: result,
-                    total_data: totalPage,
-                    per_page: perPage,
-                    current_page: currentPage,
-                    total_page: totalItems
-                })
-            }).
-            catch(err => {
-                next(err)
-            })
+        const tahunAjaran = parseInt(req.query.tahunAjaran) || 0
+        const prodi = parseInt(req.query.prodi) || 0
+
+
     },
 
     getById: async (req, res, next) => {
@@ -277,25 +154,25 @@ module.exports = {
             }
         })
         if (mataKuliahDuplicate) return res.status(401).json({ message: "data mata kuliah sudah ada" })
-        // const no_urut_makul_terakhir = await mataKuliahModel.count({
-        //     where: {
-        //         code_prodi: code_prodi,
-        //     }
-        // })
-        // var no_urut_makul
-        // if (no_urut_makul_terakhir == null) {
-        //     no_urut_makul = "0001"
-        // } else {
-        //     const code = "0000"
-        //     const a = no_urut_makul_terakhir.toString()
-        //     const panjang = a.length
-        //     const nomor = code.slice(panjang)
-        //     const b = no_urut_makul_terakhir + 1
-        //     no_urut_makul = nomor + b
-        // }
-        // const codeMataKuliah = code_prodi + no_urut_makul
+        const no_urut_makul_terakhir = await mataKuliahModel.count({
+            where: {
+                code_prodi: code_prodi,
+            }
+        })
+        var no_urut_makul
+        if (no_urut_makul_terakhir == null) {
+            no_urut_makul = "0001"
+        } else {
+            const code = "0000"
+            const a = no_urut_makul_terakhir.toString()
+            const panjang = a.length
+            const nomor = code.slice(panjang)
+            const b = no_urut_makul_terakhir + 1
+            no_urut_makul = nomor + b
+        }
+        const codeMataKuliah = code_prodi + no_urut_makul
         await mataKuliahModel.update({
-            // code_mata_kuliah: codeMataKuliah,
+            code_mata_kuliah: codeMataKuliah,
             nama_mata_kuliah: nama_mata_kuliah,
             jenis_mata_kuliah: jenis_mata_kuliah,
             code_jenjang_pendidikan: code_jenjang_pendidikan,
