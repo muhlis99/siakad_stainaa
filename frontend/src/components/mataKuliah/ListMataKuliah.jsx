@@ -143,7 +143,7 @@ const ListMataKuliah = () => {
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <Link to={`/matakuliah/edit/${mkl.id_mata_kuliah}`} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
-                                                    <button className="btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(mkl.id_mata_kuliah)} title='Hapus'><FaTrash /></button>
+                                                    <button className="ml-1 btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(mkl.id_mata_kuliah)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>

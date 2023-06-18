@@ -1,8 +1,28 @@
 import React from 'react'
 import stainaa from "../assets/img/stainaa.png"
 import { Link } from "react-router-dom"
-import { FaHome, FaUniversity, FaBookmark, FaUserGraduate, FaChalkboardTeacher, FaCalendarAlt, FaStripeS, FaBook, FaFileSignature, FaListUl, FaBusinessTime, FaBuromobelexperte, FaUsers, FaAddressBook } from "react-icons/fa"
-import { SiLevelsdotfyi, SiOpslevel, SiHomeassistantcommunitystore } from "react-icons/si"
+import {
+  FaHome,
+  FaUniversity,
+  FaBookmark,
+  FaUserGraduate,
+  FaChalkboardTeacher,
+  FaCalendarAlt,
+  FaStripeS,
+  FaBook,
+  FaFileSignature,
+  FaTasks,
+  FaBusinessTime,
+  FaBuromobelexperte,
+  FaUsers,
+  FaAddressBook,
+  FaTh
+} from "react-icons/fa"
+import {
+  SiLevelsdotfyi,
+  SiOpslevel,
+  SiHomeassistantcommunitystore
+} from "react-icons/si"
 
 const Sidebar = () => {
   return (
@@ -51,7 +71,8 @@ const Sidebar = () => {
               <Link className='text-sm flex gap-2'><span>MASTER PROSES</span></Link>
             </div>
             <div className="collapse-content grid gap-1 bg-[#2D7F5F] px-0">
-              <Link className='text-white flex gap-2 mt-2 hover:bg-[#287155] px-4 py-2'><FaListUl /> <span className='text-sm'>KRS</span></Link>
+              <Link className='text-white flex gap-2 mt-2 hover:bg-[#287155] px-4 py-2'><FaTh /> <span className='text-sm'>Sebaran Mata Kuliah</span></Link>
+              <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaTasks /> <span className='text-sm'>KRS</span></Link>
               <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBusinessTime /> <span className='text-sm'>Penjadwalan</span></Link>
               <Link to="/ploting" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBuromobelexperte /> <span className='text-sm'>Ploting Kelas</span></Link>
               <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaAddressBook /> <span className='text-sm'>KHS</span></Link>
