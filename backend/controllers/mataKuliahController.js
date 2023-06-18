@@ -333,10 +333,6 @@ module.exports = {
         const mataKuliahUse = await mataKuliahModel.findOne({
             include: [
                 {
-                    model: semesterModel,
-                    where: { status: "aktif" }
-                },
-                {
                     model: jenjangPendidikanModel,
                     where: { status: "aktif" }
                 },
