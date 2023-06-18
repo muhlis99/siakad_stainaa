@@ -11,9 +11,14 @@ const ListMataKuliah = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
                     <div className="card-body p-4">
-                        <div className="grid grid-flow-col">
+                        <div className="grid grid-cols-3 gap-4">
                             <div>
                                 <Link to="/matakuliah/add" className="btn btn-default btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
+                            </div>
+                            <div>
+                                <select className="select select-bordered select-xs max-w-xs">
+                                    <option value="">Tahun Ajaran</option>
+                                </select>
                             </div>
                             <div>
                                 <form className='mb-1'>
