@@ -1,256 +1,90 @@
 const krsModel = require('../models/krsModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
+const tahunAjaranModel = require('../models/tahunAjaranModel.js')
+const semesterModel = require('../models/semesterModel.js')
+const historyMahasiswa = require('../models/historyMahasiswaModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
     getAll: async (req, res, next) => {
         const tahunAjaran = parseInt(req.query.tahunAjaran) || 0
         const prodi = parseInt(req.query.prodi) || 0
-
-
-    },
-
-    getById: async (req, res, next) => {
-        const id = req.params.id
-        await mataKuliahModel.findOne({
-            include: [
-                {
-                    model: jenjangPendidikanModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: fakultasModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: prodiModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: tahunAjaranModel,
-                    where: { status: "aktif" }
-                },
-            ],
+        // tahun ajaran => kurikulum 
+        const thnAjar = await tahunAjaranModel.findOne({
+            attributes: ['tahun_ajaran'],
             where: {
-                id_mata_kuliah: id,
-                status: "aktif"
-            }
-        }).
-            then(getById => {
-                if (!getById) {
-                    return res.status(404).json({
-                        message: "Data mata kuliah Tidak Ditemukan",
-                        data: null
-                    })
-                }
-                res.status(201).json({
-                    message: "Data mata kuliah Ditemukan",
-                    data: getById
-                })
-            }).
-            catch(err => {
-                next(err)
-            })
-    },
-
-    post: async (req, res, next) => {
-        const { nama_mata_kuliah, jenis_mata_kuliah, code_jenjang_pendidikan, code_fakultas,
-            code_prodi, code_tahun_ajaran, sks, sks_praktek, sks_prak_lapangan,
-            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif } = req.body
-        const no_urut_makul_terakhir = await mataKuliahModel.count({
-            where: {
-                code_prodi: code_prodi,
-                code_tahun_ajaran: code_tahun_ajaran
+                code_tahun_ajaran: tahunAjaran
             }
         })
-        var no_urut_makul
-        if (no_urut_makul_terakhir == null) {
-            no_urut_makul = "0001"
+        // mengambil data dari tb mata kuliah
+        // untuk jumlah mata kuliah paket dan semesternya 
+        const Pmakul = await mataKuliahModel.findAndCountAll({
+            where: {
+                code_tahun_ajaran: tahunAjaran,
+                code_prodi: prodi,
+                status_makul: "paket"
+            },
+            group: ['code_semester'],
+            attributes: ['code_semester',],
+            include: [{ model: semesterModel, attributes: ['semester'] }]
+        })
+        var i = Pmakul.rows
+        const Jmakul = i.map(jhr => { return jhr.code_semester })
+        // jumlah mahasiswa yang memakate mata kuliah
+        const jmlMahasiswa = await historyMahasiswa.findAndCountAll({
+            where: { code_semester: Jmakul, code_tahun_ajaran: tahunAjaran, code_prodi: prodi },
+            attributes: ['nim']
+        })
+        // validasi jumlah mahasiswa yang memaket mata kuliah
+        var i = jmlMahasiswa.rows
+        const vmakul = i.map(v => { return v.nim })
+        const jmlPaketMahasiswa = krsModel.findAndCountAll({
+            where: {
+                nim: vmakul
+            }
+        })
+        var jumlah = ""
+        if ((await jmlPaketMahasiswa).count === 0) {
+            jumlah = 0
         } else {
-            const code = "0000"
-            const a = no_urut_makul_terakhir.toString()
-            const panjang = a.length
-            const nomor = code.slice(panjang)
-            const b = no_urut_makul_terakhir + 1
-            no_urut_makul = nomor + b
+            jumlah = (await jmlPaketMahasiswa).count
         }
-        const codeMataKuliah = code_prodi + no_urut_makul
-        const mataKuliahUse = await mataKuliahModel.findOne({
-            where: {
-                nama_mata_kuliah: nama_mata_kuliah,
-                code_mata_kuliah: codeMataKuliah,
-                jenis_mata_kuliah: jenis_mata_kuliah,
-                code_prodi: code_prodi,
-                status: "aktif"
-            }
-        })
-        if (mataKuliahUse) return res.status(401).json({ message: "data mata kuliah sudah ada" })
-        await mataKuliahModel.create({
-            code_mata_kuliah: codeMataKuliah,
-            nama_mata_kuliah: nama_mata_kuliah,
-            jenis_mata_kuliah: jenis_mata_kuliah,
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: code_fakultas,
-            code_prodi: code_prodi,
-            code_tahun_ajaran: code_tahun_ajaran,
-            code_kategori_nilai: "",
-            sks: sks,
-            sks_praktek: sks_praktek,
-            sks_prak_lapangan: sks_prak_lapangan,
-            sks_simulasi: sks_simulasi,
-            metode_pembelajaran: metode_pembelajaran,
-            tanggal_aktif: tanggal_aktif,
-            tanggal_non_aktif: tanggal_non_aktif,
-            status_bobot_makul: "",
-            status_makul: "",
-            status: "aktif"
-        }).
-            then(result => {
-                res.status(201).json({
-                    message: "Data mata kuliah success Ditambahkan",
-                })
-            }).
-            catch(err => {
-                next(err)
-            })
-    },
-
-    put: async (req, res, next) => {
-        const id = req.params.id
-        const mataKuliahUse = await mataKuliahModel.findOne({
-            include: [
-                {
-                    model: jenjangPendidikanModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: fakultasModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: prodiModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: tahunAjaranModel,
-                    where: { status: "aktif" }
-                }
-            ],
-            where: {
-                id_mata_kuliah: id,
-                status: "aktif"
-            }
-        })
-        if (!mataKuliahUse) return res.status(401).json({ message: "Data Mata Kuliah tidak ditemukan" })
-        const { nama_mata_kuliah, jenis_mata_kuliah, code_jenjang_pendidikan, code_fakultas,
-            code_prodi, code_tahun_ajaran, sks, sks_praktek, sks_prak_lapangan,
-            sks_simulasi, metode_pembelajaran, tanggal_aktif, tanggal_non_aktif } = req.body
-        const mataKuliahDuplicate = await mataKuliahModel.findOne({
-            where: {
-                nama_mata_kuliah: nama_mata_kuliah,
-                jenis_mata_kuliah: jenis_mata_kuliah,
-                code_prodi: code_prodi,
-                status: "aktif"
-            }
-        })
-        if (mataKuliahDuplicate) return res.status(401).json({ message: "data mata kuliah sudah ada" })
-        const no_urut_makul_terakhir = await mataKuliahModel.count({
-            where: {
-                code_prodi: code_prodi,
-            }
-        })
-        var no_urut_makul
-        if (no_urut_makul_terakhir == null) {
-            no_urut_makul = "0001"
+        // isi field keterangan 
+        var Pkelas = '0'
+        var keterangan = ""
+        if (Pkelas === Pmakul.count) {
+            keterangan = "paket kurang"
+        } else if (jumlah === (await jmlPaketMahasiswa).count) {
+            keterangan = "paket selesai"
+        } else if (jumlah != (await jmlPaketMahasiswa).count) {
+            keterangan = "paket kurang"
         } else {
-            const code = "0000"
-            const a = no_urut_makul_terakhir.toString()
-            const panjang = a.length
-            const nomor = code.slice(panjang)
-            const b = no_urut_makul_terakhir + 1
-            no_urut_makul = nomor + b
+            keterangan = "kelas kurang"
         }
-        const codeMataKuliah = code_prodi + no_urut_makul
-        await mataKuliahModel.update({
-            code_mata_kuliah: codeMataKuliah,
-            nama_mata_kuliah: nama_mata_kuliah,
-            jenis_mata_kuliah: jenis_mata_kuliah,
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: code_fakultas,
-            code_prodi: code_prodi,
-            code_tahun_ajaran: code_tahun_ajaran,
-            code_kategori_nilai: "",
-            sks: sks,
-            sks_praktek: sks_praktek,
-            sks_prak_lapangan: sks_prak_lapangan,
-            sks_simulasi: sks_simulasi,
-            metode_pembelajaran: metode_pembelajaran,
-            tanggal_aktif: tanggal_aktif,
-            tanggal_non_aktif: tanggal_non_aktif,
-            status_bobot_makul: "",
-            status_makul: "",
-            status: "aktif"
-        }, {
+        //  mengambil seluruh code mata kuliah paket sesuai semester
+        const Mmakul = await mataKuliahModel.findAll({
             where: {
-                id_mata_kuliah: id
-            }
-        }).
-            then(result => {
-                res.status(201).json({
-                    message: "Data mata kuliah success Diupdate",
-                })
-            }).
-            catch(err => {
-                next(err)
-            })
+                code_tahun_ajaran: tahunAjaran,
+                code_prodi: prodi,
+                status_makul: "paket",
+                code_semester: Jmakul
+            },
+            attributes: ['code_semester', 'code_mata_kuliah'],
+        })
+        res.status(201).json({
+            data: [{
+                tahun: thnAjar.tahun_ajaran,
+                Paketmakul: Pmakul.count,
+                Paketkelas: "dalam tahap davelope",
+                semester: Pmakul.rows,
+                jmlPaketMahasiswa: jmlMahasiswa.count,
+                jmlValidasiMahasiswa: jumlah,
+                keterangan: keterangan,
+                code_makul: Mmakul,
+                nim: i
+            }]
+        })
     },
 
-    delete: async (req, res, next) => {
-        const id = req.params.id
-        const mataKuliahUse = await mataKuliahModel.findOne({
-            include: [
-                {
-                    model: semesterModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: jenjangPendidikanModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: fakultasModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: prodiModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: tahunAjaranModel,
-                    where: { status: "aktif" }
-                }
-            ],
-            where: {
-                id_mata_kuliah: id,
-                status: "aktif"
-            }
-        })
-        if (!mataKuliahUse) return res.status(401).json({ message: "Data mata kuliah tidak ditemukan" })
-        await mataKuliahModel.update({
-            status: "tidak"
-        }, {
-            where: {
-                id_mata_kuliah: id
-            }
-        }).
-            then(result => {
-                res.status(201).json({
-                    message: "data mata kuliah succes dihapus"
-                })
-            }).
-            catch(err => {
-                next(err)
-            })
-    }
 
 }
