@@ -93,12 +93,12 @@ module.exports = {
                                 Silahkan masukkan nomor dibawah ini untuk mengatur ulang kata kunci Anda; </h5>
                                 <h3 style="color:blue" class="card-text">${randomNumber}</h3>
                                 <h6>Catatan :<br>
-                                1. ini adalah email yang dikirim oleh server STAINAA atas permintaan anda ${new Date()}
+                                1. ini adalah email yang dikirim oleh server STAINAA atas permintaan anda ${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}
                                     untuk mengatur ulang kata kunci pada aplikasi SIAKAD STAINAA.<br>
                                 2. Abaikan email ini jika anda merasa tidak melakukannya.<br>
                                 3. ini adalah email otomatis, mohon tidak membalas email ini</h6>
                                 <hr>
-                                <h6>banyuwangi, ${new Date()} WIB <br>
+                                <h6>banyuwangi, ${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')} WIB <br>
                                 Sekolah Tinggi Agama Islam Nurul Abror Al-Robbaniyin <br>
                                 jl. KH Agus Salim No 165 68453 email : muhlis_ganteng@gmail.com</h6>
                             </div>
