@@ -11,11 +11,8 @@ const krsModel = db.define('krs', {
     'code_krs': {
         type: DataTypes.TEXT,
     },
-    'code_makul': {
+    'code_mata_kuliah': {
         type: DataTypes.TEXT,
-    },
-    'nama_krs': {
-        type: DataTypes.TEXT
     },
     'status_krs': {
         type: DataTypes.ENUM,
