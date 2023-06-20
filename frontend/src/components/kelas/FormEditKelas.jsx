@@ -71,7 +71,6 @@ const FormEditKelas = () => {
                 code_jenjang_pendidikan: jenjangnya,
                 code_fakultas: fakultasnya,
                 code_prodi: prodinya,
-                dosen_wali: dosennya
 
             }).then(function (response) {
                 Swal.fire({

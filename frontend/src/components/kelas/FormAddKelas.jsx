@@ -17,7 +17,6 @@ const FormAddKelas = () => {
 
     useEffect(() => {
         getJenjangPendidikan()
-        getDataRuang()
     }, [])
 
     useEffect(() => {
@@ -45,11 +44,6 @@ const FormAddKelas = () => {
             const response = await axios.get(`v1/prodi/getProdiByFakultas/${fakultasnya}`)
             setProdi(response.data.data)
         }
-    }
-
-    const getDataRuang = async () => {
-        const response = await axios.get('v1/ruang/all')
-        setRuang(response.data.data)
     }
 
     const simpanKls = async (e) => {
