@@ -85,12 +85,22 @@ module.exports = {
             await transporter.sendMail({
                 from: 'muhammadbwi13@gmail.com',
                 to: `${email}`,
-                subject: "kode verivikasi anda",
+                subject: "Atur Ulang Kata Kunci Apliaksi Mahasiswa STAINAA",
                 text: 'jangan disebarakan pada orang lain',
                 html: `<div class="card" style="width: 18rem;">
                             <div class="card-body">
-                                <h5 class="card-title"> Ini Kode verifikasi anda ${email}</h5>
-                                <p class="card-text">${randomNumber}</p>
+                                <h5 class="card-title">Atur ulang kata kunci tinggal selangkah lagi.</h5> <br>
+                                <h5>Silahkan klik copy nomor dibawah ini untuk mengatur ulang kata kunci Anda; </h5><br><br><br>
+                                <h5 class="card-text">${randomNumber}</h5><br><br><br>
+                                <p>Catatan :</p>
+                                <h6>1. ini adalah email yang dikirim oleh server STAINAA atas permintaan anda ${new Date()}
+                                untuk mengatur ulang kata kunci pada aplikasi SIAKAD STAINAA.</h6><br>
+                                <h6>2. Abaikan email ini jika anda merasa tidak melakukannya.</h6><br>
+                                <h6>3. ini adalah email otomatis, mohon tidak membalas email ini</h6><br><br><br><br><br><br>
+                                <hr>
+                                <p>banyuwangi, ${new Date()} WIB </p><br>
+                                <p>Sekolah Tinggi Agama Islam Nurul Abror Al-Robbaniyin </p><br>
+                                <p>Pondok Pesantren Nurul Abror Al-Robbaniyin 68453 email : muhlis_ganteng@gmail.com</p><br>
                             </div>
                         </div>`
             })
