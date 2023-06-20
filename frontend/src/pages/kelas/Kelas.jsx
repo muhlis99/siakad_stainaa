@@ -20,6 +20,7 @@ const Kelas = () => {
 
     return (
         <Layout>
+            <title>Kelas</title>
             <ListKelas />
         </Layout>
     )

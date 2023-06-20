@@ -20,6 +20,7 @@ const Jenjang = () => {
 
     return (
         <Layout>
+            <title>Jenjang Pendidikan</title>
             <ListJenjang />
         </Layout>
     )

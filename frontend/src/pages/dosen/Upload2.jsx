@@ -19,7 +19,10 @@ const Upload2 = () => {
     }
 
     return (
-        <Layout><FormUpload2 /></Layout>
+        <Layout>
+            <title>Form Dosen</title>
+            <FormUpload2 />
+        </Layout>
     )
 }
 

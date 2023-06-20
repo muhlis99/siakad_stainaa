@@ -20,6 +20,7 @@ const Sebaran = () => {
 
     return (
         <Layout>
+            <title>Sebaran Mata Kuliah</title>
             <ListSebaran />
         </Layout>
     )

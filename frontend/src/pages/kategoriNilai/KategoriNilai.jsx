@@ -20,6 +20,7 @@ const KategoriNilai = () => {
 
     return (
         <Layout>
+            <title>Kategori Nilai</title>
             <ListKategoriNilai />
         </Layout>
     )

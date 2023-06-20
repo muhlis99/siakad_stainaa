@@ -42,6 +42,7 @@ const Login = () => {
 
     return (
         <div className="min-h-screen py-24">
+            <title>Login</title>
             <div className="container mx-auto">
                 <div className="flex flex-col lg:flex-row w-3/5 mx-auto overflow-hidden">
                     <div className="w-full lg:w-1/2 flex flex-col bg-no-repeat bg-50% bg-center" style={{ backgroundImage: `url(${stainaa})` }}></div>

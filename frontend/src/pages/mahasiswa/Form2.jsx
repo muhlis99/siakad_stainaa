@@ -20,7 +20,7 @@ const Form2 = () => {
 
     return (
         <Layout>
-            <FormMhs2 />
+            <title>Form Mahasiswa</title><FormMhs2 />
         </Layout>
     )
 }

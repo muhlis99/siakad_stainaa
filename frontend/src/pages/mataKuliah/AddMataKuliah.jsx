@@ -22,7 +22,7 @@ const AddMataKuliah = () => {
 
     return (
         <Layout>
-            <FormAddMataKuliah />
+            <title>Tambah Mata Kuliah</title><FormAddMataKuliah />
         </Layout>
     )
 }

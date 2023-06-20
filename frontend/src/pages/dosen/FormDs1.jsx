@@ -20,6 +20,7 @@ const FormDs1 = () => {
 
     return (
         <Layout>
+            <title>Form Dosen</title>
             <FormDosen1 />
         </Layout>
     )

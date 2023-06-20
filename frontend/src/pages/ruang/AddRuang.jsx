@@ -20,7 +20,7 @@ const AddRuang = () => {
 
     return (
         <Layout>
-            <FormAddRuang />
+            <title>Tambah Ruang</title><FormAddRuang />
         </Layout>
     )
 }

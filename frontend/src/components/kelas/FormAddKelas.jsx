@@ -8,20 +8,16 @@ const FormAddKelas = () => {
     const [Jenjang, setJenjang] = useState([])
     const [Fakultas, setFakultas] = useState([])
     const [Prodi, setProdi] = useState([])
-    const [Ruang, setRuang] = useState([])
-    const [Dosen, setDosen] = useState([])
     const [namaKelas, setNamaKelas] = useState("")
     const [identitas, setIdentitas] = useState("")
     const [jenjangnya, setJenjangnya] = useState("")
     const [fakultasnya, setFakultasnya] = useState("")
     const [prodinya, setProdinya] = useState("")
-    const [dosennya, setDosennya] = useState("")
     const navigate = useNavigate()
 
     useEffect(() => {
         getJenjangPendidikan()
         getDataRuang()
-        getDosen()
     }, [])
 
     useEffect(() => {
@@ -56,11 +52,6 @@ const FormAddKelas = () => {
         setRuang(response.data.data)
     }
 
-    const getDosen = async () => {
-        const response = await axios.get('v1/dosen/all')
-        setDosen(response.data.data)
-    }
-
     const simpanKls = async (e) => {
         e.preventDefault()
         try {
@@ -69,9 +60,7 @@ const FormAddKelas = () => {
                 identy_kelas: identitas,
                 code_jenjang_pendidikan: jenjangnya,
                 code_fakultas: fakultasnya,
-                code_prodi: prodinya,
-                dosen_wali: dosennya
-
+                code_prodi: prodinya
             }).then(function (response) {
                 Swal.fire({
                     title: response.data.message,
@@ -165,17 +154,6 @@ const FormAddKelas = () => {
                                         <option value="">Prodi</option>
                                         {Prodi.map((item) => (
                                             <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Dosen Wali</span>
-                                    </label>
-                                    <select className='select select-bordered select-sm w-full' value={dosennya} onChange={(e) => setDosennya(e.target.value)}>
-                                        <option value="">Dosen</option>
-                                        {Dosen.map((item) => (
-                                            <option key={item.id_dosen} value={item.nidn}>{item.nama}</option>
                                         ))}
                                     </select>
                                 </div>

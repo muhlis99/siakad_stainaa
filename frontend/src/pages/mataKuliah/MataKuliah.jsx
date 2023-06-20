@@ -23,7 +23,7 @@ const MataKuliah = () => {
 
     return (
         <Layout>
-            <ListMataKuliah />
+            <title>Mata Kuliah</title><ListMataKuliah />
         </Layout>
     )
 }

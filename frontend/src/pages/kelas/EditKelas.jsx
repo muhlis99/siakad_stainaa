@@ -20,6 +20,7 @@ const EditKelas = () => {
 
     return (
         <Layout>
+            <title>Edit Kelas</title>
             <FormEditKelas />
         </Layout>
     )

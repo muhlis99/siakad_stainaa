@@ -39,6 +39,7 @@ const Forgot = () => {
 
     return (
         <div>
+            <title>Forgot Password</title>
             <div className="w-full min-w-min h-56 bg-[#2D7F5F] lg:rounded-b-[50px] pt-12">
                 <div className="w-full flex gap-9 justify-center">
                     <img src={stainaa} alt="" className='w-24 relative rounded-full' />

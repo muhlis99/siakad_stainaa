@@ -19,7 +19,7 @@ const Tahun = () => {
     }
 
     return (
-        <Layout><ListTahunAjaran /></Layout>
+        <Layout><title>Tahun Ajaran</title><ListTahunAjaran /></Layout>
     )
 }
 

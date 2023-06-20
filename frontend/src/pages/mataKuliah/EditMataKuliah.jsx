@@ -22,7 +22,7 @@ const EditMataKuliah = () => {
 
     return (
         <Layout>
-            <FormEditMataKuliah />
+            <title>Edit Mata Kuliah</title><FormEditMataKuliah />
         </Layout>
     )
 }

@@ -20,7 +20,7 @@ const Detail = () => {
 
     return (
         <Layout>
-            <DetailMhs />
+            <title>Detail Mahasiswa</title><DetailMhs />
         </Layout>
     )
 }

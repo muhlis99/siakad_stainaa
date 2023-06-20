@@ -19,7 +19,10 @@ const Dashboard = () => {
     }
 
     return (
-        <Layout><Beranda /></Layout>
+        <Layout>
+            <title>Dashboard</title>
+            <Beranda />
+        </Layout>
     )
 
 }

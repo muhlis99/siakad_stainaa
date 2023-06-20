@@ -22,7 +22,7 @@ const Prodi = () => {
 
     return (
         <Layout>
-            <ProdiList />
+            <title>Prodi</title><ProdiList />
         </Layout>
     )
 }
