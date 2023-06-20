@@ -100,7 +100,7 @@ module.exports = {
                                 <hr>
                                 <h6>banyuwangi, ${new Date()} WIB <br>
                                 Sekolah Tinggi Agama Islam Nurul Abror Al-Robbaniyin <br>
-                                Pondok Pesantren Nurul Abror Al-Robbaniyin 68453 email : muhlis_ganteng@gmail.com</h6>
+                                jl. KH Agus Salim No 165 68453 email : muhlis_ganteng@gmail.com</h6>
                             </div>
                         </div>`
             })
