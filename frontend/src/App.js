@@ -38,6 +38,7 @@ import AddPloting from "./pages/plotingKelas/AddPloting"
 import MataKuliah from "./pages/mataKuliah/MataKuliah"
 import AddMataKuliah from "./pages/mataKuliah/AddMataKuliah"
 import EditMataKuliah from "./pages/mataKuliah/EditMataKuliah"
+import Sebaran from "./pages/sebaranMakul/Sebaran"
 
 function App() {
   return (
@@ -82,6 +83,7 @@ function App() {
           <Route path="/matakuliah" element={<MataKuliah />} />
           <Route path="/matakuliah/add" element={<AddMataKuliah />} />
           <Route path="/matakuliah/edit/:idMakul" element={<EditMataKuliah />} />
+          <Route path="/sebaran" element={<Sebaran />} />
         </Routes>
       </BrowserRouter>
     </div>
