@@ -9,7 +9,7 @@ const { Op, Sequelize } = require('sequelize')
 
 module.exports = {
     getAll: async (req, res, next) => {
-        const sebaranProdi = parseInt(req.query.sebaranProdi) || 0
+        const sebaranProdi = req.query.sebaranProdi || null
         const sebaranSemester = parseInt(req.query.sebaranSemester) || 0
         const totalSKS = await mataKuliahModel.sum('sks', {
             where: {

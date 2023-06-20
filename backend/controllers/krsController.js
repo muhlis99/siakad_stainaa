@@ -86,5 +86,69 @@ module.exports = {
         })
     },
 
+    viewAll: async (req, res, next) => {
+        const thnAjr = req.params.thnAjr
+        const prd = req.params.prd
+        const smt = req.params.smt
+
+        await mataKuliahModel.findAndCountAll({
+            where: {
+                code_tahun_ajaran: thnAjr,
+                code_prodi: prd,
+                code_semester: smt
+            }
+        }).then(all => {
+            if (!all) {
+                return res.status(404).json({
+                    message: "Data krs paket Tidak Ditemukan",
+                    data: []
+                })
+            }
+            res.status(201).json({
+                message: "Data krs paket Ditemukan",
+                data: all
+            })
+        })
+    },
+
+    post: async (req, res, next) => {
+        const thnAjr = req.params.thnAjr
+        const prd = req.params.prd
+        const smt = req.params.smt
+
+        // mengambil code mata kuliah yang paket sesuai semester
+        const makul = await mataKuliahModel.findAll({
+            attributes: ['code_mata_kuliah'],
+            where: {
+                code_tahun_ajaran: thnAjr,
+                code_prodi: prd,
+                code_semester: smt
+            }
+        })
+        // const dataMakul = makul.map(D => {
+        //     let data1 = { code_mata_kuliah: D.code_mata_kuliah }
+        //     return data1
+        // })
+        // console.log(dataMakul);
+        // mengambil nim mahasiswa yang krs paket sesuai semester 
+        const nim = await historyMahasiswa.findAll({
+            attributes: ['nim'],
+            where: {
+                code_tahun_ajaran: thnAjr,
+                code_prodi: prd,
+                code_semester: smt
+            }
+        })
+        var data = ""
+        nim.map(Dn => {
+            makul.map(D => {
+                data = [{ nim: Dn.nim, code_mata_kuliah: D.code_mata_kuliah }]
+                return data
+            })
+        })
+        console.log(data);
+
+
+    }
 
 }
