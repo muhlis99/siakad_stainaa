@@ -87,12 +87,12 @@ module.exports = {
                 to: `${email}`,
                 subject: "Atur Ulang Kata Kunci Apliaksi Mahasiswa STAINAA",
                 text: 'jangan disebarakan pada orang lain',
-                html: `<div class="card" style="width: 18rem;">
+                html: `<div class="card" style="width: 18rem; border: 1px solid black">
                             <div class="card-body">
                                 <h5 class="card-title">Atur ulang kata kunci tinggal selangkah lagi.</h5>
                                 <h5>Silahkan klik copy nomor dibawah ini untuk mengatur ulang kata kunci Anda; </h5>
-                                <h3 style="color:blue" class="card-text">${randomNumber}</h>
-                                <p>Catatan :</p>
+                                <h3 style="color:blue" class="card-text">${randomNumber}</h3>
+                                <h6>Catatan :</h6>
                                 <h6>1. ini adalah email yang dikirim oleh server STAINAA atas permintaan anda ${new Date()}
                                 untuk mengatur ulang kata kunci pada aplikasi SIAKAD STAINAA.</h6>
                                 <h6>2. Abaikan email ini jika anda merasa tidak melakukannya.</h6>
