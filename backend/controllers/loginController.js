@@ -92,14 +92,7 @@ module.exports = {
                                 <h5 class="card-title">Atur ulang kata kunci tinggal selangkah lagi.
                                 Silahkan klik copy nomor dibawah ini untuk mengatur ulang kata kunci Anda; </h5>
                                 <h3 style="color:blue" class="card-text">${randomNumber}</h3>
-                                <dl>
-                                    <dt>Catatan :</dt>
-                                    <dd>1. ini adalah email yang dikirim oleh server STAINAA atas permintaan anda ${new Date()}
-                                    untuk mengatur ulang kata kunci pada aplikasi SIAKAD STAINAA.</dd>
-                                    <dd>2. Abaikan email ini jika anda merasa tidak melakukannya.</dd>
-                                    <dd>3. ini adalah email otomatis, mohon tidak membalas email ini</dd>
-                                </dl><br>
-                                <h6>Catatan :
+                                <h6>Catatan :<br>
                                 1. ini adalah email yang dikirim oleh server STAINAA atas permintaan anda ${new Date()}
                                     untuk mengatur ulang kata kunci pada aplikasi SIAKAD STAINAA.<br>
                                 2. Abaikan email ini jika anda merasa tidak melakukannya.<br>
