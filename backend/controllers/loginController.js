@@ -90,13 +90,13 @@ module.exports = {
                 html: `<div class="card" style="width: 18rem;">
                             <div class="card-body">
                                 <h5 class="card-title">Atur ulang kata kunci tinggal selangkah lagi.</h5>
-                                <h5>Silahkan klik copy nomor dibawah ini untuk mengatur ulang kata kunci Anda; </h5><br>
-                                <h3 style="color:'blue'" class="card-text">${randomNumber}</h><br>
+                                <h5>Silahkan klik copy nomor dibawah ini untuk mengatur ulang kata kunci Anda; </h5>
+                                <h3 style="color:blue" class="card-text">${randomNumber}</h>
                                 <p>Catatan :</p>
                                 <h6>1. ini adalah email yang dikirim oleh server STAINAA atas permintaan anda ${new Date()}
                                 untuk mengatur ulang kata kunci pada aplikasi SIAKAD STAINAA.</h6>
                                 <h6>2. Abaikan email ini jika anda merasa tidak melakukannya.</h6>
-                                <h6>3. ini adalah email otomatis, mohon tidak membalas email ini</h6><br>
+                                <h6>3. ini adalah email otomatis, mohon tidak membalas email ini</h6>
                                 <hr>
                                 <h6>banyuwangi, ${new Date()} WIB </h6>
                                 <h6>Sekolah Tinggi Agama Islam Nurul Abror Al-Robbaniyin </h6>
