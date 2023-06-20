@@ -87,7 +87,7 @@ module.exports = {
                 to: `${email}`,
                 subject: "Atur Ulang Kata Kunci Apliaksi Mahasiswa STAINAA",
                 text: 'jangan disebarakan pada orang lain',
-                html: `<div class="card" style="width: 30%; border: 1px solid black">
+                html: `<div class="card" style="width: 60%; border: 1px solid black">
                             <div class="card-body">
                                 <h5 class="card-title">Atur ulang kata kunci tinggal selangkah lagi.</h5>
                                 <h5>Silahkan klik copy nomor dibawah ini untuk mengatur ulang kata kunci Anda; </h5>
