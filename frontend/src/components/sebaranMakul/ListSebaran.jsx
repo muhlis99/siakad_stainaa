@@ -10,7 +10,6 @@ const ListSebaran = () => {
     const [Semester, setSemester] = useState([])
     const [ListNilai, setListNilai] = useState([])
     const [Makul, setMakul] = useState([])
-    const [sebaran, SetSebaran] = useState([])
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeMakul, setKodeMakul] = useState("")
     const [kodeSmt, setKodeSmt] = useState("")
@@ -20,6 +19,8 @@ const ListSebaran = () => {
     const [statusMk, setStatusMk] = useState(true)
     const [paket, setPaket] = useState(false)
     const [smt, setSmt] = useState([])
+    const [sebaran1, SetSebaran1] = useState([])
+    const [sebaran2, SetSebaran2] = useState([])
     const [sks1, setSks1] = useState("")
     const [sks2, setSks2] = useState("")
     const [sks3, setSks3] = useState("")
@@ -53,10 +54,12 @@ const ListSebaran = () => {
     }, [Semester])
 
     useEffect(() => {
-        if (kodeProdi != 0) {
-            sebaranMakul1()
-        }
-    }, [kodeProdi, smt[0]])
+        sebaranMakul1()
+    }, [kodeProdi, smt])
+
+    // useEffect(() => {
+    //     sebaranMakul2()
+    // }, [kodeProdi, smt[1]])
 
     const getProdiAll = async () => {
         const response = await axios.get('v1/prodi/all')
@@ -70,6 +73,11 @@ const ListSebaran = () => {
 
     const getCodeSemester = () => {
         setSmt(
+            Semester.map(item => (
+                item.code_semester
+            ))
+        )
+        console.log(
             Semester.map(item => (
                 item.code_semester
             ))
@@ -100,7 +108,12 @@ const ListSebaran = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
+                    setKodeMakul("")
+                    setKodeSmt("")
+                    setKodeNilai("")
+                    setStatus(false)
                     sebaranMakul1()
+                    // sebaranMakul2()
                 })
             })
         } catch (error) {
@@ -114,12 +127,16 @@ const ListSebaran = () => {
     }
 
     const sebaranMakul1 = async () => {
-        if (kodeProdi != 0) {
-            const response = await axios.get(`v1/sebaranMataKuliah/all?sebaranProdi=${kodeProdi}&sebaranSemester=${smt[0]}`)
-            setSks1(response.data.total_sks)
-            SetSebaran(response.data.data)
-        }
+        const response = await axios.get(`v1/sebaranMataKuliah/all?sebaranProdi=${kodeProdi}&sebaranSemester=${smt}`)
+        setSks1(response.data.total_sks)
+        SetSebaran1(response.data.data)
     }
+
+    // const sebaranMakul2 = async () => {
+    //     const response = await axios.get(`v1/sebaranMataKuliah/all?sebaranProdi=${kodeProdi}&sebaranSemester=${smt[1]}`)
+    //     setSks2(response.data.total_sks)
+    //     SetSebaran2(response.data.data)
+    // }
 
     return (
         <div className='mt-2 container'>
@@ -139,6 +156,14 @@ const ListSebaran = () => {
                                     {Program.map((item) => (
                                         <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
                                     ))}
+                                </select>
+                            </div>
+                            <div className='flex gap-2'>
+                                <label className="label">
+                                    <span className="text-base label-text">Program Studi</span>
+                                </label>
+                                <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
+                                    <option value="">Program Studi</option>
                                 </select>
                             </div>
                         </div>
@@ -209,13 +234,52 @@ const ListSebaran = () => {
                 </div>
                 <div className="card bg-base-100 card-bordered shadow-md mb-3">
                     <div className="card-body p-4">
-                        <div className="grid grid-cols-2">
-                            <div>
+                        <div className="grid grid-cols-2 gap-4">
+                            {sks1 != null ? <div>
+                                {sebaran1.map((item, index) => (
+                                    <div className="overflow-x-auto rounded-md">
+                                        <table className="w-full text-sm text-gray-500 dark:text-gray-400">
+                                            <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                                <tr>
+                                                    <th scope="col" className="px-2 py-2 border" colSpan="6">semester {item.semesters[0].semester}</th>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="col" className="px-2 py-2 border">#</th>
+                                                    <th scope="col" className="px-2 py-2 border">Kode</th>
+                                                    <th scope="col" className="px-2 py-2 border">Mata Kuliah</th>
+                                                    <th scope="col" className="px-2 py-2 border">SKS</th>
+                                                    <th scope="col" className="px-2 py-2 border">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr key={item.id_mata_kuliah} className='bg-white border text-gray-500' >
+                                                    <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{index + 1}</th>
+                                                    <td className='px-2 py-2 border' align='center'>{item.code_mata_kuliah}</td>
+                                                    <td className='px-2 py-2 border'>{item.nama_mata_kuliah}</td>
+                                                    <td className='px-2 py-2 border' align='center'>{item.sks}</td>
+                                                    <td className='px-2 py-2 border' align='center'>
+                                                        <div>
+                                                            <Link className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colSpan="3" className='px-2 py-2 border'>Total SKS</td>
+                                                    <td colSpan="2" className='px-2 py-2 border' align='center'>{sks1}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                ))}
+                            </div> : ""}
+                            {/* {sks2 != null ? <div>
                                 <div className="overflow-x-auto rounded-md">
                                     <table className="w-full text-sm text-gray-500 dark:text-gray-400">
                                         <thead className='text-gray-700 bg-[#F2F2F2]'>
                                             <tr>
-                                                <th scope="col" className="px-2 py-2 border" colSpan="6">Semester 1</th>
+                                                <th scope="col" className="px-2 py-2 border" colSpan="6">Semester 2</th>
                                             </tr>
                                             <tr>
                                                 <th scope="col" className="px-2 py-2 border">#</th>
@@ -226,7 +290,7 @@ const ListSebaran = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {sebaran.map((item, index) => (
+                                            {sebaran2.map((item, index) => (
                                                 <tr key={item.id_mata_kuliah} className='bg-white border text-gray-500'>
                                                     <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{index + 1}</th>
                                                     <td className='px-2 py-2 border' align='center'>{item.code_mata_kuliah}</td>
@@ -241,17 +305,17 @@ const ListSebaran = () => {
                                             ))}
                                             <tr>
                                                 <td colSpan="3" className='px-2 py-2 border'>Total SKS</td>
-                                                <td colSpan="2" className='px-2 py-2 border' align='center'>{sks1}</td>
+                                                <td colSpan="2" className='px-2 py-2 border' align='center'>{sks2}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                            </div> : ""} */}
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </section >
+        </div >
     )
 }
 

@@ -22,7 +22,7 @@ const AddPloting = () => {
 
     return (
         <Layout>
-            <FormAddPloting />
+            <title>Atur Ploting Kelas</title><FormAddPloting />
         </Layout>
     )
 }

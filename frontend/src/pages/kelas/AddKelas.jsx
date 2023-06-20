@@ -20,6 +20,7 @@ const AddKelas = () => {
 
     return (
         <Layout>
+            <title>Tambah Kelas</title>
             <FormAddKelas />
         </Layout>
     )

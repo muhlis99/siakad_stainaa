@@ -20,6 +20,7 @@ const Dosen = () => {
 
     return (
         <Layout>
+            <title>Dosen</title>
             <ListDosen />
         </Layout>
     )

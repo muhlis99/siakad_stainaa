@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Avatar from "../assets/img/avatar.png"
 import { LogOut, reset } from "../features/authSlice"
+import Swal from 'sweetalert2'
 
 const Navbar = () => {
   const dispatch = useDispatch()
@@ -10,9 +11,21 @@ const Navbar = () => {
   const { user } = useSelector((state) => state.auth)
 
   const logOut = () => {
-    dispatch(LogOut())
-    dispatch(reset())
-    navigate("/login")
+    Swal.fire({
+      title: "Anda Yakin Untuk Keluar?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(LogOut())
+        dispatch(reset())
+        navigate("/login")
+      }
+    })
   }
   return (
     <div className="navbar bg-[#F5F5F5] shadow-md min-h-min py-1 sticky top-0 z-50">
@@ -39,7 +52,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li><Link>Settings</Link></li>
-            <li><button onClick={logOut}>Logout</button></li>
+            <li><button onClick={logOut}>Keluar</button></li>
           </ul>
         </div>
       </div>

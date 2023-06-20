@@ -20,7 +20,7 @@ const PlotingKelas = () => {
 
     return (
         <Layout>
-            <ListPlotingKelas />
+            <title>Ploting Kelas</title><ListPlotingKelas />
         </Layout>
     )
 }

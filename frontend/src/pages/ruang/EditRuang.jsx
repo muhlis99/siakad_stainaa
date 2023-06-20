@@ -20,7 +20,7 @@ const EditRuang = () => {
 
     return (
         <Layout>
-            <FormEditRuang />
+            <title>Edit Ruang</title><FormEditRuang />
         </Layout>
     )
 }

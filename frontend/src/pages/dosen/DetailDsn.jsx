@@ -19,7 +19,10 @@ const DetailDsn = () => {
     }
 
     return (
-        <Layout><DetailDosen /></Layout>
+        <Layout>
+            <title>Detail Dosen</title>
+            <DetailDosen />
+        </Layout>
     )
 }
 

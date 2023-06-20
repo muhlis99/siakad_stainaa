@@ -19,7 +19,10 @@ const Fakultas = () => {
     }
 
     return (
-        <Layout><FakultasList /></Layout>
+        <Layout>
+            <title>Fakultas</title>
+            <FakultasList />
+        </Layout>
     )
 }
 

@@ -20,7 +20,7 @@ const Mahasiswa = () => {
 
     return (
         <Layout>
-            <ListMahasiswa />
+            <title>Mahasiswa</title><ListMahasiswa />
         </Layout>
     )
 }

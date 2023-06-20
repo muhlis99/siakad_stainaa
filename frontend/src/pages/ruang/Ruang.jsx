@@ -19,7 +19,7 @@ const Ruang = () => {
     }
 
     return (
-        <Layout><ListRuang /></Layout>
+        <Layout><title>Ruang</title><ListRuang /></Layout>
     )
 }
 

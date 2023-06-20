@@ -20,7 +20,7 @@ const Semester = () => {
 
     return (
         <Layout>
-            <ListSemester />
+            <title>Semester</title><ListSemester />
         </Layout>
     )
 }

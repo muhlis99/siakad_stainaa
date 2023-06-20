@@ -19,6 +19,7 @@ const ChangePass = () => {
 
     return (
         <>
+            <title>Auth</title>
             <ChangePassword />
         </>
     )

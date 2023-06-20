@@ -20,7 +20,7 @@ const Upload = () => {
 
     return (
         <Layout>
-            <FormUpload />
+            <title>Form Mahasiswa</title><FormUpload />
         </Layout>
     )
 }
