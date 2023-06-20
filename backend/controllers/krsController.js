@@ -125,13 +125,8 @@ module.exports = {
                 code_semester: smt
             }
         })
-        // const dataMakul = makul.map(D => {
-        //     let data1 = { code_mata_kuliah: D.code_mata_kuliah }
-        //     return data1
-        // })
-        // console.log(dataMakul);
         // mengambil nim mahasiswa yang krs paket sesuai semester 
-        const nim = await historyMahasiswa.findAll({
+        const Dtnim = await historyMahasiswa.findAll({
             attributes: ['nim'],
             where: {
                 code_tahun_ajaran: thnAjr,
@@ -139,16 +134,23 @@ module.exports = {
                 code_semester: smt
             }
         })
-        var data = ""
-        nim.map(Dn => {
-            makul.map(D => {
-                data = [{ nim: Dn.nim, code_mata_kuliah: D.code_mata_kuliah }]
-                return data
+        const data_body = makul.map(Dn => {
+            let data2 = Dn.code_mata_kuliah
+            const datas = Dtnim.map(DM => {
+                let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+                return { code_krs: randomNumber, code_mata_kuliah: data2, nim: DM.nim, status_krs: "", status: "aktif" }
             })
+            krsModel.bulkCreate(datas)
         })
-        console.log(data);
-
-
+        if (data_body) {
+            res.status(201).json({
+                message: "data krs paket succes ditambahkan"
+            })
+        } else {
+            res.status(404).json({
+                message: "................."
+            })
+        }
     }
 
 }
