@@ -89,18 +89,18 @@ module.exports = {
                 text: 'jangan disebarakan pada orang lain',
                 html: `<div class="card" style="width: 60%; border: 1px solid black">
                             <div class="card-body">
-                                <h5 class="card-title">Atur ulang kata kunci tinggal selangkah lagi.</h5>
-                                <h5>Silahkan klik copy nomor dibawah ini untuk mengatur ulang kata kunci Anda; </h5>
+                                <h5 class="card-title">Atur ulang kata kunci tinggal selangkah lagi.
+                                Silahkan klik copy nomor dibawah ini untuk mengatur ulang kata kunci Anda; </h5>
                                 <h3 style="color:blue" class="card-text">${randomNumber}</h3>
-                                <h6>Catatan :</h6>
-                                <h6>1. ini adalah email yang dikirim oleh server STAINAA atas permintaan anda ${new Date()}
-                                untuk mengatur ulang kata kunci pada aplikasi SIAKAD STAINAA.</h6>
-                                <h6>2. Abaikan email ini jika anda merasa tidak melakukannya.</h6>
-                                <h6>3. ini adalah email otomatis, mohon tidak membalas email ini</h6>
+                                <h6>Catatan :
+                                1. ini adalah email yang dikirim oleh server STAINAA atas permintaan anda ${new Date()}
+                                    untuk mengatur ulang kata kunci pada aplikasi SIAKAD STAINAA.
+                                2. Abaikan email ini jika anda merasa tidak melakukannya.
+                                3. ini adalah email otomatis, mohon tidak membalas email ini</h6>
                                 <hr>
-                                <h6>banyuwangi, ${new Date()} WIB </h6>
-                                <h6>Sekolah Tinggi Agama Islam Nurul Abror Al-Robbaniyin </h6>
-                                <h6>Pondok Pesantren Nurul Abror Al-Robbaniyin 68453 email : muhlis_ganteng@gmail.com</h6>
+                                <h6>banyuwangi, ${new Date()} WIB 
+                                Sekolah Tinggi Agama Islam Nurul Abror Al-Robbaniyin 
+                                Pondok Pesantren Nurul Abror Al-Robbaniyin 68453 email : muhlis_ganteng@gmail.com</h6>
                             </div>
                         </div>`
             })
