@@ -2,7 +2,6 @@ const kelasModel = require('../models/kelasModel.js')
 const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
-const dosenModel = require('../models/dosenModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
@@ -20,9 +19,6 @@ module.exports = {
                 where: { status: "aktif" }
             }, {
                 model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                model: dosenModel,
                 where: { status: "aktif" }
             }],
             where: {
@@ -54,11 +50,6 @@ module.exports = {
                     },
                     {
                         code_prodi: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        dosen_wali: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -82,9 +73,6 @@ module.exports = {
             }, {
                 model: prodiModel,
                 where: { status: "aktif" }
-            }, {
-                model: dosenModel,
-                where: { status: "aktif" }
             }],
             where: {
                 [Op.or]: [
@@ -115,11 +103,6 @@ module.exports = {
                     },
                     {
                         code_prodi: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        dosen_wali: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -167,15 +150,6 @@ module.exports = {
             }, {
                 model: dosenModel,
                 where: { status: "aktif" }
-            }], include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
             }],
             where: {
                 id_kelas: id,
@@ -200,14 +174,13 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { nama_kelas, identy_kelas, code_jenjang_pendidikan, code_fakultas, code_prodi, dosen_wali } = req.body
+        const { nama_kelas, identy_kelas, code_jenjang_pendidikan, code_fakultas, code_prodi } = req.body
         const namaKelas = nama_kelas + identy_kelas
         const codeKelas = code_prodi + identy_kelas.replace(/ /g, '')
         const kelasUse = await kelasModel.findOne({
             where: {
                 code_kelas: codeKelas,
                 nama_kelas: namaKelas,
-                dosen_wali: dosen_wali
             }
         })
         if (kelasUse) return res.status(401).json({ message: "data kelas sudah ada" })
@@ -217,7 +190,6 @@ module.exports = {
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
-            dosen_wali: dosen_wali,
             status: "aktif",
         }).
             then(result => {
@@ -242,18 +214,6 @@ module.exports = {
             }, {
                 model: prodiModel,
                 where: { status: "aktif" }
-            }, {
-                model: dosenModel,
-                where: { status: "aktif" }
-            }], include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
             }],
             where: {
                 id_kelas: id,
@@ -261,14 +221,13 @@ module.exports = {
             }
         })
         if (!kelasUseOne) return res.status(401).json({ message: "data kelas tidak ditemukan" })
-        const { nama_kelas, identy_kelas, code_jenjang_pendidikan, code_fakultas, code_prodi, dosen_wali } = req.body
+        const { nama_kelas, identy_kelas, code_jenjang_pendidikan, code_fakultas, code_prodi } = req.body
         const namaKelas = nama_kelas + identy_kelas
         const codeKelas = code_prodi + identy_kelas.replace(/ /g, '')
         const kelasUse = await kelasModel.findOne({
             where: {
                 code_kelas: codeKelas,
                 nama_kelas: namaKelas,
-                dosen_wali: dosen_wali
             }
         })
         if (kelasUse) return res.status(401).json({ message: "data kelas sudah ada" })
@@ -278,7 +237,6 @@ module.exports = {
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
-            dosen_wali: dosen_wali,
         }, {
             where: {
                 id_kelas: id
@@ -298,18 +256,6 @@ module.exports = {
         const id = req.params.id
         const kelasModelUse = await kelasModel.findOne({
             include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                model: dosenModel,
-                where: { status: "aktif" }
-            }], include: [{
                 model: jenjangPendidikanModel,
                 where: { status: "aktif" }
             }, {
