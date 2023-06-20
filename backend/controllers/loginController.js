@@ -52,7 +52,7 @@ module.exports = {
 
     forgot: async (req, res, nest) => {
         const email = req.body.email
-        let randomNumber = Math.floor(Math.random() * 1000000)
+        let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
         const emailUse = await user.findOne({
             where: {
                 email: email

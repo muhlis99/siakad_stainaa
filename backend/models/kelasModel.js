@@ -27,9 +27,6 @@ const kelasModel = db.define('kelas', {
     'code_prodi': {
         type: DataTypes.TEXT
     },
-    'dosen_wali': {
-        type: DataTypes.TEXT
-    },
     'status': {
         type: DataTypes.ENUM,
         values: ['aktif', 'tidak']
@@ -52,9 +49,6 @@ kelasModel.hasMany(fakultasModel, { sourceKey: 'code_fakultas', foreignKey: 'cod
 prodiModel.belongsTo(kelasModel, { foreignKey: 'code_prodi' })
 kelasModel.hasMany(prodiModel, { sourceKey: 'code_prodi', foreignKey: 'code_prodi' })
 
-// dosen
-dosenModel.belongsTo(kelasModel, { foreignKey: 'nidn' })
-kelasModel.hasMany(dosenModel, { sourceKey: 'dosen_wali', foreignKey: 'nidn' })
 
 
 module.exports = kelasModel

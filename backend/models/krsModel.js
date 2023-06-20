@@ -14,6 +14,9 @@ const krsModel = db.define('krs', {
     'code_mata_kuliah': {
         type: DataTypes.TEXT,
     },
+    'nim': {
+        type: DataTypes.TEXT,
+    },
     'status_krs': {
         type: DataTypes.ENUM,
         values: ['setuju', 'tidak']

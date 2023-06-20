@@ -11,10 +11,12 @@ module.exports = {
     getAll: async (req, res, next) => {
         const sebaranProdi = req.query.sebaranProdi || null
         const sebaranSemester = parseInt(req.query.sebaranSemester) || 0
+        const sebaranTahunAjaran = parseInt(req.query.sebaranTahunAjaran) || 0
         const totalSKS = await mataKuliahModel.sum('sks', {
             where: {
                 code_prodi: sebaranProdi,
                 code_semester: sebaranSemester,
+                code_tahun_ajaran: sebaranTahunAjaran,
                 status: "aktif"
             }
         })
@@ -54,7 +56,8 @@ module.exports = {
             ],
             where: {
                 code_prodi: sebaranProdi,
-                code_semester: sebaranSemester,
+                // code_semester: sebaranSemester,
+                code_tahun_ajaran: sebaranTahunAjaran,
                 status: "aktif"
             },
             order: [
