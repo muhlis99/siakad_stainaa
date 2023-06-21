@@ -45,6 +45,14 @@ const jadwalKuliahModel = db.define('jadwalKuliah', {
     'status': {
         type: DataTypes.ENUM,
         values: ['aktif', 'tidak']
+    },
+    'lastCode': {
+        type: DataTypes.VIRTUAL,
+        get() {
+            return this.code_jadwal_kuliah;
+        }, set(value) {
+            throw new Error('Do not try to set the `code jadwal kuliah` value!');
+        }
     }
 }, {
     tableName: 'tb_jadwal_kuliah',
