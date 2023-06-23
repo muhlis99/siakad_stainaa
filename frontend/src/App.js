@@ -39,6 +39,7 @@ import MataKuliah from "./pages/mataKuliah/MataKuliah"
 import AddMataKuliah from "./pages/mataKuliah/AddMataKuliah"
 import EditMataKuliah from "./pages/mataKuliah/EditMataKuliah"
 import Sebaran from "./pages/sebaranMakul/Sebaran"
+import KrsList from "./pages/krs/KrsList"
 
 function App() {
   return (
@@ -84,6 +85,7 @@ function App() {
           <Route path="/matakuliah/add" element={<AddMataKuliah />} />
           <Route path="/matakuliah/edit/:idMakul" element={<EditMataKuliah />} />
           <Route path="/sebaran" element={<Sebaran />} />
+          <Route path="/krs" element={<KrsList />} />
         </Routes>
       </BrowserRouter>
     </div>

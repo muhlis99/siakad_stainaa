@@ -65,8 +65,8 @@ const Sidebar = () => {
             <div className="collapse-content grid gap-1 bg-[#2D7F5F] px-0">
               <Link to="/matakuliah" className='text-white flex gap-2 mt-2 hover:bg-[#287155] px-4 py-2'><FaBook /> <span className='text-sm'>Mata Kuliah</span></Link>
               <Link to='/sebaran' className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaTh /> <span className='text-sm'>Sebaran Mata Kuliah</span></Link>
+              <Link to="/krs" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaTasks /> <span className='text-sm'>KRS</span></Link>
               <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBusinessTime /> <span className='text-sm'>Penjadwalan</span></Link>
-              <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaTasks /> <span className='text-sm'>KRS</span></Link>
               <Link to="/ploting" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBuromobelexperte /> <span className='text-sm'>Ploting Kelas</span></Link>
               <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaAddressBook /> <span className='text-sm'>KHS</span></Link>
             </div>
