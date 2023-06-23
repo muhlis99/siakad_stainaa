@@ -4,16 +4,7 @@ exports.validationRuang = [
     check('nama_ruang')
         .notEmpty()
         .withMessage('nama ruang tidak boleh kosong'),
-    check('code_jenjang_pendidikan')
+    check('lokasi')
         .notEmpty()
-        .withMessage('jenjang pendidikan tidak boleh kosong'),
-    check('code_fakultas')
-        .notEmpty()
-        .withMessage('fakultas aktif tidak boleh kosong'),
-    check('code_prodi')
-        .notEmpty()
-        .withMessage('prodi tidak boleh kosong'),
-    check('code_kelas')
-        .notEmpty()
-        .withMessage('kelas tidak boleh kosong')
+        .withMessage('lokasi tidak boleh kosong'),
 ]

@@ -1,3 +1,7 @@
+// controller jadwal kuliah disatukan dengan
+// jadwal kuliah mingguan karena menyesuaikan dengan
+// front end
+
 const { Op } = require("sequelize")
 const jadwalKuliahModel = require('../models/jadwalKuliahModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
@@ -5,6 +9,7 @@ const prodiModel = require('../models/prodiModel.js')
 const semesterModel = require('../models/semesterModel.js')
 const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 const kelasModel = require('../models/kelasModel.js')
+const jadwalKuliahMingguanModel = require("../models/jadwalKuliahMingguan.js")
 
 
 module.exports = {
@@ -190,7 +195,7 @@ module.exports = {
             }
         })
         if (duplicateData) return res.status(401).json({ message: "Data jadwal kuliah sudah ada" })
-        await jadwalKuliahModel.create({
+        const jadwalKuliah = await jadwalKuliahModel.create({
             code_jadwal_kuliah: codeJadwalKuliah,
             code_mata_kuliah: code_mata_kuliah,
             code_prodi: code_prodi,
@@ -202,15 +207,45 @@ module.exports = {
             tanggal_selesai: tanggal_selesai,
             jumlah_pertemuan: jumlah_pertemuan,
             status: "aktif"
-        }).
-            then(result => {
-                res.status(201).json({
-                    message: "Data jadwal kuliah  success Ditambahkan",
-                })
-            }).
-            catch(err => {
-                next(err)
+        })
+        if (jadwalKuliah) {
+            const { dataMingguan } = req.body
+            const lastCodeMakul = jadwalKuliah.lastCode
+            const data_body = dataMingguan.map(record => {
+                function randomAngka(params) {
+                    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    var charLength = chars.length;
+                    var result = ''
+                    for (var i = 0; i < params; i++) {
+                        result += chars.charAt(Math.floor(Math.random() * charLength))
+                    }
+                    return result
+                }
+                let randomNumber = Math.floor(10000 + Math.random() * 90000)
+                let datas = {
+                    code_jadwal_kuliah_mingguan: randomAngka(3) + randomNumber,
+                    code_jadwal_kuliah: lastCodeMakul,
+                    hari: record.hari,
+                    jam_mulai: record.jam_mulai,
+                    jam_selesai: record.jam_selesai,
+                    metode_pembelajaran: record.metode_pembelajaran,
+                    ruang: record.ruang,
+                    status: "aktif",
+                }
+                return datas
             })
+
+            await jadwalKuliahMingguanModel.bulkCreate(data_body).
+                then(result => {
+                    res.status(201).json({
+                        message: "Data jadwal kuliah success Ditambahkan",
+                    })
+                }).
+                catch(err => {
+                    next(err)
+                })
+        }
+
     },
 
     put: async (req, res, next) => {
@@ -218,35 +253,31 @@ module.exports = {
         const { code_mata_kuliah, code_prodi, code_semester, code_tahun_ajaran,
             code_kelas, kapasitas, tanggal_mulai, tanggal_selesai, jumlah_pertemuan } = req.body
         const jadwalKuliahModelUse = await jadwalKuliahModel.findOne({
-            include: [{
-                model: mataKuliahModel,
-                where: { status: "aktif" }
-            }, {
-                model: semesterModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                model: tahunAjaranModel,
-                where: { status: "aktif" }
-            }, {
-                model: kelasModel,
-                where: { status: "aktif" }
-            }],
+            include: [
+                {
+                    model: mataKuliahModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: kelasModel,
+                    where: { status: "aktif" }
+                }],
             where: {
                 id_jadwal_kuliah: id,
                 status: "aktif"
             }
         })
         if (!jadwalKuliahModelUse) return res.status(401).json({ message: "Data jadwal kuliah tidak ditemukan" })
-        // const duplicateData = await jadwalKuliahModel.findOne({
-        //     where: {
-        //         code_jadwal_kuliah: jadwalKuliahModelUse.code_jadwal_kuliah
-        //     }
-        // })
-        // if (duplicateData) return res.status(401).json({ message: "Data jadwal kuliah sudah ada" })
-        await jadwalKuliahModel.update({
+        const jadwalKuliah = await jadwalKuliahModel.update({
             code_mata_kuliah: code_mata_kuliah,
             code_prodi: code_prodi,
             code_semester: code_semester,
@@ -261,15 +292,39 @@ module.exports = {
             where: {
                 id_jadwal_kuliah: id
             }
-        }).
-            then(result => {
-                res.status(201).json({
-                    message: "Data jadwal kuliah success diupdate"
-                })
-            }).
-            catch(err => {
-                next(err)
+        })
+        if (jadwalKuliah) {
+            const { dataMingguan } = req.body
+            const codeJadwalKuliah = jadwalKuliahModelUse.code_jadwal_kuliah
+            const entryCodeJakulMingguan = await jadwalKuliahMingguanModel.findAll({
+                attributes: ['id_jadwal_kuliah_mingguan'],
+                where: {
+                    code_jadwal_kuliah: codeJadwalKuliah
+                }
             })
+            const data_body = dataMingguan.map(record => {
+                let datas = {
+                    hari: record.hari,
+                    jam_mulai: record.jam_mulai,
+                    jam_selesai: record.jam_selesai,
+                    metode_pembelajaran: record.metode_pembelajaran,
+                    ruang: record.ruang,
+                    status: "aktif",
+                }
+                return datas
+            })
+
+            //  belum selesai
+            dataMingguan.forEach(element => {
+                jadwalKuliahMingguanModel.update(element, {
+                    where: {
+                        id_jadwal_kuliah_mingguan: 1
+                    }
+                })
+            });
+
+
+        }
     },
 
     deleteStatus: async (req, res, next) => {
@@ -297,20 +352,37 @@ module.exports = {
             }
         })
         if (!jadwalKuliahModelUse) return res.status(401).json({ message: "Data jadwal kuliah tidak ditemukan" })
-        await jadwalKuliahModel.update({
+        const jadwalKuliah = await jadwalKuliahModel.update({
             status: "tidak"
         }, {
             where: {
                 id_jadwal_kuliah: id
             }
-        }).
-            then(result => {
+        })
+        if (jadwalKuliah) {
+            const codeJadwalKuliah = jadwalKuliahModelUse.code_jadwal_kuliah
+            const entryCodeJakulMingguan = await jadwalKuliahMingguanModel.findAll({
+                attributes: ['id_jadwal_kuliah_mingguan'],
+                where: {
+                    code_jadwal_kuliah: codeJadwalKuliah
+                }
+            })
+            const idJadwalKuliahMingguan = entryCodeJakulMingguan.map(result => {
+                return result.id_jadwal_kuliah_mingguan
+            })
+
+            await jadwalKuliahMingguanModel.update({ status: "tidak" }, {
+                where: {
+                    id_jadwal_kuliah_mingguan: idJadwalKuliahMingguan
+                }
+            }).then(result => {
                 res.status(201).json({
-                    message: "data jadwal kuliah succes dihapus"
+                    message: "Data jadwal kuliah success Dihapus",
                 })
             }).
-            catch(err => {
-                next(err)
-            })
+                catch(err => {
+                    next(err)
+                })
+        }
     }
 }

@@ -1,8 +1,4 @@
-const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
-const fakultasModel = require('../models/fakultasModel.js')
-const prodiModel = require('../models/prodiModel.js')
 const ruangModel = require('../models/ruangModel.js')
-const kelasModel = require('../models/kelasModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
@@ -12,19 +8,6 @@ module.exports = {
         const search = req.query.search || ""
         const offset = (currentPage - 1) * perPage
         const totalPage = await ruangModel.count({
-            include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                model: kelasModel,
-                where: { status: "aktif" }
-            }],
             where: {
                 [Op.or]: [
                     {
@@ -43,22 +26,7 @@ module.exports = {
                         }
                     },
                     {
-                        code_jenjang_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_fakultas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_prodi: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_kelas: {
+                        lokasi: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -73,19 +41,6 @@ module.exports = {
         })
         const totalItems = Math.ceil(totalPage / perPage)
         await ruangModel.findAll({
-            include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                model: kelasModel,
-                where: { status: "aktif" }
-            }],
             where: {
                 [Op.or]: [
                     {
@@ -104,22 +59,7 @@ module.exports = {
                         }
                     },
                     {
-                        code_jenjang_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_fakultas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_prodi: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_kelas: {
+                        lokasi: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -155,19 +95,6 @@ module.exports = {
     getById: async (req, res, next) => {
         const id = req.params.id
         await ruangModel.findOne({
-            include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                model: kelasModel,
-                where: { status: "aktif" }
-            }],
             where: {
                 id_ruang: id,
                 status: "aktif"
@@ -191,8 +118,8 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { nama_ruang, identy_ruang, code_jenjang_pendidikan, code_fakultas, code_prodi, code_kelas } = req.body
-        const codeRuang = code_kelas + identy_ruang.replace(/ /g, '')
+        const { nama_ruang, identy_ruang, lokasi, } = req.body
+        const codeRuang = identy_ruang.replace(/ /g, '')
         const namaRuang = nama_ruang + identy_ruang
         const ruangUse = await ruangModel.findOne({
             where: {
@@ -202,12 +129,9 @@ module.exports = {
         })
         if (ruangUse) return res.status(401).json({ message: "data ruang sudah ada" })
         await ruangModel.create({
-            nama_ruang: namaRuang,
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: code_fakultas,
-            code_prodi: code_prodi,
             code_ruang: codeRuang,
-            code_kelas: code_kelas,
+            nama_ruang: namaRuang,
+            lokasi: lokasi,
             status: "aktif",
         }).
             then(result => {
@@ -223,27 +147,14 @@ module.exports = {
     put: async (req, res, next) => {
         const id = req.params.id
         const ruangUseOne = await ruangModel.findOne({
-            include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                model: kelasModel,
-                where: { status: "aktif" }
-            }],
             where: {
                 id_ruang: id,
                 status: "aktif"
             }
         })
         if (!ruangUseOne) return res.status(401).json({ message: "data ruang tidak ditemukan" })
-        const { nama_ruang, identy_ruang, code_jenjang_pendidikan, code_fakultas, code_prodi, code_kelas } = req.body
-        const codeRuang = code_kelas + identy_ruang.replace(/ /g, '')
+        const { nama_ruang, identy_ruang, lokasi, } = req.body
+        const codeRuang = nama_ruang + identy_ruang.replace(/ /g, '')
         const namaRuang = nama_ruang + identy_ruang
         const ruangUse = await ruangModel.findOne({
             where: {
@@ -254,11 +165,7 @@ module.exports = {
         if (ruangUse) return res.status(401).json({ message: "data ruang sudah ada" })
         await ruangModel.update({
             nama_ruang: namaRuang,
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: code_fakultas,
-            code_prodi: code_prodi,
-            code_kelas: code_kelas,
-            code_ruang: codeRuang,
+            lokasi: lokasi,
         }, {
             where: {
                 id_ruang: id
@@ -277,19 +184,6 @@ module.exports = {
     delete: async (req, res, next) => {
         const id = req.params.id
         const ruangModelUse = await ruangModel.findOne({
-            include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                model: kelasModel,
-                where: { status: "aktif" }
-            }],
             where: {
                 id_ruang: id,
                 status: "aktif"
