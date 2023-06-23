@@ -25,8 +25,6 @@ import Upload2 from "./pages/dosen/Upload2"
 import DetailDsn from "./pages/dosen/DetailDsn"
 import PrintDosen from "./components/dosen/PrintDosen"
 import Ruang from "./pages/ruang/Ruang"
-import AddRuang from "./pages/ruang/AddRuang"
-import EditRuang from "./pages/ruang/EditRuang"
 import Kelas from "./pages/kelas/Kelas"
 import AddKelas from "./pages/kelas/AddKelas"
 import EditKelas from "./pages/kelas/EditKelas"
@@ -71,8 +69,6 @@ function App() {
           <Route path="/dosen/detail/:idDsn" element={<DetailDsn />} />
           <Route path="/dosen/print/:idDsn" element={<PrintDosen />} />
           <Route path="/ruang" element={<Ruang />} />
-          <Route path="/ruang/add" element={<AddRuang />} />
-          <Route path="/ruang/edit/:idRng" element={<EditRuang />} />
           <Route path="/kelas" element={<Kelas />} />
           <Route path="/kelas/add" element={<AddKelas />} />
           <Route path="/kelas/edit/:idKls" element={<EditKelas />} />

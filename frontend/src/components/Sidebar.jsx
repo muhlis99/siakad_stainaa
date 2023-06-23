@@ -66,8 +66,9 @@ const Sidebar = () => {
               <Link to="/matakuliah" className='text-white flex gap-2 mt-2 hover:bg-[#287155] px-4 py-2'><FaBook /> <span className='text-sm'>Mata Kuliah</span></Link>
               <Link to='/sebaran' className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaTh /> <span className='text-sm'>Sebaran Mata Kuliah</span></Link>
               <Link to="/krs" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaTasks /> <span className='text-sm'>KRS</span></Link>
+              <Link to="/kelas" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><SiOpslevel /> <span className='text-sm'>Kelas Kuliah</span></Link>
               <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBusinessTime /> <span className='text-sm'>Penjadwalan</span></Link>
-              <Link to="/ploting" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBuromobelexperte /> <span className='text-sm'>Ploting Kelas</span></Link>
+              {/* <Link to="/ploting" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBuromobelexperte /> <span className='text-sm'>Ploting Kelas</span></Link> */}
               <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaAddressBook /> <span className='text-sm'>KHS</span></Link>
             </div>
           </div>
@@ -84,7 +85,6 @@ const Sidebar = () => {
               <Link to="/prodi" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBookmark /> <span className='text-sm'>Prodi</span></Link>
               <Link to="/dosen" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaChalkboardTeacher /> <span className='text-sm'>Dosen</span></Link>
               <Link to="/mahasiswa" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaUserGraduate /> <span className='text-sm'>Mahasiswa</span></Link>
-              <Link to="/kelas" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><SiOpslevel /> <span className='text-sm'>Kelas</span></Link>
               <Link to="/ruang" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><SiHomeassistantcommunitystore /> <span className='text-sm'>Ruang</span></Link>
             </div>
           </div>
