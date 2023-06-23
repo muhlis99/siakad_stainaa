@@ -75,7 +75,6 @@ module.exports = {
             data: [{
                 tahun: thnAjar.tahun_ajaran,
                 Paketmakul: Pmakul.count,
-                Paketkelas: "dalam tahap davelope",
                 semester: Pmakul.rows,
                 jmlPaketMahasiswa: jmlMahasiswa.count,
                 jmlValidasiMahasiswa: jumlah,
@@ -140,6 +139,7 @@ module.exports = {
                 let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
                 return { code_krs: randomNumber, code_mata_kuliah: data2, nim: DM.nim, status_krs: "", status: "aktif" }
             })
+            console.log(datas);
             krsModel.bulkCreate(datas)
         })
         if (data_body) {

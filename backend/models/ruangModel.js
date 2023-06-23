@@ -1,9 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const db = require('../config/database.js')
-const jenjangPendidikanModel = require('./jenjangPendidikanModel.js')
-const fakultasModel = require('./fakultasModel.js')
-const prodiModel = require('./prodiModel.js')
-const kelasModel = require('./kelasModel.js')
 
 const ruangModel = db.define('ruang', {
     'id_ruang': {
@@ -17,17 +13,8 @@ const ruangModel = db.define('ruang', {
     'nama_ruang': {
         type: DataTypes.TEXT
     },
-    'code_jenjang_pendidikan': {
+    'lokasi': {
         type: DataTypes.TEXT,
-    },
-    'code_fakultas': {
-        type: DataTypes.TEXT
-    },
-    'code_prodi': {
-        type: DataTypes.TEXT
-    },
-    'code_kelas': {
-        type: DataTypes.TEXT
     },
     'status': {
         type: DataTypes.ENUM,
@@ -41,17 +28,5 @@ const ruangModel = db.define('ruang', {
     paranoid: true,
 })
 
-// jenjang pendidikan
-jenjangPendidikanModel.belongsTo(ruangModel, { foreignKey: 'code_jenjang_pendidikan' })
-ruangModel.hasMany(jenjangPendidikanModel, { sourceKey: 'code_jenjang_pendidikan', foreignKey: 'code_jenjang_pendidikan' })
-// fakultas
-fakultasModel.belongsTo(ruangModel, { foreignKey: 'code_fakultas' })
-ruangModel.hasMany(fakultasModel, { sourceKey: 'code_fakultas', foreignKey: 'code_fakultas' })
-// prodi
-prodiModel.belongsTo(ruangModel, { foreignKey: 'code_prodi' })
-ruangModel.hasMany(prodiModel, { sourceKey: 'code_prodi', foreignKey: 'code_prodi' })
-// kelas
-kelasModel.belongsTo(ruangModel, { foreignKey: 'code_kelas' })
-ruangModel.hasMany(kelasModel, { sourceKey: 'code_kelas', foreignKey: 'code_kelas' })
 
 module.exports = ruangModel
