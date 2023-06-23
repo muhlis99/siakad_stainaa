@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const db = require('../config/database.js')
 const mahasiswaModel = require('./mahasiswaModel.js')
-const kelasModel = require('./kelasModel.js')
+const kelasModel = require('./kelasKuliahModel.js')
 const ruangModel = require('./ruangModel.js')
 const semesterModel = require('./semesterModel.js')
 

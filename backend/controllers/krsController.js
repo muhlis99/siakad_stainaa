@@ -128,7 +128,7 @@ module.exports = {
         const Dtnim = await historyMahasiswa.findAll({
             attributes: ['nim'],
             where: {
-                code_tahun_ajaran: thnAjr,
+                // code_tahun_ajaran: thnAjr,
                 code_prodi: prd,
                 code_semester: smt
             }
@@ -137,9 +137,14 @@ module.exports = {
             let data2 = Dn.code_mata_kuliah
             const datas = Dtnim.map(DM => {
                 let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
-                return { code_krs: randomNumber, code_mata_kuliah: data2, nim: DM.nim, status_krs: "", status: "aktif" }
+                return {
+                    code_krs: randomNumber,
+                    code_mata_kuliah: data2,
+                    nim: DM.nim,
+                    status_krs: "",
+                    status: "aktif"
+                }
             })
-            console.log(datas);
             krsModel.bulkCreate(datas)
         })
         if (data_body) {

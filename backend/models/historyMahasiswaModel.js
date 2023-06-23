@@ -14,7 +14,10 @@ const historyMahasiswa = db.define('historyMahasiswa', {
     'code_semester': {
         type: DataTypes.TEXT
     },
-    'code_tahun_ajaran': {
+    'code_jenjang_pendidikan': {
+        type: DataTypes.TEXT
+    },
+    'code_fakultas': {
         type: DataTypes.TEXT
     },
     'code_prodi': {

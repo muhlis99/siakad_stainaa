@@ -1,5 +1,5 @@
 const plotingKelasModel = require('../models/plotingKelasModel.js')
-const kelasModel = require('../models/kelasModel.js')
+const kelasModel = require('../models/kelasKuliahModel.js')
 const ruangModel = require('../models/ruangModel.js')
 const semesterModel = require('../models/semesterModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
