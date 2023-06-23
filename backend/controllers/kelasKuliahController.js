@@ -1,7 +1,10 @@
-const kelasModel = require('../models/kelasModel.js')
+const kelasModel = require('../models/kelasKuliahModel.js')
 const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
+const mataKuliahModel = require('../models/mataKuliahModel.js')
+const historyMahasiswaModel = require('../models/historyMahasiswaModel.js')
+const krsModel = require('../models/krsModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
@@ -147,9 +150,6 @@ module.exports = {
             }, {
                 model: prodiModel,
                 where: { status: "aktif" }
-            }, {
-                model: dosenModel,
-                where: { status: "aktif" }
             }],
             where: {
                 id_kelas: id,
@@ -172,34 +172,55 @@ module.exports = {
                 next(err)
             })
     },
+    //  jumlah mhs semester
+    jumlahMhs: async (req, res, next) => {
+        const { smt, jnjPen, fkts, prd } = req.params
+        await historyMahasiswaModel.findAndCountAll(
+            {
+                where: {
+                    code_jenjang_pendidikan: jnjPen,
+                    code_fakultas: fkts,
+                    code_prodi: prd,
+                    code_semester: smt,
+                    status: "aktif"
+                }
+            }
+        ).then(all => {
+            res.status(201).json({
+                message: "Data jumlah mahasiswa success Ditambahkan",
+                data: all.count
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
 
+
+    //  ploting kelas
     post: async (req, res, next) => {
-        const { nama_kelas, identy_kelas, code_jenjang_pendidikan, code_fakultas, code_prodi } = req.body
-        const namaKelas = nama_kelas + identy_kelas
-        const codeKelas = code_prodi + identy_kelas.replace(/ /g, '')
-        const kelasUse = await kelasModel.findOne({
+        const { code_jenjang_pendidikan, code_fakultas,
+            code_prodi, code_semester, code_tahun_ajaran,
+            nama_kelas, kapasitas } = req.body
+        const makul = await mataKuliahModel.findAll({
+            attributes: ['code_mata_kuliah'],
             where: {
-                code_kelas: codeKelas,
-                nama_kelas: namaKelas,
+                code_semester: code_semester,
+                status_makul: "paket"
             }
         })
-        if (kelasUse) return res.status(401).json({ message: "data kelas sudah ada" })
-        await kelasModel.create({
-            code_kelas: codeKelas,
-            nama_kelas: namaKelas,
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: code_fakultas,
-            code_prodi: code_prodi,
-            status: "aktif",
-        }).
-            then(result => {
-                res.status(201).json({
-                    message: "Data kelas success Ditambahkan",
-                })
-            }).
-            catch(err => {
-                next(err)
+
+        makul.map(M => {
+            const Mkul = M.code_mata_kuliah
+            const MM = nama_kelas.map(K => {
+                let D = {
+                    code_mata_kuliah: Mkul,
+                    nama_kelas: K
+                }
+                return D
             })
+            kelasModel.bulkCreate(MM)
+        })
+
     },
 
     put: async (req, res, next) => {

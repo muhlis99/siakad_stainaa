@@ -392,7 +392,7 @@ module.exports = {
 
     createForm4: async (req, res, next) => {
         const { nik_wali, nama_wali, pekerjaan_wali, penghasilan_wali, pendidikan_wali, tanggal_w, bulan_w, tahun_w,
-            code_jenjang_pendidikan, code_fakultas, code_prodi, mulai_semester, code_tahun_ajaran
+            code_jenjang_pendidikan, code_fakultas, code_prodi, mulai_semester
         } = req.body
         const id = req.params.id
         const tanggal_lahir_wali = tahun_w + "-" + bulan_w + "-" + tanggal_w
@@ -466,7 +466,8 @@ module.exports = {
             await historyMahasiswa.create({
                 nim: mahasiswaUse.nim,
                 code_semester: mulai_semester,
-                code_tahun_ajaran: code_tahun_ajaran,
+                code_jenjang_pendidikan: code_jenjang_pendidikan,
+                code_fakultas: code_fakultas,
                 code_prodi: code_prodi,
                 status: "aktif"
             })

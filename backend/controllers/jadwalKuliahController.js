@@ -8,7 +8,7 @@ const mataKuliahModel = require('../models/mataKuliahModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const semesterModel = require('../models/semesterModel.js')
 const tahunAjaranModel = require('../models/tahunAjaranModel.js')
-const kelasModel = require('../models/kelasModel.js')
+const kelasModel = require('../models/kelasKuliahModel.js')
 const jadwalKuliahMingguanModel = require("../models/jadwalKuliahMingguan.js")
 
 

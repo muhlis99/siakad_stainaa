@@ -4,7 +4,7 @@ const mataKuliahModel = require('./mataKuliahModel.js')
 const prodiModel = require('./prodiModel.js')
 const semesterModel = require('./semesterModel.js')
 const tahunAjaranModel = require('./tahunAjaranModel.js')
-const kelasModel = require('./kelasModel.js')
+const kelasModel = require('./kelasKuliahModel.js')
 
 const jadwalKuliahModel = db.define('jadwalKuliah', {
     'id_jadwal_kuliah': {
