@@ -221,7 +221,7 @@ const ListSebaran = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-cols-2 gap-4">
                             {Sebaran.map((item, index) => (
-                                <div key={item.id_mata_kuliah}>
+                                <div key={index + 1}>
                                     <div className="overflow-x-auto rounded-md">
                                         <table className="w-full text-sm text-gray-500 dark:text-gray-400">
                                             <thead className='text-gray-700 bg-[#F2F2F2]'>
