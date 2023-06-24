@@ -1,6 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const db = require('../config/database.js')
-const dosenModel = require('./dosenModel.js')
 const semesterModel = require('./semesterModel.js')
 const prodiModel = require('./prodiModel.js')
 const fakultasModel = require('./fakultasModel.js')
@@ -52,9 +51,6 @@ const mataKuliahModel = db.define('mataKuliah', {
         type: DataTypes.TEXT,
     },
     'sks_simulasi': {
-        type: DataTypes.TEXT,
-    },
-    'metode_pembelajaran': {
         type: DataTypes.TEXT,
     },
     'tanggal_aktif': {
