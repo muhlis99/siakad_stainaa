@@ -4,6 +4,7 @@ const jenjangPendidikanModel = require('./jenjangPendidikanModel.js')
 const fakultasModel = require('./fakultasModel.js')
 const prodiModel = require('./prodiModel.js')
 const mataKuliahModel = require('./mataKuliahModel.js')
+const semesterModel = require('./semesterModel.js')
 
 const kelasKuliahModel = db.define('kelas', {
     'id_kelas': {
@@ -35,6 +36,9 @@ const kelasKuliahModel = db.define('kelas', {
     'code_mata_kuliah': {
         type: DataTypes.TEXT
     },
+    'code_semester': {
+        type: DataTypes.TEXT
+    },
     'status': {
         type: DataTypes.ENUM,
         values: ['aktif', 'tidak']
@@ -56,9 +60,12 @@ kelasKuliahModel.hasMany(fakultasModel, { sourceKey: 'code_fakultas', foreignKey
 // prodi
 prodiModel.belongsTo(kelasKuliahModel, { foreignKey: 'code_prodi' })
 kelasKuliahModel.hasMany(prodiModel, { sourceKey: 'code_prodi', foreignKey: 'code_prodi' })
-// prodi
+// mata kuliah
 mataKuliahModel.belongsTo(kelasKuliahModel, { foreignKey: 'code_mata_kuliah' })
 kelasKuliahModel.hasMany(mataKuliahModel, { sourceKey: 'code_mata_kuliah', foreignKey: 'code_mata_kuliah' })
+// semester
+semesterModel.belongsTo(kelasKuliahModel, { foreignKey: 'code_semester' })
+kelasKuliahModel.hasMany(semesterModel, { sourceKey: 'code_semester', foreignKey: 'code_semester' })
 
 
 module.exports = kelasKuliahModel

@@ -43,17 +43,19 @@ module.exports = {
         // validasi jumlah mahasiswa yang memaket mata kuliah
         var i = jmlMahasiswa.rows
         const vmakul = i.map(v => { return v.nim })
-        const jmlPaketMahasiswa = krsModel.findAndCountAll({
+        const jmlPaketMahasiswa = await krsModel.findAndCountAll({
+            group: ['nim'],
             where: {
                 nim: vmakul
-            }
+            },
         })
         var jumlah = ""
-        if ((await jmlPaketMahasiswa).count === 0) {
+        if (jmlPaketMahasiswa.count === 0) {
             jumlah = 0
         } else {
-            jumlah = (await jmlPaketMahasiswa).count
+            jumlah = jmlPaketMahasiswa.count[0].count
         }
+        console.log(jumlah);
         // isi field keterangan 
         var Pkelas = '0'
         var keterangan = ""
@@ -81,8 +83,8 @@ module.exports = {
                 tahun: thnAjar.tahun_ajaran,
                 Paketmakul: Pmakul.count,
                 semester: Pmakul.rows,
-                jmlPaketMahasiswa: jmlMahasiswa.count,
-                jmlValidasiMahasiswa: jumlah,
+                jmlPaketMahasiswa: jumlah,
+                jmlValidasiMahasiswa: jmlMahasiswa.count,
                 keterangan: keterangan,
                 code_makul: Mmakul,
                 nim: i
