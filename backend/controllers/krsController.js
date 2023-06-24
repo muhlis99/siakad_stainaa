@@ -56,9 +56,9 @@ module.exports = {
         }
         // isi field keterangan 
         var keterangan = ""
-        if (jumlah === jmlPaketMahasiswa) {
+        if (jumlah === jmlPaketMahasiswa.count) {
             keterangan = "paket selesai"
-        } else if (jumlah != jmlPaketMahasiswa) {
+        } else if (jumlah != jmlPaketMahasiswa.count) {
             keterangan = "paket belum"
         } else {
             keterangan = "......"
