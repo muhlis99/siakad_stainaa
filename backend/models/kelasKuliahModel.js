@@ -39,6 +39,9 @@ const kelasKuliahModel = db.define('kelas', {
     'code_semester': {
         type: DataTypes.TEXT
     },
+    'code_tahun_ajaran': {
+        type: DataTypes.TEXT
+    },
     'status': {
         type: DataTypes.ENUM,
         values: ['aktif', 'tidak']

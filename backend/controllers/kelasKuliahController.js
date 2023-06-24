@@ -23,13 +23,14 @@ module.exports = {
                 where: { status: "aktif" }
             }],
             where: {
+                code_tahun_ajaran: codeThnAjr,
                 code_semester: codeSmt,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
                 status: "aktif"
             },
-            offset: offset,
-            limit: perPage,
             order: [
-                ["id_kelas", "DESC"]
+                ["id_mata_kuliah", "DESC"]
             ]
         }).
             then(result => {
@@ -89,17 +90,15 @@ module.exports = {
     //  jumlah mhs semester
     jumlahMhs: async (req, res, next) => {
         const { smt, jnjPen, fkts, prd } = req.params
-        await historyMahasiswaModel.findAndCountAll(
-            {
-                where: {
-                    code_jenjang_pendidikan: jnjPen,
-                    code_fakultas: fkts,
-                    code_prodi: prd,
-                    code_semester: smt,
-                    status: "aktif"
-                }
+        await historyMahasiswaModel.findAndCountAll({
+            where: {
+                code_jenjang_pendidikan: jnjPen,
+                code_fakultas: fkts,
+                code_prodi: prd,
+                code_semester: smt,
+                status: "aktif"
             }
-        ).then(all => {
+        }).then(all => {
             res.status(201).json({
                 message: "Data jumlah mahasiswa success Ditambahkan",
                 data: all.count
@@ -118,6 +117,7 @@ module.exports = {
                 code_semester: code_semester,
                 code_fakultas: code_fakultas,
                 code_prodi: code_prodi,
+                code_tahun_ajaran: code_tahun_ajaran,
                 status: "aktif"
             }
         })
@@ -127,6 +127,9 @@ module.exports = {
             attributes: ['code_mata_kuliah'],
             where: {
                 code_semester: code_semester,
+                code_fakultas: code_fakultas,
+                code_prodi: code_prodi,
+                code_tahun_ajaran: code_tahun_ajaran,
                 status_makul: "paket"
             }
         })
@@ -143,6 +146,9 @@ module.exports = {
                         model: mataKuliahModel,
                         where: {
                             code_semester: code_semester,
+                            code_fakultas: code_fakultas,
+                            code_prodi: code_prodi,
+                            code_tahun_ajaran: code_tahun_ajaran,
                             status_makul: "paket"
                         }
                     }],
