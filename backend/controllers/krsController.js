@@ -18,7 +18,7 @@ module.exports = {
         })
         // mengambil data dari tb mata kuliah
         // untuk jumlah mata kuliah paket dan semesternya 
-        const Pmakul = await mataKuliahModel.findAndCountAll({
+        const paketmakul = await mataKuliahModel.findAndCountAll({
             where: {
                 code_tahun_ajaran: tahunAjaran,
                 code_prodi: prodi,
@@ -28,66 +28,49 @@ module.exports = {
             attributes: ['code_semester',],
             include: [{ model: semesterModel, attributes: ['semester'] }]
         })
-        var i = Pmakul.rows
-        const Jmakul = i.map(jhr => { return jhr.code_semester })
+        var i = paketmakul.rows
+        const Jmlmakul = i.map(jhr => { return jhr.code_semester })
         // jumlah mahasiswa yang memakate mata kuliah
         const jmlMahasiswa = await historyMahasiswa.findAndCountAll({
-
             where: {
-                code_semester: Jmakul,
+                code_semester: Jmlmakul,
                 // code_tahun_ajaran: tahunAjaran,
                 code_prodi: prodi
             },
             attributes: ['nim']
         })
         // validasi jumlah mahasiswa yang memaket mata kuliah
-        var i = jmlMahasiswa.rows
-        const vmakul = i.map(v => { return v.nim })
+        var t = jmlMahasiswa.rows
+        const validasimakul = t.map(v => { return v.nim })
         const jmlPaketMahasiswa = await krsModel.findAndCountAll({
-            group: ['nim'],
             where: {
-                nim: vmakul
+                nim: validasimakul
             },
+            group: ['nim'],
         })
         var jumlah = ""
         if (jmlPaketMahasiswa.count === 0) {
             jumlah = 0
         } else {
-            jumlah = jmlPaketMahasiswa.count[0].count
+            jumlah = jmlPaketMahasiswa.count
         }
-        console.log(jumlah);
         // isi field keterangan 
-        var Pkelas = '0'
         var keterangan = ""
-        if (Pkelas === Pmakul.count) {
-            keterangan = "paket kurang"
-        } else if (jumlah === (await jmlPaketMahasiswa).count) {
+        if (jumlah === jmlPaketMahasiswa) {
             keterangan = "paket selesai"
-        } else if (jumlah != (await jmlPaketMahasiswa).count) {
-            keterangan = "paket kurang"
+        } else if (jumlah != jmlPaketMahasiswa) {
+            keterangan = "paket belum"
         } else {
-            keterangan = "kelas kurang"
+            keterangan = "......"
         }
-        //  mengambil seluruh code mata kuliah paket sesuai semester
-        const Mmakul = await mataKuliahModel.findAll({
-            where: {
-                code_tahun_ajaran: tahunAjaran,
-                code_prodi: prodi,
-                status_makul: "paket",
-                code_semester: Jmakul
-            },
-            attributes: ['code_semester', 'code_mata_kuliah'],
-        })
         res.status(201).json({
             data: [{
                 tahun: thnAjar.tahun_ajaran,
-                Paketmakul: Pmakul.count,
-                semester: Pmakul.rows,
-                jmlPaketMahasiswa: jumlah,
-                jmlValidasiMahasiswa: jmlMahasiswa.count,
+                Paketmakul: paketmakul.count,
+                semester: paketmakul.rows,
+                jumlahMahasiswaPaket: jumlah,
+                jumlahTotalMahasiswa: jmlMahasiswa.count,
                 keterangan: keterangan,
-                code_makul: Mmakul,
-                nim: i
             }]
         })
     },
