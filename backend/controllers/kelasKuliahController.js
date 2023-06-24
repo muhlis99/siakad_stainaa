@@ -9,16 +9,20 @@ const krsModel = require('../models/krsModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
-    getAll: async (req, res, next) => {
-        const { codeSmt, codeFks, codePrd, codeThnAjr } = req.params
+    getAllMatakuliah: async (req, res, next) => {
+        const { codeThnAjr, codeSmt, codeFks, codePrd } = req.params
         await mataKuliahModel.findAll({
+            attributes: ['id_mata_kuliah', 'code_mata_kuliah', 'nama_mata_kuliah', 'sks'],
             include: [{
+                attributes: ['code_jenjang_pendidikan'],
                 model: jenjangPendidikanModel,
                 where: { status: "aktif" }
             }, {
+                attributes: ['code_fakultas'],
                 model: fakultasModel,
                 where: { status: "aktif" }
             }, {
+                attributes: ['code_prodi'],
                 model: prodiModel,
                 where: { status: "aktif" }
             }],
@@ -49,18 +53,23 @@ module.exports = {
         const codeMakul = req.params.codeMakul
         await kelasModel.findAll({
             include: [{
+                attributes: ['code_jenjang_pendidikan'],
                 model: jenjangPendidikanModel,
                 where: { status: "aktif" }
             }, {
+                attributes: ['code_fakultas'],
                 model: fakultasModel,
                 where: { status: "aktif" }
             }, {
+                attributes: ['code_prodi'],
                 model: prodiModel,
                 where: { status: "aktif" }
             }, {
+                attributes: ['code_mata_kuliah'],
                 model: mataKuliahModel,
                 where: { status: "aktif" }
             }, {
+                attributes: ['code_semester'],
                 model: semesterModel,
                 where: { status: "aktif" }
             }],

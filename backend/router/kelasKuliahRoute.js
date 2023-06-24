@@ -4,7 +4,7 @@ const kelasKuliahController = require('../controllers/kelasKuliahController.js')
 const { validationKelas } = require('../validation/validationKelas.js')
 const { validationRequest } = require('../validation/validationRequest.js')
 
-route.get('/all/:codeThnAjr/:codesmt/:codeFks/:codePrd', kelasKuliahController.getAll)
+route.get('/allMatakuliah/:codeThnAjr/:codeSmt/:codeFks/:codePrd', kelasKuliahController.getAllMatakuliah)
 route.get('/getKelasByMakul/:codeMakul', kelasKuliahController.getKelasByMakul)
 route.get('/jumlahMhs/:smt/:jnjPen/:fkts/:prd', kelasKuliahController.jumlahMhs)
 route.post('/create', kelasKuliahController.post)
