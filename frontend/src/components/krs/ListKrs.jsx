@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { FaCheck, FaSearch, FaTimes, } from 'react-icons/fa'
+import Swal from 'sweetalert2'
 
 const ListKrs = () => {
     const [Program, setProgram] = useState([])
@@ -46,6 +47,28 @@ const ListKrs = () => {
 
     const modalClose = () => {
         document.getElementById('my-modal').checked = false
+    }
+
+    const paketkan = async (e, f, g) => {
+        try {
+            await axios.post(
+                `v1/krs/create/${e}/${f}/${g}`
+            ).then(function (response) {
+                Swal.fire({
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getKrsAll()
+                })
+            })
+        } catch (error) {
+            if (error.response) {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
+        }
     }
 
     return (
@@ -149,13 +172,13 @@ const ListKrs = () => {
                                         <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{item.semester[0].semesters[0].semester}</th>
                                         <td className='px-2 py-2 border' align='center'>{item.tahun}</td>
                                         <td className='px-2 py-2 border' align='center'>{item.Paketmakul[0].count}</td>
-                                        <td className='px-2 py-2 border' align='center'>{item.jmlValidasiMahasiswa}</td>
-                                        <td className='px-2 py-2 border' align='center'>{item.jmlPaketMahasiswa}</td>
-                                        <td className='px-2 py-2 border' align='center'>{item.keterangan}</td>
+                                        <td className='px-2 py-2 border' align='center'>{item.jumlahTotalMahasiswa}</td>
+                                        <td className='px-2 py-2 border' align='center'>{item.jumlahMahasiswaPaket[0] ? item.jumlahMahasiswaPaket[0].count : item.jumlahMahasiswaPaket}</td>
+                                        <td className='px-2 py-2 border' align='center'>{item.keterangan == 'paket belum' ? <span className='badge badge-sm badge-jingga opacity-80'>Paket Belum</span> : <span className='badge badge-sm badge-default'>Paket Selesai</span>}</td>
                                         <td className='px-2 py-2 border' align='center'>
                                             <div>
                                                 <div className="tooltip" data-tip="Lihat MK Paket"><button className="btn btn-xs btn-circle text-white btn-blue mr-1" onClick={() => getViewKrs(item.Paketmakul[0].code_semester.substr(0, 4), kodeProdi, item.Paketmakul[0].code_semester)} title='Lihat MK Paket'><FaSearch /></button></div>
-                                                <div className="tooltip" data-tip="Paketkan Mahasiswa"><button className="btn btn-xs btn-circle text-white btn-default" title='Paketkan Mahasiswa'><FaCheck /></button></div>
+                                                <div className="tooltip" data-tip="Paketkan Mahasiswa"><button className="btn btn-xs btn-circle text-white btn-default" onClick={() => paketkan(item.Paketmakul[0].code_semester.substr(0, 4), kodeProdi, item.Paketmakul[0].code_semester)} title='Paketkan Mahasiswa'><FaCheck /></button></div>
                                             </div>
                                         </td>
                                     </tr>
