@@ -4,16 +4,14 @@ const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
 const historyMahasiswaModel = require('../models/historyMahasiswaModel.js')
+const semesterModel = require('../models/semesterModel.js')
 const krsModel = require('../models/krsModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
     getAll: async (req, res, next) => {
-        const currentPage = parseInt(req.query.page) || 1
-        const perPage = parseInt(req.query.perPage) || 10
-        const search = req.query.search || ""
-        const offset = (currentPage - 1) * perPage
-        const totalPage = await kelasModel.count({
+        const { codeSmt, codeFks, codePrd, codeThnAjr } = req.params
+        await mataKuliahModel.findAll({
             include: [{
                 model: jenjangPendidikanModel,
                 where: { status: "aktif" }
@@ -25,96 +23,7 @@ module.exports = {
                 where: { status: "aktif" }
             }],
             where: {
-                [Op.or]: [
-                    {
-                        id_kelas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_kelas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama_kelas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_jenjang_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_fakultas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_prodi: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        status: {
-                            [Op.like]: `%${search}%`
-                        }
-                    }
-                ],
-                status: "aktif"
-            }
-        })
-        const totalItems = Math.ceil(totalPage / perPage)
-        await kelasModel.findAll({
-            include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }],
-            where: {
-                [Op.or]: [
-                    {
-                        id_kelas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_kelas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama_kelas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_jenjang_pendidikan: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_fakultas: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_prodi: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        status: {
-                            [Op.like]: `%${search}%`
-                        }
-                    }
-                ],
+                code_semester: codeSmt,
                 status: "aktif"
             },
             offset: offset,
@@ -127,20 +36,17 @@ module.exports = {
                 res.status(200).json({
                     message: "Get All kelas Success",
                     data: result,
-                    total_data: totalPage,
-                    per_page: perPage,
-                    current_page: currentPage,
-                    total_page: totalItems
                 })
             }).
             catch(err => {
                 next(err)
             })
+
     },
 
-    getById: async (req, res, next) => {
-        const id = req.params.id
-        await kelasModel.findOne({
+    getKelasByMakul: async (req, res, next) => {
+        const codeMakul = req.params.codeMakul
+        await kelasModel.findAll({
             include: [{
                 model: jenjangPendidikanModel,
                 where: { status: "aktif" }
@@ -150,28 +56,36 @@ module.exports = {
             }, {
                 model: prodiModel,
                 where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                where: { status: "aktif" }
             }],
             where: {
-                id_kelas: id,
+                code_mata_kuliah: codeMakul,
                 status: "aktif"
             }
         }).
-            then(getById => {
-                if (!getById) {
+            then(getByMakul => {
+                if (!getByMakul) {
                     return res.status(404).json({
-                        message: "Data kelas Tidak Ditemukan",
+                        message: "Data kelas kuliah Tidak Ditemukan",
                         data: null
                     })
                 }
                 res.status(201).json({
-                    message: "Data kelas Ditemukan",
-                    data: getById
+                    message: "Data kelas kuliah Ditemukan",
+                    data: getByMakul
                 })
             }).
             catch(err => {
-                next(err)
+                console.log(err);
             })
     },
+
+
     //  jumlah mhs semester
     jumlahMhs: async (req, res, next) => {
         const { smt, jnjPen, fkts, prd } = req.params
@@ -195,12 +109,19 @@ module.exports = {
         })
     },
 
-
-    //  ploting kelas
     post: async (req, res, next) => {
-        const { code_jenjang_pendidikan, code_fakultas,
-            code_prodi, code_semester, code_tahun_ajaran,
-            nama_kelas, kapasitas, status_krs, jumlah } = req.body
+        const { code_jenjang_pendidikan, code_fakultas, code_tahun_ajaran,
+            code_prodi, code_semester, nama_kelas, kapasitas } = req.body
+
+        const dataDuplicate = await kelasModel.findOne({
+            where: {
+                code_semester: code_semester,
+                code_fakultas: code_fakultas,
+                code_prodi: code_prodi,
+                status: "aktif"
+            }
+        })
+        if (dataDuplicate) return res.status(401).json({ message: "Data kelas kuliah sudah ada" })
 
         const makul = await mataKuliahModel.findAll({
             attributes: ['code_mata_kuliah'],
@@ -210,83 +131,58 @@ module.exports = {
             }
         })
 
-        const currentPage = 2 // nama kelas 
-        const perPage = 2 // kapasitas
-        const offset = (currentPage - 1) * perPage
-        const codeNim = await historyMahasiswaModel.findAll({
-            where: {
-                status: "aktif"
-            },
-            offset: offset,
-            limit: perPage,
-        })
-
-        makul.map(M => {
+        let nmKelas = ["", "A", "B"]
+        const createData = makul.map(M => {
             const Mkul = M.code_mata_kuliah
-            console.log(Mkul);
-            const MM = nama_kelas.map(K => {
-                console.log(K);
-                codeNim.forEach(key => {
-                    console.log(key.nim);
+            nama_kelas.map(nmkls => {
+                let currentPage = parseInt(nmkls) // nama kelas 
+                let perPage = parseInt(kapasitas) // kapasitas
+                let offset = (currentPage - 1) * perPage
+                codeNim = krsModel.findAll({
+                    include: [{
+                        model: mataKuliahModel,
+                        where: {
+                            code_semester: code_semester,
+                            status_makul: "paket"
+                        }
+                    }],
+                    where: {
+                        status: "aktif"
+                    },
+                    offset: offset,
+                    limit: perPage,
+                    group: ['nim']
+                }).then(al => {
+                    return Promise.all(al.map(p => {
+                        let data = {
+                            code_kelas: nmKelas[nmkls],
+                            nama_kelas: nmKelas[nmkls],
+                            nim: p.nim,
+                            kapasitas: kapasitas,
+                            code_jenjang_pendidikan: code_jenjang_pendidikan,
+                            code_fakultas: code_fakultas,
+                            code_prodi: code_prodi,
+                            code_mata_kuliah: Mkul,
+                            code_semester: code_semester,
+                            status: "aktif"
+                        }
+                        kelasModel.bulkCreate([data])
+                    }))
                 })
             })
         })
-
-    },
-
-    put: async (req, res, next) => {
-        const id = req.params.id
-        const kelasUseOne = await kelasModel.findOne({
-            include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }],
-            where: {
-                id_kelas: id,
-                status: "aktif"
-            }
-        })
-        if (!kelasUseOne) return res.status(401).json({ message: "data kelas tidak ditemukan" })
-        const { nama_kelas, identy_kelas, code_jenjang_pendidikan, code_fakultas, code_prodi } = req.body
-        const namaKelas = nama_kelas + identy_kelas
-        const codeKelas = code_prodi + identy_kelas.replace(/ /g, '')
-        const kelasUse = await kelasModel.findOne({
-            where: {
-                code_kelas: codeKelas,
-                nama_kelas: namaKelas,
-            }
-        })
-        if (kelasUse) return res.status(401).json({ message: "data kelas sudah ada" })
-        await kelasModel.update({
-            code_kelas: codeKelas,
-            nama_kelas: namaKelas,
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: code_fakultas,
-            code_prodi: code_prodi,
-        }, {
-            where: {
-                id_kelas: id
-            }
-        }).
-            then(result => {
-                res.status(201).json({
-                    message: "Data kelas success Diupdate",
-                })
-            }).
-            catch(err => {
-                next(err)
+        if (createData) {
+            res.status(201).json({
+                message: "Data kelas kuliah success Ditambahkan",
             })
+        }
     },
+
 
     delete: async (req, res, next) => {
-        const id = req.params.id
-        const kelasModelUse = await kelasModel.findOne({
+        const codeMakul = req.params.codeMakul
+        const codeKelas = req.params.codeKelas
+        const kelasModelUse = await kelasModel.findAll({
             include: [{
                 model: jenjangPendidikanModel,
                 where: { status: "aktif" }
@@ -296,27 +192,34 @@ module.exports = {
             }, {
                 model: prodiModel,
                 where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                where: { status: "aktif" }
             }],
             where: {
-                id_kelas: id,
+                code_mata_kuliah: codeMakul,
+                code_kelas: codeKelas,
                 status: "aktif"
             }
         })
-        if (!kelasModelUse) return res.status(401).json({ message: "Data kelas tidak ditemukan" })
-        await kelasModel.update({
-            status: "tidak",
-        }, {
-            where: {
-                id_kelas: id
-            }
-        }).
-            then(result => {
-                res.status(201).json({
-                    message: "data kelas succes dihapus"
-                })
-            }).
-            catch(err => {
-                next(err)
+        if (!kelasModelUse) return res.status(401).json({ message: "Data kelas kuliah tidak ditemukan" })
+        const deleteData = kelasModelUse.map(all => {
+            kelasModel.update({
+                status: "tidak"
+            }, {
+                where: {
+                    code_kelas: codeKelas,
+                    code_mata_kuliah: codeMakul
+                }
             })
+        })
+        if (deleteData) {
+            res.status(201).json({
+                message: "Data kelas kuliah success Dihapus",
+            })
+        }
     }
 }
