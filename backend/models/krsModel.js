@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const db = require('../config/database.js')
-
+const mataKuliahModel = require('./mataKuliahModel.js')
 
 const krsModel = db.define('krs', {
     'id_krs': {
@@ -32,5 +32,9 @@ const krsModel = db.define('krs', {
     underscored: true,
     paranoid: true,
 })
+
+// prodi
+mataKuliahModel.belongsTo(krsModel, { foreignKey: 'code_mata_kuliah' })
+krsModel.hasMany(mataKuliahModel, { sourceKey: 'code_mata_kuliah', foreignKey: 'code_mata_kuliah' })
 
 module.exports = krsModel

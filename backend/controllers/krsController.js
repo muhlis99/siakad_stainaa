@@ -32,7 +32,12 @@ module.exports = {
         const Jmakul = i.map(jhr => { return jhr.code_semester })
         // jumlah mahasiswa yang memakate mata kuliah
         const jmlMahasiswa = await historyMahasiswa.findAndCountAll({
-            where: { code_semester: Jmakul, code_tahun_ajaran: tahunAjaran, code_prodi: prodi },
+
+            where: {
+                code_semester: Jmakul,
+                // code_tahun_ajaran: tahunAjaran,
+                code_prodi: prodi
+            },
             attributes: ['nim']
         })
         // validasi jumlah mahasiswa yang memaket mata kuliah

@@ -200,7 +200,8 @@ module.exports = {
     post: async (req, res, next) => {
         const { code_jenjang_pendidikan, code_fakultas,
             code_prodi, code_semester, code_tahun_ajaran,
-            nama_kelas, kapasitas } = req.body
+            nama_kelas, kapasitas, status_krs, jumlah } = req.body
+
         const makul = await mataKuliahModel.findAll({
             attributes: ['code_mata_kuliah'],
             where: {
@@ -209,16 +210,26 @@ module.exports = {
             }
         })
 
+        const currentPage = 2 // nama kelas 
+        const perPage = 2 // kapasitas
+        const offset = (currentPage - 1) * perPage
+        const codeNim = await historyMahasiswaModel.findAll({
+            where: {
+                status: "aktif"
+            },
+            offset: offset,
+            limit: perPage,
+        })
+
         makul.map(M => {
             const Mkul = M.code_mata_kuliah
+            console.log(Mkul);
             const MM = nama_kelas.map(K => {
-                let D = {
-                    code_mata_kuliah: Mkul,
-                    nama_kelas: K
-                }
-                return D
+                console.log(K);
+                codeNim.forEach(key => {
+                    console.log(key.nim);
+                })
             })
-            kelasModel.bulkCreate(MM)
         })
 
     },
