@@ -2,6 +2,7 @@ const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const tahunAjaranModel = require('../models/tahunAjaranModel.js')
+const kategoriNilaiModel = require('../models/kategoriNilaiModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
 const { Op } = require('sequelize')
 
@@ -27,6 +28,10 @@ module.exports = {
                 },
                 {
                     model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: kategoriNilaiModel,
                     where: { status: "aktif" }
                 }
             ],
@@ -80,6 +85,10 @@ module.exports = {
                     model: tahunAjaranModel,
                     where: { status: "aktif" }
                 },
+                {
+                    model: kategoriNilaiModel,
+                    where: { status: "aktif" }
+                }
             ],
             where: {
                 [Op.or]: [
@@ -152,6 +161,10 @@ module.exports = {
                     model: tahunAjaranModel,
                     where: { status: "aktif" }
                 },
+                {
+                    model: kategoriNilaiModel,
+                    where: { status: "aktif" }
+                }
             ],
             where: {
                 id_mata_kuliah: id,
@@ -255,6 +268,10 @@ module.exports = {
                 {
                     model: tahunAjaranModel,
                     where: { status: "aktif" }
+                },
+                {
+                    model: kategoriNilaiModel,
+                    where: { status: "aktif" }
                 }
             ],
             where: {
@@ -325,6 +342,10 @@ module.exports = {
                 },
                 {
                     model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: kategoriNilaiModel,
                     where: { status: "aktif" }
                 }
             ],
