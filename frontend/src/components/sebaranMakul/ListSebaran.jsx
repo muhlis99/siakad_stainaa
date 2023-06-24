@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaPlus, FaEdit } from 'react-icons/fa'
+import { FaPlus, FaEdit, FaTimes, FaSave } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 // import { AutoComplete } from "primereact/autocomplete"
 import axios from 'axios'
@@ -22,6 +22,11 @@ const ListSebaran = () => {
     const [status, setStatus] = useState("")
     const [statusMk, setStatusMk] = useState(true)
     const [paket, setPaket] = useState(false)
+    const [id, setId] = useState("")
+    const [jenis, setJenis] = useState("")
+    const [nama, setNama] = useState("")
+    const [sks, setSks] = useState("")
+
 
     useEffect(() => {
         getProdiAll()
@@ -120,8 +125,114 @@ const ListSebaran = () => {
         SetSebaran(response.data.data)
     }
 
+    useEffect(() => {
+        getMakulById()
+    }, [])
+
+    const getMakulById = async (e) => {
+        try {
+            const response = await axios.get(`v1/sebaranMataKuliah/getById/1`)
+            setId(response.data.data.id_mata_kuliah)
+            setNama(response.data.data.nama_mata_kuliah)
+            setJenis(response.data.data.jenis_mata_kuliah)
+            setKodeProdi(response.data.data.prodis[0].nama_prodi)
+            setKodeSmt(response.data.data.semesters[0].semesters)
+            setSks(response.data.data.sks)
+        } catch (error) {
+
+        }
+    }
+
     return (
         <div className='mt-2 container'>
+            <input type="checkbox" checked id="my-modal-add" className="modal-toggle" />
+            <div className="modal">
+                <div className="modal-box w-11/12 max-w-2xl">
+                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2"><FaTimes /></button>
+                    <h3 className="font-bold text-xl">Detail</h3>
+                    <hr className='my-3' />
+                    <div className='grid grid-cols-2 mb-4'>
+                        <div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Mata Kuliah</td>
+                                        <td>&nbsp;:&nbsp;</td>
+                                        <td>{nama}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jenis Mata Kuliah</td>
+                                        <td>&nbsp;:&nbsp;</td>
+                                        <td>{jenis}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Prodi</td>
+                                        <td>&nbsp;:&nbsp;</td>
+                                        <td>{kodeProdi}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Semester</td>
+                                        <td>&nbsp;:&nbsp;</td>
+                                        <td>Semester {kodeSmt}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SKS</td>
+                                        <td>&nbsp;:&nbsp;</td>
+                                        <td>{sks}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>SKS Praktek</td>
+                                        <td>&nbsp;:&nbsp;</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>SKS Prak Lapangan</td>
+                                        <td>&nbsp;:&nbsp;</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>SKS Simulasi</td>
+                                        <td>&nbsp;:&nbsp;</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Metode Pembelajaran</td>
+                                        <td>&nbsp;:&nbsp;</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status Bobot</td>
+                                        <td>&nbsp;:&nbsp;</td>
+                                        <td>M h</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div className="collapse collapse-arrow bg-base-200 mt-1">
+                        <input type="checkbox" className='p-2 min-h-0' />
+                        <div className="collapse-title p-2 min-h-0">
+                            <Link className='text-sm'><span>Edit</span></Link>
+                        </div>
+                        <div className="collapse-content grid gap-1">
+                            <form >
+                                <div className="py-4">
+
+                                </div>
+                                <div className="modal-action">
+                                    <button type='submit' className="btn btn-sm btn-default"><FaSave /><span className='ml-1'>simpan</span></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Sebaran Mata Kuliah</h1>
             </section>
@@ -244,7 +355,7 @@ const ListSebaran = () => {
                                                     <td className='px-2 py-2 border' align='center'>{item.sks}</td>
                                                     <td className='px-2 py-2 border' align='center'>
                                                         <div>
-                                                            <Link className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                            <button onClick={() => getMakulById(item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
                                                         </div>
                                                     </td>
                                                 </tr>
