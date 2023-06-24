@@ -44,12 +44,16 @@ const ListKrs = () => {
         document.getElementById('my-modal').checked = true
     }
 
+    const modalClose = () => {
+        document.getElementById('my-modal').checked = false
+    }
+
     return (
         <div className='mt-2 container'>
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal absolute">
                 <div className="modal-box w-11/12 max-w-2xl rounded-none scrollbar-thin scrollbar-thumb-emerald-800 scrollbar-track-gray-100">
-                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" ><FaTimes /></button>
+                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
                     <div className="py-4">
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
