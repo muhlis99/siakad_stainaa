@@ -118,6 +118,11 @@ const ListKategoriNilai = () => {
     const modalEditClose = (e) => {
         e.preventDefault()
         document.getElementById('my-modal-edit').checked = false
+        setNilaiAngka("")
+        setNilaiHuruf("")
+        setSkor("")
+        setKategori("")
+        setKeterangan("")
     }
 
     const updateKtg = async (e) => {
