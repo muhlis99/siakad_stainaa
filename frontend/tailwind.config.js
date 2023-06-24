@@ -37,6 +37,10 @@ module.exports = {
             'background-color': '#2D7F5F',
             'border-color': '#2D7F5F',
           },
+          '.badge-default': {
+            'background-color': '#2D7F5F',
+            'border-color': '#2D7F5F',
+          },
           '.btn-default:hover': {
             'background-color': '#215E47',
             'border-color': '#215E47',
@@ -62,6 +66,10 @@ module.exports = {
           },
           '.btn-default:focus': {
             'outline': '2px solid #2D7F5F'
+          },
+          '.badge-jingga': {
+            'background-color': '#fc8003',
+            'border-color': '#fc8003',
           },
           '.file-input-default::file-selector-button': {
             'background': '#2D7F5F',
