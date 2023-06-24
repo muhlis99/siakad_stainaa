@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaPlus, FaEdit, FaTimes, FaSave } from 'react-icons/fa'
+import { FaPlus, FaEdit, FaTimes, FaSave, FaInfo, FaTrash } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 // import { AutoComplete } from "primereact/autocomplete"
 import axios from 'axios'
@@ -26,7 +26,16 @@ const ListSebaran = () => {
     const [jenis, setJenis] = useState("")
     const [nama, setNama] = useState("")
     const [sks, setSks] = useState("")
-
+    const [sksPrak, setSksPrak] = useState("")
+    const [sksPrakLap, setSksPrakLap] = useState("")
+    const [sksSim, setSksSim] = useState("")
+    const [metode, setMetode] = useState("")
+    const [bobot, setBobot] = useState("")
+    const [statusMakul, setStatusMakul] = useState("")
+    const [judul, setJudul] = useState("")
+    const [prodi, setProdi] = useState("")
+    const [smtr, setSmtr] = useState("")
+    const [nilai, setNilai] = useState("")
 
     useEffect(() => {
         getProdiAll()
@@ -129,107 +138,313 @@ const ListSebaran = () => {
         getMakulById()
     }, [])
 
-    const getMakulById = async (e) => {
+    const getMakulById = async (e, f) => {
         try {
-            const response = await axios.get(`v1/sebaranMataKuliah/getById/1`)
+            setJudul(e)
+            const response = await axios.get(`v1/sebaranMataKuliah/getById/${f}`)
             setId(response.data.data.id_mata_kuliah)
             setNama(response.data.data.nama_mata_kuliah)
             setJenis(response.data.data.jenis_mata_kuliah)
-            setKodeProdi(response.data.data.prodis[0].nama_prodi)
-            setKodeSmt(response.data.data.semesters[0].semesters)
+            setProdi(response.data.data.prodis[0].nama_prodi)
+            setSmtr(response.data.data.semesters[0].semester)
+            setKodeSmt(response.data.data.code_semester)
+            setKodeNilai(response.data.data.code_kategori_nilai)
+            setNilai(response.data.data.kategoriNilais[0].nilai_huruf)
             setSks(response.data.data.sks)
+            setSksPrak(response.data.data.sks_praktek)
+            setSksPrakLap(response.data.data.sks_prak_lapangan)
+            setSksPrakLap(response.data.data.sks_prak_lapangan)
+            setSksSim(response.data.data.sks_simulasi)
+            setMetode(response.data.data.metode_pembelajaran)
+            setBobot(response.data.data.status_bobot_makul)
+            setStatusMakul(response.data.data.status_makul)
+            let st = response.data.data.status_makul
+            let bb = response.data.data.status_bobot_makul
+            if (st == 'paket') {
+                setPaket(true)
+            } else {
+                setPaket(false)
+            }
+            if (bb = 'wajib') {
+                setStatusMk(true)
+            } else {
+                setStatusMk(false)
+            }
+            document.getElementById('my-modal').checked = true
         } catch (error) {
 
         }
     }
 
+    const modalAddClose = () => {
+        document.getElementById('my-modal').checked = false
+        setId("")
+        setNama("")
+        setJenis("")
+        setProdi("")
+        setKodeSmt("")
+        setKodeNilai("")
+        setSks("")
+        setSmtr("")
+        setSksPrak("")
+        setSksPrakLap("")
+        setSksPrakLap("")
+        setSksSim("")
+        setMetode("")
+        setBobot("")
+        setStatusMakul("")
+        setStatusMk(true)
+        setPaket(false)
+    }
+
+    const updateSebaran = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.put(`v1/sebaranMataKuliah/update/${id}`, {
+                code_semester: kodeSmt,
+                code_kategori_nilai: kodeNilai,
+                status_bobot_makul: statusBobot,
+                status_makul: status,
+            }).then(function (response) {
+                document.getElementById('my-modal').checked = false
+                Swal.fire({
+                    title: "Berhasil",
+                    text: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    setId("")
+                    setNama("")
+                    setJenis("")
+                    setProdi("")
+                    setKodeSmt("")
+                    setKodeNilai("")
+                    setSks("")
+                    setSmtr("")
+                    setSksPrak("")
+                    setSksPrakLap("")
+                    setSksPrakLap("")
+                    setSksSim("")
+                    setMetode("")
+                    setBobot("")
+                    setStatusMakul("")
+                    setStatusMk(true)
+                    setPaket(false)
+                    sebaranMakul()
+                })
+            })
+        } catch (error) {
+            if (error.response) {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
+        }
+    }
+
+    const nonaktifkan = (makulId) => {
+        Swal.fire({
+            title: "Hapus data ini?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.put(
+                        `v1/sebaranMataKuliah/delete/${makulId}`
+                    ).then((response) => {
+                        console.log(response.data)
+                        Swal.fire({
+                            title: "Terhapus",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            sebaranMakul()
+                        })
+                    })
+
+                } catch (error) {
+
+                }
+            }
+        })
+    }
+
     return (
         <div className='mt-2 container'>
-            <input type="checkbox" checked id="my-modal-add" className="modal-toggle" />
+            <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
-                <div className="modal-box w-11/12 max-w-2xl">
-                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2"><FaTimes /></button>
-                    <h3 className="font-bold text-xl">Detail</h3>
-                    <hr className='my-3' />
-                    <div className='grid grid-cols-2 mb-4'>
-                        <div>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>Mata Kuliah</td>
-                                        <td>&nbsp;:&nbsp;</td>
-                                        <td>{nama}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jenis Mata Kuliah</td>
-                                        <td>&nbsp;:&nbsp;</td>
-                                        <td>{jenis}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Prodi</td>
-                                        <td>&nbsp;:&nbsp;</td>
-                                        <td>{kodeProdi}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Semester</td>
-                                        <td>&nbsp;:&nbsp;</td>
-                                        <td>Semester {kodeSmt}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>SKS</td>
-                                        <td>&nbsp;:&nbsp;</td>
-                                        <td>{sks}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>SKS Praktek</td>
-                                        <td>&nbsp;:&nbsp;</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>SKS Prak Lapangan</td>
-                                        <td>&nbsp;:&nbsp;</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>SKS Simulasi</td>
-                                        <td>&nbsp;:&nbsp;</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Metode Pembelajaran</td>
-                                        <td>&nbsp;:&nbsp;</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Status Bobot</td>
-                                        <td>&nbsp;:&nbsp;</td>
-                                        <td>M h</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div className="collapse collapse-arrow bg-base-200 mt-1">
-                        <input type="checkbox" className='p-2 min-h-0' />
-                        <div className="collapse-title p-2 min-h-0">
-                            <Link className='text-sm'><span>Edit</span></Link>
-                        </div>
-                        <div className="collapse-content grid gap-1">
-                            <form >
-                                <div className="py-4">
-
+                <div className="modal-box w-11/12 max-w-2xl relative">
+                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
+                    <h3 className="font-bold text-xl">{judul}</h3>
+                    <div className='py-4'>
+                        {
+                            judul == 'Detail' ?
+                                <div className='grid grid-cols-2 mb-4'>
+                                    <div>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td className='uppercase'>Mata Kuliah</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>{nama}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className='uppercase'>Jenis Mk</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>{jenis}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className='uppercase'>Prodi</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>{prodi}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className='uppercase'>Semester</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>Semester {smtr}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className='uppercase'>Nilai Minimal</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>{nilai}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className='uppercase'>SKS</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>{sks}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div>
+                                        <table className='float-right'>
+                                            <tbody>
+                                                <tr>
+                                                    <td className='uppercase'>SKS Praktek</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>{sksPrak}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className='uppercase'>SKS Prak Lapangan</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>{sksPrakLap}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className='uppercase'>SKS Simulasi</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>{sksSim}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className='uppercase'>Metode Pembelajaran</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>{metode}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className='uppercase'>Status Bobot</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>{bobot}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className='uppercase'>Status MK</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td className='uppercase'>{statusMakul}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div className="modal-action">
-                                    <button type='submit' className="btn btn-sm btn-default"><FaSave /><span className='ml-1'>simpan</span></button>
-                                </div>
-                            </form>
-                        </div>
+                                :
+                                <form onSubmit={updateSebaran}>
+                                    <div className='grid grid-cols-2 gap-2 mb-4'>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">Nama Mata Kuliah</span>
+                                            </label>
+                                            <input type="text" value={nama} className="input input-sm input-bordered w-full" disabled />
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">SKS</span>
+                                            </label>
+                                            <input type="text" value={sks} className="input input-sm input-bordered w-full" disabled />
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">SKS Praktek</span>
+                                            </label>
+                                            <input type="text" value={sksPrak} className="input input-sm input-bordered w-full" disabled />
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">SKS Praktek Lapangan</span>
+                                            </label>
+                                            <input type="text" value={sksPrakLap} className="input input-sm input-bordered w-full" disabled />
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">SKS Simulasi</span>
+                                            </label>
+                                            <input type="text" value={sksSim} className="input input-sm input-bordered w-full" disabled />
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">Metode Pembelajaran</span>
+                                            </label>
+                                            <input type="text" value={metode} className="input input-sm input-bordered w-full" disabled />
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">Semester</span>
+                                            </label>
+                                            <select className='select select-bordered select-sm w-full' value={kodeSmt} onChange={(e) => setKodeSmt(e.target.value)}>
+                                                <option value="">Semester</option>
+                                                {Semester.map((item) => (
+                                                    <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">Nilai Min</span>
+                                            </label>
+                                            <select className='select select-bordered select-sm w-full' value={kodeNilai} onChange={(e) => setKodeNilai(e.target.value)}>
+                                                <option value="">Kategori Nilai</option>
+                                                {ListNilai.map((item) => (
+                                                    <option key={item.id_kategori_nilai} value={item.code_kategori_nilai}>{item.nilai_huruf} ({item.nilai_angka})</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">Opsi Tambahan</span>
+                                            </label>
+                                            <div className='flex gap-3'>
+                                                <div className="form-control">
+                                                    <label className="cursor-pointer label">
+                                                        <input type="checkbox" checked={statusMk} onChange={(e) => setStatusMk(e.target.checked)} className="checkbox checkbox-sm checkbox-success mr-1" />
+                                                        <span className="label-text">MK Wajib</span>
+                                                    </label>
+                                                </div>
+                                                <div className="form-control">
+                                                    <label className="cursor-pointer label">
+                                                        <input type="checkbox" checked={paket} onChange={(e) => setPaket(e.target.checked)} className="checkbox checkbox-sm checkbox-success mr-1" />
+                                                        <span className="label-text">MK Paket</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='col-span-2'>
+                                            <button className='btn btn-sm btn-default float-right'><FaSave /><span className='ml-1'>simpan</span></button>
+                                        </div>
+                                    </div>
+                                </form>
+                        }
                     </div>
                 </div>
             </div>
@@ -355,7 +570,9 @@ const ListSebaran = () => {
                                                     <td className='px-2 py-2 border' align='center'>{item.sks}</td>
                                                     <td className='px-2 py-2 border' align='center'>
                                                         <div>
-                                                            <button onClick={() => getMakulById(item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
+                                                            <button onClick={() => getMakulById('Detail', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-blue mr-1" title='Detail'><FaInfo /></button>
+                                                            <button onClick={() => getMakulById('Edit', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
+                                                            <button onClick={() => nonaktifkan(item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-danger ml-1" title='Hapus'><FaTrash /></button>
                                                         </div>
                                                     </td>
                                                 </tr>
