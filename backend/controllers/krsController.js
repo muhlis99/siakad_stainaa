@@ -48,21 +48,17 @@ module.exports = {
             },
             group: ['nim'],
         })
+
         var jumlah = ""
-        if (jmlPaketMahasiswa.count === 0) {
-            jumlah = 0
-        } else {
-            jumlah = jmlPaketMahasiswa.count
-        }
-        // isi field keterangan 
         var keterangan = ""
-        if (jumlah === jmlPaketMahasiswa.count) {
-            keterangan = "paket selesai"
-        } else if (jumlah != jmlPaketMahasiswa.count) {
+        if (jmlPaketMahasiswa.count == 0 || jmlPaketMahasiswa.count == null) {
+            jumlah = 0
             keterangan = "paket belum"
         } else {
-            keterangan = "......"
+            jumlah = jmlPaketMahasiswa.count
+            keterangan = "paket selesai"
         }
+        // isi field keterangan 
         res.status(201).json({
             data: [{
                 tahun: thnAjar.tahun_ajaran,
