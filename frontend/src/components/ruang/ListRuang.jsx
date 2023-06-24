@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { FaPlus, FaSearch, FaEdit, FaTrash, FaTimes, FaArrowLeft, FaArrowRight } from "react-icons/fa"
+import { FaPlus, FaSearch, FaEdit, FaTrash, FaTimes, FaArrowLeft, FaArrowRight, FaSave } from "react-icons/fa"
 import { SlOptions } from "react-icons/sl"
 import axios from 'axios'
 import Swal from "sweetalert2"
 import ReactPaginate from "react-paginate"
-import { Link } from "react-router-dom"
 
 const ListRuang = () => {
     const [RuangList, setListRuang] = useState([])
-    const [Jenjang, setJenjang] = useState([])
-    const [Fakultas, setFakultas] = useState([])
-    const [Prodi, setProdi] = useState([])
     const [page, setPage] = useState(0)
     const [perPage, setperPage] = useState(0)
     const [pages, setPages] = useState(0)
@@ -18,13 +14,10 @@ const ListRuang = () => {
     const [keyword, setKeyword] = useState("")
     const [query, setQuery] = useState("")
     const [msg, setMsg] = useState("")
-    const [namaRuang, setNamaRuang] = useState("")
-    const [ruang, setRuang] = useState("")
-    const [identitas, setIdentitas] = useState("")
-    const [jenjangnya, setJenjangnya] = useState("")
-    const [fakultasnya, setFakultasnya] = useState("")
-    const [prodinya, setProdinya] = useState("")
     const [id, setId] = useState("")
+    const [judul, setJudul] = useState("")
+    const [identitas, setIdentitas] = useState("")
+    const [lokasi, setLokasi] = useState("")
 
     useEffect(() => {
         getDataRuang()
@@ -40,11 +33,11 @@ const ListRuang = () => {
         setperPage(response.data.per_page)
     }
 
-    const pageCount = Math.ceil(rows / perPage);
+    const pageCount = Math.ceil(rows / perPage)
 
     const changePage = (event) => {
-        const newOffset = (event.selected + 1);
-        setPage(newOffset);
+        const newOffset = (event.selected + 1)
+        setPage(newOffset)
         if (event.selected === 9) {
             setMsg("Jika tidak menemukan data yang dicari, maka lakukan pencarian data secara spesifik!")
         } else {
@@ -53,9 +46,84 @@ const ListRuang = () => {
     }
 
     const cariData = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         setPage(0)
         setKeyword(query)
+    }
+
+    const simpanDataRuang = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.post('v1/ruang/create', {
+                nama_ruang: 'Ruang ',
+                identy_ruang: identitas,
+                lokasi: lokasi
+            }).then(function (response) {
+                document.getElementById('my-modal-add').checked = false
+                Swal.fire({
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getDataRuang()
+                })
+            })
+        } catch (error) {
+            if (error.response) {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
+        }
+    }
+
+    const updateDataRuang = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.put(`v1/ruang/update/${id}`, {
+                nama_ruang: 'Ruang ',
+                identy_ruang: identitas,
+                lokasi: lokasi
+            }).then(function (response) {
+                document.getElementById('my-modal-add').checked = false
+                Swal.fire({
+                    title: "Berhasil",
+                    text: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getDataRuang()
+                })
+            })
+        } catch (error) {
+            if (error.response) {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
+        }
+    }
+
+    const modalAddOpen = async (e, f) => {
+        try {
+            setJudul(e)
+            setId(f)
+            if (e == 'Edit') {
+                const response = await axios.get(`v1/ruang/getById/${f}`)
+                let nama = response.data.data.nama_ruang
+                const namaRuang = nama.substr(6)
+                setIdentitas(namaRuang)
+                setLokasi(response.data.data.lokasi)
+            }
+            document.getElementById('my-modal-add').checked = true
+        } catch (error) {
+        }
+    }
+
+    const modalAddClose = () => {
+        document.getElementById('my-modal-add').checked = false
+        setIdentitas("")
+        setLokasi("")
     }
 
     const nonaktifkan = (ruangId) => {
@@ -81,7 +149,7 @@ const ListRuang = () => {
                             icon: "success"
                         }).then(() => {
                             getDataRuang()
-                        });
+                        })
                     })
 
                 } catch (error) {
@@ -93,6 +161,37 @@ const ListRuang = () => {
 
     return (
         <div className='mt-2 container'>
+            <input type="checkbox" id="my-modal-add" className="modal-toggle" />
+            <div className="modal">
+                <div className="modal-box relative">
+                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
+                    <form onSubmit={judul == "Tambah" ? simpanDataRuang : updateDataRuang}>
+                        <h3 className="font-bold text-xl">{judul}</h3>
+                        <div className="py-4">
+                            <div>
+                                <label className="label">
+                                    <span className="text-base label-text">Nama Ruang</span>
+                                </label>
+                                <div className="form-control">
+                                    <label className="input-group input-group-sm">
+                                        <span>Ruang</span>
+                                        <input type="text" value={identitas} onChange={(e) => setIdentitas(e.target.value)} className="input input-sm input-bordered w-full" />
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label className="label">
+                                    <span className="text-base label-text">Lokasi</span>
+                                </label>
+                                <input type="text" value={lokasi} onChange={(e) => setLokasi(e.target.value)} placeholder="Lokasi Ruang" className="input input-sm input-bordered w-full" />
+                            </div>
+                        </div>
+                        <div className="modal-action">
+                            <button type='submit' className="btn btn-sm btn-default">{judul == 'Tambah' ? <><FaSave /><span className='ml-1'>simpan</span></> : <><FaEdit /><span className='ml-1'>edit</span></>}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Ruang</h1>
             </section>
@@ -101,7 +200,7 @@ const ListRuang = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <Link to="/ruang/add" className="btn btn-default btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
+                                <button onClick={() => modalAddOpen('Tambah', '')} className="btn btn-default btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></button>
                             </div>
                             <div>
                                 <form className='mb-1' onSubmit={cariData}>
@@ -129,9 +228,7 @@ const ListRuang = () => {
                                         <th scope="col" className="px-6 py-3">#</th>
                                         <th scope="col" className="px-6 py-3">Kode Ruang</th>
                                         <th scope="col" className="px-6 py-3">Nama Ruang</th>
-                                        <th scope="col" className="px-6 py-3">Jenjang</th>
-                                        <th scope="col" className="px-6 py-3">Fakultas</th>
-                                        <th scope="col" className='px-6 py-3'>Prodi</th>
+                                        <th scope="col" className="px-6 py-3">Lokasi</th>
                                         <th scope="col" className='px-6 py-3'>Status</th>
                                         <th scope="col" className="px-6 py-3" align='center'>Aksi</th>
                                     </tr>
@@ -142,13 +239,11 @@ const ListRuang = () => {
                                             <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
                                             <td className='px-6 py-2'>{rng.code_ruang}</td>
                                             <td className='px-6 py-2'>{rng.nama_ruang}</td>
-                                            <td className='px-6 py-2'>{rng.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-2'>{rng.fakultas[0].nama_fakultas}</td>
-                                            <td className='px-6 py-2'>{rng.prodis[0].nama_prodi}</td>
+                                            <td className='px-6 py-2'>{rng.lokasi}</td>
                                             <td className='px-6 py-2'>{rng.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
-                                                    <Link to={`/ruang/edit/${rng.id_ruang}`} className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit'><FaEdit /></Link>
+                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalAddOpen('Edit', rng.id_ruang)} title='Edit'><FaEdit /></button>
                                                     <button className="btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(rng.id_ruang)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
