@@ -29,7 +29,6 @@ const ListSebaran = () => {
     const [sksPrak, setSksPrak] = useState("")
     const [sksPrakLap, setSksPrakLap] = useState("")
     const [sksSim, setSksSim] = useState("")
-    const [metode, setMetode] = useState("")
     const [bobot, setBobot] = useState("")
     const [statusMakul, setStatusMakul] = useState("")
     const [judul, setJudul] = useState("")
@@ -140,37 +139,38 @@ const ListSebaran = () => {
 
     const getMakulById = async (e, f) => {
         try {
-            setJudul(e)
-            const response = await axios.get(`v1/sebaranMataKuliah/getById/${f}`)
-            setId(response.data.data.id_mata_kuliah)
-            setNama(response.data.data.nama_mata_kuliah)
-            setJenis(response.data.data.jenis_mata_kuliah)
-            setProdi(response.data.data.prodis[0].nama_prodi)
-            setSmtr(response.data.data.semesters[0].semester)
-            setKodeSmt(response.data.data.code_semester)
-            setKodeNilai(response.data.data.code_kategori_nilai)
-            setNilai(response.data.data.kategoriNilais[0].nilai_huruf)
-            setSks(response.data.data.sks)
-            setSksPrak(response.data.data.sks_praktek)
-            setSksPrakLap(response.data.data.sks_prak_lapangan)
-            setSksPrakLap(response.data.data.sks_prak_lapangan)
-            setSksSim(response.data.data.sks_simulasi)
-            setMetode(response.data.data.metode_pembelajaran)
-            setBobot(response.data.data.status_bobot_makul)
-            setStatusMakul(response.data.data.status_makul)
-            let st = response.data.data.status_makul
-            let bb = response.data.data.status_bobot_makul
-            if (st == 'paket') {
-                setPaket(true)
-            } else {
-                setPaket(false)
+            if (f != null) {
+                setJudul(e)
+                const response = await axios.get(`v1/sebaranMataKuliah/getById/${f}`)
+                setId(response.data.data.id_mata_kuliah)
+                setNama(response.data.data.nama_mata_kuliah)
+                setJenis(response.data.data.jenis_mata_kuliah)
+                setProdi(response.data.data.prodis[0].nama_prodi)
+                setSmtr(response.data.data.semesters[0].semester)
+                setKodeSmt(response.data.data.code_semester)
+                setKodeNilai(response.data.data.code_kategori_nilai)
+                setNilai(response.data.data.kategoriNilais[0].nilai_huruf)
+                setSks(response.data.data.sks)
+                setSksPrak(response.data.data.sks_praktek)
+                setSksPrakLap(response.data.data.sks_prak_lapangan)
+                setSksPrakLap(response.data.data.sks_prak_lapangan)
+                setSksSim(response.data.data.sks_simulasi)
+                setBobot(response.data.data.status_bobot_makul)
+                setStatusMakul(response.data.data.status_makul)
+                let st = response.data.data.status_makul
+                if (st == 'paket') {
+                    setPaket(true)
+                } else {
+                    setPaket(false)
+                }
+                let bb = response.data.data.status_bobot_makul
+                if (bb = 'wajib') {
+                    setStatusMk(true)
+                } else {
+                    setStatusMk(false)
+                }
+                document.getElementById('my-modal').checked = true
             }
-            if (bb = 'wajib') {
-                setStatusMk(true)
-            } else {
-                setStatusMk(false)
-            }
-            document.getElementById('my-modal').checked = true
         } catch (error) {
 
         }
@@ -190,7 +190,6 @@ const ListSebaran = () => {
         setSksPrakLap("")
         setSksPrakLap("")
         setSksSim("")
-        setMetode("")
         setBobot("")
         setStatusMakul("")
         setStatusMk(true)
@@ -224,7 +223,6 @@ const ListSebaran = () => {
                     setSksPrakLap("")
                     setSksPrakLap("")
                     setSksSim("")
-                    setMetode("")
                     setBobot("")
                     setStatusMakul("")
                     setStatusMk(true)
@@ -341,11 +339,6 @@ const ListSebaran = () => {
                                                     <td className='uppercase'>{sksSim}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td className='uppercase'>Metode Pembelajaran</td>
-                                                    <td>&nbsp;:&nbsp;</td>
-                                                    <td className='uppercase'>{metode}</td>
-                                                </tr>
-                                                <tr>
                                                     <td className='uppercase'>Status Bobot</td>
                                                     <td>&nbsp;:&nbsp;</td>
                                                     <td className='uppercase'>{bobot}</td>
@@ -362,80 +355,82 @@ const ListSebaran = () => {
                                 :
                                 <form onSubmit={updateSebaran}>
                                     <div className='grid grid-cols-2 gap-2 mb-4'>
-                                        <div>
+                                        <div className='col-span-2'>
                                             <label className="label">
                                                 <span className="text-base label-text">Nama Mata Kuliah</span>
                                             </label>
                                             <input type="text" value={nama} className="input input-sm input-bordered w-full" disabled />
                                         </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">SKS</span>
-                                            </label>
-                                            <input type="text" value={sks} className="input input-sm input-bordered w-full" disabled />
-                                        </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">SKS Praktek</span>
-                                            </label>
-                                            <input type="text" value={sksPrak} className="input input-sm input-bordered w-full" disabled />
-                                        </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">SKS Praktek Lapangan</span>
-                                            </label>
-                                            <input type="text" value={sksPrakLap} className="input input-sm input-bordered w-full" disabled />
-                                        </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">SKS Simulasi</span>
-                                            </label>
-                                            <input type="text" value={sksSim} className="input input-sm input-bordered w-full" disabled />
-                                        </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">Metode Pembelajaran</span>
-                                            </label>
-                                            <input type="text" value={metode} className="input input-sm input-bordered w-full" disabled />
-                                        </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">Semester</span>
-                                            </label>
-                                            <select className='select select-bordered select-sm w-full' value={kodeSmt} onChange={(e) => setKodeSmt(e.target.value)}>
-                                                <option value="">Semester</option>
-                                                {Semester.map((item) => (
-                                                    <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">Nilai Min</span>
-                                            </label>
-                                            <select className='select select-bordered select-sm w-full' value={kodeNilai} onChange={(e) => setKodeNilai(e.target.value)}>
-                                                <option value="">Kategori Nilai</option>
-                                                {ListNilai.map((item) => (
-                                                    <option key={item.id_kategori_nilai} value={item.code_kategori_nilai}>{item.nilai_huruf} ({item.nilai_angka})</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">Opsi Tambahan</span>
-                                            </label>
-                                            <div className='flex gap-3'>
-                                                <div className="form-control">
-                                                    <label className="cursor-pointer label">
-                                                        <input type="checkbox" checked={statusMk} onChange={(e) => setStatusMk(e.target.checked)} className="checkbox checkbox-sm checkbox-success mr-1" />
-                                                        <span className="label-text">MK Wajib</span>
+                                        <div className='col-span-2'>
+                                            <div className='grid grid-cols-4 gap-2'>
+                                                <div>
+                                                    <label className="label">
+                                                        <span className="text-base label-text">SKS</span>
                                                     </label>
+                                                    <input type="text" value={sks} className="input input-sm input-bordered w-full" disabled />
                                                 </div>
-                                                <div className="form-control">
-                                                    <label className="cursor-pointer label">
-                                                        <input type="checkbox" checked={paket} onChange={(e) => setPaket(e.target.checked)} className="checkbox checkbox-sm checkbox-success mr-1" />
-                                                        <span className="label-text">MK Paket</span>
+                                                <div>
+                                                    <label className="label">
+                                                        <span className="text-base label-text">SKS Praktek</span>
                                                     </label>
+                                                    <input type="text" value={sksPrak} className="input input-sm input-bordered w-full" disabled />
+                                                </div>
+                                                <div>
+                                                    <label className="label">
+                                                        <span className="text-base label-text">SKS Prak Lapang</span>
+                                                    </label>
+                                                    <input type="text" value={sksPrakLap} className="input input-sm input-bordered w-full" disabled />
+                                                </div>
+                                                <div>
+                                                    <label className="label">
+                                                        <span className="text-base label-text">SKS Simulasi</span>
+                                                    </label>
+                                                    <input type="text" value={sksSim} className="input input-sm input-bordered w-full" disabled />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-span-2">
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div>
+                                                    <label className="label">
+                                                        <span className="text-base label-text">Semester</span>
+                                                    </label>
+                                                    <select className='select select-bordered select-sm w-full' value={kodeSmt} onChange={(e) => setKodeSmt(e.target.value)}>
+                                                        <option value="">Semester</option>
+                                                        {Semester.map((item) => (
+                                                            <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label className="label">
+                                                        <span className="text-base label-text">Nilai Min</span>
+                                                    </label>
+                                                    <select className='select select-bordered select-sm w-full' value={kodeNilai} onChange={(e) => setKodeNilai(e.target.value)}>
+                                                        <option value="">Kategori Nilai</option>
+                                                        {ListNilai.map((item) => (
+                                                            <option key={item.id_kategori_nilai} value={item.code_kategori_nilai}>{item.nilai_huruf} ({item.nilai_angka})</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label className="label">
+                                                        <span className="text-base label-text">Opsi Tambahan</span>
+                                                    </label>
+                                                    <div className='flex gap-3'>
+                                                        <div className="form-control">
+                                                            <label className="cursor-pointer label">
+                                                                <input type="checkbox" checked={statusMk} onChange={(e) => setStatusMk(e.target.checked)} className="checkbox checkbox-sm checkbox-success mr-1" />
+                                                                <span className="label-text">MK Wajib</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-control">
+                                                            <label className="cursor-pointer label">
+                                                                <input type="checkbox" checked={paket} onChange={(e) => setPaket(e.target.checked)} className="checkbox checkbox-sm checkbox-success mr-1" />
+                                                                <span className="label-text">MK Paket</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
