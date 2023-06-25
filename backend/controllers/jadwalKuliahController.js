@@ -102,7 +102,7 @@ module.exports = {
             code_kelas, code_ruang, tanggal_mulai, tanggal_selesai, jumlah_pertemuan,
             hari, jam_mulai, jam_selesai, metode_pembelajaran } = req.body
 
-        const duplicateDataJamMulai = await jadwalKuliahModel.findAll({
+        const duplicateData = await jadwalKuliahModel.findAll({
             where: {
                 code_fakultas: code_fakultas,
                 code_prodi: code_prodi,
@@ -112,9 +112,52 @@ module.exports = {
             }
         })
 
-        duplicateDataJamMulai.map(i => { console.log(i.hari); });
+        const start = duplicateData.map(el => {
+            let jamMulai = el.jam_mulai
+            let AjamMulai = jamMulai.split(':')
+            return (+AjamMulai[0]) * 60 + (+AjamMulai[1])
+        })
 
+        const end = duplicateData.map(el => {
+            let jamselesai = el.jam_selesai
+            let Ajamselesai = jamselesai.split(':')
+            return (+Ajamselesai[0]) * 60 + (+Ajamselesai[1])
+        })
 
+        let jam = jam_mulai
+        let ajam = jam.split(':')
+        let i = (+ajam[0]) * 60 + (+ajam[1])
+
+        const validasiJamMulai = start.map(e => {
+            end.map(le => {
+                return i >= e && i < le
+            })
+        })
+
+        let jams = jam_selesai
+        let ajams = jams.split(':')
+        let s = (+ajams[0]) * 60 + (+ajams[1])
+        const validasiJamSelesai = start.map(e => {
+            end.map(le => {
+                return s >= e && i < le
+            })
+        })
+
+        const daysRoom = await jadwalKuliahModel.findOne({
+            where: {
+                code_fakultas: code_fakultas,
+                code_prodi: code_prodi,
+                code_tahun_ajaran: code_tahun_ajaran,
+                code_semester: code_semester,
+                hari: hari,
+                code_ruang: code_ruang,
+                jam_mulai: jam_mulai,
+                jam_selesai: jam_selesai,
+                status: 'aktif'
+            }
+        })
+
+        if (daysRoom && validasiJamMulai && validasiJamSelesai) return res.status(401).json({ message: "Jadwal kuliah bentrok" })
 
         function randomAngka(params) {
             var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -154,141 +197,171 @@ module.exports = {
 
     },
 
-    // put: async (req, res, next) => {
-    //     const id = req.params.id
-    //     const { code_mata_kuliah, code_prodi, code_semester, code_tahun_ajaran,
-    //         code_kelas, kapasitas, tanggal_mulai, tanggal_selesai, jumlah_pertemuan } = req.body
-    //     const jadwalKuliahModelUse = await jadwalKuliahModel.findOne({
-    //         include: [
-    //             {
-    //                 model: mataKuliahModel,
-    //                 where: { status: "aktif" }
-    //             },
-    //             {
-    //                 model: semesterModel,
-    //                 where: { status: "aktif" }
-    //             }, {
-    //                 model: prodiModel,
-    //                 where: { status: "aktif" }
-    //             }, {
-    //                 model: tahunAjaranModel,
-    //                 where: { status: "aktif" }
-    //             }, {
-    //                 model: kelasModel,
-    //                 where: { status: "aktif" }
-    //             }],
-    //         where: {
-    //             id_jadwal_kuliah: id,
-    //             status: "aktif"
-    //         }
-    //     })
-    //     if (!jadwalKuliahModelUse) return res.status(401).json({ message: "Data jadwal kuliah tidak ditemukan" })
-    //     const jadwalKuliah = await jadwalKuliahModel.update({
-    //         code_mata_kuliah: code_mata_kuliah,
-    //         code_prodi: code_prodi,
-    //         code_semester: code_semester,
-    //         code_tahun_ajaran: code_tahun_ajaran,
-    //         code_kelas: code_kelas,
-    //         kapasitas: kapasitas,
-    //         tanggal_mulai: tanggal_mulai,
-    //         tanggal_selesai: tanggal_selesai,
-    //         jumlah_pertemuan: jumlah_pertemuan,
-    //         status: "aktif"
-    //     }, {
-    //         where: {
-    //             id_jadwal_kuliah: id
-    //         }
-    //     })
-    //     if (jadwalKuliah) {
-    //         const { dataMingguan } = req.body
-    //         const codeJadwalKuliah = jadwalKuliahModelUse.code_jadwal_kuliah
-    //         const entryCodeJakulMingguan = await jadwalKuliahMingguanModel.findAll({
-    //             attributes: ['id_jadwal_kuliah_mingguan'],
-    //             where: {
-    //                 code_jadwal_kuliah: codeJadwalKuliah
-    //             }
-    //         })
-    //         const data_body = dataMingguan.map(record => {
-    //             let datas = {
-    //                 hari: record.hari,
-    //                 jam_mulai: record.jam_mulai,
-    //                 jam_selesai: record.jam_selesai,
-    //                 metode_pembelajaran: record.metode_pembelajaran,
-    //                 ruang: record.ruang,
-    //                 status: "aktif",
-    //             }
-    //             return datas
-    //         })
+    put: async (req, res, next) => {
+        const id = req.params.id
+        const { code_mata_kuliah, code_fakultas, code_prodi, code_semester, code_tahun_ajaran,
+            code_kelas, code_ruang, tanggal_mulai, tanggal_selesai, jumlah_pertemuan,
+            hari, jam_mulai, jam_selesai, metode_pembelajaran } = req.body
+        const jadwalKuliahModelUse = await jadwalKuliahModel.findOne({
+            include: [{
+                model: semesterModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                model: kelasModel,
+                where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
+                where: { status: "aktif" }
+            }],
+            where: {
+                id_jadwal_kuliah: id,
+                status: "aktif"
+            }
+        })
 
-    //         //  belum selesai
-    //         dataMingguan.forEach(element => {
-    //             jadwalKuliahMingguanModel.update(element, {
-    //                 where: {
-    //                     id_jadwal_kuliah_mingguan: 1
-    //                 }
-    //             })
-    //         });
+        if (!jadwalKuliahModelUse) return res.status(401).json({ message: "Data jadwal kuliah tidak ditemukan" })
+        const duplicateData = await jadwalKuliahModel.findAll({
+            where: {
+                code_fakultas: code_fakultas,
+                code_prodi: code_prodi,
+                code_tahun_ajaran: code_tahun_ajaran,
+                code_semester: code_semester,
+                status: 'aktif'
+            }
+        })
 
+        const start = duplicateData.map(el => {
+            let jamMulai = el.jam_mulai
+            let AjamMulai = jamMulai.split(':')
+            return (+AjamMulai[0]) * 60 + (+AjamMulai[1])
+        })
 
-    //     }
-    // },
+        const end = duplicateData.map(el => {
+            let jamselesai = el.jam_selesai
+            let Ajamselesai = jamselesai.split(':')
+            return (+Ajamselesai[0]) * 60 + (+Ajamselesai[1])
+        })
+        let jam = jam_mulai
+        let ajam = jam.split(':')
+        let i = (+ajam[0]) * 60 + (+ajam[1])
 
-    // deleteStatus: async (req, res, next) => {
-    //     const id = req.params.id
-    //     const jadwalKuliahModelUse = await jadwalKuliahModel.findOne({
-    //         include: [{
-    //             model: mataKuliahModel,
-    //             where: { status: "aktif" }
-    //         }, {
-    //             model: semesterModel,
-    //             where: { status: "aktif" }
-    //         }, {
-    //             model: prodiModel,
-    //             where: { status: "aktif" }
-    //         }, {
-    //             model: tahunAjaranModel,
-    //             where: { status: "aktif" }
-    //         }, {
-    //             model: kelasModel,
-    //             where: { status: "aktif" }
-    //         }],
-    //         where: {
-    //             id_jadwal_kuliah: id,
-    //             status: "aktif"
-    //         }
-    //     })
-    //     if (!jadwalKuliahModelUse) return res.status(401).json({ message: "Data jadwal kuliah tidak ditemukan" })
-    //     const jadwalKuliah = await jadwalKuliahModel.update({
-    //         status: "tidak"
-    //     }, {
-    //         where: {
-    //             id_jadwal_kuliah: id
-    //         }
-    //     })
-    //     if (jadwalKuliah) {
-    //         const codeJadwalKuliah = jadwalKuliahModelUse.code_jadwal_kuliah
-    //         const entryCodeJakulMingguan = await jadwalKuliahMingguanModel.findAll({
-    //             attributes: ['id_jadwal_kuliah_mingguan'],
-    //             where: {
-    //                 code_jadwal_kuliah: codeJadwalKuliah
-    //             }
-    //         })
-    //         const idJadwalKuliahMingguan = entryCodeJakulMingguan.map(result => {
-    //             return result.id_jadwal_kuliah_mingguan
-    //         })
+        const validasiJamMulai = start.map(e => {
+            end.map(le => {
+                return i >= e && i < le
+            })
+        })
 
-    //         await jadwalKuliahMingguanModel.update({ status: "tidak" }, {
-    //             where: {
-    //                 id_jadwal_kuliah_mingguan: idJadwalKuliahMingguan
-    //             }
-    //         }).then(result => {
-    //             res.status(201).json({
-    //                 message: "Data jadwal kuliah success Dihapus",
-    //             })
-    //         }).
-    //             catch(err => {
-    //                 next(err)
-    //             })
-    //     }
-    // }
+        let jams = jam_selesai
+        let ajams = jams.split(':')
+        let s = (+ajams[0]) * 60 + (+ajams[1])
+        const validasiJamSelesai = start.map(e => {
+            end.map(le => {
+                return s >= e && i < le
+            })
+        })
+
+        const daysRoom = await jadwalKuliahModel.findOne({
+            where: {
+                code_fakultas: code_fakultas,
+                code_prodi: code_prodi,
+                code_tahun_ajaran: code_tahun_ajaran,
+                code_semester: code_semester,
+                hari: hari,
+                code_ruang: code_ruang,
+                jam_mulai: jam_mulai,
+                jam_selesai: jam_selesai,
+                status: 'aktif'
+            }
+        })
+
+        if (daysRoom && validasiJamMulai && validasiJamSelesai) return res.status(401).json({ message: "Jadwal kuliah bentrok" })
+        await jadwalKuliahModel.update({
+            code_mata_kuliah: code_mata_kuliah,
+            code_fakultas: code_fakultas,
+            code_prodi: code_prodi,
+            code_semester: code_semester,
+            code_tahun_ajaran: code_tahun_ajaran,
+            code_kelas: code_kelas,
+            code_ruang: code_ruang,
+            tanggal_mulai: tanggal_mulai,
+            tanggal_selesai: tanggal_selesai,
+            jumlah_pertemuan: jumlah_pertemuan,
+            hari: hari,
+            jam_mulai: jam_mulai,
+            jam_selesai: jam_selesai,
+            metode_pembelajaran: metode_pembelajaran,
+            status: "aktif"
+        }, {
+            where: {
+                id_jadwal_kuliah: id
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "Data jadwal Kuliah success Diupdate",
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
+    deleteStatus: async (req, res, next) => {
+        const id = req.params.id
+        const jadwalKuliahModelUse = await jadwalKuliahModel.findOne({
+            include: [{
+                model: semesterModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                model: kelasModel,
+                where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
+                where: { status: "aktif" }
+            }],
+            where: {
+                id_jadwal_kuliah: id,
+                status: "aktif"
+            }
+        })
+        if (!jadwalKuliahModelUse) return res.status(401).json({ message: "Data jadwal kuliah tidak ditemukan" })
+        const jadwalKuliah = await jadwalKuliahModel.update({
+            status: "tidak"
+        }, {
+            where: {
+                id_jadwal_kuliah: id
+            }
+        })
+            .then(result => {
+                res.status(201).json({
+                    message: "Data jadwal kuliah success Dihapus",
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+
+    }
 }
