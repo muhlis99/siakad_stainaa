@@ -11,6 +11,7 @@ const FormMhs4 = () => {
     const [Jenjang, setJenjang] = useState([])
     const [Fakultas, setFakultas] = useState([])
     const [Prodi, setProdi] = useState([])
+    const [Semester, setSemester] = useState([])
     const [namanya, setNamanya] = useState("")
     const [nikWali, setNikWali] = useState("")
     const [namaWali, setNamaWali] = useState("")
@@ -23,7 +24,7 @@ const FormMhs4 = () => {
     const [jenjangnya, setJenjangnya] = useState("")
     const [fakultasnya, setFakultasnya] = useState("")
     const [prodinya, setProdinya] = useState("")
-    const [semester, setSemester] = useState("")
+    const [kodeSmt, setKodeSmt] = useState("")
     const navigate = useNavigate()
     const { idMhs } = useParams()
     const { stat } = useParams()
@@ -47,7 +48,7 @@ const FormMhs4 = () => {
                     setJenjangnya(response.data.data.code_jenjang_pendidikan)
                     setFakultasnya(response.data.data.code_fakultas)
                     setProdinya(response.data.data.code_prodi)
-                    setSemester(response.data.data.mulai_semester)
+                    setKodeSmt(response.data.data.mulai_semester)
                 } else {
                     const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
                     let tglLahirWali = response.data.data.tanggal_lahir_wali
@@ -64,7 +65,7 @@ const FormMhs4 = () => {
                     setJenjangnya(response.data.data.code_jenjang_pendidikan)
                     setFakultasnya(response.data.data.code_fakultas)
                     setProdinya(response.data.data.code_prodi)
-                    setSemester(response.data.data.mulai_semester)
+                    setKodeSmt(response.data.data.mulai_semester)
                 }
             } catch (error) {
 
@@ -78,6 +79,7 @@ const FormMhs4 = () => {
         getPenghasilan()
         getPendidikan()
         getJenjangPendidikan()
+        getSemesterAll()
     }, [])
 
     useEffect(() => {
@@ -141,16 +143,16 @@ const FormMhs4 = () => {
         }
     }
 
-    const sm = []
-    for (let smester = 1; smester < 9; smester++) {
-        sm.push(<option key={smester} value={"semester " + smester}>{"Semester " + smester}</option>)
-    }
-
     const getProdiByFakultas = async () => {
         if (fakultasnya != 0) {
             const response = await axios.get(`v1/prodi/getProdiByFakultas/${fakultasnya}`)
             setProdi(response.data.data)
         }
+    }
+
+    const getSemesterAll = async () => {
+        const response = await axios.get('v1/semester/all')
+        setSemester(response.data.data)
     }
 
     const simpanMhs = async (e) => {
@@ -168,7 +170,7 @@ const FormMhs4 = () => {
                 code_jenjang_pendidikan: jenjangnya,
                 code_fakultas: fakultasnya,
                 code_prodi: prodinya,
-                mulai_semester: semester
+                mulai_semester: kodeSmt
             }).then(function (response) {
                 Swal.fire({
                     title: response.data.message,
@@ -431,9 +433,11 @@ const FormMhs4 = () => {
                                         <label className="label">
                                             <span className="text-base label-text">Masuk Mulai Semester</span>
                                         </label>
-                                        <select className='select select-bordered select-sm w-full' value={semester} onChange={(e) => setSemester(e.target.value)}>
+                                        <select className='select select-bordered select-sm w-full' value={kodeSmt} onChange={(e) => setKodeSmt(e.target.value)}>
                                             <option value="">Mulai Semester</option>
-                                            {sm}
+                                            {Semester.map((item) => (
+                                                <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>

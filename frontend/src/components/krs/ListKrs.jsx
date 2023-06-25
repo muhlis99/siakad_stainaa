@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { FaCheck, FaSearch, FaTimes, } from 'react-icons/fa'
+import { MdDoNotDisturb } from 'react-icons/md'
 import Swal from 'sweetalert2'
 
 const ListKrs = () => {
@@ -178,7 +179,7 @@ const ListKrs = () => {
                                         <td className='px-2 py-2 border' align='center'>
                                             <div>
                                                 <div className="tooltip" data-tip="Lihat MK Paket"><button className="btn btn-xs btn-circle text-white btn-blue mr-1" onClick={() => getViewKrs(item.Paketmakul[0].code_semester.substr(0, 4), kodeProdi, item.Paketmakul[0].code_semester)} title='Lihat MK Paket'><FaSearch /></button></div>
-                                                <div className="tooltip" data-tip="Paketkan Mahasiswa"><button className="btn btn-xs btn-circle text-white btn-default" onClick={() => paketkan(item.Paketmakul[0].code_semester.substr(0, 4), kodeProdi, item.Paketmakul[0].code_semester)} title='Paketkan Mahasiswa'><FaCheck /></button></div>
+                                                {item.keterangan == 'paket belum' ? <div className="tooltip" data-tip="Paketkan Mahasiswa"><button className="btn btn-xs btn-circle text-white btn-default" onClick={() => paketkan(item.Paketmakul[0].code_semester.substr(0, 4), kodeProdi, item.Paketmakul[0].code_semester)} title='Paketkan Mahasiswa'><FaCheck /></button></div> : <div className="tooltip" data-tip="Paket Selesai"><button className="btn btn-disabled btn-orange btn-xs btn-circle text-white" tabIndex="-1" role="button" aria-disabled="true"><FaTimes /></button></div>}
                                             </div>
                                         </td>
                                     </tr>
