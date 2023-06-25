@@ -51,6 +51,7 @@ const kategoriNilai = require('./router/kategoriNilaiRoute.js')
 const sebaranMataKuliah = require('./router/sebaranMataKuliahRoute.js')
 const krs = require('./router/krsRoute.js')
 const jadwalKuliah = require('./router/jadwalKuliahRoute.js')
+const dosenPengajar = require('./router/dosenPengajarRoute.js')
 app.use('/v1/login', login)
 app.use('/v1/registrasi', registrasi)
 app.use('/v1/jenjangPendidikan', jenjangPendidikan)
@@ -69,6 +70,7 @@ app.use('/v1/plotingKelas', plotingKelas)
 app.use('/v1/kategoriNilai', kategoriNilai)
 app.use('/v1/krs', krs)
 app.use('/v1/jadwalKuliah', jadwalKuliah)
+app.use('/v1/dosenPengajar', dosenPengajar)
 
 // default index
 app.get('/', (req, res) => {

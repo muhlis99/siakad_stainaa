@@ -186,6 +186,8 @@ module.exports = {
             jam_mulai: jam_mulai,
             jam_selesai: jam_selesai,
             metode_pembelajaran: metode_pembelajaran,
+            dose_pengajar: "",
+            dose_pengganti: "",
             status: "aktif"
         }).then(result => {
             res.status(201).json({
@@ -302,6 +304,8 @@ module.exports = {
             jam_mulai: jam_mulai,
             jam_selesai: jam_selesai,
             metode_pembelajaran: metode_pembelajaran,
+            dose_pengajar: "",
+            dose_pengganti: "",
             status: "aktif"
         }, {
             where: {
