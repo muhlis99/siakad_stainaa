@@ -5,6 +5,9 @@ const prodiModel = require('./prodiModel.js')
 const semesterModel = require('./semesterModel.js')
 const tahunAjaranModel = require('./tahunAjaranModel.js')
 const kelasModel = require('./kelasKuliahModel.js')
+const ruangModel = require('./ruangModel.js')
+const fakultasModel = require('./fakultasModel.js')
+
 
 const jadwalKuliahModel = db.define('jadwalKuliah', {
     'id_jadwal_kuliah': {
@@ -16,6 +19,9 @@ const jadwalKuliahModel = db.define('jadwalKuliah', {
         type: DataTypes.TEXT,
     },
     'code_mata_kuliah': {
+        type: DataTypes.TEXT
+    },
+    'code_fakultas': {
         type: DataTypes.TEXT
     },
     'code_prodi': {
@@ -30,7 +36,7 @@ const jadwalKuliahModel = db.define('jadwalKuliah', {
     'code_kelas': {
         type: DataTypes.TEXT
     },
-    'kapasitas': {
+    'code_ruang': {
         type: DataTypes.TEXT
     },
     'tanggal_mulai': {
@@ -42,17 +48,21 @@ const jadwalKuliahModel = db.define('jadwalKuliah', {
     'jumlah_pertemuan': {
         type: DataTypes.TEXT
     },
+    'hari': {
+        type: DataTypes.TEXT
+    },
+    'jam_mulai': {
+        type: DataTypes.TEXT
+    },
+    'jam_selesai': {
+        type: DataTypes.TEXT
+    },
+    'metode_pembelajaran': {
+        type: DataTypes.TEXT
+    },
     'status': {
         type: DataTypes.ENUM,
         values: ['aktif', 'tidak']
-    },
-    'lastCode': {
-        type: DataTypes.VIRTUAL,
-        get() {
-            return this.code_jadwal_kuliah;
-        }, set(value) {
-            throw new Error('Do not try to set the `code jadwal kuliah` value!');
-        }
     }
 }, {
     tableName: 'tb_jadwal_kuliah',
@@ -81,5 +91,13 @@ jadwalKuliahModel.hasMany(semesterModel, { sourceKey: 'code_semester', foreignKe
 // tahun ajaran
 tahunAjaranModel.belongsTo(jadwalKuliahModel, { foreignKey: 'code_tahun_ajaran' })
 jadwalKuliahModel.hasMany(tahunAjaranModel, { sourceKey: 'code_tahun_ajaran', foreignKey: 'code_tahun_ajaran' })
+
+// ruang
+ruangModel.belongsTo(jadwalKuliahModel, { foreignKey: 'code_ruang' })
+jadwalKuliahModel.hasMany(ruangModel, { sourceKey: 'code_ruang', foreignKey: 'code_ruang' })
+
+// ruang
+fakultasModel.belongsTo(jadwalKuliahModel, { foreignKey: 'code_fakultas' })
+jadwalKuliahModel.hasMany(fakultasModel, { sourceKey: 'code_fakultas', foreignKey: 'code_fakultas' })
 
 module.exports = jadwalKuliahModel

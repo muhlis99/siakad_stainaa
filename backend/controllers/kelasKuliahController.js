@@ -143,10 +143,11 @@ module.exports = {
             }
         })
 
-        let nmKelas = ["", "A", "B"]
+        let nmKelas = ["", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
         const createData = makul.map(M => {
             const Mkul = M.code_mata_kuliah
             nama_kelas.map(nmkls => {
+                let randomNumber = Math.floor(100 + Math.random() * 900)
                 let currentPage = parseInt(nmkls) // nama kelas 
                 let perPage = parseInt(kapasitas) // kapasitas
                 let offset = (currentPage - 1) * perPage
@@ -170,7 +171,7 @@ module.exports = {
                 }).then(al => {
                     return Promise.all(al.map(p => {
                         let data = {
-                            code_kelas: nmKelas[nmkls],
+                            code_kelas: randomNumber + nmKelas[nmkls],
                             nama_kelas: nmKelas[nmkls],
                             nim: p.nim,
                             kapasitas: kapasitas,
@@ -179,6 +180,7 @@ module.exports = {
                             code_prodi: code_prodi,
                             code_mata_kuliah: Mkul,
                             code_semester: code_semester,
+                            code_tahun_ajaran: code_tahun_ajaran,
                             status: "aktif"
                         }
                         kelasModel.bulkCreate([data])
