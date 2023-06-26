@@ -47,6 +47,22 @@ const Sidebar = () => {
           <div className="collapse collapse-arrow bg-[#2D7F5F] hover:bg-[#287155] mt-1">
             <input type="checkbox" className='p-0 min-h-0' />
             <div className="collapse-title p-2 min-h-0 text-white">
+              <Link className='text-sm flex gap-2'><span>DATA INDUK</span></Link>
+            </div>
+            <div className="collapse-content grid gap-1 bg-[#2D7F5F] px-0">
+              <Link to="/jenjang" className='text-white flex gap-2 mt-2 hover:bg-[#287155] px-4 py-2'><SiLevelsdotfyi /> <span className='text-sm'>Jenjang Pendidikan</span></Link>
+              <Link to="/fakultas" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaUniversity /> <span className='text-sm'>Fakultas</span></Link>
+              <Link to="/prodi" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBookmark /> <span className='text-sm'>Prodi</span></Link>
+              <Link to="/dosen" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaChalkboardTeacher /> <span className='text-sm'>Dosen</span></Link>
+              <Link to="/mahasiswa" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaUserGraduate /> <span className='text-sm'>Mahasiswa</span></Link>
+              <Link to="/ruang" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><SiHomeassistantcommunitystore /> <span className='text-sm'>Ruang</span></Link>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div className="collapse collapse-arrow bg-[#2D7F5F] hover:bg-[#287155] mt-1">
+            <input type="checkbox" className='p-0 min-h-0' />
+            <div className="collapse-title p-2 min-h-0 text-white">
               <Link className='text-sm'><span>KURIKULUM</span></Link>
             </div>
             <div className="collapse-content grid gap-1 bg-[#2D7F5F] px-0">
@@ -70,22 +86,6 @@ const Sidebar = () => {
               <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBusinessTime /> <span className='text-sm'>Penjadwalan</span></Link>
               {/* <Link to="/ploting" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBuromobelexperte /> <span className='text-sm'>Ploting Kelas</span></Link> */}
               <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaAddressBook /> <span className='text-sm'>Kartu Hasil Studi</span></Link>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className="collapse collapse-arrow bg-[#2D7F5F] hover:bg-[#287155] mt-1">
-            <input type="checkbox" className='p-0 min-h-0' />
-            <div className="collapse-title p-2 min-h-0 text-white">
-              <Link className='text-sm flex gap-2'><span>DATA PELENGKAP</span></Link>
-            </div>
-            <div className="collapse-content grid gap-1 bg-[#2D7F5F] px-0">
-              <Link to="/jenjang" className='text-white flex gap-2 mt-2 hover:bg-[#287155] px-4 py-2'><SiLevelsdotfyi /> <span className='text-sm'>Jenjang Pendidikan</span></Link>
-              <Link to="/fakultas" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaUniversity /> <span className='text-sm'>Fakultas</span></Link>
-              <Link to="/prodi" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBookmark /> <span className='text-sm'>Prodi</span></Link>
-              <Link to="/dosen" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaChalkboardTeacher /> <span className='text-sm'>Dosen</span></Link>
-              <Link to="/mahasiswa" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaUserGraduate /> <span className='text-sm'>Mahasiswa</span></Link>
-              <Link to="/ruang" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><SiHomeassistantcommunitystore /> <span className='text-sm'>Ruang</span></Link>
             </div>
           </div>
         </div>

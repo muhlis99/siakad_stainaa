@@ -17,6 +17,7 @@ const ListKelas = () => {
     const [kodeSemester, setKodeSemester] = useState("")
     const [KodeMakul, setKodeMakul] = useState([])
     const [DataKelas, setDataKelas] = useState([])
+    const [title, setTitle] = useState("")
 
     useEffect(() => {
         getFakultas()
@@ -67,6 +68,9 @@ const ListKelas = () => {
         if (kodeFakultas != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0) {
             const response = await axios.get(`v1/kelasKuliah/allMatakuliah/${kodeTahun}/${kodeSemester}/${kodeFakultas}/${kodeProdi}`)
             setMakul(response.data.data)
+            setTitle("")
+        } else {
+            setTitle('Untuk melihat data kelas kuliah, silakan isi form di atas!')
         }
     }
 
@@ -144,6 +148,9 @@ const ListKelas = () => {
                             </div>
                         </div>
                         <div className='border-t-2 pointer-events-none border-t-[#2D7F5F] grid gap-2'>
+                            <div className="italic text-center text-sm mt-4">
+                                {title && <span className='text-red-700'>{title}</span>}
+                            </div>
                             <div className='mt-3'>
                                 {Makul.map((kls, index) => (
                                     <div key={kls.id_mata_kuliah} className="collapse bg-[#2D7F5F] pb-0 rounded-lg">
@@ -155,19 +162,12 @@ const ListKelas = () => {
                                             {DataKelas != 0 ? DataKelas[index].map((item) => (
                                                 <div key={item.id_kelas} className="grid grid-cols-3 gap-2 px-4 py-2 bg-base-200">
                                                     <button className='btn btn-sm btn-ghost w-14'><FaHotel /> <span className="ml-1">{item.nama_kelas}</span></button>
-                                                    <button className='btn btn-sm btn-ghost'><FaUsers /> <span className="ml-1">20/30</span></button>
+                                                    <button className='btn btn-sm btn-ghost'><FaUsers /> <span className="ml-1">{item.kapasitas}</span></button>
                                                     <div>
                                                         <button className='btn btn-xs btn-default btn-circle float-right'><FaInfo /></button>
                                                     </div>
                                                 </div>
-                                            )) : DataKelas.map((item) => (
-                                                <div key={item.id_kelas} className="grid grid-cols-3 gap-2 px-4 py-2 bg-base-200">
-                                                    <button className='btn btn-sm btn-ghost w-14'><FaHotel /> <span className="ml-1">{item.id_kelas}</span></button>
-                                                    <button className='btn btn-sm btn-ghost'><FaUsers /> <span className="ml-1">20/30</span></button>
-                                                    <div>
-                                                        <button className='btn btn-xs btn-default btn-circle float-right'><FaInfo /></button>
-                                                    </div>
-                                                </div>))}
+                                            )) : ""}
                                         </div>
                                     </div>
                                 ))}
