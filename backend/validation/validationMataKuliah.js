@@ -19,9 +19,6 @@ exports.validationMataKuliah = [
     check('sks')
         .notEmpty()
         .withMessage('sks tidak boleh kosong'),
-    check('metode_pembelajaran')
-        .notEmpty()
-        .withMessage('metode pembelajaran tidak boleh kosong'),
     check('tanggal_aktif')
         .notEmpty()
         .withMessage('tanggal aktif tidak boleh kosong'),
