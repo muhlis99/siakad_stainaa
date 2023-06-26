@@ -74,9 +74,10 @@ module.exports = {
                 where: { status: "aktif" }
             }],
             where: {
-                code_mata_kuliah: [codeMakul],
+                code_mata_kuliah: codeMakul,
                 status: "aktif"
-            }
+            },
+            group: [kelas.nama_kelas]
         }).
             then(getByMakul => {
                 if (!getByMakul) {

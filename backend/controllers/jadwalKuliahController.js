@@ -100,7 +100,7 @@ module.exports = {
     post: async (req, res, next) => {
         const { code_mata_kuliah, code_fakultas, code_prodi, code_semester, code_tahun_ajaran,
             code_kelas, code_ruang, tanggal_mulai, tanggal_selesai, jumlah_pertemuan,
-            hari, jam_mulai, jam_selesai, metode_pembelajaran } = req.body
+            hari, jam_mulai, jam_selesai } = req.body
 
         const duplicateData = await jadwalKuliahModel.findAll({
             where: {
@@ -185,7 +185,8 @@ module.exports = {
             hari: hari,
             jam_mulai: jam_mulai,
             jam_selesai: jam_selesai,
-            metode_pembelajaran: metode_pembelajaran,
+            dose_pengajar: "",
+            dose_pengganti: "",
             status: "aktif"
         }).then(result => {
             res.status(201).json({
@@ -201,7 +202,7 @@ module.exports = {
         const id = req.params.id
         const { code_mata_kuliah, code_fakultas, code_prodi, code_semester, code_tahun_ajaran,
             code_kelas, code_ruang, tanggal_mulai, tanggal_selesai, jumlah_pertemuan,
-            hari, jam_mulai, jam_selesai, metode_pembelajaran } = req.body
+            hari, jam_mulai, jam_selesai } = req.body
         const jadwalKuliahModelUse = await jadwalKuliahModel.findOne({
             include: [{
                 model: semesterModel,
@@ -301,7 +302,8 @@ module.exports = {
             hari: hari,
             jam_mulai: jam_mulai,
             jam_selesai: jam_selesai,
-            metode_pembelajaran: metode_pembelajaran,
+            dose_pengajar: "",
+            dose_pengganti: "",
             status: "aktif"
         }, {
             where: {

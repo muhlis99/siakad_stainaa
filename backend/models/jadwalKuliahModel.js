@@ -7,7 +7,7 @@ const tahunAjaranModel = require('./tahunAjaranModel.js')
 const kelasModel = require('./kelasKuliahModel.js')
 const ruangModel = require('./ruangModel.js')
 const fakultasModel = require('./fakultasModel.js')
-
+const doseModel = require('./dosenModel.js')
 
 const jadwalKuliahModel = db.define('jadwalKuliah', {
     'id_jadwal_kuliah': {
@@ -57,7 +57,10 @@ const jadwalKuliahModel = db.define('jadwalKuliah', {
     'jam_selesai': {
         type: DataTypes.TEXT
     },
-    'metode_pembelajaran': {
+    'dosen_pengajar': {
+        type: DataTypes.TEXT
+    },
+    'dosen_pengganti': {
         type: DataTypes.TEXT
     },
     'status': {
@@ -96,8 +99,12 @@ jadwalKuliahModel.hasMany(tahunAjaranModel, { sourceKey: 'code_tahun_ajaran', fo
 ruangModel.belongsTo(jadwalKuliahModel, { foreignKey: 'code_ruang' })
 jadwalKuliahModel.hasMany(ruangModel, { sourceKey: 'code_ruang', foreignKey: 'code_ruang' })
 
-// ruang
+// fakultas
 fakultasModel.belongsTo(jadwalKuliahModel, { foreignKey: 'code_fakultas' })
 jadwalKuliahModel.hasMany(fakultasModel, { sourceKey: 'code_fakultas', foreignKey: 'code_fakultas' })
+
+// dosen
+doseModel.belongsTo(jadwalKuliahModel, { foreignKey: 'nip_ynaa' })
+jadwalKuliahModel.hasMany(doseModel, { sourceKey: 'dosen_pengajar', foreignKey: 'nip_ynaa' })
 
 module.exports = jadwalKuliahModel
