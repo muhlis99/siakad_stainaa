@@ -8,6 +8,8 @@ router.get('/all/:codeJadkul', jadwalPertemuanController.get)
 router.get('/getById/:id', jadwalPertemuanController.getById)
 router.post('/create/:codeJadkul', jadwalPertemuanController.post)
 router.put('/update/:id', jadwalPertemuanController.put)
-// router.put('/deleteStatus/:id', jadwalPertemuanController.deleteStatus)
+router.put('/deleteStatus/:id', jadwalPertemuanController.deleteStatus)
+router.put('/setJenisPertemuan', jadwalPertemuanController.setJenisPertemuan)
+router.put('/setMetodePembelajaran', jadwalPertemuanController.setMetodePembelajaran)
 
 module.exports = router
