@@ -77,7 +77,7 @@ module.exports = {
                 code_mata_kuliah: codeMakul,
                 status: "aktif"
             },
-            group: [kelas.nama_kelas]
+            group: ["kelas.nama_kelas"]
         }).
             then(getByMakul => {
                 if (!getByMakul) {
