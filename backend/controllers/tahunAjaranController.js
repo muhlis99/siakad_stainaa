@@ -155,7 +155,7 @@ module.exports = {
         })
         if (!tahunAjaranUse) return res.status(401).json({ message: "Data tahun Ajaran tidak ditemukan" })
         const { dari_tahun, sampai_tahun, keterangan } = req.body
-        const code_tahun_ajaran = dari_tahun.substr(2, 4) + sampai_tahun.substr(2, 4)
+        // const code_tahun_ajaran = dari_tahun.substr(2, 4) + sampai_tahun.substr(2, 4)
         const tahun_ajaran = dari_tahun + "/" + sampai_tahun
         const tahunAjaranDuplicate = await tahunAjaran.findOne({
             where: {
@@ -166,9 +166,9 @@ module.exports = {
         if (tahunAjaranDuplicate) return res.status(401).json({ message: "data tahun Ajaran sudah ada" })
         // const tglAktif = date.format((new Date(tanggal_aktif)), 'YYYY-MM-DD')
         await tahunAjaran.update({
-            code_tahun_ajaran: code_tahun_ajaran,
-            tahun_ajaran: tahun_ajaran,
-            keterangan: keterangan,
+            code_tahun_ajaran: tahunAjaranUse.code_tahun_ajaran,
+            tahun_ajaran: tahun_ajaran || tahunAjaranUse.tahunAjaran,
+            keterangan: keterangan || tahunAjaranUse.keterangan,
             status: "aktif",
         }, {
             where: {
