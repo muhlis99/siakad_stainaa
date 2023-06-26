@@ -15,7 +15,8 @@ const ListKelas = () => {
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
-    const [kodeMakul, setKodeMakul] = useState([])
+    const [KodeMakul, setKodeMakul] = useState([])
+    const [DataKelas, setDataKelas] = useState([])
 
     useEffect(() => {
         getFakultas()
@@ -31,6 +32,14 @@ const ListKelas = () => {
     useEffect(() => {
         getMataKuliah()
     }, [kodeFakultas, kodeProdi, kodeSemester, kodeTahun])
+
+    useEffect(() => {
+        getKodeMakul()
+    }, [Makul])
+
+    useEffect(() => {
+        getDataKelas()
+    }, [KodeMakul])
 
     const getFakultas = async () => {
         const response = await axios.get('v1/fakultas/all')
@@ -62,10 +71,29 @@ const ListKelas = () => {
     }
 
     const getKodeMakul = () => {
-        var i = Makul.map(item => (
-            axios.get(`v1/kelasKuliah/getKelasByMakul/${item.code_mata_kuliah}`)
-        ))
+        var i = Makul.map(item => ({
+            kode: item.code_mata_kuliah
+        }))
+        setKodeMakul(i)
         console.log(i)
+    }
+
+    const getDataKelas = async () => {
+        if (KodeMakul.length != 0) {
+            let kelass = []
+            let promises = []
+            for (let i = 0; i < KodeMakul.length; i++) {
+                promises.push(
+                    axios.get('v1/kelasKuliah/getKelasByMakul/' + KodeMakul[i].kode).then(response => {
+                        kelass.push(response.data.data)
+                    })
+                )
+            }
+            if (KodeMakul.length != 0) {
+                Promise.all(promises).then(() => setDataKelas(kelass))
+                // Promise.all(promises).then(() => console.log('data:', kelass))
+            }
+        }
     }
 
     return (
@@ -124,13 +152,22 @@ const ListKelas = () => {
                                             <span>{kls.nama_mata_kuliah} | </span><span>SKS {kls.sks}</span>
                                         </div>
                                         <div className="collapse-content grid gap-1 px-0 py-1 bg-base-100">
-                                            <div className="grid grid-cols-3 gap-2 px-4 py-2 bg-base-200">
-                                                <button className='btn btn-sm btn-ghost w-14'><FaHotel /> <span className="ml-1">{index}</span></button>
-                                                <button className='btn btn-sm btn-ghost'><FaUsers /> <span className="ml-1">20/30</span></button>
-                                                <div>
-                                                    <button className='btn btn-xs btn-default btn-circle float-right'><FaInfo /></button>
+                                            {DataKelas != 0 ? DataKelas[index].map((item) => (
+                                                <div key={item.id_kelas} className="grid grid-cols-3 gap-2 px-4 py-2 bg-base-200">
+                                                    <button className='btn btn-sm btn-ghost w-14'><FaHotel /> <span className="ml-1">{item.nama_kelas}</span></button>
+                                                    <button className='btn btn-sm btn-ghost'><FaUsers /> <span className="ml-1">20/30</span></button>
+                                                    <div>
+                                                        <button className='btn btn-xs btn-default btn-circle float-right'><FaInfo /></button>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            )) : DataKelas.map((item) => (
+                                                <div key={item.id_kelas} className="grid grid-cols-3 gap-2 px-4 py-2 bg-base-200">
+                                                    <button className='btn btn-sm btn-ghost w-14'><FaHotel /> <span className="ml-1">{item.id_kelas}</span></button>
+                                                    <button className='btn btn-sm btn-ghost'><FaUsers /> <span className="ml-1">20/30</span></button>
+                                                    <div>
+                                                        <button className='btn btn-xs btn-default btn-circle float-right'><FaInfo /></button>
+                                                    </div>
+                                                </div>))}
                                         </div>
                                     </div>
                                 ))}
@@ -138,8 +175,8 @@ const ListKelas = () => {
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </section >
+        </div >
     )
 }
 
