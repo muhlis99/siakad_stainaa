@@ -57,9 +57,6 @@ const jadwalKuliahModel = db.define('jadwalKuliah', {
     'jam_selesai': {
         type: DataTypes.TEXT
     },
-    'metode_pembelajaran': {
-        type: DataTypes.TEXT
-    },
     'dosen_pengajar': {
         type: DataTypes.TEXT
     },
