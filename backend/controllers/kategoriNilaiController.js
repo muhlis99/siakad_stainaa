@@ -196,7 +196,7 @@ module.exports = {
         if (kategoriNilaiModelDuplicate) return res.status(401).json({ message: "data kategori Nilai sudah ada" })
         await kategoriNilaiModel.update({
             code_tahun_ajaran: code_tahun_ajaran,
-            code_kategori_nilai: codekategoriNilai,
+            // code_kategori_nilai: codekategoriNilai,
             nilai_angka: nilai_angka,
             nilai_huruf: nilai_huruf,
             interfal_skor: interfal_skor,

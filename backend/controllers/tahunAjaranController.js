@@ -166,9 +166,9 @@ module.exports = {
         if (tahunAjaranDuplicate) return res.status(401).json({ message: "data tahun Ajaran sudah ada" })
         // const tglAktif = date.format((new Date(tanggal_aktif)), 'YYYY-MM-DD')
         await tahunAjaran.update({
-            code_tahun_ajaran: tahunAjaranUse.code_tahun_ajaran,
-            tahun_ajaran: tahun_ajaran || tahunAjaranUse.tahunAjaran,
-            keterangan: keterangan || tahunAjaranUse.keterangan,
+            // code_tahun_ajaran: code_tahun_ajaran,
+            tahun_ajaran: tahun_ajaran,
+            keterangan: keterangan,
             status: "aktif",
         }, {
             where: {

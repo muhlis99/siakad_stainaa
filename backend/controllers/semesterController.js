@@ -192,7 +192,7 @@ module.exports = {
         if (semesterModelDuplicate) return res.status(401).json({ message: "data semester sudah ada" })
         // const tglAktif = date.format((new Date(tanggal_aktif)), 'YYYY-MM-DD')
         await semesterModel.update({
-            code_semester: codeSemester,
+            // code_semester: codeSemester,
             code_tahun_ajaran: code_tahun_ajaran,
             semester: semester,
             tanggal_aktif: tanggal_aktif,

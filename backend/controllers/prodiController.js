@@ -264,7 +264,7 @@ module.exports = {
         await prodi.update({
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
-            code_prodi: codeProdi,
+            // code_prodi: codeProdi,
             code_dikti_prodi: code_dikti_prodi,
             nama_prodi: nama_prodi,
         }, {
