@@ -1,91 +1,74 @@
 const jadwalKuliahModel = require('../models/jadwalKuliahModel.js')
+const mataKuliahModel = require('../models/mataKuliahModel.js')
+const prodiModel = require('../models/prodiModel.js')
+const semesterModel = require('../models/semesterModel.js')
+const tahunAjaranModel = require('../models/tahunAjaranModel.js')
+const kelasModel = require('../models/kelasKuliahModel.js')
+const fakultasModel = require("../models/fakultasModel.js")
 const dosenModel = require('../models/dosenModel.js')
 const { Op } = require('sequelize')
 
 
 module.exports = {
-    get: async (req, res, next) => {
-        const { thnAjr, smt, fks, prd } = req.params
-        await jadwalKuliahModel.findAndCountAll({
+    getAllDosen: async (req, res, next) => {
+        await dosenModel.findAll({
             where: {
                 status: "aktif"
             }
-        }).
-            then(all => {
-                return dosenModel.findAll({
-                    where: {
-
-                    },
-                })
-            }).
-            then(result => {
-                const totalPage = Math.ceil(totalItems / perPage)
-                res.status(200).json({
-                    message: "Get All Jenjang Pendidikan Success",
-                    data: result,
-                    total_data: totalItems,
-                    per_page: perPage,
-                    current_page: currentPage,
-                    total_page: totalPage
-                })
-            }).
-            catch(err => {
-                next(err)
+        }).then(all => {
+            res.status(201).json({
+                message: "Data dosen pengajar Ditemukan",
+                data: all
             })
+        }).catch(err => {
+            next(err)
+        })
     },
 
     getById: async (req, res, next) => {
         const id = req.params.id
-        const fakultasUse = await fakultas.findOne({
+        await jadwalKuliahModel.findOne({
             include: [{
+                model: semesterModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                attributes: ['nama_kelas', 'code_kelas'],
+                model: kelasModel,
+                where: { status: "aktif" },
+            }, {
+                model: mataKuliahModel,
+                where: { status: "aktif" }
+            }, {
                 model: dosenModel,
-                attributes: ["id_jenjang_pendidikan", "code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
                 where: { status: "aktif" }
             }],
             where: {
-                id_fakultas: id,
+                id_jadwal_kuliah: id,
                 status: "aktif"
-            }
+            },
+            group: ['kelas.code_kelas']
         }).
             then(result => {
                 if (!result) {
                     return res.status(404).json({
-                        message: "Data fakultas Tidak Ditemukan",
+                        message: "Data dosen pengajar Tidak Ditemukan",
                         data: null
                     })
                 }
                 res.status(201).json({
-                    message: "Data fakultas Ditemukan",
-                    data: result
-                })
-            }).
-            catch(err => {
-                next(err)
-            })
-    },
-
-    getFakulatsByJenjang: async (req, res, next) => {
-        const code = req.params.code
-        const fakultasUse = await fakultas.findAll({
-            include: [{
-                model: dosenModel,
-                attributes: ["id_jenjang_pendidikan", "code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
-                where: { status: "aktif" }
-            }],
-            where: {
-                code_jenjang_pendidikan: code,
-                status: "aktif"
-            }
-        }).
-            then(result => {
-                if (!result) {
-                    return res.status(404).json({
-                        message: "Data fakultas Tidak Ditemukan",
-                        data: null
-                    })
-                }
-                res.status(201).json({
-                    message: "Data fakultas Ditemukan",
+                    message: "Data dosen pengajar Ditemukan",
                     data: result
                 })
             }).
@@ -95,38 +78,18 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { code_jenjang_pendidikan, code_dikti_fakultas, nama_fakultas } = req.body
-        let code = ""
-        if (nama_fakultas === "AGAMA ISLAM") {
-            code = "AI"
-        } else if (nama_fakultas === "AKUNTANSI") {
-            code = "AK"
-        } else if (nama_fakultas === "TEKNOLOGI INFORMASI") {
-            code = "TI"
-        } else if (nama_fakultas === "KOMUNIKASI") {
-            code = "KM"
-        } else if (nama_fakultas === "PSIKOLOGI") {
-            code = "PS"
-        } else {
-            code = ""
-        }
-        const codefakultas = code_jenjang_pendidikan + code
-        const duplicateData = await fakultas.findOne({
+        const { dosen_pengajar, dosen_pengganti, id } = req.body
+        await jadwalKuliahModel.update({
+            dosen_pengajar: dosen_pengajar,
+            dosen_pengganti: dosen_pengganti,
+        }, {
             where: {
-                code_fakultas: codefakultas
+                id_jadwal_kuliah: id
             }
-        })
-        if (duplicateData) return res.status(401).json({ message: "Data fakultas sudah ada" })
-        await fakultas.create({
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: codefakultas,
-            code_dikti_fakultas: code_dikti_fakultas,
-            nama_fakultas: nama_fakultas,
-            status: "aktif"
         }).
             then(result => {
                 res.status(201).json({
-                    message: "Data Fakultas success Ditambahkan",
+                    message: "Data dosen pengajar success Ditambahkan",
                 })
             }).
             catch(err => {
@@ -136,53 +99,18 @@ module.exports = {
 
     put: async (req, res, next) => {
         const id = req.params.id
-        const { code_jenjang_pendidikan, code_dikti_fakultas, nama_fakultas } = req.body
-        const fakultasUse = await fakultas.findOne({
-            include: [{
-                model: dosenModel,
-                attributes: ["id_jenjang_pendidikan", "code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
-                where: { status: "aktif" }
-            }],
-            where: {
-                id_fakultas: id,
-                status: "aktif"
-            }
-        })
-        if (!fakultasUse) return res.status(401).json({ message: "Data Fakultas tidak ditemukan" })
-        let code = ""
-        if (nama_fakultas === "AGAMA ISLAM") {
-            code = "AI"
-        } else if (nama_fakultas === "AKUNTANSI") {
-            code = "AK"
-        } else if (nama_fakultas === "TEKNOLOGI INFORMASI") {
-            code = "TI"
-        } else if (nama_fakultas === "KOMUNIKASI") {
-            code = "KM"
-        } else if (nama_fakultas === "PSIKOLOGI") {
-            code = "PS"
-        } else {
-            code = ""
-        }
-        const codefakultas = code_jenjang_pendidikan + code
-        const duplicateData = await fakultas.findOne({
-            where: {
-                code_fakultas: codefakultas
-            }
-        })
-        if (duplicateData) return res.status(401).json({ message: "Data fakultas sudah ada" })
-        await fakultas.update({
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: codefakultas,
-            code_dikti_fakultas: code_dikti_fakultas,
-            nama_fakultas: nama_fakultas
+        const { dosen_pengajar, dosen_pengganti } = req.body
+        await jadwalKuliahModel.update({
+            dosen_pengajar: dosen_pengajar,
+            dosen_pengganti: dosen_pengganti,
         }, {
             where: {
-                id_fakultas: id
+                id_jadwal_kuliah: id
             }
         }).
             then(result => {
                 res.status(201).json({
-                    message: "Data Fakultas success diupdate"
+                    message: "Data dosen pengajar success Diupdate",
                 })
             }).
             catch(err => {
@@ -192,28 +120,48 @@ module.exports = {
 
     deleteStatus: async (req, res, next) => {
         const id = req.params.id
-        const fakultasUse = await fakultas.findOne({
+        const jadwalKuliahModelUse = await jadwalKuliahModel.findOne({
             include: [{
-                model: dosenModel,
-                attributes: ["id_jenjang_pendidikan", "code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
+                model: semesterModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                attributes: ['nama_kelas', 'code_kelas'],
+                model: kelasModel,
+                where: { status: "aktif" },
+            }, {
+                model: mataKuliahModel,
                 where: { status: "aktif" }
             }],
             where: {
-                id_fakultas: id,
+                id_jadwal_kuliah: id,
                 status: "aktif"
-            }
+            },
+            group: ['kelas.code_kelas'],
         })
-        if (!fakultasUse) return res.status(401).json({ message: "Data fakultas tidak ditemukan" })
-        await fakultas.update({
-            status: "tidak"
+        if (!jadwalKuliahModelUse) return res.status(401).json({ message: "Data dosen pengajar tidak ditemukan" })
+        await jadwalKuliahModel.update({
+            dosen_pengajar: "",
+            dosen_pengganti: ""
         }, {
             where: {
-                id_fakultas: id
+                id_jadwal_kuliah: id
             }
         }).
             then(result => {
                 res.status(201).json({
-                    message: "data fakultas succes dihapus"
+                    message: "data dosen pengajar succes dihapus"
                 })
             }).
             catch(err => {
