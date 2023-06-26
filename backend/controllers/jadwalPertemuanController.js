@@ -60,6 +60,19 @@ module.exports = {
                 status: "aktif"
             }
         })
+        const dataJadwalPertemuan = await jadwalPertemuanModel.findOne({
+            where: {
+                code_jadwal_kuliah: codeJadkul,
+                status: "aktif"
+            }
+        })
+        let ket = ""
+        if (dataJadwalPertemuan) {
+            ket = "data sudah ada"
+        } else {
+            ket = "data tidak ada "
+        }
+
         const jmlPert = dataJadwalKuliah.jumlah_pertemuan
         const hari = dataJadwalKuliah.hari
         const tanggalMulai = dataJadwalKuliah.tanggal_mulai
@@ -104,6 +117,7 @@ module.exports = {
         try {
             res.status(201).json({
                 message: "Data jadwal pertemuan success ditambahkan",
+                keterangan: ket
             })
         } catch (error) {
             next(error)
@@ -170,11 +184,75 @@ module.exports = {
                 }
             })
                 .then(result => {
-                    res.status(200).json({ message: "data jadwal pertemuan berhasil diupdate" })
+                    res.status(200).json({
+                        message: "data jadwal pertemuan berhasil diupdate",
+                    })
                 })
         } catch (error) {
             next(error)
         }
+    },
+
+    deleteStatus: async (req, res, next) => {
+        const { id } = req.params
+        const jadawalPertemuanUse = await jadwalPertemuanModel.findOne({
+            include: [{
+                model: jadwalKuliahModel,
+                where: { status: "aktif" }
+            }],
+            where: {
+                id_jadwal_pertemuan: id,
+                status: "aktif"
+            }
+        })
+        if (!jadawalPertemuanUse) return res.status(401).json({ message: "Data jadwal pertemuan tidak ditemukan" })
+        await jadwalPertemuanModel.update({
+            status: "tidak"
+        }, {
+            where: {
+                id_jadwal_pertemuan: id
+            }
+        }).then(all => {
+            res.status(200).json({
+                message: "data jadwal pertemuan berhasil dihapus",
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
+    setJenisPertemuan: async (req, res, next) => {
+        const { id, jenis_pertemuan } = req.body
+        await jadwalPertemuanModel.update({
+            jenis_pertemuan: jenis_pertemuan
+        }, {
+            where: {
+                id_jadwal_pertemuan: id
+            }
+        }).then(all => {
+            res.status(200).json({
+                message: "set jenis pertemuan berhasil dirubah",
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
+    setMetodePembelajaran: async (req, res, next) => {
+        const { id, metode_pembelajaran } = req.body
+        await jadwalPertemuanModel.update({
+            metode_pembelajaran: metode_pembelajaran
+        }, {
+            where: {
+                id_jadwal_pertemuan: id
+            }
+        }).then(all => {
+            res.status(200).json({
+                message: "set metode pembelajaran berhasil dirubah",
+            })
+        }).catch(err => {
+            next(err)
+        })
     }
 
 }
