@@ -29,10 +29,6 @@ module.exports = {
                 {
                     model: tahunAjaranModel,
                     where: { status: "aktif" }
-                },
-                {
-                    model: kategoriNilaiModel,
-                    where: { status: "aktif" }
                 }
             ],
             where: {
@@ -83,10 +79,6 @@ module.exports = {
                 },
                 {
                     model: tahunAjaranModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: kategoriNilaiModel,
                     where: { status: "aktif" }
                 }
             ],
