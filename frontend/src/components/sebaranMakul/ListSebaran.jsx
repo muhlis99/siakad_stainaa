@@ -13,6 +13,7 @@ const ListSebaran = () => {
     const [Makul, setMakul] = useState([])
     const [smt, setSmt] = useState([])
     const [Sebaran, SetSebaran] = useState([])
+    const [satuan, setSatuan] = useState([])
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeMakul, setKodeMakul] = useState("")
@@ -38,7 +39,6 @@ const ListSebaran = () => {
 
     useEffect(() => {
         getProdiAll()
-        getDataSemester()
         getKategoriNilai()
         getMakulAll()
         getTahunAjaran()
@@ -61,8 +61,16 @@ const ListSebaran = () => {
     }, [Semester])
 
     useEffect(() => {
-        sebaranMakul()
+        getDataSemester()
     }, [kodeProdi, kodeTahun])
+
+    useEffect(() => {
+        sebaranMakul()
+    }, [kodeProdi, smt, kodeTahun])
+
+    useEffect(() => {
+        getMakulById()
+    }, [])
 
     const getProdiAll = async () => {
         const response = await axios.get('v1/prodi/all')
@@ -75,16 +83,10 @@ const ListSebaran = () => {
     }
 
     const getDataSemester = async () => {
+        // if (kodeProdi != 0 & kodeTahun != 0) {
         const response = await axios.get(`v1/semester/all`)
         setSemester(response.data.data)
-    }
-
-    const getCodeSemester = () => {
-        setSmt(
-            Semester.map(item => (
-                item.code_semester
-            ))
-        )
+        // }
     }
 
     const getKategoriNilai = async () => {
@@ -128,14 +130,34 @@ const ListSebaran = () => {
         }
     }
 
-    const sebaranMakul = async () => {
-        const response = await axios.get(`v1/sebaranMataKuliah/all?sebaranProdi=${kodeProdi}&sebaranTahunAjaran=${kodeTahun}`)
-        SetSebaran(response.data.data)
+    const getCodeSemester = () => {
+        var i = Semester.map(item => ({
+            kode: item.code_semester
+        }))
+        setSmt(i)
+        console.log(i)
     }
 
-    useEffect(() => {
-        getMakulById()
-    }, [])
+    const sebaranMakul = () => {
+        // const response = await axios.get(`v1/sebaranMataKuliah/all?sebaranProdi=${kodeProdi}&sebaranTahunAjaran=${kodeTahun}`)
+        // SetSebaran(response.data.data)
+        if (smt.length != 0) {
+            let sebar = []
+            // let sksnya = []
+            let promises = []
+            for (let i = 0; i < smt.length; i++) {
+                promises.push(
+                    axios.get(`v1/sebaranMataKuliah/all?sebaranProdi=${kodeProdi}&sebaranSemester=${smt[i].kode}&sebaranTahunAjaran=${kodeTahun}`).then(response => {
+                        sebar.push(response.data.data)
+                        // sksnya.push(response.data.total_sks)
+                    })
+                )
+            }
+            if (smt.length != 0) {
+                Promise.all(promises).then(() => SetSebaran(sebar))
+            }
+        }
+    }
 
     const getMakulById = async (e, f) => {
         try {
@@ -541,13 +563,13 @@ const ListSebaran = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-3">
                     <div className="card-body p-4">
                         <div className="grid grid-cols-2 gap-4">
-                            {Sebaran.map((item, index) => (
-                                <div key={index + 1}>
+                            {Semester.map((items, index) => (
+                                <div key={items.id_semester}>
                                     <div className="overflow-x-auto rounded-md">
                                         <table className="w-full text-sm text-gray-500 dark:text-gray-400">
                                             <thead className='text-gray-700 bg-[#F2F2F2]'>
                                                 <tr>
-                                                    <th scope="col" className="px-2 py-2 border" colSpan="6">semester {item.semesters[0].semester}</th>
+                                                    <th scope="col" className="px-2 py-2 border" colSpan="6">Semester {items.semester}</th>
                                                 </tr>
                                                 <tr>
                                                     <th scope="col" className="px-2 py-2 border">#</th>
@@ -558,19 +580,21 @@ const ListSebaran = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr className='bg-white border text-gray-500' >
-                                                    <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{index + 1}</th>
-                                                    <td className='px-2 py-2 border' align='center'>{item.code_mata_kuliah}</td>
-                                                    <td className='px-2 py-2 border'>{item.nama_mata_kuliah}</td>
-                                                    <td className='px-2 py-2 border' align='center'>{item.sks}</td>
-                                                    <td className='px-2 py-2 border' align='center'>
-                                                        <div>
+                                                {Sebaran != 0 ? Sebaran[index].map((item) => (
+                                                    <tr key={item.id_mata_kuliah} className='bg-white border text-gray-500' >
+                                                        <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap"></th>
+                                                        <td className='px-2 py-2 border' align='center'>{item.semesters[0].code_semester}</td>
+                                                        <td className='px-2 py-2 border'></td>
+                                                        <td className='px-2 py-2 border' align='center'></td>
+                                                        <td className='px-2 py-2 border' align='center'>
+                                                            {/* <div>
                                                             <button onClick={() => getMakulById('Detail', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-blue mr-1" title='Detail'><FaInfo /></button>
                                                             <button onClick={() => getMakulById('Edit', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
                                                             <button onClick={() => nonaktifkan(item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-danger ml-1" title='Hapus'><FaTrash /></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                        </div> */}
+                                                        </td>
+                                                    </tr>
+                                                )) : ""}
                                                 <tr>
                                                     <td colSpan="3" className='px-2 py-2 border'>Total SKS</td>
                                                     <td colSpan="2" className='px-2 py-2 border' align='center'></td>
