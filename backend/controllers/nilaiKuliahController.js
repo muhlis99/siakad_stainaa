@@ -44,35 +44,35 @@ module.exports = {
             })
     },
 
-    // getMhsByKelas: async (req, res, next) => {
-    //     const { codeMakul, codeKls } = req.params
-    //     await kelasModel.findAll({
-    //         include: [{
-    //             attributes: ['nim', 'nama'],
-    //             model: mahasiswaModel,
-    //             where: { status: "aktif" }
-    //         }, {
-    //             attributes: ['code_mata_kuliah', 'nama_mata_kuliah', 'sks'],
-    //             model: mataKuliahModel,
-    //             where: { status: "aktif" }
-    //         }],
-    //         where: {
-    //             code_mata_kuliah: codeMakul,
-    //             code_kelas: codeKls,
-    //             status: "aktif"
-    //         },
-    //         order: [
-    //             ["id_kelas", "DESC"]
-    //         ]
-    //     }).
-    //         then(result => {
-    //             res.status(200).json({
-    //                 message: "Get All mahasiswa by kelas Success",
-    //                 data: result,
-    //             })
-    //         }).
-    //         catch(err => {
-    //             next(err)
-    //         })
-    // },
+    getMhsByKelas: async (req, res, next) => {
+        const { codeMakul, codeKls } = req.params
+        await kelasModel.findAll({
+            include: [{
+                attributes: ['nim', 'nama'],
+                model: mahasiswaModel,
+                where: { status: "aktif" }
+            }, {
+                attributes: ['code_mata_kuliah', 'nama_mata_kuliah', 'sks'],
+                model: mataKuliahModel,
+                where: { status: "aktif" }
+            }],
+            where: {
+                code_mata_kuliah: codeMakul,
+                code_kelas: codeKls,
+                status: "aktif"
+            },
+            order: [
+                ["id_kelas", "DESC"]
+            ]
+        }).
+            then(result => {
+                res.status(200).json({
+                    message: "Get All mahasiswa by kelas Success",
+                    data: result,
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
 }

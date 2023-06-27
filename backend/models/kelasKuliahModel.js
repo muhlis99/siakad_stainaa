@@ -75,7 +75,7 @@ kelasKuliahModel.hasMany(semesterModel, { sourceKey: 'code_semester', foreignKey
 mahasiswaModel.belongsTo(kelasKuliahModel, { foreignKey: 'nim' })
 kelasKuliahModel.hasMany(mahasiswaModel, { sourceKey: 'nim', foreignKey: 'nim' })
 // tahunAjaranModel
-tahunAjaranModelModel.belongsTo(kelasKuliahModel, { foreignKey: 'code_tahun_ajaran' })
-kelasKuliahModel.hasMany(tahunAjaranModelModel, { sourceKey: 'code_tahun_ajaran', foreignKey: 'code_tahun_ajaran' })
+tahunAjaranModel.belongsTo(kelasKuliahModel, { foreignKey: 'code_tahun_ajaran' })
+kelasKuliahModel.hasMany(tahunAjaranModel, { sourceKey: 'code_tahun_ajaran', foreignKey: 'code_tahun_ajaran' })
 
 module.exports = kelasKuliahModel

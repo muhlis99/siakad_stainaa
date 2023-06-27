@@ -5,7 +5,7 @@ const nilaiKuliahController = require('../controllers/nilaiKuliahController.js')
 // const { validationRequest } = require('../validation/validationRequest.js')
 
 router.get('/all', nilaiKuliahController.get)
-// router.get('/getMhsByKelas/:codeMakul/:codeKls', nilaiKuliahController.getMhsByKelas)
+router.get('/getMhsByKelas/:codeMakul/:codeKls', nilaiKuliahController.getMhsByKelas)
 // router.get('/getnilaiKuliahByFakultas/:code', nilaiKuliahController.getnilaiKuliahByFakultas)
 // router.post('/create', nilaiKuliahController.post)
 // router.put('/update/:id', nilaiKuliahController.put)
