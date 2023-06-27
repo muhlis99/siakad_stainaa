@@ -222,7 +222,7 @@ module.exports = {
         if (duplicateData) return res.status(401).json({ message: "Data fakultas sudah ada" })
         await fakultas.update({
             code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: codefakultas,
+            // code_fakultas: codefakultas,
             code_dikti_fakultas: code_dikti_fakultas,
             nama_fakultas: nama_fakultas
         }, {

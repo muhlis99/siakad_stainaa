@@ -166,7 +166,7 @@ module.exports = {
         if (duplicateData) return res.status(401).json({ message: "Data jejang Pendidikan sudah ada" })
         await jejangPendidikan.update({
             nama_jenjang_pendidikan: nama_jenjang_pendidikan,
-            code_jenjang_pendidikan: code
+            // code_jenjang_pendidikan: code
         }, {
             where: {
                 id_jenjang_pendidikan: id

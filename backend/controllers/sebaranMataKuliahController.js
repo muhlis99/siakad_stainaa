@@ -56,7 +56,7 @@ module.exports = {
             ],
             where: {
                 code_prodi: sebaranProdi,
-                // code_semester: sebaranSemester,
+                code_semester: sebaranSemester,
                 code_tahun_ajaran: sebaranTahunAjaran,
                 status: "aktif"
             },
