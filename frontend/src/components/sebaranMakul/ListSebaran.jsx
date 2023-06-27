@@ -12,7 +12,7 @@ const ListSebaran = () => {
     const [ListNilai, setListNilai] = useState([])
     const [Makul, setMakul] = useState([])
     const [smt, setSmt] = useState([])
-    const [Sebaran, SetSebaran] = useState([])
+    const [Sebaran, setSebaran] = useState([])
     const [satuan, setSatuan] = useState([])
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
@@ -56,13 +56,14 @@ const ListSebaran = () => {
         }
     }, [statusMk, paket])
 
-    useEffect(() => {
-        getCodeSemester()
-    }, [Semester])
 
     useEffect(() => {
         getDataSemester()
     }, [kodeProdi, kodeTahun])
+
+    useEffect(() => {
+        getCodeSemester()
+    }, [Semester])
 
     useEffect(() => {
         sebaranMakul()
@@ -80,13 +81,6 @@ const ListSebaran = () => {
     const getTahunAjaran = async () => {
         const response = await axios.get('v1/tahunAjaran/all')
         setTahun(response.data.data)
-    }
-
-    const getDataSemester = async () => {
-        // if (kodeProdi != 0 & kodeTahun != 0) {
-        const response = await axios.get(`v1/semester/all`)
-        setSemester(response.data.data)
-        // }
     }
 
     const getKategoriNilai = async () => {
@@ -130,6 +124,13 @@ const ListSebaran = () => {
         }
     }
 
+    const getDataSemester = async () => {
+        if (kodeProdi != 0 & kodeTahun != 0) {
+            const response = await axios.get(`v1/semester/all`)
+            setSemester(response.data.data)
+        }
+    }
+
     const getCodeSemester = () => {
         var i = Semester.map(item => ({
             kode: item.code_semester
@@ -138,23 +139,22 @@ const ListSebaran = () => {
         console.log(i)
     }
 
-    const sebaranMakul = () => {
-        // const response = await axios.get(`v1/sebaranMataKuliah/all?sebaranProdi=${kodeProdi}&sebaranTahunAjaran=${kodeTahun}`)
-        // SetSebaran(response.data.data)
+    const sebaranMakul = async () => {
         if (smt.length != 0) {
             let sebar = []
-            // let sksnya = []
+            let sksnya = []
             let promises = []
             for (let i = 0; i < smt.length; i++) {
                 promises.push(
-                    axios.get(`v1/sebaranMataKuliah/all?sebaranProdi=${kodeProdi}&sebaranSemester=${smt[i].kode}&sebaranTahunAjaran=${kodeTahun}`).then(response => {
+                    await axios.get('v1/sebaranMataKuliah/all?sebaranProdi=' + kodeProdi + '&sebaranSemester=' + smt[i].kode + '&sebaranTahunAjaran=' + kodeTahun).then(response => {
                         sebar.push(response.data.data)
-                        // sksnya.push(response.data.total_sks)
+                        sksnya.push(response.data.total_sks)
                     })
                 )
             }
             if (smt.length != 0) {
-                Promise.all(promises).then(() => SetSebaran(sebar))
+                Promise.all(promises).then(() => setSebaran(sebar))
+                Promise.all(promises).then(() => setSatuan(sksnya))
             }
         }
     }
@@ -180,13 +180,13 @@ const ListSebaran = () => {
                 setBobot(response.data.data.status_bobot_makul)
                 setStatusMakul(response.data.data.status_makul)
                 let st = response.data.data.status_makul
-                if (st == 'paket') {
+                if (st === 'paket') {
                     setPaket(true)
                 } else {
                     setPaket(false)
                 }
                 let bb = response.data.data.status_bobot_makul
-                if (bb = 'wajib') {
+                if (bb === 'wajib') {
                     setStatusMk(true)
                 } else {
                     setStatusMk(false)
@@ -304,7 +304,7 @@ const ListSebaran = () => {
                     <h3 className="font-bold text-xl">{judul}</h3>
                     <div className='py-4'>
                         {
-                            judul == 'Detail' ?
+                            judul === 'Detail' ?
                                 <div className='grid grid-cols-2 mb-4'>
                                     <div>
                                         <table>
@@ -560,52 +560,50 @@ const ListSebaran = () => {
                         </form>
                     </div>
                 </div>
-                <div className="card bg-base-100 card-bordered shadow-md mb-3">
-                    <div className="card-body p-4">
-                        <div className="grid grid-cols-2 gap-4">
-                            {Semester.map((items, index) => (
-                                <div key={items.id_semester}>
-                                    <div className="overflow-x-auto rounded-md">
-                                        <table className="w-full text-sm text-gray-500 dark:text-gray-400">
-                                            <thead className='text-gray-700 bg-[#F2F2F2]'>
-                                                <tr>
-                                                    <th scope="col" className="px-2 py-2 border" colSpan="6">Semester {items.semester}</th>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="col" className="px-2 py-2 border">#</th>
-                                                    <th scope="col" className="px-2 py-2 border">Kode</th>
-                                                    <th scope="col" className="px-2 py-2 border">Mata Kuliah</th>
-                                                    <th scope="col" className="px-2 py-2 border">SKS</th>
-                                                    <th scope="col" className="px-2 py-2 border">Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {Sebaran != 0 ? Sebaran[index].map((item) => (
-                                                    <tr key={item.id_mata_kuliah} className='bg-white border text-gray-500' >
-                                                        <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap"></th>
-                                                        <td className='px-2 py-2 border' align='center'>{item.semesters[0].code_semester}</td>
-                                                        <td className='px-2 py-2 border'></td>
-                                                        <td className='px-2 py-2 border' align='center'></td>
-                                                        <td className='px-2 py-2 border' align='center'>
-                                                            {/* <div>
+                <div className="grid grid-cols-2 gap-4">
+                    {Semester.map((items, index) => (
+                        <div key={items.id_semester} className="card bg-base-100 card-bordered shadow-md mb-3">
+                            <div className="card-body p-4">
+                                <div className="overflow-x-auto rounded-md">
+                                    <table className="w-full text-sm text-gray-500 dark:text-gray-400">
+                                        <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                            <tr>
+                                                <th scope="col" className="px-2 py-2 border" colSpan="6">Semester {items.semester}</th>
+                                            </tr>
+                                            <tr>
+                                                <th scope="col" className="px-2 py-2 border">#</th>
+                                                <th scope="col" className="px-2 py-2 border">Kode</th>
+                                                <th scope="col" className="px-2 py-2 border">Mata Kuliah</th>
+                                                <th scope="col" className="px-2 py-2 border">SKS</th>
+                                                <th scope="col" className="px-2 py-2 border">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {Sebaran != 0 ? Sebaran[index].map((item, no) => (
+                                                <tr key={item.id_mata_kuliah} className='bg-white border text-gray-700' >
+                                                    <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{no + 1}</th>
+                                                    <td className='px-2 py-2 border' align='center'>{item.code_mata_kuliah}</td>
+                                                    <td className='px-2 py-2 border'>{item.nama_mata_kuliah}</td>
+                                                    <td className='px-2 py-2 border' align='center'>{item.sks}</td>
+                                                    <td className='px-2 py-2 border' align='center'>
+                                                        <div>
                                                             <button onClick={() => getMakulById('Detail', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-blue mr-1" title='Detail'><FaInfo /></button>
                                                             <button onClick={() => getMakulById('Edit', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
                                                             <button onClick={() => nonaktifkan(item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-danger ml-1" title='Hapus'><FaTrash /></button>
-                                                        </div> */}
-                                                        </td>
-                                                    </tr>
-                                                )) : ""}
-                                                <tr>
-                                                    <td colSpan="3" className='px-2 py-2 border'>Total SKS</td>
-                                                    <td colSpan="2" className='px-2 py-2 border' align='center'></td>
+                                                        </div>
+                                                    </td>
                                                 </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                            )) : ""}
+                                            <tr className='bg-white border text-gray-700'>
+                                                <td colSpan="3" className='px-2 py-2 border'>Total SKS</td>
+                                                <td colSpan="2" className='px-2 py-2 border' align='center'>{satuan[index]}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            ))}
+                            </div>
                         </div>
-                    </div>
+                    ))}
                 </div>
             </section >
         </div >

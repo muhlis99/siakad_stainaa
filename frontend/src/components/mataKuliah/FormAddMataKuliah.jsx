@@ -65,7 +65,6 @@ const FormAddMataKuliah = () => {
                 sks_praktek: sksPraktek,
                 sks_prak_lapangan: sksPrakLapangan,
                 sks_simulasi: sksSimulasi,
-                metode_pembelajaran: metode,
                 tanggal_aktif: tglAktif,
                 tanggal_non_aktif: tglNonAktif
             }).then(function (response) {
@@ -178,12 +177,6 @@ const FormAddMataKuliah = () => {
                                             <option key={item.id_prodi} value={item.id_prodi}>{item.nama_prodi}</option>
                                         ))}
                                     </select>
-                                </div>
-                                <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Metode Pembelajaran</span>
-                                    </label>
-                                    <input type="text" placeholder="Masukkan Metode Pembelajaran" className="input input-sm input-bordered w-full" value={metode} onChange={(e) => setMetode(e.target.value)} />
                                 </div>
                                 <div>
                                     <label className="label">
