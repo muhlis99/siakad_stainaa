@@ -75,4 +75,40 @@ module.exports = {
                 next(err)
             })
     },
+
+    post: async (req, res, next) => {
+        const data = req.body
+        const katNilai = await kategoriNilaiModel.findAll()
+        katNilai.map(el => {
+            console.log(el.nilai_angka)
+        })
+
+
+        const dataNilai = data.map(el => {
+            let element = {
+                code_kelas: el.code_kelas,
+                code_kategori_nilai: el.code_kategori_nilai,
+                code_mata_kuliah: el.code_mata_kuliah,
+                nim: el.nim,
+                nilai_hadir: el.nilai_hadir,
+                nilai_tugas: el.nilai_tugas,
+                nilai_uts: el.nilai_uts,
+                nilai_uas: el.nilai_uas,
+                nilai_jumlah: el.nilai_jumlah,
+                nilai_akhir: el.nilai_akhir,
+                status: "aktif"
+            }
+            return element
+        })
+
+        await nilaiKuliahModel.bulkCreate(dataNilai).
+            then(result => {
+                res.status(200).json({
+                    message: "Data nilai kuliah success ditambahkan",
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    }
 }

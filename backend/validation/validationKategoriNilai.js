@@ -1,11 +1,16 @@
 const { body, check } = require('express-validator')
 
 exports.validationKategoriNilai = [
-    check('nilai_angka')
+    check('nilai_atas')
         .isInt()
-        .withMessage('nilai angka harus berupa angka')
+        .withMessage('nilai atas harus berupa atas')
         .notEmpty()
-        .withMessage('nilai angka tidak boleh kosong'),
+        .withMessage('nilai atas tidak boleh kosong'),
+    check('nilai_bawah')
+        .isInt()
+        .withMessage('nilai bawah harus berupa bawah')
+        .notEmpty()
+        .withMessage('nilai bawah tidak boleh kosong'),
     check('nilai_huruf')
         .notEmpty()
         .withMessage('nilai huruf tidak boleh kosong'),
