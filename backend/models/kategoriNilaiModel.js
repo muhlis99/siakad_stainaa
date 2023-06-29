@@ -14,7 +14,10 @@ const kategoriNilaiModel = db.define('kategoriNilai', {
     'code_tahun_ajaran': {
         type: DataTypes.TEXT,
     },
-    'nilai_angka': {
+    'nilai_atas': {
+        type: DataTypes.TEXT,
+    },
+    'nilai_bawah': {
         type: DataTypes.TEXT,
     },
     'nilai_huruf': {

@@ -53,6 +53,8 @@ const krs = require('./router/krsRoute.js')
 const jadwalKuliah = require('./router/jadwalKuliahRoute.js')
 const dosenPengajar = require('./router/dosenPengajarRoute.js')
 const jadwalPertemuan = require('./router/jadwalPertemuanRoute.js')
+// khs
+const nilaiKuliah = require('./router/nilaiKuliahRoute.js')
 
 app.use('/v1/login', login)
 app.use('/v1/registrasi', registrasi)
@@ -73,6 +75,7 @@ app.use('/v1/krs', krs)
 app.use('/v1/jadwalKuliah', jadwalKuliah)
 app.use('/v1/dosenPengajar', dosenPengajar)
 app.use('/v1/jadwalPertemuan', jadwalPertemuan)
+app.use('/v1/nilaiKuliah', nilaiKuliah)
 
 // default index
 app.get('/', (req, res) => {
