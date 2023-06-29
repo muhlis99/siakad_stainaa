@@ -83,8 +83,7 @@ const Sidebar = () => {
               <Link to='/sebaran' className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaTh /> <span className='text-sm'>Sebaran Mata Kuliah</span></Link>
               <Link to="/krs" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaTasks /> <span className='text-sm'>Kartu Rencana Studi</span></Link>
               <Link to="/kelas" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><SiOpslevel /> <span className='text-sm'>Kelas Kuliah</span></Link>
-              <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBusinessTime /> <span className='text-sm'>Penjadwalan</span></Link>
-              {/* <Link to="/ploting" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBuromobelexperte /> <span className='text-sm'>Ploting Kelas</span></Link> */}
+              <Link to="/jadwalkuliah" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBusinessTime /> <span className='text-sm'>Jadwal Kuliah</span></Link>
               <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaAddressBook /> <span className='text-sm'>Kartu Hasil Studi</span></Link>
             </div>
           </div>
