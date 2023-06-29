@@ -7,6 +7,7 @@ const historyMahasiswaModel = require('../models/historyMahasiswaModel.js')
 const semesterModel = require('../models/semesterModel.js')
 const krsModel = require('../models/krsModel.js')
 const { Op } = require('sequelize')
+const kelasKuliahModel = require('../models/kelasKuliahModel.js')
 
 module.exports = {
     getAllMatakuliah: async (req, res, next) => {
@@ -96,7 +97,46 @@ module.exports = {
             })
     },
 
-
+    getKelasById: async (req, res, next) => {
+        const id = req.params.id
+        await kelasKuliahModel.findOne({
+            include: [{
+                model: jenjangPendidikanModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                where: { status: "aktif" }
+            }],
+            where: {
+                id_kelas: id,
+                status: "aktif"
+            }
+        }).
+            then(getById => {
+                if (!getById) {
+                    return res.status(404).json({
+                        message: "Data kelas kuliah Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data kelas kuliah Ditemukan",
+                    data: getById
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
     //  jumlah mhs semester
     jumlahMhs: async (req, res, next) => {
         const { smt, jnjPen, fkts, prd } = req.params
