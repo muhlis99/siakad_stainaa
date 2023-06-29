@@ -25,9 +25,6 @@ import Upload2 from "./pages/dosen/Upload2"
 import DetailDsn from "./pages/dosen/DetailDsn"
 import PrintDosen from "./components/dosen/PrintDosen"
 import Ruang from "./pages/ruang/Ruang"
-import Kelas from "./pages/kelas/Kelas"
-import AddKelas from "./pages/kelas/AddKelas"
-import EditKelas from "./pages/kelas/EditKelas"
 import Tahun from "./pages/tahunAjaran/Tahun"
 import Semester from "./pages/semester/Semester"
 import KategoriNilai from "./pages/kategoriNilai/KategoriNilai"
@@ -38,6 +35,8 @@ import AddMataKuliah from "./pages/mataKuliah/AddMataKuliah"
 import EditMataKuliah from "./pages/mataKuliah/EditMataKuliah"
 import Sebaran from "./pages/sebaranMakul/Sebaran"
 import KrsList from "./pages/krs/KrsList"
+import Kelas from "./pages/kelas/Kelas"
+import Jadwal from "./pages/jadwalKuliah/Jadwal"
 
 function App() {
   return (
@@ -69,9 +68,6 @@ function App() {
           <Route path="/dosen/detail/:idDsn" element={<DetailDsn />} />
           <Route path="/dosen/print/:idDsn" element={<PrintDosen />} />
           <Route path="/ruang" element={<Ruang />} />
-          <Route path="/kelas" element={<Kelas />} />
-          <Route path="/kelas/add" element={<AddKelas />} />
-          <Route path="/kelas/edit/:idKls" element={<EditKelas />} />
           <Route path="/tahun" element={<Tahun />} />
           <Route path="/semester" element={<Semester />} />
           <Route path="/kategorinilai" element={<KategoriNilai />} />
@@ -82,6 +78,8 @@ function App() {
           <Route path="/matakuliah/edit/:idMakul" element={<EditMataKuliah />} />
           <Route path="/sebaran" element={<Sebaran />} />
           <Route path="/krs" element={<KrsList />} />
+          <Route path="/kelas" element={<Kelas />} />
+          <Route path="/jadwalkuliah" element={<Jadwal />} />
         </Routes>
       </BrowserRouter>
     </div>
