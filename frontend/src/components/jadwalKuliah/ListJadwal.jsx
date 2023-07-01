@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { FaHotel, FaInfo, FaUsers } from 'react-icons/fa'
+import { FaCog, FaHotel, FaInfo, FaUsers } from 'react-icons/fa'
+import { Link } from "react-router-dom"
 import axios from 'axios'
 
 const ListJadwal = () => {
@@ -174,7 +175,7 @@ const ListJadwal = () => {
                             </div>
                         </div>
                         <div className="grid gap-2">
-                            <div className='mt-4 pointer-events-none'>
+                            <div className='mt-4'>
                                 {Makul.map((mk, index) => (
                                     <div key={mk.id_mata_kuliah} className="collapse bg-[#2D7F5F] pb-0 rounded-lg">
                                         <input type="checkbox" checked className='p-0 min-h-0' readOnly />
@@ -184,10 +185,13 @@ const ListJadwal = () => {
                                         <div className="collapse-content grid gap-1 px-0 py-1 bg-base-100">
                                             {DataKelas != 0 ? DataKelas[index].map((item) => (
                                                 <div key={item.id_kelas} className="grid grid-cols-3 gap-2 px-4 py-2 bg-base-200">
-                                                    <button className='btn btn-sm btn-ghost w-14'><FaHotel /> <span className="ml-1">{item.nama_kelas}</span></button>
-                                                    <button className='btn btn-sm btn-ghost'><FaUsers /> <span className="ml-1">{item.kapasitas}</span></button>
+                                                    <button className='btn btn-sm btn-ghost w-14 pointer-events-none'><FaHotel /> <span className="ml-1">{item.nama_kelas}</span></button>
+                                                    <button className='btn btn-sm btn-ghost  pointer-events-none'><FaUsers /> <span className="ml-1">{item.kapasitas}</span></button>
                                                     <div>
-                                                        <button className='btn btn-xs btn-default btn-circle float-right'><FaInfo /></button>
+                                                        <div className="float-right">
+                                                            <button className='btn btn-xs btn-blue btn-circle mr-1' title='Detail Jadwal'><FaInfo /></button>
+                                                            <Link to={`/aturjadwal/${item.code_mata_kuliah}`} className='btn btn-xs btn-default btn-circle' title='Atur Jadwal'><FaCog /></Link>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )) : ""}
