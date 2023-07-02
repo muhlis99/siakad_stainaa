@@ -40,9 +40,9 @@ exports.validationJadwalKuliah = [
     check('jam_selesai',)
         .notEmpty()
         .withMessage(' jam selesai tidak boleh kosong'),
-    check('metode_pembelajaran',)
-        .notEmpty()
-        .withMessage('metode_pembelajaran tidak boleh kosong'),
+    // check('metode_pembelajaran',)
+    //     .notEmpty()
+    //     .withMessage('metode_pembelajaran tidak boleh kosong'),
 
 
 ]

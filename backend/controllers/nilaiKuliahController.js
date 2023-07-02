@@ -78,40 +78,40 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        // const data = req.body
-        // let randomNumber = Math.floor(1000 + Math.random() * 9000)
-        // let Dnl = data.map(i => { return i.nilai_akhir })
-        const i = await sequelize.query('SELECT code_kategori_nilai FROM tb_kategori_nilai')
-        res.json(i)
+        const data = req.body
+        let randomNumber = Math.floor(1000 + Math.random() * 9000)
+        let Dnl = data.map(i => { return i.nilai_akhir })
+        // const i = await sequelize.query('SELECT code_kategori_nilai FROM tb_kategori_nilai')
+        // res.json(i)
 
 
-        // const dataNilai = data.map(el => {
-        //     let element = {
-        //         code_nilai_kuliah: randomNumber,
-        //         code_kelas: el.code_kelas,
-        //         code_kategori_nilai: el.code_kategori_nilai,
-        //         code_mata_kuliah: el.code_mata_kuliah,
-        //         nim: el.nim,
-        //         nilai_hadir: el.nilai_hadir,
-        //         nilai_tugas: el.nilai_tugas,
-        //         nilai_uts: el.nilai_uts,
-        //         nilai_uas: el.nilai_uas,
-        //         nilai_jumlah: el.nilai_jumlah,
-        //         nilai_akhir: el.nilai_akhir,
-        //         status: "aktif"
-        //     }
-        //     return element
-        // })
+        const dataNilai = data.map(el => {
+            let element = {
+                code_nilai_kuliah: randomNumber,
+                code_kelas: el.code_kelas,
+                code_kategori_nilai: el.code_kategori_nilai,
+                code_mata_kuliah: el.code_mata_kuliah,
+                nim: el.nim,
+                nilai_hadir: el.nilai_hadir,
+                nilai_tugas: el.nilai_tugas,
+                nilai_uts: el.nilai_uts,
+                nilai_uas: el.nilai_uas,
+                nilai_jumlah: el.nilai_jumlah,
+                nilai_akhir: el.nilai_akhir,
+                status: "aktif"
+            }
+            return element
+        })
 
 
-        // await nilaiKuliahModel.bulkCreate(dataNilai).
-        //     then(result => {
-        //         res.status(200).json({
-        //             message: "Data nilai kuliah success ditambahkan",
-        //         })
-        //     }).
-        //     catch(err => {
-        //         next(err)
-        //     })
+        await nilaiKuliahModel.bulkCreate(dataNilai).
+            then(result => {
+                res.status(200).json({
+                    message: "Data nilai kuliah success ditambahkan",
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
     }
 }
