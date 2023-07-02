@@ -39,6 +39,8 @@ import Kelas from "./pages/kelas/Kelas"
 import Jadwal from "./pages/jadwalKuliah/Jadwal"
 import AturJadwal from "./pages/jadwalKuliah/AturJadwal"
 import DetailJadwalKuliah from "./pages/jadwalKuliah/DetailJadwalKuliah"
+import DosenPgjr from "./pages/jadwalKuliah/DosenPgjr"
+import Pertemuan from "./pages/jadwalKuliah/Pertemuan"
 
 function App() {
   return (
@@ -82,8 +84,10 @@ function App() {
           <Route path="/krs" element={<KrsList />} />
           <Route path="/kelas" element={<Kelas />} />
           <Route path="/jadwalkuliah" element={<Jadwal />} />
-          <Route path="/aturjadwal/:idMk" element={<AturJadwal />} />
-          <Route path="/detailjadwal" element={<DetailJadwalKuliah />} />
+          <Route path="/aturjadwal/:idKls" element={<AturJadwal />} />
+          <Route path="/detailjadwal/:idKls" element={<DetailJadwalKuliah />} />
+          <Route path="/setDsn/:idKls" element={<DosenPgjr />} />
+          <Route path="/setpertemuan/:idKls/:kodeJdl" element={<Pertemuan />} />
         </Routes>
       </BrowserRouter>
     </div>

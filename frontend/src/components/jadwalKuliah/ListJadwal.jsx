@@ -40,9 +40,9 @@ const ListJadwal = () => {
         getDataKelas()
     }, [KodeMakul])
 
-    useEffect(() => {
-        getKodeKelas()
-    }, [Makul, DataKelas])
+    // useEffect(() => {
+    //     getKodeKelas()
+    // }, [Makul, DataKelas])
 
     useEffect(() => {
         getDataJadwal()
@@ -97,24 +97,22 @@ const ListJadwal = () => {
                     })
                 )
             }
-            if (KodeMakul.length != 0) {
-                Promise.all(promises).then(() => setDataKelas(kelass))
-                Promise.all(promises).then(() => console.log(kelass))
-            }
+            Promise.all(promises).then(() => setDataKelas(kelass))
+            Promise.all(promises).then(() => console.log(kelass))
         }
     }
 
-    const getKodeKelas = () => {
-        if (DataKelas != 0) {
-            var u = Makul.map((items, index) => (
-                DataKelas[index].map(item => ({
-                    kodeKls: item.code_kelas
-                }))
-            ))
-            setKodeKelas(u)
-            // console.log(u.kodeKls)
-        }
-    }
+    // const getKodeKelas = () => {
+    //     if (DataKelas != 0) {
+    //         var u = Makul.map((items, index) => (
+    //             DataKelas[index].map(item => ({
+    //                 kodeKls: item.code_kelas
+    //             }))
+    //         ))
+    //         setKodeKelas(u)
+    //         // console.log(u.kodeKls)
+    //     }
+    // }
 
     const getDataJadwal = async () => {
         // let jadwal = []
@@ -180,17 +178,17 @@ const ListJadwal = () => {
                                     <div key={mk.id_mata_kuliah} className="collapse bg-[#2D7F5F] pb-0 rounded-lg">
                                         <input type="checkbox" checked className='p-0 min-h-0' readOnly />
                                         <div className="collapse-title p-2 min-h-0 text-white flex gap-2">
-                                            <span>{mk.nama_mata_kuliah} | </span><span>SKS {mk.sks}</span>
+                                            <span>[{mk.code_mata_kuliah}] | {mk.nama_mata_kuliah} | SKS {mk.sks}</span>
                                         </div>
                                         <div className="collapse-content grid gap-1 px-0 py-1 bg-base-100">
                                             {DataKelas != 0 ? DataKelas[index].map((item) => (
                                                 <div key={item.id_kelas} className="grid grid-cols-3 gap-2 px-4 py-2 bg-base-200">
-                                                    <button className='btn btn-sm btn-ghost w-14 pointer-events-none'><FaHotel /> <span className="ml-1">{item.nama_kelas}</span></button>
+                                                    <button className='btn btn-sm btn-ghost w-14 pointer-events-none'><FaHotel /> <span className="ml-1">{item.nama_kelas}</span> <span className="ml-1">{item.code_mata_kuliah}</span></button>
                                                     <button className='btn btn-sm btn-ghost  pointer-events-none'><FaUsers /> <span className="ml-1">{item.kapasitas}</span></button>
                                                     <div>
                                                         <div className="float-right">
                                                             <button className='btn btn-xs btn-blue btn-circle mr-1' title='Detail Jadwal'><FaInfo /></button>
-                                                            <Link to={`/aturjadwal/${item.code_mata_kuliah}`} className='btn btn-xs btn-default btn-circle' title='Atur Jadwal'><FaCog /></Link>
+                                                            <Link to={`/aturjadwal/${item.id_kelas}`} className='btn btn-xs btn-default btn-circle' title='Atur Jadwal'><FaCog /></Link>
                                                         </div>
                                                     </div>
                                                 </div>
