@@ -26,7 +26,12 @@ module.exports = {
                         }
                     },
                     {
-                        nilai_angka: {
+                        nilai_atas: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        nilai_bawah: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -68,7 +73,12 @@ module.exports = {
                         }
                     },
                     {
-                        nilai_angka: {
+                        nilai_atas: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        nilai_bawah: {
                             [Op.like]: `%${search}%`
                         }
                     },
