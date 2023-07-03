@@ -26,6 +26,10 @@ const InputNilaiMhs = () => {
         getAverage()
     }, [inputFields])
 
+    // useEffect(() => {
+    //     cekNilai()
+    // }, [nilaiAkhir])
+
     const addFields = () => {
         let newfield = []
         for (let index = 1; index <= jmlMhs; index++) {
@@ -43,9 +47,6 @@ const InputNilaiMhs = () => {
     }
 
     const getAverage = () => {
-        // var arr = [10, 10, 10, 10]
-        // var u = arr.reduce((a, b) => a + b, 0) / arr.length
-        // console.log(Math.floor(u));
         const i = inputFields.map(el => {
             var tugas = parseInt(el.tugas) || 0
             var hadir = parseInt(el.absen) || 0
@@ -55,9 +56,21 @@ const InputNilaiMhs = () => {
             return rataRata
         })
         setNIlaiAkhir(i)
-
-
     }
+
+    // const cekNilai = async () => {
+    //     try {
+    //         for (let i = 0; i < nilaiAkhir.length; i++) {
+    //             await axios.post('v1/nilaiKuliah/deteksiIndexNilai', {
+    //                 nilai_akhir: nilaiAkhir[i]
+    //             }).then(function (response) {
+    //                 console.log(response.data.data.nilai_huruf)
+    //             })
+    //         }
+    //     } catch (error) {
+
+    //     }
+    // }
 
     return (
         <div className='mt-2 container'>
