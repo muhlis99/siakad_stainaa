@@ -11,7 +11,13 @@ const InputNilaiMhs = () => {
     const handleFormChange = (index, event) => {
         let data = [...inputFields];
         data[index][event.target.name] = event.target.value;
-        setInputFields(data);
+        if (event.target.value <= 100) {
+            setInputFields(data);
+        } else {
+            alert('lebih')
+            data[index][event.target.name] = "";
+            setInputFields(data)
+        }
         // console.log(data);
     }
 
