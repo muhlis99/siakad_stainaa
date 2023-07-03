@@ -7,6 +7,7 @@ import Swal from 'sweetalert2'
 
 const ListKategoriNilai = () => {
     const [ListNilai, setListNilai] = useState([])
+    const [Tahun, setTahun] = useState([])
     const [page, setPage] = useState(0)
     const [perPage, setperPage] = useState(0)
     const [pages, setPages] = useState(0)
@@ -14,16 +15,23 @@ const ListKategoriNilai = () => {
     const [keyword, setKeyword] = useState("")
     const [query, setQuery] = useState("")
     const [msg, setMsg] = useState("")
-    const [nilaiAngka, setNilaiAngka] = useState("")
+    const [kodeTahun, setKodeTahun] = useState("")
+    const [nilaiAtas, setNilaiAtas] = useState("")
+    const [nilaiBawah, setNilaiBawah] = useState("")
     const [nilaiHuruf, setNilaiHuruf] = useState("")
     const [skor, setSkor] = useState("")
     const [kategori, setKategori] = useState("")
     const [keterangan, setKeterangan] = useState("")
+    const [judul, setJudul] = useState("")
     const [id, setId] = useState("")
 
     useEffect(() => {
         getKategoriNilai()
     }, [page, keyword])
+
+    useEffect(() => {
+        getTahunAjaran()
+    }, [])
 
     const getKategoriNilai = async () => {
         const response = await axios.get(`v1/kategoriNilai/all?page=${page}&search=${keyword}`)
@@ -52,42 +60,40 @@ const ListKategoriNilai = () => {
         setKeyword(query)
     }
 
-    const modalAddOpen = (e) => {
-        e.preventDefault()
-        document.getElementById('my-modal-add').checked = true
+    const getTahunAjaran = async () => {
+        const response = await axios.get('v1/tahunAjaran/all')
+        setTahun(response.data.data)
     }
 
-    const modalAddClose = (e) => {
-        e.preventDefault()
-        document.getElementById('my-modal-add').checked = false
-        setNilaiAngka("")
-        setNilaiHuruf("")
-        setSkor("")
-        setKategori("")
-        setKeterangan("")
+    const modalAddOpen = () => {
+        setJudul("Tambah")
+        document.getElementById('my-modal').checked = true
     }
 
     const simpanKatNilai = async (e) => {
         e.preventDefault()
         try {
             await axios.post('v1/kategoriNilai/create', {
-                nilai_angka: nilaiAngka,
+                nilai_atas: nilaiAtas,
+                nilai_bawah: nilaiBawah,
                 nilai_huruf: nilaiHuruf,
                 interfal_skor: skor,
                 kategori: kategori,
-                keterangan: keterangan
+                keterangan: keterangan,
+                code_tahun_ajaran: kodeTahun
             }).then(function (response) {
-                document.getElementById('my-modal-add').checked = false
+                document.getElementById('my-modal').checked = false
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
                     getKategoriNilai()
-                    setNilaiAngka("")
+                    setNilaiAtas("")
                     setNilaiHuruf("")
                     setSkor("")
                     setKategori("")
                     setKeterangan("")
+                    setKodeTahun("")
                 })
             })
         } catch (error) {
@@ -105,49 +111,45 @@ const ListKategoriNilai = () => {
         }
     }
 
-    const modalEditOpen = async (e) => {
+    const modalEditOpen = async (e, f) => {
         try {
             const response = await axios.get(`v1/kategoriNilai/getById/${e}`)
             setId(e)
-            setNilaiAngka(response.data.data.nilai_angka)
+            setNilaiAtas(response.data.data.nilai_atas)
+            setNilaiBawah(response.data.data.nilai_bawah)
             setNilaiHuruf(response.data.data.nilai_huruf)
             setSkor(response.data.data.interfal_skor)
             setKategori(response.data.data.kategori)
             setKeterangan(response.data.data.keterangan)
-            document.getElementById('my-modal-edit').checked = true
+            setKodeTahun(response.data.data.code_tahun_ajaran)
+            setJudul(f)
+            document.getElementById('my-modal').checked = true
         } catch (error) {
 
         }
-    }
-
-    const modalEditClose = (e) => {
-        e.preventDefault()
-        document.getElementById('my-modal-edit').checked = false
-        setNilaiAngka("")
-        setNilaiHuruf("")
-        setSkor("")
-        setKategori("")
-        setKeterangan("")
     }
 
     const updateKtg = async (e) => {
         e.preventDefault()
         try {
             await axios.put(`v1/kategoriNilai/update/${id}`, {
-                nilai_angka: nilaiAngka,
+                nilai_atas: nilaiAtas,
+                nilai_bawah: nilaiBawah,
                 nilai_huruf: nilaiHuruf,
                 interfal_skor: skor,
                 kategori: kategori,
-                keterangan: keterangan
+                keterangan: keterangan,
+                code_tahun_ajaran: kodeTahun
             }).then(function (response) {
-                document.getElementById('my-modal-edit').checked = false
+                document.getElementById('my-modal').checked = false
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
                     getKategoriNilai()
                     setId("")
-                    setNilaiAngka("")
+                    setNilaiAtas("")
+                    setNilaiBawah("")
                     setNilaiHuruf("")
                     setSkor("")
                     setKategori("")
@@ -167,6 +169,18 @@ const ListKategoriNilai = () => {
                 })
             }
         }
+    }
+
+    const modalClose = () => {
+        document.getElementById('my-modal').checked = false
+        setId("")
+        setKodeTahun("")
+        setNilaiAtas("")
+        setNilaiBawah("")
+        setNilaiHuruf("")
+        setSkor("")
+        setKategori("")
+        setKeterangan("")
     }
 
     const nonaktifkan = (ktgId) => {
@@ -203,86 +217,51 @@ const ListKategoriNilai = () => {
 
     return (
         <div className='container mt-2'>
-            <input type="checkbox" id="my-modal-add" className="modal-toggle" />
+            <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
-                    <form onSubmit={simpanKatNilai}>
-                        <h3 className="font-bold text-xl">Tambah</h3>
+                    <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
+                    <form onSubmit={judul == 'Tambah' ? simpanKatNilai : updateKtg}>
+                        <h3 className="font-bold text-xl">{judul}</h3>
                         <div className="grid lg:grid-cols-2 gap-2">
                             <div>
                                 <label className="label">
-                                    <span className="text-base label-text">Nilai Angka</span>
+                                    <span className="text-base label-text">Tahun Ajaran</span>
                                 </label>
-                                <input type="text" className="input input-sm input-bordered w-full" value={nilaiAngka} onChange={(e) => setNilaiAngka(e.target.value)} />
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Nilai Huruf</span>
-                                </label>
-                                <input type="text" className="input input-sm input-bordered w-full" value={nilaiHuruf} onChange={(e) => setNilaiHuruf(e.target.value)} />
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Interfal Skor</span>
-                                </label>
-                                <input type="text" className="input input-sm input-bordered w-full" value={skor} onChange={(e) => setSkor(e.target.value)} />
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Kategori</span>
-                                </label>
-                                <select className="select select-sm select-bordered w-full" value={kategori} onChange={(e) => setKategori(e.target.value)}>
-                                    <option value="">-Kategori-</option>
-                                    <option value="Istimewa">Istimewa</option>
-                                    <option value="Sangat Baik">Sangat Baik</option>
-                                    <option value="Lebih Baik">Lebih Baik</option>
-                                    <option value="Baik">Baik</option>
-                                    <option value="Cukup Baik">Cukup Baik</option>
-                                    <option value="Lebih Cukup">Lebih Cukup</option>
-                                    <option value="Cukup">Cukup</option>
-                                    <option value="Kurang">Kurang</option>
-                                    <option value="Kurang Sekali">Kurang Sekali</option>
+                                <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                    <option value="">Tahun Ajaran</option>
+                                    {Tahun.map((item) => (
+                                        <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                    ))}
                                 </select>
                             </div>
-                            <div className='col-span-2'>
-                                <label className="label">
-                                    <span className="text-base label-text">Keterangan</span>
-                                </label>
-                                <input type="text" className="input input-sm input-bordered w-full" value={keterangan} onChange={(e) => setKeterangan(e.target.value)} />
+                            <div className='grid grid-cols-2 gap-2'>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Nilai Atas</span>
+                                    </label>
+                                    <input type="number" className="input input-sm input-bordered w-full" value={nilaiAtas} onChange={(e) => setNilaiAtas(e.target.value)} />
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Nilai Bawah</span>
+                                    </label>
+                                    <input type="number" className="input input-sm input-bordered w-full" value={nilaiBawah} onChange={(e) => setNilaiBawah(e.target.value)} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <input type="checkbox" id="my-modal-edit" className="modal-toggle" />
-            <div className="modal">
-                <div className="modal-box relative">
-                    <form onSubmit={updateKtg}>
-                        <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
-                        <h3 className="font-bold text-xl">Edit</h3>
-                        <div className="grid lg:grid-cols-2 gap-2">
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Nilai Angka</span>
-                                </label>
-                                <input type="text" className="input input-sm input-bordered w-full" value={nilaiAngka} onChange={(e) => setNilaiAngka(e.target.value)} />
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Nilai Huruf</span>
-                                </label>
-                                <input type="text" className="input input-sm input-bordered w-full" value={nilaiHuruf} onChange={(e) => setNilaiHuruf(e.target.value)} />
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Interfal Skor</span>
-                                </label>
-                                <input type="text" className="input input-sm input-bordered w-full" value={skor} onChange={(e) => setSkor(e.target.value)} />
+                            <div className="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Nilai Huruf</span>
+                                    </label>
+                                    <input type="text" className="input input-sm input-bordered w-full" value={nilaiHuruf} onChange={(e) => setNilaiHuruf(e.target.value)} />
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Interfal Skor</span>
+                                    </label>
+                                    <input type="text" className="input input-sm input-bordered w-full" value={skor} onChange={(e) => setSkor(e.target.value)} />
+                                </div>
                             </div>
                             <div>
                                 <label className="label">
@@ -349,7 +328,8 @@ const ListKategoriNilai = () => {
                                 <thead className='text-gray-700 bg-[#F2F2F2]'>
                                     <tr>
                                         <th scope="col" className="px-6 py-3">#</th>
-                                        <th scope="col" className="px-6 py-3">Nilai Angka</th>
+                                        <th scope="col" className="px-6 py-3">Nilai Atas</th>
+                                        <th scope="col" className="px-6 py-3">Nilai Bawah</th>
                                         <th scope="col" className="px-6 py-3">Nilai Huruf</th>
                                         <th scope="col" className="px-6 py-3">Intefal Skor</th>
                                         <th scope="col" className="px-6 py-3">Kategori</th>
@@ -361,14 +341,15 @@ const ListKategoriNilai = () => {
                                     {ListNilai.map((ktg, index) => (
                                         <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500'>
                                             <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2'>{ktg.nilai_angka}</td>
+                                            <td className='px-6 py-2'>{ktg.nilai_atas}</td>
+                                            <td className='px-6 py-2'>{ktg.nilai_bawah}</td>
                                             <td className='px-6 py-2'>{ktg.nilai_huruf}</td>
                                             <td className='px-6 py-2'>{ktg.interfal_skor}</td>
                                             <td className='px-6 py-2'>{ktg.kategori}</td>
                                             <td className='px-6 py-2'>{ktg.keterangan}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
-                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai)}><FaEdit /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
                                                     <button className="btn btn-xs btn-circle text-white btn-danger" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
                                                 </div>
                                             </td>

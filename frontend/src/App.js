@@ -41,6 +41,7 @@ import AturJadwal from "./pages/jadwalKuliah/AturJadwal"
 import DetailJadwalKuliah from "./pages/jadwalKuliah/DetailJadwalKuliah"
 import DosenPgjr from "./pages/jadwalKuliah/DosenPgjr"
 import Pertemuan from "./pages/jadwalKuliah/Pertemuan"
+import InputNilai from "./pages/khs/InputNilai"
 
 function App() {
   return (
@@ -88,6 +89,7 @@ function App() {
           <Route path="/detailjadwal/:idKls" element={<DetailJadwalKuliah />} />
           <Route path="/setDsn/:idKls" element={<DosenPgjr />} />
           <Route path="/setpertemuan/:idKls/:kodeJdl" element={<Pertemuan />} />
+          <Route path="/inputnilai" element={<InputNilai />} />
         </Routes>
       </BrowserRouter>
     </div>
