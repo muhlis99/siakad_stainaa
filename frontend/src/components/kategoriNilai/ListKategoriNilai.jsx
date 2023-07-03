@@ -89,6 +89,7 @@ const ListKategoriNilai = () => {
                 }).then(() => {
                     getKategoriNilai()
                     setNilaiAtas("")
+                    setNilaiBawah("")
                     setNilaiHuruf("")
                     setSkor("")
                     setKategori("")
