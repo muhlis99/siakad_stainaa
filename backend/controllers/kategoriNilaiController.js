@@ -152,7 +152,8 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { code_tahun_ajaran, nilai_atas, nilai_bawah, nilai_huruf, interfal_skor, kategori, keterangan } = req.body
-        const codekategoriNilai = nilai_huruf.replace(/[^\w\s]/g, '')
+        let randomNumber = Math.floor(100 + Math.random() * 900)
+        const codekategoriNilai = randomNumber + nilai_huruf.replace(/[^\w\s]/g, '')
         const kategoriNilaiModelUse = await kategoriNilaiModel.findOne({
             where: {
                 code_tahun_ajaran: code_tahun_ajaran,

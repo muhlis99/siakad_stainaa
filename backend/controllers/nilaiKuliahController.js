@@ -1,4 +1,4 @@
-const { Op, Sequelize } = require('sequelize')
+const { Op, QueryTypes } = require('sequelize')
 const kelasModel = require('../models/kelasKuliahModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
@@ -46,7 +46,7 @@ module.exports = {
     },
 
     getMhsByKelas: async (req, res, next) => {
-        const { codeMakul, codeKls } = req.params
+        const { codeSmt, codeMakul, codeKls } = req.params
         await kelasModel.findAll({
             include: [{
                 attributes: ['nim', 'nama'],
@@ -60,6 +60,7 @@ module.exports = {
             where: {
                 code_mata_kuliah: codeMakul,
                 code_kelas: codeKls,
+                code_semester: codeSmt,
                 status: "aktif"
             },
             order: [
@@ -77,14 +78,22 @@ module.exports = {
             })
     },
 
+    deteksiIndexNilai: async (req, res, next) => {
+        const { nilai_akhir } = req.body
+        const nilai = Math.floor(nilai_akhir)
+        const i = await sequelize.query(`SELECT * FROM tb_kategori_nilai WHERE IF(${nilai} >= nilai_bawah AND ${nilai} <= nilai_atas, 1,0)`
+            , {
+                nest: true,
+                type: QueryTypes.SELECT
+            })
+        res.json({
+            data: i
+        })
+    },
+
     post: async (req, res, next) => {
         const data = req.body
         let randomNumber = Math.floor(1000 + Math.random() * 9000)
-        let Dnl = data.map(i => { return i.nilai_akhir })
-        // const i = await sequelize.query('SELECT code_kategori_nilai FROM tb_kategori_nilai')
-        // res.json(i)
-
-
         const dataNilai = data.map(el => {
             let element = {
                 code_nilai_kuliah: randomNumber,
