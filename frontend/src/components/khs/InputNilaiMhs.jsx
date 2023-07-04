@@ -6,11 +6,18 @@ const InputNilaiMhs = () => {
     const [inputFields, setInputFields] = useState([])
     const [jmlMhs, setJmlMhs] = useState("")
     const [nilaiAkhir, setNIlaiAkhir] = useState([])
+    const [nilaiHuruf, setNilaiHuruf] = useState([])
 
     const handleFormChange = (index, event) => {
         let data = [...inputFields];
         data[index][event.target.name] = event.target.value;
-        setInputFields(data);
+        if (event.target.value <= 100) {
+            setInputFields(data);
+        } else {
+            alert('lebih')
+            data[index][event.target.name] = "";
+            setInputFields(data)
+        }
         // console.log(data);
     }
 
@@ -25,6 +32,10 @@ const InputNilaiMhs = () => {
     useEffect(() => {
         getAverage()
     }, [inputFields])
+
+    useEffect(() => {
+        cekNilai()
+    }, [nilaiAkhir])
 
     const addFields = () => {
         let newfield = []
@@ -43,9 +54,6 @@ const InputNilaiMhs = () => {
     }
 
     const getAverage = () => {
-        // var arr = [10, 10, 10, 10]
-        // var u = arr.reduce((a, b) => a + b, 0) / arr.length
-        // console.log(Math.floor(u));
         const i = inputFields.map(el => {
             var tugas = parseInt(el.tugas) || 0
             var hadir = parseInt(el.absen) || 0
@@ -55,8 +63,23 @@ const InputNilaiMhs = () => {
             return rataRata
         })
         setNIlaiAkhir(i)
+    }
 
-
+    const cekNilai = async () => {
+        let nilai = []
+        let promises = []
+        for (let i = 0; i < nilaiAkhir.length; i++) {
+            if (nilaiAkhir[i] === 0) {
+                promises.push("")
+            } else {
+                const d = await axios.get(`/v1/nilaiKuliah/deteksiIndexNilai/${nilaiAkhir[i]}`).then(response => {
+                    nilai.push(response.data.data[0].nilai_huruf)
+                })
+                promises.push(d)
+            }
+        }
+        Promise.all(promises).then(() => setNilaiHuruf(nilai))
+        console.log(nilai);
     }
 
     return (
@@ -90,19 +113,19 @@ const InputNilaiMhs = () => {
                                             <td className='px-2 py-2 border'>{mhs.nim}</td>
                                             <td className='px-2 py-2 border'>{mhs.nama}</td>
                                             <td className='px-2 py-2 border'>
-                                                <input type="text" name='tugas' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                <input type="number" name='tugas' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                             </td>
                                             <td className='px-2 py-2 border'>
-                                                <input type="text" name='uts' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                <input type="number" name='uts' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                             </td>
                                             <td className='px-2 py-2 border'>
-                                                <input type="text" name='uas' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                <input type="number" name='uas' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                             </td>
                                             <td className='px-2 py-2 border'>
-                                                <input type="text" name='absen' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                <input type="number" name='absen' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                             </td>
-                                            <td className='px-2 py-2 border'></td>
                                             <td className='px-2 py-2 border'>{nilaiAkhir[index] == "0" ? "" : nilaiAkhir[index]}</td>
+                                            <td className='px-2 py-2 border'>{nilaiHuruf[index]}</td>
                                             <td className='px-2 py-2 border'></td>
                                         </tr>
                                     ))}
