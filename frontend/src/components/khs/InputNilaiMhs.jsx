@@ -8,17 +8,22 @@ const InputNilaiMhs = () => {
     const [nilaiAkhir, setNIlaiAkhir] = useState([])
     const [nilaiHuruf, setNilaiHuruf] = useState([])
 
+    const min = ""
+    const max = 100
+
+    const [value, setValue] = useState()
+
     const handleFormChange = (index, event) => {
-        let data = [...inputFields];
-        data[index][event.target.name] = event.target.value;
-        if (event.target.value <= 100) {
-            setInputFields(data);
-        } else {
-            alert('lebih')
-            data[index][event.target.name] = "";
-            setInputFields(data)
-        }
-        // console.log(data);
+        let data = [...inputFields]
+        data[index][event.target.name] = Math.max(min, Math.min(max, Number(event.target.value)))
+        // if (event.target.value <= 100) {
+        //     setInputFields(data)
+        // } else {
+        //     alert('lebih')
+        //     data[index][event.target.name] = ""
+        setInputFields(data)
+        // }
+        // console.log(data)
     }
 
     useEffect(() => {
@@ -42,8 +47,8 @@ const InputNilaiMhs = () => {
         for (let index = 1; index <= jmlMhs; index++) {
             newfield.push({ tugas: '', uts: '', uas: '', absen: '' })
         }
-        // console.log(newfield);
-        setInputFields(newfield);
+        // console.log(newfield)
+        setInputFields(newfield)
 
     }
 
@@ -79,13 +84,27 @@ const InputNilaiMhs = () => {
             }
         }
         Promise.all(promises).then(() => setNilaiHuruf(nilai))
-        console.log(nilai);
+        console.log(nilai)
     }
+
+    const handleChange = event => {
+        const value = Math.max(min, Math.min(max, Number(event.target.value)))
+        setValue(value)
+    }
+
+    console.log(value)
+    console.log(typeof value)
 
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Nilai Mahasiswa</h1>
+                <input
+                    type="number"
+                    className='input input-bordered'
+                    value={value}
+                    onChange={handleChange}
+                />
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md">
