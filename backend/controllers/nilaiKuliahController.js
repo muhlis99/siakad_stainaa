@@ -79,9 +79,9 @@ module.exports = {
     },
 
     deteksiIndexNilai: async (req, res, next) => {
-        const { nilaiAkhir } = req.params
+        const { nilaiAkhir, codeThnAjr } = req.params
         const nilai = Math.floor(nilaiAkhir)
-        const i = await sequelize.query(`SELECT * FROM tb_kategori_nilai WHERE IF(${nilai} >= nilai_bawah AND ${nilai} <= nilai_atas, 1,0)`
+        const i = await sequelize.query(`SELECT * FROM tb_kategori_nilai WHERE IF(${nilai} >= nilai_bawah AND ${nilai} <= nilai_atas, 1,0) AND code_tahun_ajaran = ${codeThnAjr} AND status = "aktif";`
             , {
                 nest: true,
                 type: QueryTypes.SELECT
@@ -93,7 +93,16 @@ module.exports = {
 
     post: async (req, res, next) => {
         const data = req.body
-        let randomNumber = Math.floor(1000 + Math.random() * 9000)
+        function randomAngka(params) {
+            let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let charLength = chars.length;
+            let result = ''
+            for (let i = 0; i < params; i++) {
+                result += chars.charAt(Math.floor(Math.random() * charLength))
+            }
+            return result
+        }
+        let randomNumber = randomAngka(2) + Math.floor(1000 + Math.random() * 9000)
         const dataNilai = data.map(el => {
             let element = {
                 code_nilai_kuliah: randomNumber,
