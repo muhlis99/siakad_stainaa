@@ -79,9 +79,9 @@ module.exports = {
     },
 
     deteksiIndexNilai: async (req, res, next) => {
-        const { nilaiAkhir } = req.params
+        const { nilaiAkhir, codeThnAjr } = req.params
         const nilai = Math.floor(nilaiAkhir)
-        const i = await sequelize.query(`SELECT * FROM tb_kategori_nilai WHERE IF(${nilai} >= nilai_bawah AND ${nilai} <= nilai_atas, 1,0)`
+        const i = await sequelize.query(`SELECT * FROM tb_kategori_nilai WHERE IF(${nilai} >= nilai_bawah AND ${nilai} <= nilai_atas, 1,0) AND code_tahun_ajaran = ${codeThnAjr} AND status = "aktif";`
             , {
                 nest: true,
                 type: QueryTypes.SELECT
