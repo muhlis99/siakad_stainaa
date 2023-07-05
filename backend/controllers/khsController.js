@@ -139,6 +139,7 @@ module.exports = {
                 tahunAjaran: thnAjr.tahun_ajaran,
                 jumlahSks: totalSks,
                 jumlahSksIndex: totalSksIndex,
+                // IPS: ipSemester.toFixed(2)
                 IPS: ipSemester
 
             })
