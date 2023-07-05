@@ -139,13 +139,14 @@ module.exports = {
     },
     //  jumlah mhs semester
     jumlahMhs: async (req, res, next) => {
-        const { smt, jnjPen, fkts, prd } = req.params
+        const { thnAjr, smt, jnjPen, fkts, prd } = req.params
         await historyMahasiswaModel.findAndCountAll({
             where: {
                 code_jenjang_pendidikan: jnjPen,
                 code_fakultas: fkts,
                 code_prodi: prd,
                 code_semester: smt,
+                code_tahun_ajaran: thnAjr,
                 status: "aktif"
             }
         }).then(all => {

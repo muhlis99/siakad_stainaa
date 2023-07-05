@@ -34,7 +34,7 @@ module.exports = {
         const jmlMahasiswa = await historyMahasiswa.findAndCountAll({
             where: {
                 code_semester: Jmlmakul,
-                // code_tahun_ajaran: tahunAjaran,
+                code_tahun_ajaran: tahunAjaran,
                 code_prodi: prodi
             },
             attributes: ['nim']
@@ -114,7 +114,7 @@ module.exports = {
         const Dtnim = await historyMahasiswa.findAll({
             attributes: ['nim'],
             where: {
-                // code_tahun_ajaran: thnAjr,
+                code_tahun_ajaran: thnAjr,
                 code_prodi: prd,
                 code_semester: smt
             }
