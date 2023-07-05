@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const db = require('../config/database.js')
-
+const mahasiswa = require('./mahasiswaModel.js')
 
 const historyMahasiswa = db.define('historyMahasiswa', {
     'id_history': {
@@ -34,5 +34,9 @@ const historyMahasiswa = db.define('historyMahasiswa', {
     underscored: true,
     paranoid: true,
 })
+
+mahasiswa.belongsTo(historyMahasiswa, { foreignKey: 'nim' })
+historyMahasiswa.hasMany(mahasiswa, { sourceKey: 'nim', foreignKey: 'nim' })
+
 
 module.exports = historyMahasiswa
