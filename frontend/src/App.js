@@ -45,6 +45,8 @@ import Penilaian from "./pages/penilaian/Penilaian"
 import InputNilai from "./pages/penilaian/InputNilai"
 import Detail2 from "./pages/penilaian/Detail"
 import Persemester from "./pages/mhsPersemester/Persemester"
+import Khs from "./pages/khs/Khs"
+import View from "./pages/khs/View"
 
 function App() {
   return (
@@ -96,6 +98,8 @@ function App() {
           <Route path="/inputnilai/:kodeMk/:kodeTahun/:kodeSmt/:idMk" element={<InputNilai />} />
           <Route path="/detail/:kodeMk/:kodeKls/:idMk" element={<Detail2 />} />
           <Route path="/setmhs" element={<Persemester />} />
+          <Route path="/khs" element={<Khs />} />
+          <Route path="/view/:nim/:kodeFk/:kodeJnjg/:kodeProdi/:kodeSmt/:kodeThn" element={<View />} />
         </Routes>
       </BrowserRouter>
     </div>
