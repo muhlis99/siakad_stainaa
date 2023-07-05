@@ -1,4 +1,3 @@
-const krsModel = require('../models/krsModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
 const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 const semesterModel = require('../models/semesterModel.js')
@@ -9,7 +8,8 @@ const kategoriNilaiModel = require('../models/kategoriNilaiModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
-const { Op } = require('sequelize')
+const { Sequelize, Op, literal, QueryTypes } = require('sequelize')
+const db = require('../config/database.js')
 
 module.exports = {
     getAll: async (req, res, next) => {
@@ -85,6 +85,27 @@ module.exports = {
             }
         })
 
+        const totalSks = await nilaiKuliahModel.sum('mataKuliahs.sks', {
+            include: [
+                {
+                    attributes: ["id_mata_kuliah", "code_mata_kuliah", "nama_mata_kuliah", "sks"],
+                    model: mataKuliahModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            where: {
+                nim: nim,
+                status: "aktif"
+            }
+        })
+
+        const queryTotalSksIndex = await db.query('SELECT SUM( tb_mata_kuliah.sks*tb_kategori_nilai.interfal_skor) AS total FROM `tb_nilai_kuliah` INNER JOIN tb_mata_kuliah ON tb_nilai_kuliah.code_mata_kuliah=tb_mata_kuliah.code_mata_kuliah INNER JOIN tb_kategori_nilai ON tb_nilai_kuliah.code_kategori_nilai=tb_kategori_nilai.code_kategori_nilai', {
+            nest: true,
+            type: QueryTypes.SELECT
+        })
+        const totalSksIndex = queryTotalSksIndex[0].total
+        const ipSemester = totalSksIndex / totalSks
+
         await nilaiKuliahModel.findAll({
             include: [
                 {
@@ -98,10 +119,14 @@ module.exports = {
                     where: { status: "aktif" }
                 }
             ],
+            attributes: [
+                'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
+                [Sequelize.literal('(mataKuliahs.sks*kategoriNilais.interfal_skor)'), 'sksIndexs']
+            ],
             where: {
                 nim: nim,
                 status: 'aktif'
-            }
+            },
         }).then(result => {
             res.status(201).json({
                 data: result,
@@ -111,8 +136,11 @@ module.exports = {
                 fakultas: fks.nama_fakultas,
                 jenjangPendidikan: jenjPen.nama_jenjang_pendidikan,
                 semester: smt.semester,
-                tahunAjaran: thnAjr.tahun_ajaran
-
+                tahunAjaran: thnAjr.tahun_ajaran,
+                jumlahSks: totalSks,
+                jumlahSksIndex: totalSksIndex,
+                // IPS: ipSemester.toFixed(2)
+                IPS: ipSemester
 
             })
         }).catch(err => {
