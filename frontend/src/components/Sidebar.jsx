@@ -81,10 +81,11 @@ const Sidebar = () => {
             <div className="collapse-content grid gap-1 bg-[#2D7F5F] px-0">
               <Link to="/matakuliah" className='text-white flex gap-2 mt-2 hover:bg-[#287155] px-4 py-2'><FaBook /> <span className='text-sm'>Mata Kuliah</span></Link>
               <Link to='/sebaran' className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaTh /> <span className='text-sm'>Sebaran Mata Kuliah</span></Link>
+              <Link to="/setmhs" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaTh /> <span className='text-sm'>Set MHS Persemester</span></Link>
               <Link to="/krs" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaTasks /> <span className='text-sm'>Kartu Rencana Studi</span></Link>
               <Link to="/kelas" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><SiOpslevel /> <span className='text-sm'>Kelas Kuliah</span></Link>
               <Link to="/jadwalkuliah" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaBusinessTime /> <span className='text-sm'>Jadwal Kuliah</span></Link>
-              <Link to="/inputnilai" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaFileSignature /> <span className='text-sm'>Penilaian Mahasiswa</span></Link>
+              <Link to="/penilaian" className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaFileSignature /> <span className='text-sm'>Penilaian Mahasiswa</span></Link>
               <Link className='text-white flex gap-2 hover:bg-[#287155] px-4 py-2'><FaAddressBook /> <span className='text-sm'>Kartu Hasil Studi</span></Link>
             </div>
           </div>
