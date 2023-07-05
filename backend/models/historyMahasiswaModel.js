@@ -11,6 +11,9 @@ const historyMahasiswa = db.define('historyMahasiswa', {
     'nim': {
         type: DataTypes.TEXT,
     },
+    'code_tahun_ajaran': {
+        type: DataTypes.TEXT
+    },
     'code_semester': {
         type: DataTypes.TEXT
     },
