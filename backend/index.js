@@ -49,12 +49,11 @@ const mataKuliah = require('./router/mataKuliahRoute.js')
 const kategoriNilai = require('./router/kategoriNilaiRoute.js')
 const sebaranMataKuliah = require('./router/sebaranMataKuliahRoute.js')
 const krs = require('./router/krsRoute.js')
-// jadwal kuliah
 const jadwalKuliah = require('./router/jadwalKuliahRoute.js')
 const dosenPengajar = require('./router/dosenPengajarRoute.js')
 const jadwalPertemuan = require('./router/jadwalPertemuanRoute.js')
-// khs
 const nilaiKuliah = require('./router/nilaiKuliahRoute.js')
+const setMahasiswaSmt = require('./router/setMahasiswaSmtRoute.js')
 
 app.use('/v1/login', login)
 app.use('/v1/registrasi', registrasi)
@@ -76,6 +75,8 @@ app.use('/v1/jadwalKuliah', jadwalKuliah)
 app.use('/v1/dosenPengajar', dosenPengajar)
 app.use('/v1/jadwalPertemuan', jadwalPertemuan)
 app.use('/v1/nilaiKuliah', nilaiKuliah)
+app.use('/v1/setMahasiswaSmt', setMahasiswaSmt)
+
 
 // default index
 app.get('/', (req, res) => {

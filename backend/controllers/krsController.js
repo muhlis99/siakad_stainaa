@@ -127,7 +127,7 @@ module.exports = {
                     code_krs: randomNumber,
                     code_mata_kuliah: data2,
                     nim: DM.nim,
-                    status_krs: "",
+                    status_krs: "setuju",
                     status: "aktif"
                 }
             })
