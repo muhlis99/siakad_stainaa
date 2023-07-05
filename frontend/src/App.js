@@ -41,7 +41,10 @@ import AturJadwal from "./pages/jadwalKuliah/AturJadwal"
 import DetailJadwalKuliah from "./pages/jadwalKuliah/DetailJadwalKuliah"
 import DosenPgjr from "./pages/jadwalKuliah/DosenPgjr"
 import Pertemuan from "./pages/jadwalKuliah/Pertemuan"
-import InputNilai from "./pages/khs/InputNilai"
+import Penilaian from "./pages/penilaian/Penilaian"
+import InputNilai from "./pages/penilaian/InputNilai"
+import Detail2 from "./pages/penilaian/Detail"
+import Persemester from "./pages/mhsPersemester/Persemester"
 
 function App() {
   return (
@@ -89,7 +92,10 @@ function App() {
           <Route path="/detailjadwal/:idKls" element={<DetailJadwalKuliah />} />
           <Route path="/setDsn/:idKls" element={<DosenPgjr />} />
           <Route path="/setpertemuan/:idKls/:kodeJdl" element={<Pertemuan />} />
-          <Route path="/inputnilai" element={<InputNilai />} />
+          <Route path="/penilaian" element={<Penilaian />} />
+          <Route path="/inputnilai/:kodeMk/:kodeTahun/:kodeSmt/:idMk" element={<InputNilai />} />
+          <Route path="/detail/:kodeMk/:kodeKls/:idMk" element={<Detail2 />} />
+          <Route path="/setmhs" element={<Persemester />} />
         </Routes>
       </BrowserRouter>
     </div>

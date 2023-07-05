@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
+import InputNilaiMhs from '../../components/penilaian/InputNilaiMhs'
 import Layout from '../Layout'
-import InputNilaiMhs from '../../components/khs/InputNilaiMhs'
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { getMe } from "../../features/authSlice"
