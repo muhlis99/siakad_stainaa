@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import { FaReply } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 const ViewKhs = () => {
     const [ViewKhs, setViewKhs] = useState([])
+    const [jumSks, setJumSks] = useState("")
+    const [jumSksIndeks, setJumSksIndex] = useState("")
+    const [jenjang, setJenjang] = useState("")
+    const [fakultas, setFakultas] = useState("")
+    const [Prodi, setProdi] = useState("")
+    const [tahun, setTahun] = useState("")
+    const [semt, setSemt] = useState("")
+    const [nama, setNama] = useState("")
+    const [nimnya, setNim] = useState("")
+    const [ips, setIps] = useState("")
     const { nim } = useParams()
     const { kodeFk } = useParams()
     const { kodeJnjg } = useParams()
@@ -17,6 +29,17 @@ const ViewKhs = () => {
             try {
                 const response = await axios.get(`v1/khs/viewKhs/${kodeThn}/${kodeSmt}/${kodeJnjg}/${kodeFk}/${kodeProdi}/${nim}`)
                 setViewKhs(response.data.data)
+                setJumSks(response.data.jumlahSks)
+                setJumSksIndex(response.data.jumlahSksIndex)
+                setJumSksIndex(response.data.jumlahSksIndex)
+                setIps(response.data.IPS)
+                setNim(response.data.nim)
+                setNama(response.data.mahasiswa)
+                setJenjang(response.data.jenjangPendidikan)
+                setFakultas(response.data.fakultas)
+                setProdi(response.data.prodi)
+                setTahun(response.data.tahunAjaran)
+                setSemt(response.data.semester)
             } catch (error) {
 
             }
@@ -27,22 +50,25 @@ const ViewKhs = () => {
 
 
     return (
-        <div>
+        <div className='mt-2 container'>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Kartu Hasil Studi</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
+                        <div className='py-2'>
+                            <Link to="/khs" className='btn btn-sm btn-danger'><FaReply /><span className="ml-1">Kembali</span></Link>
+                        </div>
                         <div className="grid grid-cols-2 gap-3 mb-5 bg-base-200 p-3 rounded-md">
                             <div className='flex gap-2'>
                                 <div className='flex-initial w-36'>
                                     <label>
-                                        <span className="">Jenjang Pendidikan</span>
+                                        <span className="">Nama</span>
                                     </label>
                                 </div>
                                 <div className='flex-initial w-80'>
-                                    <a></a>
+                                    <a>{nama}</a>
                                 </div>
                             </div>
                             <div className='flex gap-2'>
@@ -52,7 +78,27 @@ const ViewKhs = () => {
                                     </label>
                                 </div>
                                 <div className='flex-initial w-80'>
-                                    <a></a>
+                                    <a>{tahun}</a>
+                                </div>
+                            </div>
+                            <div className='flex gap-2'>
+                                <div className='flex-initial w-36'>
+                                    <label>
+                                        <span className="">NIM</span>
+                                    </label>
+                                </div>
+                                <div className='flex-initial w-80'>
+                                    <a>{nimnya}</a>
+                                </div>
+                            </div>
+                            <div className='flex gap-2'>
+                                <div className='flex-initial w-36'>
+                                    <label>
+                                        <span className="">Jenjang Pendidikan</span>
+                                    </label>
+                                </div>
+                                <div className='flex-initial w-80'>
+                                    <a>{jenjang}</a>
                                 </div>
                             </div>
                             <div className='flex gap-2'>
@@ -62,7 +108,7 @@ const ViewKhs = () => {
                                     </label>
                                 </div>
                                 <div className='flex-initial w-80'>
-                                    <a></a>
+                                    <a>{fakultas}</a>
                                 </div>
                             </div>
                             <div className='flex gap-2'>
@@ -72,7 +118,7 @@ const ViewKhs = () => {
                                     </label>
                                 </div>
                                 <div className='flex-initial w-80'>
-                                    <a></a>
+                                    <a>{semt}</a>
                                 </div>
                             </div>
                             <div className='flex gap-2'>
@@ -82,7 +128,7 @@ const ViewKhs = () => {
                                     </label>
                                 </div>
                                 <div className='flex-initial w-80'>
-                                    <a></a>
+                                    <a>{Prodi}</a>
                                 </div>
                             </div>
 
@@ -102,7 +148,7 @@ const ViewKhs = () => {
                                         <th scope="col" className="px-6 py-3">Angka</th>
                                         <th scope="col" className="px-6 py-3">Huruf</th>
                                         <th scope="col" className="px-6 py-3">Indeks</th>
-                                        {/* <th scope="col" className="px-6 py-3">SKS*Indeks</th> */}
+                                        <th scope="col" className="px-6 py-3">SKS*Indeks</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -115,16 +161,26 @@ const ViewKhs = () => {
                                             <td className='px-6 py-2'>{item.nilai_akhir}</td>
                                             <td className='px-6 py-2'>{item.kategoriNilais[0].nilai_huruf}</td>
                                             <td className='px-6 py-2'>{item.kategoriNilais[0].interfal_skor}</td>
-                                            {/* <td className='px-6 py-2'>{item.mataKuliahs[0].sks}</td> */}
+                                            <td className='px-6 py-2'>{item.sksIndexs}</td>
                                         </tr>
                                     ))}
+                                    <tr>
+                                        <td className='px-6 py-2' colSpan="3">Jumlah</td>
+                                        <td className='px-6 py-2'>{jumSks}</td>
+                                        <td className='px-6 py-2' colSpan="3"></td>
+                                        <td className='px-6 py-2'>{jumSksIndeks}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className='px-6 py-2' colSpan="7">IPS (Index Prestasi Semester)</td>
+                                        <td className='px-6 py-2'>{ips}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </section >
+        </div >
     )
 }
 
