@@ -328,26 +328,24 @@ const ListKategoriNilai = () => {
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className='text-gray-700 bg-[#F2F2F2]'>
                                     <tr>
-                                        <th scope="col" className="px-6 py-3">#</th>
-                                        <th scope="col" className="px-6 py-3">Nilai Atas</th>
-                                        <th scope="col" className="px-6 py-3">Nilai Bawah</th>
-                                        <th scope="col" className="px-6 py-3">Nilai Huruf</th>
-                                        <th scope="col" className="px-6 py-3">Intefal Skor</th>
-                                        <th scope="col" className="px-6 py-3">Kategori</th>
-                                        <th scope="col" className='px-6 py-3'>Keterangan</th>
+                                        <th scope="col" className="px-6 py-3" align='center'>#</th>
+                                        <th scope="col" className="px-6 py-3" align='center'>Nilai Angka</th>
+                                        <th scope="col" className="px-6 py-3" align='center'>Nilai Huruf</th>
+                                        <th scope="col" className="px-6 py-3" align='center'>Intefal Skor</th>
+                                        <th scope="col" className="px-6 py-3" align='center'>Kategori</th>
+                                        <th scope="col" className='px-6 py-3' align='center'>Keterangan</th>
                                         <th scope="col" className="px-6 py-3" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {ListNilai.map((ktg, index) => (
                                         <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2'>{ktg.nilai_atas}</td>
-                                            <td className='px-6 py-2'>{ktg.nilai_bawah}</td>
-                                            <td className='px-6 py-2'>{ktg.nilai_huruf}</td>
-                                            <td className='px-6 py-2'>{ktg.interfal_skor}</td>
-                                            <td className='px-6 py-2'>{ktg.kategori}</td>
-                                            <td className='px-6 py-2'>{ktg.keterangan}</td>
+                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap" align='center'>{index + 1}</th>
+                                            <td className='px-6 py-2' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
+                                            <td className='px-6 py-2' align='center'>{ktg.nilai_huruf}</td>
+                                            <td className='px-6 py-2' align='center'>{ktg.interfal_skor}</td>
+                                            <td className='px-6 py-2' align='center'>{ktg.kategori}</td>
+                                            <td className='px-6 py-2' align='center'>{ktg.keterangan}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>

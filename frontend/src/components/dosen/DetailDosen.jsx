@@ -365,7 +365,7 @@ const DetailDosen = () => {
                 </label>
             </label>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <Link to="/dosen" className='btn btn-sm btn-danger w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
                         <div className='grid lg:grid-cols-2'>

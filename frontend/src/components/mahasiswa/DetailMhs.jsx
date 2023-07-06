@@ -442,7 +442,7 @@ const DetailMhs = () => {
             </label>
 
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <Link to="/mahasiswa" className='btn btn-sm btn-danger w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
                         <div className='grid lg:grid-cols-2'>
@@ -550,11 +550,11 @@ const DetailMhs = () => {
                                             <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
                                             <td className='py-1'><span className='text-sm font-bold uppercase'>{prodinya}</span></td>
                                         </tr>
-                                        <tr>
+                                        {/* <tr>
                                             <td className='py-1'><span className='text-sm font-bold uppercase'>mulai semester</span></td>
                                             <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
                                             <td className='py-1'><span className='text-sm font-bold uppercase'>{semester}</span></td>
-                                        </tr>
+                                        </tr> */}
                                     </tbody>
                                 </table>
                             </div>
