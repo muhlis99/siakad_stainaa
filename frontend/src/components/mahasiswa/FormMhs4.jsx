@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from "react-router-dom"
-import { FaTimes, FaReply, FaArrowRight, FaArrowLeft, FaMale, FaFemale } from "react-icons/fa"
+import { FaTimes, FaReply, FaArrowRight, FaArrowLeft, FaMale, FaFemale, FaSave } from "react-icons/fa"
 import axios from 'axios'
 import Swal from "sweetalert2"
 
@@ -24,7 +24,9 @@ const FormMhs4 = () => {
     const [jenjangnya, setJenjangnya] = useState("")
     const [fakultasnya, setFakultasnya] = useState("")
     const [prodinya, setProdinya] = useState("")
+    const [idSmt, setIdSmt] = useState("")
     const [kodeSmt, setKodeSmt] = useState("")
+    const [kodeThn, setKodeThn] = useState("")
     const navigate = useNavigate()
     const { idMhs } = useParams()
     const { stat } = useParams()
@@ -89,6 +91,10 @@ const FormMhs4 = () => {
     useEffect(() => {
         getProdiByFakultas()
     }, [fakultasnya])
+
+    useEffect(() => {
+        getSemesterById()
+    }, [idSmt])
 
     const tg = []
     for (let tanggal = 1; tanggal < 32; tanggal++) {
@@ -155,6 +161,14 @@ const FormMhs4 = () => {
         setSemester(response.data.data)
     }
 
+    const getSemesterById = async () => {
+        if (idSmt != 0) {
+            const response = await axios.get(`v1/semester/getById/${idSmt}`)
+            setKodeSmt(response.data.data.code_semester)
+            setKodeThn(response.data.data.code_tahun_ajaran)
+        }
+    }
+
     const simpanMhs = async (e) => {
         e.preventDefault()
         try {
@@ -170,7 +184,8 @@ const FormMhs4 = () => {
                 code_jenjang_pendidikan: jenjangnya,
                 code_fakultas: fakultasnya,
                 code_prodi: prodinya,
-                mulai_semester: kodeSmt
+                mulai_semester: kodeSmt,
+                tahun_ajaran: kodeThn
             }).then(function (response) {
                 Swal.fire({
                     title: response.data.message,
@@ -313,7 +328,7 @@ const FormMhs4 = () => {
                     <h1 className='text-xl font-bold'>Detail Wali {namanya && <span>Ananda <span className='text-red-500'>{namanya}</span></span>}</h1>
                 </section>
                 <section>
-                    <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                    <div className="card bg-base-100 card-bordered shadow-md mb-2">
                         <div className="card-body p-4">
                             <form onSubmit={simpanMhs}>
                                 <div className='grid lg:grid-cols-3 gap-4'>
@@ -433,10 +448,10 @@ const FormMhs4 = () => {
                                         <label className="label">
                                             <span className="text-base label-text">Masuk Mulai Semester</span>
                                         </label>
-                                        <select className='select select-bordered select-sm w-full' value={kodeSmt} onChange={(e) => setKodeSmt(e.target.value)}>
+                                        <select className='select select-bordered select-sm w-full' value={idSmt} onChange={(e) => setIdSmt(e.target.value)}>
                                             <option value="">Mulai Semester</option>
                                             {Semester.map((item) => (
-                                                <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
+                                                <option key={item.id_semester} value={item.id_semester}>Semester {item.semester}</option>
                                             ))}
                                         </select>
                                     </div>
@@ -454,7 +469,7 @@ const FormMhs4 = () => {
                                                 <Link to={`/mahasiswa/form3/${stat}/${idMhs}`} className='btn btn-sm btn-blue w-full'><FaArrowLeft /><span className="ml-1">Kembali</span></Link>
                                             </div>
                                             <div className='lg:pl-1'>
-                                                <button className='btn btn-sm btn-blue w-full'><span className="mr-1">Simpan dan lanjut</span><FaArrowRight /></button>
+                                                <button className='btn btn-sm btn-default w-full'><FaSave /><span className="ml-1">Selesai</span></button>
                                             </div>
                                         </div>
                                     </div>

@@ -30,7 +30,7 @@ const FormDosen2 = () => {
     useEffect(() => {
         const getDosenById = async () => {
             try {
-                if (stat = "edit") {
+                if (stat == "edit") {
                     const response = await axios.get(`v1/dosen/getById/${idDsn}`)
                     setNamanya(response.data.data.nama)
                     setNegaranya(response.data.data.negara)

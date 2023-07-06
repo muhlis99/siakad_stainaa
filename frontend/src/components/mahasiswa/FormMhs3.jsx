@@ -210,7 +210,7 @@ const FormMhs3 = () => {
                 <h1 className='text-xl font-bold'>Detail Orang Tua {namanya && <span>Ananda <span className='text-red-500'>{namanya}</span></span>}</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <form onSubmit={simpanMhs}>
                             <div className='grid lg:grid-cols-3 gap-4'>

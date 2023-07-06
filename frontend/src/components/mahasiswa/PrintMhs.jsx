@@ -404,11 +404,11 @@ const PrintMhs = () => {
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
                                             <td><span className='text-xs  uppercase'>{prodinya}</span></td>
                                         </tr>
-                                        <tr>
+                                        {/* <tr>
                                             <td><span className='text-xs  uppercase'>mulai semester</span></td>
                                             <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
                                             <td><span className='text-xs  uppercase'>{semester}</span></td>
-                                        </tr>
+                                        </tr> */}
                                     </tbody>
                                 </table>
                             </div>
