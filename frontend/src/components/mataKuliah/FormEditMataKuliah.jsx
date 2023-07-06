@@ -37,6 +37,7 @@ const FormEditMataKuliah = () => {
                 setIdProdi(response.data.data.prodis[0].id_prodi)
                 setTglAktif(response.data.data.tanggal_aktif)
                 setTglNonAktif(response.data.data.tanggal_non_aktif)
+                console.log(response.data.data);
             } catch (error) {
 
             }

@@ -86,7 +86,7 @@ const ListMataKuliah = () => {
                 <h1 className='text-xl font-bold'>Mata Kuliah</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className="grid grid-cols-3 gap-4">
                             <div>
