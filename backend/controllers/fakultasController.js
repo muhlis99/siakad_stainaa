@@ -163,7 +163,8 @@ module.exports = {
         const codefakultas = code_jenjang_pendidikan + code
         const duplicateData = await fakultas.findOne({
             where: {
-                code_fakultas: codefakultas
+                code_fakultas: codefakultas,
+                status: "aktif"
             }
         })
         if (duplicateData) return res.status(401).json({ message: "Data fakultas sudah ada" })
@@ -216,7 +217,7 @@ module.exports = {
         const codefakultas = code_jenjang_pendidikan + code
         const duplicateData = await fakultas.findOne({
             where: {
-                code_fakultas: codefakultas
+                code_fakultas: codefakultas, status: "aktif"
             }
         })
         if (duplicateData) return res.status(401).json({ message: "Data fakultas sudah ada" })
