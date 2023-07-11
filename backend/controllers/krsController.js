@@ -68,7 +68,7 @@ module.exports = {
             jumlah = 0
             keterangan = "paket belum"
         } else {
-            jumlah = jmlPaketMahasiswa.count
+            jumlah = jmlPaketMahasiswa.count[0].count
             keterangan = "paket selesai"
         }
         // isi field keterangan 
@@ -77,7 +77,7 @@ module.exports = {
                 semester: smt.semester,
                 tahun: thnAjar.tahun_ajaran,
                 Paketmakul: paketmakul,
-                jumlahMahasiswaPaket: jmlPaketMahasiswa.count[0].count,
+                jumlahMahasiswaPaket: jumlah,
                 jumlahTotalMahasiswa: jmlMahasiswa.count,
                 keterangan: keterangan,
             }]
