@@ -127,6 +127,68 @@ module.exports = {
             })
     },
 
+    smtByThnAjr: async (req, res, next) => {
+        const thnAjr = req.params.thnAjr
+        await semesterModel.findAll({
+            include: [
+                {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            where: {
+                code_tahun_ajaran: thnAjr,
+                status: "aktif"
+            }
+        }).
+            then(getById => {
+                if (!getById) {
+                    return res.status(404).json({
+                        message: "Data semester Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data semester Ditemukan",
+                    data: getById
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    katNilaiByThnAjr: async (req, res, next) => {
+        const thnAjr = req.params.thnAjr
+        await kategoriNilaiModel.findAll({
+            include: [
+                {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            where: {
+                code_tahun_ajaran: thnAjr,
+                status: "aktif"
+            }
+        }).
+            then(getById => {
+                if (!getById) {
+                    return res.status(404).json({
+                        message: "Data kategori nilai Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data kategori nilai Ditemukan",
+                    data: getById
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     post: async (req, res, next) => {
         const { id_mata_kuliah, code_semester, code_kategori_nilai, status_makul, status_bobot_makul } = req.body
         await mataKuliahModel.update({

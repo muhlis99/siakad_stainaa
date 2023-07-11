@@ -6,6 +6,8 @@ const sebaranMataKuliahController = require('../controllers/sebaranMataKuliahCon
 
 route.get('/all', sebaranMataKuliahController.getAll)
 route.get('/getById/:id', sebaranMataKuliahController.getById)
+route.get('/smtByThnAjr/:thnAjr', sebaranMataKuliahController.smtByThnAjr)
+route.get('/katNilaiByThnAjr/:thnAjr', sebaranMataKuliahController.katNilaiByThnAjr)
 route.post('/create', sebaranMataKuliahController.post)
 route.put('/update/:id', sebaranMataKuliahController.put)
 route.put('/delete/:id', sebaranMataKuliahController.delete)
