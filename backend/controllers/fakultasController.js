@@ -157,6 +157,8 @@ module.exports = {
             code = "KM"
         } else if (nama_fakultas === "PSIKOLOGI") {
             code = "PS"
+        } else if (nama_fakultas === "HUKUM") {
+            code = "HK"
         } else {
             code = ""
         }
@@ -211,6 +213,8 @@ module.exports = {
             code = "KM"
         } else if (nama_fakultas === "PSIKOLOGI") {
             code = "PS"
+        } else if (nama_fakultas === "HUKUM") {
+            code = "HK"
         } else {
             code = ""
         }
