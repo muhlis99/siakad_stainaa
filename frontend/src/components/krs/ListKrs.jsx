@@ -22,6 +22,10 @@ const ListKrs = () => {
     }, [])
 
     useEffect(() => {
+        getSemester()
+    }, [kodeTahun])
+
+    useEffect(() => {
         getKrsAll()
     }, [kodeTahun, kodeProdi, kodeSemester])
 
@@ -36,8 +40,10 @@ const ListKrs = () => {
     }
 
     const getSemester = async () => {
-        const response = await axios.get('v1/semester/all')
-        setSemester(response.data.data)
+        if (kodeTahun != 0) {
+            const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahun}`)
+            setSemester(response.data.data)
+        }
     }
 
     const getKrsAll = async () => {
