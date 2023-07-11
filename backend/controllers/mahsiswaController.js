@@ -462,10 +462,10 @@ module.exports = {
             catch(err => {
                 next(err)
             })
-
+        console.log(mahasiswaUse.nim);
         try {
             await historyMahasiswa.create({
-                nim: mahasiswaUse.nim,
+                nim: nim,
                 code_tahun_ajaran: tahun_ajaran,
                 code_semester: mulai_semester,
                 code_jenjang_pendidikan: code_jenjang_pendidikan,

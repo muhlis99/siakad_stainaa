@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Avatar from "../assets/img/avatar.png"
 import { LogOut, reset } from "../features/authSlice"
@@ -45,13 +45,13 @@ const Navbar = () => {
             </div>
           </label>
           <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-            <li>
+            {/* <li>
               <Link className="justify-between">
                 Profile
                 <span className="badge">New</span>
               </Link>
             </li>
-            <li><Link>Settings</Link></li>
+            <li><Link>Settings</Link></li> */}
             <li><button onClick={logOut}>Keluar</button></li>
           </ul>
         </div>

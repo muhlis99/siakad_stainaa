@@ -25,6 +25,17 @@ module.exports = {
       {
         light: {
           ...require('daisyui/src/colors/themes')['[data-theme=light]'],
+          '.active': {
+            'background-color': '#287155',
+            'border-color': '#287155',
+          },
+          '.bg-primary': {
+            'background-color': '#2D7F5F'
+          },
+          '.focus': {
+            'background-color': '#287155',
+            'border-color': '#287155',
+          },
           '.btn-danger': {
             'background-color': '#BB2D3B',
             'border-color': '#BB2D3B',

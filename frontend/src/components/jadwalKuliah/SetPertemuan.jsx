@@ -203,7 +203,7 @@ const SetPertemuan = () => {
         }
     }
 
-    const modalOpen = () => {
+    const modalOpen = (e) => {
         if (checked == 0) {
             Swal.fire({
                 title: 'Tidak ada data yang dipilih',
@@ -211,6 +211,7 @@ const SetPertemuan = () => {
             })
         } else {
             document.getElementById('my-modal-2').checked = true
+            setStatusForm(e)
         }
     }
 
@@ -219,7 +220,7 @@ const SetPertemuan = () => {
         setJenisPertemuan("")
         setChecked("")
         setMetode("")
-        setStatusForm(e)
+        setStatusForm("")
     }
 
     const updateJenis = async (e) => {

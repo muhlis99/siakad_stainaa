@@ -114,7 +114,7 @@ const FormAddMataKuliah = () => {
                 <h1 className='text-xl font-bold'>Tambah Mata Kuliah</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <form onSubmit={simpanMakul}>
                             <div className="grid lg:grid-cols-4 gap-4">

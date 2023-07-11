@@ -37,7 +37,6 @@ const FormEditMataKuliah = () => {
                 setIdProdi(response.data.data.prodis[0].id_prodi)
                 setTglAktif(response.data.data.tanggal_aktif)
                 setTglNonAktif(response.data.data.tanggal_non_aktif)
-                console.log(response.data.data);
             } catch (error) {
 
             }
@@ -114,7 +113,7 @@ const FormEditMataKuliah = () => {
                 <h1 className='text-xl font-bold'>Edit Mata Kuliah</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <form onSubmit={updateMakul}>
                             <div className="grid lg:grid-cols-4 gap-4">
