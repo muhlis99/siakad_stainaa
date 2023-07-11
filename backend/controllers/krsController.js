@@ -8,7 +8,8 @@ const { Op } = require('sequelize')
 module.exports = {
     getAll: async (req, res, next) => {
         const tahunAjaran = parseInt(req.query.tahunAjaran) || 0
-        const prodi = parseInt(req.query.prodi) || 0
+        const prodi = req.query.prodi || 0
+        // const semester = req.query.semester || 0
         // tahun ajaran => kurikulum 
         const thnAjar = await tahunAjaranModel.findOne({
             attributes: ['tahun_ajaran'],
