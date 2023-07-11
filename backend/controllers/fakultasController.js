@@ -145,22 +145,22 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { code_jenjang_pendidikan, code_dikti_fakultas, nama_fakultas } = req.body
-        let code = ""
-        if (nama_fakultas === "AGAMA ISLAM") {
-            code = "AI"
-        } else if (nama_fakultas === "AKUNTANSI") {
-            code = "AK"
-        } else if (nama_fakultas === "TEKNOLOGI INFORMASI") {
-            code = "TI"
-        } else if (nama_fakultas === "KOMUNIKASI") {
-            code = "KM"
-        } else if (nama_fakultas === "PSIKOLOGI") {
-            code = "PS"
-        } else {
-            code = ""
-        }
-        const codefakultas = code_jenjang_pendidikan + code
+        const { code_jenjang_pendidikan, code_dikti_fakultas, codeFks, nama_fakultas } = req.body
+        // let code = ""
+        // if (nama_fakultas === "AGAMA ISLAM") {
+        //     code = "AI"
+        // } else if (nama_fakultas === "AKUNTANSI") {
+        //     code = "AK"
+        // } else if (nama_fakultas === "TEKNOLOGI INFORMASI") {
+        //     code = "TI"
+        // } else if (nama_fakultas === "KOMUNIKASI") {
+        //     code = "KM"
+        // } else if (nama_fakultas === "PSIKOLOGI") {
+        //     code = "PS"
+        // } else {
+        //     code = ""
+        // }
+        const codefakultas = code_jenjang_pendidikan + codeFks
         const duplicateData = await fakultas.findOne({
             where: {
                 code_fakultas: codefakultas
