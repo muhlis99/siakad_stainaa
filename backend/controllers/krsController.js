@@ -27,7 +27,11 @@ module.exports = {
             },
             group: ['code_semester'],
             attributes: ['code_semester',],
-            include: [{ model: semesterModel, attributes: ['semester'] }]
+            include: [{
+                model: semesterModel,
+                attributes: ['semester'],
+                status: "aktif"
+            }]
         })
         var i = paketmakul.rows
         const Jmlmakul = i.map(jhr => { return jhr.code_semester })
