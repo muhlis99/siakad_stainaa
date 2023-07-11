@@ -139,7 +139,8 @@ module.exports = {
             where: {
                 code_tahun_ajaran: thnAjr,
                 status: "aktif"
-            }
+            },
+            order: ['id_semester', 'DESC']
         }).
             then(getById => {
                 if (!getById) {
@@ -170,7 +171,8 @@ module.exports = {
             where: {
                 code_tahun_ajaran: thnAjr,
                 status: "aktif"
-            }
+            },
+            order: ['id_kategori_nilai', 'DESC']
         }).
             then(getById => {
                 if (!getById) {
