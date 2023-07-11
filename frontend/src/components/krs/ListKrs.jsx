@@ -7,20 +7,23 @@ import Swal from 'sweetalert2'
 const ListKrs = () => {
     const [Program, setProgram] = useState([])
     const [Tahun, setTahun] = useState([])
+    const [Semester, setSemester] = useState([])
     const [Krs, setKrs] = useState([])
     const [view, setView] = useState([])
     const [total, setTotal] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
+    const [kodeSemester, setKodeSemester] = useState("")
 
     useEffect(() => {
         getProdiAll()
         getTahunAjaran()
+        getSemester()
     }, [])
 
     useEffect(() => {
         getKrsAll()
-    }, [kodeTahun, kodeProdi])
+    }, [kodeTahun, kodeProdi, kodeSemester])
 
     const getProdiAll = async () => {
         const response = await axios.get('v1/prodi/all')
@@ -32,9 +35,14 @@ const ListKrs = () => {
         setTahun(response.data.data)
     }
 
+    const getSemester = async () => {
+        const response = await axios.get('v1/semester/all')
+        setSemester(response.data.data)
+    }
+
     const getKrsAll = async () => {
-        if (kodeProdi != 0 && kodeTahun != 0) {
-            const response = await axios.get(`v1/krs/all?tahunAjaran=${kodeTahun}&prodi=${kodeProdi}`)
+        if (kodeProdi != 0 & kodeTahun != 0 & kodeSemester != 0) {
+            const response = await axios.get(`v1/krs/all?tahunAjaran=${kodeTahun}&semester=${kodeSemester}&prodi=${kodeProdi}`)
             setKrs(response.data.data)
         }
     }
@@ -124,26 +132,37 @@ const ListKrs = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-3">
                     <div className="card-body p-4">
-                        <div className="grid lg:grid-cols-2 gap-2">
-                            <div className='flex gap-2'>
+                        <div className="grid lg:grid-cols-3 gap-2">
+                            <div>
                                 <label className="label">
                                     <span className="text-base label-text">Program Studi</span>
                                 </label>
-                                <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
+                                <select className='select select-bordered select-sm w-full ' value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
                                     <option value="">Program Studi</option>
                                     {Program.map((item) => (
                                         <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
                                     ))}
                                 </select>
                             </div>
-                            <div className='flex gap-2'>
+                            <div>
                                 <label className="label">
                                     <span className="text-base label-text">Tahun Ajaran</span>
                                 </label>
-                                <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                <select className='select select-bordered select-sm w-full ' value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
                                     <option value="">Tahun Ajaran</option>
                                     {Tahun.map((item) => (
                                         <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="label">
+                                    <span className="text-base label-text">Semester</span>
+                                </label>
+                                <select className='select select-bordered select-sm w-full' value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
+                                    <option value="">Semester</option>
+                                    {Semester.map((item) => (
+                                        <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
                                     ))}
                                 </select>
                             </div>
