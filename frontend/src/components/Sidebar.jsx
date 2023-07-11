@@ -35,7 +35,7 @@ const Sidebar = () => {
   return (
     <div className="drawer-side scrollbar-thin scrollbar-thumb-emerald-800 scrollbar-track-gray-100">
       <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
-      <ul className="menu w-60 bg-primary">
+      <ul className="menu w-60 bg-[#2D7F5F] rounded-box">
         <div className="flex gap-1 w-full h-14 mb-2 py-1 justify-center shadow-md  sticky top-0 z-50 bg-[#2D7F5F]">
           <div className="avatar mt-1 rounded-full shadow-lg h-10 ">
             <div className="w-10 h-10 rounded-full">
@@ -49,7 +49,7 @@ const Sidebar = () => {
             </Link>
           </div>
         </div>
-        <li><Link to="/dashboard" className={`text-white rounded-md text-xs ${location.pathname == '/dashboard' ? 'active' : ''}`}><FaHome /> <span className='text-xs'>Dashboard</span></Link></li>
+        <li className='active:bg-transparent'><Link to="/dashboard" className={`text-white rounded-md text-xs active:bg-[#2D7F5F] ${location.pathname == '/dashboard' ? 'active' : ''}`}><FaHome /> <span className='text-xs active:bg-white'>Dashboard</span></Link></li>
         <li></li>
         <li className='p-0'><span className='text-white text-xs'>DATA INDUK</span></li>
         <li>

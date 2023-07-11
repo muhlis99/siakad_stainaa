@@ -29,9 +29,6 @@ module.exports = {
             'background-color': '#287155',
             'border-color': '#287155',
           },
-          '.bg-primary': {
-            'background-color': '#2D7F5F'
-          },
           '.focus': {
             'background-color': '#287155',
             'border-color': '#287155',
