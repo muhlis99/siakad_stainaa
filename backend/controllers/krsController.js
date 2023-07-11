@@ -7,40 +7,48 @@ const { Op } = require('sequelize')
 
 module.exports = {
     getAll: async (req, res, next) => {
-        const tahunAjaran = parseInt(req.query.tahunAjaran) || 0
+        const tahunAjaran = req.query.tahunAjaran || 0
         const prodi = req.query.prodi || 0
-        // const semester = req.query.semester || 0
-        // tahun ajaran => kurikulum 
+        const semester = req.query.semester || 0
+
         const thnAjar = await tahunAjaranModel.findOne({
             attributes: ['tahun_ajaran'],
             where: {
-                code_tahun_ajaran: tahunAjaran
+                code_tahun_ajaran: tahunAjaran,
+                status: "aktif"
             }
         })
-        // mengambil data dari tb mata kuliah
-        // untuk jumlah mata kuliah paket dan semesternya 
-        const paketmakul = await mataKuliahModel.findAndCountAll({
+
+        const smt = await semesterModel.findOne({
+            attributes: ['semester'],
             where: {
+                code_semester: semester,
+                status: "aktif"
+            }
+        })
+
+        const paketmakul = await mataKuliahModel.count({
+            where: {
+                code_semester: semester,
                 code_tahun_ajaran: tahunAjaran,
                 code_prodi: prodi,
-                status_makul: "paket"
+                status_makul: "paket",
+                status_bobot_makul: "wajib",
+                status: "aktif"
             },
-            group: ['code_semester'],
-            attributes: ['code_semester',],
             include: [{
                 model: semesterModel,
                 attributes: ['semester'],
                 status: "aktif"
             }]
         })
-        var i = paketmakul.rows
-        const Jmlmakul = i.map(jhr => { return jhr.code_semester })
-        // jumlah mahasiswa yang memakate mata kuliah
+
         const jmlMahasiswa = await historyMahasiswa.findAndCountAll({
             where: {
-                code_semester: Jmlmakul,
+                code_semester: semester,
                 code_tahun_ajaran: tahunAjaran,
-                code_prodi: prodi
+                code_prodi: prodi,
+                status: "aktif"
             },
             attributes: ['nim']
         })
@@ -49,11 +57,11 @@ module.exports = {
         const validasimakul = t.map(v => { return v.nim })
         const jmlPaketMahasiswa = await krsModel.findAndCountAll({
             where: {
-                nim: validasimakul
+                nim: validasimakul,
+                status: "aktif"
             },
             group: ['nim'],
         })
-
         var jumlah = ""
         var keterangan = ""
         if (jmlPaketMahasiswa.count == 0 || jmlPaketMahasiswa.count == null) {
@@ -66,10 +74,10 @@ module.exports = {
         // isi field keterangan 
         res.status(201).json({
             data: [{
+                semester: smt.semester,
                 tahun: thnAjar.tahun_ajaran,
-                Paketmakul: paketmakul.count,
-                semester: paketmakul.rows,
-                jumlahMahasiswaPaket: jumlah,
+                Paketmakul: paketmakul,
+                jumlahMahasiswaPaket: jmlPaketMahasiswa.count[0].count,
                 jumlahTotalMahasiswa: jmlMahasiswa.count,
                 keterangan: keterangan,
             }]
