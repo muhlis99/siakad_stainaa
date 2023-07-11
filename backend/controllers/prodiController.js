@@ -191,7 +191,7 @@ module.exports = {
             code = "TIK"
         } else if (nama_prodi === "HUKUM EKONOMI SYARI'AH") {
             code = "HES"
-        } else if (nama_prodi === " PENDIDIKAN AGAMA ISLAM") {
+        } else if (nama_prodi === "PENDIDIKAN AGAMA ISLAM") {
             code = "PAI"
         } else {
             code = ""
