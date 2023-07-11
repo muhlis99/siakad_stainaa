@@ -1,18 +1,44 @@
 const mahasiswa = require('../models/mahasiswaModel.js')
 const historyMahasiswa = require('../models/historyMahasiswaModel.js')
+const fakultasModel = require('../models/fakultasModel.js')
+const semesterModel = require('../models/semesterModel.js')
+const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
+const prodiModel = require('../models/prodiModel.js')
+const tahunAjaranModel = require('../models/tahunAjaranModel.js')
+
 
 module.exports = {
     getAll: async (req, res, next) => {
-        const { codeSmt, codeJnjPen, codeFks, codePrd } = req.params
-        // const { codeSmt, codeJnjPen, codeFks, codePrd } = req.params
+        const { codeThnAjr, codeSmt, codeJnjPen, codeFks, codePrd } = req.params
 
         await historyMahasiswa.findAll({
             include: [{
                 model: mahasiswa,
                 attributes: ["nim", "nama"],
                 where: { status: "aktif" }
+            }, {
+                model: tahunAjaranModel,
+                attributes: ["code_tahun_ajaran", "tahun_ajaran"],
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                attributes: ["code_semester", "semester"],
+                where: { status: "aktif" }
+            }, {
+                model: jenjangPendidikanModel,
+                attributes: ["code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                attributes: ["code_fakultas", "nama_fakultas"],
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                attributes: ["code_prodi", "nama_prodi"],
+                where: { status: "aktif" }
             }],
             where: {
+                code_tahun_ajaran: codeThnAjr,
                 code_semester: codeSmt,
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
@@ -24,6 +50,40 @@ module.exports = {
                 res.status(200).json({
                     message: "Get All  Mahasiswa semester Success",
                     data: result,
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    smtByThnAjr: async (req, res, next) => {
+        const thnAjr = req.params.thnAjr
+        await semesterModel.findAll({
+            include: [
+                {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            where: {
+                code_tahun_ajaran: thnAjr,
+                status: "aktif"
+            },
+            order: [
+                ["id_semester", "DESC"]
+            ]
+        }).
+            then(getById => {
+                if (!getById) {
+                    return res.status(404).json({
+                        message: "Data semester Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data semester Ditemukan",
+                    data: getById
                 })
             }).
             catch(err => {
