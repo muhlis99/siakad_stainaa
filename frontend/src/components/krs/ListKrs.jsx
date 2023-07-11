@@ -189,11 +189,11 @@ const ListKrs = () => {
                             <tbody>
                                 {Krs.map((item, index) => (
                                     <tr key={index + 1} className='bg-white border text-gray-500' >
-                                        <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{item.semester[0].semesters[0].semester}</th>
+                                        <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{item.semester}</th>
                                         <td className='px-2 py-2 border' align='center'>{item.tahun}</td>
-                                        <td className='px-2 py-2 border' align='center'>{item.Paketmakul[0].count}</td>
+                                        <td className='px-2 py-2 border' align='center'>{item.Paketmakul}</td>
                                         <td className='px-2 py-2 border' align='center'>{item.jumlahTotalMahasiswa}</td>
-                                        <td className='px-2 py-2 border' align='center'>{item.jumlahMahasiswaPaket[0] ? item.jumlahMahasiswaPaket[0].count : item.jumlahMahasiswaPaket}</td>
+                                        <td className='px-2 py-2 border' align='center'>{item.jumlahMahasiswaPaket}</td>
                                         <td className='px-2 py-2 border' align='center'>{item.keterangan == 'paket belum' ? <span className='badge badge-sm badge-jingga opacity-80'>Paket Belum</span> : <span className='badge badge-sm badge-default'>Paket Selesai</span>}</td>
                                         <td className='px-2 py-2 border' align='center'>
                                             <div>
