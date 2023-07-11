@@ -39,7 +39,6 @@ const ListSebaran = () => {
 
     useEffect(() => {
         getProdiAll()
-        getKategoriNilai()
         getMakulAll()
         getTahunAjaran()
 
@@ -59,6 +58,10 @@ const ListSebaran = () => {
 
     useEffect(() => {
         getDataSemester()
+    }, [kodeProdi, kodeTahun])
+
+    useEffect(() => {
+        getKategoriNilai()
     }, [kodeProdi, kodeTahun])
 
     useEffect(() => {
@@ -84,8 +87,10 @@ const ListSebaran = () => {
     }
 
     const getKategoriNilai = async () => {
-        const response = await axios.get(`v1/kategoriNilai/all`)
-        setListNilai(response.data.data)
+        if (kodeProdi != 0 & kodeTahun != 0) {
+            const response = await axios.get(`v1/sebaranMataKuliah/katNilaiByThnAjr/${kodeTahun}`)
+            setListNilai(response.data.data)
+        }
     }
 
     const getMakulAll = async () => {
@@ -126,7 +131,7 @@ const ListSebaran = () => {
 
     const getDataSemester = async () => {
         if (kodeProdi != 0 & kodeTahun != 0) {
-            const response = await axios.get(`v1/semester/all`)
+            const response = await axios.get(`v1/sebaranMataKuliah/smtByThnAjr/${kodeTahun}`)
             setSemester(response.data.data)
         }
     }
