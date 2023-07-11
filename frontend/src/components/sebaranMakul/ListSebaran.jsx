@@ -110,7 +110,7 @@ const ListSebaran = () => {
                     setKodeMakul("")
                     setKodeSmt("")
                     setKodeNilai("")
-                    setStatus(false)
+                    setPaket(false)
                     sebaranMakul()
                 })
             })
@@ -530,7 +530,7 @@ const ListSebaran = () => {
                                     <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeNilai} onChange={(e) => setKodeNilai(e.target.value)}>
                                         <option value="">Nilai</option>
                                         {ListNilai.map((item) => (
-                                            <option key={item.id_kategori_nilai} value={item.code_kategori_nilai}>{item.nilai_huruf} ({item.nilai_angka})</option>
+                                            <option key={item.id_kategori_nilai} value={item.code_kategori_nilai}>{item.nilai_bawah} - {item.nilai_atas} ({item.nilai_huruf})</option>
                                         ))}
                                     </select>
                                 </div>

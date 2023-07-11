@@ -18,6 +18,8 @@ const Jenjang = () => {
         return navigate("/login")
     }
 
+
+
     return (
         <Layout>
             <title>Jenjang Pendidikan</title>

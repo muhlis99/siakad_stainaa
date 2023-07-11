@@ -183,7 +183,7 @@ const ListJadwal = () => {
                                         <div className="collapse-content grid gap-1 px-0 py-1 bg-base-100">
                                             {DataKelas != 0 ? DataKelas[index].map((item) => (
                                                 <div key={item.id_kelas} className="grid grid-cols-3 gap-2 px-4 py-2 bg-base-200">
-                                                    <button className='btn btn-sm btn-ghost w-14 pointer-events-none'><FaHotel /> <span className="ml-1">{item.nama_kelas}</span> <span className="ml-1">{item.code_mata_kuliah}</span></button>
+                                                    <button className='btn btn-sm btn-ghost w-14 pointer-events-none'><FaHotel /> <span className="ml-1">{item.nama_kelas}</span></button>
                                                     <button className='btn btn-sm btn-ghost  pointer-events-none'><FaUsers /> <span className="ml-1">{item.kapasitas}</span></button>
                                                     <div>
                                                         <div className="float-right">

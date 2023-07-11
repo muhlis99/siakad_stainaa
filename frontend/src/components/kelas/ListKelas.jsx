@@ -54,7 +54,7 @@ const ListKelas = () => {
 
     useEffect(() => {
         getJumlahMhs()
-    }, [kodeFakultas, kodeJenjang, kodeProdi, kodesmt])
+    }, [kodeFakultas, kodeJenjang, kodeProdi, kodesmt, kodeTahun])
 
     useEffect(() => {
         getDataArray()
@@ -126,8 +126,8 @@ const ListKelas = () => {
     }
 
     const getJumlahMhs = async () => {
-        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodesmt != 0) {
-            const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodesmt}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodesmt != 0 & kodeTahun != 0) {
+            const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodeTahun}/${kodesmt}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
             setJumMhs(response.data.data)
         } else {
             setJumMhs("")
@@ -405,7 +405,7 @@ const ListKelas = () => {
                                         <div className="collapse-content grid gap-1 px-0 py-1 bg-base-100">
                                             {DataKelas != 0 ? DataKelas[index].map((item) => (
                                                 <div key={item.id_kelas} className="grid grid-cols-3 gap-2 px-4 py-2 bg-base-200">
-                                                    <button className='btn btn-sm btn-ghost pointer-events-none w-14'><FaHotel /> <span className="ml-1">{item.code_mata_kuliah}</span></button>
+                                                    <button className='btn btn-sm btn-ghost pointer-events-none w-14'><FaHotel /> <span className="ml-1">{item.nama_kelas}</span></button>
                                                     <button className='btn btn-sm btn-ghost pointer-events-none'><FaUsers /> <span className="ml-1">{item.kapasitas}</span></button>
                                                     <div>
                                                         <button className='btn btn-xs btn-blue btn-circle float-right' title='Hapus'><FaInfo /></button>

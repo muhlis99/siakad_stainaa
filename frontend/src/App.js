@@ -47,6 +47,7 @@ import Detail2 from "./pages/penilaian/Detail"
 import Persemester from "./pages/mhsPersemester/Persemester"
 import Khs from "./pages/khs/Khs"
 import View from "./pages/khs/View"
+import Users from "./pages/user/Users"
 
 function App() {
   return (
@@ -100,6 +101,7 @@ function App() {
           <Route path="/setmhs" element={<Persemester />} />
           <Route path="/khs" element={<Khs />} />
           <Route path="/view/:nim/:kodeFk/:kodeJnjg/:kodeProdi/:kodeSmt/:kodeThn" element={<View />} />
+          <Route path="/users" element={<Users />} />
         </Routes>
       </BrowserRouter>
     </div>
