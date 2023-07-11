@@ -186,9 +186,13 @@ const MhsPersemester = () => {
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className='text-gray-700 bg-[#F2F2F2]'>
                                     <tr>
-                                        <th scope="col" className="px-6 py-3 w-5">#</th>
-                                        <th scope="col" className="px-6 py-3 w-5">NIM</th>
+                                        <th scope="col" className="px-6 py-3">#</th>
+                                        <th scope="col" className="px-6 py-3">NIM</th>
                                         <th scope="col" className="px-6 py-3">Nama</th>
+                                        <th scope="col" className="px-6 py-3">Jenjang Pendidikan</th>
+                                        <th scope="col" className="px-6 py-3">Fakultas</th>
+                                        <th scope="col" className="px-6 py-3">Prodi</th>
+                                        <th scope="col" className="px-6 py-3">Semester</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -197,6 +201,10 @@ const MhsPersemester = () => {
                                             <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
                                             <td className='px-6 py-2'>{mhs.mahasiswas[0].nim}</td>
                                             <td className='px-6 py-2'>{mhs.mahasiswas[0].nama}</td>
+                                            <td className='px-6 py-2'></td>
+                                            <td className='px-6 py-2'></td>
+                                            <td className='px-6 py-2'></td>
+                                            <td className='px-6 py-2'></td>
                                         </tr>
                                     ))}
                                 </tbody>
