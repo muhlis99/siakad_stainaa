@@ -199,7 +199,7 @@ module.exports = {
         const codeProdi = code_fakultas + code
         const duplicateData = await prodi.findOne({
             where: {
-                code_prodi: codeProdi
+                code_prodi: codeProdi, status: "aktif"
             }
         })
         if (duplicateData) return res.status(401).json({ message: "Data Prodi sudah ada" })
@@ -257,7 +257,7 @@ module.exports = {
         const codeProdi = code_fakultas + code
         const duplicateData = await prodi.findOne({
             where: {
-                code_prodi: codeProdi
+                code_prodi: codeProdi, status: "aktif"
             }
         })
         if (duplicateData) return res.status(401).json({ message: "Data Prodi sudah ada" })

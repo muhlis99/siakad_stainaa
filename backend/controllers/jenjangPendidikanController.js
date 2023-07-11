@@ -117,7 +117,8 @@ module.exports = {
         }
         const duplicateData = await jenjangPendidikanModel.findOne({
             where: {
-                code_jenjang_pendidikan: code
+                code_jenjang_pendidikan: code,
+                status: "aktif"
             }
         })
         if (duplicateData) return res.status(401).json({ message: "Data jejang Pendidikan sudah ada" })
@@ -160,7 +161,8 @@ module.exports = {
         }
         const duplicateData = await jenjangPendidikanModel.findOne({
             where: {
-                code_jenjang_pendidikan: code
+                code_jenjang_pendidikan: code,
+                status: "aktif"
             }
         })
         if (duplicateData) return res.status(401).json({ message: "Data jejang Pendidikan sudah ada" })
