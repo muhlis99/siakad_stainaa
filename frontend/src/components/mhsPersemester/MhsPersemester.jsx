@@ -7,11 +7,13 @@ const MhsPersemester = () => {
     const [Jenjang, setJenjang] = useState([])
     const [Fakultas, setFakultas] = useState([])
     const [Prodi, setProdi] = useState([])
+    const [Tahun, setTahun] = useState([])
     const [Semester, setSemester] = useState([])
     const [Mahasiswa, setMahasiswa] = useState([])
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
+    const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemesterOld, setKodeSemesterOld] = useState("")
     const [kodeSemesterNew, setKodeSemesterNew] = useState("")
     const [button, setButton] = useState("")
@@ -19,8 +21,12 @@ const MhsPersemester = () => {
 
     useEffect(() => {
         getJenjang()
-        getSemester()
+        getTahunAjaran()
     }, [])
+
+    useEffect(() => {
+        getSemester()
+    }, [kodeTahun])
 
     useEffect(() => {
         getFakultasByJenjang()
@@ -32,7 +38,7 @@ const MhsPersemester = () => {
 
     useEffect(() => {
         getMhsBySemester()
-    }, [kodeFakultas, kodeJenjang, kodeProdi, kodeSemesterOld])
+    }, [kodeFakultas, kodeJenjang, kodeProdi, kodeSemesterOld, kodeTahun])
 
     const getJenjang = async () => {
         const response = await axios.get('v1/jenjangPendidikan/all')
@@ -53,14 +59,21 @@ const MhsPersemester = () => {
         }
     }
 
+    const getTahunAjaran = async () => {
+        const response = await axios.get('v1/tahunAjaran/all')
+        setTahun(response.data.data)
+    }
+
     const getSemester = async () => {
-        const response = await axios.get('v1/semester/all')
-        setSemester(response.data.data)
+        if (kodeTahun != 0) {
+            const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahun}`)
+            setSemester(response.data.data)
+        }
     }
 
     const getMhsBySemester = async () => {
-        if (kodeFakultas != 0 & kodeJenjang != 0 & kodeProdi != 0 & kodeSemesterOld != 0) {
-            const response = await axios.get(`v1/setMahasiswaSmt/all/${kodeSemesterOld}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+        if (kodeFakultas != 0 & kodeJenjang != 0 & kodeProdi != 0 & kodeSemesterOld != 0 & kodeTahun != 0) {
+            const response = await axios.get(`v1/setMahasiswaSmt/all/${kodeTahun}/${kodeSemesterOld}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
             setMahasiswa(response.data.data)
             setButton(response.data.data.length)
             setSmt(kodeSemesterOld.substring(4, 5))
@@ -129,7 +142,7 @@ const MhsPersemester = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md">
                     <div className="card-body p-4">
-                        <div className="grid grid-cols-4 gap-2">
+                        <div className="grid grid-cols-5 gap-1">
                             <div>
                                 <label className="label">
                                     <span className="text-base label-text">Jenjang Pendidikan</span>
@@ -165,6 +178,17 @@ const MhsPersemester = () => {
                             </div>
                             <div>
                                 <label className="label">
+                                    <span className="text-base label-text">Tahun Ajaran</span>
+                                </label>
+                                <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                    <option value="">Tahun Ajaran</option>
+                                    {Tahun.map((item) => (
+                                        <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="label">
                                     <span className="text-base label-text">Semester</span>
                                 </label>
                                 <select className="select select-sm select-bordered w-full" value={kodeSemesterOld} onChange={(e) => setKodeSemesterOld(e.target.value)}>
@@ -186,9 +210,13 @@ const MhsPersemester = () => {
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className='text-gray-700 bg-[#F2F2F2]'>
                                     <tr>
-                                        <th scope="col" className="px-6 py-3 w-5">#</th>
-                                        <th scope="col" className="px-6 py-3 w-5">NIM</th>
+                                        <th scope="col" className="px-6 py-3">#</th>
+                                        <th scope="col" className="px-6 py-3">NIM</th>
                                         <th scope="col" className="px-6 py-3">Nama</th>
+                                        <th scope="col" className="px-6 py-3">Jenjang Pendidikan</th>
+                                        <th scope="col" className="px-6 py-3">Fakultas</th>
+                                        <th scope="col" className="px-6 py-3">Prodi</th>
+                                        <th scope="col" className="px-6 py-3">Semester</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -197,6 +225,10 @@ const MhsPersemester = () => {
                                             <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
                                             <td className='px-6 py-2'>{mhs.mahasiswas[0].nim}</td>
                                             <td className='px-6 py-2'>{mhs.mahasiswas[0].nama}</td>
+                                            <td className='px-6 py-2'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                            <td className='px-6 py-2'>{mhs.fakultas[0].nama_fakultas}</td>
+                                            <td className='px-6 py-2'>{mhs.prodis[0].nama_prodi}</td>
+                                            <td className='px-6 py-2'>Semester {mhs.semesters[0].semester}</td>
                                         </tr>
                                     ))}
                                 </tbody>
