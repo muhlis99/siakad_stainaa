@@ -92,8 +92,8 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { codeSmtOld, codeJnjPen, codeFks, codePrd, codeSmtNew } = req.body
-
+        const { codeSmtOld, codeThnAjrOld, codeJnjPen,
+            codeFks, codePrd, codeSmtNew, codeThnAjrNew } = req.body
 
         const dataMhsSMtOld = await historyMahasiswa.findAll({
             include: [{
@@ -102,6 +102,7 @@ module.exports = {
                 where: { status: "aktif" }
             }],
             where: {
+                code_tahun_ajaran: codeThnAjrOld,
                 code_semester: codeSmtOld,
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
@@ -114,6 +115,7 @@ module.exports = {
         const dataMhsSMtNew = dataMhsSMtOld.map(el => {
             return {
                 nim: el.nim,
+                code_tahun_ajaran: codeThnAjrNew,
                 code_semester: codeSmtNew,
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
