@@ -14,85 +14,26 @@ module.exports = {
       'contain': 'contain',
       '50%': '50%',
       '16': '4rem',
-    }
+    },
   },
   plugins: [
     require("daisyui"),
-    require("tailwind-scrollbar-daisyui"),
   ],
   daisyui: {
     themes: [
       {
-        light: {
-          ...require('daisyui/src/colors/themes')['[data-theme=light]'],
-          '.active': {
-            'background-color': '#287155',
-            'border-color': '#287155',
-          },
-          '.focus': {
-            'background-color': '#287155',
-            'border-color': '#287155',
-          },
-          '.btn-danger': {
-            'background-color': '#BB2D3B',
-            'border-color': '#BB2D3B',
-          },
-          '.btn-danger:hover': {
-            'background-color': '#B11B1B',
-            'border-color': '#B11B1B',
-          },
-          '.btn-default': {
-            'background-color': '#2D7F5F',
-            'border-color': '#2D7F5F',
-          },
-          '.btn-default:hover': {
-            'background-color': '#215E47',
-            'border-color': '#215E47',
-          },
-          '.btn-default-activ': {
-            'background-color': '#215E47',
-            'border-color': '#215E47',
-            'color': '#FFFFFF',
-          },
-          '.btn-default-outline': {
-            'border-color': '#215E47',
-          },
-          '.btn-blue': {
-            'background-color': '#0D6EFD',
-            'border-color': '#0D6EFD',
-          },
-          '.btn-blue:hover': {
-            'background-color': '#025ce3',
-            'border-color': '#025ce3',
-          },
-          '.file-input-default': {
-            'border-color': '#2D7F5F',
-          },
-          '.btn-default:focus': {
-            'outline': '2px solid #2D7F5F'
-          },
-          '.btn-orange': {
-            'background-color': '#fc8003',
-            'border-color': '#fc8003',
-          },
-          '.btn-orange:hover': {
-            'background-color': '#e37302',
-            'border-color': '#e37302',
-          },
-          '.badge-jingga': {
-            'background-color': '#fc8003',
-            'border-color': '#fc8003',
-          },
-          '.badge-default': {
-            'background-color': '#2D7F5F',
-            'border-color': '#2D7F5F',
-          },
-          '.file-input-default::file-selector-button': {
-            'background': '#2D7F5F',
-            'border-color': '#2D7F5F',
-          },
+        mytheme: {
+          "primary": "#0D6EFD",
+          "secondary": "#6C757D",
+          "accent": "#1dcdbc",
+          "neutral": "#2b3440",
+          "base-100": "#ffffff",
+          "info": "#3abff8",
+          "success": "#2D7F5F",
+          "warning": "#fbbd23",
+          "error": "#BB2D3B",
         }
-      },
-    ],
+      }
+    ]
   },
 }

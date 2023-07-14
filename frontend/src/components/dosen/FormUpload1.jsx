@@ -268,7 +268,7 @@ const FormUpload1 = () => {
                                             ) : ("")}
                                         </div>
                                     </div>
-                                    <input type="file" onChange={loadFoto} className="file-input file-input-bordered file-input-sm file-input-default w-full" />
+                                    <input type="file" onChange={loadFoto} className="file-input file-input-bordered file-input-sm file-input-success w-full" />
                                 </div>
                                 <div>
                                     <label className="label">
@@ -281,7 +281,7 @@ const FormUpload1 = () => {
                                             ) : ("")}
                                         </div>
                                     </div>
-                                    <input type="file" onChange={loadKtp} className="file-input file-input-bordered file-input-sm file-input-default w-full" />
+                                    <input type="file" onChange={loadKtp} className="file-input file-input-bordered file-input-sm file-input-success w-full" />
                                 </div>
                                 <div>
                                     <label className="label">
@@ -294,7 +294,7 @@ const FormUpload1 = () => {
                                             ) : ("")}
                                         </div>
                                     </div>
-                                    <input type="file" onChange={loadSehatRohani} className="file-input file-input-bordered file-input-sm file-input-default w-full" />
+                                    <input type="file" onChange={loadSehatRohani} className="file-input file-input-bordered file-input-sm file-input-success w-full" />
                                 </div>
                                 <div>
                                     <label className="label">
@@ -307,7 +307,7 @@ const FormUpload1 = () => {
                                             ) : ("")}
                                         </div>
                                     </div>
-                                    <input type="file" onChange={loadSehatJasmani} className="file-input file-input-bordered file-input-sm file-input-default w-full" />
+                                    <input type="file" onChange={loadSehatJasmani} className="file-input file-input-bordered file-input-sm file-input-success w-full" />
                                 </div>
                                 <div>
                                     <label className="label">
@@ -320,7 +320,7 @@ const FormUpload1 = () => {
                                             ) : ("")}
                                         </div>
                                     </div>
-                                    <input type="file" onChange={loadJanjiKerja} className="file-input file-input-bordered file-input-sm file-input-default w-full" />
+                                    <input type="file" onChange={loadJanjiKerja} className="file-input file-input-bordered file-input-sm file-input-success w-full" />
                                 </div>
                                 <div className="lg:col-span-3">
                                     <hr className='my-5' />
@@ -328,12 +328,12 @@ const FormUpload1 = () => {
                             </div>
                             <div className='grid lg:grid-cols-2'>
                                 <div>
-                                    <Link to="/dosen" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>
+                                    <Link to="/dosen" className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>
                                 </div>
                                 <div>
                                     <div className='float-right'>
                                         <div className='lg:pl-1'>
-                                            <button className='btn btn-sm btn-blue w-full'><FaTelegramPlane /> <span className="ml-1">Upload</span></button>
+                                            <button className='btn btn-sm btn-primary w-full'><FaTelegramPlane /> <span className="ml-1">Upload</span></button>
                                         </div>
                                     </div>
                                 </div>

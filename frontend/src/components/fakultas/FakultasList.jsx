@@ -208,7 +208,7 @@ const FakultasList = () => {
             <input type="checkbox" id="my-modal-add" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
+                    <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
                     <form onSubmit={simpanFakultas}>
                         <h3 className="font-bold text-xl">Tambah</h3>
                         <div className="py-4">
@@ -263,7 +263,7 @@ const FakultasList = () => {
                             }
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">simpan</button>
+                            <button type='submit' className="btn btn-sm btn-success">simpan</button>
                         </div>
                     </form>
                 </div>
@@ -273,7 +273,7 @@ const FakultasList = () => {
             <input type="checkbox" id="my-modal-edit" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
+                    <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
                     <form onSubmit={updateFakultas}>
                         <h3 className="font-bold text-xl">Edit</h3>
                         <div className="py-4">
@@ -328,7 +328,7 @@ const FakultasList = () => {
                             }
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">update</button>
+                            <button type='submit' className="btn btn-sm btn-success">update</button>
                         </div>
                     </form>
                 </div>
@@ -342,7 +342,7 @@ const FakultasList = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <label htmlFor="my-modal-add" className="btn btn-default btn-xs"><FaPlus /> tambah data</label>
+                                <label htmlFor="my-modal-add" className="btn btn-success btn-xs"><FaPlus /> tambah data</label>
                             </div>
                             <div>
                                 <form onSubmit={cariData} className='mb-1'>
@@ -355,7 +355,7 @@ const FakultasList = () => {
                                                 className="input input-xs input-bordered input-success"
                                                 placeholder='Cari'
                                             />
-                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                            <button type='submit' className="btn btn-xs btn-square btn-success">
                                                 <FaSearch />
                                             </button>
                                         </div>
@@ -384,11 +384,11 @@ const FakultasList = () => {
                                             <td className='px-6 py-2'>{faks.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
                                             <td className='px-6 py-2'>{faks.code_fakultas}</td>
                                             <td className='px-6 py-2'>{faks.nama_fakultas}</td>
-                                            <td className='px-6 py-2'>{faks.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                            <td className='px-6 py-2'>{faks.status == "aktif" ? <span className="badge btn-success badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalEditOpen(faks.id_fakultas)} title='Edit'><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(faks.id_fakultas)} title='Hapus'><FaTrash /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(faks.id_fakultas)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -408,11 +408,11 @@ const FakultasList = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle"}
+                                pageLinkClassName={"btn btn-xs btn-success-outline btn-outline btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>
