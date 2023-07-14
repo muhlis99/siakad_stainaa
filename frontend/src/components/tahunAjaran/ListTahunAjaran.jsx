@@ -134,7 +134,8 @@ const ListTahunAjaran = () => {
             await axios.put(`v1/tahunAjaran/update/${id}`, {
                 dari_tahun: pertama,
                 sampai_tahun: kedua,
-                keterangan: keterangan
+                keterangan: keterangan,
+                periode: periode
             }).then(function (response) {
                 document.getElementById('my-modal').checked = false
                 Swal.fire({
