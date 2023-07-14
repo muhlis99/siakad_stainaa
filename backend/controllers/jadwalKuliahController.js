@@ -7,28 +7,33 @@ const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 const kelasModel = require('../models/kelasKuliahModel.js')
 const ruangModel = require('../models/ruangModel.js')
 const fakultasModel = require("../models/fakultasModel.js")
+const jenjangPendidikanModel = require("../models/jenjangPendidikanModel.js")
 
 
 module.exports = {
     get: async (req, res, next) => {
-        const { thnAjr, smt, fks, prd } = req.params
+        const { thnAjr, smt, jenjPen, fks, prd, } = req.params
         await mataKuliahModel.findAll({
             include: [{
                 model: semesterModel,
                 where: { status: "aktif" }
             }, {
-                model: prodiModel,
+                model: tahunAjaranModel,
                 where: { status: "aktif" }
             }, {
-                model: tahunAjaranModel,
+                model: prodiModel,
                 where: { status: "aktif" }
             }, {
                 model: fakultasModel,
                 where: { status: "aktif" }
-            },],
+            }, {
+                model: jenjangPendidikanModel,
+                where: { status: "aktif" }
+            }],
             where: {
                 code_tahun_ajaran: thnAjr,
                 code_semester: smt,
+                code_jenjang_pendidikan: jenjPen,
                 code_fakultas: fks,
                 code_prodi: prd,
                 status: "aktif"
@@ -50,9 +55,6 @@ module.exports = {
         await jadwalKuliahModel.findOne({
             include: [{
                 model: semesterModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
                 where: { status: "aktif" }
             }, {
                 model: tahunAjaranModel,
@@ -98,7 +100,7 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { code_mata_kuliah, code_fakultas, code_prodi, code_semester, code_tahun_ajaran,
+        const { code_mata_kuliah, code_jenjang_pendidikan, code_fakultas, code_prodi, code_semester, code_tahun_ajaran,
             code_kelas, code_ruang, tanggal_mulai, tanggal_selesai, jumlah_pertemuan,
             hari, jam_mulai, jam_selesai } = req.body
 

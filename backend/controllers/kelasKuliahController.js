@@ -62,7 +62,8 @@ module.exports = {
     },
 
     getKelasByMakul: async (req, res, next) => {
-        const codeMakul = req.params.codeMakul
+        const { codeThnAjr, codeSmt, jnjPen, codeFks, codePrd, codeMakul } = req.params
+
         await kelasModel.findAll({
             include: [{
                 attributes: ['code_jenjang_pendidikan'],
@@ -90,6 +91,11 @@ module.exports = {
                 where: { status: "aktif" }
             }],
             where: {
+                code_tahun_ajaran: codeThnAjr,
+                code_semester: codeSmt,
+                code_jenjang_pendidikan: jnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
                 code_mata_kuliah: codeMakul,
                 status: "aktif"
             }
