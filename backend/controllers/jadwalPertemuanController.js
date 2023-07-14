@@ -14,7 +14,8 @@ module.exports = {
                 where: { status: "aktif" }
             }],
             where: {
-                code_jadwal_kuliah: codeJadkul
+                code_jadwal_kuliah: codeJadkul,
+                status: "aktif"
             }
         }).then(all => {
             res.status(201).json({
@@ -34,12 +35,13 @@ module.exports = {
                 where: { status: "aktif" }
             }],
             where: {
-                id_jadwal_pertemuan: id
+                id_jadwal_pertemuan: id,
+                status: "aktif"
             }
         }).then(all => {
             if (!all) {
                 return res.status(404).json({
-                    message: "Data jadwal pertemuan Tidak Ditemukan",
+                    message: "Data jadwal  pertemuan Tidak Ditemukan",
                     data: null
                 })
             }
