@@ -4,6 +4,7 @@ const mataKuliahModel = require('../models/mataKuliahModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
 const kategoriNilaiModel = require('../models/kategoriNilaiModel.js')
 const nilaiKuliahModel = require('../models/nilaiKuliahModel.js')
+const kelasDetailKuliahModel = require('../models/kelasDetailKuliahModel.js')
 const sequelize = require('../config/database.js')
 
 module.exports = {
@@ -29,7 +30,6 @@ module.exports = {
                 code_kelas: codeKls,
                 status: "aktif"
             },
-            group: ['kelas.code_kelas'],
             order: [
                 ["id_nilai_kuliah", "DESC"]
             ]
@@ -46,26 +46,16 @@ module.exports = {
     },
 
     getMhsByKelas: async (req, res, next) => {
-        const { codeSmt, codeMakul, codeKls } = req.params
-        await kelasModel.findAll({
+        const { codeKls } = req.params
+        await kelasDetailKuliahModel.findAll({
             include: [{
-                attributes: ['nim', 'nama'],
-                model: mahasiswaModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ['code_mata_kuliah', 'nama_mata_kuliah', 'sks'],
-                model: mataKuliahModel,
+                model: kelasModel,
                 where: { status: "aktif" }
             }],
             where: {
-                code_mata_kuliah: codeMakul,
                 code_kelas: codeKls,
-                code_semester: codeSmt,
                 status: "aktif"
-            },
-            order: [
-                ["id_kelas", "DESC"]
-            ]
+            }
         }).
             then(result => {
                 res.status(200).json({
@@ -120,7 +110,6 @@ module.exports = {
             }
             return element
         })
-
 
         await nilaiKuliahModel.bulkCreate(dataNilai).
             then(result => {

@@ -161,6 +161,30 @@ module.exports = {
             })
     },
 
+
+    getMhsByKelas: async (req, res, next) => {
+        const { codeKls } = req.params
+        await kelasDetailKuliahModel.findAll({
+            include: [{
+                model: kelasModel,
+                where: { status: "aktif" }
+            }],
+            where: {
+                code_kelas: codeKls,
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                res.status(200).json({
+                    message: "Get All mahasiswa by kelas Success",
+                    data: result,
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     jumlahMhs: async (req, res, next) => {
         const { thnAjr, smt, jnjPen, fkts, prd } = req.params
         await historyMahasiswaModel.findAndCountAll({
