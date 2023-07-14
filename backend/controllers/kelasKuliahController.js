@@ -194,7 +194,7 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { code_jenjang_pendidikan, code_fakultas, code_tahun_ajaran,
-            code_prodi, code_semester, nama_kelas, kapasitas } = req.body
+            code_prodi, code_semester, nama_kelas, kapasitas, jumlahPeserta } = req.body
 
         const dataDuplicate = await kelasModel.findOne({
             include: [{
@@ -265,9 +265,9 @@ module.exports = {
         const dataCreateKelas = makul.map(al => {
             const codeMakul = al.code_mata_kuliah
             nama_kelas.map(el => {
-                let randomNumber = Math.floor(100 + Math.random() * 900)
+                let randomNumber = Math.floor(10 + Math.random() * 90)
                 let data = {
-                    code_kelas: randomNumber + nmKelas[el],
+                    code_kelas: code_prodi + randomNumber + nmKelas[el],
                     nama_kelas: nmKelas[el],
                     kapasitas: kapasitas,
                     code_jenjang_pendidikan: code_jenjang_pendidikan,
@@ -279,17 +279,45 @@ module.exports = {
                     status: "aktif"
                 }
                 kelasModel.bulkCreate([data])
+                    .then(all => {
+                        all.map(elment => {
+                            let currentPage = parseInt(el) // nomor page 
+                            let perPage = parseInt(jumlahPeserta) // jumlah Peserta kelas
+                            let offset = (currentPage - 1) * perPage
+                            return krsModel.findAll({
+                                where: {
+                                    code_jenjang_pendidikan: code_jenjang_pendidikan,
+                                    code_fakultas: code_fakultas,
+                                    code_prodi: code_prodi,
+                                    code_tahun_ajaran: code_tahun_ajaran,
+                                    code_semester: code_semester,
+                                    status: "aktif"
+                                },
+                                offset: offset,
+                                limit: perPage,
+                                group: ['nim']
+                            }).then(al => {
+                                return Promise.all(al.map(p => {
+                                    let random = Math.floor(100 + Math.random() * 900)
+                                    let datas = {
+                                        code_kelas: elment.code_kelas,
+                                        code_kelas_detail: random,
+                                        nim: p.nim,
+                                        status: "aktif"
+                                    }
+                                    kelasDetailKuliahModel.bulkCreate([datas])
+                                }))
+                            })
+                        })
+                    })
             })
         })
 
         if (dataCreateKelas) {
-            console.log(dataCreateKelas);
-
-        } else {
-
+            res.status(201).json({
+                message: "data kelas kuliah succses ditambahkan"
+            })
         }
-
-
 
         // const createData = makul.map(M => {
         //     const Mkul = M.code_mata_kuliah
@@ -335,55 +363,23 @@ module.exports = {
         //         })
         //     })
         // })
-        // if (createData) {
-        //     res.status(201).json({
-        //         message: "Data kelas kuliah success Ditambahkan",
-        //     })
-        // }
     },
 
 
-    delete: async (req, res, next) => {
-        const codeMakul = req.params.codeMakul
-        const codeKelas = req.params.codeKelas
-        const kelasModelUse = await kelasModel.findAll({
-            include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                model: mataKuliahModel,
-                where: { status: "aktif" }
-            }, {
-                model: semesterModel,
-                where: { status: "aktif" }
-            }],
+    pindahKelas: async (req, res, next) => {
+        const { id, code_kelas } = req.body
+        await kelasDetailKuliahModel.update({
+            code_kelas: code_kelas
+        }, {
             where: {
-                code_mata_kuliah: codeMakul,
-                code_kelas: codeKelas,
-                status: "aktif"
+                id_kelas_detail: id
             }
-        })
-        if (!kelasModelUse) return res.status(401).json({ message: "Data kelas kuliah tidak ditemukan" })
-        const deleteData = kelasModelUse.map(all => {
-            kelasModel.update({
-                status: "tidak"
-            }, {
-                where: {
-                    code_kelas: codeKelas,
-                    code_mata_kuliah: codeMakul
-                }
+        }).then(all => {
+            res.status(200).json({
+                message: "pindah keals  berhasil dirubah",
             })
+        }).catch(err => {
+            next(err)
         })
-        if (deleteData) {
-            res.status(201).json({
-                message: "Data kelas kuliah success Dihapus",
-            })
-        }
     }
 }

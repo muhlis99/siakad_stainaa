@@ -9,6 +9,6 @@ route.get('/getKelasByMakul/:codeMakul', kelasKuliahController.getKelasByMakul)
 route.get('/getKelasById/:id', kelasKuliahController.getKelasById)
 route.get('/jumlahMhs/:thnAjr/:smt/:jnjPen/:fkts/:prd', kelasKuliahController.jumlahMhs)
 route.post('/create', kelasKuliahController.post)
-route.put('/delete/:codeMakul/:codeKelas', kelasKuliahController.delete)
+route.put('/pindahKelas', kelasKuliahController.pindahKelas)
 
 module.exports = route
