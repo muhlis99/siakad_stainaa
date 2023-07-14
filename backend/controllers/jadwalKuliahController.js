@@ -36,6 +36,8 @@ module.exports = {
                 code_jenjang_pendidikan: jenjPen,
                 code_fakultas: fks,
                 code_prodi: prd,
+                status_makul: "paket",
+                status_bobot_makul: "wajib",
                 status: "aktif"
             }
         }).
@@ -51,13 +53,16 @@ module.exports = {
     },
 
     getByKelas: async (req, res, next) => {
-        const { thnAjr, smt, fks, prd, makul, kls } = req.params
+        const { thnAjr, smt, jenjPen, fks, prd, makul, kls } = req.params
         await jadwalKuliahModel.findOne({
             include: [{
                 model: semesterModel,
                 where: { status: "aktif" }
             }, {
                 model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }, {
+                model: jenjangPendidikanModel,
                 where: { status: "aktif" }
             }, {
                 model: fakultasModel,
@@ -70,11 +75,16 @@ module.exports = {
                 where: { status: "aktif" }
             }, {
                 model: mataKuliahModel,
-                where: { status: "aktif" }
+                where: {
+                    status_makul: "paket",
+                    status_bobot_makul: "wajib",
+                    status: "aktif"
+                }
             }],
             where: {
                 code_tahun_ajaran: thnAjr,
                 code_semester: smt,
+                code_jenjang_pendidikan: jenjPen,
                 code_fakultas: fks,
                 code_prodi: prd,
                 code_mata_kuliah: makul,
@@ -106,6 +116,7 @@ module.exports = {
 
         const duplicateData = await jadwalKuliahModel.findAll({
             where: {
+                code_jenjang_pendidikan: code_jenjang_pendidikan,
                 code_fakultas: code_fakultas,
                 code_prodi: code_prodi,
                 code_tahun_ajaran: code_tahun_ajaran,
@@ -147,6 +158,7 @@ module.exports = {
 
         const daysRoom = await jadwalKuliahModel.findOne({
             where: {
+                code_jenjang_pendidikan: code_jenjang_pendidikan,
                 code_fakultas: code_fakultas,
                 code_prodi: code_prodi,
                 code_tahun_ajaran: code_tahun_ajaran,
@@ -175,6 +187,7 @@ module.exports = {
         await jadwalKuliahModel.create({
             code_jadwal_kuliah: codeJadwalKuliah,
             code_mata_kuliah: code_mata_kuliah,
+            code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
             code_semester: code_semester,
@@ -202,7 +215,7 @@ module.exports = {
 
     put: async (req, res, next) => {
         const id = req.params.id
-        const { code_mata_kuliah, code_fakultas, code_prodi, code_semester, code_tahun_ajaran,
+        const { code_mata_kuliah, code_jenjang_pendidikan, code_fakultas, code_prodi, code_semester, code_tahun_ajaran,
             code_kelas, code_ruang, tanggal_mulai, tanggal_selesai, jumlah_pertemuan,
             hari, jam_mulai, jam_selesai } = req.body
         const jadwalKuliahModelUse = await jadwalKuliahModel.findOne({
@@ -219,7 +232,7 @@ module.exports = {
                 model: fakultasModel,
                 where: { status: "aktif" }
             }, {
-                model: prodiModel,
+                model: jenjangPendidikanModel,
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
@@ -237,6 +250,7 @@ module.exports = {
         if (!jadwalKuliahModelUse) return res.status(401).json({ message: "Data jadwal kuliah tidak ditemukan" })
         const duplicateData = await jadwalKuliahModel.findAll({
             where: {
+                code_jenjang_pendidikan: code_jenjang_pendidikan,
                 code_fakultas: code_fakultas,
                 code_prodi: code_prodi,
                 code_tahun_ajaran: code_tahun_ajaran,
@@ -277,6 +291,7 @@ module.exports = {
 
         const daysRoom = await jadwalKuliahModel.findOne({
             where: {
+                code_jenjang_pendidikan: code_jenjang_pendidikan,
                 code_fakultas: code_fakultas,
                 code_prodi: code_prodi,
                 code_tahun_ajaran: code_tahun_ajaran,
@@ -292,6 +307,7 @@ module.exports = {
         if (daysRoom && validasiJamMulai && validasiJamSelesai) return res.status(401).json({ message: "Jadwal kuliah bentrok" })
         await jadwalKuliahModel.update({
             code_mata_kuliah: code_mata_kuliah,
+            code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
             code_semester: code_semester,
@@ -336,7 +352,7 @@ module.exports = {
                 model: fakultasModel,
                 where: { status: "aktif" }
             }, {
-                model: prodiModel,
+                model: jenjangPendidikanModel,
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
