@@ -4,6 +4,9 @@ exports.validationJadwalKuliah = [
     check('code_mata_kuliah')
         .notEmpty()
         .withMessage(' mata kuliah tidak boleh kosong'),
+    check('code_jenjang_pendidikan')
+        .notEmpty()
+        .withMessage(' jenjang pendidikan tidak boleh kosong'),
     check('code_fakultas')
         .notEmpty()
         .withMessage(' fakultas tidak boleh kosong'),
@@ -40,9 +43,6 @@ exports.validationJadwalKuliah = [
     check('jam_selesai',)
         .notEmpty()
         .withMessage(' jam selesai tidak boleh kosong'),
-    // check('metode_pembelajaran',)
-    //     .notEmpty()
-    //     .withMessage('metode_pembelajaran tidak boleh kosong'),
 
 
 ]

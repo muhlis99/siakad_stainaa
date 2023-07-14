@@ -41,7 +41,7 @@ module.exports = {
         }).then(all => {
             if (!all) {
                 return res.status(404).json({
-                    message: "Data jadwal  pertemuan Tidak Ditemukan",
+                    message: "Data jadwal pertemuan Tidak Ditemukan",
                     data: null
                 })
             }
@@ -68,12 +68,7 @@ module.exports = {
                 status: "aktif"
             }
         })
-        let ket = ""
-        if (dataJadwalPertemuan) {
-            ket = "data sudah ada"
-        } else {
-            ket = "data tidak ada "
-        }
+        if (dataJadwalPertemuan) return res.status(404).json({ message: "Data jadwal pertemuan sudah ada" })
 
         const jmlPert = dataJadwalKuliah.jumlah_pertemuan
         const hari = dataJadwalKuliah.hari
@@ -119,7 +114,6 @@ module.exports = {
         try {
             res.status(201).json({
                 message: "Data jadwal pertemuan success ditambahkan",
-                keterangan: ket
             })
         } catch (error) {
             next(error)
@@ -139,38 +133,40 @@ module.exports = {
             }
         })
         if (!jadawalPertemuanUse) return res.status(401).json({ message: "Data jadwal pertemuan tidak ditemukan" })
-        const { jenis_pertemuan, metode_pembelajaran,
-            url_online, rencana_materi, lampiran_materi, status_pertemuan } = req.body
-
 
         let fileNameLampiranMateri = ""
-        if (jadawalPertemuanUse.lampiran_materi === "") {
-            const file = req.files.lampiran_materi
-            // if (!file) return res.status(400).json({ message: "foto diri tidak boleh kosong" })
-            const fileSize = file.data.length
-            const ext = path.extname(file.name)
-            fileNameLampiranMateri = "lampiran_materi" + id + file.md5 + ext
-            const allowedType = ['.pdf', '.xlsx', '.xls']
-            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
-            if (fileSize > 5000000) return res.status(422).json({ msg: "lampiran materi diri yang anda upload tidak boleh lebih dari 5 mb" })
-            file.mv(`./tmp/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
-                if (err) return res.status(500).json({ message: err.message })
-            })
+        if (req.files != null) {
+            if (jadawalPertemuanUse.lampiran_materi === "") {
+                const file = req.files.lampiran_materi
+                const fileSize = file.data.length
+                const ext = path.extname(file.name)
+                fileNameLampiranMateri = "lampiran_materi" + id + file.md5 + ext
+                const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls']
+                if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
+                if (fileSize > 5000000) return res.status(422).json({ msg: "lampiran materi diri yang anda upload tidak boleh lebih dari 5 mb" })
+                file.mv(`./tmp/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
+                    if (err) return res.status(500).json({ message: err.message })
+                })
+            } else {
+                const file = req.files.lampiran_materi
+                const fileSize = file.data.length
+                const ext = path.extname(file.name)
+                fileNameLampiranMateri = "lampiran_materi" + id + file.md5 + ext
+                const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls']
+                if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
+                if (fileSize > 5000000) return res.status(422).json({ message: "lampiran materi yang anda upload tidak boleh lebih dari 5 mb" })
+                const filepath = `./tmp/lampiranMateri/${jadawalPertemuanUse.lampiran_materi}`
+                fs.unlinkSync(filepath)
+                file.mv(`./tmp/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
+                    if (err) return res.status(500).json({ message: err.message })
+                })
+            }
         } else {
-            const file = req.files.lampiran_materi
-            // if (!file) return res.status(400).json({ message: "foto diri tidak boleh kosong" })
-            const fileSize = file.data.length
-            const ext = path.extname(file.name)
-            fileNameLampiranMateri = "lampiran_materi" + id + file.md5 + ext
-            const allowedType = ['.pdf', '.xlsx', '.xls']
-            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
-            if (fileSize > 5000000) return res.status(422).json({ message: "lampiran materi yang anda upload tidak boleh lebih dari 5 mb" })
-            const filepath = `./tmp/lampiranMateri/${jadawalPertemuanUse.lampiran_materi}`
-            fs.unlinkSync(filepath)
-            file.mv(`./tmp/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
-                if (err) return res.status(500).json({ message: err.message })
-            })
+            fileNameLampiranMateri = ""
         }
+
+        const { jenis_pertemuan, metode_pembelajaran,
+            url_online, rencana_materi, status_pertemuan } = req.body
 
         try {
             await jadwalPertemuanModel.update({
