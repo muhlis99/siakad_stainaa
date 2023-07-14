@@ -163,7 +163,7 @@ module.exports = {
         })
         if (!tahunAjaranUse) return res.status(401).json({ message: "Data tahun Ajaran tidak ditemukan" })
         const { dari_tahun, sampai_tahun, periode, keterangan } = req.body
-        const tahun_ajaran = dari_tahun + "/" + sampai_tahun + periode
+        const tahun_ajaran = dari_tahun + " / " + sampai_tahun + " " + `( ${periode} )`
         const tahunAjaranDuplicate = await tahunAjaran.findOne({
             where: {
                 tahun_ajaran: tahun_ajaran,
