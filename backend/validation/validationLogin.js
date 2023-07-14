@@ -1,4 +1,4 @@
-const {body, check } = require('express-validator')
+const { body, check } = require('express-validator')
 
 exports.validationLogin = [
     check('name')
@@ -20,10 +20,10 @@ exports.validationForgot = [
 
 exports.validationVerifyCode = [
     check('code')
-    .notEmpty()
-    .withMessage('code tidak boleh kosong')
-    .isInt()
-    .withMessage('code harus berupa angka')
-    .isLength({min:6, max:6})
-    .withMessage('code yang anda masukkan kurang dari 6 digit')
+        .notEmpty()
+        .withMessage('code tidak boleh kosong')
+        .isInt()
+        .withMessage('code harus berupa angka')
+        .isLength({ min: 8, max: 8 })
+        .withMessage('code yang anda masukkan kurang dari 6 digit')
 ]

@@ -8,8 +8,10 @@ const { Op } = require('sequelize')
 module.exports = {
     getAll: async (req, res, next) => {
         const tahunAjaran = req.query.tahunAjaran || 0
-        const prodi = req.query.prodi || 0
         const semester = req.query.semester || 0
+        const jenjangPendik = req.query.jenjangPendik || 0
+        const fakultas = req.query.fakultas || 0
+        const prodi = req.query.prodi || 0
 
         const thnAjar = await tahunAjaranModel.findOne({
             attributes: ['tahun_ajaran'],
@@ -22,6 +24,7 @@ module.exports = {
         const smt = await semesterModel.findOne({
             attributes: ['semester'],
             where: {
+                code_tahun_ajaran: tahunAjaran,
                 code_semester: semester,
                 status: "aktif"
             }
@@ -29,8 +32,10 @@ module.exports = {
 
         const paketmakul = await mataKuliahModel.count({
             where: {
-                code_semester: semester,
                 code_tahun_ajaran: tahunAjaran,
+                code_semester: semester,
+                code_jenjang_pendidikan: jenjangPendik,
+                code_fakultas: fakultas,
                 code_prodi: prodi,
                 status_makul: "paket",
                 status_bobot_makul: "wajib",
@@ -45,8 +50,10 @@ module.exports = {
 
         const jmlMahasiswa = await historyMahasiswa.findAndCountAll({
             where: {
-                code_semester: semester,
                 code_tahun_ajaran: tahunAjaran,
+                code_semester: semester,
+                code_jenjang_pendidikan: jenjangPendik,
+                code_fakultas: fakultas,
                 code_prodi: prodi,
                 status: "aktif"
             },
@@ -58,6 +65,11 @@ module.exports = {
         const jmlPaketMahasiswa = await krsModel.findAndCountAll({
             where: {
                 nim: validasimakul,
+                code_tahun_ajaran: tahunAjaran,
+                code_semester: semester,
+                code_jenjang_pendidikan: jenjangPendik,
+                code_fakultas: fakultas,
+                code_prodi: prodi,
                 status: "aktif"
             },
             group: ['nim'],
@@ -86,14 +98,21 @@ module.exports = {
 
     viewAll: async (req, res, next) => {
         const thnAjr = req.params.thnAjr
-        const prd = req.params.prd
         const smt = req.params.smt
+        const jenjPen = req.params.jenjPen
+        const fks = req.params.fks
+        const prd = req.params.prd
 
         await mataKuliahModel.findAndCountAll({
             where: {
                 code_tahun_ajaran: thnAjr,
+                code_semester: smt,
+                code_jenjang_pendidikan: jenjPen,
+                code_fakultas: fks,
                 code_prodi: prd,
-                code_semester: smt
+                status_bobot_makul: "wajib",
+                status_makul: "paket",
+                status: "aktif"
             }
         }).then(all => {
             if (!all) {
@@ -111,16 +130,24 @@ module.exports = {
 
     post: async (req, res, next) => {
         const thnAjr = req.params.thnAjr
-        const prd = req.params.prd
         const smt = req.params.smt
+        const jenjPen = req.params.jenjPen
+        const fks = req.params.fks
+        const prd = req.params.prd
+
 
         // mengambil code mata kuliah yang paket sesuai semester
         const makul = await mataKuliahModel.findAll({
             attributes: ['code_mata_kuliah'],
             where: {
                 code_tahun_ajaran: thnAjr,
+                code_semester: smt,
+                code_jenjang_pendidikan: jenjPen,
+                code_fakultas: fks,
                 code_prodi: prd,
-                code_semester: smt
+                status_bobot_makul: "wajib",
+                status_makul: "paket",
+                status: "aktif"
             }
         })
         // mengambil nim mahasiswa yang krs paket sesuai semester 
@@ -128,8 +155,11 @@ module.exports = {
             attributes: ['nim'],
             where: {
                 code_tahun_ajaran: thnAjr,
+                code_semester: smt,
+                code_jenjang_pendidikan: jenjPen,
+                code_fakultas: fks,
                 code_prodi: prd,
-                code_semester: smt
+                status: "aktif"
             }
         })
         const data_body = makul.map(Dn => {
@@ -140,6 +170,11 @@ module.exports = {
                     code_krs: randomNumber,
                     code_mata_kuliah: data2,
                     nim: DM.nim,
+                    code_tahun_ajaran: thnAjr,
+                    code_semester: smt,
+                    code_jenjang_pendidikan: jenjPen,
+                    code_fakultas: fks,
+                    code_prodi: prd,
                     status_krs: "setuju",
                     status: "aktif"
                 }

@@ -5,7 +5,7 @@ const krsController = require('../controllers/krsController.js')
 // const { validationRequest } = require('../validation/validationRequest.js')
 
 router.get('/all', krsController.getAll)
-router.get('/viewAll/:thnAjr/:prd/:smt', krsController.viewAll)
-router.post('/create/:thnAjr/:prd/:smt', krsController.post)
+router.get('/viewAll/:thnAjr/:smt/:jenjPen/:fks/:prd', krsController.viewAll)
+router.post('/create/:thnAjr/:smt/:jenjPen/:fks/:prd', krsController.post)
 
 module.exports = router

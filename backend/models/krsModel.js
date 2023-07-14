@@ -14,6 +14,21 @@ const krsModel = db.define('krs', {
     'code_mata_kuliah': {
         type: DataTypes.TEXT,
     },
+    'code_tahun_ajaran': {
+        type: DataTypes.TEXT,
+    },
+    'code_semester': {
+        type: DataTypes.TEXT,
+    },
+    'code_jenjang_pendidikan': {
+        type: DataTypes.TEXT,
+    },
+    'code_fakultas': {
+        type: DataTypes.TEXT,
+    },
+    'code_prodi': {
+        type: DataTypes.TEXT,
+    },
     'nim': {
         type: DataTypes.TEXT,
     },

@@ -177,31 +177,31 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { nama_mata_kuliah, jenis_mata_kuliah, code_jenjang_pendidikan, code_fakultas,
+        const { code_mata_kuliah, nama_mata_kuliah, jenis_mata_kuliah, code_jenjang_pendidikan, code_fakultas,
             code_prodi, code_tahun_ajaran, code_kategori_nilai, sks, sks_praktek, sks_prak_lapangan,
             sks_simulasi, tanggal_aktif, tanggal_non_aktif } = req.body
-        const no_urut_makul_terakhir = await mataKuliahModel.count({
-            where: {
-                code_prodi: code_prodi,
-                code_tahun_ajaran: code_tahun_ajaran
-            }
-        })
-        var no_urut_makul
-        if (no_urut_makul_terakhir == null) {
-            no_urut_makul = "0001"
-        } else {
-            const code = "0000"
-            const a = no_urut_makul_terakhir.toString()
-            const panjang = a.length
-            const nomor = code.slice(panjang)
-            const b = no_urut_makul_terakhir + 1
-            no_urut_makul = nomor + b
-        }
-        const codeMataKuliah = code_prodi + no_urut_makul
+        // const no_urut_makul_terakhir = await mataKuliahModel.count({
+        //     where: {
+        //         code_prodi: code_prodi,
+        //         code_tahun_ajaran: code_tahun_ajaran
+        //     }
+        // })
+        // var no_urut_makul
+        // if (no_urut_makul_terakhir == null) {
+        //     no_urut_makul = "0001"
+        // } else {
+        //     const code = "0000"
+        //     const a = no_urut_makul_terakhir.toString()
+        //     const panjang = a.length
+        //     const nomor = code.slice(panjang)
+        //     const b = no_urut_makul_terakhir + 1
+        //     no_urut_makul = nomor + b
+        // }
+        // const codeMataKuliah = code_prodi + no_urut_makul
         const mataKuliahUse = await mataKuliahModel.findOne({
             where: {
                 nama_mata_kuliah: nama_mata_kuliah,
-                code_mata_kuliah: codeMataKuliah,
+                code_mata_kuliah: code_mata_kuliah,
                 jenis_mata_kuliah: jenis_mata_kuliah,
                 code_prodi: code_prodi,
                 status: "aktif"
@@ -209,7 +209,7 @@ module.exports = {
         })
         if (mataKuliahUse) return res.status(401).json({ message: "data mata kuliah sudah ada" })
         await mataKuliahModel.create({
-            code_mata_kuliah: codeMataKuliah,
+            code_mata_kuliah: code_mata_kuliah,
             nama_mata_kuliah: nama_mata_kuliah,
             jenis_mata_kuliah: jenis_mata_kuliah,
             code_jenjang_pendidikan: code_jenjang_pendidikan,
@@ -268,11 +268,12 @@ module.exports = {
             }
         })
         if (!mataKuliahUse) return res.status(401).json({ message: "Data Mata Kuliah tidak ditemukan" })
-        const { nama_mata_kuliah, jenis_mata_kuliah, code_jenjang_pendidikan, code_fakultas,
+        const { code_mata_kuliah, nama_mata_kuliah, jenis_mata_kuliah, code_jenjang_pendidikan, code_fakultas,
             code_prodi, code_tahun_ajaran, code_kategori_nilai, sks, sks_praktek, sks_prak_lapangan,
             sks_simulasi, tanggal_aktif, tanggal_non_aktif } = req.body
         const mataKuliahDuplicate = await mataKuliahModel.findOne({
             where: {
+                code_mata_kuliah: code_mata_kuliah,
                 nama_mata_kuliah: nama_mata_kuliah,
                 jenis_mata_kuliah: jenis_mata_kuliah,
                 code_prodi: code_prodi,
@@ -281,6 +282,7 @@ module.exports = {
         })
         if (mataKuliahDuplicate) return res.status(401).json({ message: "data mata kuliah sudah ada" })
         await mataKuliahModel.update({
+            code_mata_kuliah: code_mata_kuliah,
             nama_mata_kuliah: nama_mata_kuliah,
             jenis_mata_kuliah: jenis_mata_kuliah,
             code_jenjang_pendidikan: code_jenjang_pendidikan,

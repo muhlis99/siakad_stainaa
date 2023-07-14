@@ -120,9 +120,17 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { dari_tahun, sampai_tahun, keterangan } = req.body
-        const code_tahun_ajaran = dari_tahun.substr(2, 4) + sampai_tahun.substr(2, 4)
-        const tahun_ajaran = dari_tahun + "/" + sampai_tahun
+        const { dari_tahun, sampai_tahun, periode, keterangan } = req.body
+        let code = ""
+        if (periode === "Genap") {
+            code = "gnp"
+        } else if (periode === "Ganjil") {
+            code = "gnj"
+        } else {
+            code = ""
+        }
+        const code_tahun_ajaran = dari_tahun.substr(2, 4) + sampai_tahun.substr(2, 4) + code
+        const tahun_ajaran = dari_tahun + " / " + sampai_tahun + " " + `( ${periode} )`
         const tahunAjaranUse = await tahunAjaran.findOne({
             where: {
                 code_tahun_ajaran: code_tahun_ajaran
@@ -154,7 +162,7 @@ module.exports = {
             }
         })
         if (!tahunAjaranUse) return res.status(401).json({ message: "Data tahun Ajaran tidak ditemukan" })
-        const { dari_tahun, sampai_tahun, keterangan } = req.body
+        const { dari_tahun, sampai_tahun, periode, keterangan } = req.body
         const code_tahun_ajaran = dari_tahun.substr(2, 4) + sampai_tahun.substr(2, 4)
         const tahun_ajaran = dari_tahun + "/" + sampai_tahun
         const tahunAjaranDuplicate = await tahunAjaran.findOne({
