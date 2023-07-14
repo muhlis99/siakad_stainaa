@@ -9,7 +9,9 @@ const ListTahunAjaran = () => {
     const [TahunAjaran, setTahunAjaran] = useState([])
     const [pertama, setPertama] = useState("")
     const [kedua, setKedua] = useState("")
+    const [periode, setPeriode] = useState("")
     const [keterangan, setKeterangan] = useState("")
+    const [modal, setModal] = useState("")
     const [page, setPage] = useState(0)
     const [perPage, setperPage] = useState(0)
     const [pages, setPages] = useState(0)
@@ -50,39 +52,31 @@ const ListTahunAjaran = () => {
         setKeyword(query)
     }
 
-    const modalAddOpen = (e) => {
-        e.preventDefault()
-        document.getElementById('my-modal-add').checked = true
-    }
-
-    const modalAddClose = (e) => {
-        e.preventDefault()
-        document.getElementById('my-modal-add').checked = false
-        setPertama("")
-        setKedua("")
-        setKeterangan("")
-    }
-
-    const modalEditOpen = async (e) => {
+    const modalOpen = async (e, f) => {
         try {
-            const response = await axios.get(`v1/tahunAjaran/getById/${e}`)
-            let thnAjar = response.data.data.tahun_ajaran
-            const tgArray = thnAjar.split("/")
-            setPertama(tgArray[0])
-            setKedua(tgArray[1])
-            setKeterangan(response.data.data.keterangan)
-            setId(response.data.data.id_tahun_ajaran)
-            document.getElementById('my-modal-edit').checked = true
+            if (e === 'Edit') {
+                const response = await axios.get(`v1/tahunAjaran/getById/${f}`)
+                let thnAjar = response.data.data.tahun_ajaran
+                const tgArray = thnAjar.split(" ")
+                setPertama(tgArray[0])
+                setKedua(tgArray[2])
+                setPeriode(tgArray[4])
+                setKeterangan(response.data.data.keterangan)
+                setId(response.data.data.id_tahun_ajaran)
+            }
+            setModal(e)
+            document.getElementById('my-modal').checked = true
         } catch (error) {
 
         }
     }
 
-    const modalEditClose = (e) => {
+    const modalClose = (e) => {
         e.preventDefault()
-        document.getElementById('my-modal-edit').checked = false
+        document.getElementById('my-modal').checked = false
         setPertama("")
         setKedua("")
+        setPeriode("")
         setKeterangan("")
         setId("")
     }
@@ -104,9 +98,10 @@ const ListTahunAjaran = () => {
             await axios.post('v1/tahunAjaran/create', {
                 dari_tahun: pertama,
                 sampai_tahun: kedua,
-                keterangan: keterangan
+                keterangan: keterangan,
+                periode: periode
             }).then(function (response) {
-                document.getElementById('my-modal-add').checked = false
+                document.getElementById('my-modal').checked = false
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -114,6 +109,7 @@ const ListTahunAjaran = () => {
                     getTahunAjaran()
                     setPertama("")
                     setKedua("")
+                    setPeriode("")
                     setKeterangan("")
                 })
             })
@@ -140,7 +136,7 @@ const ListTahunAjaran = () => {
                 sampai_tahun: kedua,
                 keterangan: keterangan
             }).then(function (response) {
-                document.getElementById('my-modal-edit').checked = false
+                document.getElementById('my-modal').checked = false
                 Swal.fire({
                     title: "Berhasil",
                     text: response.data.message,
@@ -203,13 +199,12 @@ const ListTahunAjaran = () => {
 
     return (
         <div className='mt-2 container'>
-            {/* Modal untuk tambah data */}
-            <input type="checkbox" id="my-modal-add" className="modal-toggle" />
+            <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
-                    <form onSubmit={simpanTahun}>
-                        <h3 className="font-bold text-xl">Tambah</h3>
+                    <form onSubmit={modal == 'Tambah' ? simpanTahun : updateTahun}>
+                        <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
+                        <h3 className="font-bold text-xl">{modal}</h3>
                         <div className="grid">
                             <div>
                                 <label className="label">
@@ -231,47 +226,14 @@ const ListTahunAjaran = () => {
                             </div>
                             <div>
                                 <label className="label">
-                                    <span className="text-base label-text">Keterangan</span>
+                                    <span className="text-base label-text">Periode</span>
                                 </label>
-                                <textarea
-                                    className="textarea textarea-bordered w-full"
-                                    placeholder="Masukkan Keterangan"
-                                    value={keterangan}
-                                    onChange={(e) => setKeterangan(e.target.value)}
-                                ></textarea>
-                            </div>
-                        </div>
-                        <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                                {modal == 'Tambah' ? <select className="select select-sm select-bordered w-full" value={periode} onChange={(e) => setPeriode(e.target.value)}>
+                                    <option value="">Periode</option>
+                                    <option value="Ganjil">Ganjil</option>
+                                    <option value="Genap">Genap</option>
+                                </select> : <input type='text' disabled className='input input-sm input-bordered w-full' value={periode} />}
 
-            <input type="checkbox" id="my-modal-edit" className="modal-toggle" />
-            <div className="modal">
-                <div className="modal-box relative">
-                    <form onSubmit={updateTahun}>
-                        <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
-                        <h3 className="font-bold text-xl">Edit</h3>
-                        <div className="grid">
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Dari Tahun</span>
-                                </label>
-                                <select className="select select-sm select-bordered w-full" value={pertama} onChange={(e) => setPertama(e.target.value)}>
-                                    <option value="">-Dari Tahun-</option>
-                                    {th1}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Sampai Tahun</span>
-                                </label>
-                                <select className="select select-sm select-bordered w-full" value={kedua} onChange={(e) => setKedua(e.target.value)}>
-                                    <option value="">-Sampai Tahun-</option>
-                                    {th2}
-                                </select>
                             </div>
                             <div>
                                 <label className="label">
@@ -295,11 +257,11 @@ const ListTahunAjaran = () => {
                 <h1 className='text-xl font-bold'>Tahun Ajaran</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                <div className="card bg-base-100 card-bordered shadow-md mb-36 rounded-md">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button className="btn btn-default btn-xs" onClick={modalAddOpen}><FaPlus /> tambah data</button>
+                                <button className="btn btn-default btn-xs" onClick={() => modalOpen('Tambah', '')}><FaPlus /> tambah data</button>
                             </div>
                             <div>
                                 <form className='mb-1' onSubmit={cariData}>
@@ -342,7 +304,7 @@ const ListTahunAjaran = () => {
                                             <td className='px-6 py-2'>{thn.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
-                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalEditOpen(thn.id_tahun_ajaran)} title='Edit'><FaEdit /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalOpen('Edit', thn.id_tahun_ajaran)} title='Edit'><FaEdit /></button>
                                                     <button className="btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(thn.id_tahun_ajaran)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
