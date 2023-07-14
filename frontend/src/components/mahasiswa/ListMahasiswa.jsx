@@ -99,7 +99,7 @@ const ListMahasiswa = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button className="btn btn-default btn-xs" onClick={tbMhs}><FaPlus /> tambah data</button>
+                                <button className="btn btn-success btn-xs" onClick={tbMhs}><FaPlus /> tambah data</button>
                             </div>
                             <div>
                                 <form onSubmit={cariData} className='mb-1'>
@@ -112,7 +112,7 @@ const ListMahasiswa = () => {
                                                 className="input input-xs input-bordered input-success"
                                                 placeholder='Cari'
                                             />
-                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                            <button type='submit' className="btn btn-xs btn-square btn-success">
                                                 <FaSearch />
                                             </button>
                                         </div>
@@ -148,9 +148,9 @@ const ListMahasiswa = () => {
                                                 <div className='grid grid-flow-col'>
                                                     <Link to={`/mahasiswa/detail/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
                                                     <Link to={`/mahasiswa/form1/edit/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
-                                                    <Link to={`/mahasiswa/upload/berkas/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-blue" title='Upload Berkas'><FaImages /></Link>
-                                                    <Link to={`/mahasiswa/print/${mhs.id_mahasiswa}`} target='_blank' className="btn btn-xs btn-circle text-white btn-info" title='Print Berkas'><FaPrint /></Link>
-                                                    <button onClick={() => nonaktifkan(mhs.id_mahasiswa)} className="btn btn-xs btn-circle text-white btn-danger" title='Hapus'><FaTrash /></button>
+                                                    <Link to={`/mahasiswa/upload/berkas/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
+                                                    <Link to={`/mahasiswa/print/${mhs.id_mahasiswa}`} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
+                                                    <button onClick={() => nonaktifkan(mhs.id_mahasiswa)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -170,11 +170,11 @@ const ListMahasiswa = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle"}
+                                pageLinkClassName={"btn btn-xs btn-success-outline btn-outline btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

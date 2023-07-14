@@ -197,7 +197,7 @@ const ListJenjang = () => {
                             }
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-xs btn-default">simpan</button>
+                            <button type='submit' className="btn btn-xs btn-success">simpan</button>
                         </div>
                     </form>
                 </div>
@@ -230,7 +230,7 @@ const ListJenjang = () => {
                             }
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-xs btn-default">update</button>
+                            <button type='submit' className="btn btn-xs btn-success">update</button>
                         </div>
                     </form>
                 </div>
@@ -244,7 +244,7 @@ const ListJenjang = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <label htmlFor="my-modal-add" className="btn btn-default btn-xs"><FaPlus /> tambah data</label>
+                                <label htmlFor="my-modal-add" className="btn btn-success btn-xs"><FaPlus /> tambah data</label>
                             </div>
                             <div>
                                 <form onSubmit={cariData} className='mb-1'>
@@ -257,7 +257,7 @@ const ListJenjang = () => {
                                                 className="input input-xs input-bordered input-success"
                                                 placeholder='Cari'
                                             />
-                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                            <button type='submit' className="btn btn-xs btn-square btn-success">
                                                 <FaSearch />
                                             </button>
                                         </div>
@@ -284,11 +284,11 @@ const ListJenjang = () => {
                                             </th>
                                             <td className='px-6 py-2'>{jenj.code_jenjang_pendidikan}</td>
                                             <td className='px-6 py-2'>{jenj.nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-2'>{jenj.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                            <td className='px-6 py-2'>{jenj.status == "aktif" ? <span className="badge btn-success badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalEditOpen(jenj.id_jenjang_pendidikan)} title='Edit'><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(jenj.id_jenjang_pendidikan)} title='Hapus'><FaTrash /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(jenj.id_jenjang_pendidikan)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -308,11 +308,11 @@ const ListJenjang = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle"}
+                                pageLinkClassName={"btn btn-xs btn-success-outline btn-outline btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

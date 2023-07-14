@@ -99,7 +99,7 @@ const ListDosen = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button className="btn btn-default btn-xs" onClick={tambahDosen}><FaPlus /> tambah data</button>
+                                <button className="btn btn-success btn-xs" onClick={tambahDosen}><FaPlus /> tambah data</button>
                             </div>
                             <div>
                                 <form onSubmit={cariData} className='mb-1'>
@@ -112,7 +112,7 @@ const ListDosen = () => {
                                                 className="input input-xs input-bordered input-success"
                                                 placeholder='Cari'
                                             />
-                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                            <button type='submit' className="btn btn-xs btn-square btn-success">
                                                 <FaSearch />
                                             </button>
                                         </div>
@@ -146,9 +146,9 @@ const ListDosen = () => {
                                                 <div className='grid grid-flow-col'>
                                                     <Link to={`/dosen/detail/${dsn.id_dosen}`} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
                                                     <Link to={`/dosen/form1/edit/${dsn.id_dosen}`} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
-                                                    <Link to={`/dosen/upload1/${dsn.id_dosen}`} className="btn btn-xs btn-circle text-white btn-blue" title='Upload Berkas'><FaImages /></Link>
-                                                    <Link to={`/dosen/print/${dsn.id_dosen}`} target='_blank' className="btn btn-xs btn-circle text-white btn-info" title='Print Berkas'><FaPrint /></Link>
-                                                    <button onClick={() => nonaktifkan(dsn.id_dosen)} className="btn btn-xs btn-circle text-white btn-danger" title='Hapus'><FaTrash /></button>
+                                                    <Link to={`/dosen/upload1/${dsn.id_dosen}`} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
+                                                    <Link to={`/dosen/print/${dsn.id_dosen}`} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
+                                                    <button onClick={() => nonaktifkan(dsn.id_dosen)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -168,11 +168,11 @@ const ListDosen = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success  btn-circle  "}
+                                pageLinkClassName={"btn btn-xs btn-success-outline btn-outline btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

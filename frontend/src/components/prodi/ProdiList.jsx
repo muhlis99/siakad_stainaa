@@ -211,7 +211,7 @@ const ProdiList = () => {
             <input type="checkbox" id="my-modal-add" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
+                    <button className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
                     <form onSubmit={simpanProdi}>
                         <h3 className="font-bold text-xl">Tambah</h3>
                         <div className="py-4">
@@ -282,7 +282,7 @@ const ProdiList = () => {
                             }
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-xs btn-default">simpan</button>
+                            <button type='submit' className="btn btn-xs btn-success">simpan</button>
                         </div>
                     </form>
                 </div>
@@ -292,7 +292,7 @@ const ProdiList = () => {
             <input type="checkbox" id="my-modal-edit" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
+                    <button className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
                     <form onSubmit={updateProdi}>
                         <h3 className="font-bold text-xl">Edit</h3>
                         <div className="py-4">
@@ -363,7 +363,7 @@ const ProdiList = () => {
                             }
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-xs btn-default">simpan</button>
+                            <button type='submit' className="btn btn-xs btn-success">simpan</button>
                         </div>
                     </form>
                 </div>
@@ -376,7 +376,7 @@ const ProdiList = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <label htmlFor="my-modal-add" className="btn btn-default btn-xs"><FaPlus /> tambah data</label>
+                                <label htmlFor="my-modal-add" className="btn btn-success btn-xs"><FaPlus /> tambah data</label>
                             </div>
                             <div>
                                 <form onSubmit={cariData} className='mb-1'>
@@ -389,7 +389,7 @@ const ProdiList = () => {
                                                 onChange={(e) => setQuery(e.target.value)}
                                                 placeholder='Cari'
                                             />
-                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                            <button type='submit' className="btn btn-xs btn-square btn-success">
                                                 <FaSearch />
                                             </button>
                                         </div>
@@ -420,11 +420,11 @@ const ProdiList = () => {
                                             <td className='px-6 py-2'>{prod.fakultas[0].nama_fakultas}</td>
                                             <td className='px-6 py-2'>{prod.code_prodi}</td>
                                             <td className='px-6 py-2'>{prod.nama_prodi}</td>
-                                            <td className='px-6 py-2'>{prod.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                            <td className='px-6 py-2'>{prod.status == "aktif" ? <span className="badge btn-success badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(prod.id_prodi)}><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-danger" title='Hapus' onClick={() => nonaktifkan(prod.id_prodi)}><FaTrash /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(prod.id_prodi)}><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -444,11 +444,11 @@ const ProdiList = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle"}
+                                pageLinkClassName={"btn btn-xs btn-success-outline btn-outline btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

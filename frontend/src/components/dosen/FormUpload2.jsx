@@ -229,7 +229,7 @@ const FormUpload2 = () => {
                                             ) : ("")}
                                         </div>
                                     </div>
-                                    <input type="file" onChange={loadSk} className="file-input file-input-bordered file-input-sm file-input-default w-full" />
+                                    <input type="file" onChange={loadSk} className="file-input file-input-bordered file-input-sm file-input-success w-full" />
                                 </div>
                                 <div>
                                     <label className="label">
@@ -242,7 +242,7 @@ const FormUpload2 = () => {
                                             ) : ("")}
                                         </div>
                                     </div>
-                                    <input type="file" onChange={loadBebasNarkotika} className="file-input file-input-bordered file-input-sm file-input-default w-full" />
+                                    <input type="file" onChange={loadBebasNarkotika} className="file-input file-input-bordered file-input-sm file-input-success w-full" />
                                 </div>
                                 <div>
                                     <label className="label">
@@ -255,7 +255,7 @@ const FormUpload2 = () => {
                                             ) : ("")}
                                         </div>
                                     </div>
-                                    <input type="file" onChange={loadSkPt} className="file-input file-input-bordered file-input-sm file-input-default w-full" />
+                                    <input type="file" onChange={loadSkPt} className="file-input file-input-bordered file-input-sm file-input-success w-full" />
                                 </div>
                                 <div>
                                     <label className="label">
@@ -268,7 +268,7 @@ const FormUpload2 = () => {
                                             ) : ("")}
                                         </div>
                                     </div>
-                                    <input type="file" onChange={loadTridma} className="file-input file-input-bordered file-input-sm file-input-default w-full" />
+                                    <input type="file" onChange={loadTridma} className="file-input file-input-bordered file-input-sm file-input-success w-full" />
                                 </div>
                                 <div className="lg:col-span-2">
                                     <hr className='my-5' />
@@ -276,15 +276,15 @@ const FormUpload2 = () => {
                             </div>
                             <div className='grid lg:grid-cols-2'>
                                 <div>
-                                    <Link to="/dosen" className='btn btn-sm btn-danger'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>
+                                    <Link to="/dosen" className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
                                         <div>
-                                            <Link to={`/dosen/upload1/${idDsn}`} className='btn btn-sm btn-blue w-full'><FaArrowLeft /><span className="ml-1">Kembali</span></Link>
+                                            <Link to={`/dosen/upload1/${idDsn}`} className='btn btn-sm btn-primary w-full'><FaArrowLeft /><span className="ml-1">Kembali</span></Link>
                                         </div>
                                         <div className='lg:pl-1'>
-                                            <button className='btn btn-sm btn-blue w-full'><FaTelegramPlane /> <span className="ml-1">Upload</span></button>
+                                            <button className='btn btn-sm btn-primary w-full'><FaTelegramPlane /> <span className="ml-1">Upload</span></button>
                                         </div>
                                     </div>
                                 </div>

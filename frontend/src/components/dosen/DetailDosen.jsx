@@ -355,7 +355,7 @@ const DetailDosen = () => {
             <label htmlFor="my-modal" className="modal cursor-pointer">
                 <label className="modal-box relative" htmlFor="">
                     <div className='w-full'>
-                        <a className='btn btn-sm btn-blue w-full mb-2' download={nameFile} href={`data:image/png;base64,${modal}`}>download</a>
+                        <a className='btn btn-sm btn-primary w-full mb-2' download={nameFile} href={`data:image/png;base64,${modal}`}>download</a>
                     </div>
                     <div className='avatar'>
                         <div className="w-full  rounded ring ring-[#2D7F5F]">
@@ -367,7 +367,7 @@ const DetailDosen = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <Link to="/dosen" className='btn btn-sm btn-danger w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
+                        <Link to="/dosen" className='btn btn-sm btn-error w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
                         <div className='grid lg:grid-cols-2'>
                             <div>
                                 <table>
@@ -480,7 +480,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Foto Diri</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevFoto)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevFoto)}>Detail</button>
                                 {prevFoto ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -493,7 +493,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Scan KTP</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevKtp)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKtp)}>Detail</button>
                                 {prevKtp ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -506,7 +506,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Scan Surat Sehat Rohani</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevSehatRohani)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSehatRohani)}>Detail</button>
                                 {prevSehatRohani ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -519,7 +519,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Scan Surat Sehat Jasmani</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevSehatJasmani)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSehatJasmani)}>Detail</button>
                                 {prevSehatJasmani ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -532,7 +532,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Scan Surat Perjanjian Kerja</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevJanjiKerja)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevJanjiKerja)}>Detail</button>
                                 {prevJanjiKerja ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -545,7 +545,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">SK Dosen</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevSkDosen)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSkDosen)}>Detail</button>
                                 {prevSkDosen ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -558,7 +558,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">SK Bebas Narkotika</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevBebasNarkotika)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevBebasNarkotika)}>Detail</button>
                                 {prevBebasNarkotika ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -571,7 +571,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">SK Dari Pimpinan PT</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevSkPt)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSkPt)}>Detail</button>
                                 {prevSkPt ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -584,7 +584,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">SK Aktif Melaksanakan Tridma PT</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevTridma)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevTridma)}>Detail</button>
                                 {prevTridma ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
