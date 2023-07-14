@@ -6,6 +6,7 @@ const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 const kelasModel = require('../models/kelasKuliahModel.js')
 const fakultasModel = require("../models/fakultasModel.js")
 const dosenModel = require('../models/dosenModel.js')
+const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const { Op } = require('sequelize')
 
 
@@ -32,19 +33,18 @@ module.exports = {
                 model: semesterModel,
                 where: { status: "aktif" }
             }, {
-                model: prodiModel,
+                model: tahunAjaranModel,
                 where: { status: "aktif" }
             }, {
-                model: tahunAjaranModel,
+                model: prodiModel,
                 where: { status: "aktif" }
             }, {
                 model: fakultasModel,
                 where: { status: "aktif" }
             }, {
-                model: prodiModel,
+                model: jenjangPendidikanModel,
                 where: { status: "aktif" }
             }, {
-                attributes: ['nama_kelas', 'code_kelas'],
                 model: kelasModel,
                 where: { status: "aktif" },
             }, {
@@ -52,13 +52,12 @@ module.exports = {
                 where: { status: "aktif" }
             }, {
                 model: dosenModel,
-                where: { status: "aktif" }
+                // where: { status: "aktif" }
             }],
             where: {
                 id_jadwal_kuliah: id,
                 status: "aktif"
-            },
-            group: ['kelas.code_kelas']
+            }
         }).
             then(result => {
                 if (!result) {
@@ -125,24 +124,26 @@ module.exports = {
                 model: semesterModel,
                 where: { status: "aktif" }
             }, {
-                model: prodiModel,
+                model: tahunAjaranModel,
                 where: { status: "aktif" }
             }, {
-                model: tahunAjaranModel,
+                model: prodiModel,
                 where: { status: "aktif" }
             }, {
                 model: fakultasModel,
                 where: { status: "aktif" }
             }, {
-                model: prodiModel,
+                model: jenjangPendidikanModel,
                 where: { status: "aktif" }
             }, {
-                attributes: ['nama_kelas', 'code_kelas'],
                 model: kelasModel,
                 where: { status: "aktif" },
             }, {
                 model: mataKuliahModel,
                 where: { status: "aktif" }
+            }, {
+                model: dosenModel,
+                // where: { status: "aktif" }
             }],
             where: {
                 id_jadwal_kuliah: id,
