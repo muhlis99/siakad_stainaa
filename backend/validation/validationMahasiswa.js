@@ -76,13 +76,6 @@ exports.validationForm1 = [
     check('penerima_kps')
         .notEmpty()
         .withMessage('penerima kps tidak boleh kosong'),
-    check('npwp')
-        .notEmpty()
-        .withMessage('npwp tidak boleh kosong')
-        .isInt()
-        .withMessage('npwp harus berupa angka')
-        .isLength({ min: 16, max: 16 })
-        .withMessage('npwp yang anda masukkan harus  16 digit'),
     check('jalur_pendaftaran')
         .notEmpty()
         .withMessage('jalur pendaftaran tidak boleh kosong'),
