@@ -6,8 +6,10 @@ import { FaTimes, FaSave } from 'react-icons/fa'
 
 const FormAddMataKuliah = () => {
     const [Tahun, setTahun] = useState([])
+    const [Jenjang, setJenjang] = useState([])
+    const [Fakultas, setFakultas] = useState([])
     const [Program, setProgram] = useState([])
-    const [idProdi, setIdProdi] = useState("")
+    const [kodeMk, setKodeMk] = useState("")
     const [namaMakul, setNamaMakul] = useState("")
     const [jenisMakul, setJenisMakul] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
@@ -18,36 +20,44 @@ const FormAddMataKuliah = () => {
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
-    const [metode, setMetode] = useState("")
     const [tglAktif, setTglAktif] = useState("")
     const [tglNonAktif, setTglNonAktif] = useState("")
     const navigate = useNavigate()
 
     useEffect(() => {
         getTahunAjaran()
-        getProdi()
+        getJenjang()
     }, [])
 
     useEffect(() => {
-        getProdiById()
-    }, [idProdi])
+        getFakultas()
+    }, [kodeJenjang])
+
+    useEffect(() => {
+        getProdi()
+    }, [kodeFakultas])
 
     const getTahunAjaran = async () => {
         const response = await axios.get('v1/tahunAjaran/all')
         setTahun(response.data.data)
     }
 
-    const getProdi = async () => {
-        const response = await axios.get('v1/prodi/all')
-        setProgram(response.data.data)
+    const getJenjang = async () => {
+        const response = await axios.get('v1/jenjangPendidikan/all')
+        setJenjang(response.data.data)
     }
 
-    const getProdiById = async () => {
-        if (idProdi != 0) {
-            const response = await axios.get(`v1/prodi/getById/${idProdi}`)
-            setKodeJenjang(response.data.data.code_jenjang_pendidikan)
-            setKodeFakultas(response.data.data.code_fakultas)
-            setKodeProdi(response.data.data.code_prodi)
+    const getFakultas = async () => {
+        if (kodeJenjang != 0) {
+            const response = await axios.get(`v1/fakultas/getFakulatsByJenjang/${kodeJenjang}`)
+            setFakultas(response.data.data)
+        }
+    }
+
+    const getProdi = async () => {
+        if (kodeFakultas != 0) {
+            const response = await axios.get(`v1/prodi/getProdiByFakultas/${kodeFakultas}`)
+            setProgram(response.data.data)
         }
     }
 
@@ -55,6 +65,7 @@ const FormAddMataKuliah = () => {
         e.preventDefault()
         try {
             await axios.post('v1/mataKuliah/create', {
+                code_mata_kuliah: kodeMk,
                 nama_mata_kuliah: namaMakul,
                 jenis_mata_kuliah: jenisMakul,
                 code_jenjang_pendidikan: kodeJenjang,
@@ -114,24 +125,54 @@ const FormAddMataKuliah = () => {
                 <h1 className='text-xl font-bold'>Tambah Mata Kuliah</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-2">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
                     <div className="card-body p-4">
                         <form onSubmit={simpanMakul}>
-                            <div className="grid lg:grid-cols-4 gap-4">
-                                <div className='lg:col-span-2'>
-                                    <label className="label">
+                            <div className="grid lg:grid-cols-2 gap-4">
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
+                                        <span className="text-base label-text">Kode Mata Kuliah</span>
+                                    </label>
+                                    <input type="text" placeholder="Kode Mata Kuliah" className="input input-sm input-bordered w-full" value={kodeMk} onChange={(e) => setKodeMk(e.target.value)} />
+                                </div>
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
                                         <span className="text-base label-text">Nama Mata Kuliah</span>
                                     </label>
                                     <input type="text" placeholder="Masukkan Nama Mata Kuliah" className="input input-sm input-bordered w-full" value={namaMakul} onChange={(e) => setNamaMakul(e.target.value)} />
                                 </div>
-                                <div>
-                                    <label className="label">
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
                                         <span className="text-base label-text">Jenis Mata Kuliah</span>
                                     </label>
                                     <input type="text" placeholder="Masukkan Jenis Mata Kuliah" className="input input-sm input-bordered w-full" value={jenisMakul} onChange={(e) => setJenisMakul(e.target.value)} />
                                 </div>
-                                <div>
-                                    <label className="label">
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
+                                        <span className="text-base label-text">SKS</span>
+                                    </label>
+                                    <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered w-full" value={sks} onChange={(e) => setSks(e.target.value)} />
+                                </div>
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
+                                        <span className="text-base label-text">SKS Praktek</span>
+                                    </label>
+                                    <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered w-full" value={sksPraktek} onChange={(e) => setSksPraktek(e.target.value)} />
+                                </div>
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
+                                        <span className="text-base label-text">SKS Praktek Lapangan</span>
+                                    </label>
+                                    <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered flex-initial w-full" value={sksPrakLapangan} onChange={(e) => setSksPrakLapangan(e.target.value)} />
+                                </div>
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
+                                        <span className="text-base label-text">SKS Simulasi</span>
+                                    </label>
+                                    <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered w-full" value={sksSimulasi} onChange={(e) => setSksSimulasi(e.target.value)} />
+                                </div>
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
                                         <span className="text-base label-text">Tahun Ajaran</span>
                                     </label>
                                     <select className="select select-bordered select-sm w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
@@ -141,51 +182,47 @@ const FormAddMataKuliah = () => {
                                         ))}
                                     </select>
                                 </div>
-                                <div className='lg:col-span-4 grid lg:grid-cols-4 gap-4'>
-                                    <div>
-                                        <label className="label">
-                                            <span className="text-base label-text">SKS</span>
-                                        </label>
-                                        <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered w-full" value={sks} onChange={(e) => setSks(e.target.value)} />
-                                    </div>
-                                    <div>
-                                        <label className="label">
-                                            <span className="text-base label-text">SKS Praktek</span>
-                                        </label>
-                                        <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered w-full" value={sksPraktek} onChange={(e) => setSksPraktek(e.target.value)} />
-                                    </div>
-                                    <div>
-                                        <label className="label">
-                                            <span className="text-base label-text">SKS Praktek Lapangan</span>
-                                        </label>
-                                        <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered w-full" value={sksPrakLapangan} onChange={(e) => setSksPrakLapangan(e.target.value)} />
-                                    </div>
-                                    <div>
-                                        <label className="label">
-                                            <span className="text-base label-text">SKS Simulasi</span>
-                                        </label>
-                                        <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered w-full" value={sksSimulasi} onChange={(e) => setSksSimulasi(e.target.value)} />
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Prodi</span>
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
+                                        <span className="text-base label-text">Jenjang Pendidikan</span>
                                     </label>
-                                    <select className="select select-bordered select-sm w-full" value={idProdi} onChange={(e) => setIdProdi(e.target.value)}>
-                                        <option value="">Prodi</option>
-                                        {Program.map((item) => (
-                                            <option key={item.id_prodi} value={item.id_prodi}>{item.nama_prodi}</option>
+                                    <select className="select select-sm select-bordered w-full" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
+                                        <option value="">Jenjang Pendidikan</option>
+                                        {Jenjang.map((item) => (
+                                            <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
                                         ))}
                                     </select>
                                 </div>
-                                <div>
-                                    <label className="label">
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
+                                        <span className="text-base label-text">Fakultas</span>
+                                    </label>
+                                    <select className="select select-sm select-bordered w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
+                                        <option value="">Fakultas</option>
+                                        {Fakultas.map((item) => (
+                                            <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
+                                        <span className="text-base label-text">Prodi</span>
+                                    </label>
+                                    <select className="select select-bordered select-sm w-full" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
+                                        <option value="">Prodi</option>
+                                        {Program.map((item) => (
+                                            <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
                                         <span className="text-base label-text">Tanggal Aktif</span>
                                     </label>
                                     <input type="date" className="input input-sm input-bordered w-full" value={tglAktif} onChange={(e) => setTglAktif(e.target.value)} />
                                 </div>
-                                <div>
-                                    <label className="label">
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
                                         <span className="text-base label-text">Tanggal Non Aktif</span>
                                     </label>
                                     <input type="date" className="input input-sm input-bordered w-full" value={tglNonAktif} onChange={(e) => setTglNonAktif(e.target.value)} />

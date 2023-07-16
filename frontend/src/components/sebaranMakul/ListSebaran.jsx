@@ -6,6 +6,8 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 
 const ListSebaran = () => {
+    const [Jenjang, setJenjang] = useState([])
+    const [Fakultas, setFakultas] = useState([])
     const [Program, setProgram] = useState([])
     const [Tahun, setTahun] = useState([])
     const [Semester, setSemester] = useState([])
@@ -14,6 +16,8 @@ const ListSebaran = () => {
     const [smt, setSmt] = useState([])
     const [Sebaran, setSebaran] = useState([])
     const [satuan, setSatuan] = useState([])
+    const [kodeJenjang, setKodeJenjang] = useState("")
+    const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeMakul, setKodeMakul] = useState("")
@@ -38,10 +42,20 @@ const ListSebaran = () => {
     const [nilai, setNilai] = useState("")
 
     useEffect(() => {
-        getProdiAll()
         getMakulAll()
         getTahunAjaran()
+        getJenjangPendidikan()
+    }, [])
 
+    useEffect(() => {
+        getFakultas()
+    }, [kodeJenjang])
+
+    useEffect(() => {
+        getProdi()
+    }, [kodeFakultas])
+
+    useEffect(() => {
         if (statusMk === true) {
             setStatusBobot("wajib")
         } else {
@@ -70,15 +84,29 @@ const ListSebaran = () => {
 
     useEffect(() => {
         sebaranMakul()
-    }, [kodeProdi, smt, kodeTahun])
+    }, [kodeProdi, smt, kodeTahun, kodeFakultas, kodeJenjang])
 
     useEffect(() => {
         getMakulById()
     }, [])
 
-    const getProdiAll = async () => {
-        const response = await axios.get('v1/prodi/all')
-        setProgram(response.data.data)
+    const getJenjangPendidikan = async () => {
+        const response = await axios.get('v1/jenjangPendidikan/all')
+        setJenjang(response.data.data)
+    }
+
+    const getFakultas = async () => {
+        if (kodeJenjang != 0) {
+            const response = await axios.get(`v1/fakultas/getFakulatsByJenjang/${kodeJenjang}`)
+            setFakultas(response.data.data)
+        }
+    }
+
+    const getProdi = async () => {
+        if (kodeFakultas != 0) {
+            const response = await axios.get(`v1/prodi/getProdiByFakultas/${kodeFakultas}`)
+            setProgram(response.data.data)
+        }
     }
 
     const getTahunAjaran = async () => {
@@ -145,22 +173,21 @@ const ListSebaran = () => {
     }
 
     const sebaranMakul = async () => {
+        console.log(smt.length);
         if (smt.length != 0) {
             let sebar = []
             let sksnya = []
             let promises = []
             for (let i = 0; i < smt.length; i++) {
                 promises.push(
-                    await axios.get('v1/sebaranMataKuliah/all?sebaranProdi=' + kodeProdi + '&sebaranSemester=' + smt[i].kode + '&sebaranTahunAjaran=' + kodeTahun).then(response => {
+                    await axios.get('v1/sebaranMataKuliah/all?sebaranProdi=' + kodeProdi + '&sebaranSemester=' + smt[i].kode + '&sebaranTahunAjaran=' + kodeTahun + '&sebaranJenPen=' + kodeJenjang + '&sebaranFks=' + kodeFakultas).then(response => {
                         sebar.push(response.data.data)
                         sksnya.push(response.data.total_sks)
                     })
                 )
             }
-            if (smt.length != 0) {
-                Promise.all(promises).then(() => setSebaran(sebar))
-                Promise.all(promises).then(() => setSatuan(sksnya))
-            }
+            Promise.all(promises).then(() => setSebaran(sebar))
+            Promise.all(promises).then(() => setSatuan(sksnya))
         }
     }
 
@@ -327,7 +354,7 @@ const ListSebaran = () => {
                                                 <tr>
                                                     <td className='uppercase'>Prodi</td>
                                                     <td>&nbsp;:&nbsp;</td>
-                                                    <td className='uppercase'>{prodi}</td>
+                                                    {/* <td className='uppercase'>{prodi}</td> */}
                                                 </tr>
                                                 <tr>
                                                     <td className='uppercase'>Semester</td>
@@ -474,11 +501,33 @@ const ListSebaran = () => {
                 <h1 className='text-xl font-bold'>Sebaran Mata Kuliah</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-3">
+                <div className="card bg-base-100 card-bordered shadow-md mb-3 rounded-md">
                     <div className="card-body p-4">
-                        <div className="grid lg:grid-cols-2 gap-2">
+                        <div className="grid lg:grid-cols-2 gap-2 bg-slate-400 p-2 rounded-md">
                             <div className='flex gap-2'>
-                                <label className="label">
+                                <label className="label flex-initial w-64">
+                                    <span className="text-base label-text">Jenjang Pendidikan</span>
+                                </label>
+                                <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
+                                    <option value="">Jenjang Pendidikan</option>
+                                    {Jenjang.map((item) => (
+                                        <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className='flex gap-2'>
+                                <label className="label flex-initial w-64">
+                                    <span className="text-base label-text">Fakultas</span>
+                                </label>
+                                <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
+                                    <option value="">Fakultas</option>
+                                    {Fakultas.map((item) => (
+                                        <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className='flex gap-2'>
+                                <label className="label flex-initial w-64">
                                     <span className="text-base label-text">Program Studi</span>
                                 </label>
                                 <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
@@ -489,7 +538,7 @@ const ListSebaran = () => {
                                 </select>
                             </div>
                             <div className='flex gap-2'>
-                                <label className="label">
+                                <label className="label flex-initial w-64">
                                     <span className="text-base label-text">Tahun Ajaran</span>
                                 </label>
                                 <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
@@ -502,7 +551,7 @@ const ListSebaran = () => {
                         </div>
                     </div>
                 </div>
-                <div className="card bg-base-100 card-bordered shadow-md mb-3">
+                <div className="card bg-base-100 card-bordered shadow-md mb-3 rounded-md">
                     <div className="card-body p-4">
                         <form onSubmit={simpanSebaran}>
                             <div className='flex gap-2'>
@@ -513,7 +562,7 @@ const ListSebaran = () => {
                                     <select className='mt-1 select select-sm select-bordered w-full max-w-[260px]' value={kodeMakul} onChange={(e) => setKodeMakul(e.target.value)}>
                                         <option value="">Mata Kuliah</option>
                                         {Makul.map((item) => (
-                                            <option key={item.id_mata_kuliah} value={item.id_mata_kuliah}>{item.nama_mata_kuliah}</option>
+                                            <option key={item.id_mata_kuliah} value={item.id_mata_kuliah}>{item.code_mata_kuliah} -- {item.nama_mata_kuliah}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -567,7 +616,7 @@ const ListSebaran = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     {Semester.map((items, index) => (
-                        <div key={items.id_semester} className="card bg-base-100 card-bordered shadow-md mb-3">
+                        <div key={index} className="card bg-base-100 card-bordered shadow-md mb-3">
                             <div className="card-body p-4">
                                 <div className="overflow-x-auto rounded-md">
                                     <table className="w-full text-sm text-gray-500 dark:text-gray-400">
@@ -584,10 +633,10 @@ const ListSebaran = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {Sebaran != 0 ? Sebaran[index].map((item, no) => (
-                                                <tr key={item.id_mata_kuliah} className='bg-white border text-gray-700' >
+                                            {Sebaran != 0 ? Sebaran[1].map((item, no) => (
+                                                <tr key={no} className='bg-white border text-gray-700' >
                                                     <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{no + 1}</th>
-                                                    <td className='px-2 py-2 border' align='center'>{item.code_mata_kuliah}</td>
+                                                    <td className='px-2 py-2 border' align='center'>{item.semesters[0].code_semester}</td>
                                                     <td className='px-2 py-2 border'>{item.nama_mata_kuliah}</td>
                                                     <td className='px-2 py-2 border' align='center'>{item.sks}</td>
                                                     <td className='px-2 py-2 border' align='center'>
