@@ -12,8 +12,8 @@ module.exports = {
         const sebaranJenPen = req.query.sebaranJenPen || null
         const sebaranFks = req.query.sebaranFks || null
         const sebaranProdi = req.query.sebaranProdi || null
-        const sebaranSemester = parseInt(req.query.sebaranSemester) || 0
-        const sebaranTahunAjaran = parseInt(req.query.sebaranTahunAjaran) || 0
+        const sebaranSemester = req.query.sebaranSemester || 0
+        const sebaranTahunAjaran = req.query.sebaranTahunAjaran || 0
         const totalSKS = await mataKuliahModel.sum('sks', {
             where: {
                 code_jenjang_pendidikan: sebaranJenPen,
