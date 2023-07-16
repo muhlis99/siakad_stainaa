@@ -11,6 +11,7 @@ const FormMhs4 = () => {
     const [Jenjang, setJenjang] = useState([])
     const [Fakultas, setFakultas] = useState([])
     const [Prodi, setProdi] = useState([])
+    const [Tahun, setTahun] = useState([])
     const [Semester, setSemester] = useState([])
     const [namanya, setNamanya] = useState("")
     const [nikWali, setNikWali] = useState("")
@@ -24,9 +25,8 @@ const FormMhs4 = () => {
     const [jenjangnya, setJenjangnya] = useState("")
     const [fakultasnya, setFakultasnya] = useState("")
     const [prodinya, setProdinya] = useState("")
-    const [idSmt, setIdSmt] = useState("")
-    const [kodeSmt, setKodeSmt] = useState("")
     const [kodeThn, setKodeThn] = useState("")
+    const [kodeSmt, setKodeSmt] = useState("")
     const navigate = useNavigate()
     const { idMhs } = useParams()
     const { stat } = useParams()
@@ -81,7 +81,7 @@ const FormMhs4 = () => {
         getPenghasilan()
         getPendidikan()
         getJenjangPendidikan()
-        getSemesterAll()
+        getTahunAjaran()
     }, [])
 
     useEffect(() => {
@@ -93,8 +93,8 @@ const FormMhs4 = () => {
     }, [fakultasnya])
 
     useEffect(() => {
-        getSemesterById()
-    }, [idSmt])
+        getSemesterAll()
+    }, [kodeThn])
 
     const tg = []
     for (let tanggal = 1; tanggal < 32; tanggal++) {
@@ -156,16 +156,15 @@ const FormMhs4 = () => {
         }
     }
 
-    const getSemesterAll = async () => {
-        const response = await axios.get('v1/semester/all')
-        setSemester(response.data.data)
+    const getTahunAjaran = async () => {
+        const response = await axios.get('v1/tahunAjaran/all')
+        setTahun(response.data.data)
     }
 
-    const getSemesterById = async () => {
-        if (idSmt != 0) {
-            const response = await axios.get(`v1/semester/getById/${idSmt}`)
-            setKodeSmt(response.data.data.code_semester)
-            setKodeThn(response.data.data.code_tahun_ajaran)
+    const getSemesterAll = async () => {
+        if (kodeThn != 0) {
+            const response = await axios.get(`v1/sebaranMataKuliah/smtByThnAjr/${kodeThn}`)
+            setSemester(response.data.data)
         }
     }
 
@@ -444,14 +443,25 @@ const FormMhs4 = () => {
                                             ))}
                                         </select>
                                     </div>
-                                    <div className='lg:col-span-2'>
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text">Masuk Tahun Ajaran</span>
+                                        </label>
+                                        <select className='select select-bordered select-sm w-full' value={kodeThn} onChange={(e) => setKodeThn(e.target.value)}>
+                                            <option value="">Masuk Tahun Ajaran</option>
+                                            {Tahun.map((item) => (
+                                                <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div>
                                         <label className="label">
                                             <span className="text-base label-text">Masuk Mulai Semester</span>
                                         </label>
-                                        <select className='select select-bordered select-sm w-full' value={idSmt} onChange={(e) => setIdSmt(e.target.value)}>
+                                        <select className='select select-bordered select-sm w-full' value={kodeSmt} onChange={(e) => setKodeSmt(e.target.value)}>
                                             <option value="">Mulai Semester</option>
                                             {Semester.map((item) => (
-                                                <option key={item.id_semester} value={item.id_semester}>Semester {item.semester}</option>
+                                                <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
                                             ))}
                                         </select>
                                     </div>

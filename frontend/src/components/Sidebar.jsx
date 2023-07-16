@@ -28,10 +28,6 @@ import {
 const Sidebar = () => {
   const location = useLocation()
 
-  console.log('pathname', location.pathname)
-
-
-
   return (
     <div className="drawer-side scrollbar-thin scrollbar-thumb-emerald-800 scrollbar-track-gray-100 shadow-md">
       <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
