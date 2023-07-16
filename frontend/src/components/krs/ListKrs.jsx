@@ -5,20 +5,23 @@ import { MdDoNotDisturb } from 'react-icons/md'
 import Swal from 'sweetalert2'
 
 const ListKrs = () => {
+    const [Jenjang, setJenjang] = useState([])
+    const [Fakultas, setFakultas] = useState([])
     const [Program, setProgram] = useState([])
     const [Tahun, setTahun] = useState([])
     const [Semester, setSemester] = useState([])
     const [Krs, setKrs] = useState([])
     const [view, setView] = useState([])
     const [total, setTotal] = useState("")
+    const [kodeJenjang, setKodeJenjang] = useState("")
+    const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
 
     useEffect(() => {
-        getProdiAll()
         getTahunAjaran()
-        getSemester()
+        getJenjangPendidikan()
     }, [])
 
     useEffect(() => {
@@ -26,12 +29,34 @@ const ListKrs = () => {
     }, [kodeTahun])
 
     useEffect(() => {
+        getFakultas()
+    }, [kodeJenjang])
+
+    useEffect(() => {
+        getProdi()
+    }, [kodeFakultas])
+
+    useEffect(() => {
         getKrsAll()
     }, [kodeTahun, kodeProdi, kodeSemester])
 
-    const getProdiAll = async () => {
-        const response = await axios.get('v1/prodi/all')
-        setProgram(response.data.data)
+    const getJenjangPendidikan = async () => {
+        const response = await axios.get('v1/jenjangPendidikan/all')
+        setJenjang(response.data.data)
+    }
+
+    const getFakultas = async () => {
+        if (kodeJenjang != 0) {
+            const response = await axios.get(`v1/fakultas/getFakulatsByJenjang/${kodeJenjang}`)
+            setFakultas(response.data.data)
+        }
+    }
+
+    const getProdi = async () => {
+        if (kodeFakultas != 0) {
+            const response = await axios.get(`v1/prodi/getProdiByFakultas/${kodeFakultas}`)
+            setProgram(response.data.data)
+        }
     }
 
     const getTahunAjaran = async () => {
@@ -53,8 +78,8 @@ const ListKrs = () => {
         }
     }
 
-    const getViewKrs = async (e, f, g) => {
-        const response = await axios.get(`v1/krs/viewAll/${e}/${f}/${g}`)
+    const getViewKrs = async (a, b, c, d, e) => {
+        const response = await axios.get(`v1/krs/viewAll/${a}/${b}/${c}/${d}/${e}`)
         setView(response.data.data.rows)
         setTotal(response.data.data.count)
         document.getElementById('my-modal').checked = true
@@ -64,10 +89,10 @@ const ListKrs = () => {
         document.getElementById('my-modal').checked = false
     }
 
-    const paketkan = async (e, f, g) => {
+    const paketkan = async (a, b, c, d, e) => {
         try {
             await axios.post(
-                `v1/krs/create/${e}/${f}/${g}`
+                `v1/krs/create/${a}/${b}/${c}/${d}/${e}`
             ).then(function (response) {
                 Swal.fire({
                     title: response.data.message,
@@ -138,13 +163,35 @@ const ListKrs = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-3">
                     <div className="card-body p-4">
-                        <div className="grid lg:grid-cols-3 gap-2">
+                        <div className="grid lg:grid-cols-5 gap-2">
                             <div>
                                 <label className="label">
-                                    <span className="text-base label-text">Program Studi</span>
+                                    <span className="text-base label-text">Jenjang Pendidikan</span>
                                 </label>
-                                <select className='select select-bordered select-sm w-full ' value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
-                                    <option value="">Program Studi</option>
+                                <select className="select select-sm select-bordered w-full" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
+                                    <option value="">Jenjang Pendidikan</option>
+                                    {Jenjang.map((item) => (
+                                        <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="label">
+                                    <span className="text-base label-text">Fakultas</span>
+                                </label>
+                                <select className="select select-sm select-bordered w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
+                                    <option value="">Fakultas</option>
+                                    {Fakultas.map((item) => (
+                                        <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="label">
+                                    <span className="text-base label-text">Prodi</span>
+                                </label>
+                                <select className="select select-sm select-bordered w-full" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
+                                    <option value="">Prodi</option>
                                     {Program.map((item) => (
                                         <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
                                     ))}
@@ -180,7 +227,7 @@ const ListKrs = () => {
                         <table className="w-full text-sm text-gray-500 dark:text-gray-400">
                             <thead className='text-gray-700 bg-[#F2F2F2]'>
                                 <tr>
-                                    <th scope="col" className="px-2 py-2 border" rowSpan="2">Smt</th>
+                                    <th scope="col" className="px-2 py-2 border" rowSpan="2">Semester</th>
                                     <th scope="col" className="px-2 py-2 border" rowSpan="2">Tahun Ajaran</th>
                                     <th scope="col" className="px-2 py-2 border" rowSpan="2">Mata Kuliah</th>
                                     <th scope="col" className="px-2 py-2 border" colSpan="2">Jumlah Mahasiswa</th>
@@ -200,11 +247,11 @@ const ListKrs = () => {
                                         <td className='px-2 py-2 border' align='center'>{item.Paketmakul}</td>
                                         <td className='px-2 py-2 border' align='center'>{item.jumlahTotalMahasiswa}</td>
                                         <td className='px-2 py-2 border' align='center'>{item.jumlahMahasiswaPaket}</td>
-                                        <td className='px-2 py-2 border' align='center'>{item.keterangan == 'paket belum' ? <span className='badge badge-sm badge-jingga opacity-80'>Paket Belum</span> : <span className='badge badge-sm badge-default'>Paket Selesai</span>}</td>
+                                        <td className='px-2 py-2 border' align='center'>{item.keterangan == 'paket belum' ? <span className='badge badge-sm badge-warning opacity-80'>Paket Belum</span> : <span className='badge badge-sm badge-success'>Paket Selesai</span>}</td>
                                         <td className='px-2 py-2 border' align='center'>
                                             <div>
-                                                <div className="tooltip" data-tip="Lihat MK Paket"><button className="btn btn-xs btn-circle text-white btn-blue mr-1" onClick={() => getViewKrs(kodeTahun, kodeProdi, kodeSemester)} title='Lihat MK Paket'><FaSearch /></button></div>
-                                                {item.keterangan == 'paket selesai' || item.jumlahTotalMahasiswa == 0 ? <div className="tooltip"><button className="btn btn-disabled btn-orange btn-xs btn-circle text-white" tabIndex="-1" role="button" aria-disabled="true"><FaTimes /></button></div> : <div className="tooltip" data-tip="Paketkan Mahasiswa"><button className="btn btn-xs btn-circle text-white btn-default" onClick={() => paketkan(kodeTahun, kodeProdi, kodeSemester)} title='Paketkan Mahasiswa'><FaCheck /></button></div>}
+                                                <div className="tooltip" data-tip="Lihat MK Paket"><button className="btn btn-xs btn-circle text-white btn-info mr-1" onClick={() => getViewKrs(kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi)} title='Lihat MK Paket'><FaSearch /></button></div>
+                                                {item.keterangan == 'paket selesai' || item.jumlahTotalMahasiswa == 0 ? <div className="tooltip"><button className="btn btn-error btn-xs btn-circle text-white" tabIndex="-1" role="button" aria-disabled="true"><FaTimes /></button></div> : <div className="tooltip" data-tip="Paketkan Mahasiswa"><button className="btn btn-xs btn-circle text-white btn-success" onClick={() => paketkan(kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi)} title='Paketkan Mahasiswa'><FaCheck /></button></div>}
                                             </div>
                                         </td>
                                     </tr>
