@@ -186,8 +186,10 @@ const ListSebaran = () => {
                     })
                 )
             }
-            Promise.all(promises).then(() => setSebaran(sebar))
-            Promise.all(promises).then(() => setSatuan(sksnya))
+            if (smt.length != 0) {
+                Promise.all(promises).then(() => setSebaran(sebar))
+                Promise.all(promises).then(() => setSatuan(sksnya))
+            }
         }
     }
 
@@ -636,7 +638,7 @@ const ListSebaran = () => {
                                             {Sebaran != 0 ? Sebaran[1].map((item, no) => (
                                                 <tr key={no} className='bg-white border text-gray-700' >
                                                     <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{no + 1}</th>
-                                                    <td className='px-2 py-2 border' align='center'>{item.semesters[0].code_semester}</td>
+                                                    <td className='px-2 py-2 border' align='center'>{item.code_mata_kuliah}</td>
                                                     <td className='px-2 py-2 border'>{item.nama_mata_kuliah}</td>
                                                     <td className='px-2 py-2 border' align='center'>{item.sks}</td>
                                                     <td className='px-2 py-2 border' align='center'>
