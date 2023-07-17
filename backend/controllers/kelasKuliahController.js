@@ -92,7 +92,7 @@ module.exports = {
                 where: { status: "aktif" }
             }],
             attributes: [
-                ['code_kelas', 'code'],
+                'kapasitas', 'nama_kelas', 'code_mata_kuliah', ['code_kelas', 'code'],
                 [Sequelize.literal('(select count(*) from tb_kelas_detail where code_kelas = code)'), 'jumlahMhs']
             ],
             where: {
