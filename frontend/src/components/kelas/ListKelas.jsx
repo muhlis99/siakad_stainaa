@@ -205,7 +205,8 @@ const ListKelas = () => {
                     code_semester: kodesmt,
                     nama_kelas: kelasnya,
                     kapasitas: kapasitas,
-                    jumlahPeserta: jumMhs
+                    jumlahPeserta: jumMhs,
+                    jenkel: jenisKelamin
                 }).then(function (response) {
                     document.getElementById('my-modal').checked = false
                     Swal.fire({
@@ -223,7 +224,7 @@ const ListKelas = () => {
         } catch (error) {
             if (error.response) {
                 Swal.fire({
-                    title: error.response.data.errors[0].msg,
+                    title: error.response.data.message,
                     icon: "error"
                 })
             }
