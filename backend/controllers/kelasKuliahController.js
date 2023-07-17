@@ -64,7 +64,6 @@ module.exports = {
 
     getKelasByMakul: async (req, res, next) => {
         const { codeThnAjr, codeSmt, jnjPen, codeFks, codePrd, codeMakul } = req.params
-
         await kelasModel.findAll({
             include: [{
                 attributes: ['code_jenjang_pendidikan'],
@@ -116,6 +115,33 @@ module.exports = {
             catch(err => {
                 console.log(err);
             })
+    },
+
+    jumlahMhsByKelas: async (req, res, next) => {
+        const { codeKls } = req.params
+        await kelasDetailKuliahModel.count({
+            include: [{
+                model: kelasModel,
+                where: {
+                    status: "aktif"
+                }
+            }],
+            where: {
+                code_kelas: codeKls,
+                status: "aktif"
+            }
+        }).then(all => {
+            if (!all) {
+                return res.status(404).json({
+                    message: "jumlah mahasiswa perkelas",
+                    data: 0
+                })
+            }
+            res.status(201).json({
+                message: "jumlah mahasiswa perkelas",
+                data: all
+            })
+        })
     },
 
     getKelasById: async (req, res, next) => {
