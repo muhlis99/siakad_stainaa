@@ -13,6 +13,7 @@ const ListKelas = () => {
     const [Makul, setMakul] = useState([])
     const [KodeMakul, setKodeMakul] = useState([])
     const [DataKelas, setDataKelas] = useState([])
+    const [jumlahMhsKls, setJumlahMhsKls] = useState([])
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
@@ -82,6 +83,10 @@ const ListKelas = () => {
         getDataArray()
     }, [sampai])
 
+    useEffect(() => {
+        getDataJumlah()
+    }, [DataKelas])
+
     const getJenjang = async () => {
         const response = await axios.get('v1/jenjangPendidikan/all')
         setJenjang(response.data.data)
@@ -139,11 +144,27 @@ const ListKelas = () => {
                 const t = await axios.get('v1/kelasKuliah/getKelasByMakul/' + kodeTahun + '/' + kodeSemester + '/' + kodeJenjang + '/' + kodeFakultas + '/' + kodeProdi + '/' + KodeMakul[i]).then(response => {
                     kelass.push(response.data.data)
                 })
+                // t.map(ss => {
+                //     console.log(ss);
+                // })
+
                 promises.push(t)
+
             }
             if (KodeMakul.length != 0) {
                 Promise.all(promises).then(() => setDataKelas(kelass))
             }
+            // let jumlah = []
+            // let promisesis = []
+            // kelass.map(all => {
+            //     const f = axios.get('v1/kelasKuliah/jumlahMhsByKelas/' + all[0].code_kelas).then(response => {
+            //         kelass.push(response.data.data)
+            //     })
+            // promisesis.push(f)
+            // })
+            // console.log(kelass);
+            // Promise.all(promisesis).then(() => setJumlahMhsKls(jumlah))
+
         }
     }
 
@@ -231,36 +252,11 @@ const ListKelas = () => {
         }
     }
 
-    const hapusKelas = (e, f) => {
-        Swal.fire({
-            title: "Hapus data ini?",
-            text: "Anda tidak dapat mengembalikan ini",
-            icon: "question",
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                try {
-                    axios.put(
-                        `/v1/kelasKuliah/delete/${e}/${e}`
-                    ).then((response) => {
-                        Swal.fire({
-                            title: "Terhapus",
-                            text: response.data.message,
-                            icon: "success"
-                        }).then(() => {
-                            getMataKuliah()
-                        })
-                    })
+    const getDataJumlah = () => {
+        for (let i = 0; i < DataKelas.length; i++) {
+            console.log(DataKelas[i].kodeKelas);
+        }
 
-                } catch (error) {
-
-                }
-            }
-        })
     }
 
     return (
@@ -449,7 +445,7 @@ const ListKelas = () => {
                                             <span>{kls.code_mata_kuliah} | {kls.nama_mata_kuliah} | SKS {kls.sks}</span>
                                         </div>
                                         <div className="collapse-content grid gap-1 px-0 py-1 bg-base-100">
-                                            {DataKelas != 0 ? DataKelas[index].map((item) => (
+                                            {DataKelas != 0 ? DataKelas[index].map((item, o) => (
                                                 <div key={item.id_kelas} className="grid grid-cols-4 gap-2 px-4 py-2 bg-base-200">
                                                     <div className='flex gap-2' title={`Kelas ${item.nama_kelas}`}>
                                                         <span className='my-auto text-md'><FaHotel /></span><span className='my-auto'>{item.nama_kelas}</span>
@@ -458,12 +454,14 @@ const ListKelas = () => {
                                                         <span className='my-auto text-md'><FaCouch /></span><span className='my-auto'>{item.kapasitas}</span>
                                                     </div>
                                                     <div className='flex gap-2 justify-center' title={`Jumlah MHS ${item.kapasitas}`}>
-                                                        <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.kapasitas}</span>
+                                                        <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{ }</span>
                                                     </div>
                                                     <div>
                                                         <Link to={`/kelas/detail/${item.code_kelas}`} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link>
                                                     </div>
                                                 </div>
+
+
                                             )) : ""}
                                         </div>
                                     </div>

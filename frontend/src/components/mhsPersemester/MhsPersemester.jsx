@@ -163,10 +163,6 @@ const MhsPersemester = () => {
                                     <option key={index} disabled hidden value={item.code_semester}>Semester {item.semester}</option>
                                 )
                             })}
-
-                            {/* {Semester.map((item) => (
-                                
-                            ))} */}
                         </select>
                         <button className='btn btn-sm btn-default w-full'><FaSave /><span className="ml-1">simpan</span></button>
                     </form>

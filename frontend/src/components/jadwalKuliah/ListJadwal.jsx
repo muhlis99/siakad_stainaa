@@ -40,13 +40,6 @@ const ListJadwal = () => {
         getDataKelas()
     }, [KodeMakul])
 
-    // useEffect(() => {
-    //     getKodeKelas()
-    // }, [Makul, DataKelas])
-
-    useEffect(() => {
-        getDataJadwal()
-    }, [kodeFakultas, kodeProdi, kodeSemester, kodeTahun, KodeKelas, KodeMakul])
 
     const getFakultas = async () => {
         const response = await axios.get('v1/fakultas/all')
@@ -100,34 +93,6 @@ const ListJadwal = () => {
         }
     }
 
-    // const getKodeKelas = () => {
-    //     if (DataKelas != 0) {
-    //         var u = Makul.map((items, index) => (
-    //             DataKelas[index].map(item => ({
-    //                 kodeKls: item.code_kelas
-    //             }))
-    //         ))
-    //         setKodeKelas(u)
-    //         // console.log(u.kodeKls)
-    //     }
-    // }
-
-    const getDataJadwal = async () => {
-        // let jadwal = []
-        // let promises = []
-        // for (let i = 0; i < KodeKelas.length; i++) {
-        //     KodeKelas[i].map((item, index) => (
-        //         promises.push(
-        //             jadwal.push(KodeKelas[i].KodeKls[index])
-        //         )
-        //     ))
-
-        // }
-        // if (KodeKelas.length != 0) {
-        //     Promise.all(promises).then(() => console.log(jadwal))
-        // }
-    }
-
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
@@ -136,7 +101,12 @@ const ListJadwal = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md">
                     <div className="card-body p-4">
-                        <div className="grid grid-cols-4 gap-2">
+                        <div className="grid grid-cols-5 gap-2">
+                            <div>
+                                <select className="select select-sm select-bordered w-full">
+                                    <option value="">Jenjang Pendidikan</option>
+                                </select>
+                            </div>
                             <div>
                                 <select className="select select-bordered select-sm w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
                                     <option value="">Fakultas</option>
