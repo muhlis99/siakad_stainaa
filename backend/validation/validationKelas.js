@@ -13,7 +13,4 @@ exports.validationKelas = [
     check('code_prodi')
         .notEmpty()
         .withMessage('prodi tidak boleh kosong'),
-    check('dosen_wali')
-        .notEmpty()
-        .withMessage('dosen wali tidak boleh kosong'),
 ]
