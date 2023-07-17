@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { FaPlus, FaUsers, FaHotel, FaInfo, FaTimes, FaSave, FaTrash } from "react-icons/fa"
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { Link, useLocation } from 'react-router-dom'
 
 const ListKelas = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -19,18 +20,35 @@ const ListKelas = () => {
     const [kodeSemester, setKodeSemester] = useState("")
     const [kodesmt, setKodeSmt] = useState("")
     const [jumMhs, setJumMhs] = useState("")
-    const [tambah, setTambah] = useState("")
     const [sampai, setSampai] = useState("")
     const [kapasitas, setKapasitas] = useState("")
     const [kelasnya, setKelasnya] = useState([])
+    const [jenisKelamin, setJenisKelamin] = useState("")
     const [title, setTitle] = useState("")
+    const location = useLocation()
 
     useEffect(() => {
         getJenjang()
         getTahunAjaran()
-        getSemester()
         getKodeMakul()
     }, [])
+
+    useEffect(() => {
+        try {
+            const getkode = () => {
+                if (location.state != null) {
+                    setKodeFakultas(location.state.fak)
+                    setKodeJenjang(location.state.jen)
+                    setKodeProdi(location.state.prod)
+                    setKodeTahun(location.state.thn)
+                    setKodeSemester(location.state.sem)
+                }
+            }
+            getkode()
+        } catch (error) {
+
+        }
+    }, [location])
 
     useEffect(() => {
         getFakultas()
@@ -39,6 +57,10 @@ const ListKelas = () => {
     useEffect(() => {
         getProdi()
     }, [kodeFakultas])
+
+    useEffect(() => {
+        getSemester()
+    }, [kodeTahun])
 
     useEffect(() => {
         getMataKuliah()
@@ -54,7 +76,7 @@ const ListKelas = () => {
 
     useEffect(() => {
         getJumlahMhs()
-    }, [kodeFakultas, kodeJenjang, kodeProdi, kodesmt, kodeTahun])
+    }, [kodeFakultas, kodeJenjang, kodeProdi, kodesmt, kodeTahun, jenisKelamin])
 
     useEffect(() => {
         getDataArray()
@@ -85,39 +107,39 @@ const ListKelas = () => {
     }
 
     const getSemester = async () => {
-        const response = await axios.get(`v1/semester/all`)
-        setSemester(response.data.data)
+        if (kodeTahun != 0) {
+            const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahun}`)
+            setSemester(response.data.data)
+        }
     }
 
     const getMataKuliah = async () => {
-        if (kodeFakultas != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0) {
-            const response = await axios.get(`v1/kelasKuliah/allMatakuliah/${kodeTahun}/${kodeSemester}/${kodeFakultas}/${kodeProdi}`)
+        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0) {
+            const response = await axios.get(`v1/kelasKuliah/allMatakuliah/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
             setDataKelas([])
             setMakul(response.data.data)
             setTitle("")
         } else {
-            setTitle('Untuk melihat data kelas kuliah, silakan isi form di atas!')
             setMakul([])
         }
     }
 
     const getKodeMakul = () => {
-        var i = Makul.map(item => ({
-            kode: item.code_mata_kuliah
-        }))
+        var i = Makul.map(item => (
+            item.code_mata_kuliah
+        ))
         setKodeMakul(i)
     }
 
     const getDataKelas = async () => {
-        if (KodeMakul.length != 0) {
+        if (KodeMakul.length > 0) {
             let kelass = []
             let promises = []
             for (let i = 0; i < KodeMakul.length; i++) {
-                promises.push(
-                    axios.get('v1/kelasKuliah/getKelasByMakul/' + KodeMakul[i].kode).then(response => {
-                        kelass.push(response.data.data)
-                    })
-                )
+                const t = await axios.get('v1/kelasKuliah/getKelasByMakul/' + kodeTahun + '/' + kodeSemester + '/' + kodeJenjang + '/' + kodeFakultas + '/' + kodeProdi + '/' + KodeMakul[i]).then(response => {
+                    kelass.push(response.data.data)
+                })
+                promises.push(t)
             }
             if (KodeMakul.length != 0) {
                 Promise.all(promises).then(() => setDataKelas(kelass))
@@ -126,8 +148,8 @@ const ListKelas = () => {
     }
 
     const getJumlahMhs = async () => {
-        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodesmt != 0 & kodeTahun != 0) {
-            const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodeTahun}/${kodesmt}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodesmt != 0 & kodeTahun != 0 & jenisKelamin != 0) {
+            const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodeTahun}/${kodesmt}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${jenisKelamin}`)
             setJumMhs(response.data.data)
         } else {
             setJumMhs("")
@@ -182,7 +204,8 @@ const ListKelas = () => {
                     code_tahun_ajaran: kodeTahun,
                     code_semester: kodesmt,
                     nama_kelas: kelasnya,
-                    kapasitas: kapasitas
+                    kapasitas: kapasitas,
+                    jumlahPeserta: jumMhs
                 }).then(function (response) {
                     document.getElementById('my-modal').checked = false
                     Swal.fire({
@@ -193,6 +216,7 @@ const ListKelas = () => {
                         setSampai("")
                         setJumMhs("")
                         getMataKuliah()
+                        getDataKelas()
                     });
                 })
             }
@@ -243,10 +267,10 @@ const ListKelas = () => {
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box w-11/12 max-w-2xl rounded-md scrollbar-thin scrollbar-thumb-emerald-800 scrollbar-track-gray-100">
-                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
+                    <button className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
                     <div className="pt-4 pb-1 px-0">
                         <form onSubmit={simpanKls}>
-                            <div className="grid lg:grid-cols-4 gap-1">
+                            <div className="grid lg:grid-cols-2 gap-1">
                                 <div>
                                     <label className="label">
                                         <span className="text-base label-text">Tahun Ajaran</span>
@@ -302,39 +326,44 @@ const ListKelas = () => {
                                         ))}
                                     </select>
                                 </div>
-                                <div className='col-span-2'>
-                                    <div className="grid grid-cols-3 gap-1">
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">Jumlah Mhs</span>
-                                            </label>
-                                            <input type="text" disabled placeholder='Jumlah Mhs' value={jumMhs} className="input input-sm input-bordered w-full" />
-                                        </div>
-                                        <div className='col-span-2'>
-                                            <label className="label">
-                                                <span className="text-base label-text">Nama Kelas</span>
-                                            </label>
-                                            <div className="grid grid-cols-2 gap-1">
-                                                <div>
-                                                    <input type="text" value="A" disabled className="input input-sm input-bordered w-full" />
-                                                </div>
-                                                <div>
-                                                    <select className='select select-sm select-bordered w-full' value={sampai} onChange={(e) => setSampai(e.target.value)}>
-                                                        <option value="">Sampai</option>
-                                                        {abjadnya}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Jenis Kelamin</span>
+                                    </label>
+                                    <select className="select select-sm select-bordered w-full" value={jenisKelamin} onChange={(e) => setJenisKelamin(e.target.value)}>
+                                        <option value="">Jenis Kelamin</option>
+                                        <option value="l">Laki-Laki</option>
+                                        <option value="p">Perempuan</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label className="label">
-                                        <span className="text-base label-text">Kapasitas</span>
+                                        <span className="text-base label-text">Jumlah Mahasiswa</span>
+                                    </label>
+                                    <input type="text" disabled placeholder='Jumlah Mhs' value={jumMhs} className="input input-sm input-bordered w-full" />
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Dari Kelas</span>
+                                    </label>
+                                    <input type="text" value="A" disabled className="input input-sm input-bordered w-full" />
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Sampai Kelas</span>
+                                    </label>
+                                    <select className='select select-sm select-bordered w-full' value={sampai} onChange={(e) => setSampai(e.target.value)}>
+                                        <option value="">Sampai</option>
+                                        {abjadnya}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Kapasitas Kelas</span>
                                     </label>
                                     <input type="text" placeholder='Diisi dengan angka' className="input input-sm input-bordered w-full" value={kapasitas} onChange={(e) => setKapasitas(e.target.value)} />
                                 </div>
-                                <div className='col-span-4 mt-3'>
+                                <div className='col-span-2 mt-3'>
                                     <button className='btn btn-default btn-sm float-right'><FaSave /> <span className="ml-1">simpan</span></button>
                                 </div>
                             </div>
@@ -349,8 +378,11 @@ const ListKelas = () => {
                 <div className="card bg-base-100 card-bordered shadow-md">
                     <div className="card-body p-4">
                         <div className='mb-2'>
-                            <div className="grid grid-cols-5 gap-2">
+                            <div className="grid grid-cols-3 gap-2">
                                 <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Jenjang Pendidikan</span>
+                                    </label>
                                     <select className="select select-bordered select-sm w-full" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
                                         <option value="">Jenjang Pendidikan</option>
                                         {Jenjang.map((item) => (
@@ -359,6 +391,9 @@ const ListKelas = () => {
                                     </select>
                                 </div>
                                 <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Fakultas</span>
+                                    </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
                                         <option value="">Fakultas</option>
                                         {Fakultas.map((item) => (
@@ -367,6 +402,9 @@ const ListKelas = () => {
                                     </select>
                                 </div>
                                 <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Prodi</span>
+                                    </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
                                         <option value="">Prodi</option>
                                         {Prodi.map((item) => (
@@ -375,6 +413,9 @@ const ListKelas = () => {
                                     </select>
                                 </div>
                                 <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Tahun Ajaran</span>
+                                    </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
                                         <option value="">Tahun Ajaran</option>
                                         {Tahun.map((item) => (
@@ -383,6 +424,9 @@ const ListKelas = () => {
                                     </select>
                                 </div>
                                 <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Semester</span>
+                                    </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
                                         <option value="">Semester</option>
                                         {Semester.map((item) => (
@@ -390,12 +434,13 @@ const ListKelas = () => {
                                         ))}
                                     </select>
                                 </div>
+                                <div className='mt-2'>
+                                    <button className='btn btn-sm btn-primary float-right mt-8' onClick={modalOpen}><FaPlus /><span>tambah</span></button>
+                                </div>
                             </div>
                         </div>
                         <div className='border-t-2 border-t-[#2D7F5F] grid gap-2'>
-                            <div className='mt-2'><button className='btn btn-sm btn-default float-right' onClick={modalOpen}><FaPlus /><span className="ml-1">tambah</span></button></div>
-                            {title && <div className="italic text-center text-sm mt-4"><span className='text-red-700'>{title}</span></div>}
-                            <div className='mt-1'>
+                            <div className='mt-2'>
                                 {Makul.map((kls, index) => (
                                     <div key={kls.id_mata_kuliah} className="collapse bg-[#2D7F5F] pb-0 rounded-lg">
                                         <input type="checkbox" checked className='p-0 min-h-0' readOnly />
@@ -405,10 +450,14 @@ const ListKelas = () => {
                                         <div className="collapse-content grid gap-1 px-0 py-1 bg-base-100">
                                             {DataKelas != 0 ? DataKelas[index].map((item) => (
                                                 <div key={item.id_kelas} className="grid grid-cols-3 gap-2 px-4 py-2 bg-base-200">
-                                                    <button className='btn btn-sm btn-ghost pointer-events-none w-14'><FaHotel /> <span className="ml-1">{item.nama_kelas}</span></button>
-                                                    <button className='btn btn-sm btn-ghost pointer-events-none'><FaUsers /> <span className="ml-1">{item.kapasitas}</span></button>
+                                                    <div className='flex gap-2'>
+                                                        <span className='my-auto text-md'><FaHotel /></span><span className='my-auto font-bold'>{item.nama_kelas}</span>
+                                                    </div>
+                                                    <div className='flex gap-2 justify-center'>
+                                                        {/* <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.code_mata_kuliah}</span> */}
+                                                    </div>
                                                     <div>
-                                                        <button className='btn btn-xs btn-blue btn-circle float-right' title='Hapus'><FaInfo /></button>
+                                                        <Link to={`/kelas/detail/${item.code_kelas}`} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link>
                                                     </div>
                                                 </div>
                                             )) : ""}
