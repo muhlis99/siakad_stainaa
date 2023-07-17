@@ -171,15 +171,12 @@ module.exports = {
                     model: kelasModel,
                     include: [
                         {
-                            attributes: ['code_jenjang_pendidikan'],
                             model: jenjangPendidikanModel,
                             where: { status: "aktif" }
                         }, {
-                            attributes: ['code_fakultas'],
                             model: fakultasModel,
                             where: { status: "aktif" }
                         }, {
-                            attributes: ['code_prodi'],
                             model: prodiModel,
                             where: { status: "aktif" }
                         }],
