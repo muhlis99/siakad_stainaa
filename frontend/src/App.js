@@ -36,6 +36,7 @@ import EditMataKuliah from "./pages/mataKuliah/EditMataKuliah"
 import Sebaran from "./pages/sebaranMakul/Sebaran"
 import KrsList from "./pages/krs/KrsList"
 import Kelas from "./pages/kelas/Kelas"
+import DetailKelas from "./pages/kelas/DetailKelas"
 import Jadwal from "./pages/jadwalKuliah/Jadwal"
 import AturJadwal from "./pages/jadwalKuliah/AturJadwal"
 import DetailJadwalKuliah from "./pages/jadwalKuliah/DetailJadwalKuliah"
@@ -90,6 +91,7 @@ function App() {
           <Route path="/sebaran" element={<Sebaran />} />
           <Route path="/krs" element={<KrsList />} />
           <Route path="/kelas" element={<Kelas />} />
+          <Route path="/kelas/detail/:kodeKls" element={<DetailKelas />} />
           <Route path="/jadwalkuliah" element={<Jadwal />} />
           <Route path="/aturjadwal/:idKls" element={<AturJadwal />} />
           <Route path="/detailjadwal/:idKls" element={<DetailJadwalKuliah />} />
