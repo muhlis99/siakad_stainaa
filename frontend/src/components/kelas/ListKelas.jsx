@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { FaPlus, FaUsers, FaHotel, FaInfo, FaTimes, FaSave, FaTrash } from "react-icons/fa"
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const ListKelas = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -25,12 +25,30 @@ const ListKelas = () => {
     const [kelasnya, setKelasnya] = useState([])
     const [jenisKelamin, setJenisKelamin] = useState("")
     const [title, setTitle] = useState("")
+    const location = useLocation()
 
     useEffect(() => {
         getJenjang()
         getTahunAjaran()
         getKodeMakul()
     }, [])
+
+    useEffect(() => {
+        try {
+            const getkode = () => {
+                if (location.state != null) {
+                    setKodeFakultas(location.state.fak)
+                    setKodeJenjang(location.state.jen)
+                    setKodeProdi(location.state.prod)
+                    setKodeTahun(location.state.thn)
+                    setKodeSemester(location.state.sem)
+                }
+            }
+            getkode()
+        } catch (error) {
+
+        }
+    }, [location])
 
     useEffect(() => {
         getFakultas()
@@ -58,7 +76,7 @@ const ListKelas = () => {
 
     useEffect(() => {
         getJumlahMhs()
-    }, [kodeFakultas, kodeJenjang, kodeProdi, kodesmt, kodeTahun])
+    }, [kodeFakultas, kodeJenjang, kodeProdi, kodesmt, kodeTahun, jenisKelamin])
 
     useEffect(() => {
         getDataArray()
@@ -114,15 +132,14 @@ const ListKelas = () => {
     }
 
     const getDataKelas = async () => {
-        if (KodeMakul.length != 0) {
+        if (KodeMakul.length > 0) {
             let kelass = []
             let promises = []
             for (let i = 0; i < KodeMakul.length; i++) {
-                promises.push(
-                    axios.get('v1/kelasKuliah/getKelasByMakul/' + kodeTahun + '/' + kodeSemester + '/' + kodeJenjang + '/' + kodeFakultas + '/' + kodeProdi + '/' + KodeMakul[i]).then(response => {
-                        kelass.push(response.data.data)
-                    })
-                )
+                const t = await axios.get('v1/kelasKuliah/getKelasByMakul/' + kodeTahun + '/' + kodeSemester + '/' + kodeJenjang + '/' + kodeFakultas + '/' + kodeProdi + '/' + KodeMakul[i]).then(response => {
+                    kelass.push(response.data.data)
+                })
+                promises.push(t)
             }
             if (KodeMakul.length != 0) {
                 Promise.all(promises).then(() => setDataKelas(kelass))
@@ -131,8 +148,8 @@ const ListKelas = () => {
     }
 
     const getJumlahMhs = async () => {
-        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodesmt != 0 & kodeTahun != 0) {
-            const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodeTahun}/${kodesmt}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodesmt != 0 & kodeTahun != 0 & jenisKelamin != 0) {
+            const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodeTahun}/${kodesmt}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${jenisKelamin}`)
             setJumMhs(response.data.data)
         } else {
             setJumMhs("")
@@ -313,7 +330,7 @@ const ListKelas = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Jenis Kelamin</span>
                                     </label>
-                                    <select className="select select-sm select-bordered w-full" >
+                                    <select className="select select-sm select-bordered w-full" value={jenisKelamin} onChange={(e) => setJenisKelamin(e.target.value)}>
                                         <option value="">Jenis Kelamin</option>
                                         <option value="l">Laki-Laki</option>
                                         <option value="p">Perempuan</option>
@@ -437,7 +454,7 @@ const ListKelas = () => {
                                                         <span className='my-auto text-md'><FaHotel /></span><span className='my-auto font-bold'>{item.nama_kelas}</span>
                                                     </div>
                                                     <div className='flex gap-2 justify-center'>
-                                                        <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.code_mata_kuliah}</span>
+                                                        {/* <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.code_mata_kuliah}</span> */}
                                                     </div>
                                                     <div>
                                                         <Link to={`/kelas/detail/${item.code_kelas}`} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link>
