@@ -83,7 +83,6 @@ const ListJadwal = () => {
             kode: item.code_mata_kuliah
         }))
         setKodeMakul(i)
-        console.log(i);
     }
 
     const getDataKelas = async () => {
@@ -98,7 +97,6 @@ const ListJadwal = () => {
                 )
             }
             Promise.all(promises).then(() => setDataKelas(kelass))
-            Promise.all(promises).then(() => console.log(kelass))
         }
     }
 
