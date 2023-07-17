@@ -10,6 +10,7 @@ const { Op } = require('sequelize')
 const kelasKuliahModel = require('../models/kelasKuliahModel.js')
 const kelasDetailKuliahModel = require('../models/kelasDetailKuliahModel.js')
 const tahunAjaranModel = require('../models/tahunAjaranModel.js')
+const mahasiswaModel = require('../models/mahasiswaModel.js')
 
 module.exports = {
     getAllMatakuliah: async (req, res, next) => {
@@ -165,10 +166,30 @@ module.exports = {
     getMhsByKelas: async (req, res, next) => {
         const { codeKls } = req.params
         await kelasDetailKuliahModel.findAll({
-            include: [{
-                model: kelasModel,
-                where: { status: "aktif" }
-            }],
+            include: [
+                {
+                    model: kelasModel,
+                    include: [
+                        {
+                            attributes: ['code_jenjang_pendidikan'],
+                            model: jenjangPendidikanModel,
+                            where: { status: "aktif" }
+                        }, {
+                            attributes: ['code_fakultas'],
+                            model: fakultasModel,
+                            where: { status: "aktif" }
+                        }, {
+                            attributes: ['code_prodi'],
+                            model: prodiModel,
+                            where: { status: "aktif" }
+                        }],
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ["nim", "nama"],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                }
+            ],
             where: {
                 code_kelas: codeKls,
                 status: "aktif"
