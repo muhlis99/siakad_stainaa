@@ -207,7 +207,7 @@ module.exports = {
     },
 
     jumlahMhs: async (req, res, next) => {
-        const { thnAjr, smt, jnjPen, fkts, prd } = req.params
+        const { thnAjr, smt, jnjPen, fkts, prd, jenkel } = req.params
         await historyMahasiswaModel.findAndCountAll({
             include: [{
                 model: jenjangPendidikanModel,
@@ -224,6 +224,12 @@ module.exports = {
             }, {
                 model: semesterModel,
                 where: { status: "aktif" }
+            }, {
+                model: mahasiswaModel,
+                where: {
+                    jenis_kelamin: jenkel,
+                    status: "aktif"
+                }
             }],
             where: {
                 code_jenjang_pendidikan: jnjPen,
@@ -245,7 +251,7 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { code_jenjang_pendidikan, code_fakultas, code_tahun_ajaran,
-            code_prodi, code_semester, nama_kelas, kapasitas, jumlahPeserta } = req.body
+            code_prodi, code_semester, nama_kelas, kapasitas, jumlahPeserta, jenkel } = req.body
 
         const dataDuplicate = await kelasModel.findOne({
             include: [{
@@ -318,7 +324,7 @@ module.exports = {
             nama_kelas.map(el => {
                 let randomNumber = Math.floor(10 + Math.random() * 90)
                 let data = {
-                    code_kelas: code_prodi + randomNumber + nmKelas[el],
+                    code_kelas: jenkel + code_prodi + randomNumber + nmKelas[el],
                     nama_kelas: nmKelas[el],
                     kapasitas: kapasitas,
                     code_jenjang_pendidikan: code_jenjang_pendidikan,
@@ -332,10 +338,36 @@ module.exports = {
                 kelasModel.bulkCreate([data])
                     .then(all => {
                         all.map(elment => {
-                            let currentPage = parseInt(el) // nomor page 
-                            let perPage = parseInt(jumlahPeserta) // jumlah Peserta kelas
+                            let currentPage = parseInt(el)
+                            let perPage = parseInt(jumlahPeserta)
                             let offset = (currentPage - 1) * perPage
                             return krsModel.findAll({
+                                include: [
+                                    {
+                                        model: jenjangPendidikanModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: fakultasModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: prodiModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: mataKuliahModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: tahunAjaranModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: semesterModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: mahasiswaModel,
+                                        where: {
+                                            jenis_kelamin: jenkel,
+                                            status: "aktif"
+                                        }
+                                    }],
                                 where: {
                                     code_jenjang_pendidikan: code_jenjang_pendidikan,
                                     code_fakultas: code_fakultas,
@@ -352,7 +384,7 @@ module.exports = {
                                     let random = Math.floor(100 + Math.random() * 900)
                                     let datas = {
                                         code_kelas: elment.code_kelas,
-                                        code_kelas_detail: random,
+                                        code_kelas_detail: jenkel + random,
                                         nim: p.nim,
                                         status: "aktif"
                                     }
@@ -370,50 +402,7 @@ module.exports = {
             })
         }
 
-        // const createData = makul.map(M => {
-        //     const Mkul = M.code_mata_kuliah
-        //     nama_kelas.map(nmkls => {
-        //         let randomNumber = Math.floor(100 + Math.random() * 900)
-        //         let currentPage = parseInt(nmkls) // nama kelas 
-        //         let perPage = parseInt(kapasitas) // kapasitas
-        //         let offset = (currentPage - 1) * perPage
-        //         codeNim = krsModel.findAll({
-        //             include: [{
-        //                 model: mataKuliahModel,
-        //                 where: {
-        //                     code_semester: code_semester,
-        //                     code_fakultas: code_fakultas,
-        //                     code_prodi: code_prodi,
-        //                     code_tahun_ajaran: code_tahun_ajaran,
-        //                     status_makul: "paket"
-        //                 }
-        //             }],
-        //             where: {
-        //                 status: "aktif"
-        //             },
-        //             offset: offset,
-        //             limit: perPage,
-        //             group: ['nim']
-        //         }).then(al => {
-        //             return Promise.all(al.map(p => {
-        //                 let data = {
-        //                     code_kelas: randomNumber + nmKelas[nmkls],
-        //                     nama_kelas: nmKelas[nmkls],
-        //                     nim: p.nim,
-        //                     kapasitas: kapasitas,
-        //                     code_jenjang_pendidikan: code_jenjang_pendidikan,
-        //                     code_fakultas: code_fakultas,
-        //                     code_prodi: code_prodi,
-        //                     code_mata_kuliah: Mkul,
-        //                     code_semester: code_semester,
-        //                     code_tahun_ajaran: code_tahun_ajaran,
-        //                     status: "aktif"
-        //                 }
-        //                 kelasModel.bulkCreate([data])
-        //             }))
-        //         })
-        //     })
-        // })
+
     },
 
 
