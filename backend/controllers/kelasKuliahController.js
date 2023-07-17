@@ -185,7 +185,7 @@ module.exports = {
                         }],
                     where: { status: "aktif" }
                 }, {
-                    attributes: ["nim", "nama"],
+                    attributes: ["nim", "nama", "jenis_kelamin"],
                     model: mahasiswaModel,
                     where: { status: "aktif" }
                 }
