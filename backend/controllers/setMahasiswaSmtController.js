@@ -133,19 +133,6 @@ module.exports = {
 
         if (dataMhsSMtNew.length === 0) return res.status(401).json({ message: "data mahasiswa semester tidak ditemukan" })
 
-        // const validasiDataNew = dataMhsSMtNew.map(i => {
-        //     historyMahasiswa.findOne({
-        //         where: {
-        //             nim: i.nim,
-        //             code_semester: i.code_semester,
-        //             code_jenjang_pendidikan: i.code_jenjang_pendidikan,
-        //             code_fakultas: i.code_fakultas,
-        //             code_prodi: i.code_prodi,
-        //             status: "aktif"
-        //         }
-        //     })
-        // })
-        // if (!validasiDataNew) return res.status(401).json({ message: "data mahasiswa semester sudah ada" })
 
         const updateData = await historyMahasiswa.bulkCreate(dataUpdateMhsSMtOld, {
             updateOnDuplicate: ["status"],
