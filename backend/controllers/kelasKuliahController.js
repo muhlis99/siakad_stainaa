@@ -6,11 +6,12 @@ const mataKuliahModel = require('../models/mataKuliahModel.js')
 const historyMahasiswaModel = require('../models/historyMahasiswaModel.js')
 const semesterModel = require('../models/semesterModel.js')
 const krsModel = require('../models/krsModel.js')
-const { Op } = require('sequelize')
 const kelasKuliahModel = require('../models/kelasKuliahModel.js')
 const kelasDetailKuliahModel = require('../models/kelasDetailKuliahModel.js')
 const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
+const { Op, QueryTypes, Sequelize, literal } = require('sequelize')
+
 
 module.exports = {
     getAllMatakuliah: async (req, res, next) => {
@@ -90,6 +91,10 @@ module.exports = {
                 model: semesterModel,
                 where: { status: "aktif" }
             }],
+            attributes: [
+                'kapasitas', 'nama_kelas', 'code_mata_kuliah', ['code_kelas', 'code'],
+                [Sequelize.literal('(select count(*) from tb_kelas_detail where code_kelas = code)'), 'jumlahMhs']
+            ],
             where: {
                 code_tahun_ajaran: codeThnAjr,
                 code_semester: codeSmt,
@@ -115,33 +120,6 @@ module.exports = {
             catch(err => {
                 console.log(err);
             })
-    },
-
-    jumlahMhsByKelas: async (req, res, next) => {
-        const { codeKls } = req.params
-        await kelasDetailKuliahModel.count({
-            include: [{
-                model: kelasModel,
-                where: {
-                    status: "aktif"
-                }
-            }],
-            where: {
-                code_kelas: codeKls,
-                status: "aktif"
-            }
-        }).then(all => {
-            if (!all) {
-                return res.status(404).json({
-                    message: "jumlah mahasiswa perkelas",
-                    data: 0
-                })
-            }
-            res.status(201).json({
-                message: "jumlah mahasiswa perkelas",
-                data: all
-            })
-        })
     },
 
     getKelasById: async (req, res, next) => {
