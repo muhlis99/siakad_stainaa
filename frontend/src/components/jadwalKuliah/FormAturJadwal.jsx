@@ -77,7 +77,6 @@ const FormAturJadwal = () => {
             setKodeRuang(response.data.data.code_ruang)
             setPesan(response.data.message)
             setIdJadwal(response.data.data.id_jadwal_kuliah)
-            console.log(response);
         }
 
     }

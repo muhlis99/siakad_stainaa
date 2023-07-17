@@ -47,7 +47,6 @@ const DetailJadwal = () => {
                 setKodeSemester(response.data.data.code_semester)
                 setKodeTahun(response.data.data.code_tahun_ajaran)
                 setKapasitas(response.data.data.kapasitas)
-                console.log(response.data.data.kapasitas)
             } catch (error) {
 
             }
@@ -77,7 +76,6 @@ const DetailJadwal = () => {
             setJamSelesai(response.data.data.jam_selesai)
             setKodeRuang(response.data.data.code_ruang)
             setIdJadwal(response.data.data.id_jadwal_kuliah)
-            // console.log(response);
         }
     }
 
