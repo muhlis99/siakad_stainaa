@@ -127,7 +127,11 @@ const DetailMhsKelas = () => {
                                         <th scope="col" className="px-6 py-3">#</th>
                                         <th scope="col" className="px-6 py-3">NIM</th>
                                         <th scope="col" className="px-6 py-3">Nama</th>
-                                        <th scope="col" className="px-6 py-3">Jenjang</th>
+                                        <th scope="col" className="px-6 py-3">Kelas</th>
+                                        <th scope="col" className="px-6 py-3">Jenis Kelamin</th>
+                                        <th scope="col" className="px-6 py-3">Jenjang Pendidikan</th>
+                                        <th scope="col" className="px-6 py-3">Fakultas</th>
+                                        <th scope="col" className="px-6 py-3">Prodi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -147,7 +151,11 @@ const DetailMhsKelas = () => {
                                             </th>
                                             <td className='px-6 py-2'>{item.nim}</td>
                                             <td className='px-6 py-2'>{item.mahasiswas[0].nama}</td>
-                                            <td className='px-6 py-2'>{item.kelas[0].code_jenjang_pendidikan}</td>
+                                            <td className='px-6 py-2'>{item.kelas[0].nama_kelas}</td>
+                                            <td className='px-6 py-2'>{item.mahasiswas[0].jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan'}</td>
+                                            <td className='px-6 py-2'>{item.kelas[0].jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                            <td className='px-6 py-2'>{item.kelas[0].fakultas[0].nama_fakultas}</td>
+                                            <td className='px-6 py-2'>{item.kelas[0].prodis[0].nama_prodi}</td>
                                         </tr>
                                     ))}
                                 </tbody>

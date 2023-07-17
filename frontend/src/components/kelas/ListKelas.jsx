@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaPlus, FaUsers, FaHotel, FaInfo, FaTimes, FaSave, FaTrash } from "react-icons/fa"
+import { FaPlus, FaUsers, FaHotel, FaInfo, FaTimes, FaSave, FaCouch } from "react-icons/fa"
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { Link, useLocation } from 'react-router-dom'
@@ -376,7 +376,7 @@ const ListKelas = () => {
                 <h1 className='text-xl font-bold'>Kelas Kuliah</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md">
+                <div className="card bg-base-100 card-bordered shadow-md rounded-md">
                     <div className="card-body p-4">
                         <div className='mb-2'>
                             <div className="grid grid-cols-3 gap-2">
@@ -436,7 +436,7 @@ const ListKelas = () => {
                                     </select>
                                 </div>
                                 <div className='mt-2'>
-                                    <button className='btn btn-sm btn-primary float-right mt-8' onClick={modalOpen}><FaPlus /><span>tambah</span></button>
+                                    <button className='btn btn-sm btn-primary float-right mt-8 rounded-md' onClick={modalOpen}><FaPlus /><span>tambah</span></button>
                                 </div>
                             </div>
                         </div>
@@ -450,12 +450,15 @@ const ListKelas = () => {
                                         </div>
                                         <div className="collapse-content grid gap-1 px-0 py-1 bg-base-100">
                                             {DataKelas != 0 ? DataKelas[index].map((item) => (
-                                                <div key={item.id_kelas} className="grid grid-cols-3 gap-2 px-4 py-2 bg-base-200">
-                                                    <div className='flex gap-2'>
-                                                        <span className='my-auto text-md'><FaHotel /></span><span className='my-auto font-bold'>{item.nama_kelas}</span>
+                                                <div key={item.id_kelas} className="grid grid-cols-4 gap-2 px-4 py-2 bg-base-200">
+                                                    <div className='flex gap-2' title={`Kelas ${item.nama_kelas}`}>
+                                                        <span className='my-auto text-md'><FaHotel /></span><span className='my-auto'>{item.nama_kelas}</span>
                                                     </div>
-                                                    <div className='flex gap-2 justify-center'>
-                                                        {/* <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.code_mata_kuliah}</span> */}
+                                                    <div className='flex gap-2 justify-center' title={`Kapasitas ${item.kapasitas}`}>
+                                                        <span className='my-auto text-md'><FaCouch /></span><span className='my-auto'>{item.kapasitas}</span>
+                                                    </div>
+                                                    <div className='flex gap-2 justify-center' title={`Jumlah MHS ${item.kapasitas}`}>
+                                                        <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.kapasitas}</span>
                                                     </div>
                                                     <div>
                                                         <Link to={`/kelas/detail/${item.code_kelas}`} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link>

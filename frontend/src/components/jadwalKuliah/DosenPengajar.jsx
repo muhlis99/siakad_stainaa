@@ -45,7 +45,6 @@ const DosenPengajar = () => {
                 setKodeSemester(response.data.data.code_semester)
                 setKodeTahun(response.data.data.code_tahun_ajaran)
                 setKapasitas(response.data.data.kapasitas)
-                console.log(response.data.data.kapasitas)
             } catch (error) {
 
             }
