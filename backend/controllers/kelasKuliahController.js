@@ -93,7 +93,7 @@ module.exports = {
             }],
             attributes: [
                 ['code_kelas', 'code'],
-                [Sequelize.literal('(select count(*) from tb_kelas_detail where code_kelas = code)'), 'entry_count']
+                [Sequelize.literal('(select count(*) from tb_kelas_detail where code_kelas = code)'), 'jumlahMhs']
             ],
             where: {
                 code_tahun_ajaran: codeThnAjr,
