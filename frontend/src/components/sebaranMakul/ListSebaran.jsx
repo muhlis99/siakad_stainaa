@@ -186,8 +186,10 @@ const ListSebaran = () => {
                     })
                 )
             }
-            Promise.all(promises).then(() => setSebaran(sebar))
-            Promise.all(promises).then(() => setSatuan(sksnya))
+            if (smt.length != 0) {
+                Promise.all(promises).then(() => setSebaran(sebar))
+                Promise.all(promises).then(() => setSatuan(sksnya))
+            }
         }
     }
 
@@ -354,7 +356,7 @@ const ListSebaran = () => {
                                                 <tr>
                                                     <td className='uppercase'>Prodi</td>
                                                     <td>&nbsp;:&nbsp;</td>
-                                                    {/* <td className='uppercase'>{prodi}</td> */}
+                                                    <td className='uppercase'>{prodi}</td>
                                                 </tr>
                                                 <tr>
                                                     <td className='uppercase'>Semester</td>
@@ -463,7 +465,7 @@ const ListSebaran = () => {
                                                     <select className='select select-bordered select-sm w-full' value={kodeNilai} onChange={(e) => setKodeNilai(e.target.value)}>
                                                         <option value="">Kategori Nilai</option>
                                                         {ListNilai.map((item) => (
-                                                            <option key={item.id_kategori_nilai} value={item.code_kategori_nilai}>{item.nilai_huruf} ({item.nilai_angka})</option>
+                                                            <option key={item.id_kategori_nilai} value={item.code_kategori_nilai}>{item.nilai_huruf} ({item.nilai_bawah} - {item.nilai_atas})</option>
                                                         ))}
                                                     </select>
                                                 </div>
@@ -577,14 +579,14 @@ const ListSebaran = () => {
                                         ))}
                                     </select>
                                 </div>
-                                <div className='basis-24'>
+                                <div className='basis-32'>
                                     <label className="label">
                                         <span className="text-base label-text">Nilai Min</span>
                                     </label>
                                     <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeNilai} onChange={(e) => setKodeNilai(e.target.value)}>
                                         <option value="">Nilai</option>
                                         {ListNilai.map((item) => (
-                                            <option key={item.id_kategori_nilai} value={item.code_kategori_nilai}>{item.nilai_bawah} - {item.nilai_atas} ({item.nilai_huruf})</option>
+                                            <option key={item.id_kategori_nilai} value={item.code_kategori_nilai}>{item.nilai_huruf} ({item.nilai_bawah} - {item.nilai_atas})</option>
                                         ))}
                                     </select>
                                 </div>
@@ -616,7 +618,7 @@ const ListSebaran = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     {Semester.map((items, index) => (
-                        <div key={index} className="card bg-base-100 card-bordered shadow-md mb-3">
+                        <div key={items.id_semester} className="card bg-base-100 card-bordered shadow-md mb-3">
                             <div className="card-body p-4">
                                 <div className="overflow-x-auto rounded-md">
                                     <table className="w-full text-sm text-gray-500 dark:text-gray-400">
@@ -633,10 +635,10 @@ const ListSebaran = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {Sebaran != 0 ? Sebaran[1].map((item, no) => (
-                                                <tr key={no} className='bg-white border text-gray-700' >
+                                            {Sebaran != 0 ? Sebaran[index].map((item, no) => (
+                                                <tr key={item.id_mata_kuliah} className='bg-white border text-gray-700' >
                                                     <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{no + 1}</th>
-                                                    <td className='px-2 py-2 border' align='center'>{item.semesters[0].code_semester}</td>
+                                                    <td className='px-2 py-2 border' align='center'>{item.code_mata_kuliah}</td>
                                                     <td className='px-2 py-2 border'>{item.nama_mata_kuliah}</td>
                                                     <td className='px-2 py-2 border' align='center'>{item.sks}</td>
                                                     <td className='px-2 py-2 border' align='center'>

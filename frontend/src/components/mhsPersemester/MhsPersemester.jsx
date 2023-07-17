@@ -8,12 +8,15 @@ const MhsPersemester = () => {
     const [Fakultas, setFakultas] = useState([])
     const [Prodi, setProdi] = useState([])
     const [Tahun, setTahun] = useState([])
+    const [TahunNew, setTahunNew] = useState([])
     const [Semester, setSemester] = useState([])
+    const [SemesterNew, setSemesterNew] = useState([])
     const [Mahasiswa, setMahasiswa] = useState([])
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
+    const [kodeTahunNew, setKodeTahunNew] = useState("")
     const [kodeSemesterOld, setKodeSemesterOld] = useState("")
     const [kodeSemesterNew, setKodeSemesterNew] = useState("")
     const [button, setButton] = useState("")
@@ -27,6 +30,10 @@ const MhsPersemester = () => {
     useEffect(() => {
         getSemester()
     }, [kodeTahun])
+
+    useEffect(() => {
+        getSemesterNew()
+    }, [kodeTahunNew])
 
     useEffect(() => {
         getFakultasByJenjang()
@@ -62,6 +69,7 @@ const MhsPersemester = () => {
     const getTahunAjaran = async () => {
         const response = await axios.get('v1/tahunAjaran/all')
         setTahun(response.data.data)
+        setTahunNew(response.data.data)
     }
 
     const getSemester = async () => {
@@ -71,12 +79,19 @@ const MhsPersemester = () => {
         }
     }
 
+    const getSemesterNew = async () => {
+        if (kodeTahunNew != 0) {
+            const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahunNew}`)
+            setSemesterNew(response.data.data)
+        }
+    }
+
     const getMhsBySemester = async () => {
         if (kodeFakultas != 0 & kodeJenjang != 0 & kodeProdi != 0 & kodeSemesterOld != 0 & kodeTahun != 0) {
             const response = await axios.get(`v1/setMahasiswaSmt/all/${kodeTahun}/${kodeSemesterOld}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
             setMahasiswa(response.data.data)
             setButton(response.data.data.length)
-            setSmt(kodeSemesterOld.substring(4, 5))
+            setSmt(kodeSemesterOld.substring(7, 8))
         }
     }
 
@@ -87,26 +102,41 @@ const MhsPersemester = () => {
     const modalClose = () => {
         document.getElementById('my-modal').checked = false
         setKodeSemesterNew("")
+        setKodeTahunNew("")
     }
 
     const simpanSetMhs = async (e) => {
         e.preventDefault()
         try {
-            await axios.post(`v1/setMahasiswaSmt/create`, {
-                codeSmtOld: kodeSemesterOld,
-                codeJnjPen: kodeJenjang,
-                codeFks: kodeFakultas,
-                codePrd: kodeProdi,
-                codeSmtNew: kodeSemesterNew
-            }).then(function (response) {
+            if (kodeTahunNew == 0) {
                 Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    getMhsBySemester()
-                    modalClose()
-                });
-            })
+                    title: 'Tahun Ajaran Tidak Boleh Kosong',
+                    icon: "error"
+                })
+            } else if (kodeSemesterNew == 0) {
+                Swal.fire({
+                    title: 'Semester Tidak Boleh Kosong',
+                    icon: "error"
+                })
+            } else {
+                await axios.post(`v1/setMahasiswaSmt/create`, {
+                    codeSmtOld: kodeSemesterOld,
+                    codeJnjPen: kodeJenjang,
+                    codeFks: kodeFakultas,
+                    codePrd: kodeProdi,
+                    codeSmtNew: kodeSemesterNew,
+                    codeThnAjrOld: kodeTahun,
+                    codeThnAjrNew: kodeTahunNew
+                }).then(function (response) {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        getMhsBySemester()
+                        modalClose()
+                    });
+                })
+            }
         } catch (error) {
         }
     }
@@ -117,10 +147,16 @@ const MhsPersemester = () => {
             <div className="modal">
                 <div className="modal-box relative p-0 rounded-none w-72">
                     <button className='btn btn-sm btn-square mb-2 btn-danger rounded-none float-right' onClick={modalClose}><FaTimes /></button>
-                    <form onSubmit={simpanSetMhs} className='p-2'>
+                    <form onSubmit={simpanSetMhs} className='p-2 mt-8'>
+                        <select className="select select-sm select-bordered w-full mb-2" value={kodeTahunNew} onChange={(e) => setKodeTahunNew(e.target.value)}>
+                            <option value="">Tahun Ajaran</option>
+                            {Tahun.map((item) => (
+                                <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                            ))}
+                        </select>
                         <select className="select select-sm select-bordered w-full mb-2" value={kodeSemesterNew} onChange={(e) => setKodeSemesterNew(e.target.value)}>
                             <option value="">Semester</option>
-                            {Semester.map((item, index) => {
+                            {SemesterNew.map((item, index) => {
                                 return item.semester - smt === 1 ? (
                                     <option key={index} value={item.code_semester}>Semester {item.semester}</option>
                                 ) : (
