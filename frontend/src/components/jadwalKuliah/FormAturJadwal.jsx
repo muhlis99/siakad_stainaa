@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { FaAngleDown, FaEdit, FaReply, FaSave } from 'react-icons/fa'
 import Swal from 'sweetalert2'
-import { Link, useParams, useNavigate } from "react-router-dom"
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 
 const FormAturJadwal = () => {
@@ -31,7 +31,7 @@ const FormAturJadwal = () => {
     const [idJadwal, setIdJadwal] = useState("")
     const navigate = useNavigate()
     const { idKls } = useParams()
-
+    const location = useLocation()
 
     useEffect(() => {
         getDataRuang()
@@ -40,7 +40,7 @@ const FormAturJadwal = () => {
     useEffect(() => {
         const getDataKelasById = async () => {
             try {
-                const response = await axios.get(`v1/kelasKuliah/getKelasById/${idKls}`)
+                const response = await axios.get(`v1/kelasKuliah/getKelasById/${location.state.idn}`)
                 setFakultas(response.data.data.fakultas[0].nama_fakultas)
                 setKodeFakultas(response.data.data.code_fakultas)
                 setKelas(response.data.data.nama_kelas)
@@ -51,7 +51,7 @@ const FormAturJadwal = () => {
                 setKodeProdi(response.data.data.code_prodi)
                 setSemester(response.data.data.semesters[0].semester)
                 setKodeSemester(response.data.data.code_semester)
-                setTahun(response.data.data.code_tahun_ajaran)
+                setTahun(response.data.data.tahunAjarans[0].tahun_ajaran)
                 setKodeTahun(response.data.data.code_tahun_ajaran)
                 setKapasitas(response.data.data.kapasitas)
             } catch (error) {
@@ -59,27 +59,25 @@ const FormAturJadwal = () => {
             }
         }
         getDataKelasById()
-    }, [idKls])
+    }, [location.state])
 
-    useEffect(() => {
-        getJadwalByKelas()
-    }, [kodeTahun, kodeSemester, kodeFakultas, kodeProdi, kodeMakul, kodeKelas])
+    // useEffect(() => {
+    //     getJadwalByKelas()
+    // }, [location.state])
 
-    const getJadwalByKelas = async () => {
-        if (kodeTahun != 0 & kodeSemester != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodeMakul != 0 & kodeKelas != 0) {
-            const response = await axios.get(`v1/jadwalKuliah/getByKelas/${kodeTahun}/${kodeSemester}/${kodeFakultas}/${kodeProdi}/${kodeMakul}/${kodeKelas}`)
-            setTglMulai(response.data.data.tanggal_mulai)
-            setTglSelesai(response.data.data.tanggal_selesai)
-            setJumPertemuan(response.data.data.jumlah_pertemuan)
-            setHari(response.data.data.hari)
-            setJamMulai(response.data.data.jam_mulai)
-            setJamSelesai(response.data.data.jam_selesai)
-            setKodeRuang(response.data.data.code_ruang)
-            setPesan(response.data.message)
-            setIdJadwal(response.data.data.id_jadwal_kuliah)
-        }
-
-    }
+    // const getJadwalByKelas = async () => {
+    //     const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
+    //     console.log(response.data.message)
+    //     setTglMulai(response.data.data.tanggal_mulai)
+    //     setTglSelesai(response.data.data.tanggal_selesai)
+    //     setJumPertemuan(response.data.data.jumlah_pertemuan)
+    //     setHari(response.data.data.hari)
+    //     setJamMulai(response.data.data.jam_mulai)
+    //     setJamSelesai(response.data.data.jam_selesai)
+    //     setKodeRuang(response.data.data.code_ruang)
+    //     setPesan(response.data.message)
+    //     setIdJadwal(response.data.data.id_jadwal_kuliah)
+    // }
 
     const getDataRuang = async () => {
         const response = await axios.get('v1/ruang/all')
@@ -96,26 +94,26 @@ const FormAturJadwal = () => {
         e.preventDefault()
         try {
             await axios.post('v1/jadwalKuliah/create', {
-                code_mata_kuliah: kodeMakul,
-                code_fakultas: kodeFakultas,
-                code_prodi: kodeProdi,
-                code_semester: kodeSemester,
-                code_tahun_ajaran: kodeTahun,
-                code_kelas: kodeKelas,
+                code_mata_kuliah: location.state.mak,
+                code_jenjang_pendidikan: location.state.jen,
+                code_fakultas: location.state.fak,
+                code_prodi: location.state.pro,
+                code_semester: location.state.sem,
+                code_tahun_ajaran: location.state.thn,
+                code_kelas: location.state.kls,
                 code_ruang: kodeRuang,
                 tanggal_mulai: tglMulai,
                 tanggal_selesai: tglSelesai,
                 jumlah_pertemuan: jumPertemuan,
                 hari: hari,
                 jam_mulai: jamMulai,
-                jam_selesai: jamSelesai,
-                metode_pembelajaran: metode
+                jam_selesai: jamSelesai
             }).then(function (response) {
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate(`/detailjadwal/${idKls}`)
+                    navigate('/detailjadwal', { state: { thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn } })
                 })
             })
         } catch (error) {
@@ -193,7 +191,6 @@ const FormAturJadwal = () => {
                                             </div> :
                                             <Link to={'/jadwalkuliah'} className='btn btn-sm btn-danger'><FaReply /><span className='ml-1'>Kembali</span></Link>
                                         }
-
                                         {pesan == 'Data jadwal Kuliah Ditemukan' ? <button className='btn btn-sm btn-blue'><FaEdit /><span className='ml-1'>Update</span></button> : <button className='btn btn-sm btn-default'><FaSave /><span className='ml-1'>Simpan</span></button>}
                                     </div>
                                 </div>
@@ -234,7 +231,7 @@ const FormAturJadwal = () => {
                                         <label>
                                             <span className="">Kelas</span>
                                         </label>
-                                        <input type="text" disabled className="input input-bordered input-sm w-full max-w-xs float-right" value={kodeKelas} />
+                                        <input type="text" disabled className="input input-bordered input-sm w-full max-w-xs float-right" value={kelas} />
                                     </div>
                                     <div>
                                         <label>
@@ -289,16 +286,6 @@ const FormAturJadwal = () => {
                                             <span className="">Jam Selesai</span>
                                         </label>
                                         <input type="time" className="input input-bordered input-sm w-full max-w-xs float-right" value={jamSelesai} onChange={(e) => setJamSelesai(e.target.value)} />
-                                    </div>
-                                    <div>
-                                        <label>
-                                            <span className="">Metode Pembelajaran</span>
-                                        </label>
-                                        <select className="select select-sm select-bordered w-full max-w-xs float-right" value={metode} onChange={(e) => setMetode(e.target.value)}>
-                                            <option value="">Metode Pembelajaran</option>
-                                            <option value="offline">Offline</option>
-                                            <option value="online">Online</option>
-                                        </select>
                                     </div>
                                     <div>
                                         <label>

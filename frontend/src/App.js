@@ -93,8 +93,8 @@ function App() {
           <Route path="/kelas" element={<Kelas />} />
           <Route path="/kelas/detail/:kodeKls" element={<DetailKelas />} />
           <Route path="/jadwalkuliah" element={<Jadwal />} />
-          <Route path="/aturjadwal/:idKls" element={<AturJadwal />} />
-          <Route path="/detailjadwal/:idKls" element={<DetailJadwalKuliah />} />
+          <Route path="/aturjadwal" element={<AturJadwal />} />
+          <Route path="/detailjadwal" element={<DetailJadwalKuliah />} />
           <Route path="/setDsn/:idKls" element={<DosenPgjr />} />
           <Route path="/setpertemuan/:idKls/:kodeJdl" element={<Pertemuan />} />
           <Route path="/penilaian" element={<Penilaian />} />

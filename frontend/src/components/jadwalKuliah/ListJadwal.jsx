@@ -182,7 +182,7 @@ const ListJadwal = () => {
                                                     <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.jumlahMhs}</span>
                                                 </div>
                                                 <div>
-                                                    <Link to={`/aturjadwal/${item.code}`} state={{ thn: kodeTahun, sem: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mak: item.code_mata_kuliah, kls: item.code }} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaCog /></Link>
+                                                    <Link to={`/aturjadwal`} state={{ thn: kodeTahun, sem: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mak: item.code_mata_kuliah, kls: item.code, idn: item.id_kelas }} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaCog /></Link>
                                                 </div>
                                             </div>
                                         )) : ""}

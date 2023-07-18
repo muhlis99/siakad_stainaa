@@ -32,29 +32,6 @@ const DetailJadwal = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    // useEffect(() => {
-    //     const getDataKelasById = async () => {
-    //         try {
-    //             const response = await axios.get(`v1/kelasKuliah/getKelasById/${idKls}`)
-    //             setFakultas(response.data.data.fakultas[0].nama_fakultas)
-    //             setKodeFakultas(response.data.data.code_fakultas)
-    //             setKelas(response.data.data.nama_kelas)
-    //             setKodeKelas(response.data.data.code_kelas)
-    //             setMakul(response.data.data.mataKuliahs[0].nama_mata_kuliah)
-    //             setKodeMakul(response.data.data.code_mata_kuliah)
-    //             setProdi(response.data.data.prodis[0].nama_prodi)
-    //             setKodeProdi(response.data.data.code_prodi)
-    //             setSemester(response.data.data.semesters[0].semester)
-    //             setKodeSemester(response.data.data.code_semester)
-    //             setKodeTahun(response.data.data.code_tahun_ajaran)
-    //             setKapasitas(response.data.data.kapasitas)
-    //         } catch (error) {
-
-    //         }
-    //     }
-    //     getDataKelasById()
-    // }, [idKls])
-
     useEffect(() => {
         getJadwalByKelas()
     }, [location.state])
@@ -69,7 +46,10 @@ const DetailJadwal = () => {
         if (location.state.length != 0) {
             const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
             setTahun(response.data.data.tahunAjarans[0].tahun_ajaran)
-            setTglMulai(response.data.data.tanggal_mulai)
+            setSemester(response.data.data.semesters[0].semester)
+            setFakultas(response.data.data.fakultas[0].nama_fakultas)
+            setProdi()
+            setTglMulai(response.data.data)
             setTglSelesai(response.data.data.tanggal_selesai)
             setJumPertemuan(response.data.data.jumlah_pertemuan)
             setHari(response.data.data.hari)
