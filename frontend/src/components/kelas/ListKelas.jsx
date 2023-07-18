@@ -21,6 +21,7 @@ const ListKelas = () => {
     const [kodeSemester, setKodeSemester] = useState("")
     const [kodesmt, setKodeSmt] = useState("")
     const [jumMhs, setJumMhs] = useState("")
+    const [dari, setDari] = useState("")
     const [sampai, setSampai] = useState("")
     const [kapasitas, setKapasitas] = useState("")
     const [kelasnya, setKelasnya] = useState([])
@@ -81,7 +82,7 @@ const ListKelas = () => {
 
     useEffect(() => {
         getDataArray()
-    }, [sampai])
+    }, [dari, sampai])
 
     useEffect(() => {
         getDataJumlah()
@@ -187,7 +188,7 @@ const ListKelas = () => {
         if (sampai != 0) {
             let kelas = []
             let prom = []
-            for (let k = 1; k <= sampai; k++) {
+            for (let k = dari; k <= sampai; k++) {
                 prom.push(
                     kelas.push(k)
                 )
@@ -272,7 +273,7 @@ const ListKelas = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Tahun Ajaran</span>
                                     </label>
-                                    <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                    <select className="select select-sm select-bordered w-full" disabled value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
                                         <option value="">Tahun Ajaran</option>
                                         {Tahun.map((item) => (
                                             <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
@@ -283,7 +284,7 @@ const ListKelas = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Jenjang Pendidikan</span>
                                     </label>
-                                    <select className="select select-bordered select-sm w-full" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
+                                    <select className="select select-bordered select-sm w-full" disabled value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
                                         <option value="">Jenjang Pendidikan</option>
                                         {Jenjang.map((item) => (
                                             <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
@@ -294,7 +295,7 @@ const ListKelas = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Fakultas</span>
                                     </label>
-                                    <select className="select select-sm select-bordered w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
+                                    <select className="select select-sm select-bordered w-full" disabled value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
                                         <option value="">Fakultas</option>
                                         {Fakultas.map((item) => (
                                             <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
@@ -305,7 +306,7 @@ const ListKelas = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Prodi</span>
                                     </label>
-                                    <select className="select select-sm select-bordered w-full" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
+                                    <select className="select select-sm select-bordered w-full" disabled value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
                                         <option value="">Prodi</option>
                                         {Prodi.map((item) => (
                                             <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
@@ -343,7 +344,10 @@ const ListKelas = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Dari Kelas</span>
                                     </label>
-                                    <input type="text" value="A" disabled className="input input-sm input-bordered w-full" />
+                                    <select className='select select-sm select-bordered w-full' value={dari} onChange={(e) => setDari(e.target.value)}>
+                                        <option value="">Dari Kelas</option>
+                                        {abjadnya}
+                                    </select>
                                 </div>
                                 <div>
                                     <label className="label">
@@ -446,18 +450,18 @@ const ListKelas = () => {
                                         </div>
                                         <div className="collapse-content grid gap-1 px-0 py-1 bg-base-100">
                                             {DataKelas != 0 ? DataKelas[index].map((item, o) => (
-                                                <div key={item.id_kelas} className="grid grid-cols-4 gap-2 px-4 py-2 bg-base-200">
+                                                <div key={o} className="grid grid-cols-4 gap-2 px-4 py-2 bg-base-200">
                                                     <div className='flex gap-2' title={`Kelas ${item.nama_kelas}`}>
                                                         <span className='my-auto text-md'><FaHotel /></span><span className='my-auto'>{item.nama_kelas}</span>
                                                     </div>
                                                     <div className='flex gap-2 justify-center' title={`Kapasitas ${item.kapasitas}`}>
                                                         <span className='my-auto text-md'><FaCouch /></span><span className='my-auto'>{item.kapasitas}</span>
                                                     </div>
-                                                    <div className='flex gap-2 justify-center' title={`Jumlah MHS ${item.kapasitas}`}>
-                                                        <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{ }</span>
+                                                    <div className='flex gap-2 justify-center' title={`Jumlah MHS ${item.jumlahMhs}`}>
+                                                        <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.jumlahMhs}</span>
                                                     </div>
                                                     <div>
-                                                        <Link to={`/kelas/detail/${item.code_kelas}`} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link>
+                                                        <Link to={`/kelas/detail/${item.code}`} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link>
                                                     </div>
                                                 </div>
 

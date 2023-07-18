@@ -99,7 +99,7 @@ const DetailMhsKelas = () => {
                                 <select className='select select-sm select-bordered w-full' value={kodeKelas} onChange={(e) => setKodeKelas(e.target.value)}>
                                     <option value="">Pilih Kelas</option>
                                     {DataKelas.map((item) => (
-                                        <option key={item.id_kelas} value={item.code_kelas}>Kelas {item.nama_kelas}</option>
+                                        <option key={item.code} value={item.code}>Kelas {item.nama_kelas}</option>
                                     ))}
                                 </select>
                             </div>

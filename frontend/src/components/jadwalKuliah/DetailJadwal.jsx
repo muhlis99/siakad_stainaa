@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { FaAngleDown, FaEdit, FaSave } from 'react-icons/fa'
 import Swal from 'sweetalert2'
-import { Link, useParams, useNavigate } from "react-router-dom"
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 
 const DetailJadwal = () => {
-    // const [Ruang, setRuang] = useState([])
+    const [Ruang, setRuang] = useState([])
     const [fakultas, setFakultas] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kelas, setKelas] = useState("")
@@ -30,33 +30,34 @@ const DetailJadwal = () => {
     const [idJadwal, setIdJadwal] = useState("")
     const { idKls } = useParams()
     const navigate = useNavigate()
+    const location = useLocation()
 
-    useEffect(() => {
-        const getDataKelasById = async () => {
-            try {
-                const response = await axios.get(`v1/kelasKuliah/getKelasById/${idKls}`)
-                setFakultas(response.data.data.fakultas[0].nama_fakultas)
-                setKodeFakultas(response.data.data.code_fakultas)
-                setKelas(response.data.data.nama_kelas)
-                setKodeKelas(response.data.data.code_kelas)
-                setMakul(response.data.data.mataKuliahs[0].nama_mata_kuliah)
-                setKodeMakul(response.data.data.code_mata_kuliah)
-                setProdi(response.data.data.prodis[0].nama_prodi)
-                setKodeProdi(response.data.data.code_prodi)
-                setSemester(response.data.data.semesters[0].semester)
-                setKodeSemester(response.data.data.code_semester)
-                setKodeTahun(response.data.data.code_tahun_ajaran)
-                setKapasitas(response.data.data.kapasitas)
-            } catch (error) {
+    // useEffect(() => {
+    //     const getDataKelasById = async () => {
+    //         try {
+    //             const response = await axios.get(`v1/kelasKuliah/getKelasById/${idKls}`)
+    //             setFakultas(response.data.data.fakultas[0].nama_fakultas)
+    //             setKodeFakultas(response.data.data.code_fakultas)
+    //             setKelas(response.data.data.nama_kelas)
+    //             setKodeKelas(response.data.data.code_kelas)
+    //             setMakul(response.data.data.mataKuliahs[0].nama_mata_kuliah)
+    //             setKodeMakul(response.data.data.code_mata_kuliah)
+    //             setProdi(response.data.data.prodis[0].nama_prodi)
+    //             setKodeProdi(response.data.data.code_prodi)
+    //             setSemester(response.data.data.semesters[0].semester)
+    //             setKodeSemester(response.data.data.code_semester)
+    //             setKodeTahun(response.data.data.code_tahun_ajaran)
+    //             setKapasitas(response.data.data.kapasitas)
+    //         } catch (error) {
 
-            }
-        }
-        getDataKelasById()
-    }, [idKls])
+    //         }
+    //     }
+    //     getDataKelasById()
+    // }, [idKls])
 
     useEffect(() => {
         getJadwalByKelas()
-    }, [kodeTahun, kodeSemester, kodeFakultas, kodeProdi, kodeMakul, kodeKelas])
+    }, [location.state])
 
     const day = ["", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu"]
     const hr = []
@@ -65,8 +66,8 @@ const DetailJadwal = () => {
     }
 
     const getJadwalByKelas = async () => {
-        if (kodeTahun != 0 & kodeSemester != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodeMakul != 0 & kodeKelas != 0) {
-            const response = await axios.get(`v1/jadwalKuliah/getByKelas/${kodeTahun}/${kodeSemester}/${kodeFakultas}/${kodeProdi}/${kodeMakul}/${kodeKelas}`)
+        if (location.state.length != 0) {
+            const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
             setTahun(response.data.data.tahunAjarans[0].tahun_ajaran)
             setTglMulai(response.data.data.tanggal_mulai)
             setTglSelesai(response.data.data.tanggal_selesai)
@@ -75,7 +76,7 @@ const DetailJadwal = () => {
             setJamMulai(response.data.data.jam_mulai)
             setJamSelesai(response.data.data.jam_selesai)
             setKodeRuang(response.data.data.code_ruang)
-            setIdJadwal(response.data.data.id_jadwal_kuliah)
+            console.log(response.data.data.id_jadwal_kuliah)
         }
     }
 
@@ -85,15 +86,6 @@ const DetailJadwal = () => {
                 <h1 className='text-xl font-bold'>Detail Jadwal Kuliah</h1>
             </section>
             <section>
-                {/* <div className='card bg-base-200 card-bordered shadow-md mb-3'>
-                    <div className="card-body p-4">
-                        <ul className="menu rounded-box">
-                            <li><Link>Detail Jadwal Kuliah</Link></li>
-                            <li><Link to={`/setDsn/${idKls}`}>Dosen Pengajar</Link></li>
-                            <li><Link>Set Pertemuan</Link></li>
-                        </ul>
-                    </div>
-                </div> */}
                 <div className="col-span-4 card bg-base-100 card-bordered shadow-md mb-3">
                     <div className="card-body p-4">
                         <div className="grid grid-cols-2 gap-x-4">
