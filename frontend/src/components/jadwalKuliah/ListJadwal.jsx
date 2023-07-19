@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FaCog, FaCouch, FaHotel, FaInfo, FaUsers } from 'react-icons/fa'
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import axios from 'axios'
 
 const ListJadwal = () => {
@@ -12,13 +12,22 @@ const ListJadwal = () => {
     const [Semester, setSemester] = useState([])
     const [KodeMakul, setKodeMakul] = useState([])
     const [DataKelas, setDataKelas] = useState([])
-    const [KodeKelas, setKodeKelas] = useState([])
-    const [DataJadwal, setDataJadwal] = useState([])
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
+    const location = useLocation()
+
+    useEffect(() => {
+        if (location.state != null) {
+            setKodeJenjang(location.state.jen)
+            setKodeFakultas(location.state.fak)
+            setKodeProdi(location.state.pro)
+            setKodeTahun(location.state.thn)
+            setKodeSemester(location.state.sem)
+        }
+    }, [location])
 
     useEffect(() => {
         getTahunAjaran()
@@ -182,7 +191,7 @@ const ListJadwal = () => {
                                                     <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.jumlahMhs}</span>
                                                 </div>
                                                 <div>
-                                                    <Link to={`/aturjadwal`} state={{ thn: kodeTahun, sem: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mak: item.code_mata_kuliah, kls: item.code, idn: item.id_kelas }} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaCog /></Link>
+                                                    <Link to={`/detailjadwal`} state={{ thn: kodeTahun, sem: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mak: item.code_mata_kuliah, kls: item.code, idn: item.id_kelas }} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link>
                                                 </div>
                                             </div>
                                         )) : ""}

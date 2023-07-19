@@ -95,8 +95,8 @@ function App() {
           <Route path="/jadwalkuliah" element={<Jadwal />} />
           <Route path="/aturjadwal" element={<AturJadwal />} />
           <Route path="/detailjadwal" element={<DetailJadwalKuliah />} />
-          <Route path="/setDsn/:idKls" element={<DosenPgjr />} />
-          <Route path="/setpertemuan/:idKls/:kodeJdl" element={<Pertemuan />} />
+          <Route path="/setDsn" element={<DosenPgjr />} />
+          <Route path="/setpertemuan" element={<Pertemuan />} />
           <Route path="/penilaian" element={<Penilaian />} />
           <Route path="/inputnilai/:kodeMk/:kodeTahun/:kodeSmt/:idMk" element={<InputNilai />} />
           <Route path="/detail/:kodeMk/:kodeKls/:idMk" element={<Detail2 />} />

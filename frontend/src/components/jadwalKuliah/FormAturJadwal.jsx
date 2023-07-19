@@ -7,17 +7,11 @@ import axios from 'axios'
 const FormAturJadwal = () => {
     const [Ruang, setRuang] = useState([])
     const [fakultas, setFakultas] = useState("")
-    const [kodeFakultas, setKodeFakultas] = useState("")
     const [kelas, setKelas] = useState("")
-    const [kodeKelas, setKodeKelas] = useState("")
     const [makul, setMakul] = useState("")
-    const [kodeMakul, setKodeMakul] = useState("")
     const [prodi, setProdi] = useState("")
-    const [kodeProdi, setKodeProdi] = useState("")
     const [semester, setSemester] = useState("")
-    const [kodeSemester, setKodeSemester] = useState("")
     const [tahun, setTahun] = useState("")
-    const [kodeTahun, setKodeTahun] = useState("")
     const [kapasitas, setKapasitas] = useState("")
     const [tglMulai, setTglMulai] = useState("")
     const [tglSelesai, setTglSelesai] = useState("")
@@ -25,12 +19,9 @@ const FormAturJadwal = () => {
     const [hari, setHari] = useState("")
     const [jamMulai, setJamMulai] = useState("")
     const [jamSelesai, setJamSelesai] = useState("")
-    const [metode, setMetode] = useState("")
     const [kodeRuang, setKodeRuang] = useState("")
-    const [pesan, setPesan] = useState("")
     const [idJadwal, setIdJadwal] = useState("")
     const navigate = useNavigate()
-    const { idKls } = useParams()
     const location = useLocation()
 
     useEffect(() => {
@@ -42,17 +33,11 @@ const FormAturJadwal = () => {
             try {
                 const response = await axios.get(`v1/kelasKuliah/getKelasById/${location.state.idn}`)
                 setFakultas(response.data.data.fakultas[0].nama_fakultas)
-                setKodeFakultas(response.data.data.code_fakultas)
                 setKelas(response.data.data.nama_kelas)
-                setKodeKelas(response.data.data.code_kelas)
                 setMakul(response.data.data.mataKuliahs[0].nama_mata_kuliah)
-                setKodeMakul(response.data.data.code_mata_kuliah)
                 setProdi(response.data.data.prodis[0].nama_prodi)
-                setKodeProdi(response.data.data.code_prodi)
                 setSemester(response.data.data.semesters[0].semester)
-                setKodeSemester(response.data.data.code_semester)
                 setTahun(response.data.data.tahunAjarans[0].tahun_ajaran)
-                setKodeTahun(response.data.data.code_tahun_ajaran)
                 setKapasitas(response.data.data.kapasitas)
             } catch (error) {
 
@@ -61,23 +46,26 @@ const FormAturJadwal = () => {
         getDataKelasById()
     }, [location.state])
 
-    // useEffect(() => {
-    //     getJadwalByKelas()
-    // }, [location.state])
+    useEffect(() => {
+        const getJadwalByKelas = async () => {
+            try {
+                const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
+                console.log(response.data.message)
+                setTglMulai(response.data.data.tanggal_mulai)
+                setTglSelesai(response.data.data.tanggal_selesai)
+                setJumPertemuan(response.data.data.jumlah_pertemuan)
+                setHari(response.data.data.hari)
+                setJamMulai(response.data.data.jam_mulai)
+                setJamSelesai(response.data.data.jam_selesai)
+                setKodeRuang(response.data.data.code_ruang)
+                setIdJadwal(response.data.data.id_jadwal_kuliah)
+            } catch (error) {
 
-    // const getJadwalByKelas = async () => {
-    //     const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
-    //     console.log(response.data.message)
-    //     setTglMulai(response.data.data.tanggal_mulai)
-    //     setTglSelesai(response.data.data.tanggal_selesai)
-    //     setJumPertemuan(response.data.data.jumlah_pertemuan)
-    //     setHari(response.data.data.hari)
-    //     setJamMulai(response.data.data.jam_mulai)
-    //     setJamSelesai(response.data.data.jam_selesai)
-    //     setKodeRuang(response.data.data.code_ruang)
-    //     setPesan(response.data.message)
-    //     setIdJadwal(response.data.data.id_jadwal_kuliah)
-    // }
+            }
+        }
+        getJadwalByKelas()
+    }, [location.state])
+
 
     const getDataRuang = async () => {
         const response = await axios.get('v1/ruang/all')
@@ -126,46 +114,45 @@ const FormAturJadwal = () => {
         }
     }
 
-    const updateJadwal = async (e) => {
-        e.preventDefault()
-        try {
-            await axios.put(`v1/jadwalKuliah/update/${idJadwal}`, {
-                code_mata_kuliah: kodeMakul,
-                code_fakultas: kodeFakultas,
-                code_prodi: kodeProdi,
-                code_semester: kodeSemester,
-                code_tahun_ajaran: kodeTahun,
-                code_kelas: kodeKelas,
-                code_ruang: kodeRuang,
-                tanggal_mulai: tglMulai,
-                tanggal_selesai: tglSelesai,
-                jumlah_pertemuan: jumPertemuan,
-                hari: hari,
-                jam_mulai: jamMulai,
-                jam_selesai: jamSelesai,
-                metode_pembelajaran: metode
-            }).then(function (response) {
-                Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    navigate(`/detailjadwal/${idKls}`)
-                })
-            })
-        } catch (error) {
-            if (error.response.data.message) {
-                Swal.fire({
-                    title: error.response.data.message,
-                    icon: "error"
-                })
-            } else {
-                Swal.fire({
-                    title: error.response.data.errors[0].msg,
-                    icon: "error"
-                })
-            }
-        }
-    }
+    // const updateJadwal = async (e) => {
+    //     e.preventDefault()
+    //     try {
+    //         await axios.put(`v1/jadwalKuliah/update/${idJadwal}`, {
+    //             code_mata_kuliah: kodeMakul,
+    //             code_fakultas: kodeFakultas,
+    //             code_prodi: kodeProdi,
+    //             code_semester: kodeSemester,
+    //             code_tahun_ajaran: kodeTahun,
+    //             code_kelas: kodeKelas,
+    //             code_ruang: kodeRuang,
+    //             tanggal_mulai: tglMulai,
+    //             tanggal_selesai: tglSelesai,
+    //             jumlah_pertemuan: jumPertemuan,
+    //             hari: hari,
+    //             jam_mulai: jamMulai,
+    //             jam_selesai: jamSelesai
+    //         }).then(function (response) {
+    //             Swal.fire({
+    //                 title: response.data.message,
+    //                 icon: "success"
+    //             }).then(() => {
+    //                 navigate(`/detailjadwal/${idKls}`)
+    //             })
+    //         })
+    //     } catch (error) {
+    //         if (error.response.data.message) {
+    //             Swal.fire({
+    //                 title: error.response.data.message,
+    //                 icon: "error"
+    //             })
+    //         } else {
+    //             Swal.fire({
+    //                 title: error.response.data.errors[0].msg,
+    //                 icon: "error"
+    //             })
+    //         }
+    //     }
+    // }
 
     return (
         <div className='mt-2 container'>
@@ -175,23 +162,24 @@ const FormAturJadwal = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-3">
                     <div className="card-body p-4">
-                        <form onSubmit={pesan == 'Data jadwal Kuliah Ditemukan' ? updateJadwal : simpanJadwal}>
+                        <form onSubmit={simpanJadwal}>
                             <div className="grid grid-cols-2 gap-x-4">
                                 <div className="col-span-2 mb-3 border-b-2 pb-3 border-b-[#2D7F5F]">
                                     <div className="float-right flex gap-1">
-                                        {pesan == 'Data jadwal Kuliah Ditemukan' ?
+                                        {/* {pesan == 'Data jadwal Kuliah Ditemukan' ?
                                             <div>
                                                 <div className="dropdown dropdown-end">
                                                     <label tabIndex={0} className="btn btn-sm btn-default"><span className='mr-1'>Aksi</span><FaAngleDown /></label>
                                                     <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                                         <li><Link to={'/jadwalkuliah'}>Kembali</Link></li>
-                                                        <li><Link to={`/detailjadwal/${idKls}`}>Detail Jadwal Kuliah</Link></li>
+                                                        <li><Link to={`/detailjadwal`}>Detail Jadwal Kuliah</Link></li>
                                                     </ul>
                                                 </div>
                                             </div> :
-                                            <Link to={'/jadwalkuliah'} className='btn btn-sm btn-danger'><FaReply /><span className='ml-1'>Kembali</span></Link>
-                                        }
-                                        {pesan == 'Data jadwal Kuliah Ditemukan' ? <button className='btn btn-sm btn-blue'><FaEdit /><span className='ml-1'>Update</span></button> : <button className='btn btn-sm btn-default'><FaSave /><span className='ml-1'>Simpan</span></button>}
+                                        } */}
+                                        <Link to='/detailjadwal' state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
+                                        <button className='btn btn-sm btn-primary'><FaSave /><span>Simpan</span></button>
+                                        {/* {pesan == 'Data jadwal Kuliah Ditemukan' ? <button className='btn btn-sm btn-blue'><FaEdit /><span className='ml-1'>Update</span></button> : } */}
                                     </div>
                                 </div>
                                 <div className='grid gap-2'>
