@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
 const InputNilaiMhs = () => {
@@ -22,6 +22,7 @@ const InputNilaiMhs = () => {
     const [fakul, setFakul] = useState("")
     const [prodi, setProdi] = useState("")
     const [tahun, setTahun] = useState("")
+    const location = useLocation()
 
     const [value, setValue] = useState()
 
@@ -41,15 +42,15 @@ const InputNilaiMhs = () => {
 
     useEffect(() => {
         getMakulById()
-    }, [idMk])
+    }, [location.state])
 
     useEffect(() => {
         getKelas()
-    }, [kodeMk])
+    }, [location.state])
 
     useEffect(() => {
         getMahasiswa()
-    }, [kodeSmt, kodeMk, kodeKelas])
+    }, [kodeKelas])
 
     useEffect(() => {
         addFields()
@@ -62,17 +63,17 @@ const InputNilaiMhs = () => {
 
     useEffect(() => {
         cekNilai()
-    }, [nilaiAkhir, kodeTahun])
+    }, [nilaiAkhir, location.state])
 
     const getMakulById = async () => {
-        const response = await axios.get(`v1/mataKuliah/getById/${idMk}`)
+        const response = await axios.get(`v1/mataKuliah/getById/${location.state.idn}`)
         setFakul(response.data.data.fakultas[0].nama_fakultas)
         setProdi(response.data.data.prodis[0].nama_prodi)
         setTahun(response.data.data.nama_mata_kuliah)
     }
 
     const getKelas = async () => {
-        const response = await axios.get(`v1/kelasKuliah/getKelasByMakul/${kodeMk}`)
+        const response = await axios.get(`v1/kelasKuliah/getKelasByMakul/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.kod}`)
         setKelas(response.data.data)
     }
 
@@ -87,8 +88,8 @@ const InputNilaiMhs = () => {
     }
 
     const getMahasiswa = async () => {
-        if (kodeMk != 0 & kodeSmt != 0 & kodeKelas != 0) {
-            const response = await axios.get(`v1/nilaiKuliah/getMhsByKelas/${kodeSmt}/${kodeMk}/${kodeKelas}`)
+        if (kodeKelas) {
+            const response = await axios.get(`v1/kelasKuliah/getMhsByKelas/${kodeKelas}`)
             setMahasiswa(response.data.data)
             setJmlMhs(response.data.data.length)
             setBtn('simpan')
@@ -99,13 +100,14 @@ const InputNilaiMhs = () => {
 
     const getAverage = () => {
         const i = inputFields.map(el => {
-            var tugas = parseInt(el.tugas) || 0
-            var hadir = parseInt(el.absen) || 0
-            var uts = parseInt(el.uts) || 0
-            var uas = parseInt(el.uas) || 0
-            var rataRata = (tugas + hadir + uts + uas) / 4
+            let tugas = parseInt(el.tugas) || 0
+            let hadir = parseInt(el.absen) || 0
+            let uts = parseInt(el.uts) || 0
+            let uas = parseInt(el.uas) || 0
+            let rataRata = (tugas + hadir + uts + uas) / 4
             return rataRata
         })
+        console.log(i);
         setNIlaiAkhir(i)
     }
 
@@ -129,7 +131,7 @@ const InputNilaiMhs = () => {
             if (nilaiAkhir[i] === 0) {
                 promises.push("")
             } else {
-                const d = await axios.get(`/v1/nilaiKuliah/deteksiIndexNilai/${nilaiAkhir[i]}/${kodeTahun}`).then(response => {
+                const d = await axios.get(`/v1/nilaiKuliah/deteksiIndexNilai/${nilaiAkhir[i]}/${location.state.thn}`).then(response => {
                     nilai.push(response.data.data[0].nilai_huruf)
                     kode.push(response.data.data[0].code_kategori_nilai)
                 })
@@ -225,7 +227,7 @@ const InputNilaiMhs = () => {
                                         <select className='select select-sm select-bordered w-full' value={kodeKelas} onChange={(e) => setKodeKelas(e.target.value)}>
                                             <option value="">Kelas</option>
                                             {Kelas.map((item) => (
-                                                <option key={item.id_kelas} value={item.code_kelas}>{item.nama_kelas}</option>
+                                                <option key={item.id_kelas} value={item.code}>{item.nama_kelas}</option>
                                             ))}
                                         </select>
                                     </div>
