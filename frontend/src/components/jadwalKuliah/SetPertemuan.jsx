@@ -1,29 +1,24 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { FaAngleDown, FaEdit, FaInfo, FaTimes, FaTrash } from 'react-icons/fa'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
 const SetPertemuan = () => {
     const [Pertemuan, setPertemuan] = useState([])
     const [fakultas, setFakultas] = useState("")
-    const [kodeFakultas, setKodeFakultas] = useState("")
     const [kelas, setKelas] = useState("")
-    const [kodeKelas, setKodeKelas] = useState("")
     const [makul, setMakul] = useState("")
-    const [kodeMakul, setKodeMakul] = useState("")
     const [prodi, setProdi] = useState("")
-    const [kodeProdi, setKodeProdi] = useState("")
     const [semester, setSemester] = useState("")
-    const [kodeSemester, setKodeSemester] = useState("")
     const [tahun, setTahun] = useState("")
-    const [kodeTahun, setKodeTahun] = useState("")
     const [kapasitas, setKapasitas] = useState("")
     const [tglMulai, setTglMulai] = useState("")
     const [tglSelesai, setTglSelesai] = useState("")
     const [jumPertemuan, setJumPertemuan] = useState("")
     const [statusPerencanaan, setStatusPerencanaan] = useState("")
     const [idJadwal, setIdJadwal] = useState("")
+    const [kodeJdl, setKodeJdl] = useState("")
     const [statusModal, setStatusModal] = useState("")
     const [jenisPertemuan, setJenisPertemuan] = useState("")
     const [metode, setMetode] = useState("")
@@ -37,54 +32,51 @@ const SetPertemuan = () => {
     const [waktu, setWaktu] = useState("")
     const [idPertermuan, setIdPertemuan] = useState("")
     const [statusForm, setStatusForm] = useState("")
-    const { idKls } = useParams()
-    const { kodeJdl } = useParams()
     const [checked, setChecked] = useState([])
+    const location = useLocation()
 
     useEffect(() => {
-        const getDataKelasById = async () => {
-            try {
-                const response = await axios.get(`v1/kelasKuliah/getKelasById/${idKls}`)
-                setFakultas(response.data.data.fakultas[0].nama_fakultas)
-                setKodeFakultas(response.data.data.code_fakultas)
-                setKelas(response.data.data.nama_kelas)
-                setKodeKelas(response.data.data.code_kelas)
-                setMakul(response.data.data.mataKuliahs[0].nama_mata_kuliah)
-                setKodeMakul(response.data.data.code_mata_kuliah)
-                setProdi(response.data.data.prodis[0].nama_prodi)
-                setKodeProdi(response.data.data.code_prodi)
-                setSemester(response.data.data.semesters[0].semester)
-                setKodeSemester(response.data.data.code_semester)
-                setKodeTahun(response.data.data.code_tahun_ajaran)
-                setKapasitas(response.data.data.kapasitas)
-            } catch (error) {
-
-            }
-        }
         getDataKelasById()
-    }, [idKls])
+    }, [location.state])
 
     useEffect(() => {
         getJadwalByKelas()
-    }, [kodeTahun, kodeSemester, kodeFakultas, kodeProdi, kodeMakul, kodeKelas])
+    }, [location.state])
 
     useEffect(() => {
         getJadwalPertemuan()
-    }, [kodeJdl])
+    }, [location.state])
+
+    const getDataKelasById = async () => {
+        try {
+            const response = await axios.get(`v1/kelasKuliah/getKelasById/${location.state.idn}`)
+            setFakultas(response.data.data.fakultas[0].nama_fakultas)
+            setKelas(response.data.data.nama_kelas)
+            setMakul(response.data.data.mataKuliahs[0].nama_mata_kuliah)
+            setProdi(response.data.data.prodis[0].nama_prodi)
+            setSemester(response.data.data.semesters[0].semester)
+            setTahun(response.data.data.tahunAjarans[0].tahun_ajaran)
+            setKapasitas(response.data.data.kapasitas)
+        } catch (error) {
+
+        }
+    }
 
     const getJadwalByKelas = async () => {
-        if (kodeTahun != 0 & kodeSemester != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodeMakul != 0 & kodeKelas != 0) {
-            const response = await axios.get(`v1/jadwalKuliah/getByKelas/${kodeTahun}/${kodeSemester}/${kodeFakultas}/${kodeProdi}/${kodeMakul}/${kodeKelas}`)
-            setTahun(response.data.data.tahunAjarans[0].tahun_ajaran)
+        try {
+            const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
             setTglMulai(response.data.data.tanggal_mulai)
             setTglSelesai(response.data.data.tanggal_selesai)
             setJumPertemuan(response.data.data.jumlah_pertemuan)
             setIdJadwal(response.data.data.id_jadwal_kuliah)
+            setKodeJdl(response.data.data.code_jadwal_kuliah)
+        } catch (error) {
+
         }
     }
 
     const getJadwalPertemuan = async () => {
-        const response = await axios.get(`v1/jadwalPertemuan/all/${kodeJdl}`)
+        const response = await axios.get(`v1/jadwalPertemuan/all/${location.state.jad}`)
         setPertemuan(response.data.data)
         if (response.data.data == 0) {
             setStatusPerencanaan("tambah")
@@ -96,7 +88,7 @@ const SetPertemuan = () => {
     const simpanPerencanaan = async (e) => {
         e.preventDefault()
         try {
-            await axios.post(`v1/jadwalPertemuan/create/${kodeJdl}`).then(function (response) {
+            await axios.post(`v1/jadwalPertemuan/create/${location.state.jad}`).then(function (response) {
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -131,6 +123,11 @@ const SetPertemuan = () => {
         document.getElementById('my-modal').checked = true
     }
 
+    const loadLampiran = (e) => {
+        const image = e.target.files[0]
+        setLampiranMateri(image)
+    }
+
     const modalClose = () => {
         document.getElementById('my-modal').checked = false
         setIdPertemuan("")
@@ -144,11 +141,10 @@ const SetPertemuan = () => {
         setHari("")
         setTglPertemuan("")
         setWaktu("")
-    }
-
-    const loadLampiran = (e) => {
-        const image = e.target.files[0]
-        setLampiranMateri(image)
+        setLampiranMateri("")
+        if (statusModal == 'edit') {
+            document.getElementById('input-file').value = null
+        }
     }
 
     const updatePertemuan = async (e) => {
@@ -171,6 +167,9 @@ const SetPertemuan = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
+                    if (statusModal == 'edit') {
+                        document.getElementById('input-file').value = null
+                    }
                     setIdPertemuan("")
                     setJenisPertemuan("")
                     setMetode("")
@@ -335,7 +334,6 @@ const SetPertemuan = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Jenis Pertemuan</span>
                                     </label>
-                                    {/* <input type="text" className='input input-sm input-bordered w-full' value={jenisPertemuan} onChange={(e) => setJenisPertemuan(e.target.value)} /> */}
                                     <select className="select select-sm select-bordered w-full" value={jenisPertemuan} onChange={(e) => setJenisPertemuan(e.target.value)}>
                                         <option value="">Jenis Pertemuan</option>
                                         <option value="kuliah">Kuliah</option>
@@ -347,7 +345,6 @@ const SetPertemuan = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Metode Pembelajaran</span>
                                     </label>
-                                    {/* <input type="text" className='input input-sm input-bordered w-full' value={metode} onChange={(e) => setMetode(e.target.value)} /> */}
                                     <select className="select select-sm select-bordered w-full" value={metode} onChange={(e) => setMetode(e.target.value)}>
                                         <option value="">Metode Pembelajaran</option>
                                         <option value="offline">Offline</option>
@@ -360,31 +357,23 @@ const SetPertemuan = () => {
                                         <span className="text-base label-text">Link Online</span>
                                     </label>
                                     <input type="text" className='input input-sm input-bordered w-full' value={url} onChange={(e) => setUrl(e.target.value)} />
-                                    {/* <select className="select select-sm select-bordered w-full" value={url} onChange={(e) => setUrl(e.target.value)}>
-                                    <option value="">Pilih Dosen Pengajar</option>
-                                </select> */}
                                 </div>
                                 <div>
                                     <label className="label">
                                         <span className="text-base label-text">Rencana Materi</span>
                                     </label>
                                     <input type="text" className='input input-sm input-bordered w-full' value={rencanaMateri} onChange={(e) => setRencanaMateri(e.target.value)} />
-                                    {/* <select className="select select-sm select-bordered w-full" value={jenisPertemuan} onChange={(e) => setJenisPertemuan(e.target.value)}>
-                                    <option value="">Pilih Dosen Pengajar</option>
-                                </select> */}
                                 </div>
                                 <div>
                                     <label className="label">
                                         <span className="text-base label-text">Lampiran Materi</span>
                                     </label>
-                                    {/* <input type="text" className='input input-sm input-bordered w-full' value={lampiranMateri} onChange={(e) => setLampiranMateri(e.target.value)} /> */}
-                                    <input type="file" onChange={loadLampiran} className="file-input file-input-bordered file-input-sm file-input-default w-full" />
+                                    <input type="file" onChange={loadLampiran} id="input-file" className="file-input file-input-bordered file-input-sm file-input-default w-full" />
                                 </div>
                                 <div>
                                     <label className="label">
                                         <span className="text-base label-text">Status Pertemuan</span>
                                     </label>
-                                    {/* <input type="text" className='input input-sm input-bordered w-full' value={statusPertemuan} onChange={(e) => setStatusPertemuan(e.target.value)} /> */}
                                     <select className="select select-sm select-bordered w-full" value={statusPertemuan} onChange={(e) => setStatusPertemuan(e.target.value)}>
                                         <option value="">Status Pertemuan</option>
                                         <option value="terjadwal">Terjadwal</option>
@@ -510,7 +499,7 @@ const SetPertemuan = () => {
                                 </div>
                             </div>
                             <div className="modal-action">
-                                <button type='submit' className="btn btn-xs btn-default">update</button>
+                                <button type='submit' className="btn btn-xs btn-primary">update</button>
                             </div>
                         </form>
                         :
@@ -531,7 +520,7 @@ const SetPertemuan = () => {
                                 </div>
                             </div>
                             <div className="modal-action">
-                                <button type='submit' className="btn btn-xs btn-default">update</button>
+                                <button type='submit' className="btn btn-xs btn-primary">update</button>
                             </div>
                         </form>}
                 </div>
@@ -549,9 +538,8 @@ const SetPertemuan = () => {
                                     <div className="dropdown mr-1">
                                         <label tabIndex={0} className="btn btn-sm btn-blue"><span className='mr-1'>Navigasi</span><FaAngleDown /></label>
                                         <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                            <li><Link to={`/detailjadwal/${idKls}`}>Detail Jadwal Kuliah</Link></li>
-                                            <li><Link to={`/setDsn/${idKls}`} >Dosen Pengajar</Link></li>
-                                            <li><Link>Set Pertemuan</Link></li>
+                                            <li><Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }}>Detail Jadwal</Link></li>
+                                            <li><Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }}>Dosen Pengajar</Link></li>
                                         </ul>
                                     </div>
                                     <div className="dropdown dropdown-end">
@@ -564,7 +552,7 @@ const SetPertemuan = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-2 bg-base-200 gap-1 p-3 rounded-md mb-3">
+                            <div className="grid grid-cols-2 bg-base-100 gap-1 p-3 rounded-md mb-3">
                                 <div className='grid gap-2'>
                                     <div className='flex gap-2'>
                                         <div className='flex-initial w-48'>
@@ -707,9 +695,9 @@ const SetPertemuan = () => {
                                                 <td className='py-1 border' align='center'>{item.jadwalKuliahs[0].dosen_pengajar}</td>
                                                 <td className='py-1 border' align='center'>
                                                     <div>
-                                                        <button className="btn btn-xs btn-circle text-white btn-blue mr-1" title='Detail' onClick={() => editPertemuan(item.id_jadwal_pertemuan, 'detail')}><FaInfo /></button>
+                                                        <button className="btn btn-xs btn-circle text-white btn-info mr-1" title='Detail' onClick={() => editPertemuan(item.id_jadwal_pertemuan, 'detail')}><FaInfo /></button>
                                                         <button className="btn btn-xs btn-circle text-white btn-warning" title='Edit' onClick={() => editPertemuan(item.id_jadwal_pertemuan, 'edit')}><FaEdit /></button>
-                                                        <button className='btn btn-xs btn-circle btn-danger ml-1' title='Hapus' onClick={() => nonaktifkan(item.id_jadwal_pertemuan)}><FaTrash /></button>
+                                                        <button className='btn btn-xs btn-circle btn-error ml-1' title='Hapus' onClick={() => nonaktifkan(item.id_jadwal_pertemuan)}><FaTrash /></button>
                                                     </div>
                                                 </td>
                                             </tr>
