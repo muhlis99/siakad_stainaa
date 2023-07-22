@@ -462,20 +462,28 @@ module.exports = {
             catch(err => {
                 next(err)
             })
-        console.log(mahasiswaUse.nim);
-        try {
-            await historyMahasiswa.create({
-                nim: nim,
-                code_tahun_ajaran: tahun_ajaran,
-                code_semester: mulai_semester,
-                code_jenjang_pendidikan: code_jenjang_pendidikan,
-                code_fakultas: code_fakultas,
-                code_prodi: code_prodi,
-                status: "aktif"
-            })
-        } catch (error) {
-            next(error)
-        }
+
+        const dataHistoryMhs = await historyMahasiswa.findOne({
+            nim: nim,
+            code_tahun_ajaran: tahun_ajaran,
+            code_semester: mulai_semester,
+            code_jenjang_pendidikan: code_jenjang_pendidikan,
+            code_fakultas: code_fakultas,
+            code_prodi: code_prodi,
+            status: "aktif"
+        })
+        if (dataHistoryMhs) return res.status(401).json({ message: "Data Mahasiswa tidak ditemukan" })
+        await historyMahasiswa.create({
+            nim: nim,
+            code_tahun_ajaran: tahun_ajaran,
+            code_semester: mulai_semester,
+            code_jenjang_pendidikan: code_jenjang_pendidikan,
+            code_fakultas: code_fakultas,
+            code_prodi: code_prodi,
+            status: "aktif"
+        }).then(all => {
+            next();
+        })
     },
 
     createFile: async (req, res, next) => {
