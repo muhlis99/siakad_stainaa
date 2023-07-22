@@ -243,13 +243,13 @@ module.exports = {
         let code = ""
         if (nama_prodi === "TEKNIK ELECTRO") {
             code = "TE"
-        } else if (nama_prodi === "PERBANKKAN SYARI'AH") {
+        } else if (nama_prodi === "PERBANKAN SYARI'AH") {
             code = "PS"
         } else if (nama_prodi === "TEKNIK INFORMATIKA") {
             code = "TIK"
         } else if (nama_prodi === "HUKUM EKONOMI SYARI'AH") {
             code = "HES"
-        } else if (nama_prodi === " PENDIDIKAN AGAMA ISLAM") {
+        } else if (nama_prodi === "PENDIDIKAN AGAMA ISLAM") {
             code = "PAI"
         } else {
             code = ""
