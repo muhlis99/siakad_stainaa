@@ -410,11 +410,11 @@ module.exports = {
         if (code_prodi == "S1AIPAI") {
             kode_prodi_nim = "01"
         }
-        //  else if (code_prodi == "S1") {
-
-        // } 
-        else {
+        else if (code_prodi == "S1AIHES") {
             kode_prodi_nim = "02"
+        }
+        else {
+            kode_prodi_nim = "00"
         }
         const no_urut_mhs_terakhir = await mahasiswa.count({
             where: {
@@ -431,7 +431,7 @@ module.exports = {
             const a = no_urut_mhs_terakhir.toString()
             const panjang = a.length
             const nomor = code.slice(panjang)
-            const b = no_urut_mhs_terakhir + 1
+            const b = (no_urut_mhs_terakhir + 1)
             no_urut_mhs = nomor + b
         }
         const nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
