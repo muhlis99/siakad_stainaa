@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { FaPlus, FaEdit, FaTimes, FaSave, FaInfo, FaTrash } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
-// import { AutoComplete } from "primereact/autocomplete"
+import { FaPlus, FaEdit, FaTimes, FaSave, FaInfo } from 'react-icons/fa'
+// import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import Select from "react-select"
 
 const ListSebaran = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -40,6 +40,7 @@ const ListSebaran = () => {
     const [prodi, setProdi] = useState("")
     const [smtr, setSmtr] = useState("")
     const [nilai, setNilai] = useState("")
+    const [select2, setSelect2] = useState("")
 
     useEffect(() => {
         getMakulAll()
@@ -80,6 +81,7 @@ const ListSebaran = () => {
 
     useEffect(() => {
         getCodeSemester()
+        options()
     }, [Semester])
 
     useEffect(() => {
@@ -169,7 +171,6 @@ const ListSebaran = () => {
             kode: item.code_semester
         }))
         setSmt(i)
-        console.log(i)
     }
 
     const sebaranMakul = async () => {
@@ -327,6 +328,14 @@ const ListSebaran = () => {
                 }
             }
         })
+    }
+
+    const options = () => {
+        var i = Semester.map(item => ({
+            value: item.code_semester,
+            label: item.semester
+        }))
+        setSelect2(i)
     }
 
     return (
@@ -561,12 +570,13 @@ const ListSebaran = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Mata Kuliah</span>
                                     </label>
-                                    <select className='mt-1 select select-sm select-bordered w-full max-w-[260px]' value={kodeMakul} onChange={(e) => setKodeMakul(e.target.value)}>
+                                    <Select options={select2} className="basic-single" classNamePrefix="select" />
+                                    {/* <select className='mt-1 select select-sm select-bordered w-full max-w-[260px]' value={kodeMakul} onChange={(e) => setKodeMakul(e.target.value)}>
                                         <option value="">Mata Kuliah</option>
                                         {Makul.map((item) => (
                                             <option key={item.id_mata_kuliah} value={item.id_mata_kuliah}>{item.code_mata_kuliah} -- {item.nama_mata_kuliah}</option>
                                         ))}
-                                    </select>
+                                    </select> */}
                                 </div>
                                 <div className='basis-1/6'>
                                     <label className="label">
