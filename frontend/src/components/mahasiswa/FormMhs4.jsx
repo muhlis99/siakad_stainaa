@@ -50,6 +50,7 @@ const FormMhs4 = () => {
                     setJenjangnya(response.data.data.code_jenjang_pendidikan)
                     setFakultasnya(response.data.data.code_fakultas)
                     setProdinya(response.data.data.code_prodi)
+                    setKodeThn(response.data.data.mulai_semester.substr(0, 7))
                     setKodeSmt(response.data.data.mulai_semester)
                 } else {
                     const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
@@ -67,6 +68,7 @@ const FormMhs4 = () => {
                     setJenjangnya(response.data.data.code_jenjang_pendidikan)
                     setFakultasnya(response.data.data.code_fakultas)
                     setProdinya(response.data.data.code_prodi)
+                    setKodeThn(response.data.data.mulai_semester.substr(0, 7))
                     setKodeSmt(response.data.data.mulai_semester)
                 }
             } catch (error) {

@@ -275,7 +275,7 @@ const FormMhs1 = () => {
                                 </div>
                                 <div>
                                     <label className="label">
-                                        <span className="text-base label-text">No Handphone</span>
+                                        <span className="text-base label-text">No WhatsApp</span>
                                     </label>
                                     <input type="number" placeholder="Masukkan No Handphone" className="input input-sm input-bordered w-full" value={nohp} onChange={(e) => setNohp(e.target.value)} />
                                 </div>
