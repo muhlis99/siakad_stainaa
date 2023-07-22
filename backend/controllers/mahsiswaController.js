@@ -423,18 +423,22 @@ module.exports = {
                 }
             }
         })
-        var no_urut_mhs
+        let nim
         if (no_urut_mhs_terakhir == null) {
             no_urut_mhs = "0001"
-        } else {
+            nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
+        } else if (mahasiswaUse.nim == "") {
             const code = "0000"
             const a = no_urut_mhs_terakhir.toString()
             const panjang = a.length
             const nomor = code.slice(panjang)
             const b = (no_urut_mhs_terakhir + 1)
             no_urut_mhs = nomor + b
+            nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
+        } else {
+            nim = mahasiswaUse.nim
         }
-        const nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
+        // const nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
         await mahasiswa.update({
             nik_wali: nik_wali,
             nama_wali: nama_wali,
@@ -467,6 +471,7 @@ module.exports = {
                 status: "aktif"
             }
         })
+        console.log(dataHistoryMhs);
         if (dataHistoryMhs) {
             res.status(201).json({
                 message: "Data Mahasiswa success di tambahkan form 4"
