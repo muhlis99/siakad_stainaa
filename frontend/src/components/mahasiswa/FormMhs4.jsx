@@ -50,8 +50,8 @@ const FormMhs4 = () => {
                     setJenjangnya(response.data.data.code_jenjang_pendidikan)
                     setFakultasnya(response.data.data.code_fakultas)
                     setProdinya(response.data.data.code_prodi)
-                    setKodeThn(response.data.data.mulai_semester.substr(0, 7))
-                    setKodeSmt(response.data.data.mulai_semester)
+                    setKodeThn(response.data.data.code_tahun_ajaran)
+                    setKodeSmt(response.data.data.code_semester)
                 } else {
                     const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
                     let tglLahirWali = response.data.data.tanggal_lahir_wali
@@ -68,8 +68,8 @@ const FormMhs4 = () => {
                     setJenjangnya(response.data.data.code_jenjang_pendidikan)
                     setFakultasnya(response.data.data.code_fakultas)
                     setProdinya(response.data.data.code_prodi)
-                    setKodeThn(response.data.data.mulai_semester.substr(0, 7))
-                    setKodeSmt(response.data.data.mulai_semester)
+                    setKodeThn(response.data.data.code_tahun_ajaran)
+                    setKodeSmt(response.data.data.code_semester)
                 }
             } catch (error) {
 
@@ -185,8 +185,8 @@ const FormMhs4 = () => {
                 code_jenjang_pendidikan: jenjangnya,
                 code_fakultas: fakultasnya,
                 code_prodi: prodinya,
-                mulai_semester: kodeSmt,
-                tahun_ajaran: kodeThn
+                code_tahun_ajaran: kodeThn,
+                code_semester: kodeSmt
             }).then(function (response) {
                 Swal.fire({
                     title: response.data.message,
