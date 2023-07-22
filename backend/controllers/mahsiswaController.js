@@ -454,15 +454,7 @@ module.exports = {
             where: {
                 id_mahasiswa: id
             }
-        }).
-            then(result => {
-                res.status(201).json({
-                    message: "Data Mahasiswa success di tambahkan form 4"
-                })
-            }).
-            catch(err => {
-                next(err)
-            })
+        })
 
         const dataHistoryMhs = await historyMahasiswa.findOne({
             where: {
@@ -475,19 +467,29 @@ module.exports = {
                 status: "aktif"
             }
         })
-        console.log(dataHistoryMhs);
-        if (dataHistoryMhs) return res.status(401).json({ message: "Data hiatory Mahasiswa sudah ada" })
-        await historyMahasiswa.create({
-            nim: nim,
-            code_tahun_ajaran: code_tahun_ajaran,
-            code_semester: code_semester,
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: code_fakultas,
-            code_prodi: code_prodi,
-            status: "aktif"
-        }).then(all => {
-            next();
-        })
+        if (dataHistoryMhs) {
+            res.status(201).json({
+                message: "Data Mahasiswa success di tambahkan form 4"
+            })
+        } else {
+            await historyMahasiswa.create({
+                nim: nim,
+                code_tahun_ajaran: code_tahun_ajaran,
+                code_semester: code_semester,
+                code_jenjang_pendidikan: code_jenjang_pendidikan,
+                code_fakultas: code_fakultas,
+                code_prodi: code_prodi,
+                status: "aktif"
+            }).
+                then(result => {
+                    res.status(201).json({
+                        message: "Data Mahasiswa success di tambahkan form 4"
+                    })
+                }).
+                catch(err => {
+                    next(err)
+                })
+        }
     },
 
     createFile: async (req, res, next) => {
