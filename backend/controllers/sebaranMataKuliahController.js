@@ -139,23 +139,6 @@ module.exports = {
 
         await mataKuliahModel.findAll({
             where: {
-                [Op.or]: [
-                    {
-                        id_mata_kuliah: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        code_mata_kuliah: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama_mata_kuliah: {
-                            [Op.like]: `%${search}%`
-                        }
-                    }
-                ],
                 code_tahun_ajaran: codeThnAjr,
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
@@ -166,6 +149,12 @@ module.exports = {
             }
         }).
             then(result => {
+                if (!result) {
+                    return res.status(404).json({
+                        message: "Get mata kuliah  Tidak Ditemukan",
+                        data: null
+                    })
+                }
                 res.status(200).json({
                     message: "Get mata kuliah Success",
                     data: result,
