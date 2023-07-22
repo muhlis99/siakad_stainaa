@@ -142,7 +142,7 @@ const ViewKhs = () => {
                                 <thead className='text-gray-700 bg-[#F2F2F2]'>
                                     <tr>
                                         <th scope="col" className="px-6 py-3 w-5">#</th>
-                                        <th scope="col" className="px-6 py-3 w-5">Kode MK</th>
+                                        <th scope="col" className="px-6 py-9">Kode MK</th>
                                         <th scope="col" className="px-6 py-3">Mata Kuliah</th>
                                         <th scope="col" className="px-6 py-3">(SKS)</th>
                                         <th scope="col" className="px-6 py-3">Angka</th>
@@ -154,25 +154,25 @@ const ViewKhs = () => {
                                 <tbody>
                                     {ViewKhs.map((item, index) => (
                                         <tr className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2'>{item.mataKuliahs[0].code_mata_kuliah}</td>
-                                            <td className='px-6 py-2'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                            <td className='px-6 py-2'>{item.mataKuliahs[0].sks}</td>
-                                            <td className='px-6 py-2'>{item.nilai_akhir}</td>
-                                            <td className='px-6 py-2'>{item.kategoriNilais[0].nilai_huruf}</td>
-                                            <td className='px-6 py-2'>{item.kategoriNilais[0].interfal_skor}</td>
-                                            <td className='px-6 py-2'>{item.sksIndexs}</td>
+                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap border">{index + 1}</th>
+                                            <td className='px-6 py-2 border'>{item.mataKuliahs[0].code_mata_kuliah}</td>
+                                            <td className='px-6 py-2 border'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
+                                            <td className='px-6 py-2 border'>{item.mataKuliahs[0].sks}</td>
+                                            <td className='px-6 py-2 border'>{item.nilai_akhir}</td>
+                                            <td className='px-6 py-2 border'>{item.kategoriNilais[0].nilai_huruf}</td>
+                                            <td className='px-6 py-2 border'>{item.kategoriNilais[0].interfal_skor}</td>
+                                            <td className='px-6 py-2 border'>{item.sksIndexs}</td>
                                         </tr>
                                     ))}
                                     <tr>
-                                        <td className='px-6 py-2' colSpan="3">Jumlah</td>
-                                        <td className='px-6 py-2'>{jumSks}</td>
-                                        <td className='px-6 py-2' colSpan="3"></td>
-                                        <td className='px-6 py-2'>{jumSksIndeks}</td>
+                                        <td className='px-6 py-2 border' colSpan="3">Jumlah</td>
+                                        <td className='px-6 py-2 border'>{jumSks}</td>
+                                        <td className='px-6 py-2 border' colSpan="3"></td>
+                                        <td className='px-6 py-2 border'>{jumSksIndeks}</td>
                                     </tr>
                                     <tr>
-                                        <td className='px-6 py-2' colSpan="7">IPS (Index Prestasi Semester)</td>
-                                        <td className='px-6 py-2'>{ips}</td>
+                                        <td className='px-6 py-2 border' colSpan="7">IPS (Index Prestasi Semester)</td>
+                                        <td className='px-6 py-2 border'>{ips}</td>
                                     </tr>
                                 </tbody>
                             </table>

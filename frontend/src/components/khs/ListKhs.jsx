@@ -13,12 +13,11 @@ const ListKhs = () => {
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
-    const [kodeSemester, setKodeSemester] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
+    const [kodeSemester, setKodeSemester] = useState("")
 
     useEffect(() => {
         getJenjang()
-        getSemester()
         getTahun()
     }, [])
 
@@ -29,6 +28,10 @@ const ListKhs = () => {
     useEffect(() => {
         getProdiByFakultas()
     }, [kodeFakultas])
+
+    useEffect(() => {
+        getSemester()
+    }, [kodeTahun])
 
     useEffect(() => {
         getMhsBySemester()
@@ -59,8 +62,10 @@ const ListKhs = () => {
     }
 
     const getSemester = async () => {
-        const response = await axios.get('v1/semester/all')
-        setSemester(response.data.data)
+        if (kodeTahun != 0) {
+            const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahun}`)
+            setSemester(response.data.data)
+        }
     }
 
     const getMhsBySemester = async () => {
