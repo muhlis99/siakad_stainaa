@@ -223,7 +223,7 @@ module.exports = {
             jenis_pendaftaran: "",
             jenis_tinggal: "",
             penerima_kps: "",
-            mulai_semester: "",
+            code_semester: "",
             tanggal_masuk_kuliah: "",
             email: "",
             no_hp: "",
@@ -392,7 +392,7 @@ module.exports = {
 
     createForm4: async (req, res, next) => {
         const { nik_wali, nama_wali, pekerjaan_wali, penghasilan_wali, pendidikan_wali, tanggal_w, bulan_w, tahun_w,
-            code_jenjang_pendidikan, code_fakultas, code_prodi, mulai_semester, tahun_ajaran
+            code_jenjang_pendidikan, code_fakultas, code_prodi, code_semester, code_tahun_ajaran
         } = req.body
         const id = req.params.id
         const tanggal_lahir_wali = tahun_w + "-" + bulan_w + "-" + tanggal_w
@@ -445,7 +445,8 @@ module.exports = {
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
-            mulai_semester: mulai_semester,
+            code_semester: code_semester,
+            code_tahun_ajaran: code_tahun_ajaran,
             status: "aktif",
             tanggal_masuk_kuliah: date,
             nim: nim
@@ -464,19 +465,22 @@ module.exports = {
             })
 
         const dataHistoryMhs = await historyMahasiswa.findOne({
-            nim: nim,
-            code_tahun_ajaran: tahun_ajaran,
-            code_semester: mulai_semester,
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: code_fakultas,
-            code_prodi: code_prodi,
-            status: "aktif"
+            where: {
+                nim: nim,
+                code_tahun_ajaran: code_tahun_ajaran,
+                code_semester: code_semester,
+                code_jenjang_pendidikan: code_jenjang_pendidikan,
+                code_fakultas: code_fakultas,
+                code_prodi: code_prodi,
+                status: "aktif"
+            }
         })
-        if (dataHistoryMhs) return res.status(401).json({ message: "Data Mahasiswa tidak ditemukan" })
+        console.log(dataHistoryMhs);
+        if (dataHistoryMhs) return res.status(401).json({ message: "Data hiatory Mahasiswa sudah ada" })
         await historyMahasiswa.create({
             nim: nim,
-            code_tahun_ajaran: tahun_ajaran,
-            code_semester: mulai_semester,
+            code_tahun_ajaran: code_tahun_ajaran,
+            code_semester: code_semester,
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
@@ -780,7 +784,7 @@ module.exports = {
                     jenis_pendaftaran: row[22],
                     jenis_tinggal: row[23],
                     penerima_kps: row[24],
-                    mulai_semester: row[25],
+                    code_semester: row[25],
                     email: row[26],
                     no_hp: row[27],
                     no_telepon: row[28],

@@ -215,7 +215,7 @@ exports.validationForm4 = [
     check('pendidikan_wali')
         .notEmpty()
         .withMessage('pendidikan wali tidak boleh kosong'),
-    check('mulai_semester')
+    check('code_semester')
         .notEmpty()
-        .withMessage('mulai semester tidak boleh kosong'),
+        .withMessage('code semester tidak boleh kosong'),
 ]

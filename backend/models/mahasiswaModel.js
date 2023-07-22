@@ -89,9 +89,6 @@ const mahasiswaModel = db.define('mahasiswa', {
         type: DataTypes.ENUM,
         values: ['ya', 'tidak']
     },
-    'mulai_semester': {
-        type: DataTypes.TEXT
-    },
     'tanggal_masuk_kuliah': {
         type: DataTypes.TEXT
     },
@@ -156,6 +153,12 @@ const mahasiswaModel = db.define('mahasiswa', {
         type: DataTypes.TEXT
     },
     'pendidikan_wali': {
+        type: DataTypes.TEXT
+    },
+    'code_semester': {
+        type: DataTypes.TEXT
+    },
+    'code_tahun_ajaran': {
         type: DataTypes.TEXT
     },
     'code_jenjang_pendidikan': {
