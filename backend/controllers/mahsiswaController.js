@@ -438,7 +438,6 @@ module.exports = {
         } else {
             nim = mahasiswaUse.nim
         }
-        // const nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
         await mahasiswa.update({
             nik_wali: nik_wali,
             nama_wali: nama_wali,
