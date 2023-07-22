@@ -185,7 +185,7 @@ module.exports = {
         let code = ""
         if (nama_prodi === "TEKNIK ELECTRO") {
             code = "TE"
-        } else if (nama_prodi === "PERBANKKAN SYARI'AH") {
+        } else if (nama_prodi === "PERBANKAN SYARI'AH") {
             code = "PS"
         } else if (nama_prodi === "TEKNIK INFORMATIKA") {
             code = "TIK"
