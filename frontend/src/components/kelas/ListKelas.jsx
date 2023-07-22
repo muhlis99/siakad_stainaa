@@ -145,27 +145,12 @@ const ListKelas = () => {
                 const t = await axios.get('v1/kelasKuliah/getKelasByMakul/' + kodeTahun + '/' + kodeSemester + '/' + kodeJenjang + '/' + kodeFakultas + '/' + kodeProdi + '/' + KodeMakul[i]).then(response => {
                     kelass.push(response.data.data)
                 })
-                // t.map(ss => {
-                //     console.log(ss);
-                // })
-
                 promises.push(t)
 
             }
             if (KodeMakul.length != 0) {
                 Promise.all(promises).then(() => setDataKelas(kelass))
             }
-            // let jumlah = []
-            // let promisesis = []
-            // kelass.map(all => {
-            //     const f = axios.get('v1/kelasKuliah/jumlahMhsByKelas/' + all[0].code_kelas).then(response => {
-            //         kelass.push(response.data.data)
-            //     })
-            // promisesis.push(f)
-            // })
-            // console.log(kelass);
-            // Promise.all(promisesis).then(() => setJumlahMhsKls(jumlah))
-
         }
     }
 

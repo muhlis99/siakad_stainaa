@@ -1,37 +1,82 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { FaFileSignature } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { FaCouch, FaFileSignature, FaHotel, FaInfo, FaUsers } from 'react-icons/fa'
+import { Link, useLocation } from 'react-router-dom'
 
 
 const ListPenilaian = () => {
+    const [Jenjang, setJenjang] = useState([])
     const [Fakultas, setFakultas] = useState([])
     const [Prodi, setProdi] = useState([])
     const [Tahun, setTahun] = useState([])
     const [Semester, setSemester] = useState([])
     const [Makul, setMakul] = useState([])
+    const [KodeMakul, setKodeMakul] = useState([])
+    const [DataKelas, setDataKelas] = useState([])
+    const [Jumlah, setJumlah] = useState([])
+    const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
+    const location = useLocation()
+
+    useEffect(() => {
+        if (location.state != null) {
+            setKodeJenjang(location.state.jen)
+            setKodeFakultas(location.state.fak)
+            setKodeProdi(location.state.pro)
+            setKodeTahun(location.state.thn)
+            setKodeSemester(location.state.smt)
+        }
+    }, [location.state])
+
+    useEffect(() => {
+        getTahunAjaran()
+    }, [])
+
+    useEffect(() => {
+        getJenjang()
+    }, [])
 
     useEffect(() => {
         getFakultas()
-        getSemester()
-        getTahunAjaran()
-    }, [])
+    }, [kodeJenjang])
 
     useEffect(() => {
         getProdi()
     }, [kodeFakultas])
 
     useEffect(() => {
+        getSemester()
+    }, [kodeTahun])
+
+    useEffect(() => {
         getMakul()
-    }, [kodeFakultas, kodeProdi, kodeSemester, kodeTahun])
+    }, [kodeJenjang, kodeFakultas, kodeProdi, kodeSemester, kodeTahun])
+
+    useEffect(() => {
+        getKodeMakul()
+    }, [Makul])
+
+    useEffect(() => {
+        getKodeMakul()
+    }, [Makul])
+
+    useEffect(() => {
+        getDataKelas()
+    }, [KodeMakul])
+
+    const getJenjang = async () => {
+        const response = await axios.get('v1/jenjangPendidikan/all')
+        setJenjang(response.data.data)
+    }
 
     const getFakultas = async () => {
-        const response = await axios.get('v1/fakultas/all')
-        setFakultas(response.data.data)
+        if (kodeJenjang != 0) {
+            const response = await axios.get(`v1/fakultas/getFakulatsByJenjang/${kodeJenjang}`)
+            setFakultas(response.data.data)
+        }
     }
 
     const getProdi = async () => {
@@ -47,14 +92,43 @@ const ListPenilaian = () => {
     }
 
     const getSemester = async () => {
-        const response = await axios.get(`v1/semester/all`)
-        setSemester(response.data.data)
+        if (kodeTahun != 0) {
+            const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahun}`)
+            setSemester(response.data.data)
+        }
     }
 
     const getMakul = async () => {
-        if (kodeFakultas != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0) {
-            const response = await axios.get(`v1/jadwalKuliah/all/${kodeTahun}/${kodeSemester}/${kodeFakultas}/${kodeProdi}`)
+        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0) {
+            const response = await axios.get(`v1/jadwalKuliah/all/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
             setMakul(response.data.data)
+        }
+    }
+
+    const getKodeMakul = () => {
+        var i = Makul.map(item => (
+            item.code_mata_kuliah
+        ))
+        setKodeMakul(i)
+    }
+
+    const getDataKelas = async () => {
+        if (KodeMakul.length > 0) {
+            let kelass = []
+            let juml = []
+            let promises = []
+            for (let i = 0; i < KodeMakul.length; i++) {
+                const t = await axios.get('v1/kelasKuliah/getKelasByMakul/' + kodeTahun + '/' + kodeSemester + '/' + kodeJenjang + '/' + kodeFakultas + '/' + kodeProdi + '/' + KodeMakul[i]).then(response => {
+                    kelass.push(response.data.data)
+                    juml.push(response.data.data.length)
+                })
+                promises.push(t)
+
+            }
+            if (KodeMakul.length != 0) {
+                Promise.all(promises).then(() => setDataKelas(kelass))
+                Promise.all(promises).then(() => setJumlah(juml))
+            }
         }
     }
 
@@ -65,98 +139,91 @@ const ListPenilaian = () => {
             </section>
             <div className="card bg-base-100 card-bordered shadow-md">
                 <div className="card-body p-4">
-                    <div className="grid grid-cols-2 gap-3 mb-5 bg-base-200 p-3 rounded-md">
-                        <div className='flex gap-2'>
-                            <div className='flex-initial w-36'>
-                                <label>
-                                    <span className="">Fakultas</span>
-                                </label>
-                            </div>
-                            <div className='flex-initial w-80'>
-                                <select className="select select-bordered select-sm w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
-                                    <option value="">Fakultas</option>
-                                    {Fakultas.map((item) => (
-                                        <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
-                                    ))}
-                                </select>
-                            </div>
+                    <div className="grid grid-cols-5 gap-2 mb-5 p-3 rounded-md">
+                        <div>
+                            <label>
+                                <span className="">Jenjang Pendidikan</span>
+                            </label>
+                            <select className="select select-bordered select-sm w-full" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
+                                <option value="">Jenjang Pendidikan</option>
+                                {Jenjang.map((item) => (
+                                    <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
+                                ))}
+                            </select>
                         </div>
-                        <div className='flex gap-2'>
-                            <div className='flex-initial w-36'>
-                                <label>
-                                    <span className="">Prodi</span>
-                                </label>
-                            </div>
-                            <div className='flex-initial w-80'>
-                                <select className="select select-bordered select-sm w-full" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
-                                    <option value="">Prodi</option>
-                                    {Prodi.map((item) => (
-                                        <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
-                                    ))}
-                                </select>
-                            </div>
+                        <div>
+                            <label>
+                                <span className="">Fakultas</span>
+                            </label>
+                            <select className="select select-bordered select-sm w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
+                                <option value="">Fakultas</option>
+                                {Fakultas.map((item) => (
+                                    <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
+                                ))}
+                            </select>
                         </div>
-                        <div className='flex gap-2'>
-                            <div className='flex-initial w-36'>
-                                <label>
-                                    <span className="">Tahun Ajaran</span>
-                                </label>
-                            </div>
-                            <div className='flex-initial w-80'>
-                                <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
-                                    <option value="">Tahun Ajaran</option>
-                                    {Tahun.map((item) => (
-                                        <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
-                                    ))}
-                                </select>
-                            </div>
+                        <div>
+                            <label>
+                                <span className="">Prodi</span>
+                            </label>
+                            <select className="select select-bordered select-sm w-full" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
+                                <option value="">Prodi</option>
+                                {Prodi.map((item) => (
+                                    <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
+                                ))}
+                            </select>
                         </div>
-                        <div className='flex gap-2'>
-                            <div className='flex-initial w-36'>
-                                <label>
-                                    <span className="">Semester</span>
-                                </label>
-                            </div>
-                            <div className='flex-initial w-80'>
-                                <select className="select select-sm select-bordered w-full" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
-                                    <option value="">Semester</option>
-                                    {Semester.map((item) => (
-                                        <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
-                                    ))}
-                                </select>
-                            </div>
+                        <div>
+                            <label>
+                                <span className="">Tahun Ajaran</span>
+                            </label>
+                            <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                <option value="">Tahun Ajaran</option>
+                                {Tahun.map((item) => (
+                                    <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>
+                            <label>
+                                <span className="">Semester</span>
+                            </label>
+                            <select className="select select-sm select-bordered w-full" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
+                                <option value="">Semester</option>
+                                {Semester.map((item) => (
+                                    <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                     <div>
-                        <div className="overflow-x-auto mb-2">
-                            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
-                                    <tr>
-                                        <th scope="col" className="px-6 py-3">#</th>
-                                        <th scope="col" className="px-6 py-3">Kode Mata Kuliah</th>
-                                        <th scope="col" className="px-6 py-3">Mata Kuliah</th>
-                                        <th scope="col" className="px-6 py-3">Fakultas</th>
-                                        <th scope="col" className='px-6 py-3'>Prodi</th>
-                                        <th scope="col" className="px-6 py-3" align='center'>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {Makul.map((item, index) => (
-                                        <tr key={index} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2'>{item.code_mata_kuliah}</td>
-                                            <td className='px-6 py-2'>{item.nama_mata_kuliah}</td>
-                                            <td className='px-6 py-2'>{item.fakultas[0].nama_fakultas}</td>
-                                            <td className='px-6 py-2'>{item.prodis[0].nama_prodi}</td>
-                                            <td className='px-6 py-2' align='center'>
-                                                <div>
-                                                    <Link to={`/inputnilai/${item.code_mata_kuliah}/${item.code_tahun_ajaran}/${item.code_semester}/${item.id_mata_kuliah}`} className="btn btn-xs btn-circle text-white btn-blue mr-1" title='Input Nilai'><FaFileSignature /></Link>
+                        <div className='mt-2'>
+                            {Makul.map((kls, index) => (
+                                <div key={kls.id_mata_kuliah} className="collapse bg-[#2D7F5F] pb-0 rounded-lg">
+                                    <input type="checkbox" checked className='p-0 min-h-0' readOnly />
+                                    <div className="collapse-title p-2 min-h-0 text-white flex gap-2">
+                                        <span>{kls.code_mata_kuliah} | {kls.nama_mata_kuliah} | SKS {kls.sks}</span>
+                                    </div>
+                                    <div className="collapse-content grid gap-1 px-0 py-1 bg-base-100">
+                                        {DataKelas != 0 ? DataKelas[index].map((item, o) => (
+                                            <div key={o} className="grid grid-cols-4 gap-2 px-4 py-2 bg-base-200">
+                                                <div className='flex gap-2' title={`Kelas ${item.nama_kelas}`}>
+                                                    <span className='my-auto text-md'><FaHotel /></span><span className='my-auto'>{item.nama_kelas}</span>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                                <div className='flex gap-2 justify-center' title={`Kapasitas ${item.kapasitas}`}>
+                                                    <span className='my-auto text-md'><FaCouch /></span><span className='my-auto'>{item.kapasitas}</span>
+                                                </div>
+                                                <div className='flex gap-2 justify-center' title={`Jumlah MHS ${item.jumlahMhs}`}>
+                                                    <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.jumlahMhs}</span>
+                                                </div>
+                                                <div>
+                                                    <Link to={`/detailnilai`} state={{ mk: item.code_mata_kuliah, idn: item.id_kelas, kod: item.code }} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link>
+                                                </div>
+                                            </div>
+                                        )) : ""}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
