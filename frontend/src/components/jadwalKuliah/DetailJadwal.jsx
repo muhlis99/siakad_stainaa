@@ -43,7 +43,7 @@ const DetailJadwal = () => {
                 setHari(response.data.data.hari)
                 setJamMulai(response.data.data.jam_mulai)
                 setJamSelesai(response.data.data.jam_selesai)
-                setRuang(response.data.data.code_ruang)
+                setRuang(response.data.data.ruangs[0].nama_ruang)
             } catch (error) {
                 setStatus(error.response.data.message)
             }
