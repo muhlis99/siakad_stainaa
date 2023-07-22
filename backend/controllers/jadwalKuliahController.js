@@ -56,22 +56,32 @@ module.exports = {
         const { thnAjr, smt, jenjPen, fks, prd, makul, kls } = req.params
         await jadwalKuliahModel.findOne({
             include: [{
+                attributes: ['code_semester', 'semester'],
                 model: semesterModel,
                 where: { status: "aktif" }
             }, {
+                attributes: ['code_tahun_ajaran', 'tahun_ajaran'],
                 model: tahunAjaranModel,
                 where: { status: "aktif" }
             }, {
+                attributes: ['code_jenjang_pendidikan', 'nama_jenjang_pendidikan'],
                 model: jenjangPendidikanModel,
                 where: { status: "aktif" }
             }, {
+                attributes: ['code_fakultas', 'nama_fakultas'],
                 model: fakultasModel,
                 where: { status: "aktif" }
             }, {
+                attributes: ['code_prodi', 'nama_prodi'],
                 model: prodiModel,
                 where: { status: "aktif" }
             }, {
+                attributes: ['code_kelas', 'nama_kelas', 'kapasitas'],
                 model: kelasModel,
+                where: { status: "aktif" }
+            }, {
+                attributes: ['code_ruang', 'nama_ruang', 'lokasi'],
+                model: ruangModel,
                 where: { status: "aktif" }
             }, {
                 model: mataKuliahModel,
