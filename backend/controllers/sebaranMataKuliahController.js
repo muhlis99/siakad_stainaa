@@ -133,6 +133,38 @@ module.exports = {
             })
     },
 
+    autocompleteMakul: async (req, res, next) => {
+        const { codeThnAjr, codeJnjPen, codeFks, codePrd } = req.params
+        const search = req.query.search || ""
+
+        await mataKuliahModel.findAll({
+            where: {
+                code_tahun_ajaran: codeThnAjr,
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
+                status_bobot_makul: "",
+                status_makul: "",
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                if (!result) {
+                    return res.status(404).json({
+                        message: "Get mata kuliah  Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(200).json({
+                    message: "Get mata kuliah Success",
+                    data: result,
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     smtByThnAjr: async (req, res, next) => {
         const thnAjr = req.params.thnAjr
         await semesterModel.findAll({
