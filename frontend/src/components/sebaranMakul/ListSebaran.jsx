@@ -505,7 +505,7 @@ const ListSebaran = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-3 rounded-md">
                     <div className="card-body p-4">
-                        <div className="grid lg:grid-cols-2 gap-2 bg-slate-400 p-2 rounded-md">
+                        <div className="grid lg:grid-cols-2 gap-2 p-2 rounded-md">
                             <div className='flex gap-2'>
                                 <label className="label flex-initial w-64">
                                     <span className="text-base label-text">Jenjang Pendidikan</span>
