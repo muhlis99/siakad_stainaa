@@ -110,7 +110,7 @@ module.exports = {
             code = "S1"
         } else if (nama_jenjang_pendidikan === "MAGISTER") {
             code = "S2"
-        } else if (nama_jenjang_pendidikan === "DOCTOR") {
+        } else if (nama_jenjang_pendidikan === "DOKTOR") {
             code = "S3"
         } else {
             code = ""
@@ -154,7 +154,7 @@ module.exports = {
             code = "S1"
         } else if (nama_jenjang_pendidikan === "MAGISTER") {
             code = "S2"
-        } else if (nama_jenjang_pendidikan === "DOCTOR") {
+        } else if (nama_jenjang_pendidikan === "DOKTOR") {
             code = "S3"
         } else {
             code = ""
