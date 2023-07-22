@@ -99,7 +99,7 @@ function App() {
           <Route path="/setpertemuan" element={<Pertemuan />} />
           <Route path="/penilaian" element={<Penilaian />} />
           <Route path="/inputnilai" element={<InputNilai />} />
-          <Route path="/detail/:kodeMk/:kodeKls/:idMk" element={<Detail2 />} />
+          <Route path="/detailnilai" element={<Detail2 />} />
           <Route path="/setmhs" element={<Persemester />} />
           <Route path="/khs" element={<Khs />} />
           <Route path="/view/:nim/:kodeFk/:kodeJnjg/:kodeProdi/:kodeSmt/:kodeThn" element={<View />} />

@@ -1,56 +1,44 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { FaReply, FaSave } from 'react-icons/fa'
 
 const InputNilaiMhs = () => {
     const [Mahasiswa, setMahasiswa] = useState([])
+    const [jenjang, setJenjang] = useState("")
+    const [nmKls, setNmKls] = useState("")
+    const [nmMk, setNmMk] = useState("")
+    const [sem, setSem] = useState("")
     const [jmlMhs, setJmlMhs] = useState("")
     const [nilaiAkhir, setNIlaiAkhir] = useState([])
     const [nilaiHuruf, setNilaiHuruf] = useState([])
+    const [ket, setKet] = useState([])
     const [kodeNilai, setKodeNilai] = useState([])
     const [nilaiSum, setNilaiSum] = useState([])
-    const { kodeMk } = useParams()
-    const { kodeSmt } = useParams()
-    const { kodeTahun } = useParams()
-    const { idMk } = useParams()
-    const [Kelas, setKelas] = useState([])
-    const [kodeKelas, setKodeKelas] = useState("")
-    const [btn, setBtn] = useState("")
-    const navigate = useNavigate()
+    const [jumlahMhs, setJumlahMhs] = useState("")
     const [inputFields, setInputFields] = useState([])
     const [fakul, setFakul] = useState("")
     const [prodi, setProdi] = useState("")
     const [tahun, setTahun] = useState("")
     const location = useLocation()
+    const navigate = useNavigate()
 
     const [value, setValue] = useState()
 
     const handleFormChange = (index, event) => {
-        // let data = Math.max(min, Math.min(max, Number([...inputFields])))
         let data = [...inputFields]
         data[index][event.target.name] = event.target.value
-        // if (event.target.value <= 100) {
-        //     setInputFields(data)
-        // } else {
-        //     alert('lebih')
-        //     data[index][event.target.name] = ""
         setInputFields(data)
-        // }
-        // console.log(data)
     }
 
     useEffect(() => {
-        getMakulById()
-    }, [location.state])
-
-    useEffect(() => {
-        getKelas()
+        getKelasById()
     }, [location.state])
 
     useEffect(() => {
         getMahasiswa()
-    }, [kodeKelas])
+    }, [location.state])
 
     useEffect(() => {
         addFields()
@@ -65,16 +53,15 @@ const InputNilaiMhs = () => {
         cekNilai()
     }, [nilaiAkhir, location.state])
 
-    const getMakulById = async () => {
-        const response = await axios.get(`v1/mataKuliah/getById/${location.state.idn}`)
+    const getKelasById = async () => {
+        const response = await axios.get(`v1/kelasKuliah/getKelasById/${location.state.idn}`)
+        setJenjang(response.data.data.jenjangPendidikans[0].nama_jenjang_pendidikan)
         setFakul(response.data.data.fakultas[0].nama_fakultas)
         setProdi(response.data.data.prodis[0].nama_prodi)
-        setTahun(response.data.data.nama_mata_kuliah)
-    }
-
-    const getKelas = async () => {
-        const response = await axios.get(`v1/kelasKuliah/getKelasByMakul/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.kod}`)
-        setKelas(response.data.data)
+        setTahun(response.data.data.tahunAjarans[0].tahun_ajaran)
+        setNmKls(response.data.data.nama_kelas)
+        setNmMk(response.data.data.mataKuliahs[0].nama_mata_kuliah)
+        setSem(response.data.data.semesters[0].semester)
     }
 
     const addFields = () => {
@@ -88,13 +75,12 @@ const InputNilaiMhs = () => {
     }
 
     const getMahasiswa = async () => {
-        if (kodeKelas) {
-            const response = await axios.get(`v1/kelasKuliah/getMhsByKelas/${kodeKelas}`)
+        try {
+            const response = await axios.get(`v1/kelasKuliah/getMhsByKelas/${location.state.kod}`)
             setMahasiswa(response.data.data)
             setJmlMhs(response.data.data.length)
-            setBtn('simpan')
-        } else {
-            setBtn("")
+        } catch (error) {
+
         }
     }
 
@@ -126,6 +112,7 @@ const InputNilaiMhs = () => {
     const cekNilai = async () => {
         let nilai = []
         let kode = []
+        let status = []
         let promises = []
         for (let i = 0; i < nilaiAkhir.length; i++) {
             if (nilaiAkhir[i] === 0) {
@@ -134,12 +121,14 @@ const InputNilaiMhs = () => {
                 const d = await axios.get(`/v1/nilaiKuliah/deteksiIndexNilai/${nilaiAkhir[i]}/${location.state.thn}`).then(response => {
                     nilai.push(response.data.data[0].nilai_huruf)
                     kode.push(response.data.data[0].code_kategori_nilai)
+                    status.push(response.data.data[0].keterangan)
                 })
                 promises.push(d)
             }
         }
         Promise.all(promises).then(() => setNilaiHuruf(nilai))
         Promise.all(promises).then(() => setKodeNilai(kode))
+        Promise.all(promises).then(() => setKet(status))
     }
 
     const simpanNilai = async (e) => {
@@ -147,8 +136,8 @@ const InputNilaiMhs = () => {
         try {
             await axios.post('v1/nilaiKuliah/create',
                 Mahasiswa.map((item, index) => ({
-                    code_kelas: kodeKelas,
-                    code_mata_kuliah: kodeMk,
+                    code_kelas: location.state.kod,
+                    code_mata_kuliah: location.state.mk,
                     code_kategori_nilai: kodeNilai[index],
                     nim: item.nim,
                     nilai_hadir: inputFields[index].absen,
@@ -164,7 +153,7 @@ const InputNilaiMhs = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate(`/detail/${kodeMk}/${kodeKelas}/${idMk}`)
+                    navigate(`/detailnilai`, { state: { mk: location.state.mk, idn: location.state.idn, kod: location.state.kod } })
                 });
             })
         } catch (error) {
@@ -190,6 +179,26 @@ const InputNilaiMhs = () => {
                                 <div className='flex gap-2'>
                                     <div className='flex-initial w-36'>
                                         <label>
+                                            <span className="">Jenjang Pendidikan</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{jenjang}</a>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-36'>
+                                        <label>
+                                            <span className="">Tahun Ajaran</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{tahun}</a>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-36'>
+                                        <label>
                                             <span className="">Fakultas</span>
                                         </label>
                                     </div>
@@ -200,11 +209,11 @@ const InputNilaiMhs = () => {
                                 <div className='flex gap-2'>
                                     <div className='flex-initial w-36'>
                                         <label>
-                                            <span className="">Mata Kuliah</span>
+                                            <span className="">Semester</span>
                                         </label>
                                     </div>
                                     <div className='flex-initial w-80'>
-                                        <a>{tahun}</a>
+                                        <a>{sem}</a>
                                     </div>
                                 </div>
                                 <div className='flex gap-2'>
@@ -220,22 +229,30 @@ const InputNilaiMhs = () => {
                                 <div className='flex gap-2'>
                                     <div className='flex-initial w-36'>
                                         <label>
+                                            <span className="">Mata Kuliah</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{nmMk}</a>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-36'>
+                                        <label>
                                             <span className="">Kelas</span>
                                         </label>
                                     </div>
                                     <div className='flex-initial w-80'>
-                                        <select className='select select-sm select-bordered w-full' value={kodeKelas} onChange={(e) => setKodeKelas(e.target.value)}>
-                                            <option value="">Kelas</option>
-                                            {Kelas.map((item) => (
-                                                <option key={item.id_kelas} value={item.code}>{item.nama_kelas}</option>
-                                            ))}
-                                        </select>
+                                        <a>{nmKls}</a>
                                     </div>
                                 </div>
                             </div>
                             <div className="grid">
-                                <div className='mb-1'>
-                                    {btn && <button className='btn btn-sm btn-default float-right'>simpan</button>}
+                                <div className='mb-2'>
+                                    <div className='float-right flex gap-2'>
+                                        <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod }} className='btn btn-sm btn-error'><FaReply /> Kembali</Link>
+                                        {jmlMhs == null ? "" : <button className='btn btn-sm btn-primary'><FaSave /> simpan</button>}
+                                    </div>
                                 </div>
                                 <div className="overflow-x-auto mb-2">
                                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -275,7 +292,7 @@ const InputNilaiMhs = () => {
                                                     <td className='px-2 py-2 border'>{nilaiSum[index] == 0 ? "" : nilaiSum[index]}</td>
                                                     <td className='px-2 py-2 border'>{nilaiAkhir[index] == "0" ? "" : nilaiAkhir[index]}</td>
                                                     <td className='px-2 py-2 border'>{nilaiHuruf[index]}</td>
-                                                    <td className='px-2 py-2 border'></td>
+                                                    <td className='px-2 py-2 border'>{ket[index]}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
