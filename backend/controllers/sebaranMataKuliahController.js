@@ -143,6 +143,8 @@ module.exports = {
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
                 code_prodi: codePrd,
+                code_semester: "",
+                code_kategori_nilai: "",
                 status_bobot_makul: "",
                 status_makul: "",
                 status: "aktif"
