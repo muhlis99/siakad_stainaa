@@ -294,7 +294,7 @@ module.exports = {
             code_kategori_nilai: "",
             status_makul: "",
             status_bobot_makul: "",
-            status: "tidak"
+            status: "aktif"
         }, {
             where: {
                 id_mata_kuliah: id
