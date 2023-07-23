@@ -40,10 +40,10 @@ const ListSebaran = () => {
     const [prodi, setProdi] = useState("")
     const [smtr, setSmtr] = useState("")
     const [nilai, setNilai] = useState("")
-    const [select2, setSelect2] = useState("")
+    const [select2, setSelect2] = useState([])
+
 
     useEffect(() => {
-        getMakulAll()
         getTahunAjaran()
         getJenjangPendidikan()
     }, [])
@@ -78,6 +78,14 @@ const ListSebaran = () => {
     useEffect(() => {
         getKategoriNilai()
     }, [kodeProdi, kodeTahun])
+
+    useEffect(() => {
+        getMakulAll()
+    }, [kodeJenjang, kodeFakultas, kodeProdi, kodeTahun])
+
+    useEffect(() => {
+        options()
+    }, [Makul])
 
     useEffect(() => {
         getCodeSemester()
@@ -116,46 +124,30 @@ const ListSebaran = () => {
         setTahun(response.data.data)
     }
 
+    const getMakulAll = async () => {
+        if (kodeFakultas != 0 & kodeJenjang != 0 & kodeProdi != 0 & kodeTahun != 0) {
+            const response = await axios.get(`v1/sebaranMataKuliah/autocompleteMakul/${kodeTahun}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+            setMakul(response.data.data)
+        }
+    }
+
+    const options = () => {
+        var i = Makul.map(item => ({
+            value: item.id_mata_kuliah,
+            label: item.nama_mata_kuliah
+        }))
+        setSelect2(i)
+    }
+
+    const onchange = (e) => {
+        // console.log(e.value)
+        setKodeMakul(e.value)
+    }
+
     const getKategoriNilai = async () => {
         if (kodeProdi != 0 & kodeTahun != 0) {
             const response = await axios.get(`v1/sebaranMataKuliah/katNilaiByThnAjr/${kodeTahun}`)
             setListNilai(response.data.data)
-        }
-    }
-
-    const getMakulAll = async () => {
-        const response = await axios.get(`v1/mataKuliah/all`)
-        setMakul(response.data.data)
-    }
-
-    const simpanSebaran = async (e) => {
-        e.preventDefault()
-        try {
-            await axios.post('v1/sebaranMataKuliah/create', {
-                id_mata_kuliah: kodeMakul,
-                code_semester: kodeSmt,
-                code_kategori_nilai: kodeNilai,
-                status_bobot_makul: statusBobot,
-                status_makul: status,
-            }).then(function (response) {
-                Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    setKodeMakul("")
-                    setKodeSmt("")
-                    setKodeNilai("")
-                    setPaket(false)
-                    sebaranMakul()
-                })
-            })
-        } catch (error) {
-            if (error.response) {
-                Swal.fire({
-                    title: error.response.data.errors[0].msg,
-                    icon: "error"
-                })
-            }
         }
     }
 
@@ -173,8 +165,39 @@ const ListSebaran = () => {
         setSmt(i)
     }
 
+    const simpanSebaran = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.post('v1/sebaranMataKuliah/create', {
+                id_mata_kuliah: kodeMakul,
+                code_semester: kodeSmt,
+                code_kategori_nilai: kodeNilai,
+                status_bobot_makul: statusBobot,
+                status_makul: status,
+            }).then(function (response) {
+                Swal.fire({
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getMakulAll()
+                    setKodeMakul("")
+                    setKodeSmt("")
+                    setKodeNilai("")
+                    setPaket(false)
+                    sebaranMakul()
+                })
+            })
+        } catch (error) {
+            if (error.response) {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
+        }
+    }
+
     const sebaranMakul = async () => {
-        console.log(smt.length);
         if (smt.length != 0) {
             let sebar = []
             let sksnya = []
@@ -328,14 +351,6 @@ const ListSebaran = () => {
                 }
             }
         })
-    }
-
-    const options = () => {
-        var i = Semester.map(item => ({
-            value: item.code_semester,
-            label: item.semester
-        }))
-        setSelect2(i)
     }
 
     return (
@@ -570,7 +585,7 @@ const ListSebaran = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Mata Kuliah</span>
                                     </label>
-                                    <Select options={select2} className="basic-single" classNamePrefix="select" />
+                                    <Select options={select2} className="basic-single" onChange={onchange} classNamePrefix="select" />
                                     {/* <select className='mt-1 select select-sm select-bordered w-full max-w-[260px]' value={kodeMakul} onChange={(e) => setKodeMakul(e.target.value)}>
                                         <option value="">Mata Kuliah</option>
                                         {Makul.map((item) => (
