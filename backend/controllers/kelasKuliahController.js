@@ -166,7 +166,6 @@ module.exports = {
             })
     },
 
-
     getMhsByKelas: async (req, res, next) => {
         const { codeKls } = req.params
         await kelasDetailKuliahModel.findAll({
@@ -240,29 +239,59 @@ module.exports = {
                 code_tahun_ajaran: thnAjr,
                 status: "aktif"
             }
-        }).then(el => {
+        }).then(async el => {
             const nimMhsHistory = el.rows.map(all => {
                 return all.nim
             })
-            return kelasDetailKuliahModel.findOne({
+            const mahasiswaDetail = await kelasDetailKuliahModel.findOne({
                 where: {
                     nim: nimMhsHistory,
                     status: "aktif"
                 }
-            }).then(all => {
-                if (all) {
-                    return res.status(404).json({
-                        message: "Data jejang Pendidikan Ditemukan",
-                        data: 0
-                    })
-                }
-                res.status(201).json({
-                    message: "Data jejang Pendidikan Ditemukan",
-                    data: el.count
+            })
+            if (mahasiswaDetail) {
+                return res.status(201).json({
+                    message: "Data kelas kuliah Ditemukan",
+                    data: 0
                 })
+            }
+            res.status(201).json({
+                message: "Data kelas kuliah Ditemukan",
+                data: el.count
             })
         }).catch(err => {
             next(err)
+        })
+    },
+
+    getNamaKelasSelanjutnya: async (req, res, next) => {
+        const { thnAjr, smt, jnjPen, fkts, prd } = req.params
+        await kelasModel.max('nama_kelas', {
+            where: {
+                code_jenjang_pendidikan: jnjPen,
+                code_fakultas: fkts,
+                code_prodi: prd,
+                code_semester: smt,
+                code_tahun_ajaran: thnAjr,
+                status: "aktif"
+            }
+        }).then(all => {
+
+            const huruf = nextChar(all)
+            function nextChar(e) {
+                var i = (parseInt(e, 36) + 1) % 36;
+                return (!i * 10 + i).toString(36);
+            }
+            if (!all) {
+                return res.status(201).json({
+                    message: "Data kelas kuliah Ditemukan",
+                    data: "A"
+                })
+            }
+            res.status(201).json({
+                message: "Data kelas kuliah Ditemukan",
+                data: huruf.toUpperCase()
+            })
         })
     },
 
@@ -323,11 +352,11 @@ module.exports = {
                 }
                 kelasModel.bulkCreate([data])
                     .then(all => {
-                        all.map(elment => {
+                        all.map(async elment => {
                             let currentPage = parseInt(el)
                             let perPage = parseInt(jumlahPeserta)
                             let offset = (currentPage - 1) * perPage
-                            return krsModel.findAll({
+                            const al = await krsModel.findAll({
                                 include: [
                                     {
                                         model: jenjangPendidikanModel,
@@ -353,7 +382,8 @@ module.exports = {
                                             jenis_kelamin: jenkel,
                                             status: "aktif"
                                         }
-                                    }],
+                                    }
+                                ],
                                 where: {
                                     code_jenjang_pendidikan: code_jenjang_pendidikan,
                                     code_fakultas: code_fakultas,
@@ -365,18 +395,17 @@ module.exports = {
                                 offset: offset,
                                 limit: perPage,
                                 group: ['nim']
-                            }).then(al => {
-                                return Promise.all(al.map(p => {
-                                    let random = Math.floor(100 + Math.random() * 900)
-                                    let datas = {
-                                        code_kelas: elment.code_kelas,
-                                        code_kelas_detail: jenkel + random,
-                                        nim: p.nim,
-                                        status: "aktif"
-                                    }
-                                    kelasDetailKuliahModel.bulkCreate([datas])
-                                }))
                             })
+                            return await Promise.all(al.map(p => {
+                                let random = Math.floor(100 + Math.random() * 900)
+                                let datas = {
+                                    code_kelas: elment.code_kelas,
+                                    code_kelas_detail: jenkel + random,
+                                    nim: p.nim,
+                                    status: "aktif"
+                                }
+                                kelasDetailKuliahModel.bulkCreate([datas])
+                            }))
                         })
                     })
             })
