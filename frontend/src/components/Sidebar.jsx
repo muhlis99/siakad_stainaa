@@ -93,13 +93,13 @@ const Sidebar = () => {
             <summary className='text-white'>PERKULIAHAN</summary>
             <ul className='gap-2'>
               <li>
+                <Link to="/setmhs" className={`text-white rounded-md text-xs ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-xs'>Set MHS Persemester</span></Link>
+              </li>
+              <li>
                 <Link to="/matakuliah" className={`text-white rounded-md text-xs ${location.pathname == '/matakuliah' ? 'active' : ''}`}><FaBook /> <span className='text-xs'>Mata Kuliah</span></Link>
               </li>
               <li>
                 <Link to='/sebaran' className={`text-white rounded-md text-xs ${location.pathname == '/sebaran' ? 'active' : ''}`}><FaTh /> <span className='text-xs'>Sebaran Mata Kuliah</span></Link>
-              </li>
-              <li>
-                <Link to="/setmhs" className={`text-white rounded-md text-xs ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-xs'>Set MHS Persemester</span></Link>
               </li>
               <li>
                 <Link to="/krs" className={`text-white rounded-md text-xs ${location.pathname == '/krs' ? 'active' : ''}`}><FaTasks /> <span className='text-xs'>Kartu Rencana Studi</span></Link>
