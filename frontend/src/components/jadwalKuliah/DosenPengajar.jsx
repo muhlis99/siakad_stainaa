@@ -9,13 +9,9 @@ const DosenPengajar = () => {
     const [fakultas, setFakultas] = useState("")
     const [kelas, setKelas] = useState("")
     const [makul, setMakul] = useState("")
-    const [kodeMakul, setKodeMakul] = useState("")
     const [prodi, setProdi] = useState("")
-    const [kodeProdi, setKodeProdi] = useState("")
     const [semester, setSemester] = useState("")
-    const [kodeSemester, setKodeSemester] = useState("")
     const [tahun, setTahun] = useState("")
-    const [kodeTahun, setKodeTahun] = useState("")
     const [kapasitas, setKapasitas] = useState("")
     const [tglMulai, setTglMulai] = useState("")
     const [tglSelesai, setTglSelesai] = useState("")
@@ -163,13 +159,13 @@ const DosenPengajar = () => {
                             <div className="grid">
                                 <div className='mb-2'>
                                     <div className='float-right'>
-                                        <div className="dropdown mr-1">
+                                        <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className=''>Detail Jadwal Kuliah</Link>
+                                        <Link to={`/setpertemuan`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, jad: kodeJadwal }} className=''>Set Pertemuan</Link>
+                                        {/* <div className="dropdown mr-1">
                                             <label tabIndex={0} className="btn btn-sm btn-blue"><span className='mr-1'>Navigasi</span><FaAngleDown /></label>
                                             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                                <li><Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }}>Detail Jadwal Kuliah</Link></li>
-                                                <li><Link to={`/setpertemuan`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, jad: kodeJadwal }}>Set Pertemuan</Link></li>
                                             </ul>
-                                        </div>
+                                        </div> */}
                                         {statusForm == "tambah" ?
                                             <button className='btn btn-sm btn-primary'><FaSave /><span>simpan</span></button> :
                                             <button className='btn btn-sm btn-primary'><FaEdit /><span>edit</span></button>}
