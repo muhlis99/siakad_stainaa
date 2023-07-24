@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaAngleDown, FaCog, FaEdit, FaSave } from 'react-icons/fa'
+import { FaAngleDown, FaCog, FaEdit, FaReply, FaSave, FaUserEdit } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 import { Link, useParams, useNavigate, useLocation } from "react-router-dom"
 import axios from 'axios'
@@ -69,19 +69,12 @@ const DetailJadwal = () => {
                             <div className="grid">
                                 <div className='mb-2'>
                                     <div className="float-right flex gap-1">
+                                        <Link to={`/jadwalkuliah`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
                                         {status !== "" ?
                                             <Link to={`/aturjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-primary'><FaCog /><span>Atur Jadwal</span></Link>
-                                            : ""
+                                            : ''
                                         }
-                                        <div>
-                                            <div className="dropdown dropdown-end">
-                                                <label tabIndex={0} className="btn btn-sm btn-blue"><span className='mr-1'>Navigasi</span><FaAngleDown /></label>
-                                                <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                                    <li><Link to={`/jadwalkuliah`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro }}>Kembali</Link></li>
-                                                    <li><Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }}>Dosen Pengajar</Link></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                        {status == '' ? <Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-secondary btn-sm'><FaUserEdit />Dosen Pengajar</Link> : ''}
                                     </div>
                                 </div>
                             </div>

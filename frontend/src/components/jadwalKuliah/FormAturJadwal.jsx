@@ -105,7 +105,12 @@ const FormAturJadwal = () => {
                 })
             })
         } catch (error) {
-            if (error.response) {
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
+            } else {
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
                     icon: "error"

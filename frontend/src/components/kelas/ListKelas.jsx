@@ -21,7 +21,7 @@ const ListKelas = () => {
     const [kodeSemester, setKodeSemester] = useState("")
     const [kodesmt, setKodeSmt] = useState("")
     const [jumMhs, setJumMhs] = useState("")
-    const [dari, setDari] = useState("")
+    const [dari, setDari] = useState("1")
     const [sampai, setSampai] = useState("")
     const [kapasitas, setKapasitas] = useState("")
     const [kelasnya, setKelasnya] = useState([])
@@ -29,6 +29,7 @@ const ListKelas = () => {
     const [title, setTitle] = useState("")
     const [statusKell, setStatusKell] = useState("")
     const [statusKelp, setStatusKelp] = useState("")
+    const [klsSelanjutnya, setKlsSelanjutnya] = useState("")
     const location = useLocation()
 
     useEffect(() => {
@@ -87,8 +88,8 @@ const ListKelas = () => {
     }, [dari, sampai])
 
     useEffect(() => {
-        getDataJumlah()
-    }, [DataKelas])
+        getNamaKlsSelanjutnya()
+    }, [kodeFakultas, kodeJenjang, kodeProdi, kodeSemester, kodeTahun])
 
     const getJenjang = async () => {
         const response = await axios.get('v1/jenjangPendidikan/all')
@@ -157,16 +158,16 @@ const ListKelas = () => {
     }
 
     const getJumlahMhs = async () => {
-        if (statusKell == jenisKelamin || statusKelp == jenisKelamin) {
-            setJumMhs("0")
+        // if (statusKell == jenisKelamin || statusKelp == jenisKelamin) {
+        //     setJumMhs("0")
+        // } else {
+        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodesmt != 0 & kodeTahun != 0 & jenisKelamin != 0) {
+            const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodeTahun}/${kodesmt}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${jenisKelamin}`)
+            setJumMhs(response.data.data)
         } else {
-            if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodesmt != 0 & kodeTahun != 0 & jenisKelamin != 0) {
-                const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodeTahun}/${kodesmt}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${jenisKelamin}`)
-                setJumMhs(response.data.data)
-            } else {
-                setJumMhs("")
-            }
+            setJumMhs("")
         }
+        // }
     }
 
     const abjad = ["", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
@@ -174,6 +175,15 @@ const ListKelas = () => {
     for (let i = 1; i < abjad.length; i++) {
         abjadnya.push(<option key={i} value={i}>{abjad[i]}</option>)
     }
+
+    const getNamaKlsSelanjutnya = async () => {
+        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0) {
+            const response = await axios.get(`v1/kelasKuliah/getNamaKelasSelanjutnya/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+            setKlsSelanjutnya(response.data.data)
+        }
+    }
+
+
 
     const getDataArray = () => {
         if (sampai != 0) {
@@ -243,13 +253,6 @@ const ListKelas = () => {
                 })
             }
         }
-    }
-
-    const getDataJumlah = () => {
-        for (let i = 0; i < DataKelas.length; i++) {
-            console.log(DataKelas[i].kodeKelas);
-        }
-
     }
 
     return (
@@ -336,10 +339,7 @@ const ListKelas = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Dari Kelas</span>
                                     </label>
-                                    <select className='select select-sm select-bordered w-full' value={dari} onChange={(e) => setDari(e.target.value)}>
-                                        <option value="">Dari Kelas</option>
-                                        {abjadnya}
-                                    </select>
+                                    <input type="text" disabled className='input input-sm input-bordered w-full' value={klsSelanjutnya} />
                                 </div>
                                 <div>
                                     <label className="label">
@@ -366,8 +366,6 @@ const ListKelas = () => {
             </div>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Kelas Kuliah</h1>
-                {statusKell}
-                {statusKelp}
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md rounded-md">
