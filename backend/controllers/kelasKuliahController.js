@@ -254,37 +254,6 @@ module.exports = {
         const { code_jenjang_pendidikan, code_fakultas, code_tahun_ajaran,
             code_prodi, code_semester, nama_kelas, kapasitas, jumlahPeserta, jenkel } = req.body
 
-        const dataDuplicate = await kelasModel.findOne({
-            include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                model: mataKuliahModel,
-                where: { status: "aktif" }
-            }, {
-                model: tahunAjaranModel,
-                where: { status: "aktif" }
-            }, {
-                model: semesterModel,
-                where: { status: "aktif" }
-            }],
-            where: {
-                code_tahun_ajaran: code_tahun_ajaran,
-                code_semester: code_semester,
-                code_jenjang_pendidikan: code_jenjang_pendidikan,
-                code_fakultas: code_fakultas,
-                code_prodi: code_prodi,
-                status: "aktif"
-            }
-        })
-        if (dataDuplicate) return res.status(401).json({ message: "Data kelas kuliah sudah ada" })
-
         const makul = await mataKuliahModel.findAll({
             include: [{
                 attributes: ['code_jenjang_pendidikan'],
@@ -381,6 +350,37 @@ module.exports = {
                                 limit: perPage,
                                 group: ['nim']
                             }).then(al => {
+                                const dataDuplicate = kelasModel.findOne({
+                                    include: [{
+                                        model: jenjangPendidikanModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: fakultasModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: prodiModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: mataKuliahModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: tahunAjaranModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: semesterModel,
+                                        where: { status: "aktif" }
+                                    }],
+                                    where: {
+                                        code_kelas: elment.code_kelas,
+                                        code_tahun_ajaran: code_tahun_ajaran,
+                                        code_semester: code_semester,
+                                        code_jenjang_pendidikan: code_jenjang_pendidikan,
+                                        code_fakultas: code_fakultas,
+                                        code_prodi: code_prodi,
+                                        status: "aktif"
+                                    }
+                                })
+                                if (dataDuplicate) return res.status(401).json({ message: "Data kelas kuliah sudah ada" })
                                 return Promise.all(al.map(p => {
                                     let random = Math.floor(100 + Math.random() * 900)
                                     let datas = {
