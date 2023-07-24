@@ -67,6 +67,8 @@ const DosenPengajar = () => {
             setKodeJadwal(response.data.data.code_jadwal_kuliah)
             if (response.data.data.dosen_pengajar == '' & response.data.data.dosen_pengganti == '') {
                 setStatusForm('tambah')
+            } else {
+                setStatusForm('edit')
             }
         } catch (error) {
 
@@ -171,7 +173,7 @@ const DosenPengajar = () => {
                                         {statusForm == "tambah" ?
                                             <button className='btn btn-sm btn-primary'><FaSave /><span>simpan</span></button> :
                                             <button className='btn btn-sm btn-primary'><FaEdit /><span>edit</span></button>}
-                                        {statusForm == "" ? <button type='button' className='btn btn-sm btn-error ml-1' onClick={() => deleteDosen(kodeDsnPengajar, kodeDsnPengganti)}><FaTrash /><span className="">Hapus</span></button> : ""}
+                                        {statusForm == "edit" ? <button type='button' className='btn btn-sm btn-error ml-1' onClick={() => deleteDosen(kodeDsnPengajar, kodeDsnPengganti)}><FaTrash /><span className="">Hapus</span></button> : ""}
                                     </div>
                                 </div>
                             </div>

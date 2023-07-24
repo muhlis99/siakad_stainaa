@@ -57,7 +57,7 @@ const Beranda = () => {
         datasets: [
             {
                 label: "Mahasiswa pertahun",
-                backgroundColor: "rgb(28, 118, 253, 0.7)",
+                backgroundColor: "rgb(3, 103, 252, 0.7)",
                 borderColor: "rgb(28, 118, 253)",
                 borderWidth: 2,
                 borderRadius: 5,
@@ -119,9 +119,9 @@ const Beranda = () => {
                     </div>
 
                 </div>
-                <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md w-1/2">
                     <div className="card-body p-4">
-                        <Bar data={data} />
+                        <Bar data={data} className='relative h-60' />
                     </div>
                 </div>
             </section>
