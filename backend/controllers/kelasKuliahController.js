@@ -240,10 +240,26 @@ module.exports = {
                 code_tahun_ajaran: thnAjr,
                 status: "aktif"
             }
-        }).then(all => {
-            res.status(201).json({
-                message: "Data jumlah mahasiswa success Ditambahkan",
-                data: all.count
+        }).then(el => {
+            const nimMhsHistory = el.rows.map(all => {
+                return all.nim
+            })
+            return kelasDetailKuliahModel.findOne({
+                where: {
+                    nim: nimMhsHistory,
+                    status: "aktif"
+                }
+            }).then(all => {
+                if (all) {
+                    return res.status(404).json({
+                        message: "Data jejang Pendidikan Ditemukan",
+                        data: 0
+                    })
+                }
+                res.status(201).json({
+                    message: "Data jejang Pendidikan Ditemukan",
+                    data: el.count
+                })
             })
         }).catch(err => {
             next(err)
@@ -350,37 +366,6 @@ module.exports = {
                                 limit: perPage,
                                 group: ['nim']
                             }).then(al => {
-                                const dataDuplicate = kelasModel.findOne({
-                                    include: [{
-                                        model: jenjangPendidikanModel,
-                                        where: { status: "aktif" }
-                                    }, {
-                                        model: fakultasModel,
-                                        where: { status: "aktif" }
-                                    }, {
-                                        model: prodiModel,
-                                        where: { status: "aktif" }
-                                    }, {
-                                        model: mataKuliahModel,
-                                        where: { status: "aktif" }
-                                    }, {
-                                        model: tahunAjaranModel,
-                                        where: { status: "aktif" }
-                                    }, {
-                                        model: semesterModel,
-                                        where: { status: "aktif" }
-                                    }],
-                                    where: {
-                                        code_kelas: elment.code_kelas,
-                                        code_tahun_ajaran: code_tahun_ajaran,
-                                        code_semester: code_semester,
-                                        code_jenjang_pendidikan: code_jenjang_pendidikan,
-                                        code_fakultas: code_fakultas,
-                                        code_prodi: code_prodi,
-                                        status: "aktif"
-                                    }
-                                })
-                                if (dataDuplicate) return res.status(401).json({ message: "Data kelas kuliah sudah ada" })
                                 return Promise.all(al.map(p => {
                                     let random = Math.floor(100 + Math.random() * 900)
                                     let datas = {
