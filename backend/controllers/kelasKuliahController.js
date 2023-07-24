@@ -240,26 +240,25 @@ module.exports = {
                 code_tahun_ajaran: thnAjr,
                 status: "aktif"
             }
-        }).then(el => {
+        }).then(async el => {
             const nimMhsHistory = el.rows.map(all => {
                 return all.nim
             })
-            return kelasDetailKuliahModel.findOne({
+            const mahasiswaDetail = await kelasDetailKuliahModel.findOne({
                 where: {
                     nim: nimMhsHistory,
                     status: "aktif"
                 }
-            }).then(all => {
-                if (all) {
-                    return res.status(404).json({
-                        message: "Data jejang Pendidikan Ditemukan",
-                        data: 0
-                    })
-                }
-                res.status(201).json({
+            })
+            if (mahasiswaDetail) {
+                return res.status(404).json({
                     message: "Data jejang Pendidikan Ditemukan",
-                    data: el.count
+                    data: 0
                 })
+            }
+            res.status(201).json({
+                message: "Data jejang Pendidikan Ditemukan",
+                data: el.count
             })
         }).catch(err => {
             next(err)
@@ -323,11 +322,11 @@ module.exports = {
                 }
                 kelasModel.bulkCreate([data])
                     .then(all => {
-                        all.map(elment => {
+                        all.map(async elment => {
                             let currentPage = parseInt(el)
                             let perPage = parseInt(jumlahPeserta)
                             let offset = (currentPage - 1) * perPage
-                            return krsModel.findAll({
+                            const al = await krsModel.findAll({
                                 include: [
                                     {
                                         model: jenjangPendidikanModel,
@@ -353,7 +352,8 @@ module.exports = {
                                             jenis_kelamin: jenkel,
                                             status: "aktif"
                                         }
-                                    }],
+                                    }
+                                ],
                                 where: {
                                     code_jenjang_pendidikan: code_jenjang_pendidikan,
                                     code_fakultas: code_fakultas,
@@ -365,18 +365,17 @@ module.exports = {
                                 offset: offset,
                                 limit: perPage,
                                 group: ['nim']
-                            }).then(al => {
-                                return Promise.all(al.map(p => {
-                                    let random = Math.floor(100 + Math.random() * 900)
-                                    let datas = {
-                                        code_kelas: elment.code_kelas,
-                                        code_kelas_detail: jenkel + random,
-                                        nim: p.nim,
-                                        status: "aktif"
-                                    }
-                                    kelasDetailKuliahModel.bulkCreate([datas])
-                                }))
                             })
+                            return await Promise.all(al.map(p => {
+                                let random = Math.floor(100 + Math.random() * 900)
+                                let datas = {
+                                    code_kelas: elment.code_kelas,
+                                    code_kelas_detail: jenkel + random,
+                                    nim: p.nim,
+                                    status: "aktif"
+                                }
+                                return kelasDetailKuliahModel.bulkCreate([datas])
+                            }))
                         })
                     })
             })
