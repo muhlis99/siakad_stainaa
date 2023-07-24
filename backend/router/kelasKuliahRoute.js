@@ -8,6 +8,7 @@ route.get('/allMatakuliah/:codeThnAjr/:codeSmt/:jnjPen/:codeFks/:codePrd', kelas
 route.get('/getKelasByMakul/:codeThnAjr/:codeSmt/:jnjPen/:codeFks/:codePrd/:codeMakul', kelasKuliahController.getKelasByMakul)
 route.get('/getKelasById/:id', kelasKuliahController.getKelasById)
 route.get('/jumlahMhs/:thnAjr/:smt/:jnjPen/:fkts/:prd/:jenkel', kelasKuliahController.jumlahMhs)
+route.get('/getNamaKelasTerakhir/:thnAjr/:smt/:jnjPen/:fkts/:prd', kelasKuliahController.getNamaKelasTerakhir)
 route.get('/getMhsByKelas/:codeKls', kelasKuliahController.getMhsByKelas)
 route.post('/create', validationKelas, validationRequest, kelasKuliahController.post)
 route.put('/pindahKelas', kelasKuliahController.pindahKelas)

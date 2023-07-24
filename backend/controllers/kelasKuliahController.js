@@ -166,7 +166,6 @@ module.exports = {
             })
     },
 
-
     getMhsByKelas: async (req, res, next) => {
         const { codeKls } = req.params
         await kelasDetailKuliahModel.findAll({
@@ -251,17 +250,48 @@ module.exports = {
                 }
             })
             if (mahasiswaDetail) {
-                return res.status(404).json({
-                    message: "Data jejang Pendidikan Ditemukan",
+                return res.status(201).json({
+                    message: "Data kelas kuliah Ditemukan",
                     data: 0
                 })
             }
             res.status(201).json({
-                message: "Data jejang Pendidikan Ditemukan",
+                message: "Data kelas kuliah Ditemukan",
                 data: el.count
             })
         }).catch(err => {
             next(err)
+        })
+    },
+
+    getNamaKelasTerakhir: async (req, res, next) => {
+        const { thnAjr, smt, jnjPen, fkts, prd } = req.params
+        await kelasModel.max('nama_kelas', {
+            where: {
+                code_jenjang_pendidikan: jnjPen,
+                code_fakultas: fkts,
+                code_prodi: prd,
+                code_semester: smt,
+                code_tahun_ajaran: thnAjr,
+                status: "aktif"
+            }
+        }).then(all => {
+
+            const huruf = nextChar(all)
+            function nextChar(e) {
+                var i = (parseInt(e, 36) + 1) % 36;
+                return (!i * 10 + i).toString(36);
+            }
+            if (!all) {
+                return res.status(201).json({
+                    message: "Data kelas kuliah Ditemukan",
+                    data: "A"
+                })
+            }
+            res.status(201).json({
+                message: "Data kelas kuliah Ditemukan",
+                data: huruf.toUpperCase()
+            })
         })
     },
 
@@ -374,7 +404,7 @@ module.exports = {
                                     nim: p.nim,
                                     status: "aktif"
                                 }
-                                return kelasDetailKuliahModel.bulkCreate([datas])
+                                kelasDetailKuliahModel.bulkCreate([datas])
                             }))
                         })
                     })
