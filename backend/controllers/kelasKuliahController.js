@@ -264,7 +264,7 @@ module.exports = {
         })
     },
 
-    getNamaKelasTerakhir: async (req, res, next) => {
+    getNamaKelasSelanjutnya: async (req, res, next) => {
         const { thnAjr, smt, jnjPen, fkts, prd } = req.params
         await kelasModel.max('nama_kelas', {
             where: {
