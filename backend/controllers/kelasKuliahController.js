@@ -244,6 +244,17 @@ module.exports = {
                 return all.nim
             })
             const mahasiswaDetail = await kelasDetailKuliahModel.findOne({
+                include: [{
+                    model: kelasModel,
+                    where: {
+                        code_jenjang_pendidikan: jnjPen,
+                        code_fakultas: fkts,
+                        code_prodi: prd,
+                        code_semester: smt,
+                        code_tahun_ajaran: thnAjr,
+                        status: "aktif"
+                    }
+                }],
                 where: {
                     nim: nimMhsHistory,
                     status: "aktif"
