@@ -336,7 +336,7 @@ module.exports = {
         let nmKelas = ["", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
         const dataCreateKelas = makul.map(al => {
             const codeMakul = al.code_mata_kuliah
-            nama_kelas.map(el => {
+            nama_kelas.map(async el => {
                 let randomNumber = Math.floor(10 + Math.random() * 90)
                 let data = {
                     code_kelas: jenkel + code_prodi + randomNumber + nmKelas[el],
@@ -350,7 +350,7 @@ module.exports = {
                     code_tahun_ajaran: code_tahun_ajaran,
                     status: "aktif"
                 }
-                kelasModel.bulkCreate([data])
+                await kelasModel.bulkCreate([data])
                     .then(all => {
                         all.map(async elment => {
                             let currentPage = parseInt(el)
