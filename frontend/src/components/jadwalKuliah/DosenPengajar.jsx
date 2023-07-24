@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaAngleDown, FaEdit, FaSave, FaTrash } from 'react-icons/fa'
+import { FaAngleDown, FaEdit, FaInfo, FaPeopleArrows, FaSave, FaTrash } from 'react-icons/fa'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
@@ -158,9 +158,9 @@ const DosenPengajar = () => {
                         <form onSubmit={tambahDsnPengajar}>
                             <div className="grid">
                                 <div className='mb-2'>
-                                    <div className='float-right'>
-                                        <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className=''>Detail Jadwal Kuliah</Link>
-                                        <Link to={`/setpertemuan`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, jad: kodeJadwal }} className=''>Set Pertemuan</Link>
+                                    <div className='float-right flex gap-2'>
+                                        <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-secondary'><FaInfo /> Detail Jadwal</Link>
+                                        <Link to={`/setpertemuan`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, jad: kodeJadwal }} className='btn btn-sm btn-info'><FaPeopleArrows /> Set Pertemuan</Link>
                                         {/* <div className="dropdown mr-1">
                                             <label tabIndex={0} className="btn btn-sm btn-blue"><span className='mr-1'>Navigasi</span><FaAngleDown /></label>
                                             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
