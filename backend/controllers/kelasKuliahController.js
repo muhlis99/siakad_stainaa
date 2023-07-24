@@ -337,7 +337,9 @@ module.exports = {
         let potongArr = nmKelas.indexOf(hurufKelas)
         nmKelas = nmKelas.slice(potongArr)
         nmKelas.unshift("")
+        nama_kelas.splice(-1)
 
+        console.log(nmKelas);
         const dataCreateKelas = makul.map(al => {
             const codeMakul = al.code_mata_kuliah
             nama_kelas.map(async el => {
