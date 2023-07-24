@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { FaPlus, FaEdit, FaTimes, FaSave, FaInfo } from 'react-icons/fa'
+import React, { useState, useEffect, useRef } from 'react'
+import { FaPlus, FaEdit, FaTimes, FaSave, FaInfo, FaTrash } from 'react-icons/fa'
 // import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -41,7 +41,8 @@ const ListSebaran = () => {
     const [smtr, setSmtr] = useState("")
     const [nilai, setNilai] = useState("")
     const [select2, setSelect2] = useState([])
-
+    const [isClearable, setIsClearable] = useState(true);
+    const [reset, setReset] = useState("")
 
     useEffect(() => {
         getTahunAjaran()
@@ -134,14 +135,13 @@ const ListSebaran = () => {
     const options = () => {
         var i = Makul.map(item => ({
             value: item.id_mata_kuliah,
-            label: item.nama_mata_kuliah
+            label: item.code_mata_kuliah + " | " + item.nama_mata_kuliah,
         }))
         setSelect2(i)
     }
 
     const onchange = (e) => {
-        // console.log(e.value)
-        setKodeMakul(e.value)
+        setKodeMakul(e ? e.value : "")
     }
 
     const getKategoriNilai = async () => {
@@ -168,25 +168,37 @@ const ListSebaran = () => {
     const simpanSebaran = async (e) => {
         e.preventDefault()
         try {
-            await axios.post('v1/sebaranMataKuliah/create', {
-                id_mata_kuliah: kodeMakul,
-                code_semester: kodeSmt,
-                code_kategori_nilai: kodeNilai,
-                status_bobot_makul: statusBobot,
-                status_makul: status,
-            }).then(function (response) {
+            if (kodeSmt == 0) {
                 Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    getMakulAll()
-                    setKodeMakul("")
-                    setKodeSmt("")
-                    setKodeNilai("")
-                    setPaket(false)
-                    sebaranMakul()
+                    title: "Semester kosong",
+                    icon: 'error'
                 })
-            })
+            } else if (kodeNilai == 0) {
+                Swal.fire({
+                    title: "Nilai kosong",
+                    icon: 'error'
+                })
+            } else {
+                await axios.post('v1/sebaranMataKuliah/create', {
+                    id_mata_kuliah: kodeMakul,
+                    code_semester: kodeSmt,
+                    code_kategori_nilai: kodeNilai,
+                    status_bobot_makul: statusBobot,
+                    status_makul: status,
+                }).then(function (response) {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        getMakulAll()
+                        setKodeSmt("")
+                        setKodeNilai("")
+                        setPaket(false)
+                        sebaranMakul()
+                        document.getElementById('input-select').value = null
+                    })
+                })
+            }
         } catch (error) {
             if (error.response) {
                 Swal.fire({
@@ -585,7 +597,14 @@ const ListSebaran = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Mata Kuliah</span>
                                     </label>
-                                    <Select options={select2} className="basic-single" onChange={onchange} classNamePrefix="select" />
+                                    <Select
+                                        className="basic-single"
+                                        classNamePrefix="select"
+                                        options={select2}
+                                        onChange={onchange}
+                                        isClearable={isClearable}
+                                        id='input-select'
+                                    />
                                     {/* <select className='mt-1 select select-sm select-bordered w-full max-w-[260px]' value={kodeMakul} onChange={(e) => setKodeMakul(e.target.value)}>
                                         <option value="">Mata Kuliah</option>
                                         {Makul.map((item) => (
@@ -668,9 +687,9 @@ const ListSebaran = () => {
                                                     <td className='px-2 py-2 border' align='center'>{item.sks}</td>
                                                     <td className='px-2 py-2 border' align='center'>
                                                         <div>
-                                                            <button onClick={() => getMakulById('Detail', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-blue mr-1" title='Detail'><FaInfo /></button>
+                                                            <button onClick={() => getMakulById('Detail', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-info mr-1" title='Detail'><FaInfo /></button>
                                                             <button onClick={() => getMakulById('Edit', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
-                                                            {/* <button onClick={() => nonaktifkan(item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-danger ml-1" title='Hapus'><FaTrash /></button> */}
+                                                            <button onClick={() => nonaktifkan(item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-error ml-1" title='Hapus'><FaTrash /></button>
                                                         </div>
                                                     </td>
                                                 </tr>
