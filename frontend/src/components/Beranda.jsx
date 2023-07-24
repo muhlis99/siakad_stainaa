@@ -10,20 +10,20 @@ const Beranda = () => {
             <section>
                 <div className="grid grid-cols-4 gap-4">
                     <div>
-                        <div className='w-full h-36 bg-[#60B033] rounded-md px-3 py-3 grid grid-cols-2'>
+                        <div className='w-full h-36 bg-[#60B033] hover:bg-[#4c8a28] hover:shadow-lg rounded-md px-3 py-3 grid grid-cols-2'>
                             <div>
-                                <h1 className='text-md text-white'>Total Dosen</h1>
+                                <h1 className='text-md text-white'>Mahasiswa Putera</h1>
                                 <h1 className='text-3xl text-white font-bold mt-2'>1</h1>
                             </div>
                             <div>
-                                <h1 className='text-white text-4xl float-right'><FaChalkboardTeacher /></h1>
+                                <h1 className='text-white text-4xl float-right'><FaUserGraduate /></h1>
                             </div>
                         </div>
                     </div>
                     <div>
                         <div className='w-full h-36 bg-[#725648] rounded-md px-3 py-3 grid grid-cols-2'>
                             <div>
-                                <h1 className='text-md text-white'>Total Mahasiswa</h1>
+                                <h1 className='text-md text-white'>Mahasiswa Puteri</h1>
                                 <h1 className='text-3xl text-white font-bold mt-2'>1</h1>
                             </div>
                             <div>
@@ -34,11 +34,11 @@ const Beranda = () => {
                     <div>
                         <div className='w-full h-36 bg-[#D4C403] rounded-md px-3 py-3 grid grid-cols-2'>
                             <div>
-                                <h1 className='text-md text-white'>Total Fakultas</h1>
+                                <h1 className='text-md text-white'>Dosen</h1>
                                 <h1 className='text-3xl text-white font-bold mt-2'>1</h1>
                             </div>
                             <div>
-                                <h1 className='text-white text-4xl float-right'><FaUniversity /></h1>
+                                <h1 className='text-white text-4xl float-right'><FaChalkboardTeacher /></h1>
                             </div>
                         </div>
                     </div>
