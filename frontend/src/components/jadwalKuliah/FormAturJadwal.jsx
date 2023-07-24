@@ -72,7 +72,7 @@ const FormAturJadwal = () => {
         setRuang(response.data.data)
     }
 
-    const day = ["", "minggu", "sennin", "selasa", "rabu", "jum'at", "sabtu", "minggu"]
+    const day = ["", "minggu", "sennin", "selasa", "rabu", "kamis", "jum'at", "sabtu"]
     const hr = []
     for (let i = 1; i < day.length; i++) {
         hr.push(<option key={i} value={day[i]}>{day[i]}</option>)

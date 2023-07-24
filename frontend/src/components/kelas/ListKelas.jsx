@@ -27,6 +27,8 @@ const ListKelas = () => {
     const [kelasnya, setKelasnya] = useState([])
     const [jenisKelamin, setJenisKelamin] = useState("")
     const [title, setTitle] = useState("")
+    const [statusKell, setStatusKell] = useState("")
+    const [statusKelp, setStatusKelp] = useState("")
     const location = useLocation()
 
     useEffect(() => {
@@ -78,7 +80,7 @@ const ListKelas = () => {
 
     useEffect(() => {
         getJumlahMhs()
-    }, [kodeFakultas, kodeJenjang, kodeProdi, kodesmt, kodeTahun, jenisKelamin])
+    }, [kodeFakultas, kodeJenjang, kodeProdi, kodesmt, kodeTahun, jenisKelamin, statusKell, statusKelp])
 
     useEffect(() => {
         getDataArray()
@@ -155,11 +157,15 @@ const ListKelas = () => {
     }
 
     const getJumlahMhs = async () => {
-        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodesmt != 0 & kodeTahun != 0 & jenisKelamin != 0) {
-            const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodeTahun}/${kodesmt}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${jenisKelamin}`)
-            setJumMhs(response.data.data)
+        if (statusKell == jenisKelamin || statusKelp == jenisKelamin) {
+            setJumMhs("0")
         } else {
-            setJumMhs("")
+            if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodesmt != 0 & kodeTahun != 0 & jenisKelamin != 0) {
+                const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodeTahun}/${kodesmt}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${jenisKelamin}`)
+                setJumMhs(response.data.data)
+            } else {
+                setJumMhs("")
+            }
         }
     }
 
@@ -222,7 +228,8 @@ const ListKelas = () => {
                     }).then(() => {
                         setKodeSmt("")
                         setSampai("")
-                        setJumMhs("")
+                        setStatusKell(jenisKelamin == 'l' ? jenisKelamin : '')
+                        setStatusKelp(jenisKelamin == 'p' ? jenisKelamin : '')
                         getMataKuliah()
                         getDataKelas()
                     });
@@ -359,6 +366,8 @@ const ListKelas = () => {
             </div>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Kelas Kuliah</h1>
+                {statusKell}
+                {statusKelp}
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md rounded-md">
