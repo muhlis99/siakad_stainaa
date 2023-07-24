@@ -195,7 +195,6 @@ const ListSebaran = () => {
                         setKodeNilai("")
                         setPaket(false)
                         sebaranMakul()
-                        document.getElementById('input-select').value = null
                     })
                 })
             }
@@ -354,6 +353,7 @@ const ListSebaran = () => {
                             text: response.data.message,
                             icon: "success"
                         }).then(() => {
+                            getMakulAll()
                             sebaranMakul()
                         })
                     })
