@@ -297,7 +297,7 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { code_jenjang_pendidikan, code_fakultas, code_tahun_ajaran,
-            code_prodi, code_semester, nama_kelas, kapasitas, jumlahPeserta, jenkel } = req.body
+            code_prodi, code_semester, nama_kelas, hurufKelas, kapasitas, jumlahPeserta, jenkel } = req.body
 
         const makul = await mataKuliahModel.findAll({
             include: [{
@@ -334,6 +334,10 @@ module.exports = {
         })
 
         let nmKelas = ["", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+        let potongArr = nmKelas.indexOf(hurufKelas)
+        nmKelas = nmKelas.slice(potongArr)
+        nmKelas.unshift("")
+
         const dataCreateKelas = makul.map(al => {
             const codeMakul = al.code_mata_kuliah
             nama_kelas.map(async el => {
