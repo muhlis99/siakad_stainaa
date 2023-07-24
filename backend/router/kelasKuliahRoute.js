@@ -9,7 +9,7 @@ route.get('/getKelasByMakul/:codeThnAjr/:codeSmt/:jnjPen/:codeFks/:codePrd/:code
 route.get('/getKelasById/:id', kelasKuliahController.getKelasById)
 route.get('/jumlahMhs/:thnAjr/:smt/:jnjPen/:fkts/:prd/:jenkel', kelasKuliahController.jumlahMhs)
 route.get('/getMhsByKelas/:codeKls', kelasKuliahController.getMhsByKelas)
-route.post('/create', kelasKuliahController.post)
+route.post('/create', validationKelas, validationRequest, kelasKuliahController.post)
 route.put('/pindahKelas', kelasKuliahController.pindahKelas)
 
 module.exports = route
