@@ -227,6 +227,7 @@ const ListKelas = () => {
                     code_tahun_ajaran: kodeTahun,
                     code_semester: kodesmt,
                     nama_kelas: kelasnya,
+                    hurufKelas: klsSelanjutnya,
                     kapasitas: kapasitas,
                     jumlahPeserta: jumMhs,
                     jenkel: jenisKelamin
@@ -242,6 +243,7 @@ const ListKelas = () => {
                         setStatusKelp(jenisKelamin == 'p' ? jenisKelamin : '')
                         getMataKuliah()
                         getDataKelas()
+                        getNamaKlsSelanjutnya()
                     });
                 })
             }
