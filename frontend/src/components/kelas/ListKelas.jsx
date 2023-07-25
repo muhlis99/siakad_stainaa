@@ -23,6 +23,7 @@ const ListKelas = () => {
     const [jumMhs, setJumMhs] = useState("")
     const [dari, setDari] = useState("1")
     const [sampai, setSampai] = useState("")
+    const [sampe, setSampe] = useState("")
     const [kapasitas, setKapasitas] = useState("")
     const [kelasnya, setKelasnya] = useState([])
     const [jenisKelamin, setJenisKelamin] = useState("")
@@ -83,9 +84,18 @@ const ListKelas = () => {
         getJumlahMhs()
     }, [kodeFakultas, kodeJenjang, kodeProdi, kodesmt, kodeTahun, jenisKelamin, statusKell, statusKelp])
 
+
+    useEffect(() => {
+        if (sampai == '1') {
+            setSampe('2')
+        } else {
+            setSampe(sampai)
+        }
+    }, [sampai])
+
     useEffect(() => {
         getDataArray()
-    }, [dari, sampai])
+    }, [dari, sampai, sampe])
 
     useEffect(() => {
         getNamaKlsSelanjutnya()
@@ -183,13 +193,11 @@ const ListKelas = () => {
         }
     }
 
-
-
     const getDataArray = () => {
         if (sampai != 0) {
             let kelas = []
             let prom = []
-            for (let k = dari; k <= sampai; k++) {
+            for (let k = dari; k <= sampe; k++) {
                 prom.push(
                     kelas.push(k)
                 )
