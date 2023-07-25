@@ -116,37 +116,37 @@ module.exports = {
 
 
         const dataMhsSMtNew = dataMhsSMtOld.map(el => {
-            // return {
-            //     nim: el.nim,
-            //     code_tahun_ajaran: codeThnAjrNew,
-            //     code_semester: codeSmtNew,
-            //     code_jenjang_pendidikan: codeJnjPen,
-            //     code_fakultas: codeFks,
-            //     code_prodi: codePrd,
-            //     status: "aktif"
-            // }
+            return {
+                nim: el.nim,
+                code_tahun_ajaran: codeThnAjrNew,
+                code_semester: codeSmtNew,
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
+                status: "aktif"
+            }
             console.log(el.nim, el.status);
         })
 
-        // const dataUpdateMhsSMtOld = dataMhsSMtOld.map(el => {
-        //     return {
-        //         id_history: el.id_history,
-        //         status: "tidak"
-        //     }
-        // })
+        const dataUpdateMhsSMtOld = dataMhsSMtOld.map(el => {
+            return {
+                id_history: el.id_history,
+                status: "tidak"
+            }
+        })
 
-        // if (dataMhsSMtNew.length === 0) return res.status(401).json({ message: "data mahasiswa semester tidak ditemukan" })
+        if (dataMhsSMtNew.length === 0) return res.status(401).json({ message: "data mahasiswa semester tidak ditemukan" })
 
 
-        // const updateData = await historyMahasiswa.bulkCreate(dataUpdateMhsSMtOld, {
-        //     updateOnDuplicate: ["status"],
-        // })
+        const updateData = await historyMahasiswa.bulkCreate(dataUpdateMhsSMtOld, {
+            updateOnDuplicate: ["status"],
+        })
 
-        // const createData = await historyMahasiswa.bulkCreate(dataMhsSMtNew)
-        // if (createData) {
-        //     res.status(201).json({
-        //         message: "data berhasil di tambahkan"
-        //     })
-        // }
+        const createData = await historyMahasiswa.bulkCreate(dataMhsSMtNew)
+        if (createData) {
+            res.status(201).json({
+                message: "data berhasil di tambahkan"
+            })
+        }
     }
 }
