@@ -9,6 +9,9 @@ const Sequelize = require('../config/database.js')
 const path = require('path')
 const fs = require('fs')
 const readXlsxFile = require('read-excel-file/node')
+const QRCode = require("qrcode");
+const { createCanvas, loadImage } = require("canvas");
+
 
 module.exports = {
     get: async (req, res, next) => {
@@ -391,6 +394,48 @@ module.exports = {
     },
 
     createForm4: async (req, res, next) => {
+        async function createQrCode(dataForQRcode, center_image, width, cwidth) {
+            const canvas = createCanvas(width, width)
+            QRCode.toCanvas(
+                canvas,
+                dataForQRcode,
+                {
+                    errorCorrectionLevel: "H",
+                    width: 500,
+                    margin: 1,
+                    color: {
+                        dark: "#000000",
+                        light: "#ffffff",
+                    },
+                }
+            )
+
+            const ctx = canvas.getContext("2d")
+            const img = await loadImage(center_image)
+            const center = (width - cwidth) / 1
+            ctx.drawImage(img, 180, 200, cwidth, cwidth)
+            return canvas.toDataURL("image/png")
+        }
+
+        async function mainQrCode(params) {
+            const centerImageBase64 = fs.readFileSync(
+                path.resolve('./stainaa.png')
+            )
+            const i = Buffer.from(centerImageBase64).toString('base64url')
+            const qrCode = await createQrCode(
+                params,
+                `data:image/png;base64,${i}`,
+                250,
+                150
+            )
+            const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
+            let filename = "tmp/qrcode/test7.png";
+            const t = fs.writeFile(filename, base64Data, "base64url", (err) => {
+                if (!err) console.log(`${filename} created successfully!`)
+            })
+
+        }
+
         const { nik_wali, nama_wali, pekerjaan_wali, penghasilan_wali, pendidikan_wali, tanggal_w, bulan_w, tahun_w,
             code_jenjang_pendidikan, code_fakultas, code_prodi, code_semester, code_tahun_ajaran
         } = req.body
@@ -423,10 +468,12 @@ module.exports = {
                 }
             }
         })
+
         let nim
         if (no_urut_mhs_terakhir == null) {
             no_urut_mhs = "0001"
             nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
+            mainQrCode(nim)
         } else if (mahasiswaUse.nim == "") {
             const code = "0000"
             const a = no_urut_mhs_terakhir.toString()
@@ -435,6 +482,7 @@ module.exports = {
             const b = (no_urut_mhs_terakhir + 1)
             no_urut_mhs = nomor + b
             nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
+            mainQrCode(nim)
         } else {
             nim = mahasiswaUse.nim
         }
@@ -470,7 +518,6 @@ module.exports = {
                 status: "aktif"
             }
         })
-        console.log(dataHistoryMhs);
         if (dataHistoryMhs) {
             res.status(201).json({
                 message: "Data Mahasiswa success di tambahkan form 4"
@@ -739,99 +786,102 @@ module.exports = {
             catch(err => {
                 next(err)
             })
+
     },
 
     importEcxel: async (req, res, next) => {
-        const file = req.files.import_excel
-        if (!file) return res.status(400).json({ message: "file tidak boleh kosong" })
-        const fileSize = file.data.length
-        const ext = path.extname(file.name)
-        fileExcel = file.md5 + ext
-        const allowedType = ['.csv', '.xls', '.xlsx']
-        if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
-        file.mv(`./tmp/excel/${fileExcel}`, (err) => {
-            if (err) return res.status(500).json({ message: err.message })
-        })
 
-        const pathFileExcel = path.join(__dirname, `../tmp/excel/${fileExcel}`)
-        const schema = {
-            'tanggal_lahir': {
-                prop: 'date',
-                type: Date
-            }
-        }
-        const a = readXlsxFile(pathFileExcel).then(rows => {
-            rows.shift()
-            const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
-            rows.map(row => (
-                mahasiswa.bulkCreate([{
-                    nim: "",
-                    nik: row[1],
-                    no_kk: row[2],
-                    no_kps: row[3],
-                    nisn: row[4],
-                    npwp: row[5],
-                    nama: row[6],
-                    tanggal_lahir: row[7],
-                    tempat_lahir: row[8],
-                    jenis_kelamin: row[9],
-                    jalan: row[10],
-                    dusun: row[11],
-                    rt: row[12],
-                    rw: row[13],
-                    kode_pos: row[14],
-                    desa: row[15],
-                    kecamatan: row[16],
-                    kabupaten: row[17],
-                    provinsi: row[18],
-                    negara: row[19],
-                    alat_transportasi: row[20],
-                    jalur_pendaftaran: row[21],
-                    jenis_pendaftaran: row[22],
-                    jenis_tinggal: row[23],
-                    penerima_kps: row[24],
-                    code_semester: row[25],
-                    email: row[26],
-                    no_hp: row[27],
-                    no_telepon: row[28],
-                    nik_ayah: row[29],
-                    nama_ayah: row[30],
-                    tanggal_lahir_ayah: row[31],
-                    pekerjaan_ayah: row[32],
-                    penghasilan_ayah: row[33],
-                    pendidikan_ayah: row[34],
-                    nik_ibu: row[35],
-                    nama_ibu: row[36],
-                    tanggal_lahir_ibu: row[37],
-                    pekerjaan_ibu: row[38],
-                    penghasilan_ibu: row[39],
-                    pendidikan_ibu: row[40],
-                    nik_wali: row[41],
-                    nama_wali: row[42],
-                    tanggal_lahir_wali: row[43],
-                    pekerjaan_wali: row[44],
-                    penghasilan_wali: row[45],
-                    pendidikan_wali: row[46],
-                    code_jenjang_pendidikan: row[47],
-                    code_fakultas: row[48],
-                    code_prodi: row[49],
-                    tanggal_masuk_kuliah: date,
-                    status: "aktif",
-                    foto_diri: "",
-                    foto_kk: "",
-                    foto_ktp: "",
-                    foto_ijazah: "",
-                    foto_kip: "",
-                    individualHooks: true
-                }])
-                    .then((result) => {
-                        res.json({
-                            message: "Data berhasil disimpan"
-                        })
-                    }).catch((err) => {
-                    })
-            ))
-        })
+
+        // const file = req.files.import_excel
+        // if (!file) return res.status(400).json({ message: "file tidak boleh kosong" })
+        // const fileSize = file.data.length
+        // const ext = path.extname(file.name)
+        // fileExcel = file.md5 + ext
+        // const allowedType = ['.csv', '.xls', '.xlsx']
+        // if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file yang anda upload tidak valid" })
+        // file.mv(`./tmp/excel/${fileExcel}`, (err) => {
+        //     if (err) return res.status(500).json({ message: err.message })
+        // })
+
+        // const pathFileExcel = path.join(__dirname, `../tmp/excel/${fileExcel}`)
+        // const schema = {
+        //     'tanggal_lahir': {
+        //         prop: 'date',
+        //         type: Date
+        //     }
+        // }
+        // const a = readXlsxFile(pathFileExcel).then(rows => {
+        //     rows.shift()
+        //     const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+        //     rows.map(row => (
+        //         mahasiswa.bulkCreate([{
+        //             nim: "",
+        //             nik: row[1],
+        //             no_kk: row[2],
+        //             no_kps: row[3],
+        //             nisn: row[4],
+        //             npwp: row[5],
+        //             nama: row[6],
+        //             tanggal_lahir: row[7],
+        //             tempat_lahir: row[8],
+        //             jenis_kelamin: row[9],
+        //             jalan: row[10],
+        //             dusun: row[11],
+        //             rt: row[12],
+        //             rw: row[13],
+        //             kode_pos: row[14],
+        //             desa: row[15],
+        //             kecamatan: row[16],
+        //             kabupaten: row[17],
+        //             provinsi: row[18],
+        //             negara: row[19],
+        //             alat_transportasi: row[20],
+        //             jalur_pendaftaran: row[21],
+        //             jenis_pendaftaran: row[22],
+        //             jenis_tinggal: row[23],
+        //             penerima_kps: row[24],
+        //             code_semester: row[25],
+        //             email: row[26],
+        //             no_hp: row[27],
+        //             no_telepon: row[28],
+        //             nik_ayah: row[29],
+        //             nama_ayah: row[30],
+        //             tanggal_lahir_ayah: row[31],
+        //             pekerjaan_ayah: row[32],
+        //             penghasilan_ayah: row[33],
+        //             pendidikan_ayah: row[34],
+        //             nik_ibu: row[35],
+        //             nama_ibu: row[36],
+        //             tanggal_lahir_ibu: row[37],
+        //             pekerjaan_ibu: row[38],
+        //             penghasilan_ibu: row[39],
+        //             pendidikan_ibu: row[40],
+        //             nik_wali: row[41],
+        //             nama_wali: row[42],
+        //             tanggal_lahir_wali: row[43],
+        //             pekerjaan_wali: row[44],
+        //             penghasilan_wali: row[45],
+        //             pendidikan_wali: row[46],
+        //             code_jenjang_pendidikan: row[47],
+        //             code_fakultas: row[48],
+        //             code_prodi: row[49],
+        //             tanggal_masuk_kuliah: date,
+        //             status: "aktif",
+        //             foto_diri: "",
+        //             foto_kk: "",
+        //             foto_ktp: "",
+        //             foto_ijazah: "",
+        //             foto_kip: "",
+        //             individualHooks: true
+        //         }])
+        //             .then((result) => {
+        //                 res.json({
+        //                     message: "Data berhasil disimpan"
+        //                 })
+        //             }).catch((err) => {
+        //             })
+        //     ))
+        // })
     }
 
 }
