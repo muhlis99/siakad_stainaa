@@ -21,6 +21,7 @@ const FormAturJadwal = () => {
     const [jamSelesai, setJamSelesai] = useState("")
     const [kodeRuang, setKodeRuang] = useState("")
     const [idJadwal, setIdJadwal] = useState("")
+    const [pesan, setPesan] = useState("")
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -50,7 +51,7 @@ const FormAturJadwal = () => {
         const getJadwalByKelas = async () => {
             try {
                 const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
-                console.log(response.data.message)
+                setPesan(response.data.message)
                 setTglMulai(response.data.data.tanggal_mulai)
                 setTglSelesai(response.data.data.tanggal_selesai)
                 setJumPertemuan(response.data.data.jumlah_pertemuan)
@@ -119,55 +120,57 @@ const FormAturJadwal = () => {
         }
     }
 
-    // const updateJadwal = async (e) => {
-    //     e.preventDefault()
-    //     try {
-    //         await axios.put(`v1/jadwalKuliah/update/${idJadwal}`, {
-    //             code_mata_kuliah: kodeMakul,
-    //             code_fakultas: kodeFakultas,
-    //             code_prodi: kodeProdi,
-    //             code_semester: kodeSemester,
-    //             code_tahun_ajaran: kodeTahun,
-    //             code_kelas: kodeKelas,
-    //             code_ruang: kodeRuang,
-    //             tanggal_mulai: tglMulai,
-    //             tanggal_selesai: tglSelesai,
-    //             jumlah_pertemuan: jumPertemuan,
-    //             hari: hari,
-    //             jam_mulai: jamMulai,
-    //             jam_selesai: jamSelesai
-    //         }).then(function (response) {
-    //             Swal.fire({
-    //                 title: response.data.message,
-    //                 icon: "success"
-    //             }).then(() => {
-    //                 navigate(`/detailjadwal/${idKls}`)
-    //             })
-    //         })
-    //     } catch (error) {
-    //         if (error.response.data.message) {
-    //             Swal.fire({
-    //                 title: error.response.data.message,
-    //                 icon: "error"
-    //             })
-    //         } else {
-    //             Swal.fire({
-    //                 title: error.response.data.errors[0].msg,
-    //                 icon: "error"
-    //             })
-    //         }
-    //     }
-    // }
+    const updateJadwal = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.put(`v1/jadwalKuliah/update/${idJadwal}`, {
+                code_mata_kuliah: location.state.mak,
+                code_jenjang_pendidikan: location.state.jen,
+                code_fakultas: location.state.fak,
+                code_prodi: location.state.pro,
+                code_semester: location.state.sem,
+                code_tahun_ajaran: location.state.thn,
+                code_kelas: location.state.kls,
+                code_ruang: kodeRuang,
+                tanggal_mulai: tglMulai,
+                tanggal_selesai: tglSelesai,
+                jumlah_pertemuan: jumPertemuan,
+                hari: hari,
+                jam_mulai: jamMulai,
+                jam_selesai: jamSelesai
+            }).then(function (response) {
+                Swal.fire({
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    navigate(`/detailjadwal`, { state: { thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, stat: 'edit' } })
+                })
+            })
+        } catch (error) {
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
+            } else {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
+        }
+    }
 
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Jadwal Kuliah</h1>
+                {pesan}
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-3">
                     <div className="card-body p-4">
-                        <form onSubmit={simpanJadwal}>
+                        <form onSubmit={pesan == 'Data jadwal Kuliah Ditemukan' ? updateJadwal : simpanJadwal}>
                             <div className="grid grid-cols-2 gap-x-4">
                                 <div className="col-span-2 mb-3 border-b-2 pb-3 border-b-[#2D7F5F]">
                                     <div className="float-right flex gap-1">
@@ -183,8 +186,7 @@ const FormAturJadwal = () => {
                                             </div> :
                                         } */}
                                         <Link to='/detailjadwal' state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
-                                        <button className='btn btn-sm btn-primary'><FaSave /><span>Simpan</span></button>
-                                        {/* {pesan == 'Data jadwal Kuliah Ditemukan' ? <button className='btn btn-sm btn-blue'><FaEdit /><span className='ml-1'>Update</span></button> : } */}
+                                        {pesan == 'Data jadwal Kuliah Ditemukan' ? <button className='btn btn-sm btn-primary'><FaEdit /><span>Update</span></button> : <button className='btn btn-sm btn-primary'><FaSave /><span>Simpan</span></button>}
                                     </div>
                                 </div>
                                 <div className='grid gap-2'>

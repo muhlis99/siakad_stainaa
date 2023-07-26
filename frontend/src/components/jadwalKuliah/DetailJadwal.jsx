@@ -25,6 +25,8 @@ const DetailJadwal = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
+    console.log(location.state);
+
     useEffect(() => {
         const getJadwalByKelas = async () => {
             try {
@@ -72,7 +74,7 @@ const DetailJadwal = () => {
                                         <Link to={`/jadwalkuliah`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
                                         {status !== "" ?
                                             <Link to={`/aturjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-primary'><FaCog /><span>Atur Jadwal</span></Link>
-                                            : ''
+                                            : <Link to={`/aturjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-primary'><FaCog /><span>Atur Jadwal</span></Link>
                                         }
                                         {status == '' ? <Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-secondary btn-sm'><FaUserEdit />Dosen Pengajar</Link> : ''}
                                     </div>
