@@ -24,11 +24,12 @@ const InputNilaiMhs = () => {
     const location = useLocation()
     const navigate = useNavigate()
 
-    const [value, setValue] = useState()
+    const min = 0
+    const max = 100
 
     const handleFormChange = (index, event) => {
         let data = [...inputFields]
-        data[index][event.target.name] = event.target.value
+        data[index][event.target.name] = Math.max(Number(min), Math.min(Number(max), Number(event.target.value)))
         setInputFields(data)
     }
 
@@ -69,9 +70,8 @@ const InputNilaiMhs = () => {
         for (let index = 1; index <= jmlMhs; index++) {
             newfield.push({ tugas: '', uts: '', uas: '', absen: '' })
         }
-        // console.log(newfield)
         setInputFields(newfield)
-
+        // console.log(newfield);
     }
 
     const getMahasiswa = async () => {
@@ -93,7 +93,7 @@ const InputNilaiMhs = () => {
             let rataRata = (tugas + hadir + uts + uas) / 4
             return rataRata
         })
-        console.log(i);
+        // console.log(i);
         setNIlaiAkhir(i)
     }
 
@@ -148,7 +148,7 @@ const InputNilaiMhs = () => {
                     nilai_akhir: nilaiAkhir[index]
                 }))
             ).then(function (response) {
-                console.log(response)
+                // console.log(response)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -278,7 +278,7 @@ const InputNilaiMhs = () => {
                                                     <td className='px-2 py-2 border'>{mhs.nim}</td>
                                                     <td className='px-2 py-2 border'>{mhs.mahasiswas[0].nama}</td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='tugas' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='tugas' value={inputFields.tugas} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                                     </td>
                                                     <td className='px-2 py-2 border'>
                                                         <input type="number" name='uts' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />

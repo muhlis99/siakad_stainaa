@@ -534,16 +534,11 @@ const SetPertemuan = () => {
                     <div className="card-body p-4">
                         <div className="grid">
                             <div className='mb-2'>
-                                <div className='float-right'>
-                                    <div className="dropdown mr-1">
-                                        <label tabIndex={0} className="btn btn-sm btn-blue"><span className='mr-1'>Navigasi</span><FaAngleDown /></label>
-                                        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                            <li><Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }}>Detail Jadwal</Link></li>
-                                            <li><Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }}>Dosen Pengajar</Link></li>
-                                        </ul>
-                                    </div>
+                                <div className='float-right flex gap-1'>
+                                    <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-secondary'>Detail Jadwal</Link>
+                                    <Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-info'>Dosen Pengajar</Link>
                                     <div className="dropdown dropdown-end">
-                                        <label tabIndex={0} className="btn btn-sm btn-default"><span className='mr-1'>Aksi</span><FaAngleDown /></label>
+                                        <label tabIndex={0} className="btn btn-sm btn-primary"><span className='mr-1'>Aksi</span><FaAngleDown /></label>
                                         <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                             <li>{statusPerencanaan == 'tambah' ? <a onClick={simpanPerencanaan}>Buat Perencanaan</a> : <a>Buat Perencanaan</a>}</li>
                                             <li><a onClick={() => modalOpen('jenis')}>Set Jenis Pertemuan</a></li>
