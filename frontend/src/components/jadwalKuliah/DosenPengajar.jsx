@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { FaAngleDown, FaEdit, FaInfo, FaPeopleArrows, FaSave, FaTrash } from 'react-icons/fa'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { FaEdit, FaSearch, FaPeopleArrows, FaSave, FaTrash, FaTimes } from 'react-icons/fa'
+import { Link, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 
@@ -53,7 +53,6 @@ const DosenPengajar = () => {
     const getJadwalByKelas = async () => {
         try {
             const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
-            console.log(response.data.message)
             setTglMulai(response.data.data.tanggal_mulai)
             setTglSelesai(response.data.data.tanggal_selesai)
             setJumPertemuan(response.data.data.jumlah_pertemuan)
@@ -63,18 +62,19 @@ const DosenPengajar = () => {
             setKodeJadwal(response.data.data.code_jadwal_kuliah)
             if (response.data.data.dosen_pengajar == '' & response.data.data.dosen_pengganti == '') {
                 setStatusForm('tambah')
-            } else {
-                setStatusForm('edit')
             }
         } catch (error) {
 
         }
     }
 
-
     const getDosenAll = async () => {
         const response = await axios.get('v1/dosenPengajar/getAllDosen')
         setDosen(response.data.data)
+    }
+
+    const editDsn = (e) => {
+        setStatusForm(e)
     }
 
     const tambahDsnPengajar = async (e) => {
@@ -95,6 +95,7 @@ const DosenPengajar = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
+                        setStatusForm('')
                         getJadwalByKelas()
                     })
                 })
@@ -113,6 +114,43 @@ const DosenPengajar = () => {
             }
         }
     }
+
+    // const tambahDsnPengajar = async (e) => {
+    //     e.preventDefault()
+    //     try {
+    //         if (kodeDsnPengajar == 0) {
+    //             Swal.fire({
+    //                 title: 'Dosen Pengajar kosong',
+    //                 icon: "error"
+    //             })
+    //         } else {
+    //             await axios.put('v1/dosenPengajar/create', {
+    //                 dosen_pengajar: kodeDsnPengajar,
+    //                 dosen_pengganti: kodeDsnPengganti,
+    //                 id: idJadwal
+    //             }).then(function (response) {
+    //                 Swal.fire({
+    //                     title: response.data.message,
+    //                     icon: "success"
+    //                 }).then(() => {
+    //                     getJadwalByKelas()
+    //                 })
+    //             })
+    //         }
+    //     } catch (error) {
+    //         if (error.response.data.message) {
+    //             Swal.fire({
+    //                 title: error.response.data.message,
+    //                 icon: "error"
+    //             })
+    //         } else {
+    //             Swal.fire({
+    //                 title: error.response.data.errors[0].msg,
+    //                 icon: "error"
+    //             })
+    //         }
+    //     }
+    // }
 
     const deleteDosen = (e, f) => {
         Swal.fire({
@@ -145,8 +183,6 @@ const DosenPengajar = () => {
         })
     }
 
-    console.log(location.state);
-
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
@@ -159,17 +195,8 @@ const DosenPengajar = () => {
                             <div className="grid">
                                 <div className='mb-2'>
                                     <div className='float-right flex gap-2'>
-                                        <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-secondary'><FaInfo /> Detail Jadwal</Link>
+                                        <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-secondary'><FaSearch /> Detail Jadwal</Link>
                                         <Link to={`/setpertemuan`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, jad: kodeJadwal }} className='btn btn-sm btn-info'><FaPeopleArrows /> Set Pertemuan</Link>
-                                        {/* <div className="dropdown mr-1">
-                                            <label tabIndex={0} className="btn btn-sm btn-blue"><span className='mr-1'>Navigasi</span><FaAngleDown /></label>
-                                            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                            </ul>
-                                        </div> */}
-                                        {statusForm == "tambah" ?
-                                            <button className='btn btn-sm btn-primary'><FaSave /><span>simpan</span></button> :
-                                            <button className='btn btn-sm btn-primary'><FaEdit /><span>edit</span></button>}
-                                        {statusForm == "edit" ? <button type='button' className='btn btn-sm btn-error ml-1' onClick={() => deleteDosen(kodeDsnPengajar, kodeDsnPengganti)}><FaTrash /><span className="">Hapus</span></button> : ""}
                                     </div>
                                 </div>
                             </div>
@@ -279,33 +306,67 @@ const DosenPengajar = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className='grid grid-cols-3 gap-2 mt-8 border-t-2 border-t-[#2D7F5F] pt-5'>
+                            <div className='grid gap-2 mt-8 border-t-2 border-t-[#2D7F5F] pt-2'>
                                 <div>
-                                    <div>
-                                        <label className="label">
-                                            <span className="text-base label-text">Dosen Pengajar</span>
-                                        </label>
-                                        <select className="select select-sm select-bordered w-full" value={kodeDsnPengajar} onChange={(e) => setKodeDsnPengajar(e.target.value)}>
-                                            <option value="">Pilih Dosen Pengajar</option>
-                                            {Dosen.map((item) => (
-                                                <option key={item.id_dosen} value={item.nip_ynaa}>{item.nama}</option>
-                                            ))}
-                                        </select>
+                                    <div className='flex gap-2 float-right'>
+                                        {statusForm == "tambah" ?
+                                            <button className='btn btn-sm btn-primary'><FaSave /><span>simpan</span></button> : statusForm == "" ?
+                                                <a type='button' onClick={() => editDsn('update')} className='btn btn-sm btn-primary'><FaEdit /><span>edit</span></a> :
+                                                <button className='btn btn-sm btn-primary'><FaEdit /><span>update</span></button>
+                                        }
+                                        {statusForm == "" ? <button type='button' className='btn btn-sm btn-error' onClick={() => deleteDosen(kodeDsnPengajar, kodeDsnPengganti)}><FaTrash /><span className="">Hapus</span></button> : statusForm == 'update' ? <button type='button' className='btn btn-sm btn-error' onClick={() => editDsn('')}><FaTimes /><span className="">batal</span></button> : ""}
                                     </div>
                                 </div>
-                                <div>
-                                    <div>
-                                        <label className="label">
-                                            <span className="text-base label-text">Dosen Pengganti</span>
-                                        </label>
-                                        <select className="select select-sm select-bordered w-full" value={kodeDsnPengganti} onChange={(e) => setKodeDsnPengganti(e.target.value)}>
-                                            <option value="">Pilih Dosen Pengganti</option>
-                                            {Dosen.map((item) => (
-                                                <option key={item.id_dosen} value={item.nip_ynaa}>{item.nama}</option>
-                                            ))}
-                                        </select>
+                                {statusForm == "tambah" || statusForm == "update" ?
+                                    <div className="grid grid-cols-3 gap-2">
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">Dosen Pengajar</span>
+                                            </label>
+                                            <select className="select select-sm select-bordered w-full" value={kodeDsnPengajar} onChange={(e) => setKodeDsnPengajar(e.target.value)}>
+                                                <option value="">Pilih Dosen Pengajar</option>
+                                                {Dosen.map((item) => (
+                                                    <option key={item.id_dosen} value={item.nip_ynaa}>{item.nama}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">Dosen Pengganti</span>
+                                            </label>
+                                            <select className="select select-sm select-bordered w-full" value={kodeDsnPengganti} onChange={(e) => setKodeDsnPengganti(e.target.value)}>
+                                                <option value="">Pilih Dosen Pengganti</option>
+                                                {Dosen.map((item) => (
+                                                    <option key={item.id_dosen} value={item.nip_ynaa}>{item.nama}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div> :
+                                    <div className="grid grid-cols-3 gap-2">
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">Dosen Pengajar</span>
+                                            </label>
+                                            <select className="select select-sm w-full" disabled value={kodeDsnPengajar} onChange={(e) => setKodeDsnPengajar(e.target.value)}>
+                                                <option value="">Pilih Dosen Pengajar</option>
+                                                {Dosen.map((item) => (
+                                                    <option key={item.id_dosen} value={item.nip_ynaa}>{item.nama}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">Dosen Pengganti</span>
+                                            </label>
+                                            <select className="select select-sm w-full" disabled value={kodeDsnPengganti} onChange={(e) => setKodeDsnPengganti(e.target.value)}>
+                                                <option value="">Pilih Dosen Pengganti</option>
+                                                {Dosen.map((item) => (
+                                                    <option key={item.id_dosen} value={item.nip_ynaa}>{item.nama}</option>
+                                                ))}
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             </div>
                         </form>
                     </div>

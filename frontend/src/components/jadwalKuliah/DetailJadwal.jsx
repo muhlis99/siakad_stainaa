@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { FaAngleDown, FaCog, FaEdit, FaReply, FaSave, FaUserEdit } from 'react-icons/fa'
+import { FaCog, FaReply, FaUserEdit } from 'react-icons/fa'
 import Swal from 'sweetalert2'
-import { Link, useParams, useNavigate, useLocation } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 
 const DetailJadwal = () => {
@@ -21,7 +21,8 @@ const DetailJadwal = () => {
     const [jamSelesai, setJamSelesai] = useState("")
     const [ruang, setRuang] = useState("")
     const [status, setStatus] = useState("")
-    const { idKls } = useParams()
+    const [kodeJadwal, setKodeJadwal] = useState("")
+    const [pertemuan, setPertemuan] = useState("")
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -46,12 +47,30 @@ const DetailJadwal = () => {
                 setJamMulai(response.data.data.jam_mulai)
                 setJamSelesai(response.data.data.jam_selesai)
                 setRuang(response.data.data.ruangs[0].nama_ruang)
+                setKodeJadwal(response.data.data.code_jadwal_kuliah)
             } catch (error) {
                 setStatus(error.response.data.message)
             }
         }
         getJadwalByKelas()
     }, [location.state])
+
+    useEffect(() => {
+        getJadwalPertemuan()
+    }, [kodeJadwal])
+
+    const getJadwalPertemuan = async () => {
+        try {
+            const response = await axios.get(`v1/jadwalPertemuan/all/${kodeJadwal}`)
+            if (response.data.data.length == 0) {
+                setPertemuan('')
+            } else {
+                setPertemuan('1')
+            }
+        } catch (error) {
+
+        }
+    }
 
     const day = ["", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu"]
     const hr = []
@@ -72,10 +91,8 @@ const DetailJadwal = () => {
                                 <div className='mb-2'>
                                     <div className="float-right flex gap-1">
                                         <Link to={`/jadwalkuliah`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
-                                        {status !== "" ?
-                                            <Link to={`/aturjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-primary'><FaCog /><span>Atur Jadwal</span></Link>
-                                            : <Link to={`/aturjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-primary'><FaCog /><span>Atur Jadwal</span></Link>
-                                        }
+                                        {pertemuan == '1' ? "" : <Link to={`/aturjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-primary'><FaCog /><span>Atur Jadwal</span></Link>}
+
                                         {status == '' ? <Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-secondary btn-sm'><FaUserEdit />Dosen Pengajar</Link> : ''}
                                     </div>
                                 </div>

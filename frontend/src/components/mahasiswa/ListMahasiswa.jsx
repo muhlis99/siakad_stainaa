@@ -55,38 +55,38 @@ const ListMahasiswa = () => {
         setStat("add")
     }
 
-    const nonaktifkan = (mhsId) => {
-        Swal.fire({
-            title: "Hapus data ini?",
-            text: "Anda tidak dapat mengembalikan ini",
-            icon: "question",
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                try {
-                    axios.put(
-                        `v1/mahasiswa/nonAktif/${mhsId}`
-                    ).then((response) => {
-                        console.log(response.data)
-                        Swal.fire({
-                            title: "Terhapus",
-                            text: response.data.message,
-                            icon: "success"
-                        }).then(() => {
-                            getMahasiwa()
-                        });
-                    })
+    // const nonaktifkan = (mhsId) => {
+    //     Swal.fire({
+    //         title: "Hapus data ini?",
+    //         text: "Anda tidak dapat mengembalikan ini",
+    //         icon: "question",
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Ya, hapus!',
+    //         cancelButtonText: 'Batal'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             try {
+    //                 axios.put(
+    //                     `v1/mahasiswa/nonAktif/${mhsId}`
+    //                 ).then((response) => {
+    //                     console.log(response.data)
+    //                     Swal.fire({
+    //                         title: "Terhapus",
+    //                         text: response.data.message,
+    //                         icon: "success"
+    //                     }).then(() => {
+    //                         getMahasiwa()
+    //                     });
+    //                 })
 
-                } catch (error) {
+    //             } catch (error) {
 
-                }
-            }
-        })
-    }
+    //             }
+    //         }
+    //     })
+    // }
 
     return (
         <div className='mt-2 container'>
@@ -150,7 +150,7 @@ const ListMahasiswa = () => {
                                                     <Link to={`/mahasiswa/form1/edit/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
                                                     <Link to={`/mahasiswa/upload/berkas/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
                                                     <Link to={`/mahasiswa/print/${mhs.id_mahasiswa}`} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
-                                                    <button onClick={() => nonaktifkan(mhs.id_mahasiswa)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button>
+                                                    {/* <button onClick={() => nonaktifkan(mhs.id_mahasiswa)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button> */}
                                                 </div>
                                             </td>
                                         </tr>
