@@ -44,6 +44,7 @@ import DosenPgjr from "./pages/jadwalKuliah/DosenPgjr"
 import Pertemuan from "./pages/jadwalKuliah/Pertemuan"
 import Penilaian from "./pages/penilaian/Penilaian"
 import InputNilai from "./pages/penilaian/InputNilai"
+import UpdateNilai from "./pages/penilaian/UpdateNilai"
 import Detail2 from "./pages/penilaian/Detail"
 import Persemester from "./pages/mhsPersemester/Persemester"
 import Khs from "./pages/khs/Khs"
@@ -99,6 +100,7 @@ function App() {
           <Route path="/setpertemuan" element={<Pertemuan />} />
           <Route path="/penilaian" element={<Penilaian />} />
           <Route path="/inputnilai" element={<InputNilai />} />
+          <Route path="/updatenilai" element={<UpdateNilai />} />
           <Route path="/detailnilai" element={<Detail2 />} />
           <Route path="/setmhs" element={<Persemester />} />
           <Route path="/khs" element={<Khs />} />

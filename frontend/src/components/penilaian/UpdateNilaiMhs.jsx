@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { FaReply, FaSave } from 'react-icons/fa'
+import { FaEdit, FaReply, FaSave } from 'react-icons/fa'
 
-const InputNilaiMhs = () => {
+const UpdateNilaiMhs = () => {
     const [Mahasiswa, setMahasiswa] = useState([])
     const [jenjang, setJenjang] = useState("")
     const [nmKls, setNmKls] = useState("")
@@ -21,6 +21,10 @@ const InputNilaiMhs = () => {
     const [fakul, setFakul] = useState("")
     const [prodi, setProdi] = useState("")
     const [tahun, setTahun] = useState("")
+    const [tugas, setTugas] = useState([])
+    const [uts, setUts] = useState([])
+    const [uas, setUas] = useState([])
+    const [absen, setAbsen] = useState([])
     const location = useLocation()
     const navigate = useNavigate()
 
@@ -46,6 +50,13 @@ const InputNilaiMhs = () => {
     }, [jmlMhs])
 
     useEffect(() => {
+        getTugas()
+        getAbsen()
+        getUas()
+        getUts()
+    }, [inputFields])
+
+    useEffect(() => {
         getAverage()
         getSum()
     }, [inputFields])
@@ -65,23 +76,54 @@ const InputNilaiMhs = () => {
         setSem(response.data.data.semesters[0].semester)
     }
 
-    const addFields = () => {
-        let newfield = []
-        for (let index = 1; index <= jmlMhs; index++) {
-            newfield.push({ tugas: '', uts: '', uas: '', absen: '' })
-        }
-        setInputFields(newfield)
-        // console.log(newfield);
-    }
-
     const getMahasiswa = async () => {
         try {
-            const response = await axios.get(`v1/kelasKuliah/getMhsByKelas/${location.state.kod}`)
+            const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.mk}&codeKls=${location.state.kod}`)
             setMahasiswa(response.data.data)
             setJmlMhs(response.data.data.length)
         } catch (error) {
 
         }
+    }
+
+    const addFields = () => {
+        let newfield = []
+        Mahasiswa.map(item => (
+            newfield.push({ tugas: parseInt(item.nilai_tugas), uts: parseInt(item.nilai_uts), uas: parseInt(item.nilai_uas), absen: parseInt(item.nilai_hadir) })
+        ))
+        setInputFields(newfield)
+    }
+
+    const getTugas = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.tugas))
+        ))
+        setTugas(newfield)
+    }
+
+    const getUts = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.uts))
+        ))
+        setUts(newfield)
+    }
+
+    const getUas = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.uas))
+        ))
+        setUas(newfield)
+    }
+
+    const getAbsen = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.absen))
+        ))
+        setAbsen(newfield)
     }
 
     const getAverage = () => {
@@ -93,16 +135,15 @@ const InputNilaiMhs = () => {
             let rataRata = (tugas + hadir + uts + uas) / 4
             return rataRata
         })
-        // console.log(i);
         setNIlaiAkhir(i)
     }
 
     const getSum = () => {
         const i = inputFields.map(el => {
-            var tugas = parseInt(el.tugas) || 0
-            var hadir = parseInt(el.absen) || 0
-            var uts = parseInt(el.uts) || 0
-            var uas = parseInt(el.uas) || 0
+            let tugas = parseInt(el.tugas) || 0
+            let hadir = parseInt(el.absen) || 0
+            let uts = parseInt(el.uts) || 0
+            let uas = parseInt(el.uas) || 0
             var sum = (tugas + hadir + uts + uas)
             return sum
         })
@@ -134,17 +175,9 @@ const InputNilaiMhs = () => {
     const simpanNilai = async (e) => {
         e.preventDefault()
         try {
-            await axios.post('v1/nilaiKuliah/create',
+            await axios.put('v1/nilaiKuliah/update',
                 Mahasiswa.map((item, index) => ({
-                    code_kelas: location.state.kod,
-                    code_mata_kuliah: location.state.mk,
-                    code_kategori_nilai: kodeNilai[index],
-                    code_tahun_ajaran: location.state.thn,
-                    code_semester: location.state.smt,
-                    code_jenjang_pendidikan: location.state.jen,
-                    code_fakultas: location.state.fak,
-                    code_prodi: location.state.pro,
-                    nim: item.nim,
+                    id_nilai_kuliah: item.id_nilai_kuliah,
                     nilai_hadir: inputFields[index].absen,
                     nilai_tugas: inputFields[index].tugas,
                     nilai_uts: inputFields[index].uts,
@@ -256,7 +289,7 @@ const InputNilaiMhs = () => {
                                 <div className='mb-2'>
                                     <div className='float-right flex gap-2'>
                                         <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod }} className='btn btn-sm btn-error'><FaReply /> Kembali</Link>
-                                        {jmlMhs == null ? "" : <button className='btn btn-sm btn-primary'><FaSave /> simpan</button>}
+                                        {jmlMhs == null ? "" : <button className='btn btn-sm btn-primary'><FaEdit /> update</button>}
                                     </div>
                                 </div>
                                 <div className="overflow-x-auto mb-2">
@@ -283,16 +316,16 @@ const InputNilaiMhs = () => {
                                                     <td className='px-2 py-2 border'>{mhs.nim}</td>
                                                     <td className='px-2 py-2 border'>{mhs.mahasiswas[0].nama}</td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='tugas' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='tugas' value={tugas[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                                     </td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='uts' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='uts' value={uts[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                                     </td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='uas' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='uas' value={uas[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                                     </td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='absen' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='absen' value={absen[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                                     </td>
                                                     <td className='px-2 py-2 border'>{nilaiSum[index] == 0 ? "" : nilaiSum[index]}</td>
                                                     <td className='px-2 py-2 border'>{nilaiAkhir[index] == "0" ? "" : nilaiAkhir[index]}</td>
@@ -312,4 +345,4 @@ const InputNilaiMhs = () => {
     )
 }
 
-export default InputNilaiMhs
+export default UpdateNilaiMhs
