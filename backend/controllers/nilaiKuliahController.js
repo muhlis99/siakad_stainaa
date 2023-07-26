@@ -1,11 +1,17 @@
 const { Op, QueryTypes } = require('sequelize')
+const sequelize = require('../config/database.js')
 const kelasModel = require('../models/kelasKuliahModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
 const kategoriNilaiModel = require('../models/kategoriNilaiModel.js')
 const nilaiKuliahModel = require('../models/nilaiKuliahModel.js')
 const kelasDetailKuliahModel = require('../models/kelasDetailKuliahModel.js')
-const sequelize = require('../config/database.js')
+const tahunAjaranModel = require('../models/tahunAjaranModel.js')
+const semesterModel = require('../models/semesterModel.js')
+const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
+const fakultasModel = require('../models/fakultasModel.js')
+const prodiModel = require('../models/prodiModel.js')
+
 
 module.exports = {
     get: async (req, res, next) => {
@@ -23,6 +29,21 @@ module.exports = {
                 where: { status: "aktif" }
             }, {
                 model: kelasModel,
+                where: { status: "aktif" }
+            }, {
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                where: { status: "aktif" }
+            }, {
+                model: jenjangPendidikanModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
                 where: { status: "aktif" }
             }],
             where: {
@@ -98,8 +119,13 @@ module.exports = {
             let element = {
                 code_nilai_kuliah: randomNumber,
                 code_kelas: el.code_kelas,
-                code_kategori_nilai: el.code_kategori_nilai,
                 code_mata_kuliah: el.code_mata_kuliah,
+                code_kategori_nilai: el.code_kategori_nilai,
+                code_tahun_ajaran: el.code_tahun_ajaran,
+                code_semester: el.code_semester,
+                code_jenjang_pendidikan: el.code_jenjang_pendidikan,
+                code_fakultas: el.code_fakultas,
+                code_prodi: el.code_prodi,
                 nim: el.nim,
                 nilai_hadir: el.nilai_hadir,
                 nilai_tugas: el.nilai_tugas,
@@ -116,6 +142,35 @@ module.exports = {
             then(result => {
                 res.status(200).json({
                     message: "Data nilai kuliah success ditambahkan",
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    put: async (req, res, next) => {
+        const data = req.body
+
+        const dataNilai = data.map(el => {
+            let element = {
+                id_nilai_kuliah: el.id_nilai_kuliah,
+                nilai_hadir: el.nilai_hadir,
+                nilai_tugas: el.nilai_tugas,
+                nilai_uts: el.nilai_uts,
+                nilai_uas: el.nilai_uas,
+                nilai_jumlah: el.nilai_jumlah,
+                nilai_akhir: el.nilai_akhir,
+                status: "aktif"
+            }
+            return element
+        })
+        await nilaiKuliahModel.bulkCreate(dataNilai, {
+            updateOnDuplicate: ["nilai_hadir", "nilai_tugas", "nilai_uts", "nilai_uas", "nilai_jumlah", "nilai_akhir"],
+        }).
+            then(result => {
+                res.status(200).json({
+                    message: "Data nilai kuliah success diupdate",
                 })
             }).
             catch(err => {

@@ -16,8 +16,23 @@ module.exports = {
         const { codeThnAjr, codeSmt, codeJnjPen, codeFks, codePrd } = req.params
         await historyMahasiswa.findAll({
             include: [{
+                attributes: ['nim', 'nama'],
                 model: mahasiswaModel,
-                attributes: ["nim", "nama"],
+                where: { status: "aktif" }
+            }, {
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                where: { status: "aktif" }
+            }, {
+                model: jenjangPendidikanModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
                 where: { status: "aktif" }
             }],
             where: {
@@ -117,6 +132,31 @@ module.exports = {
                     attributes: ["id_kategori_nilai", "nilai_huruf", "interfal_skor"],
                     model: kategoriNilaiModel,
                     where: { status: "aktif" }
+                },
+                {
+                    attributes: ['nim', 'nama'],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: tahunAjaranModel,
+                    attributes: ['code_tahun_ajaran', 'tahun_ajaran'],
+                    where: { status: "aktif" }
+                }, {
+                    model: semesterModel,
+                    attributes: ['code_semester', 'semester'],
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_jenjang_pendidikan', 'nama_jenjang_pendidikan'],
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: fakultasModel,
+                    attributes: ['code_fakultas', 'nama_fakultas',],
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_prodi', 'nama_prodi'],
+                    model: prodiModel,
+                    where: { status: "aktif" }
                 }
             ],
             attributes: [
@@ -124,6 +164,11 @@ module.exports = {
                 [Sequelize.literal('(mataKuliahs.sks*kategoriNilais.interfal_skor)'), 'sksIndexs']
             ],
             where: {
+                code_tahun_ajaran: codeThnAjr,
+                code_semester: codeSmt,
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
                 nim: nim,
                 status: 'aktif'
             },

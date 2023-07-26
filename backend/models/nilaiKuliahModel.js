@@ -4,6 +4,11 @@ const mahasiswaModel = require('./mahasiswaModel.js')
 const kategoriNilaiModel = require('./kategoriNilaiModel.js')
 const mataKuliahModel = require('./mataKuliahModel.js')
 const kelasKuliahModel = require('./kelasKuliahModel.js')
+const tahunAjaranModel = require('./tahunAjaranModel.js')
+const semesterModel = require('./semesterModel.js')
+const jenjangPendidikanModel = require('./jenjangPendidikanModel.js')
+const fakultasModel = require('./fakultasModel.js')
+const prodiModel = require('./prodiModel.js')
 
 const nilaiKuliahModel = db.define('nilaiKuliah', {
     'id_nilai_kuliah': {
@@ -21,6 +26,21 @@ const nilaiKuliahModel = db.define('nilaiKuliah', {
         type: DataTypes.TEXT
     },
     'code_kategori_nilai': {
+        type: DataTypes.TEXT
+    },
+    'code_tahun_ajaran': {
+        type: DataTypes.TEXT
+    },
+    'code_semester': {
+        type: DataTypes.TEXT
+    },
+    'code_jenjang_pendidikan': {
+        type: DataTypes.TEXT
+    },
+    'code_fakultas': {
+        type: DataTypes.TEXT
+    },
+    'code_prodi': {
         type: DataTypes.TEXT
     },
     'nim': {
@@ -68,5 +88,21 @@ nilaiKuliahModel.hasMany(kategoriNilaiModel, { sourceKey: 'code_kategori_nilai',
 // kelas kuliah
 kelasKuliahModel.belongsTo(nilaiKuliahModel, { foreignKey: 'code_kelas' })
 nilaiKuliahModel.hasMany(kelasKuliahModel, { sourceKey: 'code_kelas', foreignKey: 'code_kelas' })
+// tahun ajaran
+tahunAjaranModel.belongsTo(nilaiKuliahModel, { foreignKey: 'code_tahun_ajaran' })
+nilaiKuliahModel.hasMany(tahunAjaranModel, { sourceKey: 'code_tahun_ajaran', foreignKey: 'code_tahun_ajaran' })
+// semester
+semesterModel.belongsTo(nilaiKuliahModel, { foreignKey: 'code_semester' })
+nilaiKuliahModel.hasMany(semesterModel, { sourceKey: 'code_semester', foreignKey: 'code_semester' })
+// jenjang pendidikan
+jenjangPendidikanModel.belongsTo(nilaiKuliahModel, { foreignKey: 'code_jenjang_pendidikan' })
+nilaiKuliahModel.hasMany(jenjangPendidikanModel, { sourceKey: 'code_jenjang_pendidikan', foreignKey: 'code_jenjang_pendidikan' })
+// fakultas
+fakultasModel.belongsTo(nilaiKuliahModel, { foreignKey: 'code_fakultas' })
+nilaiKuliahModel.hasMany(fakultasModel, { sourceKey: 'code_fakultas', foreignKey: 'code_fakultas' })
+// prodi
+prodiModel.belongsTo(nilaiKuliahModel, { foreignKey: 'code_prodi' })
+nilaiKuliahModel.hasMany(prodiModel, { sourceKey: 'code_prodi', foreignKey: 'code_prodi' })
+
 
 module.exports = nilaiKuliahModel
