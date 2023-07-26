@@ -101,16 +101,33 @@ module.exports = {
                 model: mahasiswa,
                 attributes: ["nim", "nama"],
                 where: { status: "aktif" }
-            }],
+            }, {
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                where: { status: "aktif" }
+            }, {
+                model: jenjangPendidikanModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }
+            ],
             where: {
                 code_tahun_ajaran: codeThnAjrOld,
                 code_semester: codeSmtOld,
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
                 code_prodi: codePrd,
-                status: {
-                    [Op.ne]: 'tidak'
-                }
+                status: "aktif"
+                // status: {
+                //     [Op.ne]: 'tidak'
+                // }
             }
         })
 
@@ -125,7 +142,6 @@ module.exports = {
                 code_prodi: codePrd,
                 status: "aktif"
             }
-            console.log(el.nim, el.status);
         })
 
         const dataUpdateMhsSMtOld = dataMhsSMtOld.map(el => {

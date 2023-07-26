@@ -155,6 +155,7 @@ module.exports = {
         const dataNilai = data.map(el => {
             let element = {
                 id_nilai_kuliah: el.id_nilai_kuliah,
+                code_kategori_nilai: el.code_kategori_nilai,
                 nilai_hadir: el.nilai_hadir,
                 nilai_tugas: el.nilai_tugas,
                 nilai_uts: el.nilai_uts,
