@@ -413,27 +413,28 @@ module.exports = {
             const ctx = canvas.getContext("2d")
             const img = await loadImage(center_image)
             const center = (width - cwidth) / 1
-            ctx.drawImage(img, 180, 200, cwidth, cwidth)
+            ctx.drawImage(img, 170, 180, cwidth, cwidth)
             return canvas.toDataURL("image/png")
         }
 
         async function mainQrCode(params) {
+            const data = Buffer.from(params).toString('base64url')
             const centerImageBase64 = fs.readFileSync(
                 path.resolve('./stainaa.png')
             )
-            const i = Buffer.from(centerImageBase64).toString('base64url')
+            const dataQrWithLogo = Buffer.from(centerImageBase64).toString('base64url')
             const qrCode = await createQrCode(
                 params,
-                `data:image/png;base64,${i}`,
+                `data:image/png;base64,${dataQrWithLogo}`,
                 250,
                 150
             )
             const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
-            let filename = "tmp/qrcode/test7.png";
-            const t = fs.writeFile(filename, base64Data, "base64url", (err) => {
+            let filename = `tmp/qrcode/${data}.png`;
+            fs.writeFile(filename, base64Data, "base64url", (err) => {
                 if (!err) console.log(`${filename} created successfully!`)
             })
-
+            fs.unlinkSync(filename)
         }
 
         const { nik_wali, nama_wali, pekerjaan_wali, penghasilan_wali, pendidikan_wali, tanggal_w, bulan_w, tahun_w,
@@ -485,6 +486,7 @@ module.exports = {
             mainQrCode(nim)
         } else {
             nim = mahasiswaUse.nim
+            mainQrCode(nim)
         }
         await mahasiswa.update({
             nik_wali: nik_wali,

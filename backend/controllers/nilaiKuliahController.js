@@ -167,7 +167,7 @@ module.exports = {
             return element
         })
         await nilaiKuliahModel.bulkCreate(dataNilai, {
-            updateOnDuplicate: ["nilai_hadir", "nilai_tugas", "nilai_uts", "nilai_uas", "nilai_jumlah", "nilai_akhir"],
+            updateOnDuplicate: ["code_kategori_nilai", "nilai_hadir", "nilai_tugas", "nilai_uts", "nilai_uas", "nilai_jumlah", "nilai_akhir"],
         }).
             then(result => {
                 res.status(200).json({
