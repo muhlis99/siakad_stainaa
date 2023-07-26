@@ -178,6 +178,7 @@ const UpdateNilaiMhs = () => {
             await axios.put('v1/nilaiKuliah/update',
                 Mahasiswa.map((item, index) => ({
                     id_nilai_kuliah: item.id_nilai_kuliah,
+                    code_kategori_nilai: kodeNilai[index],
                     nilai_hadir: inputFields[index].absen,
                     nilai_tugas: inputFields[index].tugas,
                     nilai_uts: inputFields[index].uts,
@@ -208,6 +209,7 @@ const UpdateNilaiMhs = () => {
         <div className='mt-2 container'>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Penilaian Mahasiswa</h1>
+                {kodeNilai[0]}
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md">
