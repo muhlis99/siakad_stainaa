@@ -1,6 +1,6 @@
 const express = require('express')
 const route = express.Router()
-const dosenPengajarController = require('../controllers/dosenPengajarCotroller.js')
+const dosenPengajarController = require('../controllers/dosenPengajarController.js')
 
 
 route.get('/getAllDosen', dosenPengajarController.getAllDosen)
