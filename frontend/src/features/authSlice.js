@@ -12,7 +12,7 @@ const initialState = {
 export const LoginUser = createAsyncThunk("User/LoginUser", async (user, thunkAPI) => {
     try {
         const response = await axios.post('v1/login/in', {
-            name: user.name,
+            username: user.name,
             password: user.password
         })
         return response.data
