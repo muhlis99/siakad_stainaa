@@ -11,9 +11,25 @@ const { Op } = require('sequelize')
 
 
 module.exports = {
-    getAllDosen: async (req, res, next) => {
+    autocompleteDosenPengajar: async (req, res, next) => {
+        const dataJadwalKuliah = await jadwalKuliahModel.findAll({
+            include: [{
+                model: dosenModel,
+                status: "aktif"
+            }],
+            where: {
+                status: "aktif"
+            }
+        })
+        const dataDosenPengajar = dataJadwalKuliah.map(i => {
+            return i.dosen_pengajar
+        })
+
         await dosenModel.findAll({
             where: {
+                nip_ynaa: {
+                    [Op.notIn]: dataDosenPengajar
+                },
                 status: "aktif"
             }
         }).then(all => {
@@ -77,10 +93,9 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { dosen_pengajar, dosen_pengganti, id } = req.body
+        const { dosen_pengajar, id } = req.body
         await jadwalKuliahModel.update({
             dosen_pengajar: dosen_pengajar,
-            dosen_pengganti: dosen_pengganti,
         }, {
             where: {
                 id_jadwal_kuliah: id
@@ -98,10 +113,9 @@ module.exports = {
 
     put: async (req, res, next) => {
         const id = req.params.id
-        const { dosen_pengajar, dosen_pengganti } = req.body
+        const { dosen_pengajar } = req.body
         await jadwalKuliahModel.update({
-            dosen_pengajar: dosen_pengajar,
-            dosen_pengganti: dosen_pengganti,
+            dosen_pengajar: dosen_pengajar
         }, {
             where: {
                 id_jadwal_kuliah: id
@@ -117,7 +131,7 @@ module.exports = {
             })
     },
 
-    deleteStatus: async (req, res, next) => {
+    delete: async (req, res, next) => {
         const id = req.params.id
         const jadwalKuliahModelUse = await jadwalKuliahModel.findOne({
             include: [{
@@ -148,13 +162,11 @@ module.exports = {
             where: {
                 id_jadwal_kuliah: id,
                 status: "aktif"
-            },
-            group: ['kelas.code_kelas'],
+            }
         })
         if (!jadwalKuliahModelUse) return res.status(401).json({ message: "Data dosen pengajar tidak ditemukan" })
         await jadwalKuliahModel.update({
             dosen_pengajar: "",
-            dosen_pengganti: ""
         }, {
             where: {
                 id_jadwal_kuliah: id
@@ -168,5 +180,96 @@ module.exports = {
             catch(err => {
                 next(err)
             })
-    }
+    },
+
+    postPengganti: async (req, res, next) => {
+        const { dosen_pengganti, id } = req.body
+        await jadwalKuliahModel.update({
+            dosen_pengganti: dosen_pengganti,
+        }, {
+            where: {
+                id_jadwal_kuliah: id
+            }
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "Data dosen Pengganti success Ditambahkan",
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    putPengganti: async (req, res, next) => {
+        const id = req.params.id
+        const { dosen_pengganti } = req.body
+        await jadwalKuliahModel.update({
+            dosen_pengganti: dosen_pengganti
+        }, {
+            where: {
+                id_jadwal_kuliah: id
+            }
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "Data dosen Pengganti success Diupdate",
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    deletePengganti: async (req, res, next) => {
+        const id = req.params.id
+        const jadwalKuliahModelUse = await jadwalKuliahModel.findOne({
+            include: [{
+                model: semesterModel,
+                where: { status: "aktif" }
+            }, {
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: jenjangPendidikanModel,
+                where: { status: "aktif" }
+            }, {
+                model: kelasModel,
+                where: { status: "aktif" },
+            }, {
+                model: mataKuliahModel,
+                where: { status: "aktif" }
+            }, {
+                model: dosenModel,
+                // where: { status: "aktif" }
+            }],
+            where: {
+                id_jadwal_kuliah: id,
+                status: "aktif"
+            }
+        })
+        if (!jadwalKuliahModelUse) return res.status(401).json({ message: "Data dosen pengganti tidak ditemukan" })
+        await jadwalKuliahModel.update({
+            dosen_pengganti: "",
+        }, {
+            where: {
+                id_jadwal_kuliah: id
+            }
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "data dosen pengganti succes dihapus"
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
 }
