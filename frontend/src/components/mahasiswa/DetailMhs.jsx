@@ -48,6 +48,8 @@ const DetailMhs = () => {
     const [prevIjazah, setPrevIjazah] = useState("")
     const [kips, setKips] = useState("")
     const [prevKip, setPrevKip] = useState("")
+    const [qrCode, setQrCode] = useState("")
+    const [prevQrCode, setPrevQrCode] = useState("")
     const [nikAyah, setNikAyah] = useState("")
     const [namaAyah, setNamaAyah] = useState("")
     const [tgAyah, setTgAyah] = useState("")
@@ -136,6 +138,7 @@ const DetailMhs = () => {
                 setKtps(response.data.data.foto_ktp)
                 setIjazahs(response.data.data.foto_ijazah)
                 setKips(response.data.data.foto_kip)
+                setQrCode(response.data.data.qrcode)
                 let tglLahirAyah = response.data.data.tanggal_lahir_ayah
                 const tglAyah = tglLahirAyah.split("-")
                 let tglLahirIbu = response.data.data.tanggal_lahir_ibu
@@ -191,6 +194,10 @@ const DetailMhs = () => {
     useEffect(() => {
         fotoKip()
     }, [kips])
+
+    useEffect(() => {
+        kodeQr()
+    }, [qrCode])
 
     useEffect(() => {
         jalurPendaftaranByCode()
@@ -316,6 +323,27 @@ const DetailMhs = () => {
         }
     }
 
+    const kodeQr = async () => {
+        try {
+            if (qrCode != 0) {
+                await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/qrcode/${qrCode}`, {
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevQrCode(base64)
+                })
+
+            }
+        } catch (error) {
+
+        }
+    }
+
     function randomNumberInRange(length) {
         let result = ''
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -328,10 +356,11 @@ const DetailMhs = () => {
         return result
     }
 
-    const openImage = (img) => {
+    const openImage = (img, nam) => {
         document.getElementById('my-modal').checked = true
+        console.log(img);
         setModal(img)
-        setNameFile(randomNumberInRange(15))
+        setNameFile(nam + namanya)
     }
 
     const jalurPendaftaranByCode = async () => {
@@ -431,7 +460,7 @@ const DetailMhs = () => {
             <label htmlFor="my-modal" className="modal cursor-pointer">
                 <label className="modal-box relative" htmlFor="">
                     <div className='w-full'>
-                        <a className='btn btn-sm btn-blue w-full mb-2' download={nameFile} href={`data:image/png;base64,${modal}`}>download</a>
+                        <a className='btn btn-sm btn-primary w-full mb-2' download={nameFile} href={`data:image/png;base64,${modal}`}>download</a>
                     </div>
                     <div className='avatar'>
                         <div className="w-full  rounded ring ring-[#2D7F5F]">
@@ -444,7 +473,7 @@ const DetailMhs = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <Link to="/mahasiswa" className='btn btn-sm btn-danger w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
+                        <Link to="/mahasiswa" className='btn btn-sm btn-error w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
                         <div className='grid lg:grid-cols-2'>
                             <div>
                                 <table>
@@ -754,7 +783,7 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">foto mahasiswa</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevFoto)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevFoto, 'FOTO_')}>Detail</button>
                                 {prevFoto ? (
                                     <div className="avatar">
                                         <div className="w-full  rounded ring ring-[#2D7F5F]">
@@ -767,7 +796,7 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan kartu keluarga</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevKk)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKk, 'SCANKK_')}>Detail</button>
                                 <div className="avatar">
                                     {prevKk ? (
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -780,7 +809,7 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan ktp</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevKtp)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKtp, 'KTP_')}>Detail</button>
                                 <div className="avatar">
                                     {prevKtp ? (
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -793,7 +822,7 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan ijazah</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevIjazah)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevIjazah, 'IJAZAH_')}>Detail</button>
                                 <div className="avatar">
                                     {prevIjazah ? (
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -806,11 +835,24 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan kip</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-blue cursor-pointer mb-2' onClick={() => openImage(prevKip)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKip, 'KIP_')}>Detail</button>
                                 <div className="avatar">
                                     {prevKip ? (
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
                                             <img src={`data:;base64,${prevKip}`} />
+                                        </div>
+                                    ) : (<span>File Tidak Ada</span>)}
+                                </div>
+                            </div>
+                            <div>
+                                <label className="label">
+                                    <span className="text-base label-text uppercase font-bold">QR Code</span>
+                                </label>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevQrCode, 'QR_')}>Detail</button>
+                                <div className="avatar">
+                                    {prevQrCode ? (
+                                        <div className="w-full rounded ring ring-[#2D7F5F]">
+                                            <img src={`data:;base64,${prevQrCode}`} />
                                         </div>
                                     ) : (<span>File Tidak Ada</span>)}
                                 </div>
