@@ -6,7 +6,7 @@ module.exports = {
     login: async (req, res, next) => {
         const userUse = await user.findOne({
             where: {
-                name: req.body.name
+                username: req.body.username
             }
         })
         if (!userUse) return res.status(401).json({ message: "data tidak ditemukan" })
@@ -14,12 +14,12 @@ module.exports = {
         if (!verfiyPass) return res.status(400).json({ message: "password salah" })
         req.session.userId = userUse.id
         const id = userUse.id
-        const name = userUse.name
+        const username = userUse.username
         const email = userUse.email
         const role = userUse.role
         res.status(200).json({
             message: "login suksess",
-            id, name, email, role
+            id, username, email, role
         })
     },
 
@@ -30,7 +30,7 @@ module.exports = {
             })
         }
         const userUse = await user.findOne({
-            attributes: ["id", "name", "email", "role"],
+            attributes: ["id", "username", "email", "role"],
             where: {
                 id: req.session.userId
             }
@@ -128,12 +128,12 @@ module.exports = {
             })
             req.session.userId = codeUse.id
             const id = codeUse.id
-            const name = codeUse.name
+            const username = codeUse.username
             const email = codeUse.email
             const role = codeUse.role
             res.status(200).json({
                 message: "................",
-                id, name, email, role
+                id, username, email, role
             })
         } catch (err) {
             next(err)

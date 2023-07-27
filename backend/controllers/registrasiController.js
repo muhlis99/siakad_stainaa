@@ -16,7 +16,7 @@ module.exports = {
                         }
                     },
                     {
-                        name: {
+                        username: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -44,7 +44,7 @@ module.exports = {
                                 }
                             },
                             {
-                                name: {
+                                username: {
                                     [Op.like]: `%${search}%`
                                 }
                             },
@@ -108,10 +108,10 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { name, email, password, confirmPassword, role } = req.body
+        const { username, email, password, confirmPassword, role } = req.body
         const hashPassword = await argon.hash(password)
         await registrasi.create({
-            name: name,
+            username: username,
             email: email,
             password: hashPassword,
             role: role,
@@ -136,7 +136,7 @@ module.exports = {
             }
         })
         if (!registrasiUse) return res.status(401).json({ message: "user tidak ditemukan" })
-        const { name, email, password, confirmPassword, role } = req.body
+        const { username, email, password, confirmPassword, role } = req.body
         let hashPassword
         if (password === "" || password === null) {
             hashPassword = registrasiUse.password
@@ -145,7 +145,7 @@ module.exports = {
         }
         try {
             await registrasi.update({
-                name: name,
+                username: username,
                 email: email,
                 password: hashPassword,
                 role: role

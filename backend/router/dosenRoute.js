@@ -25,6 +25,7 @@ route.use('/public/seeImage/dosen/skDosen', express.static(path.join(__dirname, 
 route.use('/public/seeImage/dosen/skBebasNarkotika', express.static(path.join(__dirname, '../tmp/dosen/skBebasNarkotika')))
 route.use('/public/seeImage/dosen/skDariPimpinanPt', express.static(path.join(__dirname, '../tmp/dosen/skDariPimpinanPt')))
 route.use('/public/seeImage/dosen/skAktifMelaksanakanTridmaPt', express.static(path.join(__dirname, '../tmp/dosen/skAktifMelaksanakanTridmaPt')))
+route.use('/public/seeImage/dosen/qrCode', express.static(path.join(__dirname, '../tmp/qrcodedosen')))
 
 
 

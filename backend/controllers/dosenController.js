@@ -4,7 +4,8 @@ const { desa, kecamatan, kabupaten, provinsi, negara } = require('../models/equi
 const { Op } = require('sequelize')
 const path = require('path')
 const fs = require('fs')
-
+const QRCode = require("qrcode");
+const { createCanvas, loadImage } = require("canvas");
 
 module.exports = {
     getAll: async (req, res, next) => {
@@ -234,6 +235,69 @@ module.exports = {
     },
 
     createForm2: async (req, res, next) => {
+        async function createQrCode(dataForQRcode, center_image, width, cwidth) {
+            const canvas = createCanvas(width, width)
+            QRCode.toCanvas(
+                canvas,
+                dataForQRcode,
+                {
+                    errorCorrectionLevel: "H",
+                    width: 500,
+                    margin: 1,
+                    color: {
+                        dark: "#000000",
+                        light: "#ffffff",
+                    },
+                }
+            )
+
+            const ctx = canvas.getContext("2d")
+            const img = await loadImage(center_image)
+            const center = (width - cwidth) / 1
+            ctx.drawImage(img, 170, 180, cwidth, cwidth)
+            return canvas.toDataURL("image/png")
+        }
+
+        async function mainQrCode(nip_ynaa, qrCodeNew, qrCodeOld = "") {
+            if (qrCodeOld != "") {
+                const data = nip_ynaa
+                const centerImageBase64 = fs.readFileSync(
+                    path.resolve('./stainaa.png')
+                )
+                const dataQrWithLogo = Buffer.from(centerImageBase64).toString('base64url')
+                const qrCode = await createQrCode(
+                    data,
+                    `data:image/png;base64,${dataQrWithLogo}`,
+                    250,
+                    150
+                )
+                const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
+                fs.unlinkSync(`tmp/qrcodedosen/${qrCodeOld}`)
+                let filename = `tmp/qrcodedosen/${qrCodeNew}.png`;
+                fs.writeFile(filename, base64Data, "base64url", (err) => {
+                    if (!err) console.log(`${filename} created successfully!`)
+                })
+            } else {
+                const data = nip_ynaa
+                const centerImageBase64 = fs.readFileSync(
+                    path.resolve('./stainaa.png')
+                )
+                const dataQrWithLogo = Buffer.from(centerImageBase64).toString('base64url')
+                const qrCode = await createQrCode(
+                    data,
+                    `data:image/png;base64,${dataQrWithLogo}`,
+                    250,
+                    150
+                )
+                const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
+                let filename = `tmp/qrcodedosen/${qrCodeNew}.png`;
+                fs.writeFile(filename, base64Data, "base64url", (err) => {
+                    if (!err) console.log(`${filename} created successfully!`)
+                })
+            }
+        }
+
+
         const id = req.params.id
         const { alamat_lengkap, desa, kecamatan,
             kabupaten, provinsi, negara, kode_pos, alat_transportasi,
@@ -245,6 +309,18 @@ module.exports = {
         })
         if (!dosenUse) return res.status(401).json({ message: "Data dosen tidak ditemukan" })
         const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+        let dataQrCode
+        let dataQrCodeOld = dosenUse.qrCode
+        if (dataQrCodeOld != "") {
+            let nip_ynaa = dosenUse.nip_ynaa
+            dataQrCode = "dosen" + Buffer.from(nip_ynaa).toString('base64url')
+            mainQrCode(nip_ynaa, dataQrCode, dataQrCodeOld)
+        } else {
+            let nip_ynaa = dosenUse.nip_ynaa
+            dataQrCode = "dosen" + Buffer.from(nip_ynaa).toString('base64url')
+            mainQrCode(nip_ynaa, dataQrCode)
+        }
+
         await dosen.update({
             alamat_lengkap: alamat_lengkap,
             desa: desa,
@@ -257,6 +333,7 @@ module.exports = {
             pendidikan_terakhir: pendidikan_terakhir,
             status_kepegawaian: status_kepegawaian,
             tanggal_mulai: date,
+            qrcode: dataQrCode + ".png",
             status: "aktif"
         }, {
             where: {

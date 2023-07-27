@@ -1,11 +1,11 @@
-const {body, check } = require('express-validator')
+const { body, check } = require('express-validator')
 const registrasi = require('../models/loginModel.js')
 
 
 exports.validationRegistrasi = [
-    check('name')
+    check('username')
         .notEmpty()
-        .withMessage('nama tidak boleh kosong'),
+        .withMessage('username tidak boleh kosong'),
     check('email')
         .notEmpty()
         .withMessage('email tidak boleh kosong')
@@ -14,25 +14,25 @@ exports.validationRegistrasi = [
         .withMessage('email tidak valid')
         .custom(value => {
             return registrasi.findOne({
-                where : {
-                    email : value
+                where: {
+                    email: value
                 }
             })
-            .then(user => {
-                if (user) {
-                    return Promise.reject('email yang anda masukkan sudah ada')
-                }
-            })
+                .then(user => {
+                    if (user) {
+                        return Promise.reject('email yang anda masukkan sudah ada')
+                    }
+                })
         }),
-    check('password' )
+    check('password')
         .notEmpty()
         .withMessage('password tidak boleh kosong')
-        .isLength({min:8})
+        .isLength({ min: 8 })
         .withMessage('password tidak kuat'),
     check('confirmPassword')
         .notEmpty()
         .withMessage('conforirm password tidak boleh kosong')
-        .custom((value, {req}) => {
+        .custom((value, { req }) => {
             if (value !== req.body.password) {
                 throw new Error('confirm password tidak sesuai dengan password')
             }

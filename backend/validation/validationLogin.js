@@ -1,9 +1,9 @@
 const { body, check } = require('express-validator')
 
 exports.validationLogin = [
-    check('name')
+    check('username')
         .notEmpty()
-        .withMessage('nama tidak boleh kosong'),
+        .withMessage('username tidak boleh kosong'),
     check('password')
         .notEmpty()
         .withMessage('password tidak boleh kosong')

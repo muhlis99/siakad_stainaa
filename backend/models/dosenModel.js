@@ -102,6 +102,9 @@ const dosenModel = db.define('dosen', {
         type: DataTypes.ENUM,
         values: ["non_pns", "pns", "x"]
     },
+    'qrcode': {
+        type: DataTypes.TEXT
+    },
     'status': {
         type: DataTypes.ENUM,
         values: ["aktif", "tidak"]

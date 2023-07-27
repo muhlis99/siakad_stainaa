@@ -185,6 +185,9 @@ const mahasiswaModel = db.define('mahasiswa', {
     'foto_kip': {
         type: DataTypes.TEXT
     },
+    'qrcode': {
+        type: DataTypes.TEXT
+    },
     'status': {
         type: DataTypes.ENUM,
         values: ["aktif", "tidak"]

@@ -417,24 +417,43 @@ module.exports = {
             return canvas.toDataURL("image/png")
         }
 
-        async function mainQrCode(params) {
-            const data = Buffer.from(params).toString('base64url')
-            const centerImageBase64 = fs.readFileSync(
-                path.resolve('./stainaa.png')
-            )
-            const dataQrWithLogo = Buffer.from(centerImageBase64).toString('base64url')
-            const qrCode = await createQrCode(
-                params,
-                `data:image/png;base64,${dataQrWithLogo}`,
-                250,
-                150
-            )
-            const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
-            let filename = `tmp/qrcode/${data}.png`;
-            fs.writeFile(filename, base64Data, "base64url", (err) => {
-                if (!err) console.log(`${filename} created successfully!`)
-            })
-            fs.unlinkSync(filename)
+        async function mainQrCode(nim, params, qrCodeOld = "") {
+            if (qrCodeOld) {
+                const data = params
+                const centerImageBase64 = fs.readFileSync(
+                    path.resolve('./stainaa.png')
+                )
+                const dataQrWithLogo = Buffer.from(centerImageBase64).toString('base64url')
+                const qrCode = await createQrCode(
+                    nim,
+                    `data:image/png;base64,${dataQrWithLogo}`,
+                    250,
+                    150
+                )
+                const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
+                fs.unlinkSync(`tmp/qrcodemahasiswa/${qrCodeOld}`)
+                let filename = `tmp/qrcodemahasiswa/${data}.png`;
+                fs.writeFile(filename, base64Data, "base64url", (err) => {
+                    if (!err) console.log(`${filename} created successfully!`)
+                })
+            } else {
+                const data = params
+                const centerImageBase64 = fs.readFileSync(
+                    path.resolve('./stainaa.png')
+                )
+                const dataQrWithLogo = Buffer.from(centerImageBase64).toString('base64url')
+                const qrCode = await createQrCode(
+                    nim,
+                    `data:image/png;base64,${dataQrWithLogo}`,
+                    250,
+                    150
+                )
+                const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
+                let filename = `tmp/qrcodemahasiswa/${data}.png`;
+                fs.writeFile(filename, base64Data, "base64url", (err) => {
+                    if (!err) console.log(`${filename} created successfully!`)
+                })
+            }
         }
 
         const { nik_wali, nama_wali, pekerjaan_wali, penghasilan_wali, pendidikan_wali, tanggal_w, bulan_w, tahun_w,
@@ -471,10 +490,12 @@ module.exports = {
         })
 
         let nim
+        let dataQrCode
         if (no_urut_mhs_terakhir == null) {
             no_urut_mhs = "0001"
             nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
-            mainQrCode(nim)
+            dataQrCode = "mahasiswa" + Buffer.from(nim).toString('base64url')
+            mainQrCode(nim, dataQrCode)
         } else if (mahasiswaUse.nim == "") {
             const code = "0000"
             const a = no_urut_mhs_terakhir.toString()
@@ -483,10 +504,13 @@ module.exports = {
             const b = (no_urut_mhs_terakhir + 1)
             no_urut_mhs = nomor + b
             nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
-            mainQrCode(nim)
+            dataQrCode = "mahasiswa" + Buffer.from(nim).toString('base64url')
+            mainQrCode(nim, dataQrCode)
         } else {
             nim = mahasiswaUse.nim
-            mainQrCode(nim)
+            dataQrCode = "mahasiswa" + Buffer.from(nim).toString('base64url')
+            const dataQrCodeOld = mahasiswa.qrCode
+            mainQrCode(nim, dataQrCode, dataQrCodeOld)
         }
         await mahasiswa.update({
             nik_wali: nik_wali,
@@ -502,7 +526,8 @@ module.exports = {
             code_tahun_ajaran: code_tahun_ajaran,
             status: "aktif",
             tanggal_masuk_kuliah: date,
-            nim: nim
+            nim: nim,
+            qrcode: dataQrCode + ".png"
         }, {
             where: {
                 id_mahasiswa: id

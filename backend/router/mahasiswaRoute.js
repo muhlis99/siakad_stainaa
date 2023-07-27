@@ -22,5 +22,6 @@ router.use('/public/seeImage/mahasiswa/kip', express.static(path.join(__dirname,
 router.use('/public/seeImage/mahasiswa/kk', express.static(path.join(__dirname, '../tmp/mahasiswa/kk')))
 router.use('/public/seeImage/mahasiswa/ktp', express.static(path.join(__dirname, '../tmp/mahasiswa/ktp')))
 router.use('/public/seeImage/mahasiswa/diri', express.static(path.join(__dirname, '../tmp/mahasiswa/diri')))
+router.use('/public/seeImage/mahasiswa/qrcode', express.static(path.join(__dirname, '../tmp/qrcodemahasiswa')))
 
 module.exports = router
