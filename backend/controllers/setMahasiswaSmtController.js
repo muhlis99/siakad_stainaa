@@ -133,8 +133,10 @@ module.exports = {
 
 
         const dataMhsSMtNew = dataMhsSMtOld.map(el => {
+            let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
             return {
                 nim: el.nim,
+                code_history: randomNumber,
                 code_tahun_ajaran: codeThnAjrNew,
                 code_semester: codeSmtNew,
                 code_jenjang_pendidikan: codeJnjPen,

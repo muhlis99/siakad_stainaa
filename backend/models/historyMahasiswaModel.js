@@ -13,6 +13,9 @@ const historyMahasiswa = db.define('historyMahasiswa', {
         autoIncrement: true,
         primaryKey: true
     },
+    'code_history': {
+        type: DataTypes.TEXT,
+    },
     'nim': {
         type: DataTypes.TEXT,
     },
