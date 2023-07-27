@@ -550,7 +550,9 @@ module.exports = {
                 message: "Data Mahasiswa success di tambahkan form 4"
             })
         } else {
+            let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
             await historyMahasiswa.create({
+                code_history: randomNumber,
                 nim: nim,
                 code_tahun_ajaran: code_tahun_ajaran,
                 code_semester: code_semester,
