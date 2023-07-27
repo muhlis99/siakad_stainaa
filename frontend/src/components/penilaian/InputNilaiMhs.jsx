@@ -21,6 +21,10 @@ const InputNilaiMhs = () => {
     const [fakul, setFakul] = useState("")
     const [prodi, setProdi] = useState("")
     const [tahun, setTahun] = useState("")
+    const [tugas, setTugas] = useState([])
+    const [uts, setUts] = useState([])
+    const [uas, setUas] = useState([])
+    const [absen, setAbsen] = useState([])
     const location = useLocation()
     const navigate = useNavigate()
 
@@ -44,6 +48,13 @@ const InputNilaiMhs = () => {
     useEffect(() => {
         addFields()
     }, [jmlMhs])
+
+    useEffect(() => {
+        getTugas()
+        getAbsen()
+        getUas()
+        getUts()
+    }, [inputFields])
 
     useEffect(() => {
         getAverage()
@@ -82,6 +93,38 @@ const InputNilaiMhs = () => {
         } catch (error) {
 
         }
+    }
+
+    const getTugas = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.tugas))
+        ))
+        setTugas(newfield)
+    }
+
+    const getUts = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.uts))
+        ))
+        setUts(newfield)
+    }
+
+    const getUas = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.uas))
+        ))
+        setUas(newfield)
+    }
+
+    const getAbsen = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.absen))
+        ))
+        setAbsen(newfield)
     }
 
     const getAverage = () => {
@@ -283,16 +326,16 @@ const InputNilaiMhs = () => {
                                                     <td className='px-2 py-2 border'>{mhs.nim}</td>
                                                     <td className='px-2 py-2 border'>{mhs.mahasiswas[0].nama}</td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='tugas' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='tugas' value={tugas[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                                     </td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='uts' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='uts' value={uts[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                                     </td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='uas' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='uas' value={uas[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                                     </td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='absen' onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='absen' value={absen[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
                                                     </td>
                                                     <td className='px-2 py-2 border'>{nilaiSum[index] == 0 ? "" : nilaiSum[index]}</td>
                                                     <td className='px-2 py-2 border'>{nilaiAkhir[index] == "0" ? "" : nilaiAkhir[index]}</td>

@@ -178,6 +178,7 @@ const UpdateNilaiMhs = () => {
             await axios.put('v1/nilaiKuliah/update',
                 Mahasiswa.map((item, index) => ({
                     id_nilai_kuliah: item.id_nilai_kuliah,
+                    code_kategori_nilai: kodeNilai[index],
                     nilai_hadir: inputFields[index].absen,
                     nilai_tugas: inputFields[index].tugas,
                     nilai_uts: inputFields[index].uts,

@@ -151,6 +151,11 @@ const ListKhs = () => {
                                         <th scope="col" className="px-6 py-3 w-5">#</th>
                                         <th scope="col" className="px-6 py-3 w-5">NIM</th>
                                         <th scope="col" className="px-6 py-3">Nama</th>
+                                        <th scope="col" className="px-6 py-3">Jenjang Pendidikan</th>
+                                        <th scope="col" className="px-6 py-3">Fakultas</th>
+                                        <th scope="col" className="px-6 py-3">Prodi</th>
+                                        <th scope="col" className="px-6 py-3">Tahun Ajaran</th>
+                                        <th scope="col" className="px-6 py-3">Semester</th>
                                         <th scope="col" className="px-6 py-3 border w-5">Aksi</th>
                                     </tr>
                                 </thead>
@@ -159,6 +164,11 @@ const ListKhs = () => {
                                         <tr key={index} className='bg-white border-b text-gray-500'>
                                             <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
                                             <td className='px-6 py-2'>{mhs.mahasiswas[0].nim}</td>
+                                            <td className='px-6 py-2'>{mhs.mahasiswas[0].nama}</td>
+                                            <td className='px-6 py-2'>{mhs.mahasiswas[0].nama}</td>
+                                            <td className='px-6 py-2'>{mhs.mahasiswas[0].nama}</td>
+                                            <td className='px-6 py-2'>{mhs.mahasiswas[0].nama}</td>
+                                            <td className='px-6 py-2'>{mhs.mahasiswas[0].nama}</td>
                                             <td className='px-6 py-2'>{mhs.mahasiswas[0].nama}</td>
                                             <td className="px-6 py-2">
                                                 <Link to={`/view/${mhs.nim}/${kodeFakultas}/${kodeJenjang}/${kodeProdi}/${kodeSemester}/${kodeTahun}`} className="btn btn-xs btn-blue btn-circle" title='Detail'><FaSearch /></Link>
