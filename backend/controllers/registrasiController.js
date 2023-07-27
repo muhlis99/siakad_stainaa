@@ -30,7 +30,8 @@ module.exports = {
                             [Op.like]: `%${search}%`
                         }
                     }
-                ]
+                ],
+                status: "aktif"
             }
         }).
             then(all => {
@@ -58,7 +59,8 @@ module.exports = {
                                     [Op.like]: `%${search}%`
                                 }
                             }
-                        ]
+                        ],
+                        status: "aktif"
                     },
                     offset: (currentPage - 1) * parseInt(perPage),
                     limit: parseInt(perPage),
@@ -87,7 +89,8 @@ module.exports = {
         const id = req.params.id
         await registrasi.findOne({
             where: {
-                id: id
+                id: id,
+                status: "aktif"
             }
         }).
             then(getById => {
@@ -109,13 +112,15 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { username, email, password, confirmPassword, role } = req.body
+        if (password != confirmPassword) return res.status(400).json({ message: "Password yang anda masukkan salah" })
         const hashPassword = await argon.hash(password)
         await registrasi.create({
             username: username,
             email: email,
             password: hashPassword,
             role: role,
-            verify_code: ""
+            verify_code: "",
+            status: "aktif"
         }).
             then(result => {
                 res.status(201).json({
@@ -132,11 +137,13 @@ module.exports = {
         const id = req.params.id
         const registrasiUse = await registrasi.findOne({
             where: {
-                id: id
+                id: id,
+                status: "aktif"
             }
         })
         if (!registrasiUse) return res.status(401).json({ message: "user tidak ditemukan" })
         const { username, email, password, confirmPassword, role } = req.body
+        if (password != confirmPassword) return res.status(400).json({ message: "Password yang anda masukkan salah" })
         let hashPassword
         if (password === "" || password === null) {
             hashPassword = registrasiUse.password
@@ -151,7 +158,8 @@ module.exports = {
                 role: role
             }, {
                 where: {
-                    id: id
+                    id: id,
+                    status: "aktif"
                 }
             }).
                 then(result => {
@@ -168,7 +176,8 @@ module.exports = {
         const id = req.params.id
         const registrasiUse = await registrasi.findOne({
             where: {
-                id: id
+                id: id,
+                status: "aktif"
             }
         })
         if (!registrasiUse) return res.status(401).json({ message: "user tidak ditemukan" })

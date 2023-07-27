@@ -343,32 +343,45 @@ module.exports = {
 
     deleteStatus: async (req, res, next) => {
         const id = req.params.id
-        const prodiUse = await prodi.findOne({
+        const pengajuanStudiUse = await pengajuanStudi.findOne({
             include: [{
+                attributes: ['nim', 'nama'],
+                model: mahasiswaModel,
+                where: { status: "aktif" }
+            }, {
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                where: { status: "aktif" }
+            }, {
                 model: jenjangPendidikanModel,
-                attributes: ["id_jenjang_pendidikan", "code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
                 where: { status: "aktif" }
             }, {
                 model: fakultasModel,
-                attributes: ["id_fakultas", "code_jenjang_pendidikan", "code_fakultas", "nama_fakultas"],
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
                 where: { status: "aktif" }
             }],
             where: {
-                id_prodi: id,
-                status: "aktif"
+                id_pengajuan_studi: id,
+                status: {
+                    [Op.ne]: 'tidak'
+                }
             }
         })
-        if (!prodiUse) return res.status(401).json({ message: "Data prodi tidak ditemukan" })
-        await prodi.update({
+        if (!pengajuanStudiUse) return res.status(401).json({ message: "Data Pengajuan Studi tidak ditemukan" })
+        await pengajuanStudiUse.update({
             status: "tidak"
         }, {
             where: {
-                id_prodi: id
+                id_pengajuan_studi: id
             }
         }).
             then(result => {
                 res.status(201).json({
-                    message: "data prodi succes dihapus"
+                    message: "data Pengajuan Studi succes dihapus"
                 })
             }).
             catch(err => {

@@ -9,7 +9,7 @@ router.get('/getById/:id', pengajuanStudiController.getById)
 router.post('/createMahasiswa', validationPengajuanStudi, validationRequest, pengajuanStudiController.postMahasiswa)
 router.put('/approveDosen/:id', pengajuanStudiController.approveDosen)
 router.put('/approveBuak/:id', pengajuanStudiController.approveBuak)
-// router.put('/deleteStatus/:id', pengajuanStudiController.deleteStatus)
+router.put('/deleteStatus/:id', pengajuanStudiController.deleteStatus)
 
 
 module.exports = router

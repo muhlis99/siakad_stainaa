@@ -21,6 +21,10 @@ const loginModel = db.define('login', {
     },
     'verify_code': {
         type: DataTypes.TEXT
+    },
+    'status': {
+        type: DataTypes.ENUM,
+        values: ['aktif', 'tidak']
     }
 }, {
     tableName: 'tb_login',

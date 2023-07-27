@@ -6,7 +6,8 @@ module.exports = {
     login: async (req, res, next) => {
         const userUse = await user.findOne({
             where: {
-                username: req.body.username
+                username: req.body.username,
+                status: "aktif"
             }
         })
         if (!userUse) return res.status(401).json({ message: "data tidak ditemukan" })
@@ -32,7 +33,8 @@ module.exports = {
         const userUse = await user.findOne({
             attributes: ["id", "username", "email", "role"],
             where: {
-                id: req.session.userId
+                id: req.session.userId,
+                status: "aktif"
             }
         })
         if (!userUse) return res.status(404).json({ message: "user tidak ditemukan" })
@@ -55,7 +57,8 @@ module.exports = {
         let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
         const emailUse = await user.findOne({
             where: {
-                email: email
+                email: email,
+                status: "aktif"
             }
         })
         if (!emailUse) return res.status(404).json({ message: "Tidak dapat menemukan akun email anda" })
@@ -73,7 +76,8 @@ module.exports = {
                 verify_code: randomNumber,
             }, {
                 where: {
-                    email: email
+                    email: email,
+                    status: "aktif"
                 }
             }).
                 then(result => {
@@ -114,7 +118,8 @@ module.exports = {
         const code = req.body.code
         const codeUse = await user.findOne({
             where: {
-                verify_code: code
+                verify_code: code,
+                status: "aktif"
             }
         })
         if (!codeUse) return res.status(404).json({ message: "data tidak ditemukan" })
@@ -123,7 +128,8 @@ module.exports = {
                 verify_code: ""
             }, {
                 where: {
-                    id: codeUse.id
+                    id: codeUse.id,
+                    status: "aktif"
                 }
             })
             req.session.userId = codeUse.id
@@ -132,7 +138,7 @@ module.exports = {
             const email = codeUse.email
             const role = codeUse.role
             res.status(200).json({
-                message: "................",
+                message: "log in berhasil",
                 id, username, email, role
             })
         } catch (err) {
@@ -149,12 +155,13 @@ module.exports = {
             password: hashPassword,
         }, {
             where: {
-                id: id
+                id: id,
+                status: "aktif"
             }
         }).
             then(result => {
                 res.status(201).json({
-                    message: "...........>>>>>>>>>>>>"
+                    message: "reset password anda telah berhasil"
                 })
             })
     }
