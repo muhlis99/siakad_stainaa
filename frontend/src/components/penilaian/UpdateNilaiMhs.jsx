@@ -209,7 +209,6 @@ const UpdateNilaiMhs = () => {
         <div className='mt-2 container'>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Penilaian Mahasiswa</h1>
-                {kodeNilai[0]}
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md">
