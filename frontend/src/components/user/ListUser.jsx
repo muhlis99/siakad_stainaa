@@ -59,7 +59,7 @@ const ListUser = () => {
             setId(f)
             if (e == 'Edit') {
                 const response = await axios.get(`v1/registrasi/getById/${f}`)
-                setUserName(response.data.data.name)
+                setUserName(response.data.data.username)
                 setEmail(response.data.data.email)
                 setRole(response.data.data.role)
             }
@@ -82,7 +82,7 @@ const ListUser = () => {
         e.preventDefault()
         try {
             await axios.post('v1/registrasi/create', {
-                name: userName,
+                username: userName,
                 email: email,
                 password: password,
                 confirmPassword: confirmPassword,
@@ -116,7 +116,7 @@ const ListUser = () => {
         e.preventDefault()
         try {
             await axios.put(`v1/registrasi/update/${id}`, {
-                name: userName,
+                username: userName,
                 email: email,
                 password: password,
                 confirmPassword: confirmPassword,
@@ -185,7 +185,7 @@ const ListUser = () => {
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalClose}>
+                    <button className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalClose}>
                         <FaTimes /></button>
                     <form onSubmit={modal == 'Tambah' ? simpanDataUser : updateDataUser}>
                         <h3 className="font-bold text-xl">
@@ -229,8 +229,7 @@ const ListUser = () => {
                             </div>
                         </div>
                         <div className="modal-action">
-                            {modal == 'Tambah' ? <button type='submit' className="btn btn-sm btn-default"><FaSave /><span className='ml-1'>simpan</span></button> : <button type='submit' className="btn btn-sm btn-default"><FaEdit /><span className='ml-1'>Update</span></button>}
-
+                            {modal == 'Tambah' ? <button type='submit' className="btn btn-sm btn-primary"><FaSave /><span>simpan</span></button> : <button type='submit' className="btn btn-sm btn-primary"><FaEdit /><span>Update</span></button>}
                         </div>
                     </form>
                 </div>
@@ -243,7 +242,7 @@ const ListUser = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button className="btn btn-default btn-xs" onClick={() => modalOpen('Tambah', '')}><FaPlus /> <span className='ml-1'>tambah data</span></button>
+                                <button className="btn btn-primary btn-sm" onClick={() => modalOpen('Tambah', '')}><FaPlus />tambah data</button>
                             </div>
                             <div>
                                 <form className='mb-1' onSubmit={cariData}>
@@ -256,7 +255,7 @@ const ListUser = () => {
                                                 className="input input-xs input-bordered input-success"
                                                 placeholder='Cari'
                                             />
-                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                            <button type='submit' className="btn btn-xs btn-square btn-success">
                                                 <FaSearch />
                                             </button>
                                         </div>
@@ -279,7 +278,7 @@ const ListUser = () => {
                                     {Users.map((use, index) => (
                                         <tr key={index} className='bg-white border-b text-gray-500'>
                                             <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2'>{use.name}</td>
+                                            <td className='px-6 py-2'>{use.username}</td>
                                             <td className='px-6 py-2'>{use.email}</td>
                                             <td className='px-6 py-2'>{use.role}</td>
                                             <td className='px-6 py-2' align='center'>
@@ -306,11 +305,11 @@ const ListUser = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle btn-default-activ"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-outline btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

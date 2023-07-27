@@ -35,7 +35,7 @@ const Navbar = () => {
         </label>
       </div>
       <div className="flex-1">
-        <span className="normal-case text-md font-bold text-[#2d8659]">Hello {user && user.data.name}, Welcome Back !</span>
+        <span className="normal-case text-md font-bold text-[#2d8659]">Hello {user && user.data.username}, Welcome Back !</span>
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
