@@ -50,6 +50,8 @@ import Persemester from "./pages/mhsPersemester/Persemester"
 import Khs from "./pages/khs/Khs"
 import View from "./pages/khs/View"
 import Users from "./pages/user/Users"
+import PengajuanStudi from "./pages/studiMahasiswa/PengajuanStudi"
+import SetPengajuanStudi from "./pages/studiMahasiswa/SetPengajuanStudi"
 
 function App() {
   return (
@@ -106,6 +108,8 @@ function App() {
           <Route path="/khs" element={<Khs />} />
           <Route path="/view/:nim/:kodeFk/:kodeJnjg/:kodeProdi/:kodeSmt/:kodeThn" element={<View />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/pengajuanstudi" element={<PengajuanStudi />} />
+          <Route path="/setpengajuan" element={<SetPengajuanStudi />} />
         </Routes>
       </BrowserRouter>
     </div>

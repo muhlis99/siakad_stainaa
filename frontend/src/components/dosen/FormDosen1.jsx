@@ -174,7 +174,7 @@ const FormDosen1 = () => {
                                     <label className="label">
                                         <span className="text-base label-text">NIPY</span>
                                     </label>
-                                    <input type="number" placeholder="Masukkan NIDN" className="input input-sm input-bordered w-full" value={nipy} onChange={(e) => setNipy(e.target.value)} />
+                                    <input type="number" placeholder="Masukkan NIPY" className="input input-sm input-bordered w-full" value={nipy} onChange={(e) => setNipy(e.target.value)} />
                                 </div>
                                 <div className='lg:col-span-2'>
                                     <label className="label">
