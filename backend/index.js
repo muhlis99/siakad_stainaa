@@ -57,6 +57,7 @@ const nilaiKuliah = require('./router/nilaiKuliahRoute.js')
 const setMahasiswaSmt = require('./router/setMahasiswaSmtRoute.js')
 const khs = require('./router/khsRoute.js')
 const pengajuanStudi = require('./router/pengajuanStudiRoute.js')
+const pembimbingAkademik = require('./router/pembimbingAkademikRoute.js')
 
 app.use('/v1/login', login)
 app.use('/v1/home', home)
@@ -82,6 +83,7 @@ app.use('/v1/nilaiKuliah', nilaiKuliah)
 app.use('/v1/setMahasiswaSmt', setMahasiswaSmt)
 app.use('/v1/khs', khs)
 app.use('/v1/pengajuanStudi', pengajuanStudi)
+app.use('/v1/pembimbingAkademik', pembimbingAkademik)
 
 
 // default index

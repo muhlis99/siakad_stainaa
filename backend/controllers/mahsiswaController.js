@@ -431,8 +431,8 @@ module.exports = {
                     150
                 )
                 const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
-                fs.unlinkSync(`tmp/qrcodemahasiswa/${qrCodeOld}`)
-                let filename = `tmp/qrcodemahasiswa/${data}.png`;
+                fs.unlinkSync(`tmp/mahasiswa/qrcode/${qrCodeOld}`)
+                let filename = `tmp/mahasiswa/qrcode/${data}.png`;
                 fs.writeFile(filename, base64Data, "base64url", (err) => {
                     if (!err) console.log(`${filename} created successfully!`)
                 })
@@ -449,7 +449,7 @@ module.exports = {
                     150
                 )
                 const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
-                let filename = `tmp/qrcodemahasiswa/${data}.png`;
+                let filename = `tmp/mahasiswa/qrcode/${data}.png`;
                 fs.writeFile(filename, base64Data, "base64url", (err) => {
                     if (!err) console.log(`${filename} created successfully!`)
                 })
@@ -494,7 +494,7 @@ module.exports = {
         if (no_urut_mhs_terakhir == null) {
             no_urut_mhs = "0001"
             nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
-            dataQrCode = "mahasiswa" + Buffer.from(nim).toString('base64url')
+            dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
             mainQrCode(nim, dataQrCode)
         } else if (mahasiswaUse.nim == "") {
             const code = "0000"
@@ -504,11 +504,11 @@ module.exports = {
             const b = (no_urut_mhs_terakhir + 1)
             no_urut_mhs = nomor + b
             nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
-            dataQrCode = "mahasiswa" + Buffer.from(nim).toString('base64url')
+            dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
             mainQrCode(nim, dataQrCode)
         } else {
             nim = mahasiswaUse.nim
-            dataQrCode = "mahasiswa" + Buffer.from(nim).toString('base64url')
+            dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
             const dataQrCodeOld = mahasiswa.qrCode
             mainQrCode(nim, dataQrCode, dataQrCodeOld)
         }
@@ -738,6 +738,37 @@ module.exports = {
         }
         // ---------------- end foto kip --------------//
 
+        //----------- foto ktm------------- //
+        let fileNameFotoKtm = ""
+        if (mahasiswaUse.foto_ktm === "") {
+            const file = req.files.foto_ktm
+            if (!file) return res.status(400).json({ message: "foto ktm tidak boleh kosong" })
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoKtm = "foto_ktm" + id + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto ktm yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ msg: "file foto ktm yang anda upload tidak boleh lebih dari 5 mb" })
+            file.mv(`./tmp/mahasiswa/ktm/${fileNameFotoKtm}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        } else {
+            const file = req.files.foto_ktm
+            if (!file) return res.status(400).json({ message: "foto ktm tidak boleh kosong" })
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            fileNameFotoKtm = "foto_ktm" + id + file.md5 + ext
+            const allowedType = ['.png', '.jpg', '.jpeg']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto ktm yang anda upload tidak valid" })
+            if (fileSize > 5000000) return res.status(422).json({ message: "file foto ktm yang anda upload tidak boleh lebih dari 5 mb" })
+            const filepath = `./tmp/mahasiswa/ktm/${mahasiswaUse.foto_ktm}`
+            fs.unlinkSync(filepath)
+            file.mv(`./tmp/mahasiswa/ktm/${fileNameFotoKtm}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        }
+        // ---------------- end foto ktm --------------//
+
         try {
             await mahasiswa.update({
                 foto_diri: fileNameFotoDiri,
@@ -745,6 +776,7 @@ module.exports = {
                 foto_ktp: fileNameFotoKtp,
                 foto_ijazah: fileNameFotoIjazah,
                 foto_kip: fileNameFotoKip,
+                foto_ktm: fileNameFotoKtm
             }, {
                 where: {
                     id_mahasiswa: id

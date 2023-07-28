@@ -45,7 +45,7 @@ const pengajuanStudi = db.define('pengajuanStudi', {
     },
     'status': {
         type: DataTypes.ENUM,
-        values: ['disetujui1', 'disetujui2', 'tidak']
+        values: ['disetujui1', 'disetujui2', 'proses', 'tidak']
     }
 }, {
     tableName: 'tb_pengajuan_studi',

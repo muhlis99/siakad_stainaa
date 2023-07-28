@@ -272,8 +272,8 @@ module.exports = {
                     150
                 )
                 const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
-                fs.unlinkSync(`tmp/qrcodedosen/${qrCodeOld}`)
-                let filename = `tmp/qrcodedosen/${qrCodeNew}.png`;
+                fs.unlinkSync(`tmp/dosen/qrcode/${qrCodeOld}`)
+                let filename = `tmp/dosen/qrcode/${qrCodeNew}.png`;
                 fs.writeFile(filename, base64Data, "base64url", (err) => {
                     if (!err) console.log(`${filename} created successfully!`)
                 })
@@ -290,7 +290,7 @@ module.exports = {
                     150
                 )
                 const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
-                let filename = `tmp/qrcodedosen/${qrCodeNew}.png`;
+                let filename = `tmp/dosen/qrcode/${qrCodeNew}.png`;
                 fs.writeFile(filename, base64Data, "base64url", (err) => {
                     if (!err) console.log(`${filename} created successfully!`)
                 })
@@ -313,11 +313,11 @@ module.exports = {
         let dataQrCodeOld = dosenUse.qrCode
         if (dataQrCodeOld != "") {
             let nip_ynaa = dosenUse.nip_ynaa
-            dataQrCode = "dosen" + Buffer.from(nip_ynaa).toString('base64url')
+            dataQrCode = "dosenQrcode" + Buffer.from(nip_ynaa).toString('base64url')
             mainQrCode(nip_ynaa, dataQrCode, dataQrCodeOld)
         } else {
             let nip_ynaa = dosenUse.nip_ynaa
-            dataQrCode = "dosen" + Buffer.from(nip_ynaa).toString('base64url')
+            dataQrCode = "dosenQrcode" + Buffer.from(nip_ynaa).toString('base64url')
             mainQrCode(nip_ynaa, dataQrCode)
         }
 
