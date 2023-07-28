@@ -107,7 +107,46 @@ const ListPengajuanStudi = () => {
                 })
             })
         } catch (error) {
+            if (error.response) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
+            }
         }
+    }
+
+    const nonaktifkan = (ajuanId) => {
+        Swal.fire({
+            title: "Hapus data ini?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.put(
+                        `v1/pengajuanStudi/deleteStatus/${ajuanId}`
+                    ).then((response) => {
+                        console.log(response.data)
+                        Swal.fire({
+                            title: "Terhapus",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            getDataStudi()
+                        });
+                    })
+
+                } catch (error) {
+
+                }
+            }
+        })
     }
 
     return (
@@ -215,7 +254,7 @@ const ListPengajuanStudi = () => {
                                     </label>
                                 </div>
                                 <div className='flex-initial w-72'>
-                                    <a>: {status == "disetujui1" ? <span>Disetujui oleh BAUAK</span> : status == "disetujui2" ? <span>Disetujui oleh Dosen Wali</span> : status == "proses" ? <span>Proses</span> : <span>Tidak Disetujui</span>}</a>
+                                    <a>: {status == "disetujui2" ? <span>Disetujui oleh BAUAK</span> : status == "disetujui1" ? <span>Disetujui oleh Dosen Wali</span> : status == "proses" ? <span>Proses</span> : <span>Tidak Disetujui</span>}</a>
                                 </div>
                             </div>
                             <div className='flex gap-2'>
@@ -240,9 +279,9 @@ const ListPengajuanStudi = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
-                            <div>
+                            {/* <div>
                                 <Link to='/setpengajuan' className="btn btn-primary btn-sm"><FaPlus /> <span className="ml-1">tambah data</span></Link>
-                            </div>
+                            </div> */}
                             {/* <div>
                                 <form className='mb-1' onSubmit={cariData}>
                                     <div className="form-control">
@@ -287,14 +326,12 @@ const ListPengajuanStudi = () => {
                                             <td className='px-2 py-2'>Semester {item.semesters[0].semester}</td>
                                             <td className='px-2 py-2'>{item.pengajuan}</td>
                                             <td className='px-2 py-2'>{item.alasan}</td>
-                                            <td className='px-2 py-2'>{item.status == 'disetujui1' || item.status == 'disetujui2' ? <span className="badge badge-success badge-sm">Disetujui</span> : item.status == 'proses' ? <span className="badge badge-warning badge-sm">Proses</span> : <span className="badge badge-error badge-sm">Tidak disetujui</span>}</td>
+                                            <td className='px-2 py-2'>{item.status == 'disetujui1' ? <span className="badge badge-success badge-sm">Disetujui Dosen Wali</span> : item.status == 'disetujui2' ? <span className="badge badge-success badge-sm">Disetujui BAUAK</span> : item.status == 'proses' ? <span className="badge badge-warning badge-sm">Proses di Dosen Wali</span> : <span className="badge badge-error badge-sm">Tidak Disetujui</span>}</td>
                                             <td className='px-2 py-2' align='center'>
                                                 <div>
                                                     <button className='btn btn-info btn-xs mr-1 text-white btn-circle' onClick={() => modalOpen(item.id_pengajuan_studi)}><FaSearch /></button>
-                                                    {item.status == 'proses' ? <button className="btn btn-xs btn-circle text-white btn-primary mr-1" onClick={() => setujui(item.id_pengajuan_studi)} title='Setujui'><FaCheck /></button> : <button className="btn btn-xs btn-circle text-white btn-disabled mr-1" title='Edit'><FaCheck /></button>}
-                                                    <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus'
-                                                    // onClick={() => nonaktifkan(smt.id_semester)}
-                                                    ><FaTimes /></button>
+                                                    {item.status == 'disetujui1' ? <button className="btn btn-xs btn-circle text-white btn-primary mr-1" onClick={() => setujui(item.id_pengajuan_studi)} title='Setujui'><FaCheck /></button> : <button className="btn btn-xs btn-circle text-white btn-disabled mr-1" title='Edit'><FaCheck /></button>}
+                                                    {item.status == 'tidak' ? <button className="btn btn-xs btn-circle text-white btn-disabled" title='Hapus'><FaTimes /></button> : <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(item.id_pengajuan_studi)}><FaTimes /></button>}
                                                 </div>
                                             </td>
                                         </tr>
