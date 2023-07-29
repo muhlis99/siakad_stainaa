@@ -126,6 +126,10 @@ module.exports = {
                 {
                     model: pembimbingAkademik,
                     status: "aktif"
+                },
+                {
+                    model: mahasiswaModel,
+                    status: "aktif"
                 }
             ],
             where: {
