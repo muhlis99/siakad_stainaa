@@ -225,6 +225,11 @@ module.exports = {
         const dataDetailPembimbing = await detailPembimbingAkademik.findAll({
             include: [{
                 model: mahasiswaModel,
+                code_tahun_ajaran: codeThnAjr,
+                code_semester: codeSmt,
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
                 status: "aktif"
             }],
             where: {
@@ -237,7 +242,12 @@ module.exports = {
         await mahasiswaModel.findAll({
             where: {
                 nim: {
-                    [Op.notIn]: dataMahsiswaInDetailPembimbing
+                    [Op.notIn]: dataMahsiswaInDetailPembimbing,
+                    code_tahun_ajaran: codeThnAjr,
+                    code_semester: codeSmt,
+                    code_jenjang_pendidikan: codeJnjPen,
+                    code_fakultas: codeFks,
+                    code_prodi: codePrd,
                 },
                 status: "aktif"
             }
