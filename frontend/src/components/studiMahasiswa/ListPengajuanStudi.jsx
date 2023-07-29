@@ -279,9 +279,9 @@ const ListPengajuanStudi = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
-                            {/* <div>
+                            <div>
                                 <Link to='/setpengajuan' className="btn btn-primary btn-sm"><FaPlus /> <span className="ml-1">tambah data</span></Link>
-                            </div> */}
+                            </div>
                             {/* <div>
                                 <form className='mb-1' onSubmit={cariData}>
                                     <div className="form-control">

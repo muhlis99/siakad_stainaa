@@ -5,7 +5,7 @@ import { FaReply, FaSave } from 'react-icons/fa'
 import { Link, useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
 
-const SetPengajuan = () => {
+const SetStudiMahasiswa = () => {
     const [Jenjang, setJenjang] = useState([])
     const [Fakultas, setFakultas] = useState([])
     const [Program, setProgram] = useState([])
@@ -119,7 +119,16 @@ const SetPengajuan = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate('/pengajuanstudi')
+                    getMhsBySemester()
+                    setKodeFakultas("")
+                    setKodeJenjang("")
+                    setKodeProdi("")
+                    setKodeSemester("")
+                    setKodeTahun("")
+                    setNim("")
+                    setTgl("")
+                    SetAjuan("")
+                    setAlasan("")
                 });
             })
         } catch (error) {
@@ -140,7 +149,7 @@ const SetPengajuan = () => {
     return (
         <div className='mt-5 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Studi Studi</h1>
+                <h1 className='text-xl font-bold'>Studi Mahasiswa</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
@@ -243,10 +252,7 @@ const SetPengajuan = () => {
                                 </div>
                             </div>
                             <hr />
-                            <div className="grid grid-cols-2 mt-2">
-                                <div>
-                                    <Link to="/pengajuanstudi" className='btn btn-sm btn-error'><FaReply />Kembali</Link>
-                                </div>
+                            <div className="grid mt-2">
                                 <div>
                                     <button className='btn btn-sm btn-primary float-right'><FaSave />Simpan</button>
                                 </div>
@@ -259,4 +265,4 @@ const SetPengajuan = () => {
     )
 }
 
-export default SetPengajuan
+export default SetStudiMahasiswa

@@ -51,8 +51,6 @@ const Sidebar = () => {
       <ul className="menu w-60 min-h-screen gap-2 bg-[#2D7F5F]">
         <li><Link to="/dashboard" className={`text-white rounded-md text-xs ${location.pathname == '/dashboard' ? 'active' : ''}`}><FaHome /> <span className='text-xs'>Dashboard</span></Link></li>
         <li>
-          {
-            location.state.collaps == 'induk'}
           <details >
             <summary className='text-white'>DATA INDUK</summary>
             <ul className='gap-2'>
@@ -102,6 +100,9 @@ const Sidebar = () => {
               </li>
               <li>
                 <Link to="/pembimbingakademik" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-xs'>Pembimbing Akadmik</span></Link>
+              </li>
+              <li>
+                <Link to="/studimhs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Studi Mahasiswa</span></Link>
               </li>
               <li>
                 <Link to="/pengajuanstudi" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/pengajuanstudi' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Pengajuan Studi</span></Link>
