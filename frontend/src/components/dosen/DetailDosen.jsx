@@ -42,6 +42,8 @@ const DetailDosen = () => {
     const [prevSkPt, setPrevSkPt] = useState("")
     const [tridmas, setTridmas] = useState("")
     const [prevTridma, setPrevTridma] = useState("")
+    const [qrCode, setQrCode] = useState("")
+    const [prevQrCode, setPrevQrCode] = useState("")
     const [modal, setModal] = useState("")
     const [nameFile, setNameFile] = useState("")
     const { idDsn } = useParams()
@@ -77,6 +79,7 @@ const DetailDosen = () => {
                 setBebasNarkotikas(response.data.data.foto_sk_bebas_narkotika)
                 setSkPts(response.data.data.foto_sk_dari_pimpinan_pt)
                 setTridmas(response.data.data.foto_sk_aktif_melaksanakan_tridma_pt)
+                setQrCode(response.data.data.qrcode)
             } catch (error) {
 
             }
@@ -127,6 +130,10 @@ const DetailDosen = () => {
     useEffect(() => {
         fotoKtp()
     }, [ktps])
+
+    useEffect(() => {
+        kodeQr()
+    }, [qrCode])
 
     const alatTransportasiByCode = async () => {
         if (alat != 0) {
@@ -331,22 +338,31 @@ const DetailDosen = () => {
         }
     }
 
-    function randomNumberInRange(length) {
-        let result = ''
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-        const charactersLength = characters.length
-        let counter = 0
-        while (counter < length) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength))
-            counter += 1
+    const kodeQr = async () => {
+        try {
+            if (qrCode != 0) {
+                await axios.get(`v1/dosen/public/seeImage/dosen/qrCode/${qrCode}`, {
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevQrCode(base64)
+                })
+
+            }
+        } catch (error) {
+
         }
-        return result
     }
 
-    const openImage = (img) => {
+    const openImage = (img, nam) => {
         document.getElementById('my-modal').checked = true
         setModal(img)
-        setNameFile(randomNumberInRange(15))
+        setNameFile(nam + namanya)
     }
 
     return (
@@ -480,7 +496,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Foto Diri</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevFoto)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevFoto, 'FOTO_')}>Detail</button>
                                 {prevFoto ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -491,9 +507,22 @@ const DetailDosen = () => {
                             </div>
                             <div>
                                 <label className="label">
+                                    <span className="text-base label-text uppercase font-bold">QR Code</span>
+                                </label>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevQrCode, 'QR_')}>Detail</button>
+                                <div className="avatar">
+                                    {prevQrCode ? (
+                                        <div className="w-full rounded ring ring-[#2D7F5F]">
+                                            <img src={`data:;base64,${prevQrCode}`} />
+                                        </div>
+                                    ) : (<span>File Tidak Ada</span>)}
+                                </div>
+                            </div>
+                            <div>
+                                <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Scan KTP</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKtp)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKtp, 'KTP_')}>Detail</button>
                                 {prevKtp ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -506,7 +535,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Scan Surat Sehat Rohani</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSehatRohani)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSehatRohani, 'SEHAT_ROHANI_')}>Detail</button>
                                 {prevSehatRohani ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -519,7 +548,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Scan Surat Sehat Jasmani</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSehatJasmani)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSehatJasmani, 'SEHAT_JASMANI_')}>Detail</button>
                                 {prevSehatJasmani ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -532,7 +561,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Scan Surat Perjanjian Kerja</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevJanjiKerja)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevJanjiKerja, 'PERJANJIAN_KERJA_')}>Detail</button>
                                 {prevJanjiKerja ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -545,7 +574,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">SK Dosen</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSkDosen)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSkDosen, 'SK_')}>Detail</button>
                                 {prevSkDosen ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -558,7 +587,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">SK Bebas Narkotika</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevBebasNarkotika)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevBebasNarkotika, 'BEBAS_NARKOTIKA_')}>Detail</button>
                                 {prevBebasNarkotika ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -571,7 +600,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">SK Dari Pimpinan PT</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSkPt)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSkPt, 'SK_PT_')}>Detail</button>
                                 {prevSkPt ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
@@ -584,7 +613,7 @@ const DetailDosen = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">SK Aktif Melaksanakan Tridma PT</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevTridma)}>Detail</button>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevTridma, 'SK_TRIDMA_PT_')}>Detail</button>
                                 {prevTridma ? (
                                     <div className="avatar">
                                         <div className="w-full rounded ring ring-[#2D7F5F]">

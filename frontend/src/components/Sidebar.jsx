@@ -17,7 +17,8 @@ import {
   FaUsers,
   FaAddressBook,
   FaTh,
-  FaNetworkWired
+  FaNetworkWired,
+  FaRegListAlt
 } from "react-icons/fa"
 import {
   SiLevelsdotfyi,
@@ -94,6 +95,18 @@ const Sidebar = () => {
             <ul className='gap-2'>
               <li>
                 <Link to="/setmhs" className={`text-white rounded-md text-xs ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-xs'>Set MHS Persemester</span></Link>
+              </li>
+              <li>
+                <details>
+                  <summary className='text-white text-xs'>
+                    <FaRegListAlt />Studi Mahasiswa
+                  </summary>
+                  <ul>
+                    <li>
+                      <Link to="/pengajuanstudi" className='rounded-md text-xs'><FaNetworkWired className='text-white' /><span className='text-xs text-white'>Pengajuan Studi</span></Link>
+                    </li>
+                  </ul>
+                </details>
               </li>
               <li>
                 <Link to="/matakuliah" className={`text-white rounded-md text-xs ${location.pathname == '/matakuliah' ? 'active' : ''}`}><FaBook /> <span className='text-xs'>Mata Kuliah</span></Link>

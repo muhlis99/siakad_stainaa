@@ -330,7 +330,7 @@ const ListSemester = () => {
                 <h1 className='text-xl font-bold'>Semester</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
