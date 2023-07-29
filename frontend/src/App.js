@@ -52,6 +52,9 @@ import View from "./pages/khs/View"
 import Users from "./pages/user/Users"
 import PengajuanStudi from "./pages/studiMahasiswa/PengajuanStudi"
 import SetPengajuanStudi from "./pages/studiMahasiswa/SetPengajuanStudi"
+import Pembimbing from "./pages/pembimbing/Pembimbing"
+import SetPembimbingAkademik from "./pages/pembimbing/SetPembimbingAkademik"
+import Perpembimbing from "./pages/pembimbing/Perpembimbing"
 
 function App() {
   return (
@@ -110,6 +113,9 @@ function App() {
           <Route path="/users" element={<Users />} />
           <Route path="/pengajuanstudi" element={<PengajuanStudi />} />
           <Route path="/setpengajuan" element={<SetPengajuanStudi />} />
+          <Route path="/pembimbingakademik" element={<Pembimbing />} />
+          <Route path="/addpembimbing" element={<SetPembimbingAkademik />} />
+          <Route path="/setpembimbingakademik" element={<Perpembimbing />} />
         </Routes>
       </BrowserRouter>
     </div>
