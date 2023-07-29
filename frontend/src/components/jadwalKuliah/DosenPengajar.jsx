@@ -31,9 +31,9 @@ const DosenPengajar = () => {
         getJadwalByKelas()
     }, [location.state])
 
-    // useEffect(() => {
-    //     getDosenAll()
-    // }, [])
+    useEffect(() => {
+        getDosenAll()
+    }, [])
 
     const getDataKelasById = async () => {
         try {
@@ -66,6 +66,11 @@ const DosenPengajar = () => {
         } catch (error) {
 
         }
+    }
+
+    const getDosenAll = async () => {
+        const response = await axios.get('v1/dosenPengajar/autocompleteDosenPengajar')
+        setDosen(response.data.data)
     }
 
     const editDsn = (e) => {
@@ -301,11 +306,7 @@ const DosenPengajar = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className='grid grid-cols-2 mt-8 border-t-2 border-t-[#2D7F5F] pt-2'>
-                                <div>
-
-                                </div>
-
+                            <div className='grid gap-2 mt-8 border-t-2 border-t-[#2D7F5F] pt-2'>
                                 {/* <div>
                                     <div className='flex gap-2 float-right'>
                                         {statusForm == "tambah" ?
