@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import stainaa from "../assets/img/stainaa.png"
 import { Link, useLocation } from "react-router-dom"
 import {
@@ -31,6 +31,16 @@ import {
 const Sidebar = () => {
   const location = useLocation()
 
+  const [collap, setCollaps] = useState("")
+
+  useEffect(() => {
+    if (location.state != null) {
+      setCollaps(location.state.collaps)
+    } else {
+      setCollaps("")
+    }
+  })
+
   return (
     <div className="drawer-side scrollbar-thin scrollbar-thumb-emerald-800 scrollbar-track-gray-100 shadow-md">
       <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
@@ -50,7 +60,7 @@ const Sidebar = () => {
       <ul className="menu w-60 min-h-screen gap-2 bg-[#2D7F5F]">
         <li><Link to="/dashboard" className={`text-white rounded-md text-xs ${location.pathname == '/dashboard' ? 'active' : ''}`}><FaHome /> <span className='text-xs'>Dashboard</span></Link></li>
         <li>
-          <details >
+          {collap == 'induk' ? <details open>
             <summary className='text-white'>DATA INDUK</summary>
             <ul className='gap-2'>
               <li>
@@ -72,73 +82,165 @@ const Sidebar = () => {
                 <Link to="/ruang" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/ruang' ? 'active' : ''}`}><SiHomeassistantcommunitystore /> <span className='text-xs'>Ruang</span></Link>
               </li>
             </ul>
-          </details>
+          </details> :
+            <details >
+              <summary className='text-white'>DATA INDUK</summary>
+              <ul className='gap-2'>
+                <li>
+                  <Link to="/jenjang" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/jenjang' ? 'active' : ''}`}><SiLevelsdotfyi /> <span className='text-xs'>Jenjang Pendidikan</span></Link>
+                </li>
+                <li>
+                  <Link to="/fakultas" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/fakultas' ? 'active' : ''}`}><FaUniversity /> <span className='text-xs'>Fakultas</span></Link>
+                </li>
+                <li className=''>
+                  <Link to="/prodi" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-xs'>Prodi</span></Link>
+                </li>
+                <li>
+                  <Link to="/dosen" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-xs'>Dosen</span></Link>
+                </li>
+                <li>
+                  <Link to="/mahasiswa" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/mahasiswa' ? 'active' : ''}`}><FaUserGraduate /> <span className='text-xs'>Mahasiswa</span></Link>
+                </li>
+                <li>
+                  <Link to="/ruang" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/ruang' ? 'active' : ''}`}><SiHomeassistantcommunitystore /> <span className='text-xs'>Ruang</span></Link>
+                </li>
+              </ul>
+            </details>
+          }
+
         </li>
         <li>
-          <details>
-            <summary className='text-white'>KURIKULUM</summary>
-            <ul className='gap-1'>
-              <li>
-                <Link to='/tahun' state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-xs'>Tahun Ajaran</span></Link>
-              </li>
-              <li>
-                <Link to="/semester" state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-xs'>Semester</span></Link>
-              </li>
-              <li>
-                <Link to="/kategorinilai" state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Kategori Nilai</span></Link>
-              </li>
-            </ul>
-          </details>
+          {collap == 'kurikulum' ?
+            <details open>
+              <summary className='text-white'>KURIKULUM</summary>
+              <ul className='gap-1'>
+                <li>
+                  <Link to='/tahun' state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-xs'>Tahun Ajaran</span></Link>
+                </li>
+                <li>
+                  <Link to="/semester" state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-xs'>Semester</span></Link>
+                </li>
+                <li>
+                  <Link to="/kategorinilai" state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Kategori Nilai</span></Link>
+                </li>
+              </ul>
+            </details>
+            :
+            <details>
+              <summary className='text-white'>KURIKULUM</summary>
+              <ul className='gap-1'>
+                <li>
+                  <Link to='/tahun' state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-xs'>Tahun Ajaran</span></Link>
+                </li>
+                <li>
+                  <Link to="/semester" state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-xs'>Semester</span></Link>
+                </li>
+                <li>
+                  <Link to="/kategorinilai" state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Kategori Nilai</span></Link>
+                </li>
+              </ul>
+            </details>
+          }
         </li>
         <li>
-          <details>
-            <summary className='text-white'>PERKULIAHAN</summary>
-            <ul className='gap-2'>
-              <li>
-                <Link to="/setmhs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-xs'>Set MHS Persemester</span></Link>
-              </li>
-              <li>
-                <Link to="/pembimbingakademik" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-xs'>Pembimbing Akadmik</span></Link>
-              </li>
-              <li>
-                <Link to="/studimhs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Studi Mahasiswa</span></Link>
-              </li>
-              <li>
-                <Link to="/pengajuanstudi" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/pengajuanstudi' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Pengajuan Studi</span></Link>
-              </li>
-              <li>
-                <Link to="/matakuliah" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/matakuliah' ? 'active' : ''}`}><FaBook /> <span className='text-xs'>Mata Kuliah</span></Link>
-              </li>
-              <li>
-                <Link to='/sebaran' state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/sebaran' ? 'active' : ''}`}><FaTh /> <span className='text-xs'>Sebaran Mata Kuliah</span></Link>
-              </li>
-              <li>
-                <Link to="/krs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/krs' ? 'active' : ''}`}><FaTasks /> <span className='text-xs'>Kartu Rencana Studi</span></Link>
-              </li>
-              <li>
-                <Link to="/kelas" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/kelas' ? 'active' : ''}`}><SiOpslevel /> <span className='text-xs'>Kelas Kuliah</span></Link>
-              </li>
-              <li>
-                <Link to="/jadwalkuliah" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/jadwalkuliah' ? 'active' : ''}`}><FaBusinessTime /> <span className='text-xs'>Jadwal Kuliah</span></Link>
-              </li>
-              <li>
-                <Link to="/penilaian" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Penilaian Mahasiswa</span></Link>
-              </li>
-              <li>
-                <Link to="/khs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/khs' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-xs'>Kartu Hasil Studi</span></Link>
-              </li>
-            </ul>
-          </details>
+          {collap == 'kuliah' ?
+            <details open>
+              <summary className='text-white'>PERKULIAHAN</summary>
+              <ul className='gap-2'>
+                <li>
+                  <Link to="/setmhs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-xs'>Set MHS Persemester</span></Link>
+                </li>
+                <li>
+                  <Link to="/pembimbingakademik" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-xs'>Pembimbing Akadmik</span></Link>
+                </li>
+                <li>
+                  <Link to="/studimhs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Studi Mahasiswa</span></Link>
+                </li>
+                <li>
+                  <Link to="/pengajuanstudi" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/pengajuanstudi' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Pengajuan Studi</span></Link>
+                </li>
+                <li>
+                  <Link to="/matakuliah" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/matakuliah' ? 'active' : ''}`}><FaBook /> <span className='text-xs'>Mata Kuliah</span></Link>
+                </li>
+                <li>
+                  <Link to='/sebaran' state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/sebaran' ? 'active' : ''}`}><FaTh /> <span className='text-xs'>Sebaran Mata Kuliah</span></Link>
+                </li>
+                <li>
+                  <Link to="/krs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/krs' ? 'active' : ''}`}><FaTasks /> <span className='text-xs'>Kartu Rencana Studi</span></Link>
+                </li>
+                <li>
+                  <Link to="/kelas" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/kelas' ? 'active' : ''}`}><SiOpslevel /> <span className='text-xs'>Kelas Kuliah</span></Link>
+                </li>
+                <li>
+                  <Link to="/jadwalkuliah" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/jadwalkuliah' ? 'active' : ''}`}><FaBusinessTime /> <span className='text-xs'>Jadwal Kuliah</span></Link>
+                </li>
+                <li>
+                  <Link to="/penilaian" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Penilaian Mahasiswa</span></Link>
+                </li>
+                <li>
+                  <Link to="/khs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/khs' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-xs'>Kartu Hasil Studi</span></Link>
+                </li>
+              </ul>
+            </details> :
+            <details>
+              <summary className='text-white'>PERKULIAHAN</summary>
+              <ul className='gap-2'>
+                <li>
+                  <Link to="/setmhs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-xs'>Set MHS Persemester</span></Link>
+                </li>
+                <li>
+                  <Link to="/pembimbingakademik" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-xs'>Pembimbing Akadmik</span></Link>
+                </li>
+                <li>
+                  <Link to="/studimhs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Studi Mahasiswa</span></Link>
+                </li>
+                <li>
+                  <Link to="/pengajuanstudi" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/pengajuanstudi' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Pengajuan Studi</span></Link>
+                </li>
+                <li>
+                  <Link to="/matakuliah" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/matakuliah' ? 'active' : ''}`}><FaBook /> <span className='text-xs'>Mata Kuliah</span></Link>
+                </li>
+                <li>
+                  <Link to='/sebaran' state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/sebaran' ? 'active' : ''}`}><FaTh /> <span className='text-xs'>Sebaran Mata Kuliah</span></Link>
+                </li>
+                <li>
+                  <Link to="/krs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/krs' ? 'active' : ''}`}><FaTasks /> <span className='text-xs'>Kartu Rencana Studi</span></Link>
+                </li>
+                <li>
+                  <Link to="/kelas" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/kelas' ? 'active' : ''}`}><SiOpslevel /> <span className='text-xs'>Kelas Kuliah</span></Link>
+                </li>
+                <li>
+                  <Link to="/jadwalkuliah" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/jadwalkuliah' ? 'active' : ''}`}><FaBusinessTime /> <span className='text-xs'>Jadwal Kuliah</span></Link>
+                </li>
+                <li>
+                  <Link to="/penilaian" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Penilaian Mahasiswa</span></Link>
+                </li>
+                <li>
+                  <Link to="/khs" state={{ collaps: 'kuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/khs' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-xs'>Kartu Hasil Studi</span></Link>
+                </li>
+              </ul>
+            </details>
+          }
         </li>
         <li>
-          <details>
-            <summary className='text-white'>PENGGUNA</summary>
-            <ul className='gap-2'>
-              <li>
-                <Link to="/users" state={{ collaps: 'user' }} className={`text-white rounded-md text-xs ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-xs'>Users</span></Link>
-              </li>
-            </ul>
-          </details>
+          {collap == 'user' ?
+            <details open>
+              <summary className='text-white'>PENGGUNA</summary>
+              <ul className='gap-2'>
+                <li>
+                  <Link to="/users" state={{ collaps: 'user' }} className={`text-white rounded-md text-xs ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-xs'>Users</span></Link>
+                </li>
+              </ul>
+            </details> :
+            <details>
+              <summary className='text-white'>PENGGUNA</summary>
+              <ul className='gap-2'>
+                <li>
+                  <Link to="/users" state={{ collaps: 'user' }} className={`text-white rounded-md text-xs ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-xs'>Users</span></Link>
+                </li>
+              </ul>
+            </details>
+          }
         </li>
       </ul>
     </div>
