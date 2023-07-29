@@ -87,9 +87,9 @@ const DosenPengajar = () => {
         setSelect2(i)
     }
 
-    const dsnPengajar = (e) => {
-        setNipy(e ? e.value : "")
-    }
+    // const dsnPengajar = (e) => {
+    //     setNipy(e ? e.value : "")
+    // }
 
     const editDsn = (e) => {
         setStatusForm(e)
