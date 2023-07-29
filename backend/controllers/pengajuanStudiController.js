@@ -188,6 +188,38 @@ module.exports = {
         const { code_tahun_ajaran, code_semester, code_jenjang_pendidikan, code_fakultas, code_prodi,
             nim, tanggal_pengajuan, pengajuan, alasan } = req.body
 
+        const dataMahasiswaUse = await historyMahasiswa.findOne({
+            include: [{
+                model: tahunAjaranModel,
+                where: { status: "aktif" }
+            }, {
+                model: semesterModel,
+                where: { status: "aktif" }
+            }, {
+                model: jenjangPendidikanModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }],
+            where: {
+                code_tahun_ajaran: code_tahun_ajaran,
+                code_semester: code_semester,
+                code_jenjang_pendidikan: code_jenjang_pendidikan,
+                code_fakultas: code_fakultas,
+                code_prodi: code_prodi,
+                nim: nim,
+                status: {
+                    [Op.notIn]: ['tidak', 'berhenti']
+                }
+            }
+        })
+
+        if (!dataMahasiswaUse) return res.status(404).json({ message: "Mahasiswa sudah berhenti" })
+
         let randomNumber = Math.floor(100000 + Math.random() * 900000)
         await pengajuanStudi.create({
             code_pengajuan_studi: randomNumber,
@@ -210,6 +242,120 @@ module.exports = {
             catch(err => {
                 next(err)
             })
+    },
+
+    createAdmin: async (req, res, next) => {
+        const { code_tahun_ajaran, code_semester, code_jenjang_pendidikan, code_fakultas, code_prodi,
+            nim, tanggal_pengajuan, pengajuan, alasan } = req.body
+
+        const dataMahasiswaUse = await historyMahasiswa.findOne({
+            include: [
+                {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: fakultasModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            where: {
+                code_jenjang_pendidikan: code_jenjang_pendidikan,
+                code_fakultas: code_fakultas,
+                code_prodi: code_prodi,
+                code_semester: code_semester,
+                code_tahun_ajaran: code_tahun_ajaran,
+                nim: nim,
+                status: {
+                    [Op.notIn]: ['tidak', 'berhenti']
+                }
+            }
+        })
+        if (!dataMahasiswaUse) return res.status(404).json({ message: "Mahasiswa sudah berhenti" })
+
+        if (pengajuan === "reaktif") {
+            let randomNumberHS = Math.floor(100000 + Math.random() * 900000)
+            await historyMahasiswa.create({
+                nim: nim,
+                code_history: randomNumberHS,
+                code_jenjang_pendidikan: code_jenjang_pendidikan,
+                code_fakultas: code_fakultas,
+                code_prodi: code_prodi,
+                code_semester: code_semester,
+                code_tahun_ajaran: code_tahun_ajaran,
+                status: "aktif"
+            })
+
+            let randomNumberDS = Math.floor(100000 + Math.random() * 900000)
+            await detailStudi.create({
+                code_detail_studi: randomNumberDS,
+                code_history: randomNumberHS,
+                status_studi: pengajuan,
+                tanggal: tanggal_pengajuan,
+                alasan: alasan
+            }).then(all => {
+                res.status(201).json({
+                    message: "Data pengajuan studi success di approve"
+                })
+            })
+        } else if (pengajuan === "cuti") {
+            let randomNumber = Math.floor(100000 + Math.random() * 900000)
+            await historyMahasiswa.update({
+                status: pengajuan
+            }, {
+                where: {
+                    id_history: dataMahasiswaUse.id_history
+                }
+            })
+
+            await detailStudi.create({
+                code_detail_studi: randomNumber,
+                code_history: dataMahasiswaUse.code_history,
+                status_studi: pengajuan,
+                tanggal: tanggal_pengajuan,
+                alasan: alasan
+            }).then(all => {
+                res.status(201).json({
+                    message: "Data pengajuan studi success di approve"
+                })
+            })
+        } else if (pengajuan === "berhenti") {
+            let randomNumber = Math.floor(100000 + Math.random() * 900000)
+            await mahasiswaModel.update({
+                status: "tidak"
+            }, {
+                where: {
+                    nim: nim
+                }
+            })
+            await historyMahasiswa.update({
+                status: pengajuan
+            }, {
+                where: {
+                    id_history: dataMahasiswaUse.id_history
+                }
+            })
+
+            await detailStudi.create({
+                code_detail_studi: randomNumber,
+                code_history: dataMahasiswaUse.code_history,
+                status_studi: pengajuan,
+                tanggal: tanggal_pengajuan,
+                alasan: alasan
+            }).then(all => {
+                res.status(201).json({
+                    message: "Data pengajuan studi success di approve"
+                })
+            })
+        }
     },
 
     approveDosen: async (req, res, next) => {
@@ -291,6 +437,17 @@ module.exports = {
         })
         if (!pengajuanStudiUse) return res.status(401).json({ message: "Data Pengajuan Studi tidak ditemukan" })
 
+        const dataHistoryMhsUse = await historyMahasiswa.findOne({
+            where: {
+                nim: pengajuanStudiUse.nim,
+                code_jenjang_pendidikan: pengajuanStudiUse.code_jenjang_pendidikan,
+                code_fakultas: pengajuanStudiUse.code_fakultas,
+                code_prodi: pengajuanStudiUse.code_prodi,
+                code_semester: pengajuanStudiUse.code_semester,
+                code_tahun_ajaran: pengajuanStudiUse.code_tahun_ajaran,
+            }
+        })
+
         await pengajuanStudi.update({
             status: "disetujui2"
         }, {
@@ -300,28 +457,38 @@ module.exports = {
             }
         })
 
-        try {
-            const dataHistoryMhsUse = await historyMahasiswa.findOne({
-                where: {
-                    nim: pengajuanStudiUse.nim,
-                    code_jenjang_pendidikan: pengajuanStudiUse.code_jenjang_pendidikan,
-                    code_fakultas: pengajuanStudiUse.code_fakultas,
-                    code_prodi: pengajuanStudiUse.code_prodi,
-                    code_semester: pengajuanStudiUse.code_semester,
-                    code_tahun_ajaran: pengajuanStudiUse.code_tahun_ajaran,
-                    status: "aktif"
-                }
+        if (pengajuanStudiUse.pengajuan === "reaktif") {
+            let randomNumberHS = Math.floor(100000 + Math.random() * 900000)
+            await historyMahasiswa.create({
+                nim: pengajuanStudiUse.nim,
+                code_history: randomNumberHS,
+                code_jenjang_pendidikan: pengajuanStudiUse.code_jenjang_pendidikan,
+                code_fakultas: pengajuanStudiUse.code_fakultas,
+                code_prodi: pengajuanStudiUse.code_prodi,
+                code_semester: pengajuanStudiUse.code_semester,
+                code_tahun_ajaran: pengajuanStudiUse.code_tahun_ajaran,
+                status: "aktif"
             })
 
-            if (!dataHistoryMhsUse) return res.status(401).json({ message: "Data history mahsiswa tidak ditemukan" })
+            let randomNumberDS = Math.floor(100000 + Math.random() * 900000)
+            await detailStudi.create({
+                code_detail_studi: randomNumberDS,
+                code_history: randomNumberHS,
+                status_studi: pengajuanStudiUse.pengajuan,
+                tanggal: pengajuanStudiUse.tanggal_pengajuan,
+                alasan: pengajuanStudiUse.alasan
+            }).then(all => {
+                res.status(201).json({
+                    message: "Data pengajuan studi success di approve"
+                })
+            })
+        } else if (pengajuanStudiUse.pengajuan === "cuti") {
             let randomNumber = Math.floor(100000 + Math.random() * 900000)
-
             await historyMahasiswa.update({
                 status: pengajuanStudiUse.pengajuan
             }, {
                 where: {
-                    id_history: dataHistoryMhsUse.id_history,
-                    status: "aktif"
+                    id_history: dataHistoryMhsUse.id_history
                 }
             })
 
@@ -336,9 +503,36 @@ module.exports = {
                     message: "Data pengajuan studi success di approve"
                 })
             })
-        } catch (error) {
-            next(error)
+        } else if (pengajuanStudiUse.pengajuan === "berhenti") {
+            let randomNumber = Math.floor(100000 + Math.random() * 900000)
+            await mahasiswaModel.update({
+                status: "tidak"
+            }, {
+                where: {
+                    nim: pengajuanStudiUse.nim
+                }
+            })
+            await historyMahasiswa.update({
+                status: pengajuanStudiUse.pengajuan
+            }, {
+                where: {
+                    id_history: dataHistoryMhsUse.id_history
+                }
+            })
+
+            await detailStudi.create({
+                code_detail_studi: randomNumber,
+                code_history: dataHistoryMhsUse.code_history,
+                status_studi: pengajuanStudiUse.pengajuan,
+                tanggal: pengajuanStudiUse.tanggal_pengajuan,
+                alasan: pengajuanStudiUse.alasan
+            }).then(all => {
+                res.status(201).json({
+                    message: "Data pengajuan studi success di approve"
+                })
+            })
         }
+
     },
 
     deleteStatus: async (req, res, next) => {
