@@ -74,8 +74,11 @@ const ListJenjang = () => {
 
             }
         } catch (error) {
-            if (error.response) {
-                setError(true)
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
             }
         }
     }

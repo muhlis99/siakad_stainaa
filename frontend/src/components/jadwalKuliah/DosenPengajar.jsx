@@ -21,6 +21,8 @@ const DosenPengajar = () => {
     const [kodeJadwal, setKodeJadwal] = useState("")
     const [statusForm, setStatusForm] = useState("")
     const [idJadwal, setIdJadwal] = useState("")
+    const [select2, setSelect2] = useState("")
+    const [isClearable, setIsClearable] = useState(true)
     const location = useLocation()
 
     useEffect(() => {
@@ -34,6 +36,10 @@ const DosenPengajar = () => {
     useEffect(() => {
         getDosenAll()
     }, [])
+
+    useEffect(() => {
+        options()
+    }, [Dosen])
 
     const getDataKelasById = async () => {
         try {
@@ -72,6 +78,18 @@ const DosenPengajar = () => {
         const response = await axios.get('v1/dosenPengajar/autocompleteDosenPengajar')
         setDosen(response.data.data)
     }
+
+    const options = () => {
+        var i = Dosen.map(item => ({
+            value: item.nip_ynaa,
+            label: item.nip_ynaa + " | " + item.nama,
+        }))
+        setSelect2(i)
+    }
+
+    // const dsnPengajar = (e) => {
+    //     setNipy(e ? e.value : "")
+    // }
 
     const editDsn = (e) => {
         setStatusForm(e)
@@ -306,68 +324,13 @@ const DosenPengajar = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className='grid gap-2 mt-8 border-t-2 border-t-[#2D7F5F] pt-2'>
-                                {/* <div>
-                                    <div className='flex gap-2 float-right'>
-                                        {statusForm == "tambah" ?
-                                            <button className='btn btn-sm btn-primary'><FaSave /><span>simpan</span></button> : statusForm == "" ?
-                                                <a type='button' onClick={() => editDsn('update')} className='btn btn-sm btn-primary'><FaEdit /><span>edit</span></a> :
-                                                <button className='btn btn-sm btn-primary'><FaEdit /><span>update</span></button>
-                                        }
-                                        {statusForm == "" ? <button type='button' className='btn btn-sm btn-error' onClick={() => deleteDosen(kodeDsnPengajar, kodeDsnPengganti)}><FaTrash /><span className="">Hapus</span></button> : statusForm == 'update' ? <button type='button' className='btn btn-sm btn-error' onClick={() => editDsn('')}><FaTimes /><span className="">batal</span></button> : ""}
-                                    </div>
-                                </div> */}
-
-                                {/* {statusForm == "tambah" || statusForm == "update" ?
-                                    <div className="grid grid-cols-3 gap-2">
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">Dosen Pengajar</span>
-                                            </label>
-                                            <select className="select select-sm select-bordered w-full" value={kodeDsnPengajar} onChange={(e) => setKodeDsnPengajar(e.target.value)}>
-                                                <option value="">Pilih Dosen Pengajar</option>
-                                                {Dosen.map((item) => (
-                                                    <option key={item.id_dosen} value={item.nip_ynaa}>{item.nama}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">Dosen Pengganti</span>
-                                            </label>
-                                            <select className="select select-sm select-bordered w-full" value={kodeDsnPengganti} onChange={(e) => setKodeDsnPengganti(e.target.value)}>
-                                                <option value="">Pilih Dosen Pengganti</option>
-                                                {Dosen.map((item) => (
-                                                    <option key={item.id_dosen} value={item.nip_ynaa}>{item.nama}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div> :
-                                    <div className="grid grid-cols-3 gap-2">
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">Dosen Pengajar</span>
-                                            </label>
-                                            <select className="select select-sm w-full" disabled value={kodeDsnPengajar} onChange={(e) => setKodeDsnPengajar(e.target.value)}>
-                                                <option value="">Pilih Dosen Pengajar</option>
-                                                {Dosen.map((item) => (
-                                                    <option key={item.id_dosen} value={item.nip_ynaa}>{item.nama}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text">Dosen Pengganti</span>
-                                            </label>
-                                            <select className="select select-sm w-full" disabled value={kodeDsnPengganti} onChange={(e) => setKodeDsnPengganti(e.target.value)}>
-                                                <option value="">Pilih Dosen Pengganti</option>
-                                                {Dosen.map((item) => (
-                                                    <option key={item.id_dosen} value={item.nip_ynaa}>{item.nama}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                } */}
+                            <div className='grid grid-cols-2 gap-4 mt-2 border-t-2 border-t-[#2D7F5F] pt-2'>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Dosen Pengajar</span>
+                                    </label>
+                                    <input type="number" placeholder="Masukkan NIK" className="input input-sm input-bordered w-full max-w-xs" />
+                                </div>
                             </div>
                         </form>
                     </div>
