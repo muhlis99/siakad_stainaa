@@ -55,6 +55,8 @@ import SetPengajuanStudi from "./pages/studiMahasiswa/SetPengajuanStudi"
 import Pembimbing from "./pages/pembimbing/Pembimbing"
 import SetPembimbingAkademik from "./pages/pembimbing/SetPembimbingAkademik"
 import Perpembimbing from "./pages/pembimbing/Perpembimbing"
+import EditPembimbing from "./pages/pembimbing/EditPembimbing"
+import DetailPembimbing from "./pages/pembimbing/DetailPembimbing"
 
 function App() {
   return (
@@ -116,6 +118,8 @@ function App() {
           <Route path="/pembimbingakademik" element={<Pembimbing />} />
           <Route path="/addpembimbing" element={<SetPembimbingAkademik />} />
           <Route path="/setpembimbingakademik" element={<Perpembimbing />} />
+          <Route path="/editpembimbingakademik" element={<EditPembimbing />} />
+          <Route path="/detailpembimbingakademik" element={<DetailPembimbing />} />
         </Routes>
       </BrowserRouter>
     </div>

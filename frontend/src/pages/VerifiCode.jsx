@@ -36,6 +36,27 @@ const VerifiCode = () => {
         }
     }
 
+    const batalkan = () => {
+        Swal.fire({
+            title: "Yakin untuk membatalkan?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, batalkan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Dibatalkan",
+                    icon: "success"
+                }).then(() => {
+                    navigate('/login')
+                });
+            }
+        })
+    }
 
     return (
         <div>
@@ -65,8 +86,8 @@ const VerifiCode = () => {
                                 />
                             </div>
                             <div className="card-actions justify-center gap-5 mt-9">
-                                <button className="btn btn-default btn-sm w-32">Kirim</button>
-                                <Link className="btn btn-danger btn-sm w-32">Batal</Link>
+                                <button className="btn btn-primary btn-sm w-32">Kirim</button>
+                                <button type='button' onClick={batalkan} className="btn btn-error btn-sm w-32">Batal</button>
                             </div>
                         </form>
                     </div>

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import Layout from '../Layout'
-import SetPembimbing from '../../components/pembimbing/SetPembimbing'
+import FormEditPembimbing from '../../components/pembimbing/FormEditPembimbing'
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { getMe } from "../../features/authSlice"
 
-const SetPembimbingAkademik = () => {
+const EditPembimbing = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { isError } = useSelector((state) => state.auth)
@@ -20,10 +20,10 @@ const SetPembimbingAkademik = () => {
 
     return (
         <Layout>
-            <title>Tambah Pembimbing Akademik</title>
-            <SetPembimbing />
+            <title>Edit Pembimbing AKademik</title>
+            <FormEditPembimbing />
         </Layout>
     )
 }
 
-export default SetPembimbingAkademik
+export default EditPembimbing

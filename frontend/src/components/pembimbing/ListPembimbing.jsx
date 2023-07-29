@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { FaArrowLeft, FaArrowRight, FaCheck, FaCog, FaPlus, FaSearch, FaTimes } from 'react-icons/fa'
+import { FaArrowLeft, FaArrowRight, FaCheck, FaCog, FaEdit, FaPlus, FaSearch, FaTimes, FaTrash } from 'react-icons/fa'
 import { SlOptions } from 'react-icons/sl'
 import ReactPaginate from 'react-paginate'
 import { Link } from "react-router-dom"
+import Swal from 'sweetalert2'
 
 const ListPembimbing = () => {
     const [Pembimbing, setPembimbing] = useState([])
@@ -38,6 +39,38 @@ const ListPembimbing = () => {
         } else {
             setMsg("")
         }
+    }
+
+    const nonaktifkan = (DsnId) => {
+        Swal.fire({
+            title: "Hapus data ini?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.put(
+                        `v1/pembimbingAkademik/delete/${DsnId}`
+                    ).then((response) => {
+                        Swal.fire({
+                            title: "Terhapus",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            getPembimbing()
+                        });
+                    })
+
+                } catch (error) {
+
+                }
+            }
+        })
     }
 
     return (
@@ -77,8 +110,9 @@ const ListPembimbing = () => {
                                             <td className='px-2 py-2'>{item.kouta_bimbingan} Mahasiswa</td>
                                             <td className='px-2 py-2' align='center'>
                                                 <div>
-                                                    <button className='btn btn-info btn-xs mr-1 text-white btn-circle' ><FaSearch /></button>
-                                                    <Link to="/setpembimbingakademik" state={{ idDsn: item.id_pembimbing_akademik }} className='btn btn-primary btn-xs mr-1 text-white btn-circle' title='Set Mahasiswa'><FaCog /></Link>
+                                                    <Link to="/detailpembimbingakademik" state={{ idDsn: item.id_pembimbing_akademik }} className='btn btn-info btn-xs mr-1 text-white btn-circle' ><FaSearch /></Link>
+                                                    <Link to='/editpembimbingakademik' state={{ idDsn: item.id_pembimbing_akademik }} className='btn btn-xs btn-circle btn-warning mr-1'><FaEdit /></Link>
+                                                    <button onClick={() => nonaktifkan(item.id_pembimbing_akademik)} className="btn btn-xs btn-error btn-circle"><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>

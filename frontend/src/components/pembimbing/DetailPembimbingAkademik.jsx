@@ -3,12 +3,12 @@ import { useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import Select from 'react-select'
 import axios from 'axios'
-import { FaPlus, FaReply } from 'react-icons/fa'
+import { FaCog, FaEdit, FaPlus, FaReply, FaSave, FaTimes, FaTrash } from 'react-icons/fa'
 import { Link } from "react-router-dom"
 
-const SetMhsPerpembimbing = () => {
-    const [Mahasiswa, setMahasiswa] = useState([])
+const DetailPembimbingAkademik = () => {
     const [MhsPembimbing, setMhsPembimbing] = useState([])
+    const [Pembimbing, setPembimbing] = useState([])
     const [kodeBimbing, setKodeBimbing] = useState("")
     const [nama, setNama] = useState("")
     const [nipy, setNipy] = useState("")
@@ -17,11 +17,9 @@ const SetMhsPerpembimbing = () => {
     const [prodi, setProdi] = useState("")
     const [kuota, setKuota] = useState("")
     const [jumlah, setJumlah] = useState("")
-    const [select2, setSelect2] = useState("")
-    const [isClearable, setIsClearable] = useState(true)
-    const [nim, setNim] = useState("")
+    const [kodePembimbing, setKodePembimbing] = useState("")
+    const [idDetail, setIdDetail] = useState("")
     const location = useLocation()
-    const selectInputRef = useRef()
 
     useEffect(() => {
         const getDataDsn = async () => {
@@ -46,13 +44,8 @@ const SetMhsPerpembimbing = () => {
     }, [kodeBimbing])
 
     useEffect(() => {
-        getMahasiswa()
+        getPembimbing()
     }, [])
-
-    useEffect(() => {
-        options()
-    }, [Mahasiswa])
-
 
     const getMhsPerPembimbing = async () => {
         if (kodeBimbing != 0) {
@@ -62,49 +55,43 @@ const SetMhsPerpembimbing = () => {
         }
     }
 
-
-    const getMahasiswa = async () => {
-        const response = await axios.get('v1/pembimbingAkademik/autocompleteMahasiswa')
-        setMahasiswa(response.data.data)
+    const getPembimbing = async () => {
+        const response = await axios.get(`v1/pembimbingAkademik/all`)
+        setPembimbing(response.data.data)
     }
 
-    const options = () => {
-        var i = Mahasiswa.map(item => ({
-            value: item.nim,
-            label: item.nim + " | " + item.nama,
-        }))
-        setSelect2(i)
+    const modalOpen = (e) => {
+        setIdDetail(e)
+        document.getElementById('my-modal').checked = true
     }
 
-    const onchange = (e) => {
-        setNim(e ? e.value : "")
+    const modalClose = () => {
+        document.getElementById('my-modal').checked = false
+        getMhsPerPembimbing()
+        setIdDetail("")
+        setKodePembimbing("")
     }
 
-    const simpanMahasiswa = async (e) => {
+    const simpanPembimbing = async (e) => {
         e.preventDefault()
         try {
-            if (nim == 0) {
+            if (kodePembimbing == 0) {
                 Swal.fire({
-                    title: "Mahasiswa Tidak Boleh Kosong",
-                    icon: "error"
-                })
-            } else if (kuota == jumlah) {
-                Swal.fire({
-                    title: "Jumlah Mahasiswa telah melebihi kapasitas bimbingan",
+                    title: "Dosen Tidak Boleh Kosong",
                     icon: "error"
                 })
             } else {
-                await axios.post('v1/pembimbingAkademik/createDetail', {
-                    code_pembimbing_akademik: kodeBimbing,
-                    nim: nim,
+                await axios.put(`v1/pembimbingAkademik/updateDetail/${idDetail}`, {
+                    code_pembimbing_akademik: kodePembimbing
                 }).then(function (response) {
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
                         getMhsPerPembimbing()
-                        getMahasiswa()
-                        setNim("")
+                        setIdDetail("")
+                        setKodePembimbing("")
+                        document.getElementById('my-modal').checked = false
                     });
                 })
             }
@@ -123,10 +110,60 @@ const SetMhsPerpembimbing = () => {
         }
     }
 
+    const nonaktifkan = (MhsId) => {
+        Swal.fire({
+            title: "Hapus data ini?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.put(
+                        `v1/pembimbingAkademik/deleteDetail/${MhsId}`
+                    ).then((response) => {
+                        Swal.fire({
+                            title: "Terhapus",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            getMhsPerPembimbing()
+                        });
+                    })
 
+                } catch (error) {
+
+                }
+            }
+        })
+    }
 
     return (
         <div className='mt-2 container'>
+            <input type="checkbox" id="my-modal" className="modal-toggle" />
+            <div className="modal">
+                <div className="modal-box relative p-0 rounded-md w-72">
+                    <button className='btn btn-sm btn-square mb-2 btn-error rounded-none float-right' onClick={modalClose}><FaTimes /></button>
+                    <form onSubmit={simpanPembimbing} className='p-2 mt-8'>
+                        <select className="select select-sm select-bordered w-full mb-2" value={kodePembimbing} onChange={(e) => setKodePembimbing(e.target.value)}>
+                            <option value="">Dosen</option>
+                            {Pembimbing.map((item, index) => {
+                                return item.code_pembimbing_akademik == kodeBimbing ? (
+                                    <option key={index} disabled hidden value={item.code_pembimbing_akademik}>{item.dosens[0].nama}</option>
+                                ) : (
+                                    <option key={index} value={item.code_pembimbing_akademik}>{item.dosens[0].nama}</option>
+                                )
+                            })}
+                            <option value=""></option>
+                        </select>
+                        <button className='btn btn-sm btn-primary w-full'><FaSave /><span className="ml-1">simpan</span></button>
+                    </form>
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Pembimbing Akademik</h1>
             </section>
@@ -134,7 +171,8 @@ const SetMhsPerpembimbing = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
                     <div className="card-body p-4">
                         <div className='mb-2'>
-                            <Link to='/detailpembimbingakademik' state={{ idDsn: location.state.idDsn }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
+                            <Link to='/pembimbingakademik' className='btn btn-sm btn-error'><FaReply />Kembali</Link>
+                            {kuota != jumlah ? <Link to='/setpembimbingakademik' state={{ idDsn: location.state.idDsn }} className="btn btn-primary btn-sm float-right"><FaCog />Set Mahasiswa</Link> : ""}
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div className='flex gap-2'>
@@ -202,21 +240,6 @@ const SetMhsPerpembimbing = () => {
                 </div>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
                     <div className="card-body p-4">
-                        <form onSubmit={simpanMahasiswa}>
-                            <div className='mb-2 flex gap-2'>
-                                <Select
-                                    className="basic-single w-60 rounded-md"
-                                    classNamePrefix="select"
-                                    ref={selectInputRef}
-                                    options={select2}
-                                    onChange={onchange}
-                                    isClearable={isClearable}
-                                    placeholder="Cari Mahasiswa"
-                                    noOptionsMessage={() => "Tidak Ada"}
-                                />
-                                <button className='btn btn-sm btn-primary mt-1'><FaPlus />Tambah</button>
-                            </div>
-                        </form>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className='text-gray-700 bg-[#F2F2F2]'>
@@ -226,6 +249,7 @@ const SetMhsPerpembimbing = () => {
                                         <th scope="col" className="px-2 py-3">Nama Mahasiswa</th>
                                         <th scope="col" className="px-2 py-3">Jenis Kelamin</th>
                                         <th scope="col" className="px-2 py-3">Tempat Tanggal Lahir</th>
+                                        <th scope="col" className="px-2 py-3">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -236,6 +260,10 @@ const SetMhsPerpembimbing = () => {
                                             <td className='px-2 py-2'>{item.mahasiswas[0].nama}</td>
                                             <td className='px-2 py-2'>{item.mahasiswas[0].jenis_kelamin == 'l' ? <span>Laki-Laki</span> : <span>Perempuan</span>}</td>
                                             <td className='px-2 py-2'>{item.mahasiswas[0].tempat_lahir}, {item.mahasiswas[0].tanggal_lahir}</td>
+                                            <td className='px-2 py-2'>
+                                                <button onClick={() => modalOpen(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-warning btn-circle mr-2"><FaEdit /></button>
+                                                <button onClick={() => nonaktifkan(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-error btn-circle"><FaTrash /></button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -244,8 +272,8 @@ const SetMhsPerpembimbing = () => {
                     </div>
                 </div>
             </section>
-        </div >
+        </div>
     )
 }
 
-export default SetMhsPerpembimbing
+export default DetailPembimbingAkademik
