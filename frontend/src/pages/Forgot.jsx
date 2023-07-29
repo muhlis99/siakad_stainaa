@@ -3,6 +3,8 @@ import stainaa from "../assets/img/stainaa.png"
 import { Link, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import Swal from "sweetalert2"
+import { FaEnvelope } from "react-icons/fa"
+
 
 const Forgot = () => {
     const [email, setEmail] = useState("")
@@ -55,19 +57,23 @@ const Forgot = () => {
                         <form onSubmit={kirimEmail}>
                             <p className='text-lg'>Untuk Mengganti Password</p>
                             <p className='text-lg mt-2'>Silakan Masukkan Email Aktif Anda</p>
-                            <div className="w-full mt-6">
-                                <label htmlFor="email" className='text-xl'>Email</label>
-                                <input
-                                    type="email"
-                                    id='email'
-                                    placeholder='example@gmail.com'
-                                    className='ml-2 input input-md input-bordered w-80'
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
+                            <div className="w-full mt-6 form-control">
+                                <div className="input-group">
+                                    <span>{<FaEnvelope />}</span>
+                                    <input
+                                        type="email"
+                                        id='email'
+                                        placeholder='example@gmail.com'
+                                        className='input input-bordered  py-2 px-2 w-full rounded-xl'
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+
+                                </div>
+
                             </div>
                             <div className="card-actions justify-center gap-5 mt-9">
-                                <button className="btn btn-default btn-sm w-32">Kirim</button>
+                                <button className="btn btn-primary btn-sm w-32">Kirim</button>
                                 <Link className="btn btn-danger btn-sm w-32">Batal</Link>
                             </div>
                         </form>

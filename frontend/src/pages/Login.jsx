@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { LoginUser, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
+import { FaEyeSlash, FaEye, FaUserCircle } from "react-icons/fa"
 
 const Login = () => {
     const [name, setUsername] = useState("")
@@ -12,6 +13,8 @@ const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
+    const [isVisible, setVisible] = useState(false)
+
 
     useEffect(() => {
         if (user || isSuccess) {
@@ -40,6 +43,11 @@ const Login = () => {
         dispatch(LoginUser({ name, password }))
     }
 
+
+    const toggle = () => {
+        setVisible(!isVisible)
+    }
+
     return (
         <div className="min-h-screen py-24">
             <title>Login</title>
@@ -50,26 +58,38 @@ const Login = () => {
                         <h2 className='text-3xl mb-3 text-[#2D7F5F] font-bold'>WELCOME BACK</h2>
                         <p className='text-gray-500'>Sistem Akademik Sekolah Tinggi <br />Agama Islam Nurul Abror Al-Robbaniyin</p>
                         <form onSubmit={Auth}>
-                            <div className="mt-5">
-                                <input
-                                    type="text"
-                                    className='border border-[#2d8659] py-2 px-2 w-full rounded-xl'
-                                    value={name}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    placeholder='Username Anda'
-                                />
+                            <div className="mt-5 form-control">
+                                <div className="input-group">
+                                    <input
+                                        type="text"
+                                        className='border border-[#2d8659] py-2 px-2 w-full rounded-xl'
+                                        value={name}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        placeholder='Username Anda'
+                                    />
+                                    <button type='button' class="btn btn-square btn btn-success" >
+                                        {<FaUserCircle />}
+                                    </button>
+                                </div>
                             </div>
-                            <div className="mt-5">
-                                <input
-                                    type="password"
-                                    className='border border-[#2d8659] py-2 px-2 w-full rounded-xl'
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder='Password Anda'
-                                />
+                            <div className="mt-5 form-control">
+                                <div className="input-group">
+                                    <input
+                                        type={!isVisible ? "password" : "text"}
+                                        className='border border-[#2d8659] py-2 px-2 w-full rounded-xl'
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder='Password Anda'
+                                    />
+                                    <button type='button' class="btn btn-square btn btn-success" onClick={toggle}>
+                                        {isVisible ? <FaEyeSlash /> : <FaEye />}
+                                    </button>
+                                </div>
                             </div>
                             <div className="mt-2 mb-4 float-right">
-                                <Link to="/forgot" className='text-gray-500'>Forgot Password</Link>
+                                <span className='text-xs'>
+                                    <Link to="/forgot" className='text-gray-500'>Forgot Password ?</Link>
+                                </span>
                             </div>
                             <div className="mt-5">
                                 <button type='submit' className='bg-[#2d8659] py-2 px-2 w-full rounded-xl text-white font-bold'>LOGIN</button>
