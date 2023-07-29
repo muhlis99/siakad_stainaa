@@ -28,7 +28,7 @@ const Navbar = () => {
     })
   }
   return (
-    <div className="navbar bg-[#F5F5F5] shadow-md min-h-min py-1 sticky z-50 top-0">
+    <div className="navbar bg-[#F5F5F5] shadow-md min-h-min py-1 sticky z-40 top-0">
       <div className="flex-none lg:hidden">
         <label htmlFor="my-drawer-2" className="btn btn-square btn-ghost">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-6 h-6 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
