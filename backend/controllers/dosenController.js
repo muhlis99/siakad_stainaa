@@ -686,6 +686,7 @@ module.exports = {
 
     nonAktif: async (req, res, next) => {
         const id = req.params.id
+        const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
         const dosenUse = await dosen.findOne({
             include: [{
                 model: pendidikan
@@ -700,6 +701,7 @@ module.exports = {
         if (!dosenUse) return res.status(401).json({ message: "Data dosen tidak ditemukan" })
         await dosen.update({
             status: "tidak",
+            tanggal_berhenti: date
         }, {
             where: {
                 id_dosen: id,
