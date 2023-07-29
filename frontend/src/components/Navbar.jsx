@@ -35,7 +35,7 @@ const Navbar = () => {
         </label>
       </div>
       <div className="flex-1">
-        <span className="normal-case text-md font-bold text-[#2d8659]">Hello {user && user.data.username}, Welcome Back !</span>
+        <span className="normal-case text-md font-bold text-[#344B4B]">Hello {user && user.data.username}, Welcome Back !</span>
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
@@ -44,15 +44,10 @@ const Navbar = () => {
               <img src={Avatar} />
             </div>
           </label>
-          <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-            {/* <li>
-              <Link className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </Link>
-            </li>
-            <li><Link>Settings</Link></li> */}
-            <li><button onClick={logOut}>Keluar</button></li>
+          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+
+            {/* <li><a>Settings</a></li> */}
+            <li><button onClick={logOut}>log out</button></li>
           </ul>
         </div>
       </div>
