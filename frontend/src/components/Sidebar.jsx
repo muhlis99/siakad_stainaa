@@ -35,10 +35,9 @@ const Sidebar = () => {
     <div className="drawer-side scrollbar-thin scrollbar-thumb-emerald-800 scrollbar-track-gray-100 shadow-md">
       <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
       <div className="flex gap-1 w-full h-14 py-1 justify-center shadow-md  sticky top-0 z-50 bg-[#2D7F5F]">
-        <div className="avatar mt-1 rounded-full shadow-lg h-10 ">
-          <div className="w-10 h-10 rounded-full">
-            <img src={stainaa} className='shadow-md' />
-
+        <div className="avatar mt-1 rounded-full drop-shadow-lg h-10 ">
+          <div className="w-10 h-10 rounded-full drop-shadow-lg">
+            <img src={stainaa} />
           </div>
         </div>
         <div className="text-center text-white">

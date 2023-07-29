@@ -74,7 +74,7 @@ const Beranda = () => {
             <section>
                 <div className="grid grid-cols-4 gap-4 mb-4">
                     <div>
-                        <div className='w-full h-36 bg-[#60B033] hover:bg-[#4c8a28] hover:shadow-lg rounded-md px-3 py-3 grid grid-cols-3'>
+                        <div className='w-full h-36 bg-[#60B033] hover:bg-[#4c8a28] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-3'>
                             <div className='col-span-2'>
                                 <h1 className='text-md text-white'>Mahasiswa Putera</h1>
                                 <h1 className='text-3xl text-white font-bold mt-2'>{putera}</h1>

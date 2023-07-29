@@ -31,9 +31,9 @@ const DosenPengajar = () => {
         getJadwalByKelas()
     }, [location.state])
 
-    useEffect(() => {
-        getDosenAll()
-    }, [])
+    // useEffect(() => {
+    //     getDosenAll()
+    // }, [])
 
     const getDataKelasById = async () => {
         try {
@@ -66,11 +66,6 @@ const DosenPengajar = () => {
         } catch (error) {
 
         }
-    }
-
-    const getDosenAll = async () => {
-        const response = await axios.get('v1/dosenPengajar/getAllDosen')
-        setDosen(response.data.data)
     }
 
     const editDsn = (e) => {
@@ -306,8 +301,12 @@ const DosenPengajar = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className='grid gap-2 mt-8 border-t-2 border-t-[#2D7F5F] pt-2'>
+                            <div className='grid grid-cols-2 mt-8 border-t-2 border-t-[#2D7F5F] pt-2'>
                                 <div>
+
+                                </div>
+
+                                {/* <div>
                                     <div className='flex gap-2 float-right'>
                                         {statusForm == "tambah" ?
                                             <button className='btn btn-sm btn-primary'><FaSave /><span>simpan</span></button> : statusForm == "" ?
@@ -316,8 +315,9 @@ const DosenPengajar = () => {
                                         }
                                         {statusForm == "" ? <button type='button' className='btn btn-sm btn-error' onClick={() => deleteDosen(kodeDsnPengajar, kodeDsnPengganti)}><FaTrash /><span className="">Hapus</span></button> : statusForm == 'update' ? <button type='button' className='btn btn-sm btn-error' onClick={() => editDsn('')}><FaTimes /><span className="">batal</span></button> : ""}
                                     </div>
-                                </div>
-                                {statusForm == "tambah" || statusForm == "update" ?
+                                </div> */}
+
+                                {/* {statusForm == "tambah" || statusForm == "update" ?
                                     <div className="grid grid-cols-3 gap-2">
                                         <div>
                                             <label className="label">
@@ -366,7 +366,7 @@ const DosenPengajar = () => {
                                             </select>
                                         </div>
                                     </div>
-                                }
+                                } */}
                             </div>
                         </form>
                     </div>
