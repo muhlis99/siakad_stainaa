@@ -138,7 +138,7 @@ module.exports = {
             const email = codeUse.email
             const role = codeUse.role
             res.status(200).json({
-                message: "log in berhasil",
+                message: "",
                 id, username, email, role
             })
         } catch (err) {
