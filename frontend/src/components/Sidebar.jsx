@@ -51,6 +51,8 @@ const Sidebar = () => {
       <ul className="menu w-60 min-h-screen gap-2 bg-[#2D7F5F]">
         <li><Link to="/dashboard" className={`text-white rounded-md text-xs ${location.pathname == '/dashboard' ? 'active' : ''}`}><FaHome /> <span className='text-xs'>Dashboard</span></Link></li>
         <li>
+          {
+            location.state.collaps == 'induk'}
           <details >
             <summary className='text-white'>DATA INDUK</summary>
             <ul className='gap-2'>
