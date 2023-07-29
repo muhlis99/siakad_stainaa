@@ -80,7 +80,28 @@ module.exports = {
             group: [[Sequelize.literal('YEAR(tanggal_masuk_kuliah)')]]
         }).then(result => {
             res.status(200).json({
-                message: "total prodi  succes",
+                message: "total mahasiswa  succes",
+                data: result,
+            })
+        }).catch(err => {
+            console.log(err);
+        })
+    },
+
+    diagramDosen: async (req, res, next) => {
+        await dosenModel.findAll({
+            attributes: [
+                [Sequelize.literal('YEAR(tanggal_mulai)'), 'tahun'],
+                [Sequelize.literal('COUNT(id_dosen)'), 'jumlahDosen']
+            ],
+            where: {
+                tanggal_mulai: { [Op.ne]: null },
+                status: "aktif",
+            },
+            group: [[Sequelize.literal('YEAR(tanggal_mulai)')]]
+        }).then(result => {
+            res.status(200).json({
+                message: "total dosen  succes",
                 data: result,
             })
         }).catch(err => {
