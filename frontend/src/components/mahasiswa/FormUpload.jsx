@@ -21,6 +21,9 @@ const FormUpload = () => {
     const [kip, setKip] = useState("")
     const [kips, setKips] = useState("")
     const [prevKip, setPrevKip] = useState("")
+    const [ktm, setKtm] = useState("")
+    const [ktms, setKtms] = useState("")
+    const [prevktm, setPrevKtm] = useState("")
     const navigate = useNavigate()
     const { idMhs } = useParams()
 
@@ -52,7 +55,8 @@ const FormUpload = () => {
         fotoKtp()
         fotoIjazah()
         fotoKip()
-    }, [fotos, kks, ktps, ijazahs, kips])
+        // fotoKtm()
+    }, [fotos, kks, ktps, ijazahs, kips, ktm])
 
     const fotoDiri = async () => {
         try {
@@ -159,6 +163,27 @@ const FormUpload = () => {
         }
     }
 
+    // const fotoKtm = async () => {
+    //     try {
+    //         if (ktms != 0) {
+    //             await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/kip/${ktms}`, {
+    //                 responseType: "arraybuffer"
+    //             }).then((response) => {
+    //                 const base64 = btoa(
+    //                     new Uint8Array(response.data).reduce(
+    //                         (data, byte) => data + String.fromCharCode(byte),
+    //                         ''
+    //                     )
+    //                 )
+    //                 setPrevKip(`data:;base64,${base64}`)
+    //             })
+
+    //         }
+    //     } catch (error) {
+
+    //     }
+    // }
+
     const loadFoto = (e) => {
         const image = e.target.files[0]
         setFoto(image)
@@ -189,6 +214,12 @@ const FormUpload = () => {
         setPrevKip(URL.createObjectURL(image))
     }
 
+    const loadKtm = (e) => {
+        const image = e.target.files[0]
+        setKtm(image)
+        setPrevKtm(URL.createObjectURL(image))
+    }
+
     const simpanBerkas = async (e) => {
         e.preventDefault()
         const formData = new FormData()
@@ -197,6 +228,7 @@ const FormUpload = () => {
         formData.append("foto_ktp", ktp)
         formData.append("foto_ijazah", ijazah)
         formData.append("foto_kip", kip)
+        formData.append("foto_ktm", kip)
         try {
             if (foto == fotos) {
                 Swal.fire({
@@ -221,6 +253,11 @@ const FormUpload = () => {
             } else if (kip == kips) {
                 Swal.fire({
                     title: "Scan KIP Tidak Boleh Kosong",
+                    icon: "warning"
+                })
+            } else if (ktm == ktms) {
+                Swal.fire({
+                    title: "Scan KTM Tidak Boleh Kosong",
                     icon: "warning"
                 })
             } else {
@@ -257,7 +294,7 @@ const FormUpload = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-16">
                     <div className="card-body p-4">
                         <form onSubmit={simpanBerkas}>
-                            <div className='grid lg:grid-cols-5 gap-4'>
+                            <div className='grid lg:grid-cols-3 gap-4'>
                                 <div>
                                     <label className="label">
                                         <span className="text-base label-text">Foto Diri Mahasiswa</span>
@@ -322,6 +359,19 @@ const FormUpload = () => {
                                         </div>
                                     </div>
                                     <input type="file" onChange={loadKip} className="file-input file-input-bordered file-input-sm file-input-success w-full" />
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Scan KTM</span>
+                                    </label>
+                                    <div className="avatar">
+                                        <div className="w-20 rounded ring ring-[#2D7F5F]">
+                                            {prevktm ? (
+                                                <img src={prevktm} className='border-black' />
+                                            ) : ("")}
+                                        </div>
+                                    </div>
+                                    <input type="file" onChange={loadKtm} className="file-input file-input-bordered file-input-sm file-input-success w-full" />
                                 </div>
                                 <div className="lg:col-span-3">
                                     <hr className='my-5' />
