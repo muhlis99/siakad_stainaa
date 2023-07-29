@@ -161,6 +161,7 @@ module.exports = {
         }
         const duplicateData = await jenjangPendidikanModel.findOne({
             where: {
+                nama_jenjang_pendidikan: nama_jenjang_pendidikan,
                 code_jenjang_pendidikan: code,
                 status: "aktif"
             }
