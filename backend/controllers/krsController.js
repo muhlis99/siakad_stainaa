@@ -102,7 +102,7 @@ module.exports = {
 
         var jumlah = ""
         var keterangan = ""
-        if (paketmakul > paketmakulKrs && jmlPaketMahasiswa.count[0].count > 0) {
+        if ((paketmakul > paketmakulKrs && jmlPaketMahasiswa.count == 0) || (paketmakul == 0 && paketmakulKrs == 0 && jmlPaketMahasiswa.count == 0)) {
             jumlah = 0
             keterangan = "paket belum"
         } else {
@@ -291,17 +291,6 @@ module.exports = {
                 })
             }
         }
-
-
-        // if (data_body) {
-        //     res.status(201).json({
-        //         message: "data krs paket succes ditambahkan"
-        //     })
-        // } else {
-        //     res.status(404).json({
-        //         message: "................."
-        //     })
-        // }
     }
 
 }
