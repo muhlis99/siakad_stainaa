@@ -317,6 +317,7 @@ const ListKategoriNilai = () => {
                             <div className='flex gap-2'>
                                 <button className="btn btn-success btn-xs" onClick={modalAddOpen}><FaPlus /> <span>tambah data</span></button>
                                 <select className='select select-sm select-bordered max-w-xs' value={kodeThn} onChange={(e) => setKodeThn(e.target.value)}>
+                                    <option value="">Semua</option>
                                     {Tahun.map((item) => (
                                         <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
                                     ))}
@@ -376,6 +377,7 @@ const ListKategoriNilai = () => {
                                         ) : ktg.code_tahun_ajaran == kodeThn ? (
                                             <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500'>
                                                 <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap" align='center'>{index + 1}</th>
+                                                <td className='px-6 py-2' align='center'>{ktg.tahunAjarans[0].tahun_ajaran}</td>
                                                 <td className='px-6 py-2' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
                                                 <td className='px-6 py-2' align='center'>{ktg.nilai_huruf}</td>
                                                 <td className='px-6 py-2' align='center'>{ktg.interfal_skor}</td>

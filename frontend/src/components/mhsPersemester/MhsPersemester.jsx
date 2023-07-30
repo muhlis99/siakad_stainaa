@@ -146,7 +146,7 @@ const MhsPersemester = () => {
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative p-0 rounded-none w-72">
-                    <button className='btn btn-sm btn-square mb-2 btn-danger rounded-none float-right' onClick={modalClose}><FaTimes /></button>
+                    <button className='btn btn-sm btn-square mb-2 btn-error rounded-none float-right' onClick={modalClose}><FaTimes /></button>
                     <form onSubmit={simpanSetMhs} className='p-2 mt-8'>
                         <select className="select select-sm select-bordered w-full mb-2" value={kodeTahunNew} onChange={(e) => setKodeTahunNew(e.target.value)}>
                             <option value="">Tahun Ajaran</option>
@@ -164,7 +164,7 @@ const MhsPersemester = () => {
                                 )
                             })}
                         </select>
-                        <button className='btn btn-sm btn-default w-full'><FaSave /><span className="ml-1">simpan</span></button>
+                        <button className='btn btn-sm btn-primary w-full'><FaSave /><span className="ml-1">simpan</span></button>
                     </form>
                 </div>
             </div>
@@ -236,7 +236,7 @@ const MhsPersemester = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mt-2">
                     <div className="card-body p-4">
                         <div className='mb-2'>
-                            {button > 0 ? <button className='btn btn-sm btn-default float-right' onClick={modalOpen}><FaCog /><span className="ml-1">Set Mahasiswa</span></button> : ""}
+                            {button > 0 ? <button className='btn btn-sm btn-primary float-right' onClick={modalOpen}><FaCog /><span className="ml-1">Set Mahasiswa</span></button> : ""}
                         </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaEdit, FaSearch, FaPeopleArrows, FaSave, FaTrash, FaTimes } from 'react-icons/fa'
+import { FaEdit, FaSearch, FaPeopleArrows, FaSave, FaTrash, FaTimes, FaPlus } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
@@ -7,6 +7,7 @@ import Select from "react-select"
 
 const DosenPengajar = () => {
     const [Dosen, setDosen] = useState([])
+    const [Dsn, setDsn] = useState([])
     const [fakultas, setFakultas] = useState("")
     const [kelas, setKelas] = useState("")
     const [makul, setMakul] = useState("")
@@ -71,9 +72,6 @@ const DosenPengajar = () => {
             setKodeDsnPengajar(response.data.data.dosen_pengajar)
             setKodeDsnPengganti(response.data.data.dosen_pengganti)
             setKodeJadwal(response.data.data.code_jadwal_kuliah)
-            if (response.data.data.dosen_pengajar == '' & response.data.data.dosen_pengganti == '') {
-                setStatusForm('tambah')
-            }
         } catch (error) {
 
         }
@@ -100,8 +98,9 @@ const DosenPengajar = () => {
         setNipyp(e ? e.value : "")
     }
 
-    const editDsn = (e) => {
+    const modalDsnPengajar = (e) => {
         setStatusForm(e)
+        document.getElementById('dsn-pengajar').checked = true
     }
 
     const tambahDsnPengajar = async (e) => {
@@ -141,43 +140,6 @@ const DosenPengajar = () => {
         }
     }
 
-    // const tambahDsnPengajar = async (e) => {
-    //     e.preventDefault()
-    //     try {
-    //         if (kodeDsnPengajar == 0) {
-    //             Swal.fire({
-    //                 title: 'Dosen Pengajar kosong',
-    //                 icon: "error"
-    //             })
-    //         } else {
-    //             await axios.put('v1/dosenPengajar/create', {
-    //                 dosen_pengajar: kodeDsnPengajar,
-    //                 dosen_pengganti: kodeDsnPengganti,
-    //                 id: idJadwal
-    //             }).then(function (response) {
-    //                 Swal.fire({
-    //                     title: response.data.message,
-    //                     icon: "success"
-    //                 }).then(() => {
-    //                     getJadwalByKelas()
-    //                 })
-    //             })
-    //         }
-    //     } catch (error) {
-    //         if (error.response.data.message) {
-    //             Swal.fire({
-    //                 title: error.response.data.message,
-    //                 icon: "error"
-    //             })
-    //         } else {
-    //             Swal.fire({
-    //                 title: error.response.data.errors[0].msg,
-    //                 icon: "error"
-    //             })
-    //         }
-    //     }
-    // }
-
     const deleteDosen = (e, f) => {
         Swal.fire({
             title: "Hapus data Dosen Pengajar?",
@@ -211,6 +173,33 @@ const DosenPengajar = () => {
 
     return (
         <div className='mt-2 container'>
+            <input type="checkbox" id="dsn-pengajar" className="modal-toggle" />
+            <div className="modal">
+                <div className="modal-box">
+                    <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2"><FaTimes /></button>
+                    <form onSubmit={tambahDsnPengajar}>
+                        <h3 className="font-bold text-xl">{statusForm} Dosen Pengajar</h3>
+                        <div className="py-4">
+                            <div>
+                                <label className="label">
+                                    <span className="text-base label-text">Dosen Pengajar</span>
+                                </label>
+                                <Select
+                                    className="basic-single w-full"
+                                    classNamePrefix="select"
+                                    options={select2}
+                                    onChange={dsnPengajar}
+                                    isClearable={isClearable}
+                                    id='input-select'
+                                />
+                            </div>
+                        </div>
+                        <div className="modal-action">
+                            <button type='submit' className="btn btn-sm btn-primary"><FaSave />simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Dosen Pengajar</h1>
             </section>
@@ -332,27 +321,45 @@ const DosenPengajar = () => {
                             </div>
                         </div>
                         <div className='grid grid-cols-2 gap-4 mt-2 border-t-2 border-t-[#2D7F5F] pt-2'>
-                            <form onSubmit={tambahDsnPengajar}>
+                            <div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Dosen Pengajar</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{kodeDsnPengajar}</a>
+                                    </div>
+                                </div>
+                                <div className='mt-2 flex gap-1'>
+                                    {kodeDsnPengajar ? "" : <button className='btn btn-xs btn-primary btn-circle' onClick={() => modalDsnPengajar('Tambah')} title='Tambah Dosen Pengajar'><FaPlus /></button>}
+                                    {kodeDsnPengajar ? <button className='btn btn-xs btn-warning btn-circle' onClick={() => modalDsnPengajar('Edit')} title='Edit Dosen Pengajar'><FaEdit /></button> : ""}
+                                    {kodeDsnPengajar ? <button className='btn btn-xs btn-error btn-circle' title='Hapus Dosen Pengajar'><FaTrash /></button> : ""}
+                                </div>
+                            </div>
+                            <div className='flex gap-2'>
+                                <div className='flex-initial w-48'>
+                                    <label>
+                                        <span className="">Dosen Pengganti</span>
+                                    </label>
+                                </div>
+                                <div className='flex-initial w-80'>
+                                    <a>{kodeDsnPengganti}</a>
+                                </div>
+                            </div>
+                            {/* <form onSubmit={tambahDsnPengajar}>
                                 <div>
                                     <label className="label">
                                         <span className="text-base label-text">Dosen Pengajar</span>
                                     </label>
-                                    <Select
-                                        className="basic-single w-full max-w-xs"
-                                        classNamePrefix="select"
-                                        options={select2}
-                                        onChange={dsnPengajar}
-                                        isClearable={isClearable}
-                                        id='input-select'
-                                    />
+                                    
                                     <button className='btn btn-sm btn-primary mt-2'><FaSave /> Simpan</button>
                                 </div>
-                            </form>
-                            <form action="">
+                            </form> */}
+                            {/* <form action="">
                                 <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Dosen Pengganti</span>
-                                    </label>
+
                                     <Select
                                         className="basic-single w-full max-w-xs"
                                         classNamePrefix="select"
@@ -363,7 +370,7 @@ const DosenPengajar = () => {
                                     />
                                     <button className='btn btn-sm btn-primary mt-2'><FaSave /> Simpan</button>
                                 </div>
-                            </form>
+                            </form> */}
                         </div>
                     </div>
                 </div>
