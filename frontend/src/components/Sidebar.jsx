@@ -37,7 +37,6 @@ const Sidebar = () => {
   useEffect(() => {
     if (location.state != null) {
       setCollaps(location.state.collaps)
-      // console.log(location.state)
     } else {
       setCollaps("")
     }
@@ -66,22 +65,22 @@ const Sidebar = () => {
             <summary className='text-white'>DATA INDUK</summary>
             <ul className='gap-2'>
               <li>
-                <Link to="/jenjang" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/jenjang' ? 'active' : ''}`}><SiLevelsdotfyi /> <span className='text-xs'>Jenjang Pendidikan</span></Link>
+                <Link to="/jenjang" state={{ collaps: 'induk', activ: '/jenjang' }} className={`text-white rounded-md text-xs ${location.pathname == '/jenjang' ? 'active' : ''}`}><SiLevelsdotfyi /> <span className='text-xs'>Jenjang Pendidikan</span></Link>
               </li>
               <li>
-                <Link to="/fakultas" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/fakultas' ? 'active' : ''}`}><FaUniversity /> <span className='text-xs'>Fakultas</span></Link>
+                <Link to="/fakultas" state={{ collaps: 'induk', activ: '/fakultas' }} className={`text-white rounded-md text-xs ${location.pathname == '/fakultas' ? 'active' : ''}`}><FaUniversity /> <span className='text-xs'>Fakultas</span></Link>
               </li>
               <li className=''>
-                <Link to="/prodi" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-xs'>Prodi</span></Link>
+                <Link to="/prodi" state={{ collaps: 'induk', activ: '/prodi' }} className={`text-white rounded-md text-xs ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-xs'>Prodi</span></Link>
               </li>
               <li>
-                <Link to="/dosen" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-xs'>Dosen</span></Link>
+                <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className={`text-white rounded-md text-xs ${location.pathname == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-xs'>Dosen</span></Link>
               </li>
               <li>
-                <Link to="/mahasiswa" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/mahasiswa' ? 'active' : ''}`}><FaUserGraduate /> <span className='text-xs'>Mahasiswa</span></Link>
+                <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className={`text-white rounded-md text-xs ${location.pathname == '/mahasiswa' ? 'active' : ''}`}><FaUserGraduate /> <span className='text-xs'>Mahasiswa</span></Link>
               </li>
               <li>
-                <Link to="/ruang" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/ruang' ? 'active' : ''}`}><SiHomeassistantcommunitystore /> <span className='text-xs'>Ruang</span></Link>
+                <Link to="/ruang" state={{ collaps: 'induk', activ: '/ruang' }} className={`text-white rounded-md text-xs ${location.pathname == '/ruang' ? 'active' : ''}`}><SiHomeassistantcommunitystore /> <span className='text-xs'>Ruang</span></Link>
               </li>
             </ul>
           </details> :
@@ -89,22 +88,22 @@ const Sidebar = () => {
               <summary className='text-white'>DATA INDUK</summary>
               <ul className='gap-2'>
                 <li>
-                  <Link to="/jenjang" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/jenjang' ? 'active' : ''}`}><SiLevelsdotfyi /> <span className='text-xs'>Jenjang Pendidikan</span></Link>
+                  <Link to="/jenjang" state={{ collaps: 'induk', activ: '/jenjang' }} className={`text-white rounded-md text-xs ${location.pathname == '/jenjang' ? 'active' : ''}`}><SiLevelsdotfyi /> <span className='text-xs'>Jenjang Pendidikan</span></Link>
                 </li>
                 <li>
-                  <Link to="/fakultas" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/fakultas' ? 'active' : ''}`}><FaUniversity /> <span className='text-xs'>Fakultas</span></Link>
+                  <Link to="/fakultas" state={{ collaps: 'induk', activ: '/fakultas' }} className={`text-white rounded-md text-xs ${location.pathname == '/fakultas' ? 'active' : ''}`}><FaUniversity /> <span className='text-xs'>Fakultas</span></Link>
                 </li>
                 <li className=''>
-                  <Link to="/prodi" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-xs'>Prodi</span></Link>
+                  <Link to="/prodi" state={{ collaps: 'induk', activ: '/prodi' }} className={`text-white rounded-md text-xs ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-xs'>Prodi</span></Link>
                 </li>
                 <li>
-                  <Link to="/dosen" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-xs'>Dosen</span></Link>
+                  <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className={`text-white rounded-md text-xs ${location.pathname == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-xs'>Dosen</span></Link>
                 </li>
                 <li>
-                  <Link to="/mahasiswa" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/mahasiswa' ? 'active' : ''}`}><FaUserGraduate /> <span className='text-xs'>Mahasiswa</span></Link>
+                  <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className={`text-white rounded-md text-xs ${location.pathname == '/mahasiswa' ? 'active' : ''}`}><FaUserGraduate /> <span className='text-xs'>Mahasiswa</span></Link>
                 </li>
                 <li>
-                  <Link to="/ruang" state={{ collaps: 'induk' }} className={`text-white rounded-md text-xs ${location.pathname == '/ruang' ? 'active' : ''}`}><SiHomeassistantcommunitystore /> <span className='text-xs'>Ruang</span></Link>
+                  <Link to="/ruang" state={{ collaps: 'induk', activ: '/ruang' }} className={`text-white rounded-md text-xs ${location.pathname == '/ruang' ? 'active' : ''}`}><SiHomeassistantcommunitystore /> <span className='text-xs'>Ruang</span></Link>
                 </li>
               </ul>
             </details>
@@ -117,13 +116,13 @@ const Sidebar = () => {
               <summary className='text-white'>KURIKULUM</summary>
               <ul className='gap-1'>
                 <li>
-                  <Link to='/tahun' state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-xs'>Tahun Ajaran</span></Link>
+                  <Link to='/tahun' state={{ collaps: 'kurikulum', activ: '/tahun' }} className={`text-white rounded-md text-xs ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-xs'>Tahun Ajaran</span></Link>
                 </li>
                 <li>
-                  <Link to="/semester" state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-xs'>Semester</span></Link>
+                  <Link to="/semester" state={{ collaps: 'kurikulum', activ: '/semester' }} className={`text-white rounded-md text-xs ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-xs'>Semester</span></Link>
                 </li>
                 <li>
-                  <Link to="/kategorinilai" state={{ collaps: 'kurikulum' }} className={`text-white rounded-md text-xs ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Kategori Nilai</span></Link>
+                  <Link to="/kategorinilai" state={{ collaps: 'kurikulum', activ: '/kategorinilai' }} className={`text-white rounded-md text-xs ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Kategori Nilai</span></Link>
                 </li>
               </ul>
             </details>
