@@ -67,9 +67,9 @@ const Login = () => {
                                         onChange={(e) => setUsername(e.target.value)}
                                         placeholder='Username Anda'
                                     />
-                                    <button type='button' class="btn btn-square btn btn-success" >
+                                    <span className='w-12 bg-success text-white'>
                                         {<FaUserCircle />}
-                                    </button>
+                                    </span>
                                 </div>
                             </div>
                             <div className="mt-5 form-control">
@@ -81,7 +81,7 @@ const Login = () => {
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder='Password Anda'
                                     />
-                                    <button type='button' class="btn btn-square btn btn-success" onClick={toggle}>
+                                    <button type='button' class="btn btn-square btn-success" onClick={toggle}>
                                         {isVisible ? <FaEyeSlash /> : <FaEye />}
                                     </button>
                                 </div>

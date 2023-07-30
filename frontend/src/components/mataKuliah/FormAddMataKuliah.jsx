@@ -233,12 +233,12 @@ const FormAddMataKuliah = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    <button type='button' onClick={batalkan} className='btn btn-sm btn-danger'><FaTimes /> <span className="ml-1">Batal</span></button>
+                                    <button type='button' onClick={batalkan} className='btn btn-sm btn-error'><FaTimes /> <span className="ml-1">Batal</span></button>
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
                                         <div className='lg:pl-1'>
-                                            <button className='btn btn-sm btn-blue w-full'><FaSave /><span className="ml-1">Simpan </span></button>
+                                            <button className='btn btn-sm btn-primary w-full'><FaSave /><span className="ml-1">Simpan </span></button>
                                         </div>
                                     </div>
                                 </div>

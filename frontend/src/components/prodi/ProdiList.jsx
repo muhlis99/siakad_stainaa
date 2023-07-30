@@ -99,11 +99,22 @@ const ProdiList = () => {
                         setKodeFaks("")
                         setKodeDikti("")
                         setNamaProdi("")
+                        setError(false)
                     });
                 })
             }
         } catch (error) {
-
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
+            } else {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
         }
     }
 
@@ -114,6 +125,7 @@ const ProdiList = () => {
         setKodeFaks("")
         setKodeDikti("")
         setNamaProdi("")
+        setError(false)
     }
 
     const modalEditOpen = async (e) => {
@@ -164,11 +176,22 @@ const ProdiList = () => {
                         setKodeDikti("")
                         setNamaProdi("")
                         setId("")
+                        setError(false)
                     });
                 })
             }
         } catch (error) {
-
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
+            } else {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
         }
     }
 

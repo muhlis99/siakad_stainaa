@@ -16,6 +16,7 @@ const ListKategoriNilai = () => {
     const [query, setQuery] = useState("")
     const [msg, setMsg] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
+    const [kodeThn, setKodeThn] = useState("")
     const [nilaiAtas, setNilaiAtas] = useState("")
     const [nilaiBawah, setNilaiBawah] = useState("")
     const [nilaiHuruf, setNilaiHuruf] = useState("")
@@ -289,12 +290,11 @@ const ListKategoriNilai = () => {
                             </div>
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">simpan</button>
+                            <button type='submit' className="btn btn-sm btn-primary">simpan</button>
                         </div>
                     </form>
                 </div>
             </div>
-
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Kategori Nilai</h1>
             </section>
@@ -302,8 +302,13 @@ const ListKategoriNilai = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
-                            <div>
-                                <button className="btn btn-default btn-xs" onClick={modalAddOpen}><FaPlus /> <span className="ml-1">tambah data</span></button>
+                            <div className='flex gap-2'>
+                                <button className="btn btn-success btn-xs" onClick={modalAddOpen}><FaPlus /> <span>tambah data</span></button>
+                                <select className='select select-sm select-bordered max-w-xs' value={kodeThn} onChange={(e) => setKodeThn(e.target.value)}>
+                                    {Tahun.map((item) => (
+                                        <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div>
                                 <form className='mb-1' onSubmit={cariData}>
@@ -316,7 +321,7 @@ const ListKategoriNilai = () => {
                                                 className="input input-xs input-bordered input-success"
                                                 placeholder='Cari'
                                             />
-                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                            <button type='submit' className="btn btn-xs btn-square btn-success">
                                                 <FaSearch />
                                             </button>
                                         </div>
@@ -349,7 +354,7 @@ const ListKategoriNilai = () => {
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-danger" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -369,11 +374,11 @@ const ListKategoriNilai = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle btn-default-activ"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-outline btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

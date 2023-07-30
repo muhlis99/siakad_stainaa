@@ -79,6 +79,11 @@ const ListJenjang = () => {
                     title: error.response.data.message,
                     icon: "error"
                 })
+            } else {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
             }
         }
     }
@@ -131,8 +136,16 @@ const ListJenjang = () => {
                 })
             }
         } catch (error) {
-            if (error.response) {
-                setError(true)
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
+            } else {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
             }
         }
 

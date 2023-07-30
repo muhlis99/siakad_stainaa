@@ -144,10 +144,10 @@ const ListDosen = () => {
                                             <td className='px-6 py-2'>{dsn.alat_transportasis[0].nama_alat_transportasi}</td>
                                             <td className='px-6 py-2'>
                                                 <div className='grid grid-flow-col'>
-                                                    <Link to={`/dosen/detail/${dsn.id_dosen}`} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
-                                                    <Link to={`/dosen/form1/edit/${dsn.id_dosen}`} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
-                                                    <Link to={`/dosen/upload1/${dsn.id_dosen}`} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
-                                                    <Link to={`/dosen/print/${dsn.id_dosen}`} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
+                                                    <Link to={`/dosen/detail/${dsn.id_dosen}`} state={{ collaps: 'induk' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
+                                                    <Link to={`/dosen/form1/edit/${dsn.id_dosen}`} state={{ collaps: 'induk' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                    <Link to={`/dosen/upload1/${dsn.id_dosen}`} state={{ collaps: 'induk' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
+                                                    <Link to={`/dosen/print/${dsn.id_dosen}`} state={{ collaps: 'induk' }} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
                                                     <button onClick={() => nonaktifkan(dsn.id_dosen)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>

@@ -90,7 +90,7 @@ const ListMataKuliah = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-cols-3 gap-4">
                             <div>
-                                <Link to="/matakuliah/add" className="btn btn-default btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
+                                <Link to="/matakuliah/add" className="btn btn-success btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
                             </div>
                             <div>
                                 {/* <select className="select select-bordered select-xs max-w-xs">
@@ -108,7 +108,7 @@ const ListMataKuliah = () => {
                                                 className="input input-xs input-bordered input-success"
                                                 placeholder='Cari'
                                             />
-                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                            <button type='submit' className="btn btn-xs btn-square btn-success">
                                                 <FaSearch />
                                             </button>
                                         </div>
@@ -143,7 +143,7 @@ const ListMataKuliah = () => {
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <Link to={`/matakuliah/edit/${mkl.id_mata_kuliah}`} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
-                                                    <button className="ml-1 btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(mkl.id_mata_kuliah)} title='Hapus'><FaTrash /></button>
+                                                    <button className="ml-1 btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(mkl.id_mata_kuliah)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -163,11 +163,11 @@ const ListMataKuliah = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle btn-default-activ"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-outline btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

@@ -83,7 +83,7 @@ const ListPembimbing = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <Link to="/addpembimbing" className="btn btn-primary btn-sm"><FaPlus /> <span className="ml-1">tambah data</span></Link>
+                                <Link to="/addpembimbing" className="btn btn-success btn-xs"><FaPlus /> <span className="ml-1">tambah data</span></Link>
                             </div>
                         </div>
                         <div className="overflow-x-auto mb-2">

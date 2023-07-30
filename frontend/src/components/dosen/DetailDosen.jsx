@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FaReply } from "react-icons/fa"
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useLocation } from "react-router-dom"
 import axios from 'axios'
 
 const DetailDosen = () => {
@@ -47,6 +47,7 @@ const DetailDosen = () => {
     const [modal, setModal] = useState("")
     const [nameFile, setNameFile] = useState("")
     const { idDsn } = useParams()
+    const location = useLocation()
 
     useEffect(() => {
         const getDsnById = async () => {
@@ -383,7 +384,7 @@ const DetailDosen = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <Link to="/dosen" className='btn btn-sm btn-error w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
+                        <Link to="/dosen" state={{ collaps: 'induk' }} className='btn btn-sm btn-error w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
                         <div className='grid lg:grid-cols-2'>
                             <div>
                                 <table>
