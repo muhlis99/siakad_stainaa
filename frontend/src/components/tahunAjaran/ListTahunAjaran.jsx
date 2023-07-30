@@ -47,9 +47,9 @@ const ListTahunAjaran = () => {
     }
 
     const cariData = (e) => {
-        e.preventDefault();
+        e.preventDefault()
+        setKeyword(e ? e.target.value : "")
         setPage(0)
-        setKeyword(query)
     }
 
     const modalOpen = async (e, f) => {
@@ -262,25 +262,22 @@ const ListTahunAjaran = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button className="btn btn-primary btn-xs" onClick={() => modalOpen('Tambah', '')}><FaPlus /> tambah data</button>
+                                <button className="btn btn-success btn-xs" onClick={() => modalOpen('Tambah', '')}><FaPlus /> tambah data</button>
                             </div>
                             <div>
-                                <form className='mb-1' onSubmit={cariData}>
-                                    <div className="form-control">
-                                        <div className="input-group justify-end">
-                                            <input
-                                                type="text"
-                                                value={query}
-                                                onChange={(e) => setQuery(e.target.value)}
-                                                className="input input-xs input-bordered input-success"
-                                                placeholder='Cari'
-                                            />
-                                            <button type='submit' className="btn btn-xs btn-square btn-success">
-                                                <FaSearch />
-                                            </button>
-                                        </div>
+                                <div className="form-control">
+                                    <div className="input-group justify-end">
+                                        <input
+                                            type="text"
+                                            onChange={cariData}
+                                            className="input input-xs input-bordered input-success"
+                                            placeholder='Cari'
+                                        />
+                                        <button type='submit' className="btn btn-xs btn-square btn-success">
+                                            <FaSearch />
+                                        </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                         <div className="overflow-x-auto mb-2">

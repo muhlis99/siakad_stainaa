@@ -45,8 +45,8 @@ const ListMahasiswa = () => {
 
     const cariData = (e) => {
         e.preventDefault()
+        setKeyword(e ? e.target.value : "")
         setPage(0)
-        setKeyword(query)
     }
 
     const tbMhs = async () => {
@@ -102,22 +102,19 @@ const ListMahasiswa = () => {
                                 <button className="btn btn-success btn-xs" onClick={tbMhs}><FaPlus /> tambah data</button>
                             </div>
                             <div>
-                                <form onSubmit={cariData} className='mb-1'>
-                                    <div className="form-control">
-                                        <div className="input-group justify-end">
-                                            <input
-                                                type="text"
-                                                value={query}
-                                                onChange={(e) => setQuery(e.target.value)}
-                                                className="input input-xs input-bordered input-success"
-                                                placeholder='Cari'
-                                            />
-                                            <button type='submit' className="btn btn-xs btn-square btn-success">
-                                                <FaSearch />
-                                            </button>
-                                        </div>
+                                <div className="form-control">
+                                    <div className="input-group justify-end">
+                                        <input
+                                            type="text"
+                                            onChange={cariData}
+                                            className="input input-xs input-bordered input-success"
+                                            placeholder='Cari'
+                                        />
+                                        <button type='submit' className="btn btn-xs btn-square btn-success">
+                                            <FaSearch />
+                                        </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                         <div className="overflow-x-auto mb-2">

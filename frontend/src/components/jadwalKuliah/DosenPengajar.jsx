@@ -31,8 +31,6 @@ const DosenPengajar = () => {
     const [nipyp, setNipyp] = useState("")
     const location = useLocation()
 
-    console.log(location.state);
-
     useEffect(() => {
         getDataKelasById()
     }, [location.state])
@@ -67,6 +65,7 @@ const DosenPengajar = () => {
     const getJadwalByKelas = async () => {
         try {
             const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
+            console.log(response);
             setTglMulai(response.data.data.tanggal_mulai)
             setTglSelesai(response.data.data.tanggal_selesai)
             setJumPertemuan(response.data.data.jumlah_pertemuan)
@@ -210,6 +209,7 @@ const DosenPengajar = () => {
                             icon: "success"
                         }).then(() => {
                             getJadwalByKelas()
+                            setPengajar("")
                         })
                     })
                 } catch (error) {
@@ -327,6 +327,7 @@ const DosenPengajar = () => {
                             icon: "success"
                         }).then(() => {
                             getJadwalByKelas()
+                            setPengganti("")
                         })
                     })
                 } catch (error) {
