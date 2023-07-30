@@ -281,7 +281,7 @@ module.exports = {
             }, {
                 model: mataKuliahModel,
                 where: { status: "aktif" }
-            }, , {
+            }, {
                 model: dosenModel,
                 as: "dosenPengganti"
             }],
