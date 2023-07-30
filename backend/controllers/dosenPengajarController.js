@@ -15,7 +15,8 @@ module.exports = {
         const dataJadwalKuliah = await jadwalKuliahModel.findAll({
             include: [{
                 model: dosenModel,
-                status: "aktif"
+                status: "aktif",
+                as: "dosenPengajar"
             }],
             where: {
                 status: "aktif"
