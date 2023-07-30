@@ -43,6 +43,38 @@ module.exports = {
         })
     },
 
+    autocompleteDosenPengganti: async (req, res, next) => {
+        const dataJadwalKuliah = await jadwalKuliahModel.findAll({
+            include: [{
+                model: dosenModel,
+                status: "aktif",
+                as: "dosenPengajar"
+            }],
+            where: {
+                status: "aktif"
+            }
+        })
+        const dataDosenPengajar = dataJadwalKuliah.map(i => {
+            return i.dosen_pengajar
+        })
+
+        await dosenModel.findAll({
+            where: {
+                nip_ynaa: {
+                    [Op.notIn]: dataDosenPengajar
+                },
+                status: "aktif"
+            }
+        }).then(all => {
+            res.status(201).json({
+                message: "Data dosen pengganti Ditemukan",
+                data: all
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
     getById: async (req, res, next) => {
         const id = req.params.id
         await jadwalKuliahModel.findOne({
