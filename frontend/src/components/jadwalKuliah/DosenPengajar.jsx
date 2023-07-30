@@ -3,6 +3,7 @@ import { FaEdit, FaSearch, FaPeopleArrows, FaSave, FaTrash, FaTimes } from 'reac
 import { Link, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
+import Select from "react-select"
 
 const DosenPengajar = () => {
     const [Dosen, setDosen] = useState([])
@@ -23,7 +24,11 @@ const DosenPengajar = () => {
     const [idJadwal, setIdJadwal] = useState("")
     const [select2, setSelect2] = useState("")
     const [isClearable, setIsClearable] = useState(true)
+    const [nipy, setNipy] = useState("")
+    const [nipyp, setNipyp] = useState("")
     const location = useLocation()
+
+    console.log(location.state);
 
     useEffect(() => {
         getDataKelasById()
@@ -87,9 +92,13 @@ const DosenPengajar = () => {
         setSelect2(i)
     }
 
-    // const dsnPengajar = (e) => {
-    //     setNipy(e ? e.value : "")
-    // }
+    const dsnPengajar = (e) => {
+        setNipy(e ? e.value : "")
+    }
+
+    const dsnPengganti = (e) => {
+        setNipyp(e ? e.value : "")
+    }
 
     const editDsn = (e) => {
         setStatusForm(e)
@@ -98,23 +107,22 @@ const DosenPengajar = () => {
     const tambahDsnPengajar = async (e) => {
         e.preventDefault()
         try {
-            if (kodeDsnPengajar == 0) {
+            if (nipy == 0) {
                 Swal.fire({
                     title: 'Dosen Pengajar kosong',
                     icon: "error"
                 })
             } else {
                 await axios.put('v1/dosenPengajar/create', {
-                    dosen_pengajar: kodeDsnPengajar,
-                    dosen_pengganti: kodeDsnPengganti,
+                    dosen_pengajar: nipy,
                     id: idJadwal
                 }).then(function (response) {
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        setStatusForm('')
                         getJadwalByKelas()
+                        getDosenAll()
                     })
                 })
             }
@@ -209,130 +217,154 @@ const DosenPengajar = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-3">
                     <div className="card-body p-4">
-                        <form onSubmit={tambahDsnPengajar}>
-                            <div className="grid">
-                                <div className='mb-2'>
-                                    <div className='float-right flex gap-2'>
-                                        <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-secondary'><FaSearch /> Detail Jadwal</Link>
-                                        <Link to={`/setpertemuan`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, jad: kodeJadwal }} className='btn btn-sm btn-info'><FaPeopleArrows /> Set Pertemuan</Link>
+                        <div className="grid">
+                            <div className='mb-2'>
+                                <div className='float-right flex gap-2'>
+                                    <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-secondary'><FaSearch /> Detail Jadwal</Link>
+                                    <Link to={`/setpertemuan`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, jad: kodeJadwal }} className='btn btn-sm btn-info'><FaPeopleArrows /> Set Pertemuan</Link>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='grid grid-cols-2 gap-2'>
+                            <div className='grid gap-2'>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Tahun Ajaran</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{tahun}</a>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Semester</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{semester}</a>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Fakultas</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{fakultas}</a>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Program Studi</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{prodi}</a>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Mata Kuliah</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{makul}</a>
                                     </div>
                                 </div>
                             </div>
-                            <div className='grid grid-cols-2 gap-2'>
-                                <div className='grid gap-2'>
-                                    <div className='flex gap-2'>
-                                        <div className='flex-initial w-48'>
-                                            <label>
-                                                <span className="">Tahun Ajaran</span>
-                                            </label>
-                                        </div>
-                                        <div className='flex-initial w-80'>
-                                            <a>{tahun}</a>
-                                        </div>
+                            <div className='grid gap-2'>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Kelas</span>
+                                        </label>
                                     </div>
-                                    <div className='flex gap-2'>
-                                        <div className='flex-initial w-48'>
-                                            <label>
-                                                <span className="">Semester</span>
-                                            </label>
-                                        </div>
-                                        <div className='flex-initial w-80'>
-                                            <a>{semester}</a>
-                                        </div>
-                                    </div>
-                                    <div className='flex gap-2'>
-                                        <div className='flex-initial w-48'>
-                                            <label>
-                                                <span className="">Fakultas</span>
-                                            </label>
-                                        </div>
-                                        <div className='flex-initial w-80'>
-                                            <a>{fakultas}</a>
-                                        </div>
-                                    </div>
-                                    <div className='flex gap-2'>
-                                        <div className='flex-initial w-48'>
-                                            <label>
-                                                <span className="">Program Studi</span>
-                                            </label>
-                                        </div>
-                                        <div className='flex-initial w-80'>
-                                            <a>{prodi}</a>
-                                        </div>
-                                    </div>
-                                    <div className='flex gap-2'>
-                                        <div className='flex-initial w-48'>
-                                            <label>
-                                                <span className="">Mata Kuliah</span>
-                                            </label>
-                                        </div>
-                                        <div className='flex-initial w-80'>
-                                            <a>{makul}</a>
-                                        </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{kelas}</a>
                                     </div>
                                 </div>
-                                <div className='grid gap-2'>
-                                    <div className='flex gap-2'>
-                                        <div className='flex-initial w-48'>
-                                            <label>
-                                                <span className="">Kelas</span>
-                                            </label>
-                                        </div>
-                                        <div className='flex-initial w-80'>
-                                            <a>{kelas}</a>
-                                        </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Kapasitas</span>
+                                        </label>
                                     </div>
-                                    <div className='flex gap-2'>
-                                        <div className='flex-initial w-48'>
-                                            <label>
-                                                <span className="">Kapasitas</span>
-                                            </label>
-                                        </div>
-                                        <div className='flex-initial w-80'>
-                                            <a>{kapasitas}</a>
-                                        </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{kapasitas}</a>
                                     </div>
-                                    <div className='flex gap-2'>
-                                        <div className='flex-initial w-48'>
-                                            <label>
-                                                <span className="">Tanggal Mulai</span>
-                                            </label>
-                                        </div>
-                                        <div className='flex-initial w-80'>
-                                            <a>{tglMulai}</a>
-                                        </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Tanggal Mulai</span>
+                                        </label>
                                     </div>
-                                    <div className='flex gap-2'>
-                                        <div className='flex-initial w-48'>
-                                            <label>
-                                                <span className="">Tanggal Selesai</span>
-                                            </label>
-                                        </div>
-                                        <div className='flex-initial w-80'>
-                                            <a>{tglSelesai}</a>
-                                        </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{tglMulai}</a>
                                     </div>
-                                    <div className='flex gap-2'>
-                                        <div className='flex-initial w-48'>
-                                            <label>
-                                                <span className="">Jumlah Pertemuan</span>
-                                            </label>
-                                        </div>
-                                        <div className='flex-initial w-80'>
-                                            <a>{jumPertemuan}</a>
-                                        </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Tanggal Selesai</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{tglSelesai}</a>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Jumlah Pertemuan</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{jumPertemuan}</a>
                                     </div>
                                 </div>
                             </div>
-                            <div className='grid grid-cols-2 gap-4 mt-2 border-t-2 border-t-[#2D7F5F] pt-2'>
+                        </div>
+                        <div className='grid grid-cols-2 gap-4 mt-2 border-t-2 border-t-[#2D7F5F] pt-2'>
+                            <form onSubmit={tambahDsnPengajar}>
                                 <div>
                                     <label className="label">
                                         <span className="text-base label-text">Dosen Pengajar</span>
                                     </label>
-                                    <input type="number" placeholder="Masukkan NIK" className="input input-sm input-bordered w-full max-w-xs" />
+                                    <Select
+                                        className="basic-single w-full max-w-xs"
+                                        classNamePrefix="select"
+                                        options={select2}
+                                        onChange={dsnPengajar}
+                                        isClearable={isClearable}
+                                        id='input-select'
+                                    />
+                                    <button className='btn btn-sm btn-primary mt-2'><FaSave /> Simpan</button>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                            <form action="">
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text">Dosen Pengganti</span>
+                                    </label>
+                                    <Select
+                                        className="basic-single w-full max-w-xs"
+                                        classNamePrefix="select"
+                                        options={select2}
+                                        onChange={dsnPengganti}
+                                        isClearable={isClearable}
+                                        id='input-select'
+                                    />
+                                    <button className='btn btn-sm btn-primary mt-2'><FaSave /> Simpan</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </section>

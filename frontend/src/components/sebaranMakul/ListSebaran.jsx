@@ -527,7 +527,7 @@ const ListSebaran = () => {
                                             </div>
                                         </div>
                                         <div className='col-span-2'>
-                                            <button className='btn btn-sm btn-default float-right'><FaSave /><span className='ml-1'>simpan</span></button>
+                                            <button className='btn btn-sm btn-primary float-right'><FaSave /><span className='ml-1'>simpan</span></button>
                                         </div>
                                     </div>
                                 </form>
@@ -652,7 +652,7 @@ const ListSebaran = () => {
                                             </label>
                                         </div>
                                         <div>
-                                            <button className='btn btn-sm btn-default'><FaPlus /><span className='ml-1'>Tambah</span></button>
+                                            <button className='btn btn-sm btn-primary'><FaPlus /><span className='ml-1'>Tambah</span></button>
                                         </div>
                                     </div>
                                 </div>

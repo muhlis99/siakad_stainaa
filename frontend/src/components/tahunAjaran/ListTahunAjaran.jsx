@@ -204,7 +204,7 @@ const ListTahunAjaran = () => {
             <div className="modal">
                 <div className="modal-box relative">
                     <form onSubmit={modal == 'Tambah' ? simpanTahun : updateTahun}>
-                        <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
+                        <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
                         <h3 className="font-bold text-xl">{modal}</h3>
                         <div className="grid">
                             <div>
@@ -249,7 +249,7 @@ const ListTahunAjaran = () => {
                             </div>
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">simpan</button>
+                            <button type='submit' className="btn btn-sm btn-primary">simpan</button>
                         </div>
                     </form>
                 </div>
@@ -262,7 +262,7 @@ const ListTahunAjaran = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button className="btn btn-default btn-xs" onClick={() => modalOpen('Tambah', '')}><FaPlus /> tambah data</button>
+                                <button className="btn btn-primary btn-xs" onClick={() => modalOpen('Tambah', '')}><FaPlus /> tambah data</button>
                             </div>
                             <div>
                                 <form className='mb-1' onSubmit={cariData}>
@@ -275,7 +275,7 @@ const ListTahunAjaran = () => {
                                                 className="input input-xs input-bordered input-success"
                                                 placeholder='Cari'
                                             />
-                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                            <button type='submit' className="btn btn-xs btn-square btn-success">
                                                 <FaSearch />
                                             </button>
                                         </div>
@@ -302,11 +302,11 @@ const ListTahunAjaran = () => {
                                             <td className='px-6 py-2'>{thn.code_tahun_ajaran}</td>
                                             <td className='px-6 py-2'>{thn.tahun_ajaran}</td>
                                             <td className='px-6 py-2'>{thn.keterangan}</td>
-                                            <td className='px-6 py-2'>{thn.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                            <td className='px-6 py-2'>{thn.status == "aktif" ? <span className="badge btn-success badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalOpen('Edit', thn.id_tahun_ajaran)} title='Edit'><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(thn.id_tahun_ajaran)} title='Hapus'><FaTrash /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(thn.id_tahun_ajaran)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -326,11 +326,11 @@ const ListTahunAjaran = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle btn-primary-activ"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-outline btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

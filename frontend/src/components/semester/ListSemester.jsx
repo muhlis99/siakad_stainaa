@@ -211,7 +211,7 @@ const ListSemester = () => {
             <input type="checkbox" id="my-modal-add" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
+                    <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
                     <form onSubmit={simpanSmt}>
                         <h3 className="font-bold text-xl">Tambah</h3>
                         <div className="grid">
@@ -261,7 +261,7 @@ const ListSemester = () => {
                             </div>
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">simpan</button>
+                            <button type='submit' className="btn btn-sm btn-primary">simpan</button>
                         </div>
                     </form>
                 </div>
@@ -271,7 +271,7 @@ const ListSemester = () => {
             <div className="modal">
                 <div className="modal-box relative">
                     <form onSubmit={updateSmt}>
-                        <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
+                        <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
                         <h3 className="font-bold text-xl">Edit</h3>
                         <div className="grid">
                             <div>
@@ -320,7 +320,7 @@ const ListSemester = () => {
                             </div>
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">simpan</button>
+                            <button type='submit' className="btn btn-sm btn-primary">simpan</button>
                         </div>
                     </form>
                 </div>
@@ -334,7 +334,7 @@ const ListSemester = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button className="btn btn-default btn-xs" onClick={modalAddOpen}><FaPlus /> <span className="ml-1">tambah data</span></button>
+                                <button className="btn btn-success btn-xs" onClick={modalAddOpen}><FaPlus /> <span className="ml-1">tambah data</span></button>
                             </div>
                             <div>
                                 <form className='mb-1' onSubmit={cariData}>
@@ -347,7 +347,7 @@ const ListSemester = () => {
                                                 className="input input-xs input-bordered input-success"
                                                 placeholder='Cari'
                                             />
-                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                            <button type='submit' className="btn btn-xs btn-square btn-success">
                                                 <FaSearch />
                                             </button>
                                         </div>
@@ -376,11 +376,11 @@ const ListSemester = () => {
                                             <td className='px-6 py-2'>{smt.tahunAjarans[0].tahun_ajaran}</td>
                                             <td className='px-6 py-2'><Moment date={smt.tanggal_aktif} format="DD MMMM YYYY" /></td>
                                             <td className='px-6 py-2'>{smt.keterangan}</td>
-                                            <td className='px-6 py-2'>{smt.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                            <td className='px-6 py-2'>{smt.status == "aktif" ? <span className="badge primary badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(smt.id_semester)}><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-danger" title='Hapus' onClick={() => nonaktifkan(smt.id_semester)}><FaTrash /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(smt.id_semester)}><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -400,11 +400,11 @@ const ListSemester = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle primary-activ"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-outline btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

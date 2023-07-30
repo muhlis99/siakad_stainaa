@@ -242,7 +242,7 @@ const ListUser = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button className="btn btn-primary btn-sm" onClick={() => modalOpen('Tambah', '')}><FaPlus />tambah data</button>
+                                <button className="btn btn-success btn-xs" onClick={() => modalOpen('Tambah', '')}><FaPlus />tambah data</button>
                             </div>
                             <div>
                                 <form className='mb-1' onSubmit={cariData}>
@@ -285,7 +285,7 @@ const ListUser = () => {
                                                 <div>
                                                     <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalOpen('Edit', use.id)}
                                                         title='Edit'><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(use.id)} title='Hapus'><FaTrash /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(use.id)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>

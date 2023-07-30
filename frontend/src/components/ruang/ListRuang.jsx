@@ -164,7 +164,7 @@ const ListRuang = () => {
             <input type="checkbox" id="my-modal-add" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
+                    <button className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
                     <form onSubmit={judul == "Tambah" ? simpanDataRuang : updateDataRuang}>
                         <h3 className="font-bold text-xl">{judul}</h3>
                         <div className="py-4">
@@ -187,7 +187,7 @@ const ListRuang = () => {
                             </div>
                         </div>
                         <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-default">{judul == 'Tambah' ? <><FaSave /><span className='ml-1'>simpan</span></> : <><FaEdit /><span className='ml-1'>edit</span></>}</button>
+                            <button type='submit' className="btn btn-sm btn-primary">{judul == 'Tambah' ? <><FaSave /><span className='ml-1'>simpan</span></> : <><FaEdit /><span className='ml-1'>edit</span></>}</button>
                         </div>
                     </form>
                 </div>
@@ -200,7 +200,7 @@ const ListRuang = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button onClick={() => modalAddOpen('Tambah', '')} className="btn btn-default btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></button>
+                                <button onClick={() => modalAddOpen('Tambah', '')} className="btn btn-success btn-xs"><FaPlus /> <span className=''>tambah data</span></button>
                             </div>
                             <div>
                                 <form className='mb-1' onSubmit={cariData}>
@@ -213,7 +213,7 @@ const ListRuang = () => {
                                                 className="input input-xs input-bordered input-success"
                                                 placeholder='Cari'
                                             />
-                                            <button type='submit' className="btn btn-xs btn-square btn-default">
+                                            <button type='submit' className="btn btn-xs btn-square btn-success">
                                                 <FaSearch />
                                             </button>
                                         </div>
@@ -240,11 +240,11 @@ const ListRuang = () => {
                                             <td className='px-6 py-2'>{rng.code_ruang}</td>
                                             <td className='px-6 py-2'>{rng.nama_ruang}</td>
                                             <td className='px-6 py-2'>{rng.lokasi}</td>
-                                            <td className='px-6 py-2'>{rng.status == "aktif" ? <span className="badge btn-default badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                            <td className='px-6 py-2'>{rng.status == "aktif" ? <span className="badge btn-primary badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalAddOpen('Edit', rng.id_ruang)} title='Edit'><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-danger" onClick={() => nonaktifkan(rng.id_ruang)} title='Hapus'><FaTrash /></button>
+                                                    <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(rng.id_ruang)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -264,11 +264,11 @@ const ListRuang = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-outline btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>
