@@ -663,7 +663,6 @@ const SetPertemuan = () => {
                                             <th scope="col" className="py-1 border">Waktu</th>
                                             <th scope="col" className="py-1 border">Jenis</th>
                                             <th scope="col" className="py-1 border">Metode</th>
-                                            <th scope="col" className="py-1 border">Pengajar</th>
                                             <th scope="col" className="py-1 border">Aksi</th>
                                         </tr>
                                     </thead>
@@ -687,7 +686,6 @@ const SetPertemuan = () => {
                                                 <td className='py-1 border' align='center'>{item.jadwalKuliahs[0].jam_mulai + " s/d " + item.jadwalKuliahs[0].jam_selesai}</td>
                                                 <td className='py-1 border' align='center'>{item.jenis_pertemuan}</td>
                                                 <td className='py-1 border' align='center'>{item.metode_pembelajaran}</td>
-                                                <td className='py-1 border' align='center'>{item.jadwalKuliahs[0].dosen_pengajar}</td>
                                                 <td className='py-1 border' align='center'>
                                                     <div>
                                                         <button className="btn btn-xs btn-circle text-white btn-info mr-1" title='Detail' onClick={() => editPertemuan(item.id_jadwal_pertemuan, 'detail')}><FaInfo /></button>
