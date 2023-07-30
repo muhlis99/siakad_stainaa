@@ -114,10 +114,18 @@ jadwalKuliahModel.hasMany(jenjangPendidikanModel, { sourceKey: 'code_jenjang_pen
 
 // dosen
 doseModel.belongsTo(jadwalKuliahModel, { foreignKey: 'nip_ynaa' })
-jadwalKuliahModel.hasMany(doseModel, { sourceKey: 'dosen_pengajar', foreignKey: 'nip_ynaa' })
+jadwalKuliahModel.hasMany(doseModel, {
+    sourceKey: 'dosen_pengajar',
+    foreignKey: 'nip_ynaa',
+    as: "dosenPengajar"
+})
 
 // dosen pengganti
 doseModel.belongsTo(jadwalKuliahModel, { foreignKey: 'nip_ynaa' })
-jadwalKuliahModel.hasMany(doseModel, { sourceKey: 'dosen_pengganti', foreignKey: 'nip_ynaa' })
+jadwalKuliahModel.hasMany(doseModel, {
+    sourceKey: 'dosen_pengganti',
+    foreignKey: 'nip_ynaa',
+    as: "dosenPengganti"
+})
 
 module.exports = jadwalKuliahModel
