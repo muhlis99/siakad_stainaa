@@ -74,30 +74,42 @@ const ListKategoriNilai = () => {
     const simpanKatNilai = async (e) => {
         e.preventDefault()
         try {
-            await axios.post('v1/kategoriNilai/create', {
-                nilai_atas: nilaiAtas,
-                nilai_bawah: nilaiBawah,
-                nilai_huruf: nilaiHuruf,
-                interfal_skor: skor,
-                kategori: kategori,
-                keterangan: keterangan,
-                code_tahun_ajaran: kodeTahun
-            }).then(function (response) {
-                document.getElementById('my-modal').checked = false
+            if (nilaiBawah > nilaiAtas) {
                 Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    getKategoriNilai()
-                    setNilaiAtas("")
-                    setNilaiBawah("")
-                    setNilaiHuruf("")
-                    setSkor("")
-                    setKategori("")
-                    setKeterangan("")
-                    setKodeTahun("")
+                    title: "Nilai minimal melebihi nilai maksimal",
+                    icon: "error"
                 })
-            })
+            } else if (nilaiBawah == nilaiAtas) {
+                Swal.fire({
+                    title: "Nilai minimal sama dengan nilai maksimal",
+                    icon: "error"
+                })
+            } else {
+                await axios.post('v1/kategoriNilai/create', {
+                    nilai_atas: nilaiAtas,
+                    nilai_bawah: nilaiBawah,
+                    nilai_huruf: nilaiHuruf,
+                    interfal_skor: skor,
+                    kategori: kategori,
+                    keterangan: keterangan,
+                    code_tahun_ajaran: kodeTahun
+                }).then(function (response) {
+                    document.getElementById('my-modal').checked = false
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        getKategoriNilai()
+                        setNilaiAtas("")
+                        setNilaiBawah("")
+                        setNilaiHuruf("")
+                        setSkor("")
+                        setKategori("")
+                        setKeterangan("")
+                        setKodeTahun("")
+                    })
+                })
+            }
         } catch (error) {
             if (error.response.data.message) {
                 Swal.fire({
@@ -222,7 +234,7 @@ const ListKategoriNilai = () => {
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-danger absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
+                    <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
                     <form onSubmit={judul == 'Tambah' ? simpanKatNilai : updateKtg}>
                         <h3 className="font-bold text-xl">{judul}</h3>
                         <div className="grid lg:grid-cols-2 gap-2">
@@ -240,13 +252,13 @@ const ListKategoriNilai = () => {
                             <div className='grid grid-cols-2 gap-2'>
                                 <div>
                                     <label className="label">
-                                        <span className="text-base label-text">Nilai Atas</span>
+                                        <span className="text-base label-text">Nilai Maks</span>
                                     </label>
                                     <input type="number" className="input input-sm input-bordered w-full" value={nilaiAtas} onChange={(e) => setNilaiAtas(e.target.value)} />
                                 </div>
                                 <div>
                                     <label className="label">
-                                        <span className="text-base label-text">Nilai Bawah</span>
+                                        <span className="text-base label-text">Nilai Min</span>
                                     </label>
                                     <input type="number" className="input input-sm input-bordered w-full" value={nilaiBawah} onChange={(e) => setNilaiBawah(e.target.value)} />
                                 </div>
