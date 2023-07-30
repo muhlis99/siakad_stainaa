@@ -19,7 +19,6 @@ const ListKelas = () => {
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
-    const [kodesmt, setKodeSmt] = useState("")
     const [jumMhs, setJumMhs] = useState("")
     const [dari, setDari] = useState("1")
     const [sampai, setSampai] = useState("")
@@ -82,7 +81,7 @@ const ListKelas = () => {
 
     useEffect(() => {
         getJumlahMhs()
-    }, [kodeFakultas, kodeJenjang, kodeProdi, kodesmt, kodeTahun, jenisKelamin, statusKell, statusKelp])
+    }, [kodeFakultas, kodeJenjang, kodeProdi, kodeSemester, kodeTahun, jenisKelamin, statusKell, statusKelp])
 
 
     useEffect(() => {
@@ -171,8 +170,8 @@ const ListKelas = () => {
         // if (statusKell == jenisKelamin || statusKelp == jenisKelamin) {
         //     setJumMhs("0")
         // } else {
-        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodesmt != 0 & kodeTahun != 0 & jenisKelamin != 0) {
-            const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodeTahun}/${kodesmt}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${jenisKelamin}`)
+        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0 & jenisKelamin != 0) {
+            const response = await axios.get(`v1/kelasKuliah/jumlahMhs/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${jenisKelamin}`)
             setJumMhs(response.data.data)
         } else {
             setJumMhs("")
@@ -211,7 +210,7 @@ const ListKelas = () => {
     const modalClose = () => {
         document.getElementById('my-modal').checked = false
         setSampai("")
-        setKodeSmt("")
+        setKodeSemester("")
         setJumMhs("")
     }
 
@@ -233,7 +232,7 @@ const ListKelas = () => {
                     code_fakultas: kodeFakultas,
                     code_prodi: kodeProdi,
                     code_tahun_ajaran: kodeTahun,
-                    code_semester: kodesmt,
+                    code_semester: kodeSemester,
                     nama_kelas: kelasnya,
                     hurufKelas: klsSelanjutnya,
                     kapasitas: kapasitas,
@@ -245,7 +244,6 @@ const ListKelas = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        setKodeSmt("")
                         setSampai("")
                         setStatusKell(jenisKelamin == 'l' ? jenisKelamin : '')
                         setStatusKelp(jenisKelamin == 'p' ? jenisKelamin : '')
@@ -322,7 +320,7 @@ const ListKelas = () => {
                                     <label className="label">
                                         <span className="text-base label-text">Semester</span>
                                     </label>
-                                    <select className="select select-sm select-bordered w-full" value={kodesmt} onChange={(e) => setKodeSmt(e.target.value)}>
+                                    <select className="select select-sm select-bordered w-full" disabled value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
                                         <option value="">Semester</option>
                                         {Semester.map((item) => (
                                             <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>

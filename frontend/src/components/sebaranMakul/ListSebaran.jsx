@@ -370,7 +370,7 @@ const ListSebaran = () => {
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box w-11/12 max-w-2xl relative">
-                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
+                    <button className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
                     <h3 className="font-bold text-xl">{judul}</h3>
                     <div className='py-4'>
                         {
