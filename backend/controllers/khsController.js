@@ -105,16 +105,34 @@ module.exports = {
                 {
                     attributes: ["id_mata_kuliah", "code_mata_kuliah", "nama_mata_kuliah", "sks"],
                     model: mataKuliahModel,
-                    where: { status: "aktif" }
+                    where: {
+                        code_tahun_ajaran: codeThnAjr,
+                        code_semester: codeSmt,
+                        code_jenjang_pendidikan: codeJnjPen,
+                        code_fakultas: codeFks,
+                        code_prodi: codePrd,
+                        status: "aktif"
+                    }
                 }
             ],
             where: {
+                code_tahun_ajaran: codeThnAjr,
+                code_semester: codeSmt,
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
                 nim: nim,
                 status: "aktif"
             }
         })
 
-        const queryTotalSksIndex = await db.query('SELECT SUM( tb_mata_kuliah.sks*tb_kategori_nilai.interfal_skor) AS total FROM `tb_nilai_kuliah` INNER JOIN tb_mata_kuliah ON tb_nilai_kuliah.code_mata_kuliah=tb_mata_kuliah.code_mata_kuliah INNER JOIN tb_kategori_nilai ON tb_nilai_kuliah.code_kategori_nilai=tb_kategori_nilai.code_kategori_nilai', {
+        const queryTotalSksIndex = await db.query(`SELECT SUM( tb_mata_kuliah.sks*tb_kategori_nilai.interfal_skor) AS total FROM tb_nilai_kuliah
+        INNER JOIN tb_mata_kuliah ON tb_nilai_kuliah.code_mata_kuliah=tb_mata_kuliah.code_mata_kuliah INNER JOIN tb_kategori_nilai ON
+        tb_nilai_kuliah.code_kategori_nilai=tb_kategori_nilai.code_kategori_nilai WHERE tb_nilai_kuliah.code_tahun_ajaran="${codeThnAjr}" 
+        AND tb_nilai_kuliah.code_semester="${codeSmt}" AND tb_nilai_kuliah.code_jenjang_pendidikan="${codeJnjPen}" 
+        AND tb_nilai_kuliah.code_fakultas="${codeFks}" AND tb_nilai_kuliah.code_prodi="${codePrd}" AND tb_nilai_kuliah.status="aktif" AND tb_nilai_kuliah.nim="${nim}"
+        AND tb_mata_kuliah.code_tahun_ajaran="${codeThnAjr}" AND tb_mata_kuliah.code_semester="${codeSmt}" AND tb_mata_kuliah.code_jenjang_pendidikan="${codeJnjPen}" 
+        AND tb_mata_kuliah.code_fakultas="${codeFks}" AND tb_mata_kuliah.code_prodi="${codePrd}" AND tb_mata_kuliah.status="aktif"`, {
             nest: true,
             type: QueryTypes.SELECT
         })
@@ -126,7 +144,14 @@ module.exports = {
                 {
                     attributes: ["id_mata_kuliah", "code_mata_kuliah", "nama_mata_kuliah", "sks"],
                     model: mataKuliahModel,
-                    where: { status: "aktif" }
+                    where: {
+                        code_tahun_ajaran: codeThnAjr,
+                        code_semester: codeSmt,
+                        code_jenjang_pendidikan: codeJnjPen,
+                        code_fakultas: codeFks,
+                        code_prodi: codePrd,
+                        status: "aktif"
+                    }
                 },
                 {
                     attributes: ["id_kategori_nilai", "nilai_huruf", "interfal_skor"],
