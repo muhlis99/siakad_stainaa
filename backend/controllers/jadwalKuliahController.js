@@ -8,6 +8,7 @@ const kelasModel = require('../models/kelasKuliahModel.js')
 const ruangModel = require('../models/ruangModel.js')
 const fakultasModel = require("../models/fakultasModel.js")
 const jenjangPendidikanModel = require("../models/jenjangPendidikanModel.js")
+const dosenModel = require("../models/dosenModel.js")
 
 
 module.exports = {
@@ -88,6 +89,11 @@ module.exports = {
                 where: {
                     status_makul: "paket",
                     status_bobot_makul: "wajib",
+                    status: "aktif"
+                }
+            }, {
+                model: dosenModel,
+                where: {
                     status: "aktif"
                 }
             }],

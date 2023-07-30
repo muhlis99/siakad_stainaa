@@ -9,11 +9,9 @@ router.post('/create', pembimbingAkademikController.post)
 router.put('/update/:id', pembimbingAkademikController.put)
 router.put('/delete/:id', pembimbingAkademikController.delete)
 router.get('/autocompleteDosen', pembimbingAkademikController.autocompleteDosen)
-router.get('/autocompleteMahasiswa/:codeThnAjr/:codeSmt/:codeJnjPen/:codeFks/:codePrd', pembimbingAkademikController.autocompleteMahasiswa)
+router.get('/autocompleteMahasiswa/:codeJnjPen/:codeFks/:codePrd', pembimbingAkademikController.autocompleteMahasiswa)
 router.post('/createDetail', pembimbingAkademikController.postDetail)
 router.put('/updateDetail/:id', pembimbingAkademikController.putDetail)
 router.put('/deleteDetail/:id', pembimbingAkademikController.deleteDetail)
-
-
 
 module.exports = router
