@@ -7,6 +7,7 @@ module.exports = {
         const currentPage = parseInt(req.query.page) || 1
         const perPage = parseInt(req.query.perPage) || 10
         const search = req.query.search || ""
+        const codeThnAjr = req.query.codeThnAjr || ""
         const offset = (currentPage - 1) * perPage
         const totalPage = await kategoriNilaiModel.count({
             include: [{
@@ -51,7 +52,10 @@ module.exports = {
                         }
                     }
                 ],
-                status: "aktif"
+                status: "aktif",
+                code_tahun_ajaran: {
+                    [Op.like]: `%${codeThnAjr}%`
+                }
             }
         })
         const totalItems = Math.ceil(totalPage / perPage)
@@ -98,7 +102,10 @@ module.exports = {
                         }
                     }
                 ],
-                status: "aktif"
+                status: "aktif",
+                code_tahun_ajaran: {
+                    [Op.like]: `%${codeThnAjr}%`
+                }
             },
             offset: offset,
             limit: perPage,
