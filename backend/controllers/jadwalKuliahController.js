@@ -93,15 +93,9 @@ module.exports = {
                 }
             }, {
                 model: dosenModel,
-                where: {
-                    status: "aktif"
-                },
                 as: "dosenPengajar"
             }, {
                 model: dosenModel,
-                where: {
-                    status: "aktif"
-                },
                 as: "dosenPengganti"
             }],
             where: {
