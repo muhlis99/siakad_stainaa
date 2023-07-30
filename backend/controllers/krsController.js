@@ -48,6 +48,28 @@ module.exports = {
             }]
         })
 
+        const paketmakulKrs = await krsModel.count({
+            where: {
+                code_tahun_ajaran: tahunAjaran,
+                code_semester: semester,
+                code_jenjang_pendidikan: jenjangPendik,
+                code_fakultas: fakultas,
+                code_prodi: prodi,
+
+            },
+            include: [{
+                model: semesterModel,
+                attributes: ['semester'],
+                status: "aktif"
+            }, {
+                model: mataKuliahModel,
+                status_makul: "paket",
+                status_bobot_makul: "wajib",
+                status: "aktif"
+            }]
+        })
+
+
         const jmlMahasiswa = await historyMahasiswa.findAndCountAll({
             where: {
                 code_tahun_ajaran: tahunAjaran,
@@ -74,9 +96,13 @@ module.exports = {
             },
             group: ['nim'],
         })
+        console.log(paketmakul);
+        console.log(paketmakulKrs);
+        console.log(jmlPaketMahasiswa.count);
+
         var jumlah = ""
         var keterangan = ""
-        if (jmlPaketMahasiswa.count == 0 || jmlPaketMahasiswa.count == null) {
+        if (paketmakul > paketmakulKrs && jmlPaketMahasiswa.count[0].count > 0) {
             jumlah = 0
             keterangan = "paket belum"
         } else {
@@ -136,7 +162,6 @@ module.exports = {
         const prd = req.params.prd
 
 
-        // mengambil code mata kuliah yang paket sesuai semester
         const makul = await mataKuliahModel.findAll({
             attributes: ['code_mata_kuliah'],
             where: {
@@ -150,7 +175,8 @@ module.exports = {
                 status: "aktif"
             }
         })
-        // mengambil nim mahasiswa yang krs paket sesuai semester 
+
+
         const Dtnim = await historyMahasiswa.findAll({
             attributes: ['nim'],
             where: {
@@ -162,34 +188,120 @@ module.exports = {
                 status: "aktif"
             }
         })
-        const data_body = makul.map(Dn => {
-            let data2 = Dn.code_mata_kuliah
-            const datas = Dtnim.map(DM => {
-                let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
-                return {
-                    code_krs: randomNumber,
-                    code_mata_kuliah: data2,
-                    nim: DM.nim,
+
+        const makulInKrs = makul.map(al => {
+            return al.code_mata_kuliah
+        })
+
+        const validasimakul = await krsModel.findOne({
+            where: {
+                code_mata_kuliah: makulInKrs,
+                code_tahun_ajaran: thnAjr,
+                code_semester: smt,
+                code_jenjang_pendidikan: jenjPen,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            }
+        })
+
+        if (validasimakul) {
+            const makulKrs = await krsModel.findAll({
+                code_tahun_ajaran: thnAjr,
+                code_semester: smt,
+                code_jenjang_pendidikan: jenjPen,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            })
+            const validasiMakulKrs = makulKrs.map(al => {
+                return al.code_mata_kuliah
+            })
+            const paketmakulNew = await mataKuliahModel.findAll({
+                where: {
                     code_tahun_ajaran: thnAjr,
                     code_semester: smt,
                     code_jenjang_pendidikan: jenjPen,
                     code_fakultas: fks,
                     code_prodi: prd,
-                    status_krs: "setuju",
-                    status: "aktif"
+                    status_bobot_makul: "wajib",
+                    status_makul: "paket",
+                    status: "aktif",
+                    code_mata_kuliah: {
+                        [Op.notIn]: validasiMakulKrs
+                    }
                 }
             })
-            krsModel.bulkCreate(datas)
-        })
-        if (data_body) {
-            res.status(201).json({
-                message: "data krs paket succes ditambahkan"
+
+            const data_body = paketmakulNew.map(Dn => {
+                let data2 = Dn.code_mata_kuliah
+                const datas = Dtnim.map(DM => {
+                    let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+                    return {
+                        code_krs: randomNumber,
+                        code_mata_kuliah: data2,
+                        nim: DM.nim,
+                        code_tahun_ajaran: thnAjr,
+                        code_semester: smt,
+                        code_jenjang_pendidikan: jenjPen,
+                        code_fakultas: fks,
+                        code_prodi: prd,
+                        status_krs: "setuju",
+                        status: "aktif"
+                    }
+                })
+                krsModel.bulkCreate(datas)
             })
+            if (data_body) {
+                res.status(201).json({
+                    message: "data krs paket succes ditambahkan"
+                })
+            } else {
+                res.status(404).json({
+                    message: "................."
+                })
+            }
         } else {
-            res.status(404).json({
-                message: "................."
+            const data_body = makul.map(Dn => {
+                let data2 = Dn.code_mata_kuliah
+                const datas = Dtnim.map(DM => {
+                    let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+                    return {
+                        code_krs: randomNumber,
+                        code_mata_kuliah: data2,
+                        nim: DM.nim,
+                        code_tahun_ajaran: thnAjr,
+                        code_semester: smt,
+                        code_jenjang_pendidikan: jenjPen,
+                        code_fakultas: fks,
+                        code_prodi: prd,
+                        status_krs: "setuju",
+                        status: "aktif"
+                    }
+                })
+                krsModel.bulkCreate(datas)
             })
+            if (data_body) {
+                res.status(201).json({
+                    message: "data krs paket succes ditambahkan"
+                })
+            } else {
+                res.status(404).json({
+                    message: "................."
+                })
+            }
         }
+
+
+        // if (data_body) {
+        //     res.status(201).json({
+        //         message: "data krs paket succes ditambahkan"
+        //     })
+        // } else {
+        //     res.status(404).json({
+        //         message: "................."
+        //     })
+        // }
     }
 
 }
