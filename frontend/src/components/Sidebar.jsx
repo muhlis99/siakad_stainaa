@@ -32,10 +32,12 @@ const Sidebar = () => {
   const location = useLocation()
 
   const [collap, setCollaps] = useState("")
+  const [active, setActive] = useState("")
 
   useEffect(() => {
     if (location.state != null) {
       setCollaps(location.state.collaps)
+      // console.log(location.state)
     } else {
       setCollaps("")
     }

@@ -20,6 +20,8 @@ const DosenPengajar = () => {
     const [jumPertemuan, setJumPertemuan] = useState("")
     const [kodeDsnPengajar, setKodeDsnPengajar] = useState("")
     const [kodeDsnPengganti, setKodeDsnPengganti] = useState("")
+    const [pengajar, setPengajar] = useState("")
+    const [pengganti, setPengganti] = useState("")
     const [kodeJadwal, setKodeJadwal] = useState("")
     const [statusForm, setStatusForm] = useState("")
     const [idJadwal, setIdJadwal] = useState("")
@@ -72,6 +74,7 @@ const DosenPengajar = () => {
             setKodeDsnPengajar(response.data.data.dosen_pengajar)
             setKodeDsnPengganti(response.data.data.dosen_pengganti)
             setKodeJadwal(response.data.data.code_jadwal_kuliah)
+            setPengganti(response.data.data.dosens[0].nama)
         } catch (error) {
 
         }
@@ -103,6 +106,11 @@ const DosenPengajar = () => {
         document.getElementById('dsn-pengajar').checked = true
     }
 
+    const closeDsnPengajar = () => {
+        setStatusForm("")
+        document.getElementById('dsn-pengajar').checked = false
+    }
+
     const tambahDsnPengajar = async (e) => {
         e.preventDefault()
         try {
@@ -116,12 +124,14 @@ const DosenPengajar = () => {
                     dosen_pengajar: nipy,
                     id: idJadwal
                 }).then(function (response) {
+                    document.getElementById('dsn-pengajar').checked = false
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
                         getJadwalByKelas()
                         getDosenAll()
+                        setStatusForm("")
                     })
                 })
             }
@@ -140,7 +150,45 @@ const DosenPengajar = () => {
         }
     }
 
-    const deleteDosen = (e, f) => {
+    const editDsnPengajar = async (e) => {
+        e.preventDefault()
+        try {
+            if (nipy == 0) {
+                Swal.fire({
+                    title: 'Dosen Pengajar tidak diedit',
+                    icon: "error"
+                })
+            } else {
+                await axios.put(`v1/dosenPengajar/update/${idJadwal}`, {
+                    dosen_pengajar: nipy
+                }).then(function (response) {
+                    document.getElementById('dsn-pengajar').checked = false
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        getJadwalByKelas()
+                        getDosenAll()
+                        setStatusForm("")
+                    })
+                })
+            }
+        } catch (error) {
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
+            } else {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
+        }
+    }
+
+    const deleteDosenPengajar = (e, f) => {
         Swal.fire({
             title: "Hapus data Dosen Pengajar?",
             text: "Anda tidak dapat mengembalikan ini",
@@ -153,9 +201,125 @@ const DosenPengajar = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 try {
-                    axios.put(`v1/dosenPengajar/deleteStatus/${idJadwal}`, {
-                        dosen_pengajar: e,
-                        dosen_pengganti: f
+                    axios.put(`v1/dosenPengajar/delete/${idJadwal}`, {
+                        dosen_pengajar: e
+                    }).then(function (response) {
+                        Swal.fire({
+                            title: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            getJadwalByKelas()
+                        })
+                    })
+                } catch (error) {
+
+                }
+            }
+        })
+    }
+
+    const modalDsnPengganti = (e) => {
+        setStatusForm(e)
+        document.getElementById('dsn-pengganti').checked = true
+    }
+
+    const closeDsnPengganti = () => {
+        setStatusForm("")
+        document.getElementById('dsn-pengganti').checked = false
+    }
+
+    const tambahDsnPengganti = async (e) => {
+        e.preventDefault()
+        try {
+            if (nipyp == 0) {
+                Swal.fire({
+                    title: 'Dosen Pengganti kosong',
+                    icon: "error"
+                })
+            } else {
+                await axios.put('v1/dosenPengajar/createPengganti', {
+                    dosen_pengganti: nipyp,
+                    id: idJadwal
+                }).then(function (response) {
+                    document.getElementById('dsn-pengganti').checked = false
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        getJadwalByKelas()
+                        getDosenAll()
+                        setStatusForm("")
+                    })
+                })
+            }
+        } catch (error) {
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
+            } else {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
+        }
+    }
+
+    const editDsnPengganti = async (e) => {
+        e.preventDefault()
+        try {
+            if (nipy == 0) {
+                Swal.fire({
+                    title: 'Dosen Pengganti tidak diedit',
+                    icon: "error"
+                })
+            } else {
+                await axios.put(`v1/dosenPengajar/updatePengganti/${idJadwal}`, {
+                    dosen_pengganti: nipyp
+                }).then(function (response) {
+                    document.getElementById('dsn-pengganti').checked = false
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        getJadwalByKelas()
+                        getDosenAll()
+                        setStatusForm("")
+                    })
+                })
+            }
+        } catch (error) {
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
+            } else {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                })
+            }
+        }
+    }
+
+    const deleteDosenPengganti = (e, f) => {
+        Swal.fire({
+            title: "Hapus data Dosen Pengganti?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.put(`v1/dosenPengajar/deletePengganti/${idJadwal}`, {
+                        dosen_pengganti: e
                     }).then(function (response) {
                         Swal.fire({
                             title: response.data.message,
@@ -176,8 +340,8 @@ const DosenPengajar = () => {
             <input type="checkbox" id="dsn-pengajar" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box">
-                    <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2"><FaTimes /></button>
-                    <form onSubmit={tambahDsnPengajar}>
+                    <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={closeDsnPengajar}><FaTimes /></button>
+                    <form onSubmit={statusForm == 'Tambah' ? tambahDsnPengajar : editDsnPengajar}>
                         <h3 className="font-bold text-xl">{statusForm} Dosen Pengajar</h3>
                         <div className="py-4">
                             <div>
@@ -191,6 +355,36 @@ const DosenPengajar = () => {
                                     onChange={dsnPengajar}
                                     isClearable={isClearable}
                                     id='input-select'
+                                    placeholder={statusForm == 'Edit' ? kodeDsnPengajar + ' | ' + kodeDsnPengajar : ''}
+                                />
+                            </div>
+                        </div>
+                        <div className="modal-action">
+                            <button type='submit' className="btn btn-sm btn-primary"><FaSave />simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <input type="checkbox" id="dsn-pengganti" className="modal-toggle" />
+            <div className="modal">
+                <div className="modal-box">
+                    <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={closeDsnPengganti}><FaTimes /></button>
+                    <form onSubmit={statusForm == 'Tambah' ? tambahDsnPengganti : editDsnPengganti}>
+                        <h3 className="font-bold text-xl">{statusForm} Dosen Pengganti</h3>
+                        <div className="py-4">
+                            <div>
+                                <label className="label">
+                                    <span className="text-base label-text">Dosen Pengganti</span>
+                                </label>
+                                <Select
+                                    className="basic-single w-full"
+                                    classNamePrefix="select"
+                                    options={select2}
+                                    onChange={dsnPengganti}
+                                    isClearable={isClearable}
+                                    id='input-select'
+                                    placeholder={statusForm == 'Edit' ? kodeDsnPengajar + ' | ' + kodeDsnPengajar : ''}
                                 />
                             </div>
                         </div>
@@ -333,19 +527,30 @@ const DosenPengajar = () => {
                                     </div>
                                 </div>
                                 <div className='mt-2 flex gap-1'>
-                                    {kodeDsnPengajar ? "" : <button className='btn btn-xs btn-primary btn-circle' onClick={() => modalDsnPengajar('Tambah')} title='Tambah Dosen Pengajar'><FaPlus /></button>}
+                                    {kodeDsnPengajar ? "" :
+                                        <button className='btn btn-xs btn-primary btn-circle' onClick={() => modalDsnPengajar('Tambah')} title='Tambah Dosen Pengajar'><FaPlus /></button>
+                                    }
                                     {kodeDsnPengajar ? <button className='btn btn-xs btn-warning btn-circle' onClick={() => modalDsnPengajar('Edit')} title='Edit Dosen Pengajar'><FaEdit /></button> : ""}
-                                    {kodeDsnPengajar ? <button className='btn btn-xs btn-error btn-circle' title='Hapus Dosen Pengajar'><FaTrash /></button> : ""}
+                                    {kodeDsnPengajar ? <button className='btn btn-xs btn-error btn-circle' onClick={() => deleteDosenPengajar(kodeDsnPengajar)} title='Hapus Dosen Pengajar'><FaTrash /></button> : ""}
                                 </div>
                             </div>
-                            <div className='flex gap-2'>
-                                <div className='flex-initial w-48'>
-                                    <label>
-                                        <span className="">Dosen Pengganti</span>
-                                    </label>
+                            <div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Dosen Pengganti</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{pengganti}</a>
+                                    </div>
                                 </div>
-                                <div className='flex-initial w-80'>
-                                    <a>{kodeDsnPengganti}</a>
+                                <div className='mt-2 flex gap-1'>
+                                    {kodeDsnPengganti ? "" :
+                                        <button className='btn btn-xs btn-primary btn-circle' onClick={() => modalDsnPengganti('Tambah')} title='Tambah Dosen Pengajar'><FaPlus /></button>
+                                    }
+                                    {kodeDsnPengganti ? <button className='btn btn-xs btn-warning btn-circle' onClick={() => modalDsnPengganti('Edit')} title='Edit Dosen Pengajar'><FaEdit /></button> : ""}
+                                    {kodeDsnPengganti ? <button className='btn btn-xs btn-error btn-circle' onClick={() => deleteDosenPengganti(kodeDsnPengganti)} title='Hapus Dosen Pengajar'><FaTrash /></button> : ""}
                                 </div>
                             </div>
                             {/* <form onSubmit={tambahDsnPengajar}>
