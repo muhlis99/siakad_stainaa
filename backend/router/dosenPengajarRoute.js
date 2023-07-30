@@ -4,6 +4,7 @@ const dosenPengajarController = require('../controllers/dosenPengajarController.
 
 
 route.get('/autocompleteDosenPengajar', dosenPengajarController.autocompleteDosenPengajar)
+route.get('/autocompleteDosenPengganti', dosenPengajarController.autocompleteDosenPengajar)
 route.get('/getById/:id', dosenPengajarController.getById)
 route.put('/create', dosenPengajarController.post)
 route.put('/update/:id', dosenPengajarController.put)
