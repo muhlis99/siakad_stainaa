@@ -222,15 +222,20 @@ module.exports = {
     },
 
     autocompleteMahasiswa: async (req, res, next) => {
+        const { codeJnjPen, codeFks, codePrd } = req.params
+        console.log(codeJnjPen);
+        console.log(codeFks);
+        console.log(codePrd);
+
         const dataDetailPembimbing = await detailPembimbingAkademik.findAll({
             include: [{
                 model: mahasiswaModel,
-                code_tahun_ajaran: codeThnAjr,
-                code_semester: codeSmt,
-                code_jenjang_pendidikan: codeJnjPen,
-                code_fakultas: codeFks,
-                code_prodi: codePrd,
-                status: "aktif"
+                where: {
+                    code_jenjang_pendidikan: codeJnjPen,
+                    code_fakultas: codeFks,
+                    code_prodi: codePrd,
+                    status: "aktif"
+                }
             }],
             where: {
                 status: "aktif"
@@ -243,15 +248,19 @@ module.exports = {
             where: {
                 nim: {
                     [Op.notIn]: dataMahsiswaInDetailPembimbing,
-                    code_tahun_ajaran: codeThnAjr,
-                    code_semester: codeSmt,
-                    code_jenjang_pendidikan: codeJnjPen,
-                    code_fakultas: codeFks,
-                    code_prodi: codePrd,
                 },
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
                 status: "aktif"
             }
         }).then(all => {
+            if (!all) {
+                res.status(201).json({
+                    message: "Data mahsiswa  Ditemukan",
+                    data: []
+                })
+            }
             res.status(201).json({
                 message: "Data mahsiswa  Ditemukan",
                 data: all
