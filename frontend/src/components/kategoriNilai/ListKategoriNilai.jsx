@@ -334,6 +334,7 @@ const ListKategoriNilai = () => {
                                 <thead className='text-gray-700 bg-[#F2F2F2]'>
                                     <tr>
                                         <th scope="col" className="px-6 py-3" align='center'>#</th>
+                                        <th scope="col" className="px-6 py-3" align='center'>Tahun Ajaran</th>
                                         <th scope="col" className="px-6 py-3" align='center'>Nilai Angka</th>
                                         <th scope="col" className="px-6 py-3" align='center'>Nilai Huruf</th>
                                         <th scope="col" className="px-6 py-3" align='center'>Intefal Skor</th>
@@ -343,7 +344,43 @@ const ListKategoriNilai = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {ListNilai.map((ktg, index) => (
+                                    {ListNilai.map((ktg, index) => {
+                                        return kodeThn == 0 ? (
+                                            <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500'>
+                                                <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap" align='center'>{index + 1}</th>
+                                                <td className='px-6 py-2' align='center'>{ktg.tahunAjarans[0].tahun_ajaran}</td>
+                                                <td className='px-6 py-2' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
+                                                <td className='px-6 py-2' align='center'>{ktg.nilai_huruf}</td>
+                                                <td className='px-6 py-2' align='center'>{ktg.interfal_skor}</td>
+                                                <td className='px-6 py-2' align='center'>{ktg.kategori}</td>
+                                                <td className='px-6 py-2' align='center'>{ktg.keterangan}</td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div>
+                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
+                                                        <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ) : ktg.code_tahun_ajaran == kodeThn ? (
+                                            <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500'>
+                                                <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap" align='center'>{index + 1}</th>
+                                                <td className='px-6 py-2' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
+                                                <td className='px-6 py-2' align='center'>{ktg.nilai_huruf}</td>
+                                                <td className='px-6 py-2' align='center'>{ktg.interfal_skor}</td>
+                                                <td className='px-6 py-2' align='center'>{ktg.kategori}</td>
+                                                <td className='px-6 py-2' align='center'>{ktg.keterangan}</td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div>
+                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
+                                                        <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            ""
+                                        )
+                                    })}
+                                    {/* {ListNilai.map((ktg, index) => (
                                         <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500'>
                                             <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap" align='center'>{index + 1}</th>
                                             <td className='px-6 py-2' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
@@ -358,7 +395,7 @@ const ListKategoriNilai = () => {
                                                 </div>
                                             </td>
                                         </tr>
-                                    ))}
+                                    ))} */}
                                 </tbody>
                             </table>
                         </div>
