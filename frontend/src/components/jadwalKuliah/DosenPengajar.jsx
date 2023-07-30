@@ -74,7 +74,8 @@ const DosenPengajar = () => {
             setKodeDsnPengajar(response.data.data.dosen_pengajar)
             setKodeDsnPengganti(response.data.data.dosen_pengganti)
             setKodeJadwal(response.data.data.code_jadwal_kuliah)
-            setPengganti(response.data.data.dosens[0].nama)
+            setPengajar(response.data.data.dosenPengajar[0].nama)
+            setPengganti(response.data.data.dosenPengganti[0].nama)
         } catch (error) {
 
         }
@@ -355,7 +356,7 @@ const DosenPengajar = () => {
                                     onChange={dsnPengajar}
                                     isClearable={isClearable}
                                     id='input-select'
-                                    placeholder={statusForm == 'Edit' ? kodeDsnPengajar + ' | ' + kodeDsnPengajar : ''}
+                                    placeholder={statusForm == 'Edit' ? kodeDsnPengajar + ' | ' + pengajar : ''}
                                 />
                             </div>
                         </div>
@@ -384,7 +385,7 @@ const DosenPengajar = () => {
                                     onChange={dsnPengganti}
                                     isClearable={isClearable}
                                     id='input-select'
-                                    placeholder={statusForm == 'Edit' ? kodeDsnPengajar + ' | ' + kodeDsnPengajar : ''}
+                                    placeholder={statusForm == 'Edit' ? kodeDsnPengganti + ' | ' + pengganti : ''}
                                 />
                             </div>
                         </div>
@@ -514,7 +515,7 @@ const DosenPengajar = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='grid grid-cols-2 gap-4 mt-2 border-t-2 border-t-[#2D7F5F] pt-2'>
+                        <div className='grid grid-cols-2 gap-4'>
                             <div>
                                 <div className='flex gap-2'>
                                     <div className='flex-initial w-48'>
@@ -523,7 +524,7 @@ const DosenPengajar = () => {
                                         </label>
                                     </div>
                                     <div className='flex-initial w-80'>
-                                        <a>{kodeDsnPengajar}</a>
+                                        <a>{pengajar}</a>
                                     </div>
                                 </div>
                                 <div className='mt-2 flex gap-1'>
@@ -547,35 +548,12 @@ const DosenPengajar = () => {
                                 </div>
                                 <div className='mt-2 flex gap-1'>
                                     {kodeDsnPengganti ? "" :
-                                        <button className='btn btn-xs btn-primary btn-circle' onClick={() => modalDsnPengganti('Tambah')} title='Tambah Dosen Pengajar'><FaPlus /></button>
+                                        <button className='btn btn-xs btn-primary btn-circle' onClick={() => modalDsnPengganti('Tambah')} title='Tambah Dosen Pengganti'><FaPlus /></button>
                                     }
-                                    {kodeDsnPengganti ? <button className='btn btn-xs btn-warning btn-circle' onClick={() => modalDsnPengganti('Edit')} title='Edit Dosen Pengajar'><FaEdit /></button> : ""}
-                                    {kodeDsnPengganti ? <button className='btn btn-xs btn-error btn-circle' onClick={() => deleteDosenPengganti(kodeDsnPengganti)} title='Hapus Dosen Pengajar'><FaTrash /></button> : ""}
+                                    {kodeDsnPengganti ? <button className='btn btn-xs btn-warning btn-circle' onClick={() => modalDsnPengganti('Edit')} title='Edit Dosen Pengganti'><FaEdit /></button> : ""}
+                                    {kodeDsnPengganti ? <button className='btn btn-xs btn-error btn-circle' onClick={() => deleteDosenPengganti(kodeDsnPengganti)} title='Hapus Dosen Pengganti'><FaTrash /></button> : ""}
                                 </div>
                             </div>
-                            {/* <form onSubmit={tambahDsnPengajar}>
-                                <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Dosen Pengajar</span>
-                                    </label>
-                                    
-                                    <button className='btn btn-sm btn-primary mt-2'><FaSave /> Simpan</button>
-                                </div>
-                            </form> */}
-                            {/* <form action="">
-                                <div>
-
-                                    <Select
-                                        className="basic-single w-full max-w-xs"
-                                        classNamePrefix="select"
-                                        options={select2}
-                                        onChange={dsnPengganti}
-                                        isClearable={isClearable}
-                                        id='input-select'
-                                    />
-                                    <button className='btn btn-sm btn-primary mt-2'><FaSave /> Simpan</button>
-                                </div>
-                            </form> */}
                         </div>
                     </div>
                 </div>
