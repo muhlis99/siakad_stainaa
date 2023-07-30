@@ -101,7 +101,10 @@ module.exports = {
                 where: { status: "aktif" }
             }, {
                 model: dosenModel,
-                // where: { status: "aktif" }
+                as: "dosenPengajar"
+            }, {
+                model: dosenModel,
+                as: "dosenPengganti"
             }],
             where: {
                 id_jadwal_kuliah: id,
@@ -190,7 +193,7 @@ module.exports = {
                 where: { status: "aktif" }
             }, {
                 model: dosenModel,
-                // where: { status: "aktif" }
+                as: "dosenPengajar"
             }],
             where: {
                 id_jadwal_kuliah: id,
@@ -278,9 +281,9 @@ module.exports = {
             }, {
                 model: mataKuliahModel,
                 where: { status: "aktif" }
-            }, {
+            }, , {
                 model: dosenModel,
-                // where: { status: "aktif" }
+                as: "dosenPengganti"
             }],
             where: {
                 id_jadwal_kuliah: id,
