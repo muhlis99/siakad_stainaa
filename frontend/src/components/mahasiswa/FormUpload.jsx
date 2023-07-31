@@ -42,6 +42,8 @@ const FormUpload = () => {
                 setIjazahs(response.data.data.foto_ijazah)
                 setKip(response.data.data.foto_kip)
                 setKips(response.data.data.foto_kip)
+                setKtm(response.data.data.foto_ktm)
+                setKtms(response.data.data.foto_ktm)
             } catch (error) {
 
             }
@@ -55,8 +57,8 @@ const FormUpload = () => {
         fotoKtp()
         fotoIjazah()
         fotoKip()
-        // fotoKtm()
-    }, [fotos, kks, ktps, ijazahs, kips, ktm])
+        fotoKtm()
+    }, [fotos, kks, ktps, ijazahs, kips, ktms])
 
     const fotoDiri = async () => {
         try {
@@ -163,26 +165,26 @@ const FormUpload = () => {
         }
     }
 
-    // const fotoKtm = async () => {
-    //     try {
-    //         if (ktms != 0) {
-    //             await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/kip/${ktms}`, {
-    //                 responseType: "arraybuffer"
-    //             }).then((response) => {
-    //                 const base64 = btoa(
-    //                     new Uint8Array(response.data).reduce(
-    //                         (data, byte) => data + String.fromCharCode(byte),
-    //                         ''
-    //                     )
-    //                 )
-    //                 setPrevKip(`data:;base64,${base64}`)
-    //             })
+    const fotoKtm = async () => {
+        try {
+            if (ktms != 0) {
+                await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/ktm/${ktms}`, {
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevKtm(`data:;base64,${base64}`)
+                })
 
-    //         }
-    //     } catch (error) {
+            }
+        } catch (error) {
 
-    //     }
-    // }
+        }
+    }
 
     const loadFoto = (e) => {
         const image = e.target.files[0]
@@ -270,7 +272,7 @@ const FormUpload = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        navigate("/mahasiswa")
+                        navigate("/mahasiswa", { state: { collaps: 'induk', activ: '/mahasiswa' } })
                     });
                 })
             }
@@ -379,7 +381,7 @@ const FormUpload = () => {
                             </div>
                             <div className='grid lg:grid-cols-2'>
                                 <div>
-                                    <Link to="/mahasiswa" className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>
+                                    <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>
                                 </div>
                                 <div>
                                     <div className='float-right'>

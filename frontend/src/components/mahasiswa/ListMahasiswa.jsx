@@ -90,7 +90,7 @@ const ListMahasiswa = () => {
 
     return (
         <div className='mt-2 container'>
-            {idMhs && <Navigate to={`form1/${stat}/${idMhs}`} />}
+            {idMhs && <Navigate to={`form1/${stat}/${idMhs}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} />}
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Mahasiswa</h1>
             </section>
@@ -143,9 +143,9 @@ const ListMahasiswa = () => {
                                             <td className='px-6 py-2'>{mhs.prodis[0].nama_prodi}</td>
                                             <td className='px-6 py-2'>
                                                 <div className='grid grid-flow-col'>
-                                                    <Link to={`/mahasiswa/detail/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
-                                                    <Link to={`/mahasiswa/form1/edit/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
-                                                    <Link to={`/mahasiswa/upload/berkas/${mhs.id_mahasiswa}`} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
+                                                    <Link to={`/mahasiswa/detail/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
+                                                    <Link to={`/mahasiswa/form1/edit/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                    <Link to={`/mahasiswa/upload/berkas/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
                                                     <Link to={`/mahasiswa/print/${mhs.id_mahasiswa}`} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
                                                     {/* <button onClick={() => nonaktifkan(mhs.id_mahasiswa)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button> */}
                                                 </div>

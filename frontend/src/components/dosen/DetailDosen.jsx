@@ -384,7 +384,7 @@ const DetailDosen = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <Link to="/dosen" state={{ collaps: 'induk' }} className='btn btn-sm btn-error w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
+                        <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-error w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
                         <div className='grid lg:grid-cols-2'>
                             <div>
                                 <table>

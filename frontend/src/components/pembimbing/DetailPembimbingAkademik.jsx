@@ -152,8 +152,8 @@ const DetailPembimbingAkademik = () => {
                         <select className="select select-sm select-bordered w-full mb-2" value={kodePembimbing} onChange={(e) => setKodePembimbing(e.target.value)}>
                             <option value="">Dosen</option>
                             {Pembimbing.map((item, index) => {
-                                return item.code_pembimbing_akademik == kodeBimbing ? (
-                                    <option key={index} disabled hidden value={item.code_pembimbing_akademik}>{item.dosens[0].nama}</option>
+                                return item.code_pembimbing_akademik == kodeBimbing || item.code_prodi != location.state.pro ? (
+                                    ""
                                 ) : (
                                     <option key={index} value={item.code_pembimbing_akademik}>{item.dosens[0].nama}</option>
                                 )
@@ -171,8 +171,8 @@ const DetailPembimbingAkademik = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
                     <div className="card-body p-4">
                         <div className='mb-2'>
-                            <Link to='/pembimbingakademik' className='btn btn-sm btn-error'><FaReply />Kembali</Link>
-                            {kuota != jumlah ? <Link to='/setpembimbingakademik' state={{ idDsn: location.state.idDsn }} className="btn btn-primary btn-sm float-right"><FaCog />Set Mahasiswa</Link> : ""}
+                            <Link to='/pembimbingakademik' state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
+                            {kuota != jumlah ? <Link to='/setpembimbingakademik' state={{ idDsn: location.state.idDsn, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/pembimbingakademik' }} className="btn btn-primary btn-sm float-right"><FaCog />Set Mahasiswa</Link> : ""}
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div className='flex gap-2'>

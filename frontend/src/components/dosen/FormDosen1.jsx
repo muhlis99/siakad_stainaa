@@ -108,7 +108,7 @@ const FormDosen1 = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate(`/dosen/form2/${stat}/${idDsn}`)
+                    navigate(`/dosen/form2/${stat}/${idDsn}`, { state: { collaps: 'induk', activ: '/dosen' } })
                 });
             })
         } catch (error) {
@@ -143,7 +143,7 @@ const FormDosen1 = () => {
                             text: response.data.message,
                             icon: "success"
                         }).then(() => {
-                            navigate("/dosen")
+                            navigate("/dosen", { state: { collaps: 'induk', activ: '/dosen' } })
                         });
                     })
 
@@ -249,7 +249,7 @@ const FormDosen1 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type='button' onClick={() => batal(idDsn)} className='btn btn-sm btn-error'><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/dosen" className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>}
+                                    {stat == "add" ? <button type='button' onClick={() => batal(idDsn)} className='btn btn-sm btn-error'><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>}
                                 </div>
                                 <div>
                                     <div className='float-right'>

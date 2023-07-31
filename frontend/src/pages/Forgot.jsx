@@ -95,8 +95,8 @@ const Forgot = () => {
 
                             </div>
                             <div className="card-actions justify-center gap-5 mt-9">
-                                <button className="btn btn-default btn-sm w-32">Kirim</button>
-                                <button type='button' onClick={batalkan} className="btn btn-danger btn-sm w-32">Batal</button>
+                                <button className="btn btn-primary btn-sm w-32">Kirim</button>
+                                <button type='button' onClick={batalkan} className="btn btn-error btn-sm w-32">Batal</button>
                             </div>
                         </form>
                     </div>

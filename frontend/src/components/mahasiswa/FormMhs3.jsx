@@ -158,7 +158,7 @@ const FormMhs3 = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate(`/mahasiswa/form4/${stat}/${idMhs}`)
+                    navigate(`/mahasiswa/form4/${stat}/${idMhs}`, { state: { collaps: 'induk', activ: '/mahasiswa' } })
                 });
             })
         } catch (error) {
@@ -193,7 +193,7 @@ const FormMhs3 = () => {
                             text: response.data.message,
                             icon: "success"
                         }).then(() => {
-                            navigate("/mahasiswa")
+                            navigate("/mahasiswa", { state: { collaps: 'induk', activ: '/mahasiswa' } })
                         });
                     })
 
@@ -367,12 +367,12 @@ const FormMhs3 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-error' onClick={() => batal(idMhs)}><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
+                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-error' onClick={() => batal(idMhs)}><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
                                         <div>
-                                            <Link to={`/mahasiswa/form2/${stat}/${idMhs}`} className='btn btn-sm btn-primary w-full'><FaArrowLeft /><span className="ml-1">Kembali</span></Link>
+                                            <Link to={`/mahasiswa/form2/${stat}/${idMhs}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-primary w-full'><FaArrowLeft /><span className="ml-1">Kembali</span></Link>
                                         </div>
                                         <div className='lg:pl-1'>
                                             <button className='btn btn-sm btn-primary w-full'><span className="mr-1">Simpan dan lanjut</span><FaArrowRight /></button>

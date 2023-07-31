@@ -150,7 +150,7 @@ const FormMhs1 = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate(`/mahasiswa/form2/${stat}/${idMhs}`)
+                    navigate(`/mahasiswa/form2/${stat}/${idMhs}`, { state: { collaps: 'induk', activ: '/mahasiswa' } })
                 });
             })
         } catch (error) {
@@ -185,7 +185,7 @@ const FormMhs1 = () => {
                             text: response.data.message,
                             icon: "success"
                         }).then(() => {
-                            navigate("/mahasiswa")
+                            navigate("/mahasiswa", { state: { collaps: 'induk', activ: '/mahasiswa' } })
                         });
                     })
 
@@ -341,7 +341,7 @@ const FormMhs1 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-error' onClick={() => batal(idMhs)}><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
+                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-error' onClick={() => batal(idMhs)}><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
                                 </div>
                                 <div>
                                     <div className='float-right'>

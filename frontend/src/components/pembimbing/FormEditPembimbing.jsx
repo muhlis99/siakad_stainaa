@@ -126,7 +126,7 @@ const FormEditPembimbing = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        navigate('/pembimbingakademik')
+                        navigate('/pembimbingakademik', { state: { collaps: 'kuliah', activ: '/pembimbingakademik' } })
                     });
                 })
             }
@@ -211,7 +211,7 @@ const FormEditPembimbing = () => {
                             <hr />
                             <div className="grid grid-cols-2 mt-2">
                                 <div>
-                                    <Link to="/pembimbingakademik" className='btn btn-sm btn-error'><FaReply />Kembali</Link>
+                                    <Link to="/pembimbingakademik" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
                                 </div>
                                 <div>
                                     <button className='btn btn-sm btn-primary float-right'><FaSave />Simpan</button>
