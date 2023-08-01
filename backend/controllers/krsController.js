@@ -48,6 +48,7 @@ module.exports = {
             }]
         })
 
+        if (paketmakul.count == 0) return res.status(401).json({ message: "data tidak ditemukan" })
 
         const jmlMahasiswa = await historyMahasiswa.findAndCountAll({
             where: {
@@ -110,7 +111,8 @@ module.exports = {
             jumlah = jmlPaketMahasiswa.count[0].count
             keterangan = "paket selesai"
         }
-        // isi field keterangan 
+
+
         res.status(201).json({
             data: [{
                 semester: smt.semester,
@@ -121,6 +123,7 @@ module.exports = {
                 keterangan: keterangan,
             }]
         })
+
     },
 
     viewAll: async (req, res, next) => {
