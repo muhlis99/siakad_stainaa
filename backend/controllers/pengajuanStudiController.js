@@ -139,6 +139,165 @@ module.exports = {
             })
     },
 
+    getAdmin: async (req, res, next) => {
+        const currentPage = parseInt(req.query.page) || 1
+        const perPage = parseInt(req.query.perPage) || 10
+        const search = req.query.search || ""
+        const offset = (currentPage - 1) * perPage
+        const totalPage = await historyMahasiswa.count({
+            include: [
+                // {
+                //     attributes: ['nim', 'nama'],
+                //     model: mahasiswaModel,
+                //     where: { status: "aktif" }
+                // },
+                // {
+                //     model: tahunAjaranModel,
+                //     where: { status: "aktif" }
+                // },
+                // {
+                //     model: semesterModel,
+                //     where: { status: "aktif" }
+                // },
+                // {
+                //     model: jenjangPendidikanModel,
+                //     where: { status: "aktif" }
+                // },
+                // {
+                //     model: fakultasModel,
+                //     where: { status: "aktif" }
+                // },
+                // {
+                //     model: prodiModel,
+                //     where: { status: "aktif" }
+                // }
+
+            ],
+            where: {
+                [Op.or]: [
+                    {
+                        nim: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_tahun_ajaran: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_semester: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_jenjang_pendidikan: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_semester: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_prodi: {
+                            [Op.like]: `%${search}%`
+                        }
+                    }
+                ],
+                status: {
+                    [Op.not]: ['tidak', 'aktif'],
+                }
+            }
+        })
+        const totalItems = Math.ceil(totalPage / perPage)
+        await historyMahasiswa.findAll({
+            include: [
+                // {
+                //     attributes: ['nim', 'nama'],
+                //     model: mahasiswaModel,
+                //     where: { status: "aktif" }
+                // },
+                // {
+                //     model: tahunAjaranModel,
+                //     where: { status: "aktif" }
+                // },
+                // {
+                //     model: semesterModel,
+                //     where: { status: "aktif" }
+                // },
+                // {
+                //     model: jenjangPendidikanModel,
+                //     where: { status: "aktif" }
+                // },
+                // {
+                //     model: fakultasModel,
+                //     where: { status: "aktif" }
+                // },
+                // {
+                //     model: prodiModel,
+                //     where: { status: "aktif" }
+                // }
+            ],
+            where: {
+                [Op.or]: [
+                    {
+                        nim: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_tahun_ajaran: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_semester: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_jenjang_pendidikan: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_semester: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_prodi: {
+                            [Op.like]: `%${search}%`
+                        }
+                    }
+                ],
+                status: {
+                    [Op.not]: ['tidak', 'aktif'],
+                }
+            },
+            offset: offset,
+            limit: perPage,
+            order: [
+                ["id_history", "DESC"]
+            ]
+        }).
+            then(result => {
+                res.status(200).json({
+                    message: "Get All pengajun studi Success",
+                    data: result,
+                    total_data: totalPage,
+                    per_page: perPage,
+                    current_page: currentPage,
+                    total_page: totalItems
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     getById: async (req, res, next) => {
         const id = req.params.id
         const prodiUse = await pengajuanStudi.findOne({

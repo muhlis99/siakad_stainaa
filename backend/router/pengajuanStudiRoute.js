@@ -5,6 +5,7 @@ const { validationPengajuanStudi } = require('../validation/validationPengajuanS
 const { validationRequest } = require('../validation/validationRequest.js')
 
 router.get('/all', pengajuanStudiController.get)
+router.get('/allAdmin', pengajuanStudiController.getAdmin)
 router.get('/getById/:id', pengajuanStudiController.getById)
 router.post('/createMahasiswa', validationPengajuanStudi, validationRequest, pengajuanStudiController.postMahasiswa)
 router.post('/createAdmin', validationPengajuanStudi, validationRequest, pengajuanStudiController.createAdmin)
