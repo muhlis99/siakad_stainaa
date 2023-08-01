@@ -12,6 +12,7 @@ router.post('/createAdmin', validationPengajuanStudi, validationRequest, pengaju
 router.put('/approveDosen/:id', pengajuanStudiController.approveDosen)
 router.put('/approveBuak/:id', pengajuanStudiController.approveBuak)
 router.put('/deleteStatus/:id', pengajuanStudiController.deleteStatus)
+router.get('/autocomplete/:codeThnAjr/:codeSmt/:codeJnjPen/:codeFks/:codePrd/:status', pengajuanStudiController.autocomplete)
 
 
 module.exports = router

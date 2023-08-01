@@ -139,6 +139,119 @@ module.exports = {
             })
     },
 
+    autocomplete: async (req, res, next) => {
+        const { codeThnAjr, codeSmt, codeJnjPen, codeFks, codePrd, status } = req.params
+        if (status == "aktif") {
+            await historyMahasiswa.findAll({
+                include: [{
+                    attributes: ['nim', 'nama'],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: fakultasModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }],
+                where: {
+                    status: "cuti",
+                    code_tahun_ajaran: codeThnAjr,
+                    code_semester: codeSmt,
+                    code_jenjang_pendidikan: codeJnjPen,
+                    code_fakultas: codeFks,
+                    code_prodi: codePrd,
+                }
+            }).then(all => {
+                res.status(200).json({
+                    message: "Get autocomplite Success",
+                    data: all
+                })
+            })
+        } else if (status == "cuti") {
+            await historyMahasiswa.findAll({
+                include: [{
+                    attributes: ['nim', 'nama'],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: fakultasModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }],
+                where: {
+                    status: "aktif",
+                    code_tahun_ajaran: codeThnAjr,
+                    code_semester: codeSmt,
+                    code_jenjang_pendidikan: codeJnjPen,
+                    code_fakultas: codeFks,
+                    code_prodi: codePrd,
+                }
+            }).then(all => {
+                res.status(200).json({
+                    message: "Get autocomplite Success",
+                    data: all
+                })
+            })
+        } else if (status == "berhenti") {
+            await historyMahasiswa.findAll({
+                include: [{
+                    attributes: ['nim', 'nama'],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: fakultasModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }],
+                where: {
+                    status: ["aktif", "cuti"],
+                    code_tahun_ajaran: codeThnAjr,
+                    code_semester: codeSmt,
+                    code_jenjang_pendidikan: codeJnjPen,
+                    code_fakultas: codeFks,
+                    code_prodi: codePrd,
+                }
+            }).then(all => {
+                res.status(200).json({
+                    message: "Get autocomplite Success",
+                    data: all
+                })
+            })
+        }
+    },
+
     getAdmin: async (req, res, next) => {
         const currentPage = parseInt(req.query.page) || 1
         const perPage = parseInt(req.query.perPage) || 10

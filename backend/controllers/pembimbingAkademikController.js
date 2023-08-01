@@ -223,9 +223,6 @@ module.exports = {
 
     autocompleteMahasiswa: async (req, res, next) => {
         const { codeJnjPen, codeFks, codePrd } = req.params
-        console.log(codeJnjPen);
-        console.log(codeFks);
-        console.log(codePrd);
 
         const dataDetailPembimbing = await detailPembimbingAkademik.findAll({
             include: [{
