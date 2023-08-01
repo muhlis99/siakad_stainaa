@@ -23,6 +23,9 @@ module.exports = {
       '50%': '50%',
       '16': '4rem',
     },
+    active: {
+      'background-color': '#ffffff'
+    }
   },
   plugins: [
     require("daisyui"),
@@ -39,8 +42,7 @@ module.exports = {
           "info": "#0DCAF0",
           "success": "#2D7F5F",
           "warning": "#fbbd23",
-          "error": "#BB2D3B",
-          "ghost": "#cccccc"
+          "error": "#BB2D3B"
         }
       }
     ]
