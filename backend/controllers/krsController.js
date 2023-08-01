@@ -30,7 +30,7 @@ module.exports = {
             }
         })
 
-        const paketmakul = await mataKuliahModel.count({
+        const paketmakul = await mataKuliahModel.findAndCountAll({
             where: {
                 code_tahun_ajaran: tahunAjaran,
                 code_semester: semester,
@@ -44,27 +44,6 @@ module.exports = {
             include: [{
                 model: semesterModel,
                 attributes: ['semester'],
-                status: "aktif"
-            }]
-        })
-
-        const paketmakulKrs = await krsModel.count({
-            where: {
-                code_tahun_ajaran: tahunAjaran,
-                code_semester: semester,
-                code_jenjang_pendidikan: jenjangPendik,
-                code_fakultas: fakultas,
-                code_prodi: prodi,
-
-            },
-            include: [{
-                model: semesterModel,
-                attributes: ['semester'],
-                status: "aktif"
-            }, {
-                model: mataKuliahModel,
-                status_makul: "paket",
-                status_bobot_makul: "wajib",
                 status: "aktif"
             }]
         })
@@ -96,13 +75,35 @@ module.exports = {
             },
             group: ['nim'],
         })
-        console.log(paketmakul);
-        console.log(paketmakulKrs);
-        console.log(jmlPaketMahasiswa.count);
+
+        const arrayPaketMakul = paketmakul.rows.map(al => {
+            return al.code_mata_kuliah
+        })
+        const lastElemetArrayPaketMakul = arrayPaketMakul.pop()
+        const jumlahPaketmakulKrs = await krsModel.count({
+            where: {
+                code_tahun_ajaran: tahunAjaran,
+                code_semester: semester,
+                code_jenjang_pendidikan: jenjangPendik,
+                code_fakultas: fakultas,
+                code_prodi: prodi,
+                code_mata_kuliah: lastElemetArrayPaketMakul
+            },
+            include: [{
+                model: semesterModel,
+                attributes: ['semester'],
+                status: "aktif"
+            }, {
+                model: mataKuliahModel,
+                status_makul: "paket",
+                status_bobot_makul: "wajib",
+                status: "aktif"
+            }]
+        })
 
         var jumlah = ""
         var keterangan = ""
-        if ((paketmakul > paketmakulKrs && jmlPaketMahasiswa.count == 0) || (paketmakul == 0 && paketmakulKrs == 0 && jmlPaketMahasiswa.count == 0)) {
+        if (jumlahPaketmakulKrs === null || jumlahPaketmakulKrs === 0) {
             jumlah = 0
             keterangan = "paket belum"
         } else {
@@ -114,7 +115,7 @@ module.exports = {
             data: [{
                 semester: smt.semester,
                 tahun: thnAjar.tahun_ajaran,
-                Paketmakul: paketmakul,
+                Paketmakul: paketmakul.count,
                 jumlahMahasiswaPaket: jumlah,
                 jumlahTotalMahasiswa: jmlMahasiswa.count,
                 keterangan: keterangan,
