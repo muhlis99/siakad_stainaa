@@ -39,7 +39,7 @@ const Navbar = () => {
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="btn btn-accent btn-circle avatar">
+          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="w-5 rounded-full">
               <img src={Avatar} />
             </div>

@@ -109,7 +109,7 @@ const FormEditMataKuliah = () => {
                     text: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate("/matakuliah")
+                    navigate("/matakuliah", { state: { collaps: 'kuliah', activ: '/matakuliah' } })
                 })
             })
         } catch (error) {
@@ -241,7 +241,7 @@ const FormEditMataKuliah = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    <Link to="/matakuliah" className='btn btn-sm btn-error'><FaReply /> <span className="ml-1">Kembali</span></Link>
+                                    <Link to="/matakuliah" state={{ collaps: 'kuliah', activ: '/matakuliah' }} className='btn btn-sm btn-error'><FaReply /> <span className="ml-1">Kembali</span></Link>
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>

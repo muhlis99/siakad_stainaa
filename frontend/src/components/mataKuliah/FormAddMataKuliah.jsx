@@ -83,7 +83,7 @@ const FormAddMataKuliah = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate("/matakuliah")
+                    navigate("/matakuliah", { state: { collaps: 'kuliah', activ: '/matakuliah' } })
                 })
             })
         } catch (error) {
@@ -113,7 +113,7 @@ const FormAddMataKuliah = () => {
                     text: "Input Mata Kuliah dibatalkan",
                     icon: "success"
                 }).then(() => {
-                    navigate('/matakuliah')
+                    navigate('/matakuliah', { state: { collaps: 'kuliah', activ: '/matakuliah' } })
                 });
             }
         })

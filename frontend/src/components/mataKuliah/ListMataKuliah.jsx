@@ -90,7 +90,7 @@ const ListMataKuliah = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-cols-3 gap-4">
                             <div>
-                                <Link to="/matakuliah/add" className="btn btn-success btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
+                                <Link to="/matakuliah/add" state={{ collaps: 'kuliah', activ: '/matakuliah' }} className="btn btn-success btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
                             </div>
                             <div>
                                 {/* <select className="select select-bordered select-xs max-w-xs">
@@ -139,7 +139,7 @@ const ListMataKuliah = () => {
                                             <td className='px-6 py-2'>{mkl.prodis[0].nama_prodi}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
-                                                    <Link to={`/matakuliah/edit/${mkl.id_mata_kuliah}`} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                    <Link to={`/matakuliah/edit/${mkl.id_mata_kuliah}`} state={{ collaps: 'kuliah', activ: '/matakuliah' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
                                                     <button className="ml-1 btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(mkl.id_mata_kuliah)} title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>

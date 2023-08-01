@@ -405,8 +405,8 @@ const DosenPengajar = () => {
                         <div className="grid">
                             <div className='mb-2'>
                                 <div className='float-right flex gap-2'>
-                                    <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-secondary'><FaSearch /> Detail Jadwal</Link>
-                                    <Link to={`/setpertemuan`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, jad: kodeJadwal }} className='btn btn-sm btn-info'><FaPeopleArrows /> Set Pertemuan</Link>
+                                    <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-secondary'><FaSearch /> Detail Jadwal</Link>
+                                    <Link to={`/setpertemuan`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, jad: kodeJadwal, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-info'><FaPeopleArrows /> Set Pertemuan</Link>
                                 </div>
                             </div>
                         </div>

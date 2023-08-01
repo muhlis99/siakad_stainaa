@@ -10,6 +10,7 @@ const Beranda = () => {
     const [dosen, setDosen] = useState("")
     const [prodi, setProdi] = useState("")
     const [Diagram, setDiagram] = useState([])
+    const [DiagramDsn, setDiagramDsn] = useState([])
 
     useEffect(() => {
         getMhsPutera()
@@ -17,6 +18,7 @@ const Beranda = () => {
         getDosen()
         getProdi()
         getDiagramMhs()
+        getDiagramDsn()
     }, [])
 
     const getMhsPutera = async () => {
@@ -66,6 +68,33 @@ const Beranda = () => {
         ],
     }
 
+    const getDiagramDsn = async () => {
+        const response = await axios.get('v1/home/diagramDosen')
+        setDiagramDsn(response.data.data);
+    }
+
+    const label = DiagramDsn.map(item => (
+        item.tahun
+    ))
+
+    const Jmlh = DiagramDsn.map(item => (
+        item.jumlahDosen
+    ))
+
+    const dataDsn = {
+        labels: label,
+        datasets: [
+            {
+                label: "Dosen Pertahun",
+                backgroundColor: "rgb(0, 153, 51, 0.7)",
+                borderColor: "rgb(0, 128, 43)",
+                borderWidth: 2,
+                borderRadius: 5,
+                data: Jmlh,
+            },
+        ],
+    }
+
     return (
         <div className="container mt-2">
             <section className='mb-5'>
@@ -85,7 +114,7 @@ const Beranda = () => {
                         </div>
                     </div>
                     <div>
-                        <div className='w-full h-36 bg-[#725648] rounded-md px-3 py-3 grid grid-cols-3'>
+                        <div className='w-full h-36 bg-[#725648] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-3'>
                             <div className='col-span-2'>
                                 <h1 className='text-md text-white'>Mahasiswa Puteri</h1>
                                 <h1 className='text-3xl text-white font-bold mt-2'>{puteri}</h1>
@@ -96,7 +125,7 @@ const Beranda = () => {
                         </div>
                     </div>
                     <div>
-                        <div className='w-full h-36 bg-[#D4C403] rounded-md px-3 py-3 grid grid-cols-2'>
+                        <div className='w-full h-36 bg-[#D4C403] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-2'>
                             <div>
                                 <h1 className='text-md text-white'>Dosen</h1>
                                 <h1 className='text-3xl text-white font-bold mt-2'>{dosen}</h1>
@@ -107,7 +136,7 @@ const Beranda = () => {
                         </div>
                     </div>
                     <div>
-                        <div className='w-full h-36 bg-[#2D677F] rounded-md px-3 py-3 grid grid-cols-2'>
+                        <div className='w-full h-36 bg-[#2D677F] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-2'>
                             <div>
                                 <h1 className='text-md text-white'>Program Studi</h1>
                                 <h1 className='text-3xl text-white font-bold mt-2'>{prodi}</h1>
@@ -119,9 +148,16 @@ const Beranda = () => {
                     </div>
 
                 </div>
-                <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md w-1/2">
-                    <div className="card-body p-4">
-                        <Bar data={data} className='relative h-60' />
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
+                        <div className="card-body p-4">
+                            <Bar data={data} className='relative h-60' />
+                        </div>
+                    </div>
+                    <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
+                        <div className="card-body p-4">
+                            <Bar data={dataDsn} className='relative h-60' />
+                        </div>
                     </div>
                 </div>
             </section>
