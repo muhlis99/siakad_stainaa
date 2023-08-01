@@ -137,7 +137,7 @@ const ListStudiMahasiswa = () => {
                             </div>
                         </div> */}
                         <div>
-                            <Link state={{ collaps: 'kuliah', activ: '/studimhs' }} className="btn btn-sm btn-success"><FaPlus /> tambah data</Link>
+                            <Link to="/studimhs/add" state={{ collaps: 'kuliah', activ: '/studimhs' }} className="btn btn-sm btn-success"><FaPlus /> tambah data</Link>
                         </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -151,23 +151,21 @@ const ListStudiMahasiswa = () => {
                                         <th scope="col" align='center' className="px-2 py-3">Prodi</th>
                                         <th scope="col" align='center' className="px-2 py-3">Tahun Ajaran</th>
                                         <th scope="col" align='center' className="px-2 py-3">Semester</th>
-                                        <th scope="col" align='center' className="px-2 py-3 w-5">Aksi</th>
+                                        <th scope="col" align='center' className="px-2 py-3 w-5">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Studi.map((item, index) => (
                                         <tr className='bg-white border-b text-gray-500'>
-                                            <th scope="row" align='center' className="px-2 py-2 font-medium whitespace-nowrap"></th>
-                                            <td className='px-2 py-2' align='center'></td>
-                                            <td className='px-2 py-2' align='center'></td>
-                                            <td className='px-2 py-2' align='center'></td>
-                                            <td className='px-2 py-2' align='center'></td>
-                                            <td className='px-2 py-2' align='center'></td>
-                                            <td className='px-2 py-2' align='center'></td>
-                                            <td className='px-2 py-2' align='center'></td>
-                                            <td className="px-2 py-2">
-                                                <Link state={{ collaps: 'kuliah', activ: '/studimhs' }} className="btn btn-xs btn-info btn-circle" title='Detail'><FaSearch /></Link>
-                                            </td>
+                                            <th scope="row" align='center' className="px-2 py-2 font-medium whitespace-nowrap">{index + 1}</th>
+                                            <td className='px-2 py-2' align='center'>{item.nim}</td>
+                                            <td className='px-2 py-2' align='center'>{item.mahasiswas[0].nama}</td>
+                                            <td className='px-2 py-2' align='center'>{item.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                            <td className='px-2 py-2' align='center'>{item.fakultas[0].nama_fakultas}</td>
+                                            <td className='px-2 py-2' align='center'>{item.prodis[0].nama_prodi}</td>
+                                            <td className='px-2 py-2' align='center'>{item.tahunAjarans[0].tahun_ajaran}</td>
+                                            <td className='px-2 py-2' align='center'>Semester {item.semesters[0].semester}</td>
+                                            <td className="px-2 py-2" align='center'><span className='capitalize'>{item.status}</span></td>
                                         </tr>
                                     ))}
                                 </tbody>

@@ -119,16 +119,7 @@ const SetStudiMahasiswa = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    getMhsBySemester()
-                    setKodeFakultas("")
-                    setKodeJenjang("")
-                    setKodeProdi("")
-                    setKodeSemester("")
-                    setKodeTahun("")
-                    setNim("")
-                    setTgl("")
-                    SetAjuan("")
-                    setAlasan("")
+                    navigate("/studimhs", { state: { collaps: 'kuliah', activ: '/studimhs' } })
                 });
             })
         } catch (error) {
@@ -229,6 +220,7 @@ const SetStudiMahasiswa = () => {
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={ajuan} onChange={(e) => SetAjuan(e.target.value)}>
                                         <option value="">Pengajuan</option>
+                                        <option value="aktif">Aktif</option>
                                         <option value="cuti">Cuti</option>
                                         <option value="berhenti">Berhenti</option>
                                     </select>
@@ -254,6 +246,7 @@ const SetStudiMahasiswa = () => {
                             <hr />
                             <div className="grid mt-2">
                                 <div>
+                                    <Link to="/studimhs" state={{ collaps: 'kuliah', activ: '/studimhs' }} className='btn btn-sm btn-error'><FaReply />kembali</Link>
                                     <button className='btn btn-sm btn-primary float-right'><FaSave />Simpan</button>
                                 </div>
                             </div>

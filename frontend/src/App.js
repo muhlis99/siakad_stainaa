@@ -116,6 +116,7 @@ function App() {
           <Route path="/view/:nim/:kodeFk/:kodeJnjg/:kodeProdi/:kodeSmt/:kodeThn" element={<View />} />
           <Route path="/users" element={<Users />} />
           <Route path="/studimhs" element={<ListStudiMhs />} />
+          <Route path="/studimhs/add" element={<StudiMahasiswa />} />
           <Route path="/pengajuanstudi" element={<PengajuanStudi />} />
           <Route path="/setpengajuan" element={<SetPengajuanStudi />} />
           <Route path="/pembimbingakademik" element={<Pembimbing />} />
