@@ -204,6 +204,17 @@ const SetStudiMahasiswa = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
+                                        <span className="text-base label-text">Pengajuan</span>
+                                    </label>
+                                    <select className="select select-sm select-bordered w-full" value={ajuan} onChange={(e) => SetAjuan(e.target.value)}>
+                                        <option value="">Pengajuan</option>
+                                        <option value="reaktif">Aktif</option>
+                                        <option value="cuti">Cuti</option>
+                                        <option value="berhenti">Berhenti</option>
+                                    </select>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <label className="label flex-initial w-64">
                                         <span className="text-base label-text">Nama Mahasiswa</span>
                                     </label>
                                     <Select
@@ -213,17 +224,6 @@ const SetStudiMahasiswa = () => {
                                         onChange={onchange}
                                         isClearable={isClearable}
                                     />
-                                </div>
-                                <div className='flex gap-2'>
-                                    <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Pengajuan</span>
-                                    </label>
-                                    <select className="select select-sm select-bordered w-full" value={ajuan} onChange={(e) => SetAjuan(e.target.value)}>
-                                        <option value="">Pengajuan</option>
-                                        <option value="reaktif">Aktif</option>
-                                        <option value="cuti">Cuti</option>
-                                        <option value="berhenti">Berhenti</option>
-                                    </select>
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">

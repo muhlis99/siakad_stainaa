@@ -16,9 +16,9 @@ const Beranda = () => {
 
     useEffect(() => {
         setLoading(true)
-        // setTimeout(() => {
-        //     setLoading(false)
-        // }, 2000);
+        setTimeout(() => {
+            setLoading(false)
+        }, 2000);
     }, [])
 
 
@@ -109,8 +109,8 @@ const Beranda = () => {
         <>
             {loading ?
                 <div className='w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50'>
-                    <div className=' h-32 w-32 border-x-2 border-x-[#000] mx-auto mt-72'>
-                        <PuffLoader className='' size={100} />
+                    <div className='h-28 w-28 border mx-auto mt-72'>
+                        <PuffLoader className='' size={109} />
                     </div>
                 </div>
                 :
