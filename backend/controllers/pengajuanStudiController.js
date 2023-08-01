@@ -141,7 +141,7 @@ module.exports = {
 
     autocomplete: async (req, res, next) => {
         const { codeThnAjr, codeSmt, codeJnjPen, codeFks, codePrd, status } = req.params
-        if (status == "aktif") {
+        if (status == "reaktif") {
             await historyMahasiswa.findAll({
                 include: [{
                     attributes: ['nim', 'nama'],
