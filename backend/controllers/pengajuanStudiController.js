@@ -146,31 +146,31 @@ module.exports = {
         const offset = (currentPage - 1) * perPage
         const totalPage = await historyMahasiswa.count({
             include: [
-                // {
-                //     attributes: ['nim', 'nama'],
-                //     model: mahasiswaModel,
-                //     where: { status: "aktif" }
-                // },
-                // {
-                //     model: tahunAjaranModel,
-                //     where: { status: "aktif" }
-                // },
-                // {
-                //     model: semesterModel,
-                //     where: { status: "aktif" }
-                // },
-                // {
-                //     model: jenjangPendidikanModel,
-                //     where: { status: "aktif" }
-                // },
-                // {
-                //     model: fakultasModel,
-                //     where: { status: "aktif" }
-                // },
-                // {
-                //     model: prodiModel,
-                //     where: { status: "aktif" }
-                // }
+                {
+                    attributes: ['nim', 'nama'],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: fakultasModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }
 
             ],
             where: {
@@ -214,31 +214,31 @@ module.exports = {
         const totalItems = Math.ceil(totalPage / perPage)
         await historyMahasiswa.findAll({
             include: [
-                // {
-                //     attributes: ['nim', 'nama'],
-                //     model: mahasiswaModel,
-                //     where: { status: "aktif" }
-                // },
-                // {
-                //     model: tahunAjaranModel,
-                //     where: { status: "aktif" }
-                // },
-                // {
-                //     model: semesterModel,
-                //     where: { status: "aktif" }
-                // },
-                // {
-                //     model: jenjangPendidikanModel,
-                //     where: { status: "aktif" }
-                // },
-                // {
-                //     model: fakultasModel,
-                //     where: { status: "aktif" }
-                // },
-                // {
-                //     model: prodiModel,
-                //     where: { status: "aktif" }
-                // }
+                {
+                    attributes: ['nim', 'nama'],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: fakultasModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }
             ],
             where: {
                 [Op.or]: [
