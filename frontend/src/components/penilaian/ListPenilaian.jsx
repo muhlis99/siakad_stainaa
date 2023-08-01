@@ -217,7 +217,7 @@ const ListPenilaian = () => {
                                                     <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.jumlahMhs}</span>
                                                 </div>
                                                 <div>
-                                                    <Link to={`/detailnilai`} state={{ mk: item.code_mata_kuliah, idn: item.id_kelas, kod: item.code }} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link>
+                                                    <Link to={`/detailnilai`} state={{ mk: item.code_mata_kuliah, idn: item.id_kelas, kod: item.code, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link>
                                                 </div>
                                             </div>
                                         )) : ""}

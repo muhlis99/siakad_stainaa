@@ -133,8 +133,8 @@ const DetailNilai = () => {
                         <div className="grid">
                             <div className='mb-2'>
                                 <div className='float-right flex gap-2'>
-                                    <Link to="/penilaian" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi }} className='btn btn-sm btn-error'><FaReply />kembali</Link>
-                                    {juml == 0 ? <Link to="/inputnilai" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mk: location.state.mk, idn: location.state.idn, kod: location.state.kod }} className='btn btn-sm btn-primary'><FaFileSignature />input nilai</Link> : <Link to="/updatenilai" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mk: location.state.mk, idn: location.state.idn, kod: location.state.kod }} className='btn btn-sm btn-primary'><FaEdit />edit nilai</Link>}
+                                    <Link to="/penilaian" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error'><FaReply />kembali</Link>
+                                    {juml == 0 ? <Link to="/inputnilai" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-primary'><FaFileSignature />input nilai</Link> : <Link to="/updatenilai" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-primary'><FaEdit />edit nilai</Link>}
                                 </div>
                             </div>
                             <div className="overflow-x-auto mb-2">

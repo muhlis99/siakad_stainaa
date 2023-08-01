@@ -104,7 +104,7 @@ const SetPengajuan = () => {
     const simpanPengajuan = async (e) => {
         e.preventDefault()
         try {
-            await axios.post(`v1/pengajuanStudi/createAdmin`, {
+            await axios.post(`v1/pengajuanStudi/createMahasiswa`, {
                 code_tahun_ajaran: kodeTahun,
                 code_semester: kodeSemester,
                 code_jenjang_pendidikan: kodeJenjang,
@@ -140,7 +140,7 @@ const SetPengajuan = () => {
     return (
         <div className='mt-5 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Studi Studi</h1>
+                <h1 className='text-xl font-bold'>Studi Mahasiswa</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">

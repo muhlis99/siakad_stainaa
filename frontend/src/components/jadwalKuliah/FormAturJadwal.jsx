@@ -102,7 +102,7 @@ const FormAturJadwal = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate('/detailjadwal', { state: { thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn } })
+                    navigate('/detailjadwal', { state: { thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' } })
                 })
             })
         } catch (error) {
@@ -143,7 +143,7 @@ const FormAturJadwal = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate(`/detailjadwal`, { state: { thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, stat: 'edit' } })
+                    navigate(`/detailjadwal`, { state: { thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, stat: 'edit', collaps: 'kuliah', activ: '/jadwalkuliah' } })
                 })
             })
         } catch (error) {
@@ -174,18 +174,7 @@ const FormAturJadwal = () => {
                             <div className="grid grid-cols-2 gap-x-4">
                                 <div className="col-span-2 mb-3 border-b-2 pb-3 border-b-[#2D7F5F]">
                                     <div className="float-right flex gap-1">
-                                        {/* {pesan == 'Data jadwal Kuliah Ditemukan' ?
-                                            <div>
-                                                <div className="dropdown dropdown-end">
-                                                    <label tabIndex={0} className="btn btn-sm btn-default"><span className='mr-1'>Aksi</span><FaAngleDown /></label>
-                                                    <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                                        <li><Link to={'/jadwalkuliah'}>Kembali</Link></li>
-                                                        <li><Link to={`/detailjadwal`}>Detail Jadwal Kuliah</Link></li>
-                                                    </ul>
-                                                </div>
-                                            </div> :
-                                        } */}
-                                        <Link to='/detailjadwal' state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
+                                        <Link to='/detailjadwal' state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
                                         {pesan == 'Data jadwal Kuliah Ditemukan' ? <button className='btn btn-sm btn-primary'><FaEdit /><span>Update</span></button> : <button className='btn btn-sm btn-primary'><FaSave /><span>Simpan</span></button>}
                                     </div>
                                 </div>

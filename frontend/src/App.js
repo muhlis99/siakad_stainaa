@@ -50,8 +50,10 @@ import Persemester from "./pages/mhsPersemester/Persemester"
 import Khs from "./pages/khs/Khs"
 import View from "./pages/khs/View"
 import Users from "./pages/user/Users"
-import PengajuanStudi from "./pages/studiMahasiswa/PengajuanStudi"
+import ListStudiMhs from "./pages/studiMahasiswa/ListStudiMhs"
 import StudiMahasiswa from "./pages/studiMahasiswa/StudiMahasiswa"
+import PengajuanStudi from "./pages/studiMahasiswa/PengajuanStudi"
+import SetPengajuanStudi from "./pages/studiMahasiswa/SetPengajuanStudi"
 import Pembimbing from "./pages/pembimbing/Pembimbing"
 import SetPembimbingAkademik from "./pages/pembimbing/SetPembimbingAkademik"
 import Perpembimbing from "./pages/pembimbing/Perpembimbing"
@@ -113,8 +115,9 @@ function App() {
           <Route path="/khs" element={<Khs />} />
           <Route path="/view/:nim/:kodeFk/:kodeJnjg/:kodeProdi/:kodeSmt/:kodeThn" element={<View />} />
           <Route path="/users" element={<Users />} />
-          <Route path="/studimhs" element={<StudiMahasiswa />} />
+          <Route path="/studimhs" element={<ListStudiMhs />} />
           <Route path="/pengajuanstudi" element={<PengajuanStudi />} />
+          <Route path="/setpengajuan" element={<SetPengajuanStudi />} />
           <Route path="/pembimbingakademik" element={<Pembimbing />} />
           <Route path="/addpembimbing" element={<SetPembimbingAkademik />} />
           <Route path="/setpembimbingakademik" element={<Perpembimbing />} />

@@ -535,8 +535,8 @@ const SetPertemuan = () => {
                         <div className="grid">
                             <div className='mb-2'>
                                 <div className='float-right flex gap-1'>
-                                    <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-secondary'>Detail Jadwal</Link>
-                                    <Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn }} className='btn btn-sm btn-info'>Dosen Pengajar</Link>
+                                    <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-secondary'>Detail Jadwal</Link>
+                                    <Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-info'>Dosen Pengajar</Link>
                                     <div className="dropdown dropdown-end">
                                         <label tabIndex={0} className="btn btn-sm btn-primary"><span className='mr-1'>Aksi</span><FaAngleDown /></label>
                                         <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">

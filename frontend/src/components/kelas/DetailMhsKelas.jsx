@@ -117,7 +117,7 @@ const DetailMhsKelas = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
                     <div className="card-body p-4">
                         <div>
-                            <Link to="/kelas" state={{ jen: kodeJenjang, fak: kodeFakultas, prod: kodeProdi, thn: kodeTahun, sem: kodeSemester }} className="btn btn-error btn-sm rounded-md"><FaReply /> <span className="">kembali</span></Link>
+                            <Link to="/kelas" state={{ jen: kodeJenjang, fak: kodeFakultas, prod: kodeProdi, thn: kodeTahun, sem: kodeSemester, collaps: 'kuliah', activ: '/kelas' }} className="btn btn-error btn-sm rounded-md"><FaReply /> <span className="">kembali</span></Link>
                             <button className="btn btn-primary btn-sm float-right rounded-md" onClick={() => getDataKelas(kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi, kodeMakul)}><FaCog /> <span className="">Pindahkan</span></button>
                         </div>
                         <div className="overflow-x-auto mb-2">

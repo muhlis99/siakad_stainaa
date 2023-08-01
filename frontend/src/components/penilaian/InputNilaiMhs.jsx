@@ -201,7 +201,7 @@ const InputNilaiMhs = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate(`/detailnilai`, { state: { mk: location.state.mk, idn: location.state.idn, kod: location.state.kod } })
+                    navigate(`/detailnilai`, { state: { mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' } })
                 });
             })
         } catch (error) {
@@ -298,7 +298,7 @@ const InputNilaiMhs = () => {
                             <div className="grid">
                                 <div className='mb-2'>
                                     <div className='float-right flex gap-2'>
-                                        <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod }} className='btn btn-sm btn-error'><FaReply /> Kembali</Link>
+                                        <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error'><FaReply /> Kembali</Link>
                                         {jmlMhs == null ? "" : <button className='btn btn-sm btn-primary'><FaSave /> simpan</button>}
                                     </div>
                                 </div>

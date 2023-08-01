@@ -58,7 +58,7 @@ const ViewKhs = () => {
                 <div className="card bg-base-100 card-border-blacked shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className='py-2'>
-                            <Link to="/khs" state={{ jen: kodeJnjg, fak: kodeFk, pro: kodeProdi, thn: kodeThn, sem: kodeSmt }} className='btn btn-sm btn-error'><FaReply /> Kembali</Link>
+                            <Link to="/khs" state={{ jen: kodeJnjg, fak: kodeFk, pro: kodeProdi, thn: kodeThn, sem: kodeSmt, collaps: 'kuliah', activ: '/khs' }} className='btn btn-sm btn-error'><FaReply /> Kembali</Link>
                         </div>
                         <div className="grid grid-cols-2 gap-3 mb-5 p-3 rounded-md">
                             <div className='flex gap-2'>
