@@ -3,7 +3,7 @@ import { FaBookmark, FaChalkboardTeacher, FaUserGraduate } from 'react-icons/fa'
 import axios from "axios"
 import Chart from "chart.js/auto"
 import { Bar } from "react-chartjs-2"
-import ClipLoader from "react-spinners/ClipLoader";
+import PuffLoader from "react-spinners/PuffLoader";
 
 const Beranda = () => {
     const [putera, setPutera] = useState("")
@@ -16,9 +16,9 @@ const Beranda = () => {
 
     useEffect(() => {
         setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
-        }, 2000);
+        // setTimeout(() => {
+        //     setLoading(false)
+        // }, 2000);
     }, [])
 
 
@@ -109,8 +109,8 @@ const Beranda = () => {
         <>
             {loading ?
                 <div className='w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50'>
-                    <div>
-                        <ClipLoader className='mx-auto my-auto content-center' size={100} />
+                    <div className=' h-32 w-32 border-x-2 border-x-[#000] mx-auto mt-72'>
+                        <PuffLoader className='' size={100} />
                     </div>
                 </div>
                 :

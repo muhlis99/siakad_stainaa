@@ -220,7 +220,7 @@ const SetStudiMahasiswa = () => {
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={ajuan} onChange={(e) => SetAjuan(e.target.value)}>
                                         <option value="">Pengajuan</option>
-                                        <option value="aktif">Aktif</option>
+                                        <option value="reaktif">Aktif</option>
                                         <option value="cuti">Cuti</option>
                                         <option value="berhenti">Berhenti</option>
                                     </select>
