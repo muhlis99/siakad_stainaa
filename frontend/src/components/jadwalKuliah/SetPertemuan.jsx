@@ -684,8 +684,8 @@ const SetPertemuan = () => {
                                                 <td className='py-1 border' align='center'>{item.pertemuan}</td>
                                                 <td className='py-1 border' align='center'>{item.jadwalKuliahs[0].hari + ", " + item.tanggal_pertemuan}</td>
                                                 <td className='py-1 border' align='center'>{item.jadwalKuliahs[0].jam_mulai + " s/d " + item.jadwalKuliahs[0].jam_selesai}</td>
-                                                <td className='py-1 border' align='center'>{item.jenis_pertemuan}</td>
-                                                <td className='py-1 border' align='center'>{item.metode_pembelajaran}</td>
+                                                <td className='py-1 border' align='center'>{item.jenis_pertemuan == 'kuliah' ? <span>Kuliah</span> : item.jenis_pertemuan == 'uts' ? <span>UTS</span> : <span>UAS</span>}</td>
+                                                <td className='py-1 border' align='center'>{item.metode_pembelajaran == 'offline' ? <span>Offline</span> : item.metode_pembelajaran == 'online' ? <span>Online</span> : <span>Campur</span>}</td>
                                                 <td className='py-1 border' align='center'>
                                                     <div>
                                                         <button className="btn btn-xs btn-circle text-white btn-info mr-1" title='Detail' onClick={() => editPertemuan(item.id_jadwal_pertemuan, 'detail')}><FaInfo /></button>

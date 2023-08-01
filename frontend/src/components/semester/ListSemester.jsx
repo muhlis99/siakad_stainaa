@@ -16,6 +16,7 @@ const ListSemester = () => {
     const [keyword, setKeyword] = useState("")
     const [query, setQuery] = useState("")
     const [msg, setMsg] = useState("")
+    const [kodeThn, setKodeThn] = useState("")
     const [semster, setSemster] = useState("")
     const [thnAjar, setThnAjar] = useState("")
     const [tglAktif, setTglAktif] = useState("")
@@ -57,9 +58,9 @@ const ListSemester = () => {
     }
 
     const cariData = (e) => {
-        e.preventDefault();
+        e.preventDefault()
+        setKeyword(e ? e.target.value : "")
         setPage(0)
-        setKeyword(query)
     }
 
     const modalAddOpen = (e) => {
@@ -266,7 +267,6 @@ const ListSemester = () => {
                     </form>
                 </div>
             </div>
-
             <input type="checkbox" id="my-modal-edit" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
@@ -333,26 +333,29 @@ const ListSemester = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
-                            <div>
+                            <div className='flex gap-2'>
                                 <button className="btn btn-success btn-xs" onClick={modalAddOpen}><FaPlus /> <span className="ml-1">tambah data</span></button>
+                                <select className='select select-sm select-bordered max-w-xs' value={kodeThn} onChange={(e) => setKodeThn(e.target.value)}>
+                                    <option value="">Semua</option>
+                                    {Tahun.map((item) => (
+                                        <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div>
-                                <form className='mb-1' onSubmit={cariData}>
-                                    <div className="form-control">
-                                        <div className="input-group justify-end">
-                                            <input
-                                                type="text"
-                                                value={query}
-                                                onChange={(e) => setQuery(e.target.value)}
-                                                className="input input-xs input-bordered input-success"
-                                                placeholder='Cari'
-                                            />
-                                            <button type='submit' className="btn btn-xs btn-square btn-success">
-                                                <FaSearch />
-                                            </button>
-                                        </div>
+                                <div className="form-control">
+                                    <div className="input-group justify-end">
+                                        <input
+                                            type="text"
+                                            onChange={cariData}
+                                            className="input input-xs input-bordered input-success"
+                                            placeholder='Cari'
+                                        />
+                                        <button type='submit' className="btn btn-xs btn-square btn-success">
+                                            <FaSearch />
+                                        </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                         <div className="overflow-x-auto mb-2">
@@ -369,7 +372,42 @@ const ListSemester = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Semester.map((smt, index) => (
+                                    {Semester.map((smt, index) => {
+                                        return kodeThn == 0 ? (
+                                            <tr key={smt.id_semester} className='bg-white border-b text-gray-500'>
+                                                <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
+                                                <td className='px-6 py-2'>Semester {smt.semester}</td>
+                                                <td className='px-6 py-2'>{smt.tahunAjarans[0].tahun_ajaran}</td>
+                                                <td className='px-6 py-2'><Moment date={smt.tanggal_aktif} format="DD MMMM YYYY" /></td>
+                                                <td className='px-6 py-2'>{smt.keterangan}</td>
+                                                <td className='px-6 py-2'>{smt.status == "aktif" ? <span className="badge primary badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div>
+                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(smt.id_semester)}><FaEdit /></button>
+                                                        <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(smt.id_semester)}><FaTrash /></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ) : smt.code_tahun_ajaran == kodeThn ? (
+                                            <tr key={smt.id_semester} className='bg-white border-b text-gray-500'>
+                                                <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
+                                                <td className='px-6 py-2'>Semester {smt.semester}</td>
+                                                <td className='px-6 py-2'>{smt.tahunAjarans[0].tahun_ajaran}</td>
+                                                <td className='px-6 py-2'><Moment date={smt.tanggal_aktif} format="DD MMMM YYYY" /></td>
+                                                <td className='px-6 py-2'>{smt.keterangan}</td>
+                                                <td className='px-6 py-2'>{smt.status == "aktif" ? <span className="badge primary badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div>
+                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(smt.id_semester)}><FaEdit /></button>
+                                                        <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(smt.id_semester)}><FaTrash /></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            ""
+                                        )
+                                    })}
+                                    {/* {Semester.map((smt, index) => (
                                         <tr key={smt.id_semester} className='bg-white border-b text-gray-500'>
                                             <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
                                             <td className='px-6 py-2'>Semester {smt.semester}</td>
@@ -384,7 +422,7 @@ const ListSemester = () => {
                                                 </div>
                                             </td>
                                         </tr>
-                                    ))}
+                                    ))} */}
                                 </tbody>
                             </table>
                         </div>

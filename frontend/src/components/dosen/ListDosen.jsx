@@ -50,9 +50,9 @@ const ListDosen = () => {
     }
 
     const cariData = (e) => {
-        e.preventDefault();
+        e.preventDefault()
+        setKeyword(e ? e.target.value : "")
         setPage(0)
-        setKeyword(query)
     }
 
     const nonaktifkan = (dsnId) => {
@@ -90,7 +90,7 @@ const ListDosen = () => {
 
     return (
         <div className='mt-2 container'>
-            {idDsn && <Navigate to={`form1/${stat}/${idDsn}`} />}
+            {idDsn && <Navigate to={`form1/${stat}/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen' }} />}
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Dosen</h1>
             </section>
@@ -102,22 +102,19 @@ const ListDosen = () => {
                                 <button className="btn btn-success btn-xs" onClick={tambahDosen}><FaPlus /> tambah data</button>
                             </div>
                             <div>
-                                <form onSubmit={cariData} className='mb-1'>
-                                    <div className="form-control">
-                                        <div className="input-group justify-end">
-                                            <input
-                                                type="text"
-                                                value={query}
-                                                onChange={(e) => setQuery(e.target.value)}
-                                                className="input input-xs input-bordered input-success"
-                                                placeholder='Cari'
-                                            />
-                                            <button type='submit' className="btn btn-xs btn-square btn-success">
-                                                <FaSearch />
-                                            </button>
-                                        </div>
+                                <div className="form-control">
+                                    <div className="input-group justify-end">
+                                        <input
+                                            type="text"
+                                            onChange={cariData}
+                                            className="input input-xs input-bordered input-success"
+                                            placeholder='Cari'
+                                        />
+                                        <button type='submit' className="btn btn-xs btn-square btn-success">
+                                            <FaSearch />
+                                        </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                         <div className="overflow-x-auto mb-2">
@@ -144,10 +141,10 @@ const ListDosen = () => {
                                             <td className='px-6 py-2'>{dsn.alat_transportasis[0].nama_alat_transportasi}</td>
                                             <td className='px-6 py-2'>
                                                 <div className='grid grid-flow-col'>
-                                                    <Link to={`/dosen/detail/${dsn.id_dosen}`} state={{ collaps: 'induk' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
-                                                    <Link to={`/dosen/form1/edit/${dsn.id_dosen}`} state={{ collaps: 'induk' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
-                                                    <Link to={`/dosen/upload1/${dsn.id_dosen}`} state={{ collaps: 'induk' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
-                                                    <Link to={`/dosen/print/${dsn.id_dosen}`} state={{ collaps: 'induk' }} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
+                                                    <Link to={`/dosen/detail/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
+                                                    <Link to={`/dosen/form1/edit/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                    <Link to={`/dosen/upload1/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
+                                                    <Link to={`/dosen/print/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
                                                     <button onClick={() => nonaktifkan(dsn.id_dosen)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button>
                                                 </div>
                                             </td>

@@ -53,6 +53,7 @@ const SetMhsPerpembimbing = () => {
         options()
     }, [Mahasiswa])
 
+    console.log(location.state);
 
     const getMhsPerPembimbing = async () => {
         if (kodeBimbing != 0) {
@@ -64,7 +65,7 @@ const SetMhsPerpembimbing = () => {
 
 
     const getMahasiswa = async () => {
-        const response = await axios.get('v1/pembimbingAkademik/autocompleteMahasiswa')
+        const response = await axios.get(`v1/pembimbingAkademik/autocompleteMahasiswa/${location.state.jen}/${location.state.fak}/${location.state.pro}`)
         setMahasiswa(response.data.data)
     }
 
@@ -134,7 +135,7 @@ const SetMhsPerpembimbing = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
                     <div className="card-body p-4">
                         <div className='mb-2'>
-                            <Link to='/detailpembimbingakademik' state={{ idDsn: location.state.idDsn }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
+                            <Link to='/detailpembimbingakademik' state={{ idDsn: location.state.idDsn, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div className='flex gap-2'>
@@ -225,7 +226,9 @@ const SetMhsPerpembimbing = () => {
                                         <th scope="col" className="px-2 py-3">NIPY</th>
                                         <th scope="col" className="px-2 py-3">Nama Mahasiswa</th>
                                         <th scope="col" className="px-2 py-3">Jenis Kelamin</th>
-                                        <th scope="col" className="px-2 py-3">Tempat Tanggal Lahir</th>
+                                        <th scope="col" className="px-2 py-3">Jenjang Pendidikan</th>
+                                        <th scope="col" className="px-2 py-3">Fakultas</th>
+                                        <th scope="col" className="px-2 py-3">Prodi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -235,7 +238,9 @@ const SetMhsPerpembimbing = () => {
                                             <td className='px-2 py-2'>{item.nim}</td>
                                             <td className='px-2 py-2'>{item.mahasiswas[0].nama}</td>
                                             <td className='px-2 py-2'>{item.mahasiswas[0].jenis_kelamin == 'l' ? <span>Laki-Laki</span> : <span>Perempuan</span>}</td>
-                                            <td className='px-2 py-2'>{item.mahasiswas[0].tempat_lahir}, {item.mahasiswas[0].tanggal_lahir}</td>
+                                            <td className='px-2 py-2'>{jenjang}</td>
+                                            <td className='px-2 py-2'>{fakultas}</td>
+                                            <td className='px-2 py-2'>{prodi}</td>
                                         </tr>
                                     ))}
                                 </tbody>

@@ -194,7 +194,7 @@ const FormUpload2 = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        navigate("/dosen")
+                        navigate("/dosen", { state: { collaps: 'induk', activ: '/dosen' } })
                     });
                 })
             }
@@ -276,12 +276,12 @@ const FormUpload2 = () => {
                             </div>
                             <div className='grid lg:grid-cols-2'>
                                 <div>
-                                    <Link to="/dosen" className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>
+                                    <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
                                         <div>
-                                            <Link to={`/dosen/upload1/${idDsn}`} className='btn btn-sm btn-primary w-full'><FaArrowLeft /><span className="ml-1">Kembali</span></Link>
+                                            <Link to={`/dosen/upload1/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-primary w-full'><FaArrowLeft /><span className="ml-1">Kembali</span></Link>
                                         </div>
                                         <div className='lg:pl-1'>
                                             <button className='btn btn-sm btn-primary w-full'><FaTelegramPlane /> <span className="ml-1">Upload</span></button>

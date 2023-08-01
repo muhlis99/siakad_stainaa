@@ -50,6 +50,8 @@ const DetailMhs = () => {
     const [prevKip, setPrevKip] = useState("")
     const [qrCode, setQrCode] = useState("")
     const [prevQrCode, setPrevQrCode] = useState("")
+    const [ktm, setKtm] = useState("")
+    const [prevKtm, setPrevKtm] = useState("")
     const [nikAyah, setNikAyah] = useState("")
     const [namaAyah, setNamaAyah] = useState("")
     const [tgAyah, setTgAyah] = useState("")
@@ -139,6 +141,7 @@ const DetailMhs = () => {
                 setIjazahs(response.data.data.foto_ijazah)
                 setKips(response.data.data.foto_kip)
                 setQrCode(response.data.data.qrcode)
+                setKtm(response.data.data.foto_ktm)
                 let tglLahirAyah = response.data.data.tanggal_lahir_ayah
                 const tglAyah = tglLahirAyah.split("-")
                 let tglLahirIbu = response.data.data.tanggal_lahir_ibu
@@ -198,6 +201,10 @@ const DetailMhs = () => {
     useEffect(() => {
         kodeQr()
     }, [qrCode])
+
+    useEffect(() => {
+        fotoKtm()
+    }, [ktm])
 
     useEffect(() => {
         jalurPendaftaranByCode()
@@ -344,6 +351,27 @@ const DetailMhs = () => {
         }
     }
 
+    const fotoKtm = async () => {
+        try {
+            if (ktm != 0) {
+                await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/ktm/${ktm}`, {
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevKtm(base64)
+                })
+
+            }
+        } catch (error) {
+
+        }
+    }
+
     const openImage = (img, nam) => {
         document.getElementById('my-modal').checked = true
         console.log(img);
@@ -461,7 +489,7 @@ const DetailMhs = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <Link to="/mahasiswa" className='btn btn-sm btn-error w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
+                        <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
                         <div className='grid lg:grid-cols-2'>
                             <div>
                                 <table>
@@ -841,6 +869,19 @@ const DetailMhs = () => {
                                     {prevQrCode ? (
                                         <div className="w-full rounded ring ring-[#2D7F5F]">
                                             <img src={`data:;base64,${prevQrCode}`} />
+                                        </div>
+                                    ) : (<span>File Tidak Ada</span>)}
+                                </div>
+                            </div>
+                            <div>
+                                <label className="label">
+                                    <span className="text-base label-text uppercase font-bold">Scan KTM</span>
+                                </label>
+                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKtm, 'KTM_')}>Detail</button>
+                                <div className="avatar">
+                                    {prevKtm ? (
+                                        <div className="w-full rounded ring ring-[#2D7F5F]">
+                                            <img src={`data:;base64,${prevKtm}`} />
                                         </div>
                                     ) : (<span>File Tidak Ada</span>)}
                                 </div>

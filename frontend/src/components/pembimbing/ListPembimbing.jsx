@@ -83,7 +83,7 @@ const ListPembimbing = () => {
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <Link to="/addpembimbing" className="btn btn-success btn-xs"><FaPlus /> <span className="ml-1">tambah data</span></Link>
+                                <Link to="/addpembimbing" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className="btn btn-success btn-xs"><FaPlus /> <span className="ml-1">tambah data</span></Link>
                             </div>
                         </div>
                         <div className="overflow-x-auto mb-2">
@@ -110,8 +110,8 @@ const ListPembimbing = () => {
                                             <td className='px-2 py-2'>{item.kouta_bimbingan} Mahasiswa</td>
                                             <td className='px-2 py-2' align='center'>
                                                 <div>
-                                                    <Link to="/detailpembimbingakademik" state={{ idDsn: item.id_pembimbing_akademik }} className='btn btn-info btn-xs mr-1 text-white btn-circle' ><FaSearch /></Link>
-                                                    <Link to='/editpembimbingakademik' state={{ idDsn: item.id_pembimbing_akademik }} className='btn btn-xs btn-circle btn-warning mr-1'><FaEdit /></Link>
+                                                    <Link to="/detailpembimbingakademik" state={{ idDsn: item.id_pembimbing_akademik, jen: item.code_jenjang_pendidikan, fak: item.code_fakultas, pro: item.code_prodi, collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-info btn-xs mr-1 text-white btn-circle' ><FaSearch /></Link>
+                                                    <Link to='/editpembimbingakademik' state={{ idDsn: item.id_pembimbing_akademik, jen: item.code_jenjang_pendidikan, fak: item.code_fakultas, pro: item.code_prodi, collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-xs btn-circle btn-warning mr-1'><FaEdit /></Link>
                                                     <button onClick={() => nonaktifkan(item.id_pembimbing_akademik)} className="btn btn-xs btn-error btn-circle"><FaTrash /></button>
                                                 </div>
                                             </td>
