@@ -3,6 +3,7 @@ import { FaBookmark, FaChalkboardTeacher, FaUserGraduate } from 'react-icons/fa'
 import axios from "axios"
 import Chart from "chart.js/auto"
 import { Bar } from "react-chartjs-2"
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Beranda = () => {
     const [putera, setPutera] = useState("")
@@ -11,6 +12,15 @@ const Beranda = () => {
     const [prodi, setProdi] = useState("")
     const [Diagram, setDiagram] = useState([])
     const [DiagramDsn, setDiagramDsn] = useState([])
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 2000);
+    }, [])
+
 
     useEffect(() => {
         getMhsPutera()
@@ -96,72 +106,73 @@ const Beranda = () => {
     }
 
     return (
-        <div className="container mt-2">
-            <section className='mb-5'>
-                <h1 className='text-2xl font-bold'>Dashboard</h1>
-            </section>
-            <section>
-                <div className="grid grid-cols-4 gap-4 mb-4">
+        <>
+            {loading ?
+                <div className='w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50'>
                     <div>
-                        <div className='w-full h-36 bg-[#60B033] hover:bg-[#4c8a28] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-3'>
-                            <div className='col-span-2'>
-                                <h1 className='text-md text-white'>Mahasiswa Putera</h1>
-                                <h1 className='text-3xl text-white font-bold mt-2'>{putera}</h1>
-                            </div>
-                            <div>
-                                <h1 className='text-white text-4xl float-right'><FaUserGraduate /></h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className='w-full h-36 bg-[#725648] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-3'>
-                            <div className='col-span-2'>
-                                <h1 className='text-md text-white'>Mahasiswa Puteri</h1>
-                                <h1 className='text-3xl text-white font-bold mt-2'>{puteri}</h1>
-                            </div>
-                            <div>
-                                <h1 className='text-white text-4xl float-right'><FaUserGraduate /></h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className='w-full h-36 bg-[#D4C403] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-2'>
-                            <div>
-                                <h1 className='text-md text-white'>Dosen</h1>
-                                <h1 className='text-3xl text-white font-bold mt-2'>{dosen}</h1>
-                            </div>
-                            <div>
-                                <h1 className='text-white text-4xl float-right'><FaChalkboardTeacher /></h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className='w-full h-36 bg-[#2D677F] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-2'>
-                            <div>
-                                <h1 className='text-md text-white'>Program Studi</h1>
-                                <h1 className='text-3xl text-white font-bold mt-2'>{prodi}</h1>
-                            </div>
-                            <div>
-                                <h1 className='text-white text-4xl float-right'><FaBookmark /></h1>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
-                        <div className="card-body p-4">
-                            <Bar data={data} className='relative h-60' />
-                        </div>
-                    </div>
-                    <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
-                        <div className="card-body p-4">
-                            <Bar data={dataDsn} className='relative h-60' />
-                        </div>
+                        <ClipLoader className='mx-auto my-auto content-center' size={100} />
                     </div>
                 </div>
-            </section>
-        </div>
+                :
+                <div className="container mt-2">
+                    <section className='mb-5'>
+                        <h1 className='text-2xl font-bold'>Dashboard</h1>
+                    </section>
+                    <section>
+                        <div className="grid grid-cols-4 gap-4 mb-4">
+                            <div className='w-full h-36 bg-[#60B033] hover:bg-[#4c8a28] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-3'>
+                                <div className='col-span-2'>
+                                    <h1 className='text-md text-white'>Mahasiswa Putera</h1>
+                                    <h1 className='text-3xl text-white font-bold mt-2'>{putera}</h1>
+                                </div>
+                                <div>
+                                    <h1 className='text-white text-4xl float-right'><FaUserGraduate /></h1>
+                                </div>
+                            </div>
+                            <div className='w-full h-36 bg-[#725648] hover:bg-[#5e473b] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-3'>
+                                <div className='col-span-2'>
+                                    <h1 className='text-md text-white'>Mahasiswa Puteri</h1>
+                                    <h1 className='text-3xl text-white font-bold mt-2'>{puteri}</h1>
+                                </div>
+                                <div>
+                                    <h1 className='text-white text-4xl float-right'><FaUserGraduate /></h1>
+                                </div>
+                            </div>
+                            <div className='w-full h-36 bg-[#D4C403] hover:bg-[#b0a103] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-2'>
+                                <div>
+                                    <h1 className='text-md text-white'>Dosen</h1>
+                                    <h1 className='text-3xl text-white font-bold mt-2'>{dosen}</h1>
+                                </div>
+                                <div>
+                                    <h1 className='text-white text-4xl float-right'><FaChalkboardTeacher /></h1>
+                                </div>
+                            </div>
+                            <div className='w-full h-36 bg-[#2D677F] hover:bg-[#214c5e] drop-shadow-xl rounded-md px-3 py-3 grid grid-cols-2'>
+                                <div>
+                                    <h1 className='text-md text-white'>Program Studi</h1>
+                                    <h1 className='text-3xl text-white font-bold mt-2'>{prodi}</h1>
+                                </div>
+                                <div>
+                                    <h1 className='text-white text-4xl float-right'><FaBookmark /></h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
+                                <div className="card-body p-4">
+                                    <Bar data={data} className='relative h-60' />
+                                </div>
+                            </div>
+                            <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
+                                <div className="card-body p-4">
+                                    <Bar data={dataDsn} className='relative h-60' />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            }
+        </>
     )
 }
 

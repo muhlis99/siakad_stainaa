@@ -38,7 +38,7 @@ const ListKrs = () => {
 
     useEffect(() => {
         getKrsAll()
-    }, [kodeTahun, kodeProdi, kodeSemester])
+    }, [kodeTahun, kodeProdi, kodeSemester, kodeFakultas, kodeJenjang])
 
     const getJenjangPendidikan = async () => {
         const response = await axios.get('v1/jenjangPendidikan/all')
@@ -73,7 +73,7 @@ const ListKrs = () => {
 
     const getKrsAll = async () => {
         if (kodeProdi != 0 & kodeTahun != 0 & kodeSemester != 0) {
-            const response = await axios.get(`v1/krs/all?tahunAjaran=${kodeTahun}&semester=${kodeSemester}&prodi=${kodeProdi}`)
+            const response = await axios.get(`v1/krs/all?tahunAjaran=${kodeTahun}&semester=${kodeSemester}&prodi=${kodeProdi}&fakultas=${kodeFakultas}&jenjangPendik=${kodeJenjang}`)
             setKrs(response.data.data)
         }
     }
