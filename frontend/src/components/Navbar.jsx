@@ -1,9 +1,10 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import Avatar from "../assets/img/avatar.png"
+import Avatar from "../assets/img/man.png"
 import { LogOut, reset } from "../features/authSlice"
 import Swal from 'sweetalert2'
+import { RiLogoutCircleLine } from "react-icons/ri";
 
 const Navbar = () => {
   const dispatch = useDispatch()
@@ -27,6 +28,8 @@ const Navbar = () => {
       }
     })
   }
+
+  console.log(user);
   return (
     <div className="navbar bg-[#F5F5F5] shadow-md min-h-min py-1 sticky z-40 top-0">
       <div className="flex-none lg:hidden">
@@ -35,19 +38,30 @@ const Navbar = () => {
         </label>
       </div>
       <div className="flex-1">
-        <span className="normal-case text-md font-bold text-[#344B4B]">Hello {user && user.data.username}, Welcome Back !</span>
       </div>
       <div className="flex-none">
-        <div className="dropdown dropdown-end">
+        <div className="dropdown dropdown-end drop-shadow-lg">
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-            <div className="w-5 rounded-full">
+            <div className="w-8 rounded-full">
               <img src={Avatar} />
             </div>
           </label>
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
 
-            {/* <li><a>Settings</a></li> */}
-            <li><button onClick={logOut}>log out</button></li>
+            <li>
+              <div className='flex p-2 border-b'>
+                <div className="avatar">
+                  <div className="w-8 rounded">
+                    <img src={Avatar} />
+                  </div>
+                </div>
+                <div className=' ml-5'>
+                  <a className='capitalize'>{user && <span>{user.data.username}</span>}</a><br />
+                  <a className='text-[10px]'>{user && <span>{user.data.email}</span>}</a>
+                </div>
+              </div>
+            </li>
+            <li><button onClick={logOut}><RiLogoutCircleLine />log out</button></li>
           </ul>
         </div>
       </div>
