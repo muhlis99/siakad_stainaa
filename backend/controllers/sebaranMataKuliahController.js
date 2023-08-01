@@ -5,6 +5,8 @@ const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
 const kategoriNilaiModel = require('../models/kategoriNilaiModel.js')
 const semesterModel = require('../models/semesterModel.js')
+const krsModel = require('../models/krsModel.js')
+
 const { Op, Sequelize } = require('sequelize')
 
 module.exports = {
@@ -236,7 +238,42 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { id_mata_kuliah, code_semester, code_kategori_nilai, status_makul, status_bobot_makul } = req.body
+        const { id_mata_kuliah, code_tahun_ajaran, code_semester,
+            code_jenjang_pendidikan, code_fakultas, code_prodi,
+            code_kategori_nilai, status_makul, status_bobot_makul } = req.body
+        const validasiSebaran = await krsModel.findOne({
+            include: [
+                {
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: fakultasModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            where: {
+                code_tahun_ajaran: code_tahun_ajaran,
+                code_semester: code_semester,
+                code_jenjang_pendidikan: code_jenjang_pendidikan,
+                code_fakultas: code_fakultas,
+                code_prodi: code_prodi
+            }
+        })
+        if (validasiSebaran) return res.status(404).json({ message: "KRS sudah aktif" })
+
         await mataKuliahModel.update({
             code_semester: code_semester,
             code_kategori_nilai: code_kategori_nilai,
