@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import axios from 'axios'
-import { FaSearch } from 'react-icons/fa'
+import { FaPlus, FaSearch } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 const ListStudiMahasiswa = () => {
@@ -20,6 +20,7 @@ const ListStudiMahasiswa = () => {
     useEffect(() => {
         getJenjang()
         getTahun()
+        getStudiMhs()
     }, [])
 
     useEffect(() => {
@@ -63,6 +64,11 @@ const ListStudiMahasiswa = () => {
             const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahun}`)
             setSemester(response.data.data)
         }
+    }
+
+    const getStudiMhs = async () => {
+        const response = await axios.get('v1/pengajuanStudi/allAdmin')
+        setStudi(response.data.data)
     }
 
     return (
@@ -130,6 +136,9 @@ const ListStudiMahasiswa = () => {
                                 </select>
                             </div>
                         </div> */}
+                        <div>
+                            <Link state={{ collaps: 'kuliah', activ: '/studimhs' }} className="btn btn-sm btn-success"><FaPlus /> tambah data</Link>
+                        </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className='text-gray-700 bg-[#F2F2F2]'>
@@ -146,19 +155,21 @@ const ListStudiMahasiswa = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className='bg-white border-b text-gray-500'>
-                                        <th scope="row" align='center' className="px-2 py-2 font-medium whitespace-nowrap"></th>
-                                        <td className='px-2 py-2' align='center'></td>
-                                        <td className='px-2 py-2' align='center'></td>
-                                        <td className='px-2 py-2' align='center'></td>
-                                        <td className='px-2 py-2' align='center'></td>
-                                        <td className='px-2 py-2' align='center'></td>
-                                        <td className='px-2 py-2' align='center'></td>
-                                        <td className='px-2 py-2' align='center'></td>
-                                        <td className="px-2 py-2">
-                                            <Link state={{ collaps: 'kuliah', activ: '/studimhs' }} className="btn btn-xs btn-info btn-circle" title='Detail'><FaSearch /></Link>
-                                        </td>
-                                    </tr>
+                                    {Studi.map((item, index) => (
+                                        <tr className='bg-white border-b text-gray-500'>
+                                            <th scope="row" align='center' className="px-2 py-2 font-medium whitespace-nowrap"></th>
+                                            <td className='px-2 py-2' align='center'></td>
+                                            <td className='px-2 py-2' align='center'></td>
+                                            <td className='px-2 py-2' align='center'></td>
+                                            <td className='px-2 py-2' align='center'></td>
+                                            <td className='px-2 py-2' align='center'></td>
+                                            <td className='px-2 py-2' align='center'></td>
+                                            <td className='px-2 py-2' align='center'></td>
+                                            <td className="px-2 py-2">
+                                                <Link state={{ collaps: 'kuliah', activ: '/studimhs' }} className="btn btn-xs btn-info btn-circle" title='Detail'><FaSearch /></Link>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
