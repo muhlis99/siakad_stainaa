@@ -44,7 +44,7 @@ const SetStudiMahasiswa = () => {
 
     useEffect(() => {
         getMhsBySemester()
-    }, [kodeFakultas, kodeJenjang, kodeProdi, kodeSemester, kodeTahun])
+    }, [kodeFakultas, kodeJenjang, kodeProdi, kodeSemester, kodeTahun, ajuan])
 
     useEffect(() => {
         options()
@@ -82,8 +82,8 @@ const SetStudiMahasiswa = () => {
     }
 
     const getMhsBySemester = async () => {
-        if (kodeFakultas != 0 & kodeJenjang != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0) {
-            const response = await axios.get(`v1/khs/all/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+        if (kodeFakultas != 0 & kodeJenjang != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0 & ajuan != 0) {
+            const response = await axios.get(`v1/pengajuanStudi/autocomplete/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${ajuan}`)
             setMahasiswa(response.data.data)
         }
     }

@@ -23,8 +23,12 @@ module.exports = {
       '50%': '50%',
       '16': '4rem',
     },
-    active: {
-      'background-color': '#ffffff'
+    fontFamily: {
+      'sans': ['Dosis', 'sans-serif'],
+      'serif': ['ui-serif', 'Georgia'],
+      'mono': ['ui-monospace', 'SFMono-Regular'],
+      'display': ['Oswald'],
+      'body': ['"Open Sans"'],
     }
   },
   plugins: [

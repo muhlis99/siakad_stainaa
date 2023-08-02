@@ -47,13 +47,13 @@ const Sidebar = () => {
   return (
     <div className="drawer-side scrollbar-thin scrollbar-thumb-emerald-800 scrollbar-track-gray-100 shadow-md">
       <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-      <div className="flex gap-1 w-full h-14 py-1 justify-center shadow-md  sticky top-0 z-50 bg-[#2D7F5F]">
+      <div className="flex gap-1 w-full h-14 py-1 justify-center shadow-lg  sticky top-0 z-50 bg-[#2D7F5F]">
         <div className="avatar mt-1 rounded-full drop-shadow-lg h-10 ">
           <div className="w-10 h-10 rounded-full drop-shadow-lg">
             <img src={stainaa} />
           </div>
         </div>
-        <div className="text-center text-white">
+        <div className="text-center text-[#F5F5F5]">
           <Link to="/dashboard">
             <p className='text-xl font-bold mt-1'>SIAKAD</p>
             <p className='text-[8px]'>STAI NURUL ABROR AL-ROBBANIYIN</p>
@@ -61,51 +61,51 @@ const Sidebar = () => {
         </div>
       </div>
       <ul className="menu w-60 min-h-screen gap-2 bg-[#2D7F5F]">
-        <li><Link to="/dashboard" className={`text-white rounded-md text-xs ${location.pathname == '/dashboard' ? 'active' : ''}`}><FaHome /> <span className='text-xs'>Dashboard</span></Link></li>
+        <li><Link to="/dashboard" className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/dashboard' ? 'active' : ''}`}><FaHome /> <span className='text-sm'>Dashboard</span></Link></li>
         <li>
           {collap == 'induk' ? <details open>
-            <summary className='text-white'>DATA INDUK</summary>
+            <summary className='text-[#F5F5F5]'><FaBook />Data Induk</summary>
             <ul className='gap-2'>
               <li>
-                <Link to="/jenjang" state={{ collaps: 'induk', activ: '/jenjang' }} className={`text-white rounded-md text-xs ${location.pathname == '/jenjang' ? 'active' : ''}`}><SiLevelsdotfyi /> <span className='text-xs'>Jenjang Pendidikan</span></Link>
+                <Link to="/jenjang" state={{ collaps: 'induk', activ: '/jenjang' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/jenjang' ? 'active' : ''}`}><SiLevelsdotfyi /> <span className='text-sm'>Jenjang Pendidikan</span></Link>
               </li>
               <li>
-                <Link to="/fakultas" state={{ collaps: 'induk', activ: '/fakultas' }} className={`text-white rounded-md text-xs ${location.pathname == '/fakultas' ? 'active' : ''}`}><FaUniversity /> <span className='text-xs'>Fakultas</span></Link>
+                <Link to="/fakultas" state={{ collaps: 'induk', activ: '/fakultas' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/fakultas' ? 'active' : ''}`}><FaUniversity /> <span className='text-sm'>Fakultas</span></Link>
               </li>
               <li className=''>
-                <Link to="/prodi" state={{ collaps: 'induk', activ: '/prodi' }} className={`text-white rounded-md text-xs ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-xs'>Prodi</span></Link>
+                <Link to="/prodi" state={{ collaps: 'induk', activ: '/prodi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-sm'>Prodi</span></Link>
               </li>
               <li>
-                <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className={`text-white rounded-md text-xs ${location.pathname == '/dosen' || active == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-xs'>Dosen</span></Link>
+                <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/dosen' || active == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-sm'>Dosen</span></Link>
               </li>
               <li>
-                <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className={`text-white rounded-md text-xs ${location.pathname == '/mahasiswa' || active == '/mahasiswa' ? 'active' : ''}`}><FaUserGraduate /> <span className='text-xs'>Mahasiswa</span></Link>
+                <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/mahasiswa' || active == '/mahasiswa' ? 'active' : ''}`}><FaUserGraduate /> <span className='text-sm'>Mahasiswa</span></Link>
               </li>
               <li>
-                <Link to="/ruang" state={{ collaps: 'induk', activ: '/ruang' }} className={`text-white rounded-md text-xs ${location.pathname == '/ruang' ? 'active' : ''}`}><SiHomeassistantcommunitystore /> <span className='text-xs'>Ruang</span></Link>
+                <Link to="/ruang" state={{ collaps: 'induk', activ: '/ruang' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/ruang' ? 'active' : ''}`}><SiHomeassistantcommunitystore /> <span className='text-sm'>Ruang</span></Link>
               </li>
             </ul>
           </details> :
             <details >
-              <summary className='text-white'>DATA INDUK</summary>
+              <summary className='text-[#F5F5F5]'><FaBook />Data Induk</summary>
               <ul className='gap-2'>
                 <li>
-                  <Link to="/jenjang" state={{ collaps: 'induk', activ: '/jenjang' }} className={`text-white rounded-md text-xs ${location.pathname == '/jenjang' ? 'active' : ''}`}><SiLevelsdotfyi /> <span className='text-xs'>Jenjang Pendidikan</span></Link>
+                  <Link to="/jenjang" state={{ collaps: 'induk', activ: '/jenjang' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/jenjang' ? 'active' : ''}`}><SiLevelsdotfyi /> <span className='text-sm'>Jenjang Pendidikan</span></Link>
                 </li>
                 <li>
-                  <Link to="/fakultas" state={{ collaps: 'induk', activ: '/fakultas' }} className={`text-white rounded-md text-xs ${location.pathname == '/fakultas' ? 'active' : ''}`}><FaUniversity /> <span className='text-xs'>Fakultas</span></Link>
+                  <Link to="/fakultas" state={{ collaps: 'induk', activ: '/fakultas' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/fakultas' ? 'active' : ''}`}><FaUniversity /> <span className='text-sm'>Fakultas</span></Link>
                 </li>
                 <li className=''>
-                  <Link to="/prodi" state={{ collaps: 'induk', activ: '/prodi' }} className={`text-white rounded-md text-xs ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-xs'>Prodi</span></Link>
+                  <Link to="/prodi" state={{ collaps: 'induk', activ: '/prodi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-sm'>Prodi</span></Link>
                 </li>
                 <li>
-                  <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className={`text-white rounded-md text-xs ${location.pathname == '/dosen' || active == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-xs'>Dosen</span></Link>
+                  <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/dosen' || active == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-sm'>Dosen</span></Link>
                 </li>
                 <li>
-                  <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className={`text-white rounded-md text-xs ${location.pathname == '/mahasiswa' || active == '/mahasiswa' ? 'active' : ''}`}><FaUserGraduate /> <span className='text-xs'>Mahasiswa</span></Link>
+                  <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/mahasiswa' || active == '/mahasiswa' ? 'active' : ''}`}><FaUserGraduate /> <span className='text-sm'>Mahasiswa</span></Link>
                 </li>
                 <li>
-                  <Link to="/ruang" state={{ collaps: 'induk', activ: '/ruang' }} className={`text-white rounded-md text-xs ${location.pathname == '/ruang' ? 'active' : ''}`}><SiHomeassistantcommunitystore /> <span className='text-xs'>Ruang</span></Link>
+                  <Link to="/ruang" state={{ collaps: 'induk', activ: '/ruang' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/ruang' ? 'active' : ''}`}><SiHomeassistantcommunitystore /> <span className='text-sm'>Ruang</span></Link>
                 </li>
               </ul>
             </details>
@@ -115,31 +115,31 @@ const Sidebar = () => {
         <li>
           {collap == 'kurikulum' ?
             <details open>
-              <summary className='text-white'>KURIKULUM</summary>
+              <summary className='text-[#F5F5F5]'><FaBook />Kurikulum</summary>
               <ul className='gap-1'>
                 <li>
-                  <Link to='/tahun' state={{ collaps: 'kurikulum', activ: '/tahun' }} className={`text-white rounded-md text-xs ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-xs'>Tahun Ajaran</span></Link>
+                  <Link to='/tahun' state={{ collaps: 'kurikulum', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
                 </li>
                 <li>
-                  <Link to="/semester" state={{ collaps: 'kurikulum', activ: '/semester' }} className={`text-white rounded-md text-xs ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-xs'>Semester</span></Link>
+                  <Link to="/semester" state={{ collaps: 'kurikulum', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
                 </li>
                 <li>
-                  <Link to="/kategorinilai" state={{ collaps: 'kurikulum', activ: '/kategorinilai' }} className={`text-white rounded-md text-xs ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Kategori Nilai</span></Link>
+                  <Link to="/kategorinilai" state={{ collaps: 'kurikulum', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
                 </li>
               </ul>
             </details>
             :
             <details>
-              <summary className='text-white'>KURIKULUM</summary>
+              <summary className='text-[#F5F5F5]'><FaBook />Kurikulum</summary>
               <ul className='gap-1'>
                 <li>
-                  <Link to='/tahun' state={{ collaps: 'kurikulum', activ: '/tahun' }} className={`text-white rounded-md text-xs ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-xs'>Tahun Ajaran</span></Link>
+                  <Link to='/tahun' state={{ collaps: 'kurikulum', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
                 </li>
                 <li>
-                  <Link to="/semester" state={{ collaps: 'kurikulum', activ: '/semester' }} className={`text-white rounded-md text-xs ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-xs'>Semester</span></Link>
+                  <Link to="/semester" state={{ collaps: 'kurikulum', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
                 </li>
                 <li>
-                  <Link to="/kategorinilai" state={{ collaps: 'kurikulum', activ: '/kategorinilai' }} className={`text-white rounded-md text-xs ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Kategori Nilai</span></Link>
+                  <Link to="/kategorinilai" state={{ collaps: 'kurikulum', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
                 </li>
               </ul>
             </details>
@@ -148,78 +148,78 @@ const Sidebar = () => {
         <li>
           {collap == 'kuliah' ?
             <details open>
-              <summary className='text-white'>PERKULIAHAN</summary>
+              <summary className='text-[#F5F5F5]'><FaBook />Perkuliahan</summary>
               <ul className='gap-2'>
                 <li>
-                  <Link to="/setmhs" state={{ collaps: 'kuliah', activ: '/setmhs' }} className={`text-white rounded-md text-xs ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-xs'>Set MHS Persemester</span></Link>
+                  <Link to="/setmhs" state={{ collaps: 'kuliah', activ: '/setmhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-sm'>Set MHS Persemester</span></Link>
                 </li>
                 <li>
-                  <Link to="/pembimbingakademik" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className={`text-white rounded-md text-xs ${location.pathname == '/pembimbingakademik' || active == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-xs'>Pembimbing Akadmik</span></Link>
+                  <Link to="/pembimbingakademik" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pembimbingakademik' || active == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-sm'>Pembimbing Akadmik</span></Link>
                 </li>
                 <li>
-                  <Link to="/studimhs" state={{ collaps: 'kuliah', activ: '/studimhs' }} className={`text-white rounded-md text-xs ${location.pathname == '/studimhs' || active == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Studi Mahasiswa</span></Link>
+                  <Link to="/studimhs" state={{ collaps: 'kuliah', activ: '/studimhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/studimhs' || active == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-sm'>Studi Mahasiswa</span></Link>
                 </li>
                 <li>
-                  <Link to="/pengajuanstudi" state={{ collaps: 'kuliah', activ: '/pengajuanstudi' }} className={`text-white rounded-md text-xs ${location.pathname == '/pengajuanstudi' || active == '/pengajuanstudi' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Pengajuan Studi</span></Link>
+                  <Link to="/pengajuanstudi" state={{ collaps: 'kuliah', activ: '/pengajuanstudi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pengajuanstudi' || active == '/pengajuanstudi' ? 'active' : ''}`}><FaFileAlt /><span className='text-sm'>Pengajuan Studi</span></Link>
                 </li>
                 <li>
-                  <Link to="/matakuliah" state={{ collaps: 'kuliah', activ: '/matakuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/matakuliah' || active == '/matakuliah' ? 'active' : ''}`}><FaBook /> <span className='text-xs'>Mata Kuliah</span></Link>
+                  <Link to="/matakuliah" state={{ collaps: 'kuliah', activ: '/matakuliah' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/matakuliah' || active == '/matakuliah' ? 'active' : ''}`}><FaBook /> <span className='text-sm'>Mata Kuliah</span></Link>
                 </li>
                 <li>
-                  <Link to='/sebaran' state={{ collaps: 'kuliah', activ: '/sebaran' }} className={`text-white rounded-md text-xs ${location.pathname == '/sebaran' ? 'active' : ''}`}><FaTh /> <span className='text-xs'>Sebaran Mata Kuliah</span></Link>
+                  <Link to='/sebaran' state={{ collaps: 'kuliah', activ: '/sebaran' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/sebaran' ? 'active' : ''}`}><FaTh /> <span className='text-sm'>Sebaran Mata Kuliah</span></Link>
                 </li>
                 <li>
-                  <Link to="/krs" state={{ collaps: 'kuliah', activ: '/krs' }} className={`text-white rounded-md text-xs ${location.pathname == '/krs' ? 'active' : ''}`}><FaTasks /> <span className='text-xs'>Kartu Rencana Studi</span></Link>
+                  <Link to="/krs" state={{ collaps: 'kuliah', activ: '/krs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/krs' ? 'active' : ''}`}><FaTasks /> <span className='text-sm'>Kartu Rencana Studi</span></Link>
                 </li>
                 <li>
-                  <Link to="/kelas" state={{ collaps: 'kuliah', activ: '/kelas' }} className={`text-white rounded-md text-xs ${location.pathname == '/kelas' || active == '/kelas' ? 'active' : ''}`}><SiOpslevel /> <span className='text-xs'>Kelas Kuliah</span></Link>
+                  <Link to="/kelas" state={{ collaps: 'kuliah', activ: '/kelas' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kelas' || active == '/kelas' ? 'active' : ''}`}><SiOpslevel /> <span className='text-sm'>Kelas Kuliah</span></Link>
                 </li>
                 <li>
-                  <Link to="/jadwalkuliah" state={{ collaps: 'kuliah', activ: '/jadwalkuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/jadwalkuliah' || active == '/jadwalkuliah' ? 'active' : ''}`}><FaBusinessTime /> <span className='text-xs'>Jadwal Kuliah</span></Link>
+                  <Link to="/jadwalkuliah" state={{ collaps: 'kuliah', activ: '/jadwalkuliah' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/jadwalkuliah' || active == '/jadwalkuliah' ? 'active' : ''}`}><FaBusinessTime /> <span className='text-sm'>Jadwal Kuliah</span></Link>
                 </li>
                 <li>
-                  <Link to="/penilaian" state={{ collaps: 'kuliah', activ: '/penilaian' }} className={`text-white rounded-md text-xs ${location.pathname == '/penilaian' || active == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Penilaian Mahasiswa</span></Link>
+                  <Link to="/penilaian" state={{ collaps: 'kuliah', activ: '/penilaian' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/penilaian' || active == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Penilaian Mahasiswa</span></Link>
                 </li>
                 <li>
-                  <Link to="/khs" state={{ collaps: 'kuliah', activ: '/khs' }} className={`text-white rounded-md text-xs ${location.pathname == '/khs' || active == '/khs' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-xs'>Kartu Hasil Studi</span></Link>
+                  <Link to="/khs" state={{ collaps: 'kuliah', activ: '/khs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/khs' || active == '/khs' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-sm'>Kartu Hasil Studi</span></Link>
                 </li>
               </ul>
             </details> :
             <details>
-              <summary className='text-white'>PERKULIAHAN</summary>
+              <summary className='text-[#F5F5F5]'><FaBook />Perkuliahan</summary>
               <ul className='gap-2'>
                 <li>
-                  <Link to="/setmhs" state={{ collaps: 'kuliah', activ: '/setmhs' }} className={`text-white rounded-md text-xs ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-xs'>Set MHS Persemester</span></Link>
+                  <Link to="/setmhs" state={{ collaps: 'kuliah', activ: '/setmhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-sm'>Set MHS Persemester</span></Link>
                 </li>
                 <li>
-                  <Link to="/pembimbingakademik" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className={`text-white rounded-md text-xs ${location.pathname == '/pembimbingakademik' || active == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-xs'>Pembimbing Akadmik</span></Link>
+                  <Link to="/pembimbingakademik" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pembimbingakademik' || active == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-sm'>Pembimbing Akadmik</span></Link>
                 </li>
                 <li>
-                  <Link to="/studimhs" state={{ collaps: 'kuliah', activ: '/studimhs' }} className={`text-white rounded-md text-xs ${location.pathname == '/studimhs' || active == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Studi Mahasiswa</span></Link>
+                  <Link to="/studimhs" state={{ collaps: 'kuliah', activ: '/studimhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/studimhs' || active == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-sm'>Studi Mahasiswa</span></Link>
                 </li>
                 <li>
-                  <Link to="/pengajuanstudi" state={{ collaps: 'kuliah', activ: '/pengajuanstudi' }} className={`text-white rounded-md text-xs ${location.pathname == '/pengajuanstudi' || active == '/pengajuanstudi' ? 'active' : ''}`}><FaFileAlt /><span className='text-xs'>Pengajuan Studi</span></Link>
+                  <Link to="/pengajuanstudi" state={{ collaps: 'kuliah', activ: '/pengajuanstudi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pengajuanstudi' || active == '/pengajuanstudi' ? 'active' : ''}`}><FaFileAlt /><span className='text-sm'>Pengajuan Studi</span></Link>
                 </li>
                 <li>
-                  <Link to="/matakuliah" state={{ collaps: 'kuliah', activ: '/matakuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/matakuliah' || active == '/matakuliah' ? 'active' : ''}`}><FaBook /> <span className='text-xs'>Mata Kuliah</span></Link>
+                  <Link to="/matakuliah" state={{ collaps: 'kuliah', activ: '/matakuliah' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/matakuliah' || active == '/matakuliah' ? 'active' : ''}`}><FaBook /> <span className='text-sm'>Mata Kuliah</span></Link>
                 </li>
                 <li>
-                  <Link to='/sebaran' state={{ collaps: 'kuliah', activ: '/sebaran' }} className={`text-white rounded-md text-xs ${location.pathname == '/sebaran' ? 'active' : ''}`}><FaTh /> <span className='text-xs'>Sebaran Mata Kuliah</span></Link>
+                  <Link to='/sebaran' state={{ collaps: 'kuliah', activ: '/sebaran' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/sebaran' ? 'active' : ''}`}><FaTh /> <span className='text-sm'>Sebaran Mata Kuliah</span></Link>
                 </li>
                 <li>
-                  <Link to="/krs" state={{ collaps: 'kuliah', activ: '/krs' }} className={`text-white rounded-md text-xs ${location.pathname == '/krs' ? 'active' : ''}`}><FaTasks /> <span className='text-xs'>Kartu Rencana Studi</span></Link>
+                  <Link to="/krs" state={{ collaps: 'kuliah', activ: '/krs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/krs' ? 'active' : ''}`}><FaTasks /> <span className='text-sm'>Kartu Rencana Studi</span></Link>
                 </li>
                 <li>
-                  <Link to="/kelas" state={{ collaps: 'kuliah', activ: '/kelas' }} className={`text-white rounded-md text-xs ${location.pathname == '/kelas' || active == '/kelas' ? 'active' : ''}`}><SiOpslevel /> <span className='text-xs'>Kelas Kuliah</span></Link>
+                  <Link to="/kelas" state={{ collaps: 'kuliah', activ: '/kelas' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kelas' || active == '/kelas' ? 'active' : ''}`}><SiOpslevel /> <span className='text-sm'>Kelas Kuliah</span></Link>
                 </li>
                 <li>
-                  <Link to="/jadwalkuliah" state={{ collaps: 'kuliah', activ: '/jadwalkuliah' }} className={`text-white rounded-md text-xs ${location.pathname == '/jadwalkuliah' || active == '/jadwalkuliah' ? 'active' : ''}`}><FaBusinessTime /> <span className='text-xs'>Jadwal Kuliah</span></Link>
+                  <Link to="/jadwalkuliah" state={{ collaps: 'kuliah', activ: '/jadwalkuliah' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/jadwalkuliah' || active == '/jadwalkuliah' ? 'active' : ''}`}><FaBusinessTime /> <span className='text-sm'>Jadwal Kuliah</span></Link>
                 </li>
                 <li>
-                  <Link to="/penilaian" state={{ collaps: 'kuliah', activ: '/penilaian' }} className={`text-white rounded-md text-xs ${location.pathname == '/penilaian' || active == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-xs'>Penilaian Mahasiswa</span></Link>
+                  <Link to="/penilaian" state={{ collaps: 'kuliah', activ: '/penilaian' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/penilaian' || active == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Penilaian Mahasiswa</span></Link>
                 </li>
                 <li>
-                  <Link to="/khs" state={{ collaps: 'kuliah', activ: '/khs' }} className={`text-white rounded-md text-xs ${location.pathname == '/khs' || active == '/khs' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-xs'>Kartu Hasil Studi</span></Link>
+                  <Link to="/khs" state={{ collaps: 'kuliah', activ: '/khs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/khs' || active == '/khs' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-sm'>Kartu Hasil Studi</span></Link>
                 </li>
               </ul>
             </details>
@@ -228,18 +228,18 @@ const Sidebar = () => {
         <li>
           {collap == 'user' ?
             <details open>
-              <summary className='text-white'>PENGGUNA</summary>
+              <summary className='text-[#F5F5F5]'><FaBook />Pengguna</summary>
               <ul className='gap-2'>
                 <li>
-                  <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-white rounded-md text-xs ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-xs'>Users</span></Link>
+                  <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-sm'>Users</span></Link>
                 </li>
               </ul>
             </details> :
             <details>
-              <summary className='text-white'>PENGGUNA</summary>
+              <summary className='text-[#F5F5F5]'><FaBook />Pengguna</summary>
               <ul className='gap-2'>
                 <li>
-                  <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-white rounded-md text-xs ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-xs'>Users</span></Link>
+                  <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-sm'>Users</span></Link>
                 </li>
               </ul>
             </details>
