@@ -26,7 +26,7 @@ module.exports = {
                     }, {
                         model: alatTransportasi
                     }],
-                    attributes: ["id_dosen", "nama", "nidn", "jenis_kelamin", "status"],
+                    attributes: ["id_dosen", "nama", "nidn", "jenis_kelamin", "qrcode", "status"],
                     where: {
                         [Op.or]: [
                             {
