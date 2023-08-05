@@ -141,8 +141,8 @@ const ListMahasiswa = () => {
                                             <td className='px-6 py-2'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
                                             <td className='px-6 py-2'>{mhs.fakultas[0].nama_fakultas}</td>
                                             <td className='px-6 py-2'>{mhs.prodis[0].nama_prodi}</td>
-                                            <td className='px-6 py-2'>
-                                                <div className='grid grid-flow-col'>
+                                            <td className='px-6 py-2' align='center'>
+                                                <div className='flex gap-1'>
                                                     <Link to={`/mahasiswa/detail/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
                                                     <Link to={`/mahasiswa/form1/edit/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
                                                     <Link to={`/mahasiswa/upload/berkas/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
