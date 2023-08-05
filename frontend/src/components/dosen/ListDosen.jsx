@@ -5,6 +5,7 @@ import { Link, Navigate } from "react-router-dom"
 import ReactPaginate from "react-paginate"
 import axios from 'axios'
 import Swal from "sweetalert2"
+import stainaa from "../../assets/img/stainaa.png"
 
 const ListDosen = () => {
     const [Dosen, setDosen] = useState([])
@@ -22,6 +23,10 @@ const ListDosen = () => {
         getDosen()
     }, [page, keyword])
 
+    useEffect(() => {
+        getQrDsn()
+    }, [Dosen])
+
     const getDosen = async () => {
         const response = await axios.get(`v1/dosen/all?page=${page}&search=${keyword}`)
         setDosen(response.data.data)
@@ -29,6 +34,13 @@ const ListDosen = () => {
         setrows(response.data.total_data)
         setPages(response.data.total_page)
         setperPage(response.data.per_page)
+    }
+
+    const getQrDsn = () => {
+        var i = Dosen.map(item => (
+            item.nama
+        ))
+        console.log(i)
     }
 
     const tambahDosen = async () => {
@@ -92,14 +104,14 @@ const ListDosen = () => {
         <div className='mt-2 container'>
             {idDsn && <Navigate to={`form1/${stat}/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen' }} />}
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Dosen</h1>
+                <h1 className='text-2xl font-bold'>Dosen</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button className="btn btn-success btn-xs" onClick={tambahDosen}><FaPlus /> tambah data</button>
+                                <button className="btn btn-success btn-sm rounded-md capitalize" onClick={tambahDosen}><FaPlus /> tambah data</button>
                             </div>
                             <div>
                                 <div className="form-control">
@@ -107,10 +119,10 @@ const ListDosen = () => {
                                         <input
                                             type="text"
                                             onChange={cariData}
-                                            className="input input-xs input-bordered input-success"
+                                            className="input input-sm input-bordered input-success"
                                             placeholder='Cari'
                                         />
-                                        <button type='submit' className="btn btn-xs btn-square btn-success">
+                                        <button type='submit' className="btn btn-sm btn-square btn-success">
                                             <FaSearch />
                                         </button>
                                     </div>
@@ -119,26 +131,34 @@ const ListDosen = () => {
                         </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
-                                        <th scope="col" className="px-6 py-3">#</th>
-                                        <th scope="col" className="px-6 py-3">NIDN</th>
-                                        <th scope="col" className="px-6 py-3">Nama</th>
-                                        <th scope="col" className="px-6 py-3">Jenis Kelamin</th>
-                                        <th scope="col" className="px-6 py-3">Pendidikan</th>
-                                        <th scope="col" className='px-6 py-3'>Alat Tranportasi</th>
-                                        <th scope="col" className="px-6 py-3" align='center'>Aksi</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">#</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">NIDN</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">QR Code</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Nama</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Jenis Kelamin</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Pendidikan</th>
+                                        <th scope="col" className='px-6 py-2 text-sm'>Alat Tranportasi</th>
+                                        <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Dosen.map((dsn, index) => (
-                                        <tr key={dsn.id_dosen} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2'>{dsn.nidn}</td>
-                                            <td className='px-6 py-2'>{dsn.nama}</td>
-                                            <td className='px-6 py-2'>{dsn.jenis_kelamin == "l" ? "Laki-Laki" : "Perempuan"}</td>
-                                            <td className='px-6 py-2'>{dsn.pendidikans[0].nama_pendidikan}</td>
-                                            <td className='px-6 py-2'>{dsn.alat_transportasis[0].nama_alat_transportasi}</td>
+                                        <tr key={dsn.id_dosen} className='bg-white border-b text-gray-500 border-x'>
+                                            <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                            <td className='px-6 py-2 font-semibold'>{dsn.nidn}</td>
+                                            <td className='px-6 py-2 font-semibold'>
+                                                <div className="avatar">
+                                                    <div className="w-8 rounded">
+                                                        <img src={stainaa} alt="Tailwind-CSS-Avatar-component" />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className='px-6 py-2 font-semibold'>{dsn.nama}</td>
+                                            <td className='px-6 py-2 font-semibold'>{dsn.jenis_kelamin == "l" ? "Laki-Laki" : "Perempuan"}</td>
+                                            <td className='px-6 py-2 font-semibold'>{dsn.pendidikans[0].nama_pendidikan}</td>
+                                            <td className='px-6 py-2 font-semibold'>{dsn.alat_transportasis[0].nama_alat_transportasi}</td>
                                             <td className='px-6 py-2'>
                                                 <div className='grid grid-flow-col'>
                                                     <Link to={`/dosen/detail/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
@@ -154,7 +174,7 @@ const ListDosen = () => {
                             </table>
                         </div>
                         <div>
-                            <span className='text-sm'>Total Data : {rows} page: {rows ? page : 0} of {pages}</span>
+                            <span className='text-sm font-semibold'>Total Data : {rows} page: {page} of {pages}</span>
                             <p className='text-sm text-red-700'>{msg}</p>
                         </div>
                         <div className="mt-2 justify-center btn-group" key={rows} aria-label='pagination'>
@@ -165,11 +185,11 @@ const ListDosen = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-success  btn-circle  "}
-                                pageLinkClassName={"btn btn-xs btn-success-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

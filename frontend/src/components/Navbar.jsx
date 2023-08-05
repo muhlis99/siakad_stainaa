@@ -29,7 +29,6 @@ const Navbar = () => {
     })
   }
 
-  console.log(user);
   return (
     <div className="navbar bg-[#F5F5F5] shadow-md min-h-min py-1 sticky z-40 top-0">
       <div className="flex-none lg:hidden">
