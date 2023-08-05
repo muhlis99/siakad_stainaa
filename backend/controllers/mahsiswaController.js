@@ -413,7 +413,7 @@ module.exports = {
             const ctx = canvas.getContext("2d")
             const img = await loadImage(center_image)
             const center = (width - cwidth) / 1
-            ctx.drawImage(img, 170, 180, cwidth, cwidth)
+            ctx.drawImage(img, 200, 190, cwidth, cwidth)
             return canvas.toDataURL("image/png")
         }
 
@@ -427,8 +427,8 @@ module.exports = {
                 const qrCode = await createQrCode(
                     nim,
                     `data:image/png;base64,${dataQrWithLogo}`,
-                    250,
-                    150
+                    150,
+                    100
                 )
                 const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
                 fs.unlinkSync(`tmp/mahasiswa/qrcode/${qrCodeOld}`)
@@ -445,8 +445,8 @@ module.exports = {
                 const qrCode = await createQrCode(
                     nim,
                     `data:image/png;base64,${dataQrWithLogo}`,
-                    250,
-                    150
+                    150,
+                    100
                 )
                 const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
                 let filename = `tmp/mahasiswa/qrcode/${data}.png`;
