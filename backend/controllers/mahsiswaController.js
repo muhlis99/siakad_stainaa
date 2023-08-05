@@ -33,7 +33,7 @@ module.exports = {
                 attributes: ["nama_prodi"],
                 where: { status: "aktif" }
             }],
-            attributes: ["id_mahasiswa", "nim", "nama"],
+            attributes: ["id_mahasiswa", "nim", "nama", "qrcode", "status"],
             where: {
                 [Op.or]: [
                     {
@@ -70,7 +70,7 @@ module.exports = {
                 attributes: ["nama_prodi"],
                 where: { status: "aktif" }
             }],
-            attributes: ["id_mahasiswa", "nim", "nama"],
+            attributes: ["id_mahasiswa", "nim", "nama", "qrcode", "status"],
             where: {
                 [Op.or]: [
                     {
