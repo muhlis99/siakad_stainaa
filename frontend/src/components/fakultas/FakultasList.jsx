@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaTrash, FaPlus, FaSearch, FaArrowRight, FaArrowLeft, FaTimes, FaEdit } from "react-icons/fa";
+import { FaTrash, FaPlus, FaSearch, FaArrowRight, FaArrowLeft, FaTimes, FaEdit, FaSave } from "react-icons/fa";
 import { SlOptions } from "react-icons/sl";
 import axios from 'axios';
 import ReactPaginate from "react-paginate";
@@ -215,63 +215,75 @@ const FakultasList = () => {
             {/* Modal untuk tambah data */}
             <input type="checkbox" id="my-modal-add" className="modal-toggle" />
             <div className="modal">
-                <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
+                <div className="modal-box grid p-0 rounded-md">
                     <form onSubmit={simpanFakultas}>
-                        <h3 className="font-bold text-xl">Tambah</h3>
-                        <div className="py-4">
-                            <div className="form-control w-full ">
-                                <label className='text-sm uppercase font-bold mb-1'>Nama Jenjang Pendidikan</label>
-                                <select
-                                    className="select select-bordered select-sm"
-                                    value={kodeJenjang}
-                                    onChange={(e) => setKodeJenjang(e.target.value)}
-                                >
-                                    <option disabled value={""}>-Pilih Jenjang Pendidikan-</option>
-                                    {Jenjang.map((jenj) => (
-                                        <option key={jenj.code_jenjang_pendidikan} value={jenj.code_jenjang_pendidikan}>{jenj.nama_jenjang_pendidikan}</option>
-                                    ))}
-
-                                </select>
-                            </div>
-                            {errors && kodeJenjang.length <= 0 ?
-                                <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
-                            }
-                            <div className="form-control w-full mt-2">
-                                <label className="text-sm uppercase font-bold mb-1">Kode dikti fakultas</label>
-                                <input
-                                    type="text"
-                                    placeholder="Kode Dikti Fakultas"
-                                    value={kodeDikti}
-                                    onChange={(e) => setKodeDikti(e.target.value)}
-                                    className="input input-sm input-bordered w-full"
-                                />
-                            </div>
-                            {errors && kodeDikti.length <= 0 ?
-                                <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
-                            }
-                            <div className="form-control w-full mt-2">
-                                <label className='text-sm uppercase font-bold mb-1'>Nama Fakultas</label>
-                                <select
-                                    className="select select-bordered select-sm"
-                                    value={namaFak}
-                                    onChange={(e) => setNamaFak(e.target.value)}
-                                >
-                                    <option disabled value={""}>-Pilih Fakultas-</option>
-                                    <option>AGAMA ISLAM</option>
-                                    <option>AKUNTANSI</option>
-                                    <option>HUKUM</option>
-                                    <option>TEKNOLOGI INFORMASI</option>
-                                    <option>KOMUNIKASI</option>
-                                    <option>PSIKOLOGI</option>
-                                </select>
-                            </div>
-                            {errors && namaFak.length <= 0 ?
-                                <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
-                            }
+                        <div className='bg-base-200 border-b-2 p-3'>
+                            <h3 className="font-bold text-xl mb-1">Tambah</h3>
+                            <button type='button' className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
                         </div>
-                        <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-success">simpan</button>
+                        <div className='mb-2'>
+                            <div className="py-4 px-4">
+                                <div className="grid gap-3">
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text font-semibold">Jenjang Pendidikan</span>
+                                        </label>
+                                        <select
+                                            className="select select-bordered select-sm w-full"
+                                            value={kodeJenjang}
+                                            onChange={(e) => setKodeJenjang(e.target.value)}
+                                        >
+                                            <option disabled value={""}>-Jenjang Pendidikan-</option>
+                                            {Jenjang.map((jenj) => (
+                                                <option key={jenj.code_jenjang_pendidikan} value={jenj.code_jenjang_pendidikan}>{jenj.nama_jenjang_pendidikan}</option>
+                                            ))}
+
+                                        </select>
+                                        {errors && kodeJenjang.length <= 0 ?
+                                            <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
+                                        }
+                                    </div>
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text font-semibold">Kode Dikti Fakultas</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            placeholder="Kode Dikti Fakultas"
+                                            value={kodeDikti}
+                                            onChange={(e) => setKodeDikti(e.target.value)}
+                                            className="input input-sm input-bordered w-full"
+                                        />
+                                        {errors && kodeDikti.length <= 0 ?
+                                            <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
+                                        }
+                                    </div>
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text font-semibold">Fakultas</span>
+                                        </label>
+                                        <select
+                                            className="select select-bordered select-sm w-full"
+                                            value={namaFak}
+                                            onChange={(e) => setNamaFak(e.target.value)}
+                                        >
+                                            <option disabled value={""}>-Pilih Fakultas-</option>
+                                            <option>AGAMA ISLAM</option>
+                                            <option>AKUNTANSI</option>
+                                            <option>HUKUM</option>
+                                            <option>TEKNOLOGI INFORMASI</option>
+                                            <option>KOMUNIKASI</option>
+                                            <option>PSIKOLOGI</option>
+                                        </select>
+                                        {errors && namaFak.length <= 0 ?
+                                            <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='p-3 border-t-2 text-center'>
+                            <button type='submit' className="btn btn-sm btn-primary capitalize"><FaSave />simpan</button>
                         </div>
                     </form>
                 </div>
@@ -280,77 +292,89 @@ const FakultasList = () => {
             {/* Modal untuk edit data */}
             <input type="checkbox" id="my-modal-edit" className="modal-toggle" />
             <div className="modal">
-                <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
+                <div className="modal-box grid p-0 rounded-md">
                     <form onSubmit={updateFakultas}>
-                        <h3 className="font-bold text-xl">Edit</h3>
-                        <div className="py-4">
-                            <div className="form-control w-full ">
-                                <label className='text-sm uppercase font-bold mb-1'>Nama Jenjang Pendidikan</label>
-                                <select
-                                    className="select select-bordered select-sm"
-                                    value={kodeJenjang}
-                                    onChange={(e) => setKodeJenjang(e.target.value)}
-                                >
-                                    <option disabled value={""}>-Pilih Jenjang Pendidikan-</option>
-                                    {Jenjang.map((jenj) => (
-                                        <option key={jenj.code_jenjang_pendidikan} value={jenj.code_jenjang_pendidikan}>{jenj.nama_jenjang_pendidikan}</option>
-                                    ))}
-
-                                </select>
-                            </div>
-                            {errors && kodeJenjang.length <= 0 ?
-                                <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
-                            }
-                            <div className="form-control w-full mt-2">
-                                <label className="text-sm uppercase font-bold mb-1">Kode dikti fakultas</label>
-                                <input
-                                    type="text"
-                                    placeholder="Kode Dikti Fakultas"
-                                    value={kodeDikti}
-                                    onChange={(e) => setKodeDikti(e.target.value)}
-                                    className="input input-sm input-bordered w-full"
-                                />
-                            </div>
-                            {errors && kodeDikti.length <= 0 ?
-                                <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
-                            }
-                            <div className="form-control w-full mt-2">
-                                <label className='text-sm uppercase font-bold mb-1'>Nama Fakultas</label>
-                                <select
-                                    className="select select-bordered select-sm"
-                                    value={namaFak}
-                                    onChange={(e) => setNamaFak(e.target.value)}
-                                >
-                                    <option disabled value={""}>-Pilih Fakultas-</option>
-                                    <option>AGAMA ISLAM</option>
-                                    <option>AKUNTANSI</option>
-                                    <option>HUKUM</option>
-                                    <option>TEKNOLOGI INFORMASI</option>
-                                    <option>KOMUNIKASI</option>
-                                    <option>PSIKOLOGI</option>
-                                </select>
-                            </div>
-                            {errors && namaFak.length <= 0 ?
-                                <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
-                            }
+                        <div className='bg-base-200 border-b-2 p-3'>
+                            <h3 className="font-bold text-xl mb-1">Edit</h3>
+                            <button type='button' className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
                         </div>
-                        <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-success">update</button>
+                        <div className='mb-2'>
+                            <div className="py-4 px-4">
+                                <div className="grid gap-3">
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text font-semibold">Jenjang Pendidikan</span>
+                                        </label>
+                                        <select
+                                            className="select select-bordered select-sm w-full"
+                                            value={kodeJenjang}
+                                            onChange={(e) => setKodeJenjang(e.target.value)}
+                                        >
+                                            <option disabled value={""}>-Jenjang Pendidikan-</option>
+                                            {Jenjang.map((jenj) => (
+                                                <option key={jenj.code_jenjang_pendidikan} value={jenj.code_jenjang_pendidikan}>{jenj.nama_jenjang_pendidikan}</option>
+                                            ))}
+
+                                        </select>
+                                        {errors && kodeJenjang.length <= 0 ?
+                                            <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
+                                        }
+                                    </div>
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text font-semibold">Kode Dikti Fakultas</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            placeholder="Kode Dikti Fakultas"
+                                            value={kodeDikti}
+                                            onChange={(e) => setKodeDikti(e.target.value)}
+                                            className="input input-sm input-bordered w-full"
+                                        />
+                                        {errors && kodeDikti.length <= 0 ?
+                                            <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
+                                        }
+                                    </div>
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text font-semibold">Fakultas</span>
+                                        </label>
+                                        <select
+                                            className="select select-bordered select-sm w-full"
+                                            value={namaFak}
+                                            onChange={(e) => setNamaFak(e.target.value)}
+                                        >
+                                            <option disabled value={""}>-Pilih Fakultas-</option>
+                                            <option>AGAMA ISLAM</option>
+                                            <option>AKUNTANSI</option>
+                                            <option>HUKUM</option>
+                                            <option>TEKNOLOGI INFORMASI</option>
+                                            <option>KOMUNIKASI</option>
+                                            <option>PSIKOLOGI</option>
+                                        </select>
+                                        {errors && namaFak.length <= 0 ?
+                                            <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='p-3 border-t-2 text-center'>
+                            <button type='submit' className="btn btn-sm btn-primary capitalize"><FaEdit />Edit</button>
                         </div>
                     </form>
                 </div>
             </div>
 
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Fakultas</h1>
+                <h1 className='text-2xl font-bold'>Fakultas</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <label htmlFor="my-modal-add" className="btn btn-success btn-xs"><FaPlus /> tambah data</label>
+                                <label htmlFor="my-modal-add" className="btn btn-success btn-sm capitalize rounded-md"><FaPlus /> tambah data</label>
                             </div>
                             <div>
                                 <div className="form-control">
@@ -358,10 +382,10 @@ const FakultasList = () => {
                                         <input
                                             type="text"
                                             onChange={cariData}
-                                            className="input input-xs input-bordered input-success"
+                                            className="input input-sm input-bordered input-success"
                                             placeholder='Cari'
                                         />
-                                        <button type='submit' className="btn btn-xs btn-square btn-success">
+                                        <button type='submit' className="btn btn-sm btn-square btn-success">
                                             <FaSearch />
                                         </button>
                                     </div>
@@ -370,26 +394,26 @@ const FakultasList = () => {
                         </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
-                                        <th scope="col" className="px-6 py-3">#</th>
-                                        <th scope="col" className="px-6 py-3">Jenjang</th>
-                                        <th scope="col" className="px-6 py-3">Kode Fakultas</th>
-                                        <th scope="col" className="px-6 py-3">Nama Fakultas</th>
-                                        <th scope="col" className='px-6 py-3'>Status</th>
-                                        <th scope="col" className="px-6 py-3" align='center'>Aksi</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">#</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Jenjang</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Kode Fakultas</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Nama Fakultas</th>
+                                        <th scope="col" className='px-6 py-2 text-sm'>Status</th>
+                                        <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Fakultas.map((faks, index) => (
-                                        <tr key={faks.id_fakultas} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">
+                                        <tr key={faks.id_fakultas} className='bg-white border-b text-gray-500 border-x'>
+                                            <th scope="row" className="px-6 py-2 whitespace-nowrap font-semibold">
                                                 {index + 1}
                                             </th>
-                                            <td className='px-6 py-2'>{faks.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-2'>{faks.code_fakultas}</td>
-                                            <td className='px-6 py-2'>{faks.nama_fakultas}</td>
-                                            <td className='px-6 py-2'>{faks.status == "aktif" ? <span className="badge btn-success badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                            <td className='px-6 py-2 font-semibold'>{faks.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                            <td className='px-6 py-2 font-semibold'>{faks.code_fakultas}</td>
+                                            <td className='px-6 py-2 font-semibold'>{faks.nama_fakultas}</td>
+                                            <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{faks.status}</span></td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalEditOpen(faks.id_fakultas)} title='Edit'><FaEdit /></button>
@@ -402,7 +426,7 @@ const FakultasList = () => {
                             </table>
                         </div>
                         <div>
-                            <span className='text-sm'>Total Data : {rows} page: {page} of {pages}</span>
+                            <span className='text-sm font-semibold'>Total Data : {rows} page: {page} of {pages}</span>
                             <p className='text-sm text-red-700'>{msg}</p>
                         </div>
                         <div className="mt-2 justify-center btn-group" key={rows} aria-label='pagination'>
@@ -413,11 +437,11 @@ const FakultasList = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
                                 activeLinkClassName={"btn btn-xs btn-success btn-circle"}
-                                pageLinkClassName={"btn btn-xs btn-success-outline btn-outline btn-circle ml-1"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

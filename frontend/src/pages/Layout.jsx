@@ -1,13 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
-import ClockLoader from "react-spinners/ClockLoader"
 
 const Layout = ({ children }) => {
-    const [loading, setLoading] = useState(true)
-    const [color, setColor] = useState("#000000")
-
     return (
         <React.Fragment>
             <div>

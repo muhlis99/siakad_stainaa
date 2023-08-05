@@ -20,7 +20,10 @@ import {
   FaNetworkWired,
   FaRegListAlt,
   FaHandHolding,
-  FaFileAlt
+  FaFileAlt,
+  FaStackOverflow,
+  FaCopy,
+  FaDatabase
 } from "react-icons/fa"
 import {
   SiLevelsdotfyi,
@@ -64,7 +67,7 @@ const Sidebar = () => {
         <li><Link to="/dashboard" className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/dashboard' ? 'active' : ''}`}><FaHome /> <span className='text-sm'>Dashboard</span></Link></li>
         <li>
           {collap == 'induk' ? <details open>
-            <summary className='text-[#F5F5F5]'><FaBook />Data Induk</summary>
+            <summary className='text-[#F5F5F5]'><FaDatabase />Data Induk</summary>
             <ul className='gap-2'>
               <li>
                 <Link to="/jenjang" state={{ collaps: 'induk', activ: '/jenjang' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/jenjang' ? 'active' : ''}`}><SiLevelsdotfyi /> <span className='text-sm'>Jenjang Pendidikan</span></Link>
@@ -87,7 +90,7 @@ const Sidebar = () => {
             </ul>
           </details> :
             <details >
-              <summary className='text-[#F5F5F5]'><FaBook />Data Induk</summary>
+              <summary className='text-[#F5F5F5]'><FaDatabase />Data Induk</summary>
               <ul className='gap-2'>
                 <li>
                   <Link to="/jenjang" state={{ collaps: 'induk', activ: '/jenjang' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/jenjang' ? 'active' : ''}`}><SiLevelsdotfyi /> <span className='text-sm'>Jenjang Pendidikan</span></Link>
@@ -115,7 +118,7 @@ const Sidebar = () => {
         <li>
           {collap == 'kurikulum' ?
             <details open>
-              <summary className='text-[#F5F5F5]'><FaBook />Kurikulum</summary>
+              <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
               <ul className='gap-1'>
                 <li>
                   <Link to='/tahun' state={{ collaps: 'kurikulum', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
@@ -130,7 +133,7 @@ const Sidebar = () => {
             </details>
             :
             <details>
-              <summary className='text-[#F5F5F5]'><FaBook />Kurikulum</summary>
+              <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
               <ul className='gap-1'>
                 <li>
                   <Link to='/tahun' state={{ collaps: 'kurikulum', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
@@ -148,7 +151,7 @@ const Sidebar = () => {
         <li>
           {collap == 'kuliah' ?
             <details open>
-              <summary className='text-[#F5F5F5]'><FaBook />Perkuliahan</summary>
+              <summary className='text-[#F5F5F5]'><FaCopy />Perkuliahan</summary>
               <ul className='gap-2'>
                 <li>
                   <Link to="/setmhs" state={{ collaps: 'kuliah', activ: '/setmhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-sm'>Set MHS Persemester</span></Link>
@@ -186,7 +189,7 @@ const Sidebar = () => {
               </ul>
             </details> :
             <details>
-              <summary className='text-[#F5F5F5]'><FaBook />Perkuliahan</summary>
+              <summary className='text-[#F5F5F5]'><FaCopy />Perkuliahan</summary>
               <ul className='gap-2'>
                 <li>
                   <Link to="/setmhs" state={{ collaps: 'kuliah', activ: '/setmhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-sm'>Set MHS Persemester</span></Link>
@@ -228,7 +231,7 @@ const Sidebar = () => {
         <li>
           {collap == 'user' ?
             <details open>
-              <summary className='text-[#F5F5F5]'><FaBook />Pengguna</summary>
+              <summary className='text-[#F5F5F5]'><FaUsers />Pengguna</summary>
               <ul className='gap-2'>
                 <li>
                   <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-sm'>Users</span></Link>
@@ -236,7 +239,7 @@ const Sidebar = () => {
               </ul>
             </details> :
             <details>
-              <summary className='text-[#F5F5F5]'><FaBook />Pengguna</summary>
+              <summary className='text-[#F5F5F5]'><FaUsers />Pengguna</summary>
               <ul className='gap-2'>
                 <li>
                   <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-sm'>Users</span></Link>
