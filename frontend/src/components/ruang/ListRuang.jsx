@@ -163,44 +163,50 @@ const ListRuang = () => {
         <div className='mt-2 container'>
             <input type="checkbox" id="my-modal-add" className="modal-toggle" />
             <div className="modal">
-                <div className="modal-box relative">
-                    <button className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
+                <div className="modal-box grid p-0 rounded-md">
                     <form onSubmit={judul == "Tambah" ? simpanDataRuang : updateDataRuang}>
-                        <h3 className="font-bold text-xl">{judul}</h3>
-                        <div className="py-4">
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Nama Ruang</span>
-                                </label>
-                                <div className="form-control">
-                                    <label className="input-group input-group-sm">
-                                        <span>Ruang</span>
-                                        <input type="text" value={identitas} onChange={(e) => setIdentitas(e.target.value)} className="input input-sm input-bordered w-full" />
-                                    </label>
+                        <div className='bg-base-200 border-b-2 p-3'>
+                            <h3 className="font-bold text-xl mb-1">{judul}</h3>
+                            <button type='button' className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalAddClose}><FaTimes /></button>
+                        </div>
+                        <div className='mb-2'>
+                            <div className="py-4 px-4">
+                                <div className="grid gap-3">
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text font-semibold">Nama Ruang</span>
+                                        </label>
+                                        <div className="form-control">
+                                            <label className="input-group input-group-sm">
+                                                <span>Ruang</span>
+                                                <input type="text" value={identitas} onChange={(e) => setIdentitas(e.target.value)} className="input input-sm input-bordered w-full" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text font-semibold">Nama Ruang</span>
+                                        </label>
+                                        <input type="text" value={lokasi} onChange={(e) => setLokasi(e.target.value)} placeholder="Lokasi Ruang" className="input input-sm input-bordered w-full" />
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Lokasi</span>
-                                </label>
-                                <input type="text" value={lokasi} onChange={(e) => setLokasi(e.target.value)} placeholder="Lokasi Ruang" className="input input-sm input-bordered w-full" />
-                            </div>
                         </div>
-                        <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-primary">{judul == 'Tambah' ? <><FaSave /><span className='ml-1'>simpan</span></> : <><FaEdit /><span className='ml-1'>edit</span></>}</button>
+                        <div className='p-3 border-t-2 text-center'>
+                            <button type='submit' className="btn btn-sm btn-primary capitalize">{judul == 'Tambah' ? <FaSave /> : <FaEdit />}{judul == 'Tambah' ? 'Simpan' : 'Edit'}</button>
                         </div>
                     </form>
                 </div>
             </div>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Ruang</h1>
+                <h1 className='text-2xl font-bold'>Ruang</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button onClick={() => modalAddOpen('Tambah', '')} className="btn btn-success btn-xs"><FaPlus /> <span className=''>tambah data</span></button>
+                                <button onClick={() => modalAddOpen('Tambah', '')} className="btn btn-success btn-sm rounded-md capitalize"><FaPlus /> <span className=''>tambah data</span></button>
                             </div>
                             <div>
                                 <div className="form-control">
@@ -208,10 +214,10 @@ const ListRuang = () => {
                                         <input
                                             type="text"
                                             onChange={cariData}
-                                            className="input input-xs input-bordered input-success"
+                                            className="input input-sm input-bordered input-success"
                                             placeholder='Cari'
                                         />
-                                        <button type='submit' className="btn btn-xs btn-square btn-success">
+                                        <button type='submit' className="btn btn-sm btn-square btn-success">
                                             <FaSearch />
                                         </button>
                                     </div>
@@ -220,24 +226,24 @@ const ListRuang = () => {
                         </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
-                                        <th scope="col" className="px-6 py-3">#</th>
-                                        <th scope="col" className="px-6 py-3">Kode Ruang</th>
-                                        <th scope="col" className="px-6 py-3">Nama Ruang</th>
-                                        <th scope="col" className="px-6 py-3">Lokasi</th>
-                                        <th scope="col" className='px-6 py-3'>Status</th>
-                                        <th scope="col" className="px-6 py-3" align='center'>Aksi</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">#</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Kode Ruang</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Nama Ruang</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Lokasi</th>
+                                        <th scope="col" className='px-6 py-2 text-sm'>Status</th>
+                                        <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {RuangList.map((rng, index) => (
-                                        <tr key={rng.id_ruang} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2'>{rng.code_ruang}</td>
-                                            <td className='px-6 py-2'>{rng.nama_ruang}</td>
-                                            <td className='px-6 py-2'>{rng.lokasi}</td>
-                                            <td className='px-6 py-2'>{rng.status == "aktif" ? <span className="badge btn-primary badge-sm">Aktif</span> : <span className="badge badge-error badge-sm">Tidak Aktif</span>}</td>
+                                        <tr key={rng.id_ruang} className='bg-white border-b text-gray-500 border-x'>
+                                            <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                            <td className='px-6 py-2 font-semibold'>{rng.code_ruang}</td>
+                                            <td className='px-6 py-2 font-semibold'>{rng.nama_ruang}</td>
+                                            <td className='px-6 py-2 font-semibold'>{rng.lokasi}</td>
+                                            <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{rng.status}</span></td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalAddOpen('Edit', rng.id_ruang)} title='Edit'><FaEdit /></button>
@@ -250,7 +256,7 @@ const ListRuang = () => {
                             </table>
                         </div>
                         <div>
-                            <span className='text-sm'>Total Data : {rows} page: {rows ? page : 0} of {pages}</span>
+                            <span className='text-sm font-semibold'>Total Data : {rows} page: {page} of {pages}</span>
                             <p className='text-sm text-red-700'>{msg}</p>
                         </div>
                         <div className="mt-2 justify-center btn-group" key={rows} aria-label='pagination'>
@@ -265,7 +271,7 @@ const ListRuang = () => {
                                 nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
                                 breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
                                 activeLinkClassName={"btn btn-xs btn-success btn-circle"}
-                                pageLinkClassName={"btn btn-xs btn-success btn-outline btn-circle ml-1"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>
