@@ -8,6 +8,8 @@ import Swal from "sweetalert2"
 
 const ListMahasiswa = () => {
     const [Mahasiswa, setMahasiswa] = useState([])
+    const [namaQr, setNamaQr] = useState([])
+    const [prevQr, setPrevQr] = useState([])
     const [page, setPage] = useState(0)
     const [perPage, setperPage] = useState(0)
     const [pages, setPages] = useState(0)
@@ -22,6 +24,14 @@ const ListMahasiswa = () => {
         getMahasiwa()
     }, [page, keyword])
 
+    useEffect(() => {
+        getQrMahasiswa()
+    }, [Mahasiswa])
+
+    useEffect(() => {
+        getQrMhs()
+    }, [namaQr])
+
     const getMahasiwa = async () => {
         const response = await axios.get(`v1/mahasiswa/all?page=${page}&search=${keyword}`)
         setMahasiswa(response.data.data)
@@ -29,6 +39,35 @@ const ListMahasiswa = () => {
         setrows(response.data.total_data)
         setPages(response.data.total_page)
         setperPage(response.data.per_page)
+    }
+
+    const getQrMahasiswa = () => {
+        var i = Mahasiswa.map(item => (
+            item.qrcode
+        ))
+        setNamaQr(i)
+    }
+
+    const getQrMhs = async () => {
+        if (namaQr != 0) {
+            let qrCode = []
+            let promises = []
+            for (let i = 0; i < namaQr.length; i++) {
+                const t = await axios.get('v1/mahasiswa/public/seeImage/mahasiswa/qrcode/' + namaQr[i], {
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    qrCode.push(base64)
+                })
+                promises.push(t)
+            }
+            Promise.all(promises).then(() => setPrevQr(qrCode))
+        }
     }
 
     const pageCount = Math.ceil(rows / perPage)
@@ -122,7 +161,7 @@ const ListMahasiswa = () => {
                                 <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
                                         <th scope="col" className="px-6 py-2 text-sm">#</th>
-                                        <th scope="col" className="px-6 py-2 text-sm">NIM</th>
+                                        {/* <th scope="col" className="px-6 py-2 text-sm">NIM</th> */}
                                         <th scope="col" className="px-6 py-2 text-sm">Nama</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Jenjang</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Fakultas</th>
@@ -136,8 +175,20 @@ const ListMahasiswa = () => {
                                             <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">
                                                 {index + 1}
                                             </th>
-                                            <td className='px-6 py-2 font-semibold'>{mhs.nim}</td>
-                                            <td className='px-6 py-2 font-semibold'>{mhs.nama}</td>
+                                            <td className='px-6 py-2 font-semibold'>
+                                                <div className='flex gap-3'>
+                                                    <div className="avatar">
+                                                        <div className="w-16 rounded">
+                                                            {prevQr[index] ? <img src={`data:;base64,${prevQr[index]}`} alt='QR Code' /> : ""}
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <h6 className='font-semibold'>{mhs.nama}</h6>
+                                                        <h6 className='font-semibold'>{mhs.nim}</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {/* <td className='px-6 py-2 font-semibold'>{mhs.nim}{mhs.nama}</td> */}
                                             <td className='px-6 py-2 font-semibold'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
                                             <td className='px-6 py-2 font-semibold'>{mhs.fakultas[0].nama_fakultas}</td>
                                             <td className='px-6 py-2 font-semibold'>{mhs.prodis[0].nama_prodi}</td>

@@ -199,13 +199,13 @@ const FormMhs1 = () => {
     return (
         <div className='container mt-2'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Identitas Diri {namanya && <span>Ananda <span className='text-red-500'>{namanya}</span></span>}</h1>
+                <h1 className='text-2xl font-bold'>Identitas Diri {namanya && <span>Ananda <span className='capitalize'>{namanya}</span></span>}</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <form onSubmit={simpanMhs}>
-                            <div className='grid lg:grid-cols-4 gap-4'>
+                            <div className='grid lg:grid-cols-4 gap-3'>
                                 <div>
                                     <label className="label">
                                         <span className="text-base label-text">NIK</span>
@@ -341,12 +341,12 @@ const FormMhs1 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-error' onClick={() => batal(idMhs)}><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>}
+                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-error rounded-md capitalize' onClick={() => batal(idMhs)}><FaTimes /> <span className="">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error rounded-md capitalize'><FaReply /> <span className=''>Kembali Ke Data Mahasiswa</span></Link>}
                                 </div>
                                 <div>
                                     <div className='float-right'>
                                         <div className='lg:pl-1'>
-                                            <button className='btn btn-sm btn-primary w-full'><span className="mr-1">Simpan dan lanjut</span><FaArrowRight /></button>
+                                            <button className='btn btn-sm btn-primary w-full rounded-md capitalize'><span className="">Simpan dan lanjut</span><FaArrowRight /></button>
                                         </div>
                                     </div>
                                 </div>

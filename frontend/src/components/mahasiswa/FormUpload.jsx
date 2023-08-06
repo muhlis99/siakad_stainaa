@@ -290,7 +290,7 @@ const FormUpload = () => {
     return (
         <div className='container mt-2'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Upload Berkas {namanya && <span>Ananda <span className='text-red-500'>{namanya}</span></span>}</h1>
+                <h1 className='text-2xl font-bold'>Upload Berkas {namanya && <span>Ananda <span className='capitalize'>{namanya}</span></span>}</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-16">
@@ -381,12 +381,12 @@ const FormUpload = () => {
                             </div>
                             <div className='grid lg:grid-cols-2'>
                                 <div>
-                                    <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>
+                                    <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> <span className='ml-1'>Kembali Ke Data Mahasiswa</span></Link>
                                 </div>
                                 <div>
                                     <div className='float-right'>
                                         <div className='lg:pl-1'>
-                                            <button className='btn btn-sm btn-primary w-full'><FaTelegramPlane /> <span>Upload</span></button>
+                                            <button className='btn btn-sm btn-primary w-full capitalize rounded-md'><FaTelegramPlane /> <span>Upload</span></button>
                                         </div>
                                     </div>
                                 </div>
