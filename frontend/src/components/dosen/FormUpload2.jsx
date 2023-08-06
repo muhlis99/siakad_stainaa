@@ -211,7 +211,7 @@ const FormUpload2 = () => {
     return (
         <div className='container mt-2'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Upload Berkas {namanya && <span>Dari <span className='text-red-500'>{namanya}</span></span>}</h1>
+                <h1 className='text-2xl font-bold'>Upload Berkas {namanya && <span>Dari <span className='capitalize'>{namanya}</span></span>}</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-16">
@@ -276,15 +276,15 @@ const FormUpload2 = () => {
                             </div>
                             <div className='grid lg:grid-cols-2'>
                                 <div>
-                                    <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>
+                                    <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> <span className=''>Kembali Ke Data Dosen</span></Link>
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
                                         <div>
-                                            <Link to={`/dosen/upload1/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-primary w-full'><FaArrowLeft /><span className="ml-1">Kembali</span></Link>
+                                            <Link to={`/dosen/upload1/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-primary w-full capitalize rounded-md'><FaArrowLeft /><span className="">Kembali</span></Link>
                                         </div>
                                         <div className='lg:pl-1'>
-                                            <button className='btn btn-sm btn-primary w-full'><FaTelegramPlane /> <span className="ml-1">Upload</span></button>
+                                            <button className='btn btn-sm btn-primary w-full capitalize rounded-md'><FaTelegramPlane /> <span className="">Upload</span></button>
                                         </div>
                                     </div>
                                 </div>
