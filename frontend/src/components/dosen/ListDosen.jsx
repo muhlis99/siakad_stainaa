@@ -9,6 +9,8 @@ import stainaa from "../../assets/img/stainaa.png"
 
 const ListDosen = () => {
     const [Dosen, setDosen] = useState([])
+    const [namaQr, setNamaQr] = useState([])
+    const [prevQr, setPrevQr] = useState([])
     const [page, setPage] = useState(0)
     const [perPage, setperPage] = useState(0)
     const [pages, setPages] = useState(0)
@@ -27,6 +29,10 @@ const ListDosen = () => {
         getQrDsn()
     }, [Dosen])
 
+    useEffect(() => {
+        getQrDosen()
+    }, [namaQr])
+
     const getDosen = async () => {
         const response = await axios.get(`v1/dosen/all?page=${page}&search=${keyword}`)
         setDosen(response.data.data)
@@ -38,9 +44,36 @@ const ListDosen = () => {
 
     const getQrDsn = () => {
         var i = Dosen.map(item => (
-            item.nama
+            item.qrcode
         ))
-        console.log(i)
+        setNamaQr(i)
+    }
+
+    const getQrDosen = async () => {
+        if (namaQr.length != 0) {
+            let qrCode = []
+            let promises = []
+            for (let i = 0; i < namaQr.length; i++) {
+                // const t = await axios.get('v1/dosen/public/seeImage/dosen/qrCode/' + namaQr[i]).then(response => {
+                //     qrCode.push(response.data.data)
+                // })
+                // promises.push(t)
+
+                const t = await axios.get('v1/dosen/public/seeImage/dosen/qrCode/' + namaQr[i], {
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    qrCode.push(base64)
+                })
+                promises.push(t)
+            }
+            Promise.all(promises).then(() => setPrevQr(qrCode))
+        }
     }
 
     const tambahDosen = async () => {
@@ -134,9 +167,9 @@ const ListDosen = () => {
                                 <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
                                         <th scope="col" className="px-6 py-2 text-sm">#</th>
-                                        <th scope="col" className="px-6 py-2 text-sm">NIDN</th>
+                                        {/* <th scope="col" className="px-6 py-2 text-sm">NIDN</th> */}
                                         <th scope="col" className="px-6 py-2 text-sm">QR Code</th>
-                                        <th scope="col" className="px-6 py-2 text-sm">Nama</th>
+                                        {/* <th scope="col" className="px-6 py-2 text-sm">Nama</th> */}
                                         <th scope="col" className="px-6 py-2 text-sm">Jenis Kelamin</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Pendidikan</th>
                                         <th scope="col" className='px-6 py-2 text-sm'>Alat Tranportasi</th>
@@ -147,15 +180,21 @@ const ListDosen = () => {
                                     {Dosen.map((dsn, index) => (
                                         <tr key={dsn.id_dosen} className='bg-white border-b text-gray-500 border-x'>
                                             <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2 font-semibold'>{dsn.nidn}</td>
+                                            {/* <td className='px-6 py-2 font-semibold'>{dsn.nidn}</td> */}
                                             <td className='px-6 py-2 font-semibold'>
-                                                <div className="avatar">
-                                                    <div className="w-8 rounded">
-                                                        <img src={stainaa} alt="Tailwind-CSS-Avatar-component" />
+                                                <div className='flex gap-3'>
+                                                    <div className="avatar">
+                                                        <div className="w-16 rounded">
+                                                            {prevQr && <img src={`data:;base64,${prevQr[index]}`} alt='QR Code' />}
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <h6 className='font-semibold'>{dsn.nama}</h6>
+                                                        <h6 className='font-semibold'>{dsn.nidn}</h6>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className='px-6 py-2 font-semibold'>{dsn.nama}</td>
+                                            {/* <td className='px-6 py-2 font-semibold'>{dsn.nama}</td> */}
                                             <td className='px-6 py-2 font-semibold'>{dsn.jenis_kelamin == "l" ? "Laki-Laki" : "Perempuan"}</td>
                                             <td className='px-6 py-2 font-semibold'>{dsn.pendidikans[0].nama_pendidikan}</td>
                                             <td className='px-6 py-2 font-semibold'>{dsn.alat_transportasis[0].nama_alat_transportasi}</td>
