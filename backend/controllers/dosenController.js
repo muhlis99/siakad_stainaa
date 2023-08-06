@@ -272,8 +272,8 @@ module.exports = {
                     100
                 )
                 const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
-                fs.unlinkSync(`tmp/dosen/qrcode/${qrCodeOld}`)
-                let filename = `tmp/dosen/qrcode/${qrCodeNew}.png`;
+                fs.unlinkSync(`../tmp_siakad/dosen/qrcode/${qrCodeOld}`)
+                let filename = `../tmp_siakad/dosen/qrcode/${qrCodeNew}.png`;
                 fs.writeFile(filename, base64Data, "base64url", (err) => {
                     if (!err) console.log(`${filename} created successfully!`)
                 })
@@ -290,7 +290,7 @@ module.exports = {
                     100
                 )
                 const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
-                let filename = `tmp/dosen/qrcode/${qrCodeNew}.png`;
+                let filename = `../tmp_siakad/dosen/qrcode/${qrCodeNew}.png`;
                 fs.writeFile(filename, base64Data, "base64url", (err) => {
                     if (!err) console.log(`${filename} created successfully!`)
                 })
@@ -369,7 +369,7 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto diri yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file foto diri yang anda upload tidak boleh lebih dari 5 mb" })
-            file.mv(`./tmp/dosen/diri/${fileNameFotoDiri}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/diri/${fileNameFotoDiri}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         } else {
@@ -381,9 +381,9 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto diri yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file foto diri yang anda upload tidak boleh lebih dari 5 mb" })
-            const filepath = `./tmp/dosen/diri/${dosenUse.foto_diri}`
+            const filepath = `../tmp_siakad/dosen/diri/${dosenUse.foto_diri}`
             fs.unlinkSync(filepath)
-            file.mv(`./tmp/dosen/diri/${fileNameFotoDiri}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/diri/${fileNameFotoDiri}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         }
@@ -400,7 +400,7 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto ktp yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file foto ktp yang anda upload tidak boleh lebih dari 5 mb" })
-            file.mv(`./tmp/dosen/ktp/${fileNameFotoKtp}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/ktp/${fileNameFotoKtp}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         } else {
@@ -412,9 +412,9 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto ktp yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file foto ktp yang anda upload tidak boleh lebih dari 5 mb" })
-            const filepath = `./tmp/dosen/ktp/${dosenUse.foto_ktp}`
+            const filepath = `../tmp_siakad/dosen/ktp/${dosenUse.foto_ktp}`
             fs.unlinkSync(filepath)
-            file.mv(`./tmp/dosen/ktp/${fileNameFotoKtp}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/ktp/${fileNameFotoKtp}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         }
@@ -431,7 +431,7 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sehat rohani yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file foto sehat rohani yang anda upload tidak boleh lebih dari 5 mb" })
-            file.mv(`./tmp/dosen/sehatRohani/${fileNameFotoSehatRohani}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/sehatRohani/${fileNameFotoSehatRohani}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         } else {
@@ -443,9 +443,9 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sehat rohani yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file foto sehat rohani yang anda upload tidak boleh lebih dari 5 mb" })
-            const filepath = `./tmp/dosen/sehatRohani/${dosenUse.foto_sehat_rohani}`
+            const filepath = `../tmp_siakad/dosen/sehatRohani/${dosenUse.foto_sehat_rohani}`
             fs.unlinkSync(filepath)
-            file.mv(`./tmp/dosen/SehatRohani/${fileNameFotoSehatRohani}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/SehatRohani/${fileNameFotoSehatRohani}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         }
@@ -462,7 +462,7 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sehat jasmani yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file foto sehat jasmani yang anda upload tidak boleh lebih dari 5 mb" })
-            file.mv(`./tmp/dosen/sehatJasmani/${fileNameFotoSehatJasmani}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/sehatJasmani/${fileNameFotoSehatJasmani}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         } else {
@@ -474,9 +474,9 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sehat jasmani yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file foto sehat jasmani yang anda upload tidak boleh lebih dari 5 mb" })
-            const filepath = `./tmp/dosen/sehatJasmani/${dosenUse.foto_sehat_jasmani}`
+            const filepath = `../tmp_siakad/dosen/sehatJasmani/${dosenUse.foto_sehat_jasmani}`
             fs.unlinkSync(filepath)
-            file.mv(`./tmp/dosen/SehatJasmani/${fileNameFotoSehatJasmani}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/SehatJasmani/${fileNameFotoSehatJasmani}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         }
@@ -493,7 +493,7 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto surat perjanian kerja yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file foto surat perjanian kerja yang anda upload tidak boleh lebih dari 5 mb" })
-            file.mv(`./tmp/dosen/suratPerjanjianKerja/${fileNameFotoSuratPerjanjianKerja}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/suratPerjanjianKerja/${fileNameFotoSuratPerjanjianKerja}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         } else {
@@ -505,9 +505,9 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto surat perjanian kerja yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file foto surat perjanian kerja yang anda upload tidak boleh lebih dari 5 mb" })
-            const filepath = `./tmp/dosen/suratPerjanjianKerja/${dosenUse.foto_surat_perjanjian_kerja}`
+            const filepath = `../tmp_siakad/dosen/suratPerjanjianKerja/${dosenUse.foto_surat_perjanjian_kerja}`
             fs.unlinkSync(filepath)
-            file.mv(`./tmp/dosen/suratPerjanjianKerja/${fileNameFotoSuratPerjanjianKerja}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/suratPerjanjianKerja/${fileNameFotoSuratPerjanjianKerja}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         }
@@ -552,7 +552,7 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sk dosen yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file foto sk dosen yang anda upload tidak boleh lebih dari 5 mb" })
-            file.mv(`./tmp/dosen/skDosen/${fileNameFotoSkDosen}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/skDosen/${fileNameFotoSkDosen}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         } else {
@@ -564,9 +564,9 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sk dosen yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file foto sk dosen yang anda upload tidak boleh lebih dari 5 mb" })
-            const filepath = `./tmp/dosen/skDosen/${dosenUse.foto_sk_dosen}`
+            const filepath = `../tmp_siakad/dosen/skDosen/${dosenUse.foto_sk_dosen}`
             fs.unlinkSync(filepath)
-            file.mv(`./tmp/dosen/skDosen/${fileNameFotoSkDosen}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/skDosen/${fileNameFotoSkDosen}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         }
@@ -583,7 +583,7 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sk bebas narkotika yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file foto sk bebas narkotika yang anda upload tidak boleh lebih dari 5 mb" })
-            file.mv(`./tmp/dosen/skBebasNarkotika/${fileNameFotoSkBebasNarkotika}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/skBebasNarkotika/${fileNameFotoSkBebasNarkotika}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         } else {
@@ -595,9 +595,9 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sk bebas narkotika yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file foto sk bebas narkotika yang anda upload tidak boleh lebih dari 5 mb" })
-            const filepath = `./tmp/dosen/skBebasNarkotika/${dosenUse.foto_sk_bebas_narkotika}`
+            const filepath = `../tmp_siakad/dosen/skBebasNarkotika/${dosenUse.foto_sk_bebas_narkotika}`
             fs.unlinkSync(filepath)
-            file.mv(`./tmp/dosen/skBebasNarkotika/${fileNameFotoSkBebasNarkotika}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/skBebasNarkotika/${fileNameFotoSkBebasNarkotika}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         }
@@ -614,7 +614,7 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sk dari pimpinan pt yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file foto sk dari pimpinan pt yang anda upload tidak boleh lebih dari 5 mb" })
-            file.mv(`./tmp/dosen/skDariPimpinanPt/${fileNameFotoSkDariPimpinanPt}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/skDariPimpinanPt/${fileNameFotoSkDariPimpinanPt}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         } else {
@@ -626,9 +626,9 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sk dari pimpinan pt yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file foto sk dari pimpinan pt yang anda upload tidak boleh lebih dari 5 mb" })
-            const filepath = `./tmp/dosen/skDariPimpinanPt/${dosenUse.foto_sk_dari_pimpinan_pt}`
+            const filepath = `../tmp_siakad/dosen/skDariPimpinanPt/${dosenUse.foto_sk_dari_pimpinan_pt}`
             fs.unlinkSync(filepath)
-            file.mv(`./tmp/dosen/skDariPimpinanPt/${fileNameFotoSkDariPimpinanPt}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/skDariPimpinanPt/${fileNameFotoSkDariPimpinanPt}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         }
@@ -645,7 +645,7 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sk aktif melaksanakan tridma pt yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ msg: "file foto sk aktif melaksanakan tridma pt yang anda upload tidak boleh lebih dari 5 mb" })
-            file.mv(`./tmp/dosen/skAktifMelaksanakanTridmaPt/${fileNameFotoSkAktifMelaksanakanTridmaPt}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/skAktifMelaksanakanTridmaPt/${fileNameFotoSkAktifMelaksanakanTridmaPt}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         } else {
@@ -657,9 +657,9 @@ module.exports = {
             const allowedType = ['.png', '.jpg', '.jpeg']
             if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto sk aktif melaksanakan tridma pt yang anda upload tidak valid" })
             if (fileSize > 5000000) return res.status(422).json({ message: "file foto sk aktif melaksanakan tridma pt yang anda upload tidak boleh lebih dari 5 mb" })
-            const filepath = `./tmp/dosen/skAktifMelaksanakanTridmaPt/${dosenUse.foto_sk_aktif_melaksanakan_tridma_pt}`
+            const filepath = `../tmp_siakad/dosen/skAktifMelaksanakanTridmaPt/${dosenUse.foto_sk_aktif_melaksanakan_tridma_pt}`
             fs.unlinkSync(filepath)
-            file.mv(`./tmp/dosen/skAktifMelaksanakanTridmaPt/${fileNameFotoSkAktifMelaksanakanTridmaPt}`, (err) => {
+            file.mv(`../tmp_siakad/dosen/skAktifMelaksanakanTridmaPt/${fileNameFotoSkAktifMelaksanakanTridmaPt}`, (err) => {
                 if (err) return res.status(500).json({ message: err.message })
             })
         }

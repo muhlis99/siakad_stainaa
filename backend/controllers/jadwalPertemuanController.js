@@ -144,7 +144,7 @@ module.exports = {
                 const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls']
                 if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
                 if (fileSize > 5000000) return res.status(422).json({ msg: "lampiran materi diri yang anda upload tidak boleh lebih dari 5 mb" })
-                file.mv(`./tmp/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
+                file.mv(`../tmp_siakad/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
                     if (err) return res.status(500).json({ message: err.message })
                 })
             } else {
@@ -155,9 +155,9 @@ module.exports = {
                 const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls']
                 if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
                 if (fileSize > 5000000) return res.status(422).json({ message: "lampiran materi yang anda upload tidak boleh lebih dari 5 mb" })
-                const filepath = `./tmp/lampiranMateri/${jadawalPertemuanUse.lampiran_materi}`
+                const filepath = `../tmp_siakad/lampiranMateri/${jadawalPertemuanUse.lampiran_materi}`
                 fs.unlinkSync(filepath)
-                file.mv(`./tmp/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
+                file.mv(`../tmp_siakad/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
                     if (err) return res.status(500).json({ message: err.message })
                 })
             }
