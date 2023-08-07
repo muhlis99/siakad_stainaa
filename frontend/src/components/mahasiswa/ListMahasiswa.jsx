@@ -8,6 +8,8 @@ import Swal from "sweetalert2"
 
 const ListMahasiswa = () => {
     const [Mahasiswa, setMahasiswa] = useState([])
+    const [namaQr, setNamaQr] = useState([])
+    const [prevQr, setPrevQr] = useState([])
     const [page, setPage] = useState(0)
     const [perPage, setperPage] = useState(0)
     const [pages, setPages] = useState(0)
@@ -22,6 +24,14 @@ const ListMahasiswa = () => {
         getMahasiwa()
     }, [page, keyword])
 
+    useEffect(() => {
+        getQrMahasiswa()
+    }, [Mahasiswa])
+
+    useEffect(() => {
+        getQrMhs()
+    }, [namaQr])
+
     const getMahasiwa = async () => {
         const response = await axios.get(`v1/mahasiswa/all?page=${page}&search=${keyword}`)
         setMahasiswa(response.data.data)
@@ -29,6 +39,35 @@ const ListMahasiswa = () => {
         setrows(response.data.total_data)
         setPages(response.data.total_page)
         setperPage(response.data.per_page)
+    }
+
+    const getQrMahasiswa = () => {
+        var i = Mahasiswa.map(item => (
+            item.qrcode
+        ))
+        setNamaQr(i)
+    }
+
+    const getQrMhs = async () => {
+        if (namaQr != 0) {
+            let qrCode = []
+            let promises = []
+            for (let i = 0; i < namaQr.length; i++) {
+                const t = await axios.get('v1/mahasiswa/public/seeImage/mahasiswa/qrcode/' + namaQr[i], {
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    qrCode.push(base64)
+                })
+                promises.push(t)
+            }
+            Promise.all(promises).then(() => setPrevQr(qrCode))
+        }
     }
 
     const pageCount = Math.ceil(rows / perPage)
@@ -92,14 +131,14 @@ const ListMahasiswa = () => {
         <div className='mt-2 container'>
             {idMhs && <Navigate to={`form1/${stat}/${idMhs}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} />}
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Mahasiswa</h1>
+                <h1 className='text-2xl font-bold'>Mahasiswa</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>
-                                <button className="btn btn-success btn-xs" onClick={tbMhs}><FaPlus /> tambah data</button>
+                                <button className="btn btn-success btn-sm rounded-md capitalize" onClick={tbMhs}><FaPlus /> tambah data</button>
                             </div>
                             <div>
                                 <div className="form-control">
@@ -107,10 +146,10 @@ const ListMahasiswa = () => {
                                         <input
                                             type="text"
                                             onChange={cariData}
-                                            className="input input-xs input-bordered input-success"
+                                            className="input input-sm input-bordered input-success"
                                             placeholder='Cari'
                                         />
-                                        <button type='submit' className="btn btn-xs btn-square btn-success">
+                                        <button type='submit' className="btn btn-sm btn-square btn-success">
                                             <FaSearch />
                                         </button>
                                     </div>
@@ -119,28 +158,40 @@ const ListMahasiswa = () => {
                         </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
-                                        <th scope="col" className="px-6 py-3">#</th>
-                                        <th scope="col" className="px-6 py-3">NIM</th>
-                                        <th scope="col" className="px-6 py-3">Nama</th>
-                                        <th scope="col" className="px-6 py-3">Jenjang</th>
-                                        <th scope="col" className="px-6 py-3">Fakultas</th>
-                                        <th scope="col" className='px-6 py-3'>Prodi</th>
-                                        <th scope="col" className="px-6 py-3" align='center'>Aksi</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">#</th>
+                                        {/* <th scope="col" className="px-6 py-2 text-sm">NIM</th> */}
+                                        <th scope="col" className="px-6 py-2 text-sm">Nama</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Jenjang</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Fakultas</th>
+                                        <th scope="col" className='px-6 py-2 text-sm'>Prodi</th>
+                                        <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Mahasiswa.map((mhs, index) => (
-                                        <tr key={mhs.id_mahasiswa} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">
+                                        <tr key={mhs.id_mahasiswa} className='bg-white border-b text-gray-500 border-x'>
+                                            <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">
                                                 {index + 1}
                                             </th>
-                                            <td className='px-6 py-2'>{mhs.nim}</td>
-                                            <td className='px-6 py-2'>{mhs.nama}</td>
-                                            <td className='px-6 py-2'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-2'>{mhs.fakultas[0].nama_fakultas}</td>
-                                            <td className='px-6 py-2'>{mhs.prodis[0].nama_prodi}</td>
+                                            <td className='px-6 py-2 font-semibold'>
+                                                <div className='flex gap-3'>
+                                                    <div className="avatar">
+                                                        <div className="w-16 rounded">
+                                                            {prevQr[index] ? <img src={`data:;base64,${prevQr[index]}`} alt='QR Code' /> : ""}
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <h6 className='font-semibold'>{mhs.nama}</h6>
+                                                        <h6 className='font-semibold'>{mhs.nim}</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {/* <td className='px-6 py-2 font-semibold'>{mhs.nim}{mhs.nama}</td> */}
+                                            <td className='px-6 py-2 font-semibold'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                            <td className='px-6 py-2 font-semibold'>{mhs.fakultas[0].nama_fakultas}</td>
+                                            <td className='px-6 py-2 font-semibold'>{mhs.prodis[0].nama_prodi}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div className='flex gap-1'>
                                                     <Link to={`/mahasiswa/detail/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
@@ -156,7 +207,7 @@ const ListMahasiswa = () => {
                             </table>
                         </div>
                         <div>
-                            <span className='text-sm'>Total Data : {rows} page: {rows ? page : 0} of {pages}</span>
+                            <span className='text-sm font-semibold'>Total Data : {rows} page: {page} of {pages}</span>
                             <p className='text-sm text-red-700'>{msg}</p>
                         </div>
                         <div className="mt-2 justify-center btn-group" key={rows} aria-label='pagination'>
@@ -167,11 +218,11 @@ const ListMahasiswa = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-success-outline btn-circle btn-outline ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
                                 activeLinkClassName={"btn btn-xs btn-success btn-circle"}
-                                pageLinkClassName={"btn btn-xs btn-success-outline btn-outline btn-circle ml-1"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

@@ -165,14 +165,14 @@ const DetailPembimbingAkademik = () => {
                 </div>
             </div>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Pembimbing Akademik</h1>
+                <h1 className='text-2xl font-bold'>Pembimbing Akademik</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className='mb-2'>
-                            <Link to='/pembimbingakademik' state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
-                            {kuota != jumlah ? <Link to='/setpembimbingakademik' state={{ idDsn: location.state.idDsn, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/pembimbingakademik' }} className="btn btn-primary btn-sm float-right"><FaCog />Set Mahasiswa</Link> : ""}
+                            <Link to='/pembimbingakademik' state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply />Kembali</Link>
+                            {kuota != jumlah ? <Link to='/setpembimbingakademik' state={{ idDsn: location.state.idDsn, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/pembimbingakademik' }} className="btn btn-primary btn-sm float-right capitalize rounded-md"><FaCog />Set Mahasiswa</Link> : ""}
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div className='flex gap-2'>
@@ -198,7 +198,7 @@ const DetailPembimbingAkademik = () => {
                             <div className='flex gap-2'>
                                 <div className='flex-initial w-60'>
                                     <label>
-                                        <span className="">NAMA</span>
+                                        <span className="">NAMA DOSEN</span>
                                     </label>
                                 </div>
                                 <div className='w-full'>
@@ -238,29 +238,31 @@ const DetailPembimbingAkademik = () => {
                         </div>
                     </div>
                 </div>
-                <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
-                                        <th scope="col" className="px-2 py-3">#</th>
-                                        <th scope="col" className="px-2 py-3">NIPY</th>
-                                        <th scope="col" className="px-2 py-3">Nama Mahasiswa</th>
-                                        <th scope="col" className="px-2 py-3">Jenis Kelamin</th>
-                                        <th scope="col" className="px-2 py-3">Tempat Tanggal Lahir</th>
-                                        <th scope="col" className="px-2 py-3">Aksi</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">#</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">NIPY</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Nama Mahasiswa</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Jenjang Pendidikan</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Fakultas</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Prodi</th>
+                                        <th scope="col" className="px-2 py-2 text-sm" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {MhsPembimbing.map((item, index) => (
-                                        <tr key={index} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-2 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-2 py-2'>{item.nim}</td>
-                                            <td className='px-2 py-2'>{item.mahasiswas[0].nama}</td>
-                                            <td className='px-2 py-2'>{item.mahasiswas[0].jenis_kelamin == 'l' ? <span>Laki-Laki</span> : <span>Perempuan</span>}</td>
-                                            <td className='px-2 py-2'>{item.mahasiswas[0].tempat_lahir}, {item.mahasiswas[0].tanggal_lahir}</td>
-                                            <td className='px-2 py-2'>
+                                        <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                            <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                            <td className='px-2 py-2 font-semibold'>{item.nim}</td>
+                                            <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].nama}</td>
+                                            <td className='px-2 py-2 font-semibold'>{jenjang}</td>
+                                            <td className='px-2 py-2 font-semibold'>{fakultas}</td>
+                                            <td className='px-2 py-2 font-semibold'>{prodi}</td>
+                                            <td className='px-2 py-2' align='center'>
                                                 <button onClick={() => modalOpen(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-warning btn-circle mr-2"><FaEdit /></button>
                                                 <button onClick={() => nonaktifkan(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-error btn-circle"><FaTrash /></button>
                                             </td>

@@ -5,7 +5,6 @@ import { Link, Navigate } from "react-router-dom"
 import ReactPaginate from "react-paginate"
 import axios from 'axios'
 import Swal from "sweetalert2"
-import stainaa from "../../assets/img/stainaa.png"
 
 const ListDosen = () => {
     const [Dosen, setDosen] = useState([])
@@ -50,15 +49,10 @@ const ListDosen = () => {
     }
 
     const getQrDosen = async () => {
-        if (namaQr.length != 0) {
+        if (namaQr != 0) {
             let qrCode = []
             let promises = []
             for (let i = 0; i < namaQr.length; i++) {
-                // const t = await axios.get('v1/dosen/public/seeImage/dosen/qrCode/' + namaQr[i]).then(response => {
-                //     qrCode.push(response.data.data)
-                // })
-                // promises.push(t)
-
                 const t = await axios.get('v1/dosen/public/seeImage/dosen/qrCode/' + namaQr[i], {
                     responseType: "arraybuffer"
                 }).then((response) => {
@@ -168,8 +162,8 @@ const ListDosen = () => {
                                     <tr>
                                         <th scope="col" className="px-6 py-2 text-sm">#</th>
                                         {/* <th scope="col" className="px-6 py-2 text-sm">NIDN</th> */}
-                                        <th scope="col" className="px-6 py-2 text-sm">QR Code</th>
-                                        {/* <th scope="col" className="px-6 py-2 text-sm">Nama</th> */}
+                                        <th scope="col" className="px-6 py-2 text-sm">Nama</th>
+                                        {/* <th scope="col" className="px-6 py-2 text-sm">QR Code</th> */}
                                         <th scope="col" className="px-6 py-2 text-sm">Jenis Kelamin</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Pendidikan</th>
                                         <th scope="col" className='px-6 py-2 text-sm'>Alat Tranportasi</th>
@@ -185,7 +179,7 @@ const ListDosen = () => {
                                                 <div className='flex gap-3'>
                                                     <div className="avatar">
                                                         <div className="w-16 rounded">
-                                                            {prevQr && <img src={`data:;base64,${prevQr[index]}`} alt='QR Code' />}
+                                                            {prevQr[index] ? <img src={`data:;base64,${prevQr[index]}`} alt='QR Code' /> : ""}
                                                         </div>
                                                     </div>
                                                     <div>
@@ -198,8 +192,8 @@ const ListDosen = () => {
                                             <td className='px-6 py-2 font-semibold'>{dsn.jenis_kelamin == "l" ? "Laki-Laki" : "Perempuan"}</td>
                                             <td className='px-6 py-2 font-semibold'>{dsn.pendidikans[0].nama_pendidikan}</td>
                                             <td className='px-6 py-2 font-semibold'>{dsn.alat_transportasis[0].nama_alat_transportasi}</td>
-                                            <td className='px-6 py-2'>
-                                                <div className='grid grid-flow-col'>
+                                            <td className='px-6 py-2' align='center'>
+                                                <div className='flex gap-1 justify-center'>
                                                     <Link to={`/dosen/detail/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
                                                     <Link to={`/dosen/form1/edit/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
                                                     <Link to={`/dosen/upload1/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>

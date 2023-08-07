@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import Select from 'react-select'
 import axios from 'axios'
-import { FaPlus, FaReply } from 'react-icons/fa'
+import { FaPlus, FaReply, FaSave, FaTimes } from 'react-icons/fa'
 import { Link } from "react-router-dom"
 
 const SetMhsPerpembimbing = () => {
@@ -21,7 +21,6 @@ const SetMhsPerpembimbing = () => {
     const [isClearable, setIsClearable] = useState(true)
     const [nim, setNim] = useState("")
     const location = useLocation()
-    const selectInputRef = useRef()
 
     useEffect(() => {
         const getDataDsn = async () => {
@@ -53,8 +52,6 @@ const SetMhsPerpembimbing = () => {
         options()
     }, [Mahasiswa])
 
-    console.log(location.state);
-
     const getMhsPerPembimbing = async () => {
         if (kodeBimbing != 0) {
             const response = await axios.get(`v1/pembimbingAkademik/getMhsByPembimbingAkademik/${kodeBimbing}`)
@@ -62,7 +59,6 @@ const SetMhsPerpembimbing = () => {
             setJumlah(response.data.data.length)
         }
     }
-
 
     const getMahasiswa = async () => {
         const response = await axios.get(`v1/pembimbingAkademik/autocompleteMahasiswa/${location.state.jen}/${location.state.fak}/${location.state.pro}`)
@@ -75,6 +71,15 @@ const SetMhsPerpembimbing = () => {
             label: item.nim + " | " + item.nama,
         }))
         setSelect2(i)
+    }
+
+    const modalOpen = () => {
+        document.getElementById('my-modal').checked = true
+    }
+
+    const modalClose = () => {
+        document.getElementById('my-modal').checked = false
+        setNim("")
     }
 
     const onchange = (e) => {
@@ -99,6 +104,7 @@ const SetMhsPerpembimbing = () => {
                     code_pembimbing_akademik: kodeBimbing,
                     nim: nim,
                 }).then(function (response) {
+                    document.getElementById('my-modal').checked = false
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -128,14 +134,47 @@ const SetMhsPerpembimbing = () => {
 
     return (
         <div className='mt-2 container'>
+            <input type="checkbox" id="my-modal" className="modal-toggle" />
+            <div className="modal">
+                <div className="modal-box grid p-0 rounded-md">
+                    <form onSubmit={simpanMahasiswa}>
+                        <div className='bg-base-200 border-b-2 p-3'>
+                            <h3 className="font-bold text-xl mb-1">Tambah Mahasiswa</h3>
+                            <button type='button' className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
+                        </div>
+                        <div className='mb-2'>
+                            <div className="py-4 px-4">
+                                <div className="">
+                                    <label className="label">
+                                        <span className="text-base label-text font-semibold">Mahasiswa</span>
+                                    </label>
+                                    <Select
+                                        className="basic-single rounded-md w-full"
+                                        classNamePrefix="select"
+                                        options={select2}
+                                        onChange={onchange}
+                                        isClearable={isClearable}
+                                        placeholder="Cari Mahasiswa"
+                                        noOptionsMessage={() => "Tidak Ada"}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='p-3 border-t-2 text-center'>
+                            <button type='submit' className="btn btn-sm btn-primary capitalize"><FaSave />simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Pembimbing Akademik</h1>
+                <h1 className='text-2xl font-bold'>Pembimbing Akademik</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className='mb-2'>
-                            <Link to='/detailpembimbingakademik' state={{ idDsn: location.state.idDsn, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
+                            <Link to='/detailpembimbingakademik' state={{ idDsn: location.state.idDsn, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply />Kembali</Link>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div className='flex gap-2'>
@@ -201,46 +240,34 @@ const SetMhsPerpembimbing = () => {
                         </div>
                     </div>
                 </div>
-                <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <form onSubmit={simpanMahasiswa}>
-                            <div className='mb-2 flex gap-2'>
-                                <Select
-                                    className="basic-single w-60 rounded-md"
-                                    classNamePrefix="select"
-                                    ref={selectInputRef}
-                                    options={select2}
-                                    onChange={onchange}
-                                    isClearable={isClearable}
-                                    placeholder="Cari Mahasiswa"
-                                    noOptionsMessage={() => "Tidak Ada"}
-                                />
-                                <button className='btn btn-sm btn-primary mt-1'><FaPlus />Tambah</button>
-                            </div>
-                        </form>
+                        <div className=''>
+                            <button className='btn btn-sm btn-primary capitalize rounded-md' onClick={modalOpen}><FaPlus />Tambah</button>
+                        </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
-                                        <th scope="col" className="px-2 py-3">#</th>
-                                        <th scope="col" className="px-2 py-3">NIPY</th>
-                                        <th scope="col" className="px-2 py-3">Nama Mahasiswa</th>
-                                        <th scope="col" className="px-2 py-3">Jenis Kelamin</th>
-                                        <th scope="col" className="px-2 py-3">Jenjang Pendidikan</th>
-                                        <th scope="col" className="px-2 py-3">Fakultas</th>
-                                        <th scope="col" className="px-2 py-3">Prodi</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">#</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">NIPY</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Nama Mahasiswa</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Jenis Kelamin</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Jenjang Pendidikan</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Fakultas</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Prodi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {MhsPembimbing.map((item, index) => (
-                                        <tr key={index} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-2 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-2 py-2'>{item.nim}</td>
-                                            <td className='px-2 py-2'>{item.mahasiswas[0].nama}</td>
-                                            <td className='px-2 py-2'>{item.mahasiswas[0].jenis_kelamin == 'l' ? <span>Laki-Laki</span> : <span>Perempuan</span>}</td>
-                                            <td className='px-2 py-2'>{jenjang}</td>
-                                            <td className='px-2 py-2'>{fakultas}</td>
-                                            <td className='px-2 py-2'>{prodi}</td>
+                                        <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                            <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                            <td className='px-2 py-2 font-semibold'>{item.nim}</td>
+                                            <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].nama}</td>
+                                            <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].jenis_kelamin == 'l' ? <span>Laki-Laki</span> : <span>Perempuan</span>}</td>
+                                            <td className='px-2 py-2 font-semibold'>{jenjang}</td>
+                                            <td className='px-2 py-2 font-semibold'>{fakultas}</td>
+                                            <td className='px-2 py-2 font-semibold'>{prodi}</td>
                                         </tr>
                                     ))}
                                 </tbody>

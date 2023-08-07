@@ -474,22 +474,27 @@ const DetailMhs = () => {
         <div className="container mt-3">
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <label htmlFor="my-modal" className="modal cursor-pointer">
-                <label className="modal-box relative" htmlFor="">
-                    <div className='w-full'>
+                <label className="modal-box relative p-1 rounded-sm" htmlFor="">
+                    <figure><img src={`data:;base64,${modal}`} alt="" /></figure>
+                    {/* <div className='w-full'>
                         <a className='btn btn-sm btn-primary w-full mb-2' download={nameFile} href={`data:image/png;base64,${modal}`}>download</a>
                     </div>
                     <div className='avatar'>
-                        <div className="w-full  rounded ring ring-[#2D7F5F]">
-                            <img src={`data:;base64,${modal}`} alt="" />
+                        <div className="w-full  rounded">
+                            
                         </div>
-                    </div>
+                    </div> */}
                 </label>
             </label>
-
+            <section className='mb-5'>
+                <h1 className='text-2xl font-bold'>Mahasiswa</h1>
+            </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
+                        <div>
+                            <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error capitalize rounded-md mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
+                        </div>
                         <div className='grid lg:grid-cols-2'>
                             <div>
                                 <table>
@@ -799,91 +804,91 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">foto mahasiswa</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevFoto, 'FOTO_')}>Detail</button>
+                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevFoto ? '' : 'hidden'}`} onClick={() => openImage(prevFoto, 'FOTO_')}>Detail</button>
                                 {prevFoto ? (
                                     <div className="avatar">
-                                        <div className="w-full  rounded ring ring-[#2D7F5F]">
+                                        <div className="w-full  rounded">
                                             <img src={`data:;base64,${prevFoto}`} />
                                         </div>
                                     </div>
-                                ) : (<span>File Tidak Ada</span>)}
+                                ) : (<span className='ml-3'>File Tidak Ada</span>)}
                             </div>
                             <div>
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan kartu keluarga</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKk, 'SCANKK_')}>Detail</button>
+                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKk ? '' : 'hidden'}`} onClick={() => openImage(prevKk, 'SCANKK_')}>Detail</button>
                                 <div className="avatar">
                                     {prevKk ? (
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
+                                        <div className="w-full rounded">
                                             <img src={`data:;base64,${prevKk}`} />
                                         </div>
-                                    ) : (<span>File Tidak Ada</span>)}
+                                    ) : (<span className='ml-3'>File Tidak Ada</span>)}
                                 </div>
                             </div>
                             <div>
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan ktp</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKtp, 'KTP_')}>Detail</button>
+                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKtp ? '' : 'hidden'}`} onClick={() => openImage(prevKtp, 'KTP_')}>Detail</button>
                                 <div className="avatar">
                                     {prevKtp ? (
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
+                                        <div className="w-full rounded">
                                             <img src={`data:;base64,${prevKtp}`} />
                                         </div>
-                                    ) : (<span>File Tidak Ada</span>)}
+                                    ) : (<span className='ml-3'>File Tidak Ada</span>)}
                                 </div>
                             </div>
                             <div>
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan ijazah</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevIjazah, 'IJAZAH_')}>Detail</button>
+                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevIjazah ? '' : 'hidden'}`} onClick={() => openImage(prevIjazah, 'IJAZAH_')}>Detail</button>
                                 <div className="avatar">
                                     {prevIjazah ? (
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
+                                        <div className="w-full rounded">
                                             <img src={`data:;base64,${prevIjazah}`} />
                                         </div>
-                                    ) : (<span>File Tidak Ada</span>)}
+                                    ) : (<span className='ml-3'>File Tidak Ada</span>)}
                                 </div>
                             </div>
                             <div>
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan kip</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKip, 'KIP_')}>Detail</button>
+                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKip ? '' : 'hidden'}`} onClick={() => openImage(prevKip, 'KIP_')}>Detail</button>
                                 <div className="avatar">
                                     {prevKip ? (
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
+                                        <div className="w-full rounded">
                                             <img src={`data:;base64,${prevKip}`} />
                                         </div>
-                                    ) : (<span>File Tidak Ada</span>)}
+                                    ) : (<span className='ml-3'>File Tidak Ada</span>)}
                                 </div>
                             </div>
                             <div>
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">QR Code</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevQrCode, 'QR_')}>Detail</button>
+                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevQrCode ? '' : 'hidden'}`} onClick={() => openImage(prevQrCode, 'QR_')}>Detail</button>
                                 <div className="avatar">
                                     {prevQrCode ? (
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
+                                        <div className="w-full rounded">
                                             <img src={`data:;base64,${prevQrCode}`} />
                                         </div>
-                                    ) : (<span>File Tidak Ada</span>)}
+                                    ) : (<span className='ml-3'>File Tidak Ada</span>)}
                                 </div>
                             </div>
                             <div>
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Scan KTM</span>
                                 </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKtm, 'KTM_')}>Detail</button>
-                                <div className="avatar">
+                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKtm ? '' : 'hidden'}`} onClick={() => openImage(prevKtm, 'KTM_')}>Detail</button>
+                                <div className="avatar drop-shadow-lg">
                                     {prevKtm ? (
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
+                                        <div className="w-full rounded drop-shadow-lg">
                                             <img src={`data:;base64,${prevKtm}`} />
                                         </div>
-                                    ) : (<span>File Tidak Ada</span>)}
+                                    ) : (<span className='ml-3'>File Tidak Ada</span>)}
                                 </div>
                             </div>
                         </div>

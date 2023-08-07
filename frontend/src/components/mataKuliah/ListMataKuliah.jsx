@@ -83,14 +83,14 @@ const ListMataKuliah = () => {
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Mata Kuliah</h1>
+                <h1 className='text-2xl font-bold'>Mata Kuliah</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className="grid grid-cols-3 gap-4">
                             <div>
-                                <Link to="/matakuliah/add" state={{ collaps: 'kuliah', activ: '/matakuliah' }} className="btn btn-success btn-xs"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
+                                <Link to="/matakuliah/add" state={{ collaps: 'kuliah', activ: '/matakuliah' }} className="btn btn-success btn-sm capitalize rounded-md"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
                             </div>
                             <div>
                                 {/* <select className="select select-bordered select-xs max-w-xs">
@@ -103,10 +103,10 @@ const ListMataKuliah = () => {
                                         <input
                                             type="text"
                                             onChange={cariData}
-                                            className="input input-xs input-bordered input-success"
+                                            className="input input-sm input-bordered input-success"
                                             placeholder='Cari'
                                         />
-                                        <button type='submit' className="btn btn-xs btn-square btn-success">
+                                        <button type='submit' className="btn btn-sm btn-square btn-success">
                                             <FaSearch />
                                         </button>
                                     </div>
@@ -115,28 +115,28 @@ const ListMataKuliah = () => {
                         </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
-                                        <th scope="col" className="px-6 py-3">#</th>
-                                        <th scope="col" className="px-6 py-3">Tahun Ajaran</th>
-                                        <th scope="col" className="px-6 py-3">Kode</th>
-                                        <th scope="col" className="px-6 py-3">Nama</th>
-                                        <th scope="col" className="px-6 py-3">SKS</th>
-                                        <th scope="col" className='px-6 py-3'>Prodi</th>
-                                        <th scope="col" className="px-6 py-3" align='center'>Aksi</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">#</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Tahun Ajaran</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Kode</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Nama</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">SKS</th>
+                                        <th scope="col" className='px-6 py-2 text-sm'>Prodi</th>
+                                        <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Makul.map((mkl, index) => (
-                                        <tr key={mkl.id_mata_kuliah} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">
+                                        <tr key={mkl.id_mata_kuliah} className='bg-white border-b text-gray-500 border-x'>
+                                            <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">
                                                 {index + 1}
                                             </th>
-                                            <td className='px-6 py-2'>{mkl.tahunAjarans[0].tahun_ajaran}</td>
-                                            <td className='px-6 py-2'>{mkl.code_mata_kuliah}</td>
-                                            <td className='px-6 py-2'>{mkl.nama_mata_kuliah}</td>
-                                            <td className='px-6 py-2'>{mkl.sks}</td>
-                                            <td className='px-6 py-2'>{mkl.prodis[0].nama_prodi}</td>
+                                            <td className='px-6 py-2 font-semibold'>{mkl.tahunAjarans[0].tahun_ajaran}</td>
+                                            <td className='px-6 py-2 font-semibold'>{mkl.code_mata_kuliah}</td>
+                                            <td className='px-6 py-2 font-semibold'>{mkl.nama_mata_kuliah}</td>
+                                            <td className='px-6 py-2 font-semibold'>{mkl.sks}</td>
+                                            <td className='px-6 py-2 font-semibold'>{mkl.prodis[0].nama_prodi}</td>
                                             <td className='px-6 py-2' align='center'>
                                                 <div>
                                                     <Link to={`/matakuliah/edit/${mkl.id_mata_kuliah}`} state={{ collaps: 'kuliah', activ: '/matakuliah' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
@@ -149,7 +149,7 @@ const ListMataKuliah = () => {
                             </table>
                         </div>
                         <div>
-                            <span className='text-sm'>Total Data : {rows} page: {rows ? page : 0} of {pages}</span>
+                            <span className='text-sm font-semibold'>Total Data : {rows} page: {page} of {pages}</span>
                             <p className='text-sm text-red-700'>{msg}</p>
                         </div>
                         <div className="mt-2 justify-center btn-group" key={rows} aria-label='pagination'>
@@ -163,8 +163,8 @@ const ListMataKuliah = () => {
                                 previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
                                 nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
                                 breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-success btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-success btn-outline btn-circle ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

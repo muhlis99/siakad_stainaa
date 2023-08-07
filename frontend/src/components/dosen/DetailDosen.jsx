@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { FaReply } from "react-icons/fa"
+import { FaSearch, FaR, FaSearcheply, FaArrowCircleDown } from "react-icons/fa"
 import { useParams, Link, useLocation } from "react-router-dom"
 import axios from 'axios'
+import avatar from "../../assets/img/man.png"
+import nofile from "../../assets/img/no_file.png"
 
 const DetailDosen = () => {
     const [nidn, setNidn] = useState("")
+    const [nipy, setNipy] = useState("")
     const [namanya, setNamanya] = useState("")
     const [tmp, setTmp] = useState("")
     const [tgl, setTgl] = useState("")
@@ -46,6 +49,7 @@ const DetailDosen = () => {
     const [prevQrCode, setPrevQrCode] = useState("")
     const [modal, setModal] = useState("")
     const [nameFile, setNameFile] = useState("")
+    const [tab, setTab] = useState("")
     const { idDsn } = useParams()
     const location = useLocation()
 
@@ -54,6 +58,7 @@ const DetailDosen = () => {
             try {
                 const response = await axios.get(`v1/dosen/getById/${idDsn}`)
                 setNidn(response.data.data.nidn)
+                setNipy(response.data.data.nip_ynaa)
                 setNamanya(response.data.data.nama)
                 setTmp(response.data.data.tempat_lahir)
                 setTgl(response.data.data.tanggal_lahir)
@@ -366,262 +371,603 @@ const DetailDosen = () => {
         setNameFile(nam + namanya)
     }
 
+    const pindahTab = (e) => {
+        setTab(e)
+    }
+
     return (
         <div className='mt-2 container'>
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <label htmlFor="my-modal" className="modal cursor-pointer">
-                <label className="modal-box relative" htmlFor="">
-                    <div className='w-full'>
+                <label className="modal-box p-1 rounded-sm" htmlFor="">
+                    {/* <div className='w-full'>
                         <a className='btn btn-sm btn-primary w-full mb-2' download={nameFile} href={`data:image/png;base64,${modal}`}>download</a>
-                    </div>
-                    <div className='avatar'>
-                        <div className="w-full  rounded ring ring-[#2D7F5F]">
-                            <img src={`data:;base64,${modal}`} alt="" />
-                        </div>
-                    </div>
+                    </div> */}
+                    <figure><img src={`data:;base64,${modal}`} alt="Shoes" /></figure>
                 </label>
             </label>
+            <section className='mb-5'>
+                <h1 className='text-2xl font-bold'>Dosen</h1>
+            </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-2">
-                    <div className="card-body p-4">
-                        <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-error w-32 mb-2'><FaReply /><span className='ml-1'>Kembali</span></Link>
-                        <div className='grid lg:grid-cols-2'>
-                            <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>nidn</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{nidn}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>nama</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{namanya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>tempat lahir</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{tmp}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>tanggal lahir</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{tgl}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>jenis kelamin</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{jenkel == "l" ? "laki-laki" : "perempuan"}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>email</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold '>{email}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>NO handphone</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold '>{nohp}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>no telepon</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold '>{notelp}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>pendidikan</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{pendidikan}</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>alamat lengkap</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{alamat}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>desa</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{desanya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>kecamatan</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{kecamatannya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>kabupaten</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{kabupatennya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>provinsi</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{provinsinya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>negara</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{negaranya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>kode pos</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{kodepos}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>alat transportasi</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{alatTransportasi}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>status kepegawaian</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
-                                            <td className='py-1'><span className='text-sm font-bold uppercase'>{statusPg}</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="col-span-2">
-                                <hr className='my-5' />
-                            </div>
-                        </div>
-                        <div className="grid lg:grid-cols-3 gap-4">
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text uppercase font-bold">Foto Diri</span>
-                                </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevFoto, 'FOTO_')}>Detail</button>
-                                {prevFoto ? (
-                                    <div className="avatar">
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
-                                            <img src={`data:;base64,${prevFoto}`} />
-                                        </div>
+                <div className="grid grid-cols-4 gap-3">
+                    <div className="card bg-base-100 card-bordered shadow-md mb-2 border-t-2 border-t-[#2D7F5F]">
+                        <div className="card-body p-4 h-96">
+                            {prevFoto ? (
+                                <div className="avatar mx-auto drop-shadow-lg mt-4">
+                                    <div className="w-24 rounded-full drop-shadow-lg">
+                                        <img src={`data:;base64,${prevFoto}`} />
                                     </div>
-                                ) : (<span>File Tidak Ada</span>)}
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text uppercase font-bold">QR Code</span>
-                                </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevQrCode, 'QR_')}>Detail</button>
-                                <div className="avatar">
-                                    {prevQrCode ? (
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
-                                            <img src={`data:;base64,${prevQrCode}`} />
-                                        </div>
-                                    ) : (<span>File Tidak Ada</span>)}
+                                </div>
+                            ) : (
+                                <div className="avatar mx-auto drop-shadow-lg mt-4">
+                                    <div className="w-24 rounded-full drop-shadow-lg">
+                                        <img src={avatar} />
+                                    </div>
+                                </div>
+                            )}
+                            <div className='grid gap-4 mt-3'>
+                                <div className='border-b border-t pt-2 pb-2'>
+                                    <a className='text-xl float-left font-semibold tracking-wide w-14'>NIPY</a>
+                                    <a className='text-xl float-right font-semibold tracking-wide'>{nipy}</a>
+                                </div>
+                                <div className='border-b pb-2'>
+                                    <a className='text-xl float-left font-semibold tracking-wide w-14'>NIDN</a>
+                                    <a className='text-xl float-right font-semibold tracking-wide '>{nidn}</a>
+                                </div>
+                                <div className='border-b pb-2'>
+                                    <a className='text-xl float-left font-semibold tracking-wide w-14'>Nama</a>
+                                    <a className='text-xl float-right font-semibold tracking-wide '>{namanya}</a>
+                                </div>
+                                <div className='border-b pb-2'>
+                                    <a className='text-xl float-left font-semibold tracking-wide w-14'>Email</a>
+                                    <a className='text-xl float-right font-semibold tracking-wide '>{email}</a>
                                 </div>
                             </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text uppercase font-bold">Scan KTP</span>
-                                </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKtp, 'KTP_')}>Detail</button>
-                                {prevKtp ? (
-                                    <div className="avatar">
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
-                                            <img src={`data:;base64,${prevKtp}`} />
-                                        </div>
-                                    </div>
-                                ) : (<span>File Tidak Ada</span>)}
+                        </div>
+                    </div>
+                    <div className="card bg-base-100 card-bordered shadow-md mb-2 col-span-3">
+                        <div className="card-body p-4">
+                            <div className="tabs border-b border-b-[#2D7F5F]">
+                                <a className={`tab tab-lifted ${tab == 'one' || tab == 0 ? 'tab-active' : ''} active:border-[#2D7F5F]`} onClick={() => pindahTab('one')}>Data Diri</a>
+                                <a className={`tab tab-lifted ${tab == 'two' ? 'tab-active' : ''} active:border-[#2D7F5F]`} onClick={() => pindahTab('two')}>Data Alamat</a>
+                                <a className={`tab tab-lifted ${tab == 'three' ? 'tab-active' : ''} active:border-[#2D7F5F]`} onClick={() => pindahTab('three')}>Berkas</a>
                             </div>
                             <div>
-                                <label className="label">
-                                    <span className="text-base label-text uppercase font-bold">Scan Surat Sehat Rohani</span>
-                                </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSehatRohani, 'SEHAT_ROHANI_')}>Detail</button>
-                                {prevSehatRohani ? (
-                                    <div className="avatar">
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
-                                            <img src={`data:;base64,${prevSehatRohani}`} />
+                                <div className={`one ${tab == 'one' || tab == 0 ? '' : 'hidden'}`}>
+                                    <div className="grid grid-cols-2">
+                                        <div className='py-4'>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>nidn</span></td>
+                                                        <td className='py-2 font-medium text-lg'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>{nidn}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>NIPY</span></td>
+                                                        <td className='py-2 font-medium text-lg'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>{nipy}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>nama</span></td>
+                                                        <td className='py-2 font-medium text-lg'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>{namanya}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>tempat lahir</span></td>
+                                                        <td className='py-2 font-medium text-lg'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>{tmp}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>tanggal lahir</span></td>
+                                                        <td className='py-2 font-medium text-lg'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>{tgl}</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div className='py-4'>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>jenis kelamin</span></td>
+                                                        <td className='py-2 font-medium text-lg'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>{jenkel == "l" ? "laki-laki" : "perempuan"}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>email</span></td>
+                                                        <td className='py-2 font-medium text-lg'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold '>{email}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>NO handphone</span></td>
+                                                        <td className='py-2 font-medium text-lg'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold '>{nohp}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>no telepon</span></td>
+                                                        <td className='py-2 font-medium text-lg'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold '>{notelp}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>pendidikan</span></td>
+                                                        <td className='py-2 font-medium text-lg'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3 font-medium text-lg'><span className='text-sm font-bold uppercase'>{pendidikan}</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                ) : (<span>File Tidak Ada</span>)}
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text uppercase font-bold">Scan Surat Sehat Jasmani</span>
-                                </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSehatJasmani, 'SEHAT_JASMANI_')}>Detail</button>
-                                {prevSehatJasmani ? (
-                                    <div className="avatar">
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
-                                            <img src={`data:;base64,${prevSehatJasmani}`} />
+                                </div>
+                                <div className={`two ${tab == 'two' ? '' : 'hidden'}`}>
+                                    <div className='grid grid-cols-2'>
+                                        <div className='py-4'>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>alamat lengkap</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>{alamat}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>desa</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>{desanya}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>kecamatan</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>{kecamatannya}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>kabupaten</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>{kabupatennya}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>provinsi</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>{provinsinya}</span></td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div className='py-4'>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>negara</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>{negaranya}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>kode pos</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>{kodepos}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>alat transportasi</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>{alatTransportasi}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>status kepegawaian</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold'>&nbsp;:&nbsp;</span></td>
+                                                        <td className='py-2 px-3'><span className='text-sm font-bold uppercase'>{statusPg}</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                ) : (<span>File Tidak Ada</span>)}
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text uppercase font-bold">Scan Surat Perjanjian Kerja</span>
-                                </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevJanjiKerja, 'PERJANJIAN_KERJA_')}>Detail</button>
-                                {prevJanjiKerja ? (
-                                    <div className="avatar">
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
-                                            <img src={`data:;base64,${prevJanjiKerja}`} />
+                                </div>
+                                <div className={`three ${tab == 'three' ? '' : 'hidden'}`}>
+                                    <div className="grid grid-cols-2">
+                                        <div className=''>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b' rowSpan='2'>
+                                                            {prevFoto ? (
+                                                                <div className="avatar">
+                                                                    <div className="w-10 rounded">
+                                                                        <img src={`data:;base64,${prevFoto}`} />
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="avatar">
+                                                                    <div className="w-16 rounded">
+                                                                        <img src={nofile} />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                        <td className='px-3 py-2'>Foto Diri</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b'>
+                                                            <div className='flex gap-2'>
+                                                                <button className={`btn btn-xs btn-circle btn-primary ${prevFoto ? '' : 'btn-disabled'} cursor-pointer mb-2`} title='Detail' onClick={() => openImage(prevFoto, 'FOTO_DIRI_')}><FaSearch /></button>
+                                                                <a className={`btn btn-xs btn-info text-white mb-2 btn-circle ${prevFoto ? '' : 'btn-disabled'}`} title='download' download={`FOTO_DIRI_${namanya}`} href={`data:image/png;base64,${prevFoto}`}><FaArrowCircleDown /></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b' rowSpan='2'>
+                                                            {prevQrCode ? (
+                                                                <div className="w-10 rounded">
+                                                                    <img src={`data:;base64,${prevQrCode}`} />
+                                                                </div>
+                                                            ) : (
+                                                                <div className="avatar">
+                                                                    <div className="w-16 rounded">
+                                                                        <img src={nofile} />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                        <td className='px-3 py-2'>QR Code</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b'>
+                                                            <div className="flex gap-1">
+                                                                <button className={`btn btn-xs btn-circle btn-primary ${prevQrCode ? '' : 'btn-disabled'} cursor-pointer mb-2`} onClick={() => openImage(prevQrCode, 'QR_CODE_')}><FaSearch /></button>
+                                                                <a className={`btn btn-xs btn-info text-white mb-2 btn-circle ${prevQrCode ? '' : 'btn-disabled'}`} title='download' download={`QR_CODE_${namanya}`} href={`data:image/png;base64,${prevQrCode}`}><FaArrowCircleDown /></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b' rowSpan='2'>
+                                                            {prevKtp ? (
+                                                                <div className="avatar">
+                                                                    <div className="w-10 rounded">
+                                                                        <img src={`data:;base64,${prevKtp}`} />
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="avatar">
+                                                                    <div className="w-16 rounded">
+                                                                        <img src={nofile} />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                        <td className='px-3 py-2'>Scan KTP Dosen</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b'>
+                                                            <div className="flex gap-1">
+                                                                <button className={`btn btn-xs btn-circle btn-primary ${prevKtp ? '' : 'btn-disabled'} cursor-pointer mb-2`} onClick={() => openImage(prevKtp, 'SCAN_KTP_')}><FaSearch /></button>
+                                                                <a className={`btn btn-xs btn-info text-white mb-2 btn-circle ${prevKtp ? '' : 'btn-disabled'}`} title='download' download={`SCAN_KTP_${namanya}`} href={`data:image/png;base64,${prevKtp}`}><FaArrowCircleDown /></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b' rowSpan='2'>
+                                                            {prevSehatRohani ? (
+                                                                <div className="avatar">
+                                                                    <div className="w-10 rounded">
+                                                                        <img src={`data:;base64,${prevSehatRohani}`} />
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="avatar">
+                                                                    <div className="w-16 rounded">
+                                                                        <img src={nofile} />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                        <td className='px-3 py-2'>Scan SK Sehat Rohani</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b'>
+                                                            <div className="flex gap-1">
+                                                                <button className={`btn btn-xs btn-circle btn-primary ${prevSehatRohani ? '' : 'btn-disabled'} cursor-pointer mb-2`} onClick={() => openImage(prevSehatRohani, 'SEHAT_ROHANI_')}><FaSearch /></button>
+                                                                <a className={`btn btn-xs btn-info text-white mb-2 btn-circle ${prevSehatRohani ? '' : 'btn-disabled'}`} title='download' download={`SEHAT_ROHANI_${namanya}`} href={`data:image/png;base64,${prevSehatRohani}`}><FaArrowCircleDown /></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b' rowSpan='2'>
+                                                            {prevSehatJasmani ? (
+                                                                <div className="avatar">
+                                                                    <div className="w-10 rounded">
+                                                                        <img src={`data:;base64,${prevSehatJasmani}`} />
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="avatar">
+                                                                    <div className="w-16 rounded">
+                                                                        <img src={nofile} />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                        <td className='px-3 py-2'>Scan SK Sehat Jasmani</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b'>
+                                                            <div className="flex gap-1">
+                                                                <button className={`btn btn-xs btn-circle btn-primary ${prevSehatJasmani ? '' : 'btn-disabled'} cursor-pointer mb-2`} onClick={() => openImage(prevSehatJasmani, 'SEHAT_JASMANI_')}><FaSearch /></button>
+                                                                <a className={`btn btn-xs btn-info text-white mb-2 btn-circle ${prevSehatJasmani ? '' : 'btn-disabled'}`} title='download' download={`SEHAT_JASMANI_${namanya}`} href={`data:image/png;base64,${prevSehatJasmani}`}><FaArrowCircleDown /></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b' rowSpan='2'>
+                                                            {prevJanjiKerja ? (
+                                                                <div className="avatar">
+                                                                    <div className="w-10 rounded">
+                                                                        <img src={`data:;base64,${prevJanjiKerja}`} />
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="avatar">
+                                                                    <div className="w-16 rounded">
+                                                                        <img src={nofile} />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                        <td className='px-3 py-2'>Scan SK Perjanjian Kerja</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b'>
+                                                            <div className="flex gap-1">
+                                                                <button className={`btn btn-xs btn-circle btn-primary ${prevJanjiKerja ? '' : 'btn-disabled'} cursor-pointer mb-2`} onClick={() => openImage(prevJanjiKerja, 'PERJANJIAN_KERJA')}><FaSearch /></button>
+                                                                <a className={`btn btn-xs btn-info text-white mb-2 btn-circle ${prevJanjiKerja ? '' : 'btn-disabled'}`} title='download' download={`PERJANJIAN_KERJA${namanya}`} href={`data:image/png;base64,${prevJanjiKerja}`}><FaArrowCircleDown /></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b' rowSpan='2'>
+                                                            {prevSkDosen ? (
+                                                                <div className="avatar">
+                                                                    <div className="w-10 rounded">
+                                                                        <img src={`data:;base64,${prevSkDosen}`} />
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="avatar">
+                                                                    <div className="w-16 rounded">
+                                                                        <img src={nofile} />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                        <td className='px-3 py-2'>Scan SK Dosen</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b'>
+                                                            <div className="flex gap-1">
+                                                                <button className={`btn btn-xs btn-circle btn-primary ${prevSkDosen ? '' : 'btn-disabled'} cursor-pointer mb-2`} onClick={() => openImage(prevSkDosen, 'SK_DOSEN_')}><FaSearch /></button>
+                                                                <a className={`btn btn-xs btn-info text-white mb-2 btn-circle ${prevSkDosen ? '' : 'btn-disabled'}`} title='download' download={`SK_DOSEN_${namanya}`} href={`data:image/png;base64,${prevSkDosen}`}><FaArrowCircleDown /></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b' rowSpan='2'>
+                                                            {prevBebasNarkotika ? (
+                                                                <div className="avatar">
+                                                                    <div className="w-10 rounded">
+                                                                        <img src={`data:;base64,${prevBebasNarkotika}`} />
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="avatar">
+                                                                    <div className="w-16 rounded">
+                                                                        <img src={nofile} />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                        <td className='px-3 py-2'>Scan SK Bebas Narkotika</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b'>
+                                                            <div className="flex gap-1">
+                                                                <button className={`btn btn-xs btn-circle btn-primary ${prevBebasNarkotika ? '' : 'btn-disabled'} cursor-pointer mb-2`} onClick={() => openImage(prevBebasNarkotika, 'BEBAS_NARKOTIKA')}><FaSearch /></button>
+                                                                <a className={`btn btn-xs btn-info text-white mb-2 btn-circle ${prevBebasNarkotika ? '' : 'btn-disabled'}`} title='download' download={`SK_BEBAS_NARKOTIKA${namanya}`} href={`data:image/png;base64,${prevBebasNarkotika}`}><FaArrowCircleDown /></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b' rowSpan='2'>
+                                                            {prevSkPt ? (
+                                                                <div className="avatar">
+                                                                    <div className="w-10 rounded">
+                                                                        <img src={`data:;base64,${prevSkPt}`} />
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="avatar">
+                                                                    <div className="w-16 rounded">
+                                                                        <img src={nofile} />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                        <td className='px-3 py-2'>Scan SK PT</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b'>
+                                                            <div className="flex gap-1">
+                                                                <button className={`btn btn-xs btn-circle btn-primary ${prevSkPt ? '' : 'btn-disabled'} cursor-pointer mb-2`} onClick={() => openImage(prevSkPt, 'SK_PT_')}><FaSearch /></button>
+                                                                <a className={`btn btn-xs btn-info text-white mb-2 btn-circle ${prevSkPt ? '' : 'btn-disabled'}`} title='download' download={`SK_PT_${namanya}`} href={`data:image/png;base64,${prevSkPt}`}><FaArrowCircleDown /></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b' rowSpan='2'>
+                                                            {prevTridma ? (
+                                                                <div className="avatar">
+                                                                    <div className="w-10 rounded">
+                                                                        <img src={`data:;base64,${prevTridma}`} />
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="avatar">
+                                                                    <div className="w-16 rounded">
+                                                                        <img src={nofile} />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                        <td className='px-3 py-2'>Scan SK Tridma PT</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='px-3 py-2 border-b'>
+                                                            <div className="flex gap-1">
+                                                                <button className={`btn btn-xs btn-circle btn-primary ${prevTridma ? '' : 'btn-disabled'} cursor-pointer mb-2`} onClick={() => openImage(prevTridma, 'SK_TRIDMA_PT_')}><FaSearch /></button>
+                                                                <a className={`btn btn-xs btn-info text-white mb-2 btn-circle ${prevTridma ? '' : 'btn-disabled'}`} title='download' download={`SK_TRIDMA_PT_${namanya}`} href={`data:image/png;base64,${prevTridma}`}><FaArrowCircleDown /></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                ) : (<span>File Tidak Ada</span>)}
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text uppercase font-bold">SK Dosen</span>
-                                </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSkDosen, 'SK_')}>Detail</button>
-                                {prevSkDosen ? (
-                                    <div className="avatar">
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
-                                            <img src={`data:;base64,${prevSkDosen}`} />
+                                    {/* <div className="grid lg:grid-cols-3 gap-4">
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text uppercase font-bold">Foto Diri</span>
+                                            </label>
+                                            <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevFoto, 'FOTO_')}>Detail</button>
+                                            {prevFoto ? (
+                                                <div className="avatar">
+                                                    <div className="w-32 rounded ring ring-[#2D7F5F]">
+                                                        <img src={`data:;base64,${prevFoto}`} />
+                                                    </div>
+                                                </div>
+                                            ) : (<span>File Tidak Ada</span>)}
                                         </div>
-                                    </div>
-                                ) : (<span>File Tidak Ada</span>)}
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text uppercase font-bold">SK Bebas Narkotika</span>
-                                </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevBebasNarkotika, 'BEBAS_NARKOTIKA_')}>Detail</button>
-                                {prevBebasNarkotika ? (
-                                    <div className="avatar">
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
-                                            <img src={`data:;base64,${prevBebasNarkotika}`} />
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text uppercase font-bold">QR Code</span>
+                                            </label>
+                                            <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevQrCode, 'QR_')}>Detail</button>
+                                            <div className="avatar">
+                                                {prevQrCode ? (
+                                                    <div className="w-32 rounded ring ring-[#2D7F5F]">
+                                                        <img src={`data:;base64,${prevQrCode}`} />
+                                                    </div>
+                                                ) : (<span>File Tidak Ada</span>)}
+                                            </div>
                                         </div>
-                                    </div>
-                                ) : (<span>File Tidak Ada</span>)}
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text uppercase font-bold">SK Dari Pimpinan PT</span>
-                                </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSkPt, 'SK_PT_')}>Detail</button>
-                                {prevSkPt ? (
-                                    <div className="avatar">
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
-                                            <img src={`data:;base64,${prevSkPt}`} />
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text uppercase font-bold">Scan KTP</span>
+                                            </label>
+                                            <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevKtp, 'KTP_')}>Detail</button>
+                                            {prevKtp ? (
+                                                <div className="avatar">
+                                                    <div className="w-32 rounded ring ring-[#2D7F5F]">
+                                                        <img src={`data:;base64,${prevKtp}`} />
+                                                    </div>
+                                                </div>
+                                            ) : (<span>File Tidak Ada</span>)}
                                         </div>
-                                    </div>
-                                ) : (<span>File Tidak Ada</span>)}
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text uppercase font-bold">SK Aktif Melaksanakan Tridma PT</span>
-                                </label>
-                                <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevTridma, 'SK_TRIDMA_PT_')}>Detail</button>
-                                {prevTridma ? (
-                                    <div className="avatar">
-                                        <div className="w-full rounded ring ring-[#2D7F5F]">
-                                            <img src={`data:;base64,${prevTridma}`} />
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text uppercase font-bold">Scan Surat Sehat Rohani</span>
+                                            </label>
+                                            <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSehatRohani, 'SEHAT_ROHANI_')}>Detail</button>
+                                            {prevSehatRohani ? (
+                                                <div className="avatar">
+                                                    <div className="w-32 rounded ring ring-[#2D7F5F]">
+                                                        <img src={`data:;base64,${prevSehatRohani}`} />
+                                                    </div>
+                                                </div>
+                                            ) : (<span>File Tidak Ada</span>)}
                                         </div>
-                                    </div>
-                                ) : (<span>File Tidak Ada</span>)}
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text uppercase font-bold">Scan Surat Sehat Jasmani</span>
+                                            </label>
+                                            <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSehatJasmani, 'SEHAT_JASMANI_')}>Detail</button>
+                                            {prevSehatJasmani ? (
+                                                <div className="avatar">
+                                                    <div className="w-32 rounded ring ring-[#2D7F5F]">
+                                                        <img src={`data:;base64,${prevSehatJasmani}`} />
+                                                    </div>
+                                                </div>
+                                            ) : (<span>File Tidak Ada</span>)}
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text uppercase font-bold">Scan Surat Perjanjian Kerja</span>
+                                            </label>
+                                            <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevJanjiKerja, 'PERJANJIAN_KERJA_')}>Detail</button>
+                                            {prevJanjiKerja ? (
+                                                <div className="avatar">
+                                                    <div className="w-32 rounded ring ring-[#2D7F5F]">
+                                                        <img src={`data:;base64,${prevJanjiKerja}`} />
+                                                    </div>
+                                                </div>
+                                            ) : (<span>File Tidak Ada</span>)}
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text uppercase font-bold">SK Dosen</span>
+                                            </label>
+                                            <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSkDosen, 'SK_')}>Detail</button>
+                                            {prevSkDosen ? (
+                                                <div className="avatar">
+                                                    <div className="w-32 rounded ring ring-[#2D7F5F]">
+                                                        <img src={`data:;base64,${prevSkDosen}`} />
+                                                    </div>
+                                                </div>
+                                            ) : (<span>File Tidak Ada</span>)}
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text uppercase font-bold">SK Bebas Narkotika</span>
+                                            </label>
+                                            <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevBebasNarkotika, 'BEBAS_NARKOTIKA_')}>Detail</button>
+                                            {prevBebasNarkotika ? (
+                                                <div className="avatar">
+                                                    <div className="w-32 rounded ring ring-[#2D7F5F]">
+                                                        <img src={`data:;base64,${prevBebasNarkotika}`} />
+                                                    </div>
+                                                </div>
+                                            ) : (<span>File Tidak Ada</span>)}
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text uppercase font-bold">SK Dari Pimpinan PT</span>
+                                            </label>
+                                            <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevSkPt, 'SK_PT_')}>Detail</button>
+                                            {prevSkPt ? (
+                                                <div className="avatar">
+                                                    <div className="w-32 rounded ring ring-[#2D7F5F]">
+                                                        <img src={`data:;base64,${prevSkPt}`} />
+                                                    </div>
+                                                </div>
+                                            ) : (<span>File Tidak Ada</span>)}
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text uppercase font-bold">SK Aktif Melaksanakan Tridma PT</span>
+                                            </label>
+                                            <button className='btn btn-sm w-full btn-primary cursor-pointer mb-2' onClick={() => openImage(prevTridma, 'SK_TRIDMA_PT_')}>Detail</button>
+                                            {prevTridma ? (
+                                                <div className="avatar">
+                                                    <div className="w-32 rounded ring ring-[#2D7F5F]">
+                                                        <img src={`data:;base64,${prevTridma}`} />
+                                                    </div>
+                                                </div>
+                                            ) : (<span>File Tidak Ada</span>)}
+                                        </div>
+                                    </div> */}
+                                </div>
                             </div>
                         </div>
                     </div>

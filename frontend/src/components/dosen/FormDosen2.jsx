@@ -198,7 +198,7 @@ const FormDosen2 = () => {
     return (
         <div className='mt-2 container'>
             <section className="mb-5">
-                <h1 className='text-xl font-bold'>Detail Alamat {namanya && <span>Dari <span className='text-red-500'>{namanya}</span></span>}</h1>
+                <h1 className='text-2xl font-bold'>Detail Alamat {namanya && <span>Dari <span className='capitalize'>{namanya}</span></span>}</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
@@ -315,15 +315,15 @@ const FormDosen2 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type="button" onClick={() => batal(idDsn)} className='btn btn-sm btn-error'><FaTimes /> <span className="ml-1">Batal</span></button> : <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-error'><FaReply /> <span className='ml-1'>Kembali Ke Data Dosen</span></Link>}
+                                    {stat == "add" ? <button type="button" onClick={() => batal(idDsn)} className='btn btn-sm btn-error capitalize rounded-md'><FaTimes /> <span className="">Batal</span></button> : <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> <span className=''>Kembali Ke Data Dosen</span></Link>}
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
                                         <div>
-                                            <Link to={`/dosen/form1/${stat}/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm btn-primary w-full'><FaArrowLeft /><span className="ml-1">Kembali</span></Link>
+                                            <Link to={`/dosen/form1/${stat}/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen' }} className='btn btn-sm rounded-md btn-primary w-full capitalize'><FaArrowLeft /><span>Kembali</span></Link>
                                         </div>
                                         <div className='lg:pl-1'>
-                                            <button className='btn btn-sm btn-success w-full'><FaCheck /><span className="ml-1">Selesai</span></button>
+                                            <button className='btn btn-sm rounded-md btn-success w-full capitalize'><FaCheck /><span className="">Selesai</span></button>
                                         </div>
                                     </div>
                                 </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from "react-router-dom"
 import axios from 'axios'
 import { useReactToPrint } from "react-to-print"
-import stainaa from "../../assets/img/stainaa.png"
+import kop from "../../assets/img/kop.png"
 
 const PrintMhs = () => {
     const [nik, setNik] = useState("")
@@ -284,18 +284,8 @@ const PrintMhs = () => {
             <section ref={el => (componentRef = el)}>
                 <div className="card">
                     <div className="card-body p-4">
-                        <div className="flex gap-3 w-full ">
-                            <div className="avatar mt-1 rounded-full h-12 ">
-                                <div className="w-16 h-16 rounded-full">
-                                    <img src={stainaa} />
-                                </div>
-                            </div>
-                            <div>
-                                <p className='text-xs font-bold'>YAYASAN NURUL ABROR AL-ROBBANIYIN</p>
-                                <p className='text-xs font-bold'>SEKOLAH TINGGI AGAMA ISLAM NURUL ABROR AL-ROBBANIYIN</p>
-                                <p className='text-xs font-bold uppercase'>alasbuluh wongsorejo banyuwangi</p>
-                                <p className='text-xs font-bold '>FORMULIR MAHASISWA</p>
-                            </div>
+                        <div className='mb-36'>
+                            <img src={kop} alt="" className='absolute left-0 right-0 top-0' />
                         </div>
                         <hr className='w-full' />
                         <div className='grid lg:grid-cols-2'>

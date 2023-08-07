@@ -165,6 +165,26 @@ const ListSebaran = () => {
         setSmt(i)
     }
 
+    const sebaranMakul = async () => {
+        if (smt.length != 0) {
+            let sebar = []
+            let sksnya = []
+            let promises = []
+            for (let i = 0; i < smt.length; i++) {
+                promises.push(
+                    await axios.get('v1/sebaranMataKuliah/all?sebaranProdi=' + kodeProdi + '&sebaranSemester=' + smt[i].kode + '&sebaranTahunAjaran=' + kodeTahun + '&sebaranJenPen=' + kodeJenjang + '&sebaranFks=' + kodeFakultas).then(response => {
+                        sebar.push(response.data.data)
+                        sksnya.push(response.data.total_sks)
+                    })
+                )
+            }
+            if (smt.length != 0) {
+                Promise.all(promises).then(() => setSebaran(sebar))
+                Promise.all(promises).then(() => setSatuan(sksnya))
+            }
+        }
+    }
+
     const simpanSebaran = async (e) => {
         e.preventDefault()
         try {
@@ -185,6 +205,10 @@ const ListSebaran = () => {
                     code_kategori_nilai: kodeNilai,
                     status_bobot_makul: statusBobot,
                     status_makul: status,
+                    code_tahun_ajaran: kodeTahun,
+                    code_jenjang_pendidikan: kodeJenjang,
+                    code_fakultas: kodeFakultas,
+                    code_prodi: kodeProdi
                 }).then(function (response) {
                     Swal.fire({
                         title: response.data.message,
@@ -204,26 +228,6 @@ const ListSebaran = () => {
                     title: error.response.data.errors[0].msg,
                     icon: "error"
                 })
-            }
-        }
-    }
-
-    const sebaranMakul = async () => {
-        if (smt.length != 0) {
-            let sebar = []
-            let sksnya = []
-            let promises = []
-            for (let i = 0; i < smt.length; i++) {
-                promises.push(
-                    await axios.get('v1/sebaranMataKuliah/all?sebaranProdi=' + kodeProdi + '&sebaranSemester=' + smt[i].kode + '&sebaranTahunAjaran=' + kodeTahun + '&sebaranJenPen=' + kodeJenjang + '&sebaranFks=' + kodeFakultas).then(response => {
-                        sebar.push(response.data.data)
-                        sksnya.push(response.data.total_sks)
-                    })
-                )
-            }
-            if (smt.length != 0) {
-                Promise.all(promises).then(() => setSebaran(sebar))
-                Promise.all(promises).then(() => setSatuan(sksnya))
             }
         }
     }
@@ -449,7 +453,7 @@ const ListSebaran = () => {
                                     <div className='grid grid-cols-2 gap-2 mb-4'>
                                         <div className='col-span-2'>
                                             <label className="label">
-                                                <span className="text-base label-text">Nama Mata Kuliah</span>
+                                                <span className="text-base label-text font-semibold">Nama Mata Kuliah</span>
                                             </label>
                                             <input type="text" value={nama} className="input input-sm input-bordered w-full" disabled />
                                         </div>
@@ -457,25 +461,25 @@ const ListSebaran = () => {
                                             <div className='grid grid-cols-4 gap-2'>
                                                 <div>
                                                     <label className="label">
-                                                        <span className="text-base label-text">SKS</span>
+                                                        <span className="text-base label-text font-semibold">SKS</span>
                                                     </label>
                                                     <input type="text" value={sks} className="input input-sm input-bordered w-full" disabled />
                                                 </div>
                                                 <div>
                                                     <label className="label">
-                                                        <span className="text-base label-text">SKS Praktek</span>
+                                                        <span className="text-base label-text font-semibold">SKS Praktek</span>
                                                     </label>
                                                     <input type="text" value={sksPrak} className="input input-sm input-bordered w-full" disabled />
                                                 </div>
                                                 <div>
                                                     <label className="label">
-                                                        <span className="text-base label-text">SKS Prak Lapang</span>
+                                                        <span className="text-base label-text font-semibold">SKS Prak Lapang</span>
                                                     </label>
                                                     <input type="text" value={sksPrakLap} className="input input-sm input-bordered w-full" disabled />
                                                 </div>
                                                 <div>
                                                     <label className="label">
-                                                        <span className="text-base label-text">SKS Simulasi</span>
+                                                        <span className="text-base label-text font-semibold">SKS Simulasi</span>
                                                     </label>
                                                     <input type="text" value={sksSim} className="input input-sm input-bordered w-full" disabled />
                                                 </div>
@@ -485,7 +489,7 @@ const ListSebaran = () => {
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div>
                                                     <label className="label">
-                                                        <span className="text-base label-text">Semester</span>
+                                                        <span className="text-base label-text font-semibold">Semester</span>
                                                     </label>
                                                     <select className='select select-bordered select-sm w-full' value={kodeSmt} onChange={(e) => setKodeSmt(e.target.value)}>
                                                         <option value="">Semester</option>
@@ -496,7 +500,7 @@ const ListSebaran = () => {
                                                 </div>
                                                 <div>
                                                     <label className="label">
-                                                        <span className="text-base label-text">Nilai Min</span>
+                                                        <span className="text-base label-text font-semibold">Nilai Min</span>
                                                     </label>
                                                     <select className='select select-bordered select-sm w-full' value={kodeNilai} onChange={(e) => setKodeNilai(e.target.value)}>
                                                         <option value="">Kategori Nilai</option>
@@ -507,7 +511,7 @@ const ListSebaran = () => {
                                                 </div>
                                                 <div>
                                                     <label className="label">
-                                                        <span className="text-base label-text">Opsi Tambahan</span>
+                                                        <span className="text-base label-text font-semibold">Opsi Tambahan</span>
                                                     </label>
                                                     <div className='flex gap-3'>
                                                         <div className="form-control">
@@ -536,15 +540,15 @@ const ListSebaran = () => {
                 </div>
             </div>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Sebaran Mata Kuliah</h1>
+                <h1 className='text-2xl font-bold'>Sebaran Mata Kuliah</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-3 rounded-md">
+                <div className="card bg-base-100 card-bordered shadow-md mb-3">
                     <div className="card-body p-4">
                         <div className="grid lg:grid-cols-2 gap-2 p-2 rounded-md">
                             <div className='flex gap-2'>
                                 <label className="label flex-initial w-64">
-                                    <span className="text-base label-text">Jenjang Pendidikan</span>
+                                    <span className="text-base label-text font-semibold">Jenjang Pendidikan</span>
                                 </label>
                                 <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
                                     <option value="">Jenjang Pendidikan</option>
@@ -555,7 +559,7 @@ const ListSebaran = () => {
                             </div>
                             <div className='flex gap-2'>
                                 <label className="label flex-initial w-64">
-                                    <span className="text-base label-text">Fakultas</span>
+                                    <span className="text-base label-text font-semibold">Fakultas</span>
                                 </label>
                                 <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
                                     <option value="">Fakultas</option>
@@ -566,7 +570,7 @@ const ListSebaran = () => {
                             </div>
                             <div className='flex gap-2'>
                                 <label className="label flex-initial w-64">
-                                    <span className="text-base label-text">Program Studi</span>
+                                    <span className="text-base label-text font-semibold">Program Studi</span>
                                 </label>
                                 <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
                                     <option value="">Program Studi</option>
@@ -577,7 +581,7 @@ const ListSebaran = () => {
                             </div>
                             <div className='flex gap-2'>
                                 <label className="label flex-initial w-64">
-                                    <span className="text-base label-text">Tahun Ajaran</span>
+                                    <span className="text-base label-text font-semibold">Tahun Ajaran</span>
                                 </label>
                                 <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
                                     <option value="">Tahun Ajaran</option>
@@ -589,13 +593,13 @@ const ListSebaran = () => {
                         </div>
                     </div>
                 </div>
-                <div className="card bg-base-100 card-bordered shadow-md mb-3 rounded-md">
+                <div className="card bg-base-100 card-bordered shadow-md mb-3">
                     <div className="card-body p-4">
                         <form onSubmit={simpanSebaran}>
                             <div className='flex gap-2'>
-                                <div className='basis-1/4'>
+                                <div className='basis-1/3'>
                                     <label className="label">
-                                        <span className="text-base label-text">Mata Kuliah</span>
+                                        <span className="text-base label-text font-semibold">Mata Kuliah</span>
                                     </label>
                                     <Select
                                         className="basic-single"
@@ -605,16 +609,10 @@ const ListSebaran = () => {
                                         isClearable={isClearable}
                                         id='input-select'
                                     />
-                                    {/* <select className='mt-1 select select-sm select-bordered w-full max-w-[260px]' value={kodeMakul} onChange={(e) => setKodeMakul(e.target.value)}>
-                                        <option value="">Mata Kuliah</option>
-                                        {Makul.map((item) => (
-                                            <option key={item.id_mata_kuliah} value={item.id_mata_kuliah}>{item.code_mata_kuliah} -- {item.nama_mata_kuliah}</option>
-                                        ))}
-                                    </select> */}
                                 </div>
-                                <div className='basis-1/6'>
+                                <div className='basis-1/3'>
                                     <label className="label">
-                                        <span className="text-base label-text">Semester</span>
+                                        <span className="text-base label-text font-semibold">Semester</span>
                                     </label>
                                     <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeSmt} onChange={(e) => setKodeSmt(e.target.value)}>
                                         <option value="">Semester</option>
@@ -623,9 +621,9 @@ const ListSebaran = () => {
                                         ))}
                                     </select>
                                 </div>
-                                <div className='basis-32'>
+                                <div className='basis-1/3'>
                                     <label className="label">
-                                        <span className="text-base label-text">Nilai Min</span>
+                                        <span className="text-base label-text font-semibold">Nilai Min</span>
                                     </label>
                                     <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeNilai} onChange={(e) => setKodeNilai(e.target.value)}>
                                         <option value="">Nilai</option>
@@ -636,7 +634,7 @@ const ListSebaran = () => {
                                 </div>
                                 <div className="basis-2/5">
                                     <label className="label">
-                                        <span className="text-base label-text">Opsi Tambahan</span>
+                                        <span className="text-base label-text font-semibold">Opsi Tambahan</span>
                                     </label>
                                     <div className='flex gap-3'>
                                         <div className="form-control">
@@ -652,7 +650,7 @@ const ListSebaran = () => {
                                             </label>
                                         </div>
                                         <div>
-                                            <button className='btn btn-sm btn-primary'><FaPlus /><span className='ml-1'>Tambah</span></button>
+                                            <button className='btn btn-sm btn-primary capitalize rounded-md'><FaPlus /><span>Tambah</span></button>
                                         </div>
                                     </div>
                                 </div>

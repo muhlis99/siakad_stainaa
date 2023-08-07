@@ -3,7 +3,7 @@ import Swal from 'sweetalert2'
 import axios from 'axios'
 import Select from 'react-select'
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { FaReply, FaSave } from 'react-icons/fa'
+import { FaEdit, FaReply, FaSave } from 'react-icons/fa'
 
 const FormEditPembimbing = () => {
     const [Dosen, setDosen] = useState([])
@@ -148,16 +148,16 @@ const FormEditPembimbing = () => {
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Pembimbing Akademik</h1>
+                <h1 className='text-2xl font-bold'>Pembimbing Akademik</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <form onSubmit={simpanPembimbing}>
                             <div className="grid grid-cols-2 gap-2 mb-2">
-                                <div className='flex gap-2'>
-                                    <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Dosen</span>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text font-semibold">Dosen</span>
                                     </label>
                                     <Select
                                         className="basic-single w-full rounded-md"
@@ -168,9 +168,9 @@ const FormEditPembimbing = () => {
                                         placeholder={nipy + ' | ' + nama}
                                     />
                                 </div>
-                                <div className='flex gap-2'>
-                                    <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Jenjang Pendidikan</span>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text font-semibold">Jenjang Pendidikan</span>
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
                                         <option value="">Jenjang Pendidikan</option>
@@ -179,9 +179,9 @@ const FormEditPembimbing = () => {
                                         ))}
                                     </select>
                                 </div>
-                                <div className='flex gap-2'>
-                                    <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Fakultas</span>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text font-semibold">Fakultas</span>
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
                                         <option value="">Fakultas</option>
@@ -190,9 +190,9 @@ const FormEditPembimbing = () => {
                                         ))}
                                     </select>
                                 </div>
-                                <div className='flex gap-2'>
-                                    <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Prodi</span>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text font-semibold">Prodi</span>
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
                                         <option value="">Prodi</option>
@@ -201,9 +201,9 @@ const FormEditPembimbing = () => {
                                         ))}
                                     </select>
                                 </div>
-                                <div className='flex gap-2'>
-                                    <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Kuota Mahasiswa</span>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text font-semibold">Kuota Mahasiswa</span>
                                     </label>
                                     <input type='number' placeholder='Diisi dengan angka' className="input input-sm input-bordered w-full" value={kuota} onChange={(e) => setKuota(e.target.value)} />
                                 </div>
@@ -211,10 +211,10 @@ const FormEditPembimbing = () => {
                             <hr />
                             <div className="grid grid-cols-2 mt-2">
                                 <div>
-                                    <Link to="/pembimbingakademik" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
+                                    <Link to="/pembimbingakademik" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm rounded-md capitalize  btn-error'><FaReply />Kembali</Link>
                                 </div>
                                 <div>
-                                    <button className='btn btn-sm btn-primary float-right'><FaSave />Simpan</button>
+                                    <button className='btn btn-sm btn-primary float-right capitalize rounded-md'><FaEdit />Edit</button>
                                 </div>
                             </div>
                         </form>

@@ -138,18 +138,18 @@ const SetStudiMahasiswa = () => {
     }
 
     return (
-        <div className='mt-5 container'>
+        <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Studi Mahasiswa</h1>
+                <h1 className='text-2xl font-bold'>Studi Mahasiswa</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <form onSubmit={simpanPengajuan}>
                             <div className="grid grid-cols-2 gap-2 mb-2">
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Jenjang Pendidikan</span>
+                                        <span className="text-base label-text font-semibold">Jenjang Pendidikan</span>
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
                                         <option value="">Jenjang Pendidikan</option>
@@ -160,7 +160,7 @@ const SetStudiMahasiswa = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Fakultas</span>
+                                        <span className="text-base label-text font-semibold">Fakultas</span>
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
                                         <option value="">Fakultas</option>
@@ -171,7 +171,7 @@ const SetStudiMahasiswa = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Prodi</span>
+                                        <span className="text-base label-text font-semibold">Prodi</span>
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
                                         <option value="">Prodi</option>
@@ -182,7 +182,7 @@ const SetStudiMahasiswa = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Tahun AJaran</span>
+                                        <span className="text-base label-text font-semibold">Tahun AJaran</span>
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
                                         <option value="">Tahun Ajaran</option>
@@ -193,7 +193,7 @@ const SetStudiMahasiswa = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Semester</span>
+                                        <span className="text-base label-text font-semibold">Semester</span>
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
                                         <option value="">Semester</option>
@@ -204,7 +204,7 @@ const SetStudiMahasiswa = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Pengajuan</span>
+                                        <span className="text-base label-text font-semibold">Pengajuan</span>
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={ajuan} onChange={(e) => SetAjuan(e.target.value)}>
                                         <option value="">Pengajuan</option>
@@ -215,7 +215,7 @@ const SetStudiMahasiswa = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Nama Mahasiswa</span>
+                                        <span className="text-base label-text font-semibold">Nama Mahasiswa</span>
                                     </label>
                                     <Select
                                         className="basic-single w-full rounded-md"
@@ -227,13 +227,13 @@ const SetStudiMahasiswa = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Tanggal Pengajuan</span>
+                                        <span className="text-base label-text font-semibold">Tanggal Pengajuan</span>
                                     </label>
                                     <input type='date' className="input input-sm input-bordered w-full" value={tgl} onChange={(e) => setTgl(e.target.value)} />
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Alasan</span>
+                                        <span className="text-base label-text font-semibold">Alasan</span>
                                     </label>
                                     <textarea
                                         className="textarea textarea-bordered w-full"
@@ -246,8 +246,8 @@ const SetStudiMahasiswa = () => {
                             <hr />
                             <div className="grid mt-2">
                                 <div>
-                                    <Link to="/studimhs" state={{ collaps: 'kuliah', activ: '/studimhs' }} className='btn btn-sm btn-error'><FaReply />kembali</Link>
-                                    <button className='btn btn-sm btn-primary float-right'><FaSave />Simpan</button>
+                                    <Link to="/studimhs" state={{ collaps: 'kuliah', activ: '/studimhs' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply />kembali</Link>
+                                    <button className='btn btn-sm btn-primary capitalize rounded-md float-right'><FaSave />Simpan</button>
                                 </div>
                             </div>
                         </form>
