@@ -81,7 +81,7 @@ const DetailJadwal = () => {
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Jadwal Kuliah</h1>
+                <h1 className='text-2xl font-bold'>Jadwal Kuliah</h1>
             </section>
             <section>
                 <div className="col-span-4 card bg-base-100 card-bordered shadow-md mb-3">
@@ -90,10 +90,9 @@ const DetailJadwal = () => {
                             <div className="grid">
                                 <div className='mb-2'>
                                     <div className="float-right flex gap-1">
-                                        <Link to={`/jadwalkuliah`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
-                                        {pertemuan == '1' ? "" : <Link to={`/aturjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-primary'><FaCog /><span>Atur Jadwal</span></Link>}
-
-                                        {status == '' ? <Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-secondary btn-sm'><FaUserEdit />Dosen Pengajar</Link> : ''}
+                                        <Link to={`/jadwalkuliah`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-error rounded-md capitalize'><FaReply />Kembali</Link>
+                                        {pertemuan == '1' ? "" : <Link to={`/aturjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-primary capitalize rounded-md'><FaCog /><span>Atur Jadwal</span></Link>}
+                                        {status == '' ? <Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-secondary btn-sm capitalize rounded-md '><FaUserEdit />Dosen Pengajar</Link> : ''}
                                     </div>
                                 </div>
                             </div>

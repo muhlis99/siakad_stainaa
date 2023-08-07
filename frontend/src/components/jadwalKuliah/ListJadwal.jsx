@@ -124,13 +124,16 @@ const ListJadwal = () => {
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Jadwal Kuliah</h1>
+                <h1 className='text-2xl font-bold'>Jadwal Kuliah</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md rounded-md">
                     <div className="card-body p-4">
                         <div className="grid grid-cols-5 gap-2">
                             <div>
+                                <label className="label">
+                                    <span className="text-base label-text font-semibold">Jenjang Pendidikan</span>
+                                </label>
                                 <select className="select select-sm select-bordered w-full" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
                                     <option value="">Jenjang Pendidikan</option>
                                     {Jenjang.map((item) => (
@@ -139,6 +142,9 @@ const ListJadwal = () => {
                                 </select>
                             </div>
                             <div>
+                                <label className="label">
+                                    <span className="text-base label-text font-semibold">Fakultas</span>
+                                </label>
                                 <select className="select select-bordered select-sm w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
                                     <option value="">Fakultas</option>
                                     {Fakultas.map((item) => (
@@ -147,6 +153,9 @@ const ListJadwal = () => {
                                 </select>
                             </div>
                             <div>
+                                <label className="label">
+                                    <span className="text-base label-text font-semibold">Prodi</span>
+                                </label>
                                 <select className="select select-bordered select-sm w-full" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
                                     <option value="">Prodi</option>
                                     {Prodi.map((item) => (
@@ -155,6 +164,9 @@ const ListJadwal = () => {
                                 </select>
                             </div>
                             <div>
+                                <label className="label">
+                                    <span className="text-base label-text font-semibold">Tahun</span>
+                                </label>
                                 <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
                                     <option value="">Tahun Ajaran</option>
                                     {Tahun.map((item) => (
@@ -163,6 +175,9 @@ const ListJadwal = () => {
                                 </select>
                             </div>
                             <div>
+                                <label className="label">
+                                    <span className="text-base label-text font-semibold">Semester</span>
+                                </label>
                                 <select className="select select-sm select-bordered w-full" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
                                     <option value="">Semester</option>
                                     {Semester.map((item) => (
