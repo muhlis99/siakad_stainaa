@@ -79,7 +79,7 @@ module.exports = {
                 model: prodiModel,
                 where: { status: "aktif" }
             }, {
-                attributes: ['code_mata_kuliah'],
+                attributes: ['code_mata_kuliah', 'nama_mata_kuliah'],
                 model: mataKuliahModel,
                 where: { status: "aktif" }
             }, {
