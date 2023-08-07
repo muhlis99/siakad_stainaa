@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { useNavigate } from 'react-router-dom'
-import { FaTimes, FaSave } from 'react-icons/fa'
+import { Link, useNavigate } from 'react-router-dom'
+import { FaReply, FaSave } from 'react-icons/fa'
 
 const FormAddMataKuliah = () => {
     const [Tahun, setTahun] = useState([])
@@ -122,7 +122,7 @@ const FormAddMataKuliah = () => {
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Tambah Mata Kuliah</h1>
+                <h1 className='text-2xl font-bold'>Tambah Mata Kuliah</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
@@ -131,49 +131,49 @@ const FormAddMataKuliah = () => {
                             <div className="grid lg:grid-cols-2 gap-4">
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Kode Mata Kuliah</span>
+                                        <span className="text-base label-text font-semibold">Kode Mata Kuliah</span>
                                     </label>
                                     <input type="text" placeholder="Kode Mata Kuliah" className="input input-sm input-bordered w-full" value={kodeMk} onChange={(e) => setKodeMk(e.target.value)} />
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Nama Mata Kuliah</span>
+                                        <span className="text-base label-text font-semibold">Nama Mata Kuliah</span>
                                     </label>
                                     <input type="text" placeholder="Masukkan Nama Mata Kuliah" className="input input-sm input-bordered w-full" value={namaMakul} onChange={(e) => setNamaMakul(e.target.value)} />
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Jenis Mata Kuliah</span>
+                                        <span className="text-base label-text font-semibold">Jenis Mata Kuliah</span>
                                     </label>
                                     <input type="text" placeholder="Masukkan Jenis Mata Kuliah" className="input input-sm input-bordered w-full" value={jenisMakul} onChange={(e) => setJenisMakul(e.target.value)} />
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">SKS</span>
+                                        <span className="text-base label-text font-semibold">SKS</span>
                                     </label>
                                     <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered w-full" value={sks} onChange={(e) => setSks(e.target.value)} />
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">SKS Praktek</span>
+                                        <span className="text-base label-text font-semibold">SKS Praktek</span>
                                     </label>
                                     <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered w-full" value={sksPraktek} onChange={(e) => setSksPraktek(e.target.value)} />
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">SKS Praktek Lapangan</span>
+                                        <span className="text-base label-text font-semibold">SKS Praktek Lapangan</span>
                                     </label>
                                     <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered flex-initial w-full" value={sksPrakLapangan} onChange={(e) => setSksPrakLapangan(e.target.value)} />
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">SKS Simulasi</span>
+                                        <span className="text-base label-text font-semibold">SKS Simulasi</span>
                                     </label>
                                     <input type="number" placeholder="Diisi Dengan Angka" className="input input-sm input-bordered w-full" value={sksSimulasi} onChange={(e) => setSksSimulasi(e.target.value)} />
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Tahun Ajaran</span>
+                                        <span className="text-base label-text font-semibold">Tahun Ajaran</span>
                                     </label>
                                     <select className="select select-bordered select-sm w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
                                         <option value="">Tahun Ajaran</option>
@@ -184,7 +184,7 @@ const FormAddMataKuliah = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Jenjang Pendidikan</span>
+                                        <span className="text-base label-text font-semibold">Jenjang Pendidikan</span>
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
                                         <option value="">Jenjang Pendidikan</option>
@@ -195,7 +195,7 @@ const FormAddMataKuliah = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Fakultas</span>
+                                        <span className="text-base label-text font-semibold">Fakultas</span>
                                     </label>
                                     <select className="select select-sm select-bordered w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
                                         <option value="">Fakultas</option>
@@ -206,7 +206,7 @@ const FormAddMataKuliah = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Prodi</span>
+                                        <span className="text-base label-text font-semibold">Prodi</span>
                                     </label>
                                     <select className="select select-bordered select-sm w-full" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
                                         <option value="">Prodi</option>
@@ -217,13 +217,13 @@ const FormAddMataKuliah = () => {
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Tanggal Aktif</span>
+                                        <span className="text-base label-text font-semibold">Tanggal Aktif</span>
                                     </label>
                                     <input type="date" className="input input-sm input-bordered w-full" value={tglAktif} onChange={(e) => setTglAktif(e.target.value)} />
                                 </div>
                                 <div className='flex gap-2'>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text">Tanggal Non Aktif</span>
+                                        <span className="text-base label-text font-semibold">Tanggal Non Aktif</span>
                                     </label>
                                     <input type="date" className="input input-sm input-bordered w-full" value={tglNonAktif} onChange={(e) => setTglNonAktif(e.target.value)} />
                                 </div>
@@ -233,12 +233,12 @@ const FormAddMataKuliah = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    <button type='button' onClick={batalkan} className='btn btn-sm btn-error'><FaTimes /> <span className="ml-1">Batal</span></button>
+                                    <Link to='/matakuliah' state={{ collaps: 'kuliah', activ: '/matakuliah' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> <span className="">Kembali</span></Link>
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
                                         <div className='lg:pl-1'>
-                                            <button className='btn btn-sm btn-primary w-full'><FaSave /><span className="ml-1">Simpan </span></button>
+                                            <button className='btn btn-sm btn-primary w-full capitalize rounded-md'><FaSave /><span>Simpan </span></button>
                                         </div>
                                     </div>
                                 </div>

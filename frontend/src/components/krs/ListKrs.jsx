@@ -18,6 +18,7 @@ const ListKrs = () => {
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
+    const [pesan, setPesan] = useState("")
 
     useEffect(() => {
         getTahunAjaran()
@@ -72,9 +73,14 @@ const ListKrs = () => {
     }
 
     const getKrsAll = async () => {
-        if (kodeProdi != 0 & kodeTahun != 0 & kodeSemester != 0) {
-            const response = await axios.get(`v1/krs/all?tahunAjaran=${kodeTahun}&semester=${kodeSemester}&prodi=${kodeProdi}&fakultas=${kodeFakultas}&jenjangPendik=${kodeJenjang}`)
-            setKrs(response.data.data)
+        try {
+            if (kodeTahun != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeFakultas != 0 & kodeJenjang != 0) {
+                const response = await axios.get(`v1/krs/all?tahunAjaran=${kodeTahun}&semester=${kodeSemester}&prodi=${kodeProdi}&fakultas=${kodeFakultas}&jenjangPendik=${kodeJenjang}`)
+                setKrs(response.data.data)
+                setPesan("")
+            }
+        } catch (error) {
+
         }
     }
 

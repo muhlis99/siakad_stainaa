@@ -185,7 +185,7 @@ const ListRuang = () => {
                                     </div>
                                     <div>
                                         <label className="label">
-                                            <span className="text-base label-text font-semibold">Nama Ruang</span>
+                                            <span className="text-base label-text font-semibold">Lokasi</span>
                                         </label>
                                         <input type="text" value={lokasi} onChange={(e) => setLokasi(e.target.value)} placeholder="Lokasi Ruang" className="input input-sm input-bordered w-full" />
                                     </div>

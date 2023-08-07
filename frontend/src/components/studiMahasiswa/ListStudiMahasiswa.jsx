@@ -74,7 +74,7 @@ const ListStudiMahasiswa = () => {
     return (
         <div className='container mt-2'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Studi Mahasiswa</h1>
+                <h1 className='text-2xl font-bold'>Studi Mahasiswa</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
@@ -137,35 +137,35 @@ const ListStudiMahasiswa = () => {
                             </div>
                         </div> */}
                         <div>
-                            <Link to="/studimhs/add" state={{ collaps: 'kuliah', activ: '/studimhs' }} className="btn btn-sm btn-success"><FaPlus /> tambah data</Link>
+                            <Link to="/studimhs/add" state={{ collaps: 'kuliah', activ: '/studimhs' }} className="btn btn-sm btn-success capitalize rounded-md"><FaPlus /> tambah data</Link>
                         </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
-                                        <th scope="col" align='center' className="px-2 py-3 w-5">#</th>
-                                        <th scope="col" align='center' className="px-2 py-3 w-5">NIM</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Nama</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Jenjang Pendidikan</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Fakultas</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Prodi</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Tahun Ajaran</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Semester</th>
-                                        <th scope="col" align='center' className="px-2 py-3 w-5">Status</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm w-5">#</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm w-5">NIM</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Nama</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Jenjang Pendidikan</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Fakultas</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Prodi</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Tahun Ajaran</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Semester</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm w-5">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Studi.map((item, index) => (
-                                        <tr className='bg-white border-b text-gray-500'>
-                                            <th scope="row" align='center' className="px-2 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-2 py-2' align='center'>{item.nim}</td>
-                                            <td className='px-2 py-2' align='center'>{item.mahasiswas[0].nama}</td>
-                                            <td className='px-2 py-2' align='center'>{item.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-2 py-2' align='center'>{item.fakultas[0].nama_fakultas}</td>
-                                            <td className='px-2 py-2' align='center'>{item.prodis[0].nama_prodi}</td>
-                                            <td className='px-2 py-2' align='center'>{item.tahunAjarans[0].tahun_ajaran}</td>
-                                            <td className='px-2 py-2' align='center'>Semester {item.semesters[0].semester}</td>
-                                            <td className="px-2 py-2" align='center'><span className='capitalize'>{item.status}</span></td>
+                                        <tr className='bg-white border-b text-gray-500 border-x'>
+                                            <th scope="row" align='center' className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{item.nim}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{item.mahasiswas[0].nama}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{item.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{item.fakultas[0].nama_fakultas}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{item.prodis[0].nama_prodi}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{item.tahunAjarans[0].tahun_ajaran}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>Semester {item.semesters[0].semester}</td>
+                                            <td className="px-2 py-2 font-semibold" align='center'><span className='capitalize'>{item.status}</span></td>
                                         </tr>
                                     ))}
                                 </tbody>

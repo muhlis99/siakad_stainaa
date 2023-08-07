@@ -271,17 +271,16 @@ const ListPengajuanStudi = () => {
                     </div>
                 </div>
             </div>
-
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Pengajuan Studi</h1>
+                <h1 className='text-2xl font-bold'>Pengajuan Studi</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-36">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
-                            <div>
+                            {/* <div>
                                 <Link to='/setpengajuan' className="btn btn-primary btn-sm"><FaPlus /> <span className="ml-1">tambah data</span></Link>
-                            </div>
+                            </div> */}
                             {/* <div>
                                 <form className='mb-1' onSubmit={cariData}>
                                     <div className="form-control">
@@ -303,30 +302,30 @@ const ListPengajuanStudi = () => {
                         </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
-                                        <th scope="col" className="px-2 py-3">#</th>
-                                        <th scope="col" className="px-2 py-3">NIM</th>
-                                        <th scope="col" className="px-2 py-3">Nama</th>
-                                        <th scope="col" className="px-2 py-3">Prodi</th>
-                                        <th scope="col" className="px-2 py-3">Semester</th>
-                                        <th scope="col" className="px-2 py-3">Pengajuan</th>
-                                        <th scope="col" className="px-2 py-3">Alasan</th>
-                                        <th scope="col" className='px-2 py-3'>Status</th>
-                                        <th scope="col" className="px-2 py-3" align='center'>Aksi</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">#</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">NIM</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Nama</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Prodi</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Semester</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Pengajuan</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">Alasan</th>
+                                        <th scope="col" className='px-2 py-2 text-sm'>Status</th>
+                                        <th scope="col" className="px-2 py-2 text-sm" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Studi.map((item, index) => (
-                                        <tr key={index} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-2 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-2 py-2'>{item.mahasiswas[0].nim}</td>
-                                            <td className='px-2 py-2'>{item.mahasiswas[0].nama}</td>
-                                            <td className='px-2 py-2'>{item.prodis[0].nama_prodi}</td>
-                                            <td className='px-2 py-2'>Semester {item.semesters[0].semester}</td>
-                                            <td className='px-2 py-2'>{item.pengajuan}</td>
-                                            <td className='px-2 py-2'>{item.alasan}</td>
-                                            <td className='px-2 py-2'>{item.status == 'disetujui1' ? <span className="badge badge-success badge-sm">Disetujui Dosen Wali</span> : item.status == 'disetujui2' ? <span className="badge badge-success badge-sm">Disetujui BAUAK</span> : item.status == 'proses' ? <span className="badge badge-warning badge-sm">Proses di Dosen Wali</span> : <span className="badge badge-error badge-sm">Tidak Disetujui</span>}</td>
+                                        <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                            <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                            <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].nim}</td>
+                                            <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].nama}</td>
+                                            <td className='px-2 py-2 font-semibold'>{item.prodis[0].nama_prodi}</td>
+                                            <td className='px-2 py-2 font-semibold'>Semester {item.semesters[0].semester}</td>
+                                            <td className='px-2 py-2 font-semibold'>{item.pengajuan}</td>
+                                            <td className='px-2 py-2 font-semibold'>{item.alasan}</td>
+                                            <td className='px-2 py-2 font-semibold'>{item.status == 'disetujui1' ? <span className="badge badge-success badge-sm">Disetujui Dosen Wali</span> : item.status == 'disetujui2' ? <span className="badge badge-success badge-sm">Disetujui BAUAK</span> : item.status == 'proses' ? <span className="badge badge-warning badge-sm">Proses di Dosen Wali</span> : <span className="badge badge-error badge-sm">Tidak Disetujui</span>}</td>
                                             <td className='px-2 py-2' align='center'>
                                                 <div>
                                                     <button className='btn btn-info btn-xs mr-1 text-white btn-circle' onClick={() => modalOpen(item.id_pengajuan_studi)}><FaSearch /></button>
@@ -340,7 +339,7 @@ const ListPengajuanStudi = () => {
                             </table>
                         </div>
                         <div>
-                            <span className='text-sm'>Total Data : {rows} page: {rows ? page : 0} of {pages}</span>
+                            <span className='text-sm font-semibold'>Total Data : {rows} page: {page} of {pages}</span>
                             <p className='text-sm text-red-700'>{msg}</p>
                         </div>
                         <div className="mt-2 justify-center btn-group" key={rows} aria-label='pagination'>
@@ -351,11 +350,11 @@ const ListPengajuanStudi = () => {
                                 pageCount={Math.min(10, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
-                                previousLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline"}
-                                nextLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                breakLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-outline ml-1"}
-                                activeLinkClassName={"btn btn-xs btn-default-outline btn-circle btn-default-activ"}
-                                pageLinkClassName={"btn btn-xs btn-default-outline btn-outline btn-circle ml-1"}
+                                previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-circle ml-1"}
                                 disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
                             />
                         </div>

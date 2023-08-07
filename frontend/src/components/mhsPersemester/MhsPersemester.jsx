@@ -145,31 +145,52 @@ const MhsPersemester = () => {
         <div className='mt-2 container'>
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
-                <div className="modal-box relative p-0 rounded-none w-72">
-                    <button className='btn btn-sm btn-square mb-2 btn-error rounded-none float-right' onClick={modalClose}><FaTimes /></button>
-                    <form onSubmit={simpanSetMhs} className='p-2 mt-8'>
-                        <select className="select select-sm select-bordered w-full mb-2" value={kodeTahunNew} onChange={(e) => setKodeTahunNew(e.target.value)}>
-                            <option value="">Tahun Ajaran</option>
-                            {Tahun.map((item) => (
-                                <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
-                            ))}
-                        </select>
-                        <select className="select select-sm select-bordered w-full mb-2" value={kodeSemesterNew} onChange={(e) => setKodeSemesterNew(e.target.value)}>
-                            <option value="">Semester</option>
-                            {SemesterNew.map((item, index) => {
-                                return item.semester - smt === 1 ? (
-                                    <option key={index} value={item.code_semester}>Semester {item.semester}</option>
-                                ) : (
-                                    <option key={index} disabled hidden value={item.code_semester}>Semester {item.semester}</option>
-                                )
-                            })}
-                        </select>
-                        <button className='btn btn-sm btn-primary w-full'><FaSave /><span className="ml-1">simpan</span></button>
+                <div className="modal-box rounded-md p-0">
+                    <form onSubmit={simpanSetMhs}>
+                        <div className='bg-base-200 border-b-2 p-3'>
+                            <h3 className="font-bold text-xl mb-1">Set Mahasiswa</h3>
+                            <button type='button' className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
+                        </div>
+                        <div className='mb-2'>
+                            <div className="py-4 px-4">
+                                <div className="grid gap-2">
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text font-semibold">Tahun Ajaran</span>
+                                        </label>
+                                        <select className="select select-sm select-bordered w-full mb-2" value={kodeTahunNew} onChange={(e) => setKodeTahunNew(e.target.value)}>
+                                            <option value="">Tahun Ajaran</option>
+                                            {Tahun.map((item) => (
+                                                <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text font-semibold">Semester</span>
+                                        </label>
+                                        <select className="select select-sm select-bordered w-full mb-2" value={kodeSemesterNew} onChange={(e) => setKodeSemesterNew(e.target.value)}>
+                                            <option value="">Semester</option>
+                                            {SemesterNew.map((item, index) => {
+                                                return item.semester - smt === 1 ? (
+                                                    <option key={index} value={item.code_semester}>Semester {item.semester}</option>
+                                                ) : (
+                                                    <option key={index} disabled hidden value={item.code_semester}>Semester {item.semester}</option>
+                                                )
+                                            })}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='p-3 border-t-2 text-center'>
+                            <button type='submit' className="btn btn-sm btn-primary capitalize"><FaSave />Simpan</button>
+                        </div>
                     </form>
                 </div>
             </div>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Set Mahasiswa Persemester</h1>
+                <h1 className='text-2xl font-bold'>Set Mahasiswa Persemester</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md">
@@ -177,7 +198,7 @@ const MhsPersemester = () => {
                         <div className="grid grid-cols-5 gap-1">
                             <div>
                                 <label className="label">
-                                    <span className="text-base label-text">Jenjang Pendidikan</span>
+                                    <span className="text-base label-text font-semibold">Jenjang Pendidikan</span>
                                 </label>
                                 <select className="select select-sm select-bordered w-full" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
                                     <option value="">Jenjang Pendidikan</option>
@@ -188,7 +209,7 @@ const MhsPersemester = () => {
                             </div>
                             <div>
                                 <label className="label">
-                                    <span className="text-base label-text">Fakultas</span>
+                                    <span className="text-base label-text font-semibold">Fakultas</span>
                                 </label>
                                 <select className="select select-sm select-bordered w-full" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
                                     <option value="">Fakultas</option>
@@ -199,7 +220,7 @@ const MhsPersemester = () => {
                             </div>
                             <div>
                                 <label className="label">
-                                    <span className="text-base label-text">Prodi</span>
+                                    <span className="text-base label-text font-semibold">Prodi</span>
                                 </label>
                                 <select className="select select-sm select-bordered w-full" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
                                     <option value="">Prodi</option>
@@ -210,7 +231,7 @@ const MhsPersemester = () => {
                             </div>
                             <div>
                                 <label className="label">
-                                    <span className="text-base label-text">Tahun Ajaran</span>
+                                    <span className="text-base label-text font-semibold">Tahun Ajaran</span>
                                 </label>
                                 <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
                                     <option value="">Tahun Ajaran</option>
@@ -221,7 +242,7 @@ const MhsPersemester = () => {
                             </div>
                             <div>
                                 <label className="label">
-                                    <span className="text-base label-text">Semester</span>
+                                    <span className="text-base label-text font-semibold">Semester</span>
                                 </label>
                                 <select className="select select-sm select-bordered w-full" value={kodeSemesterOld} onChange={(e) => setKodeSemesterOld(e.target.value)}>
                                     <option value="">Semester</option>
@@ -236,31 +257,31 @@ const MhsPersemester = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mt-2">
                     <div className="card-body p-4">
                         <div className='mb-2'>
-                            {button > 0 ? <button className='btn btn-sm btn-primary float-right' onClick={modalOpen}><FaCog /><span className="ml-1">Set Mahasiswa</span></button> : ""}
+                            {button > 0 ? <button className='btn btn-sm btn-primary capitalize rounded-md float-right' onClick={modalOpen}><FaCog /><span className="ml-1">Set Mahasiswa</span></button> : ""}
                         </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
-                                        <th scope="col" className="px-6 py-3">#</th>
-                                        <th scope="col" className="px-6 py-3">NIM</th>
-                                        <th scope="col" className="px-6 py-3">Nama</th>
-                                        <th scope="col" className="px-6 py-3">Jenjang Pendidikan</th>
-                                        <th scope="col" className="px-6 py-3">Fakultas</th>
-                                        <th scope="col" className="px-6 py-3">Prodi</th>
-                                        <th scope="col" className="px-6 py-3">Semester</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">#</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">NIM</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Nama</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Jenjang Pendidikan</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Fakultas</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Prodi</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Semester</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Mahasiswa.map((mhs, index) => (
-                                        <tr key={index} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2'>{mhs.mahasiswas[0].nim}</td>
-                                            <td className='px-6 py-2'>{mhs.mahasiswas[0].nama}</td>
-                                            <td className='px-6 py-2'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-2'>{mhs.fakultas[0].nama_fakultas}</td>
-                                            <td className='px-6 py-2'>{mhs.prodis[0].nama_prodi}</td>
-                                            <td className='px-6 py-2'>Semester {mhs.semesters[0].semester}</td>
+                                        <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                            <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                            <td className='px-6 py-2 font-semibold'>{mhs.mahasiswas[0].nim}</td>
+                                            <td className='px-6 py-2 font-semibold'>{mhs.mahasiswas[0].nama}</td>
+                                            <td className='px-6 py-2 font-semibold'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                            <td className='px-6 py-2 font-semibold'>{mhs.fakultas[0].nama_fakultas}</td>
+                                            <td className='px-6 py-2 font-semibold'>{mhs.prodis[0].nama_prodi}</td>
+                                            <td className='px-6 py-2 font-semibold'>SEMESTER {mhs.semesters[0].semester}</td>
                                         </tr>
                                     ))}
                                 </tbody>
