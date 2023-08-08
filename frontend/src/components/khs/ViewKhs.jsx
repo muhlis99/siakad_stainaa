@@ -52,13 +52,13 @@ const ViewKhs = () => {
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Kartu Hasil Studi</h1>
+                <h1 className='text-2xl font-bold'>Kartu Hasil Studi</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-border-blacked shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className='py-2'>
-                            <Link to="/khs" state={{ jen: kodeJnjg, fak: kodeFk, pro: kodeProdi, thn: kodeThn, sem: kodeSmt, collaps: 'kuliah', activ: '/khs' }} className='btn btn-sm btn-error'><FaReply /> Kembali</Link>
+                            <Link to="/khs" state={{ jen: kodeJnjg, fak: kodeFk, pro: kodeProdi, thn: kodeThn, sem: kodeSmt, collaps: 'kuliah', activ: '/khs' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> Kembali</Link>
                         </div>
                         <div className="grid grid-cols-2 gap-3 mb-5 p-3 rounded-md">
                             <div className='flex gap-2'>

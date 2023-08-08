@@ -80,6 +80,7 @@ const SetPertemuan = () => {
         setPertemuan(response.data.data)
         if (response.data.data == 0) {
             setStatusPerencanaan("tambah")
+
         } else {
             setStatusPerencanaan("")
         }
@@ -527,7 +528,7 @@ const SetPertemuan = () => {
             </div>
 
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Set Pertemuan</h1>
+                <h1 className='text-2xl font-bold'>Set Pertemuan</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-3">
@@ -535,10 +536,10 @@ const SetPertemuan = () => {
                         <div className="grid">
                             <div className='mb-2'>
                                 <div className='float-right flex gap-1'>
-                                    <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-secondary'>Detail Jadwal</Link>
-                                    <Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-info'>Dosen Pengajar</Link>
+                                    <Link to={`/detailjadwal`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm capitalize rounded-md btn-secondary'>Detail Jadwal</Link>
+                                    <Link to={`/setDsn`} state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm  capitalize rounded-md btn-info'>Dosen Pengajar</Link>
                                     <div className="dropdown dropdown-end">
-                                        <label tabIndex={0} className="btn btn-sm btn-primary"><span className='mr-1'>Aksi</span><FaAngleDown /></label>
+                                        <label tabIndex={0} className="btn btn-sm btn-primary  capitalize rounded-md"><span className='mr-1'>Aksi</span><FaAngleDown /></label>
                                         <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                             <li>{statusPerencanaan == 'tambah' ? <a onClick={simpanPerencanaan}>Buat Perencanaan</a> : <a>Buat Perencanaan</a>}</li>
                                             <li><a onClick={() => modalOpen('jenis')}>Set Jenis Pertemuan</a></li>

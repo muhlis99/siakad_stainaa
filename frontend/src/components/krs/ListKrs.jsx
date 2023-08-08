@@ -80,7 +80,7 @@ const ListKrs = () => {
                 setPesan("")
             }
         } catch (error) {
-
+            setPesan("Data Kosong")
         }
     }
 
@@ -261,7 +261,8 @@ const ListKrs = () => {
                                             </div>
                                         </td>
                                     </tr>
-                                ))}
+                                ))
+                                }
                             </tbody>
                         </table>
                     </div>

@@ -453,6 +453,7 @@ const ListKelas = () => {
                                 <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
                                         <th scope="col" className="px-6 py-2 text-sm">#</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Kode Mata Kuliah</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Mata Kuliah</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Nama Kelas</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Jumlah Mahasiswa</th>
@@ -467,13 +468,18 @@ const ListKelas = () => {
                                                 <tr key={o} className='bg-white border-b text-gray-500 border-x'>
                                                     <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{o + 1}</th>
                                                     <td className='px-6 py-2 font-semibold'>{item.mataKuliahs[0].code_mata_kuliah}</td>
+                                                    <td className='px-6 py-2 font-semibold'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
                                                     <td className='px-6 py-2 font-semibold'>Kelas {item.nama_kelas}</td>
                                                     <td className='px-6 py-2 font-semibold'>{item.jumlahMhs} Mahasiswa</td>
                                                     <td className='px-6 py-2 font-semibold'>{item.kapasitas} Peserta</td>
                                                     <td className='px-6 py-2 font-semibold' align='center'><Link to={`/kelas/detail/${item.code}`} state={{ collaps: 'kuliah', activ: '/kelas' }} className='btn btn-xs btn-info btn-circle text-white' title='Detail'><FaInfo /></Link></td>
                                                 </tr>
                                             ))
-                                            : ""}
+                                            :
+                                            <tr className='bg-white border-b text-gray-500 border-x'>
+                                                <td colSpan='6' align='center' className='px-auto py-2 font-semibold'>Data Kelas Kosong</td>
+                                            </tr>
+                                        }
                                     </tbody>
                                 ))}
                             </table>

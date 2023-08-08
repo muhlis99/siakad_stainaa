@@ -127,7 +127,7 @@ const ListJadwal = () => {
                 <h1 className='text-2xl font-bold'>Jadwal Kuliah</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md rounded-md">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className="grid grid-cols-5 gap-2">
                             <div>
@@ -186,7 +186,7 @@ const ListJadwal = () => {
                                 </select>
                             </div>
                         </div>
-                        <div className="grid gap-2">
+                        {/* <div className="grid gap-2">
                             <div className='mt-4'>
                                 {Makul.map((mk, index) => (
                                     <div key={mk.id_mata_kuliah} className="collapse bg-[#2D7F5F] pb-0 rounded-lg mb-2">
@@ -213,6 +213,46 @@ const ListJadwal = () => {
                                     </div>
                                 ))}
                             </div>
+                        </div> */}
+                    </div>
+                </div>
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
+                    <div className="card-body p-4">
+                        <div className="overflow-x-auto mb-2">
+                            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead className='text-gray-700 bg-[#d4cece]'>
+                                    <tr>
+                                        <th scope="col" className="px-6 py-2 text-sm">#</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Kode Mata Kuliah</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Mata Kuliah</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Nama Kelas</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Jumlah Mahasiswa</th>
+                                        <th scope="col" className='px-6 py-2 text-sm'>Kapasitas</th>
+                                        <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
+                                    </tr>
+                                </thead>
+                                {Makul.map((kls, index) => (
+                                    <tbody key={index}>
+                                        {DataKelas != 0 ?
+                                            DataKelas[index].map((item, o) => (
+                                                <tr key={o} className='bg-white border-b text-gray-500 border-x'>
+                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{o + 1}</th>
+                                                    <td className='px-6 py-2 font-semibold'>{item.mataKuliahs[0].code_mata_kuliah}</td>
+                                                    <td className='px-6 py-2 font-semibold'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
+                                                    <td className='px-6 py-2 font-semibold'>Kelas {item.nama_kelas}</td>
+                                                    <td className='px-6 py-2 font-semibold'>{item.jumlahMhs} Mahasiswa</td>
+                                                    <td className='px-6 py-2 font-semibold'>{item.kapasitas} Peserta</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'><Link to={`/detailjadwal`} state={{ thn: kodeTahun, sem: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mak: item.code_mata_kuliah, kls: item.code, idn: item.id_kelas, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link></td>
+                                                </tr>
+                                            ))
+                                            :
+                                            <tr className='bg-white border-b text-gray-500 border-x'>
+                                                <td colSpan='6' align='center' className='px-auto py-2 font-semibold'>Data Kelas Kosong. Silakan lakukan input kelas</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                ))}
+                            </table>
                         </div>
                     </div>
                 </div>

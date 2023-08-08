@@ -89,7 +89,7 @@ const ListKhs = () => {
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Kartu Hasil Studi</h1>
+                <h1 className='text-2xl font-bold'>Kartu Hasil Studi</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md">
@@ -157,30 +157,30 @@ const ListKhs = () => {
                     <div className="card-body p-4">
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead className='text-gray-700 bg-[#F2F2F2]'>
+                                <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
-                                        <th scope="col" align='center' className="px-2 py-3 w-5">#</th>
-                                        <th scope="col" align='center' className="px-2 py-3 w-5">NIM</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Nama</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Jenjang Pendidikan</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Fakultas</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Prodi</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Tahun Ajaran</th>
-                                        <th scope="col" align='center' className="px-2 py-3">Semester</th>
-                                        <th scope="col" align='center' className="px-2 py-3 w-5">Aksi</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm w-5">#</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm w-5">NIM</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Nama</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Jenjang Pendidikan</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Fakultas</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Prodi</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Tahun Ajaran</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm">Semester</th>
+                                        <th scope="col" align='center' className="px-2 py-2 text-sm w-5">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Mahasiswa.map((mhs, index) => (
-                                        <tr key={index} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" align='center' className="px-2 py-2 font-medium whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-2 py-2' align='center'>{mhs.mahasiswas[0].nim}</td>
-                                            <td className='px-2 py-2' align='center'>{mhs.mahasiswas[0].nama}</td>
-                                            <td className='px-2 py-2' align='center'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-2 py-2' align='center'>{mhs.fakultas[0].nama_fakultas}</td>
-                                            <td className='px-2 py-2' align='center'>{mhs.prodis[0].nama_prodi}</td>
-                                            <td className='px-2 py-2' align='center'>{mhs.tahunAjarans[0].tahun_ajaran}</td>
-                                            <td className='px-2 py-2' align='center'>{mhs.semesters[0].semester}</td>
+                                        <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                            <th scope="row" align='center' className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.mahasiswas[0].nim}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.mahasiswas[0].nama}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.fakultas[0].nama_fakultas}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.prodis[0].nama_prodi}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.tahunAjarans[0].tahun_ajaran}</td>
+                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.semesters[0].semester}</td>
                                             <td className="px-2 py-2">
                                                 <Link to={`/view/${mhs.nim}/${kodeFakultas}/${kodeJenjang}/${kodeProdi}/${kodeSemester}/${kodeTahun}`} state={{ collaps: 'kuliah', activ: '/khs' }} className="btn btn-xs btn-info btn-circle" title='Detail'><FaSearch /></Link>
                                             </td>
