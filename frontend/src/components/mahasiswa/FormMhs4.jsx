@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom"
 import { FaTimes, FaReply, FaArrowRight, FaArrowLeft, FaMale, FaFemale, FaSave } from "react-icons/fa"
 import axios from 'axios'
 import Swal from "sweetalert2"
+import Loading from '../Loading'
 
 const FormMhs4 = () => {
     const [Pekerjaan, setPekerjaan] = useState([])
@@ -30,6 +31,7 @@ const FormMhs4 = () => {
     const navigate = useNavigate()
     const { idMhs } = useParams()
     const { stat } = useParams()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const getMhsById = async () => {
@@ -173,6 +175,7 @@ const FormMhs4 = () => {
     const simpanMhs = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await axios.put(`v1/mahasiswa/createForm4/${idMhs}`, {
                 nik_wali: nikWali,
                 nama_wali: namaWali,
@@ -188,6 +191,7 @@ const FormMhs4 = () => {
                 code_tahun_ajaran: kodeThn,
                 code_semester: kodeSmt
             }).then(function (response) {
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -196,6 +200,7 @@ const FormMhs4 = () => {
                 });
             })
         } catch (error) {
+            setLoading(false)
             if (error.response) {
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
@@ -221,7 +226,6 @@ const FormMhs4 = () => {
                     axios.delete(
                         `v1/mahasiswa/delete/${mhsId}`
                     ).then((response) => {
-                        console.log(response.data)
                         Swal.fire({
                             title: "Dibatalkan",
                             text: response.data.message,
@@ -244,8 +248,6 @@ const FormMhs4 = () => {
                 const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
                 let tglLahirAyah = response.data.data.tanggal_lahir_ayah
                 const tglAyah = tglLahirAyah.split("-")
-                // let tglLahirIbu = response.data.data.tanggal_lahir_ibu
-                // const tglIbu = tglLahirIbu.split("-")
                 setNikWali(response.data.data.nik_ayah)
                 setNamaWali(response.data.data.nama_ayah)
                 setTgWali(tglAyah[2])
@@ -254,20 +256,10 @@ const FormMhs4 = () => {
                 setPkrjnWali(response.data.data.pekerjaan_ayah)
                 setPndptWali(response.data.data.penghasilan_ayah)
                 setPndknWali(response.data.data.pendidikan_ayah)
-                // setNikIbu(response.data.data.nik_ibu)
-                // setNamaIbu(response.data.data.nama_ibu)
-                // setTgIbu(tglIbu[2])
-                // setBlIbu(tglIbu[1])
-                // setThIbu(tglIbu[0])
-                // setPkrjnIbu(response.data.data.pekerjaan_ibu)
-                // setPndptIbu(response.data.data.penghasilan_ibu)
-                // setPndknIbu(response.data.data.pendidikan_ibu)
             } else {
                 const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
                 let tglLahirAyah = response.data.data.tanggal_lahir_ayah
                 const tglAyah = tglLahirAyah.split("-")
-                // let tglLahirIbu = response.data.data.tanggal_lahir_ibu
-                // const tglIbu = tglLahirIbu.split("-")
                 setNikWali(response.data.data.nik_ayah)
                 setNamaWali(response.data.data.nama_ayah)
                 setTgWali(tglAyah[2])
@@ -276,14 +268,6 @@ const FormMhs4 = () => {
                 setPkrjnWali(response.data.data.pekerjaan_ayah)
                 setPndptWali(response.data.data.penghasilan_ayah)
                 setPndknWali(response.data.data.pendidikan_ayah)
-                // setNikIbu(response.data.data.nik_ibu)
-                // setNamaIbu(response.data.data.nama_ibu)
-                // setTgIbu(tglIbu[2])
-                // setBlIbu(tglIbu[1])
-                // setThIbu(tglIbu[0])
-                // setPkrjnIbu(response.data.data.pekerjaan_ibu)
-                // setPndptIbu(response.data.data.penghasilan_ibu)
-                // setPndknIbu(response.data.data.pendidikan_ibu)
             }
         } catch (error) {
 
@@ -325,6 +309,11 @@ const FormMhs4 = () => {
     return (
         <div>
             <div className='container mt-2'>
+                <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                    <div className='w-[74px] mx-auto mt-72'>
+                        <Loading />
+                    </div>
+                </div>
                 <section className='mb-5'>
                     <h1 className='text-2xl font-bold'>Detail Wali {namanya && <span>Ananda <span className='capitalize'>{namanya}</span></span>}</h1>
                 </section>
@@ -334,8 +323,8 @@ const FormMhs4 = () => {
                             <form onSubmit={simpanMhs}>
                                 <div className='grid lg:grid-cols-3 gap-4'>
                                     <div className='lg:col-span-3'>
-                                        <button type='button' onClick={salinAyah} className='btn btn-secondary btn-sm mr-1'><FaMale /><span> salin data ayah</span></button>
-                                        <button type='button' onClick={salinIbu} className='btn btn-secondary btn-sm'><FaFemale /><span> salin data ibu</span></button>
+                                        <button type='button' onClick={salinAyah} className='btn btn-secondary btn-sm mr-1 capitalize rounded-md'><FaMale /><span> salin data ayah</span></button>
+                                        <button type='button' onClick={salinIbu} className='btn btn-secondary btn-sm capitalize rounded-md'><FaFemale /><span> salin data ibu</span></button>
                                     </div>
                                     <div>
                                         <label className="label">

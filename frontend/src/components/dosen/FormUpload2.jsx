@@ -3,6 +3,7 @@ import { FaReply, FaArrowLeft, FaTelegramPlane } from "react-icons/fa"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import Swal from "sweetalert2"
+import Loading from '../Loading'
 
 const FormUpload2 = () => {
     const [namanya, setNamanya] = useState("")
@@ -20,6 +21,7 @@ const FormUpload2 = () => {
     const [prevTridma, setPrevTridma] = useState("")
     const navigate = useNavigate()
     const { idDsn } = useParams()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const getDsnById = async () => {
@@ -176,7 +178,7 @@ const FormUpload2 = () => {
                 })
             } else if (skPt == skPts) {
                 Swal.fire({
-                    title: "Scan SK Dari Pimpinan PT  Tidak Boleh Kosong",
+                    title: "Scan SK Dari Pimpinan PT Tidak Boleh Kosong",
                     icon: "warning"
                 })
             } else if (tridma == tridmas) {
@@ -185,11 +187,13 @@ const FormUpload2 = () => {
                     icon: "warning"
                 })
             } else {
+                setLoading(true)
                 await axios.put(`v1/dosen/createFromUpload2/${idDsn}`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data"
                     }
                 }).then(function (response) {
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -210,6 +214,11 @@ const FormUpload2 = () => {
 
     return (
         <div className='container mt-2'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Upload Berkas {namanya && <span>Dari <span className='capitalize'>{namanya}</span></span>}</h1>
             </section>

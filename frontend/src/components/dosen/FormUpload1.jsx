@@ -3,7 +3,7 @@ import { FaReply, FaTelegramPlane } from "react-icons/fa"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import Swal from "sweetalert2"
-import SyncLoader from "react-spinners/SyncLoader"
+import Loading from '../Loading'
 
 const FormUpload1 = () => {
     const [namanya, setNamanya] = useState("")
@@ -256,7 +256,7 @@ const FormUpload1 = () => {
         <div className='container mt-2'>
             <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
                 <div className='w-[74px] mx-auto mt-72'>
-                    <SyncLoader className='' size={20} />
+                    <Loading />
                 </div>
             </div>
             <section className='mb-5'>

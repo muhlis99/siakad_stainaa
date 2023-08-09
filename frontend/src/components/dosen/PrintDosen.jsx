@@ -6,6 +6,7 @@ import { useReactToPrint } from "react-to-print"
 
 const PrintDosen = () => {
     const [nidn, setNidn] = useState("")
+    const [nipy, setNipy] = useState("")
     const [namanya, setNamanya] = useState("")
     const [tmp, setTmp] = useState("")
     const [tgl, setTgl] = useState("")
@@ -34,6 +35,7 @@ const PrintDosen = () => {
             try {
                 const response = await axios.get(`v1/dosen/getById/${idDsn}`)
                 setNidn(response.data.data.nidn)
+                setNipy(response.data.data.nip_ynaa)
                 setNamanya(response.data.data.nama)
                 setTmp(response.data.data.tempat_lahir)
                 setTgl(response.data.data.tanggal_lahir)
@@ -94,7 +96,7 @@ const PrintDosen = () => {
             <section ref={el => (componentRef = el)}>
                 <div className="card">
                     <div className="card-body p-4">
-                        <div>
+                        <div className='mb-40'>
                             <img src={kop} alt="" className='absolute left-0 right-0 top-0' />
                         </div>
                         <div className='grid lg:grid-cols-2'>
@@ -105,6 +107,11 @@ const PrintDosen = () => {
                                             <td className='py-1'><span className='text-sm uppercase'>nidn</span></td>
                                             <td className='py-1'><span className='text-sm'>&nbsp;:&nbsp;</span></td>
                                             <td className='py-1'><span className='text-sm uppercase'>{nidn}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td className='py-1'><span className='text-sm uppercase'>nipy</span></td>
+                                            <td className='py-1'><span className='text-sm'>&nbsp;:&nbsp;</span></td>
+                                            <td className='py-1'><span className='text-sm uppercase'>{nipy}</span></td>
                                         </tr>
                                         <tr>
                                             <td className='py-1'><span className='text-sm uppercase'>nama</span></td>

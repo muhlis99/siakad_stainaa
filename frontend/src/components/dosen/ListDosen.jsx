@@ -5,7 +5,7 @@ import { Link, Navigate } from "react-router-dom"
 import ReactPaginate from "react-paginate"
 import axios from 'axios'
 import Swal from "sweetalert2"
-import SyncLoader from "react-spinners/SyncLoader"
+import Loading from '../Loading'
 
 const ListDosen = () => {
     const [Dosen, setDosen] = useState([])
@@ -80,6 +80,7 @@ const ListDosen = () => {
     }
 
     const tambahDosen = async () => {
+        setLoading(true)
         const response = await axios.post('v1/dosen/createFirts')
         setIdDsn(response.data.data)
         setStat("add")
@@ -141,14 +142,14 @@ const ListDosen = () => {
             {idDsn && <Navigate to={`form1/${stat}/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen' }} />}
             <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
                 <div className='w-[74px] mx-auto mt-72'>
-                    <SyncLoader className='' size={20} />
+                    <Loading />
                 </div>
             </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Dosen</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-36">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className="grid grid-flow-col">
                             <div>

@@ -4,6 +4,7 @@ import { SlOptions } from "react-icons/sl"
 import axios from 'axios'
 import Swal from "sweetalert2"
 import ReactPaginate from "react-paginate"
+import Loading from '../Loading'
 
 const ListRuang = () => {
     const [RuangList, setListRuang] = useState([])
@@ -18,6 +19,14 @@ const ListRuang = () => {
     const [judul, setJudul] = useState("")
     const [identitas, setIdentitas] = useState("")
     const [lokasi, setLokasi] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500);
+    }, [])
 
     useEffect(() => {
         getDataRuang()
@@ -54,20 +63,25 @@ const ListRuang = () => {
     const simpanDataRuang = async (e) => {
         e.preventDefault()
         try {
+            document.getElementById('my-modal-add').checked = false
+            setLoading(true)
             await axios.post('v1/ruang/create', {
                 nama_ruang: 'Ruang ',
                 identy_ruang: identitas,
                 lokasi: lokasi
             }).then(function (response) {
-                document.getElementById('my-modal-add').checked = false
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
                     getDataRuang()
+                    setIdentitas("")
+                    setLokasi("")
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response) {
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
@@ -80,21 +94,26 @@ const ListRuang = () => {
     const updateDataRuang = async (e) => {
         e.preventDefault()
         try {
+            document.getElementById('my-modal-add').checked = false
+            setLoading(true)
             await axios.put(`v1/ruang/update/${id}`, {
                 nama_ruang: 'Ruang ',
                 identy_ruang: identitas,
                 lokasi: lokasi
             }).then(function (response) {
-                document.getElementById('my-modal-add').checked = false
+                setLoading(false)
                 Swal.fire({
                     title: "Berhasil",
                     text: response.data.message,
                     icon: "success"
                 }).then(() => {
                     getDataRuang()
+                    setIdentitas("")
+                    setLokasi("")
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response) {
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
@@ -142,7 +161,6 @@ const ListRuang = () => {
                     axios.put(
                         `v1/ruang/delete/${ruangId}`
                     ).then((response) => {
-                        console.log(response.data)
                         Swal.fire({
                             title: "Terhapus",
                             text: response.data.message,
@@ -196,6 +214,11 @@ const ListRuang = () => {
                             <button type='submit' className="btn btn-sm btn-primary capitalize">{judul == 'Tambah' ? <FaSave /> : <FaEdit />}{judul == 'Tambah' ? 'Simpan' : 'Edit'}</button>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
                 </div>
             </div>
             <section className='mb-5'>

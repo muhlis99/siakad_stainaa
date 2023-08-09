@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom"
 import { FaTimes, FaReply, FaArrowRight, FaArrowLeft } from "react-icons/fa"
 import axios from "axios"
 import Swal from "sweetalert2"
+import Loading from '../Loading'
 
 const FormMhs3 = () => {
     const [Pekerjaan, setPekerjaan] = useState([])
@@ -28,6 +29,7 @@ const FormMhs3 = () => {
     const navigate = useNavigate()
     const { idMhs } = useParams()
     const { stat } = useParams()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const getMhsById = async () => {
@@ -136,6 +138,7 @@ const FormMhs3 = () => {
     const simpanMhs = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await axios.put(`v1/mahasiswa/createForm3/${idMhs}`, {
                 nik_ayah: nikAyah,
                 nama_ayah: namaAyah,
@@ -154,6 +157,7 @@ const FormMhs3 = () => {
                 penghasilan_ibu: pndptIbu,
                 pendidikan_ibu: pndknIbu
             }).then(function (response) {
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -162,6 +166,7 @@ const FormMhs3 = () => {
                 });
             })
         } catch (error) {
+            setLoading(false)
             if (error.response) {
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
@@ -187,7 +192,6 @@ const FormMhs3 = () => {
                     axios.delete(
                         `v1/mahasiswa/delete/${mhsId}`
                     ).then((response) => {
-                        console.log(response.data)
                         Swal.fire({
                             title: "Dibatalkan",
                             text: response.data.message,
@@ -206,6 +210,11 @@ const FormMhs3 = () => {
 
     return (
         <div className='container mt-2'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Detail Orang Tua {namanya && <span>Ananda <span className='capitalize'>{namanya}</span></span>}</h1>
             </section>

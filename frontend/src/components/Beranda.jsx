@@ -13,7 +13,8 @@ import {
 } from 'chart.js'
 import { Bar } from "react-chartjs-2"
 import { Line } from "react-chartjs-2"
-import SyncLoader from "react-spinners/SyncLoader"
+import Loading from './Loading'
+
 
 const Beranda = () => {
     const [putera, setPutera] = useState("")
@@ -138,7 +139,7 @@ const Beranda = () => {
             {loading ?
                 <div className='w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50'>
                     <div className='w-[74px] mx-auto mt-72'>
-                        <SyncLoader className='' size={20} />
+                        <Loading />
                     </div>
                 </div>
                 :
@@ -147,7 +148,7 @@ const Beranda = () => {
                         <h1 className='text-2xl font-bold'>Dashboard</h1>
                     </section>
                     <section>
-                        <div className="grid grid-cols-4 gap-4 mb-4">
+                        <div className="grid lg:grid-cols-4 gap-4 mb-4">
                             <div className='w-full h-28 border-l-4 border-l-[#60B033] bg-base-100 drop-shadow-xl rounded-md px-4 py-3 grid grid-cols-3'>
                                 <div className='col-span-2 my-auto'>
                                     <h1 className='text-md text-[#60B033]'>Mahasiswa Putera</h1>
@@ -185,7 +186,7 @@ const Beranda = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid lg:grid-cols-2 gap-4">
                             <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
                                 <div className='pl-4 pt-2 pb-2 border-b-2 bg-slate-100 rounded-e-md'>
                                     <span className='my-auto font-semibold text-slate-500'>Mahasiswa</span>

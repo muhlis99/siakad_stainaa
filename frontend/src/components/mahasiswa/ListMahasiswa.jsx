@@ -5,6 +5,7 @@ import { SlOptions } from "react-icons/sl"
 import axios from 'axios'
 import ReactPaginate from "react-paginate"
 import Swal from "sweetalert2"
+import Loading from '../Loading'
 
 const ListMahasiswa = () => {
     const [Mahasiswa, setMahasiswa] = useState([])
@@ -19,6 +20,14 @@ const ListMahasiswa = () => {
     const [msg, setMsg] = useState("")
     const [idMhs, setIdMhs] = useState("")
     const [stat, setStat] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500);
+    }, [])
 
     useEffect(() => {
         getMahasiwa()
@@ -89,6 +98,7 @@ const ListMahasiswa = () => {
     }
 
     const tbMhs = async () => {
+        setLoading(true)
         const response = await axios.post('v1/mahasiswa/createFirst')
         setIdMhs(response.data.data)
         setStat("add")
@@ -110,7 +120,6 @@ const ListMahasiswa = () => {
     //                 axios.put(
     //                     `v1/mahasiswa/nonAktif/${mhsId}`
     //                 ).then((response) => {
-    //                     console.log(response.data)
     //                     Swal.fire({
     //                         title: "Terhapus",
     //                         text: response.data.message,
@@ -130,6 +139,11 @@ const ListMahasiswa = () => {
     return (
         <div className='mt-2 container'>
             {idMhs && <Navigate to={`form1/${stat}/${idMhs}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} />}
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Mahasiswa</h1>
             </section>
