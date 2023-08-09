@@ -53,12 +53,12 @@ const DetailNilai = () => {
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Penilaian Mahasiswa</h1>
+                <h1 className='text-2xl font-bold'>Penilaian Mahasiswa</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <div className="grid grid-cols-2 gap-3 mb-2 bg-base-200 p-3 rounded-md">
+                        <div className="grid grid-cols-2 gap-3 mb-2 p-3 rounded-md">
                             <div className='flex gap-2'>
                                 <div className='flex-initial w-36'>
                                     <label>
@@ -133,8 +133,8 @@ const DetailNilai = () => {
                         <div className="grid">
                             <div className='mb-2'>
                                 <div className='float-right flex gap-2'>
-                                    <Link to="/penilaian" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error'><FaReply />kembali</Link>
-                                    {juml == 0 ? <Link to="/inputnilai" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-primary'><FaFileSignature />input nilai</Link> : <Link to="/updatenilai" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-primary'><FaEdit />edit nilai</Link>}
+                                    <Link to="/penilaian" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply />kembali</Link>
+                                    {juml == 0 ? <Link to="/inputnilai" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-primary capitalize rounded-md'><FaFileSignature />input nilai</Link> : <Link to="/updatenilai" state={{ thn: kodeTahun, smt: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-primary capitalize rounded-md'><FaEdit />edit nilai</Link>}
                                 </div>
                             </div>
                             <div className="overflow-x-auto mb-2">

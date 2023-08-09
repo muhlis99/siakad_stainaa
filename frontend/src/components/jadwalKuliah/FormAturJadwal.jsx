@@ -164,8 +164,7 @@ const FormAturJadwal = () => {
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Jadwal Kuliah</h1>
-                {pesan}
+                <h1 className='text-2xl font-bold'>Jadwal Kuliah</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-3">
@@ -174,38 +173,38 @@ const FormAturJadwal = () => {
                             <div className="grid grid-cols-2 gap-x-4">
                                 <div className="col-span-2 mb-3 border-b-2 pb-3 border-b-[#2D7F5F]">
                                     <div className="float-right flex gap-1">
-                                        <Link to='/detailjadwal' state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-error'><FaReply />Kembali</Link>
-                                        {pesan == 'Data jadwal Kuliah Ditemukan' ? <button className='btn btn-sm btn-primary'><FaEdit /><span>Update</span></button> : <button className='btn btn-sm btn-primary'><FaSave /><span>Simpan</span></button>}
+                                        <Link to='/detailjadwal' state={{ thn: location.state.thn, sem: location.state.sem, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, mak: location.state.mak, kls: location.state.kls, idn: location.state.idn, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-sm btn-error rounded-md capitalize'><FaReply />Kembali</Link>
+                                        {pesan == 'Data jadwal Kuliah Ditemukan' ? <button className='btn btn-sm btn-primary capitalize rounded-md'><FaEdit /><span>Update</span></button> : <button className='btn btn-sm btn-primary rounded-md capitalize'><FaSave /><span>Simpan</span></button>}
                                     </div>
                                 </div>
                                 <div className='grid gap-2'>
                                     <div>
                                         <label>
-                                            <span className="">Tahun Ajaran</span>
+                                            <span className="font-semibold">Tahun Ajaran</span>
                                         </label>
                                         <input type="text" disabled className="input input-bordered input-sm w-full max-w-xs float-right" value={tahun} />
                                     </div>
                                     <div>
                                         <label>
-                                            <span className="">Fakultas</span>
+                                            <span className="font-semibold">Fakultas</span>
                                         </label>
                                         <input type="text" disabled className="input input-bordered input-sm w-full max-w-xs float-right" value={fakultas} />
                                     </div>
                                     <div>
                                         <label>
-                                            <span className="">Program Studi</span>
+                                            <span className="font-semibold">Program Studi</span>
                                         </label>
                                         <input type="text" disabled className="input input-bordered input-sm w-full max-w-xs float-right" value={prodi} />
                                     </div>
                                     <div>
                                         <label>
-                                            <span className="">Mata Kuliah</span>
+                                            <span className="font-semibold">Mata Kuliah</span>
                                         </label>
                                         <input type="text" disabled className="input input-bordered input-sm w-full max-w-xs float-right" value={makul} />
                                     </div>
                                     <div>
                                         <label>
-                                            <span className="">Semester</span>
+                                            <span className="font-semibold">Semester</span>
                                         </label>
                                         <input type="text" disabled className="input input-bordered input-sm w-full max-w-xs float-right" value={semester} />
                                     </div>
@@ -213,31 +212,31 @@ const FormAturJadwal = () => {
                                 <div className='grid gap-2'>
                                     <div>
                                         <label>
-                                            <span className="">Kelas</span>
+                                            <span className="font-semibold">Kelas</span>
                                         </label>
                                         <input type="text" disabled className="input input-bordered input-sm w-full max-w-xs float-right" value={kelas} />
                                     </div>
                                     <div>
                                         <label>
-                                            <span className="">Kapasitas</span>
+                                            <span className="font-semibold">Kapasitas</span>
                                         </label>
                                         <input type="text" disabled className="input input-bordered input-sm w-full max-w-xs float-right" value={kapasitas} />
                                     </div>
                                     <div>
                                         <label>
-                                            <span className="">Tanggal Mulai</span>
+                                            <span className="font-semibold">Tanggal Mulai</span>
                                         </label>
                                         <input type="date" className="input input-bordered input-sm w-full max-w-xs float-right" value={tglMulai} onChange={(e) => setTglMulai(e.target.value)} />
                                     </div>
                                     <div>
                                         <label>
-                                            <span className="">Tanggal Selesai</span>
+                                            <span className="font-semibold">Tanggal Selesai</span>
                                         </label>
                                         <input type="date" className="input input-bordered input-sm w-full max-w-xs float-right" value={tglSelesai} onChange={(e) => setTglSelesai(e.target.value)} />
                                     </div>
                                     <div>
                                         <label>
-                                            <span className="">Jumlah Pertemuan</span>
+                                            <span className="font-semibold">Jumlah Pertemuan</span>
                                         </label>
                                         <input type="number" className="input input-bordered input-sm w-full max-w-xs float-right" value={jumPertemuan} onChange={(e) => setJumPertemuan(e.target.value)} />
                                     </div>
@@ -252,7 +251,7 @@ const FormAturJadwal = () => {
                                 <div className='grid gap-2'>
                                     <div>
                                         <label>
-                                            <span className="">Hari</span>
+                                            <span className="font-semibold">Hari</span>
                                         </label>
                                         <select className="select select-sm select-bordered w-full max-w-xs float-right" value={hari} onChange={(e) => setHari(e.target.value)}>
                                             <option value="">Hari</option>
@@ -261,19 +260,19 @@ const FormAturJadwal = () => {
                                     </div>
                                     <div>
                                         <label>
-                                            <span className="">Jam Mulai</span>
+                                            <span className="font-semibold">Jam Mulai</span>
                                         </label>
                                         <input type="time" className="input input-bordered input-sm w-full max-w-xs float-right" value={jamMulai} onChange={(e) => setJamMulai(e.target.value)} />
                                     </div>
                                     <div>
                                         <label>
-                                            <span className="">Jam Selesai</span>
+                                            <span className="font-semibold">Jam Selesai</span>
                                         </label>
                                         <input type="time" className="input input-bordered input-sm w-full max-w-xs float-right" value={jamSelesai} onChange={(e) => setJamSelesai(e.target.value)} />
                                     </div>
                                     <div>
                                         <label>
-                                            <span className="">Ruang</span>
+                                            <span className="font-semibold">Ruang</span>
                                         </label>
                                         <select className="select select-sm select-bordered w-full max-w-xs float-right" value={kodeRuang} onChange={(e) => setKodeRuang(e.target.value)}>
                                             <option value="">Ruang</option>

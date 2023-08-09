@@ -62,13 +62,13 @@ const Login = () => {
                                 <div className="input-group">
                                     <input
                                         type="text"
-                                        className='border border-[#2d8659] py-2 px-2 w-full rounded-xl'
+                                        className='input input-sm border border-[#2d8659] py-2 px-2 w-full rounded-xl'
                                         value={name}
                                         onChange={(e) => setUsername(e.target.value)}
                                         placeholder='Username Anda'
                                     />
-                                    <span className='w-12 bg-success text-white'>
-                                        {<FaUserCircle />}
+                                    <span className='w-9 p-0 bg-success text-white'>
+                                        {<FaUserCircle className='mx-auto' />}
                                     </span>
                                 </div>
                             </div>
@@ -76,12 +76,12 @@ const Login = () => {
                                 <div className="input-group">
                                     <input
                                         type={!isVisible ? "password" : "text"}
-                                        className='border border-[#2d8659] py-2 px-2 w-full rounded-xl'
+                                        className='input input-sm border border-[#2d8659] py-2 px-2 w-full rounded-xl'
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder='Password Anda'
                                     />
-                                    <button type='button' class="btn btn-square btn-success" onClick={toggle}>
+                                    <button type='button' class="btn btn-sm btn-square btn-success" onClick={toggle}>
                                         {isVisible ? <FaEyeSlash /> : <FaEye />}
                                     </button>
                                 </div>

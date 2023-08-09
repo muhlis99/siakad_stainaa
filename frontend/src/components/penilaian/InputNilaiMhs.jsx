@@ -217,13 +217,13 @@ const InputNilaiMhs = () => {
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-xl font-bold'>Penilaian Mahasiswa</h1>
+                <h1 className='text-2xl font-bold'>Penilaian Mahasiswa</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md">
                     <div className="card-body p-4">
                         <form onSubmit={simpanNilai}>
-                            <div className="grid grid-cols-2 gap-3 mb-5 bg-base-200 p-3 rounded-md">
+                            <div className="grid grid-cols-2 gap-3 mb-5 p-3 rounded-md">
                                 <div className='flex gap-2'>
                                     <div className='flex-initial w-36'>
                                         <label>
@@ -298,8 +298,8 @@ const InputNilaiMhs = () => {
                             <div className="grid">
                                 <div className='mb-2'>
                                     <div className='float-right flex gap-2'>
-                                        <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error'><FaReply /> Kembali</Link>
-                                        {jmlMhs == null ? "" : <button className='btn btn-sm btn-primary'><FaSave /> simpan</button>}
+                                        <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> Kembali</Link>
+                                        {jmlMhs == null ? "" : <button className='btn btn-sm btn-primary capitalize rounded-md'><FaSave /> simpan</button>}
                                     </div>
                                 </div>
                                 <div className="overflow-x-auto mb-2">
