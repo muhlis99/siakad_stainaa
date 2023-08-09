@@ -5,6 +5,7 @@ import { store } from './app/store';
 import App from './App';
 import axios from "axios";
 
+// axios.defaults.baseURL = "https://api-siakad.stainaa.ac.id/";
 axios.defaults.baseURL = "http://localhost:4001/";
 axios.defaults.withCredentials = true;
 

@@ -81,7 +81,7 @@ const Login = () => {
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder='Password Anda'
                                     />
-                                    <button type='button' class="btn btn-sm btn-square btn-success" onClick={toggle}>
+                                    <button type='button' className="btn btn-sm btn-square btn-success" onClick={toggle}>
                                         {isVisible ? <FaEyeSlash /> : <FaEye />}
                                     </button>
                                 </div>

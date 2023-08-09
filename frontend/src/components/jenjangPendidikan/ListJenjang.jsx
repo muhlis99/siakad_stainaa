@@ -1,22 +1,31 @@
 import React, { useState, useEffect } from 'react'
-import axios from "axios";
-import { FaTimes, FaSearch, FaTrash, FaArrowLeft, FaArrowRight, FaPlus, FaEdit, FaSave } from "react-icons/fa";
-import { SlOptions } from "react-icons/sl";
-import ReactPaginate from "react-paginate";
-import Swal from "sweetalert2";
+import axios from "axios"
+import { FaTimes, FaSearch, FaTrash, FaArrowLeft, FaArrowRight, FaPlus, FaEdit, FaSave } from "react-icons/fa"
+import { SlOptions } from "react-icons/sl"
+import ReactPaginate from "react-paginate"
+import Swal from "sweetalert2"
+import SyncLoader from "react-spinners/SyncLoader"
 
 const ListJenjang = () => {
-    const [Jenjang, setJenjang] = useState([]);
-    const [page, setPage] = useState(0);
-    const [perPage, setperPage] = useState(0);
-    const [pages, setPages] = useState(0);
-    const [rows, setrows] = useState(0);
-    const [keyword, setKeyword] = useState("");
-    const [query, setQuery] = useState("");
-    const [msg, setMsg] = useState("");
-    const [nama, setNama] = useState("");
-    const [errors, setError] = useState("");
-    const [id, setId] = useState("");
+    const [Jenjang, setJenjang] = useState([])
+    const [page, setPage] = useState(0)
+    const [perPage, setperPage] = useState(0)
+    const [pages, setPages] = useState(0)
+    const [rows, setrows] = useState(0)
+    const [keyword, setKeyword] = useState("")
+    const [query, setQuery] = useState("")
+    const [msg, setMsg] = useState("")
+    const [nama, setNama] = useState("")
+    const [errors, setError] = useState("")
+    const [id, setId] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500);
+    }, [])
 
     useEffect(() => {
         getJenjang()
@@ -54,32 +63,34 @@ const ListJenjang = () => {
     const simpanJenjang = async (e) => {
         e.preventDefault()
         try {
-            if (nama.length == 0) {
-                setError(true)
-            } else {
-                document.getElementById('my-modal-add').checked = false;
-                await axios.post(
-                    'v1/jenjangPendidikan/create', {
-                    nama_jenjang_pendidikan: nama
-                }).then(function (response) {
-                    Swal.fire({
-                        title: "Berhasil",
-                        text: response.data.message,
-                        icon: "success"
-                    }).then(() => {
-                        getJenjang()
-                        setNama("")
-                    });
-                })
-
-            }
+            setLoading(true)
+            document.getElementById('my-modal-add').checked = false;
+            await axios.post(
+                'v1/jenjangPendidikan/create', {
+                nama_jenjang_pendidikan: nama
+            }).then(function (response) {
+                setLoading(false)
+                Swal.fire({
+                    title: "Berhasil",
+                    text: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getJenjang()
+                    setNama("")
+                });
+            })
         } catch (error) {
             if (error.response.data.message) {
+                setLoading(false)
                 Swal.fire({
                     title: error.response.data.message,
                     icon: "error"
+                }).then(() => {
+                    getJenjang()
+                    setNama("")
                 })
             } else {
+                setLoading(false)
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
                     icon: "error"
@@ -119,11 +130,13 @@ const ListJenjang = () => {
             if (nama.length == 0) {
                 setError(true)
             } else {
+                setLoading(true)
                 document.getElementById('my-modal-edit').checked = false;
                 await axios.put(
                     `v1/jenjangPendidikan/update/${id}`, {
                     nama_jenjang_pendidikan: nama
                 }).then(function (response) {
+                    setLoading(false)
                     Swal.fire({
                         title: "Berhasil",
                         text: response.data.message,
@@ -137,11 +150,16 @@ const ListJenjang = () => {
             }
         } catch (error) {
             if (error.response.data.message) {
+                setLoading(false)
                 Swal.fire({
                     title: error.response.data.message,
                     icon: "error"
+                }).then(() => {
+                    getJenjang()
+                    setNama("")
                 })
             } else {
+                setLoading(false)
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
                     icon: "error"
@@ -164,10 +182,11 @@ const ListJenjang = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 try {
+                    setLoading(true)
                     axios.put(
                         `v1/jenjangPendidikan/deleteStatus/${jenjangId}`
                     ).then((response) => {
-                        console.log(response.data)
+                        setLoading(false)
                         Swal.fire({
                             title: "Terhapus",
                             text: response.data.message,
@@ -231,7 +250,7 @@ const ListJenjang = () => {
             <input type="checkbox" id="my-modal-edit" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box grid p-0 rounded-md">
-                    <form onSubmit={simpanJenjang}>
+                    <form onSubmit={updateJenjang}>
                         <div className='bg-base-200 border-b-2 p-3'>
                             <h3 className="font-bold text-xl mb-1">Edit</h3>
                             <button type='button' className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalEditClose}><FaTimes /></button>
@@ -265,6 +284,12 @@ const ListJenjang = () => {
                             <button type='submit' className="btn btn-sm btn-primary capitalize"><FaEdit />edit</button>
                         </div>
                     </form>
+                </div>
+            </div>
+
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <SyncLoader className='' size={20} />
                 </div>
             </div>
 

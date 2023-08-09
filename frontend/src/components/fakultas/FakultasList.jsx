@@ -4,6 +4,7 @@ import { SlOptions } from "react-icons/sl";
 import axios from 'axios';
 import ReactPaginate from "react-paginate";
 import Swal from "sweetalert2";
+import SyncLoader from "react-spinners/SyncLoader"
 
 const FakultasList = () => {
     const [Fakultas, setFakultas] = useState([]);
@@ -20,6 +21,14 @@ const FakultasList = () => {
     const [namaFak, setNamaFak] = useState("");
     const [errors, setError] = useState("");
     const [id, setId] = useState("");
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500);
+    }, [])
 
     useEffect(() => {
         getFakultas()
@@ -76,35 +85,39 @@ const FakultasList = () => {
     const simpanFakultas = async (e) => {
         e.preventDefault()
         try {
-            if (kodeJenjang.length == 0 || kodeDikti.length == 0 || namaFak.length == 0) {
-                setError(true)
-            } else {
-                document.getElementById('my-modal-add').checked = false;
-                await axios.post('v1/fakultas/create', {
-                    code_jenjang_pendidikan: kodeJenjang,
-                    code_dikti_fakultas: kodeDikti,
-                    nama_fakultas: namaFak
-                }).then(function (response) {
-                    Swal.fire({
-                        title: "Berhasil",
-                        text: response.data.message,
-                        icon: "success"
-                    }).then(() => {
-                        getFakultas()
-                        setNamaFak("")
-                        setKodeDikti("")
-                        setKodeJenjang("")
-                    });
-                })
-            }
-
+            setLoading(true)
+            document.getElementById('my-modal-add').checked = false;
+            await axios.post('v1/fakultas/create', {
+                code_jenjang_pendidikan: kodeJenjang,
+                code_dikti_fakultas: kodeDikti,
+                nama_fakultas: namaFak
+            }).then(function (response) {
+                setLoading(false)
+                Swal.fire({
+                    title: "Berhasil",
+                    text: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getFakultas()
+                    setNamaFak("")
+                    setKodeDikti("")
+                    setKodeJenjang("")
+                });
+            })
         } catch (error) {
             if (error.response.data.message) {
+                setLoading(false)
                 Swal.fire({
                     title: error.response.data.message,
                     icon: "error"
+                }).then(() => {
+                    getFakultas()
+                    setNamaFak("")
+                    setKodeDikti("")
+                    setKodeJenjang("")
                 })
             } else {
+                setLoading(false)
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
                     icon: "error"
@@ -138,36 +151,42 @@ const FakultasList = () => {
     const updateFakultas = async (e) => {
         e.preventDefault()
         try {
-            if (kodeJenjang.length == 0 || kodeDikti.length == 0 || namaFak.length == 0) {
-                setError(true)
-            } else {
-                document.getElementById('my-modal-edit').checked = false;
-                await axios.put(
-                    `v1/fakultas/update/${id}`, {
-                    code_jenjang_pendidikan: kodeJenjang,
-                    code_dikti_fakultas: kodeDikti,
-                    nama_fakultas: namaFak
-                }).then(function (response) {
-                    Swal.fire({
-                        title: "Berhasil",
-                        text: response.data.message,
-                        icon: "success"
-                    }).then(() => {
-                        getFakultas()
-                        setNamaFak("")
-                        setKodeDikti("")
-                        setKodeJenjang("")
-                        setId("")
-                    });
-                })
-            }
+            setLoading(true)
+            document.getElementById('my-modal-edit').checked = false;
+            await axios.put(
+                `v1/fakultas/update/${id}`, {
+                code_jenjang_pendidikan: kodeJenjang,
+                code_dikti_fakultas: kodeDikti,
+                nama_fakultas: namaFak
+            }).then(function (response) {
+                setLoading(false)
+                Swal.fire({
+                    title: "Berhasil",
+                    text: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getFakultas()
+                    setNamaFak("")
+                    setKodeDikti("")
+                    setKodeJenjang("")
+                    setId("")
+                });
+            })
         } catch (error) {
             if (error.response.data.message) {
+                setLoading(false)
                 Swal.fire({
                     title: error.response.data.message,
                     icon: "error"
+                }).then(() => {
+                    getFakultas()
+                    setNamaFak("")
+                    setKodeDikti("")
+                    setKodeJenjang("")
+                    setId("")
                 })
             } else {
+                setLoading(false)
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
                     icon: "error"
@@ -190,10 +209,11 @@ const FakultasList = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 try {
+                    setLoading(true)
                     axios.put(
                         `v1/fakultas/deleteStatus/${jenjangId}`
                     ).then((response) => {
-                        console.log(response.data)
+                        setLoading(false)
                         Swal.fire({
                             title: "Terhapus",
                             text: response.data.message,
@@ -202,7 +222,6 @@ const FakultasList = () => {
                             getFakultas()
                         });
                     })
-
                 } catch (error) {
 
                 }
@@ -363,6 +382,12 @@ const FakultasList = () => {
                             <button type='submit' className="btn btn-sm btn-primary capitalize"><FaEdit />Edit</button>
                         </div>
                     </form>
+                </div>
+            </div>
+
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <SyncLoader className='' size={20} />
                 </div>
             </div>
 

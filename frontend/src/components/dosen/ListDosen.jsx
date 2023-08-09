@@ -5,6 +5,7 @@ import { Link, Navigate } from "react-router-dom"
 import ReactPaginate from "react-paginate"
 import axios from 'axios'
 import Swal from "sweetalert2"
+import SyncLoader from "react-spinners/SyncLoader"
 
 const ListDosen = () => {
     const [Dosen, setDosen] = useState([])
@@ -19,6 +20,14 @@ const ListDosen = () => {
     const [msg, setMsg] = useState("")
     const [idDsn, setIdDsn] = useState("")
     const [stat, setStat] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500);
+    }, [])
 
     useEffect(() => {
         getDosen()
@@ -130,6 +139,11 @@ const ListDosen = () => {
     return (
         <div className='mt-2 container'>
             {idDsn && <Navigate to={`form1/${stat}/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen' }} />}
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <SyncLoader className='' size={20} />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Dosen</h1>
             </section>

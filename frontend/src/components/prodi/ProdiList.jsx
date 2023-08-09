@@ -4,6 +4,7 @@ import { SlOptions } from "react-icons/sl";
 import axios from 'axios';
 import ReactPaginate from "react-paginate";
 import Swal from "sweetalert2";
+import SyncLoader from "react-spinners/SyncLoader"
 
 const ProdiList = () => {
     const [Prodi, setProdi] = useState([]);
@@ -22,6 +23,14 @@ const ProdiList = () => {
     const [kodeDikti, setKodeDikti] = useState("");
     const [namaProdi, setNamaProdi] = useState("");
     const [id, setId] = useState("");
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500);
+    }, [])
 
     useEffect(() => {
         getProdi()
@@ -29,7 +38,7 @@ const ProdiList = () => {
 
     useEffect(() => {
         getJenjang()
-    });
+    }, []);
 
     useEffect(() => {
         getFakultasByJenjang()
@@ -79,35 +88,41 @@ const ProdiList = () => {
     const simpanProdi = async (e) => {
         e.preventDefault()
         try {
-            if (kodeJenj.length == 0 || kodeFaks.length == 0 || kodeDikti.length == 0 || namaProdi.length == 0) {
-                setError(true)
-            } else {
-                document.getElementById('my-modal-add').checked = false;
-                await axios.post('v1/prodi/create', {
-                    code_jenjang_pendidikan: kodeJenj,
-                    code_fakultas: kodeFaks,
-                    code_dikti_prodi: kodeDikti,
-                    nama_prodi: namaProdi
-                }).then(function (response) {
-                    Swal.fire({
-                        title: "Berhasil",
-                        text: response.data.message,
-                        icon: "success"
-                    }).then(() => {
-                        getProdi()
-                        setKodeJenj("")
-                        setKodeFaks("")
-                        setKodeDikti("")
-                        setNamaProdi("")
-                        setError(false)
-                    });
-                })
-            }
+            setLoading(true)
+            document.getElementById('my-modal-add').checked = false;
+            await axios.post('v1/prodi/create', {
+                code_jenjang_pendidikan: kodeJenj,
+                code_fakultas: kodeFaks,
+                code_dikti_prodi: kodeDikti,
+                nama_prodi: namaProdi
+            }).then(function (response) {
+                setLoading(false)
+                Swal.fire({
+                    title: "Berhasil",
+                    text: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getProdi()
+                    setKodeJenj("")
+                    setKodeFaks("")
+                    setKodeDikti("")
+                    setNamaProdi("")
+                    setError(false)
+                });
+            })
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
                     icon: "error"
+                }).then(() => {
+                    getProdi()
+                    setKodeJenj("")
+                    setKodeFaks("")
+                    setKodeDikti("")
+                    setNamaProdi("")
+                    setError(false)
                 })
             } else {
                 Swal.fire({
@@ -155,36 +170,43 @@ const ProdiList = () => {
     const updateProdi = async (e) => {
         e.preventDefault()
         try {
-            if (kodeJenj.length == 0 || kodeFaks.length == 0 || kodeDikti.length == 0 || namaProdi.length == 0) {
-                setError(true)
-            } else {
-                document.getElementById('my-modal-edit').checked = false;
-                await axios.put(`v1/prodi/update/${id}`, {
-                    code_jenjang_pendidikan: kodeJenj,
-                    code_fakultas: kodeFaks,
-                    code_dikti_prodi: kodeDikti,
-                    nama_prodi: namaProdi
-                }).then(function (response) {
-                    Swal.fire({
-                        title: "Berhasil",
-                        text: response.data.message,
-                        icon: "success"
-                    }).then(() => {
-                        getProdi()
-                        setKodeJenj("")
-                        setKodeFaks("")
-                        setKodeDikti("")
-                        setNamaProdi("")
-                        setId("")
-                        setError(false)
-                    });
-                })
-            }
+            setLoading(true)
+            document.getElementById('my-modal-edit').checked = false;
+            await axios.put(`v1/prodi/update/${id}`, {
+                code_jenjang_pendidikan: kodeJenj,
+                code_fakultas: kodeFaks,
+                code_dikti_prodi: kodeDikti,
+                nama_prodi: namaProdi
+            }).then(function (response) {
+                setLoading(false)
+                Swal.fire({
+                    title: "Berhasil",
+                    text: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getProdi()
+                    setKodeJenj("")
+                    setKodeFaks("")
+                    setKodeDikti("")
+                    setNamaProdi("")
+                    setId("")
+                    setError(false)
+                });
+            })
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
                     icon: "error"
+                }).then(() => {
+                    getProdi()
+                    setKodeJenj("")
+                    setKodeFaks("")
+                    setKodeDikti("")
+                    setNamaProdi("")
+                    setId("")
+                    setError(false)
                 })
             } else {
                 Swal.fire({
@@ -226,6 +248,7 @@ const ProdiList = () => {
                 }
             }
         })
+
     }
 
     return (
@@ -419,6 +442,13 @@ const ProdiList = () => {
                     </form>
                 </div>
             </div>
+
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <SyncLoader className='' size={20} />
+                </div>
+            </div>
+
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Prodi</h1>
             </section>

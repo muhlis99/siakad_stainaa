@@ -3,6 +3,7 @@ import { FaTimes, FaReply, FaArrowLeft, FaCheck } from "react-icons/fa"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import Swal from "sweetalert2"
+import SyncLoader from "react-spinners/SyncLoader"
 
 const FormDosen2 = () => {
     const [Negara, setNegara] = useState([])
@@ -26,6 +27,7 @@ const FormDosen2 = () => {
     const navigate = useNavigate()
     const { idDsn } = useParams()
     const { stat } = useParams()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const getDosenById = async () => {
@@ -133,6 +135,7 @@ const FormDosen2 = () => {
     const simpanDsn = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await axios.put(`v1/dosen/createForm2/${idDsn}`, {
                 alamat_lengkap: alamat,
                 desa: desanya,
@@ -145,6 +148,7 @@ const FormDosen2 = () => {
                 pendidikan_terakhir: pndkn,
                 status_kepegawaian: statusPg
             }).then(function (response) {
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -197,6 +201,11 @@ const FormDosen2 = () => {
 
     return (
         <div className='mt-2 container'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <SyncLoader className='' size={20} />
+                </div>
+            </div>
             <section className="mb-5">
                 <h1 className='text-2xl font-bold'>Detail Alamat {namanya && <span>Dari <span className='capitalize'>{namanya}</span></span>}</h1>
             </section>
