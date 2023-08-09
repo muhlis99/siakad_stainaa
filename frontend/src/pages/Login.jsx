@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { LoginUser, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
 import { FaEyeSlash, FaEye, FaUserCircle } from "react-icons/fa"
+import Loading from '../components/Loading'
 
 const Login = () => {
     const [name, setUsername] = useState("")
@@ -14,9 +15,17 @@ const Login = () => {
     const navigate = useNavigate()
     const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
     const [isVisible, setVisible] = useState(false)
-
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500)
+    }, [])
+
+    useEffect(() => {
+        setLoading(false)
         if (user || isSuccess) {
             if (user.message == "selamat datang") {
                 navigate("/dashboard")
@@ -40,6 +49,7 @@ const Login = () => {
 
     const Auth = (e) => {
         e.preventDefault()
+        setLoading(true)
         dispatch(LoginUser({ name, password }))
     }
 
@@ -52,6 +62,11 @@ const Login = () => {
         <div className="min-h-screen py-24">
             <title>Login</title>
             <div className="container mx-auto">
+                <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                    <div className='w-[74px] mx-auto mt-72'>
+                        <Loading />
+                    </div>
+                </div>
                 <div className="flex flex-col lg:flex-row w-3/5 mx-auto overflow-hidden">
                     <div className="w-full lg:w-1/2 flex flex-col bg-no-repeat bg-50% bg-center" style={{ backgroundImage: `url(${stainaa})` }}></div>
                     <div className="w-full lg:w-1/2 py-16 px-12">

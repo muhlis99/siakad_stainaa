@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { FaEdit, FaReply, FaSave } from 'react-icons/fa'
+import Loading from '../Loading'
 
 const UpdateNilaiMhs = () => {
     const [Mahasiswa, setMahasiswa] = useState([])
@@ -27,6 +28,7 @@ const UpdateNilaiMhs = () => {
     const [absen, setAbsen] = useState([])
     const location = useLocation()
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     const min = 0
     const max = 100
@@ -175,6 +177,7 @@ const UpdateNilaiMhs = () => {
     const simpanNilai = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await axios.put('v1/nilaiKuliah/update',
                 Mahasiswa.map((item, index) => ({
                     id_nilai_kuliah: item.id_nilai_kuliah,
@@ -187,7 +190,7 @@ const UpdateNilaiMhs = () => {
                     nilai_akhir: nilaiAkhir[index]
                 }))
             ).then(function (response) {
-                // console.log(response)
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -196,6 +199,7 @@ const UpdateNilaiMhs = () => {
                 });
             })
         } catch (error) {
+            setLoading(false)
             if (error.response) {
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
@@ -207,6 +211,11 @@ const UpdateNilaiMhs = () => {
 
     return (
         <div className='mt-2 container'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Penilaian Mahasiswa</h1>
             </section>

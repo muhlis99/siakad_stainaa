@@ -3,6 +3,7 @@ import { FaAngleDown, FaEdit, FaReply, FaSave } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 import { Link, useParams, useNavigate, useLocation } from "react-router-dom"
 import axios from 'axios'
+import Loading from '../Loading'
 
 const FormAturJadwal = () => {
     const [Ruang, setRuang] = useState([])
@@ -24,6 +25,7 @@ const FormAturJadwal = () => {
     const [pesan, setPesan] = useState("")
     const navigate = useNavigate()
     const location = useLocation()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         getDataRuang()
@@ -82,6 +84,7 @@ const FormAturJadwal = () => {
     const simpanJadwal = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await axios.post('v1/jadwalKuliah/create', {
                 code_mata_kuliah: location.state.mak,
                 code_jenjang_pendidikan: location.state.jen,
@@ -98,6 +101,7 @@ const FormAturJadwal = () => {
                 jam_mulai: jamMulai,
                 jam_selesai: jamSelesai
             }).then(function (response) {
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -106,6 +110,7 @@ const FormAturJadwal = () => {
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -123,6 +128,7 @@ const FormAturJadwal = () => {
     const updateJadwal = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await axios.put(`v1/jadwalKuliah/update/${idJadwal}`, {
                 code_mata_kuliah: location.state.mak,
                 code_jenjang_pendidikan: location.state.jen,
@@ -139,6 +145,7 @@ const FormAturJadwal = () => {
                 jam_mulai: jamMulai,
                 jam_selesai: jamSelesai
             }).then(function (response) {
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -147,6 +154,7 @@ const FormAturJadwal = () => {
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -163,6 +171,11 @@ const FormAturJadwal = () => {
 
     return (
         <div className='mt-2 container'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Jadwal Kuliah</h1>
             </section>

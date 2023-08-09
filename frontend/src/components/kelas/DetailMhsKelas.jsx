@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { FaCog, FaReply, FaSave, FaTimes } from 'react-icons/fa'
+import Loading from '../Loading'
 
 const DetailMhsKelas = () => {
     const [Detail, setDetail] = useState([])
@@ -16,6 +17,7 @@ const DetailMhsKelas = () => {
     const [kodeKelas, setKodeKelas] = useState("")
     const { kodeKls } = useParams()
     const [checked, setChecked] = useState([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         getMhsPerKls()
@@ -68,11 +70,13 @@ const DetailMhsKelas = () => {
                     icon: "error"
                 })
             } else {
+                document.getElementById('my-modal').checked = false
+                setLoading(true)
                 await axios.put('v1/kelasKuliah/pindahKelas', {
                     id: checked,
                     code_kelas: kodeKelas,
                 }).then(function (response) {
-                    document.getElementById('my-modal').checked = false
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -135,6 +139,11 @@ const DetailMhsKelas = () => {
                         </div>
                     </form>
                 </div> */}
+            </div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
             </div>
             <section className='mb-5'>
                 <h1 className='text-xl font-bold'>Detail Kelas Kuliah</h1>

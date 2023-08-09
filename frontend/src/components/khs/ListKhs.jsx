@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useLocation } from "react-router-dom"
 import { FaSearch } from 'react-icons/fa'
+import Loading from '../Loading'
 
 const ListKhs = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -16,6 +17,14 @@ const ListKhs = () => {
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
     const location = useLocation()
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500)
+    }, [])
 
     useEffect(() => {
         if (location.state != null) {
@@ -88,6 +97,11 @@ const ListKhs = () => {
 
     return (
         <div className='mt-2 container'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Kartu Hasil Studi</h1>
             </section>

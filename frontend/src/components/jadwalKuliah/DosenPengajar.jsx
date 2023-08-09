@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import Select from "react-select"
+import Loading from '../Loading'
 
 const DosenPengajar = () => {
     const [Dosen, setDosen] = useState([])
@@ -30,6 +31,7 @@ const DosenPengajar = () => {
     const [nipy, setNipy] = useState("")
     const [nipyp, setNipyp] = useState("")
     const location = useLocation()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         getDataKelasById()
@@ -120,11 +122,13 @@ const DosenPengajar = () => {
                     icon: "error"
                 })
             } else {
+                document.getElementById('dsn-pengajar').checked = false
+                setLoading(true)
                 await axios.put('v1/dosenPengajar/create', {
                     dosen_pengajar: nipy,
                     id: idJadwal
                 }).then(function (response) {
-                    document.getElementById('dsn-pengajar').checked = false
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -136,6 +140,7 @@ const DosenPengajar = () => {
                 })
             }
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -159,10 +164,12 @@ const DosenPengajar = () => {
                     icon: "error"
                 })
             } else {
+                document.getElementById('dsn-pengajar').checked = false
+                setLoading(true)
                 await axios.put(`v1/dosenPengajar/update/${idJadwal}`, {
                     dosen_pengajar: nipy
                 }).then(function (response) {
-                    document.getElementById('dsn-pengajar').checked = false
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -174,6 +181,7 @@ const DosenPengajar = () => {
                 })
             }
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -238,11 +246,13 @@ const DosenPengajar = () => {
                     icon: "error"
                 })
             } else {
+                document.getElementById('dsn-pengganti').checked = false
+                setLoading(true)
                 await axios.put('v1/dosenPengajar/createPengganti', {
                     dosen_pengganti: nipyp,
                     id: idJadwal
                 }).then(function (response) {
-                    document.getElementById('dsn-pengganti').checked = false
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -254,6 +264,7 @@ const DosenPengajar = () => {
                 })
             }
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -277,10 +288,12 @@ const DosenPengajar = () => {
                     icon: "error"
                 })
             } else {
+                document.getElementById('dsn-pengganti').checked = false
+                setLoading(true)
                 await axios.put(`v1/dosenPengajar/updatePengganti/${idJadwal}`, {
                     dosen_pengganti: nipyp
                 }).then(function (response) {
-                    document.getElementById('dsn-pengganti').checked = false
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -292,6 +305,7 @@ const DosenPengajar = () => {
                 })
             }
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -367,7 +381,6 @@ const DosenPengajar = () => {
                     </form>
                 </div>
             </div>
-
             <input type="checkbox" id="dsn-pengganti" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box">
@@ -394,6 +407,11 @@ const DosenPengajar = () => {
                             <button type='submit' className="btn btn-sm btn-primary"><FaSave />simpan</button>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
                 </div>
             </div>
             <section className='mb-5'>

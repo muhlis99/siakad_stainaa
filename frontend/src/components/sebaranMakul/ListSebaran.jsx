@@ -4,6 +4,7 @@ import { FaPlus, FaEdit, FaTimes, FaSave, FaInfo, FaTrash } from 'react-icons/fa
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import Select from "react-select"
+import Loading from '../Loading'
 
 const ListSebaran = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -43,6 +44,14 @@ const ListSebaran = () => {
     const [select2, setSelect2] = useState([])
     const [isClearable, setIsClearable] = useState(true);
     const [reset, setReset] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500)
+    }, [])
 
     useEffect(() => {
         getTahunAjaran()
@@ -199,6 +208,7 @@ const ListSebaran = () => {
                     icon: 'error'
                 })
             } else {
+                setLoading(true)
                 await axios.post('v1/sebaranMataKuliah/create', {
                     id_mata_kuliah: kodeMakul,
                     code_semester: kodeSmt,
@@ -210,6 +220,7 @@ const ListSebaran = () => {
                     code_fakultas: kodeFakultas,
                     code_prodi: kodeProdi
                 }).then(function (response) {
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -294,13 +305,15 @@ const ListSebaran = () => {
     const updateSebaran = async (e) => {
         e.preventDefault()
         try {
+            document.getElementById('my-modal').checked = false
+            setLoading(true)
             await axios.put(`v1/sebaranMataKuliah/update/${id}`, {
                 code_semester: kodeSmt,
                 code_kategori_nilai: kodeNilai,
                 status_bobot_makul: statusBobot,
                 status_makul: status,
             }).then(function (response) {
-                document.getElementById('my-modal').checked = false
+                setLoading(false)
                 Swal.fire({
                     title: "Berhasil",
                     text: response.data.message,
@@ -326,10 +339,16 @@ const ListSebaran = () => {
                 })
             })
         } catch (error) {
-            if (error.response) {
+            setLoading(false)
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: "error"
+                })
+            } else {
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
-                    icon: "error"
+                    icon: 'error'
                 })
             }
         }
@@ -537,6 +556,11 @@ const ListSebaran = () => {
                                 </form>
                         }
                     </div>
+                </div>
+            </div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
                 </div>
             </div>
             <section className='mb-5'>

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { FaCheck, FaSearch, FaTimes, } from 'react-icons/fa'
 import { MdDoNotDisturb } from 'react-icons/md'
 import Swal from 'sweetalert2'
+import Loading from '../Loading'
 
 const ListKrs = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -19,6 +20,14 @@ const ListKrs = () => {
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
     const [pesan, setPesan] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500)
+    }, [])
 
     useEffect(() => {
         getTahunAjaran()
@@ -97,9 +106,11 @@ const ListKrs = () => {
 
     const paketkan = async (a, b, c, d, e) => {
         try {
+            setLoading(true)
             await axios.post(
                 `v1/krs/create/${a}/${b}/${c}/${d}/${e}`
             ).then(function (response) {
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -108,6 +119,7 @@ const ListKrs = () => {
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response) {
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
@@ -161,6 +173,11 @@ const ListKrs = () => {
                             </table>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
                 </div>
             </div>
             <section className='mb-5'>

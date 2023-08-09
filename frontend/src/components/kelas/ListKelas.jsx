@@ -3,6 +3,7 @@ import { FaPlus, FaUsers, FaHotel, FaInfo, FaTimes, FaSave, FaCouch } from "reac
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { Link, useLocation } from 'react-router-dom'
+import Loading from '../Loading'
 
 const ListKelas = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -31,6 +32,14 @@ const ListKelas = () => {
     const [statusKelp, setStatusKelp] = useState("")
     const [klsSelanjutnya, setKlsSelanjutnya] = useState("")
     const location = useLocation()
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500)
+    }, [])
 
     useEffect(() => {
         getJenjang()
@@ -226,6 +235,8 @@ const ListKelas = () => {
                     icon: "error"
                 })
             } else {
+                document.getElementById('my-modal').checked = false
+                setLoading(true)
                 await axios.post('v1/kelasKuliah/create', {
                     code_jenjang_pendidikan: kodeJenjang,
                     code_fakultas: kodeFakultas,
@@ -238,7 +249,7 @@ const ListKelas = () => {
                     jumlahPeserta: jumMhs,
                     jenkel: jenisKelamin
                 }).then(function (response) {
-                    document.getElementById('my-modal').checked = false
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -253,6 +264,7 @@ const ListKelas = () => {
                 })
             }
         } catch (error) {
+            setLoading(false)
             if (error.response) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -374,6 +386,11 @@ const ListKelas = () => {
                             <button type='submit' className="btn btn-sm btn-primary capitalize"><FaSave />simpan</button>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
                 </div>
             </div>
             <section className='mb-5'>

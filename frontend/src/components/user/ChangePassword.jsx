@@ -4,12 +4,14 @@ import { Link, useNavigate, useLocation } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { ResetPass, reset } from "../../features/authSlice"
 import Swal from "sweetalert2"
+import Loading from '../Loading'
 
 const ChangePassword = () => {
     const [id, setId] = useState("")
     const [newPass, setNewPass] = useState("")
     const [confirmPass, setConfirmPass] = useState("")
     const location = useLocation()
+    const [loading, setLoading] = useState(false)
 
     // { location.state.id }
 
@@ -18,6 +20,7 @@ const ChangePassword = () => {
     const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
 
     useEffect(() => {
+        setLoading(false)
         if (user || isSuccess) {
             if (user.message == "selamat datang") {
             } else {
@@ -57,6 +60,7 @@ const ChangePassword = () => {
                 icon: 'error'
             })
         } else {
+            setLoading(true)
             dispatch(ResetPass({ id, newPass, confirmPass }))
         }
     }
@@ -85,6 +89,11 @@ const ChangePassword = () => {
 
     return (
         <div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <div className="w-full min-w-min h-56 bg-[#2D7F5F] lg:rounded-b-[50px] pt-12">
                 <div className="w-full flex gap-9 justify-center">
                     <img src={stainaa} alt="" className='w-24 relative rounded-full' />

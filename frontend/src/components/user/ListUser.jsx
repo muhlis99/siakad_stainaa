@@ -4,6 +4,7 @@ import { FaArrowLeft, FaArrowRight, FaEdit, FaPlus, FaSave, FaSearch, FaTimes, F
 import ReactPaginate from 'react-paginate'
 import Swal from 'sweetalert2'
 import { SlOptions } from 'react-icons/sl'
+import Loading from '../Loading'
 
 const ListUser = () => {
     const [Users, setUsers] = useState([])
@@ -21,6 +22,14 @@ const ListUser = () => {
     const [confirmPassword, setConfirmPassword] = useState("")
     const [role, setRole] = useState("")
     const [modal, setModal] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500)
+    }, [])
 
     useEffect(() => {
         getDataUsers()
@@ -81,6 +90,8 @@ const ListUser = () => {
     const simpanDataUser = async (e) => {
         e.preventDefault()
         try {
+            document.getElementById('my-modal').checked = false
+            setLoading(true)
             await axios.post('v1/registrasi/create', {
                 username: userName,
                 email: email,
@@ -88,7 +99,7 @@ const ListUser = () => {
                 confirmPassword: confirmPassword,
                 role: role
             }).then(function (response) {
-                document.getElementById('my-modal').checked = false
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -103,6 +114,7 @@ const ListUser = () => {
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response) {
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
@@ -115,6 +127,8 @@ const ListUser = () => {
     const updateDataUser = async (e) => {
         e.preventDefault()
         try {
+            document.getElementById('my-modal').checked = false
+            setLoading(true)
             await axios.put(`v1/registrasi/update/${id}`, {
                 username: userName,
                 email: email,
@@ -122,7 +136,7 @@ const ListUser = () => {
                 confirmPassword: confirmPassword,
                 role: role
             }).then(function (response) {
-                document.getElementById('my-modal').checked = false
+                setLoading(false)
                 Swal.fire({
                     title: "Berhasil",
                     text: response.data.message,
@@ -138,6 +152,7 @@ const ListUser = () => {
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response) {
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
@@ -285,6 +300,11 @@ const ListUser = () => {
                         </div>
                     </form>
                 </div> */}
+            </div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
             </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Users</h1>

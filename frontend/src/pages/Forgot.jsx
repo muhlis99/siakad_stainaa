@@ -1,22 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import stainaa from "../assets/img/stainaa.png"
 import { Link, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import Swal from "sweetalert2"
 import { FaEnvelope } from "react-icons/fa"
+import Loading from '../components/Loading'
 
 
 const Forgot = () => {
     const [email, setEmail] = useState("")
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     const kirimEmail = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await axios.post('v1/login/forgot', {
                 email: email
 
             }).then(function (response) {
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -25,6 +29,7 @@ const Forgot = () => {
                 });
             })
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -64,6 +69,11 @@ const Forgot = () => {
     return (
         <div>
             <title>Forgot Password</title>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <div className="w-full min-w-min h-56 bg-[#2D7F5F] lg:rounded-b-[50px] pt-12">
                 <div className="w-full flex gap-9 justify-center">
                     <img src={stainaa} alt="" className='w-24 relative rounded-full' />
