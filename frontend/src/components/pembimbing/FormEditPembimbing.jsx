@@ -4,6 +4,7 @@ import axios from 'axios'
 import Select from 'react-select'
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { FaEdit, FaReply, FaSave } from 'react-icons/fa'
+import Loading from '../Loading'
 
 const FormEditPembimbing = () => {
     const [Dosen, setDosen] = useState([])
@@ -20,6 +21,7 @@ const FormEditPembimbing = () => {
     const [kuota, setKuota] = useState("")
     const navigate = useNavigate()
     const location = useLocation()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const getDataDsn = async () => {
@@ -115,6 +117,7 @@ const FormEditPembimbing = () => {
                     icon: "error"
                 })
             } else {
+                setLoading(true)
                 await axios.put(`v1/pembimbingAkademik/update/${location.state.idDsn}`, {
                     code_jenjang_pendidikan: kodeJenjang,
                     code_fakultas: kodeFakultas,
@@ -122,6 +125,7 @@ const FormEditPembimbing = () => {
                     dosen: nipy,
                     kouta_bimbingan: kuota
                 }).then(function (response) {
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -131,6 +135,7 @@ const FormEditPembimbing = () => {
                 })
             }
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -147,6 +152,11 @@ const FormEditPembimbing = () => {
 
     return (
         <div className='mt-2 container'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Pembimbing Akademik</h1>
             </section>

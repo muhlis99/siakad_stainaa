@@ -5,6 +5,7 @@ import Select from 'react-select'
 import axios from 'axios'
 import { FaPlus, FaReply, FaSave, FaTimes } from 'react-icons/fa'
 import { Link } from "react-router-dom"
+import Loading from '../Loading'
 
 const SetMhsPerpembimbing = () => {
     const [Mahasiswa, setMahasiswa] = useState([])
@@ -21,6 +22,7 @@ const SetMhsPerpembimbing = () => {
     const [isClearable, setIsClearable] = useState(true)
     const [nim, setNim] = useState("")
     const location = useLocation()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const getDataDsn = async () => {
@@ -89,32 +91,34 @@ const SetMhsPerpembimbing = () => {
     const simpanMahasiswa = async (e) => {
         e.preventDefault()
         try {
-            if (nim == 0) {
+            // if (nim == 0) {
+            //     Swal.fire({
+            //         title: "Mahasiswa Tidak Boleh Kosong",
+            //         icon: "error"
+            //     })
+            // } else if (kuota == jumlah) {
+            //     Swal.fire({
+            //         title: "Jumlah Mahasiswa telah melebihi kapasitas bimbingan",
+            //         icon: "error"
+            //     })
+            // } else {
+            document.getElementById('my-modal').checked = false
+            setLoading(true)
+            await axios.post('v1/pembimbingAkademik/createDetail', {
+                code_pembimbing_akademik: kodeBimbing,
+                nim: nim,
+            }).then(function (response) {
+                setLoading(false)
                 Swal.fire({
-                    title: "Mahasiswa Tidak Boleh Kosong",
-                    icon: "error"
-                })
-            } else if (kuota == jumlah) {
-                Swal.fire({
-                    title: "Jumlah Mahasiswa telah melebihi kapasitas bimbingan",
-                    icon: "error"
-                })
-            } else {
-                await axios.post('v1/pembimbingAkademik/createDetail', {
-                    code_pembimbing_akademik: kodeBimbing,
-                    nim: nim,
-                }).then(function (response) {
-                    document.getElementById('my-modal').checked = false
-                    Swal.fire({
-                        title: response.data.message,
-                        icon: "success"
-                    }).then(() => {
-                        getMhsPerPembimbing()
-                        getMahasiswa()
-                        setNim("")
-                    });
-                })
-            }
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getMhsPerPembimbing()
+                    getMahasiswa()
+                    setNim("")
+                });
+            })
+            // }
         } catch (error) {
             if (error.response.data.message) {
                 Swal.fire({
@@ -166,7 +170,11 @@ const SetMhsPerpembimbing = () => {
                     </form>
                 </div>
             </div>
-
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Pembimbing Akademik</h1>
             </section>

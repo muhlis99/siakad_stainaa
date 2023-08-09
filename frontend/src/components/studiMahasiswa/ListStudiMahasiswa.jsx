@@ -3,6 +3,7 @@ import Swal from 'sweetalert2'
 import axios from 'axios'
 import { FaPlus, FaSearch } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import Loading from '../Loading'
 
 const ListStudiMahasiswa = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -16,6 +17,14 @@ const ListStudiMahasiswa = () => {
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500)
+    }, [])
 
     useEffect(() => {
         getJenjang()
@@ -73,6 +82,11 @@ const ListStudiMahasiswa = () => {
 
     return (
         <div className='container mt-2'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Studi Mahasiswa</h1>
             </section>

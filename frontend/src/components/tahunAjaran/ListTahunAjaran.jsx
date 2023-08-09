@@ -4,6 +4,7 @@ import { SlOptions } from "react-icons/sl"
 import axios from 'axios'
 import Swal from "sweetalert2"
 import ReactPaginate from "react-paginate"
+import Loading from '../Loading'
 
 const ListTahunAjaran = () => {
     const [TahunAjaran, setTahunAjaran] = useState([])
@@ -20,6 +21,16 @@ const ListTahunAjaran = () => {
     const [query, setQuery] = useState("")
     const [msg, setMsg] = useState("")
     const [id, setId] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500);
+    }, [])
+
 
     useEffect(() => {
         getTahunAjaran()
@@ -95,13 +106,15 @@ const ListTahunAjaran = () => {
     const simpanTahun = async (e) => {
         e.preventDefault()
         try {
+            document.getElementById('my-modal').checked = false
+            setLoading(true)
             await axios.post('v1/tahunAjaran/create', {
                 dari_tahun: pertama,
                 sampai_tahun: kedua,
                 keterangan: keterangan,
                 periode: periode
             }).then(function (response) {
-                document.getElementById('my-modal').checked = false
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -114,6 +127,7 @@ const ListTahunAjaran = () => {
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -131,13 +145,15 @@ const ListTahunAjaran = () => {
     const updateTahun = async (e) => {
         e.preventDefault()
         try {
+            document.getElementById('my-modal').checked = false
+            setLoading(true)
             await axios.put(`v1/tahunAjaran/update/${id}`, {
                 dari_tahun: pertama,
                 sampai_tahun: kedua,
                 keterangan: keterangan,
                 periode: periode
             }).then(function (response) {
-                document.getElementById('my-modal').checked = false
+                setLoading(false)
                 Swal.fire({
                     title: "Berhasil",
                     text: response.data.message,
@@ -151,6 +167,7 @@ const ListTahunAjaran = () => {
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -181,7 +198,6 @@ const ListTahunAjaran = () => {
                     axios.put(
                         `v1/tahunAjaran/delete/${thnId}`
                     ).then((response) => {
-                        console.log(response.data)
                         Swal.fire({
                             title: "Terhapus",
                             text: response.data.message,
@@ -308,6 +324,11 @@ const ListTahunAjaran = () => {
                         </div>
                     </form>
                 </div> */}
+            </div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
             </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Tahun Ajaran</h1>

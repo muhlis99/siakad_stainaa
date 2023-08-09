@@ -3,6 +3,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaReply, FaSave } from 'react-icons/fa'
+import Loading from '../Loading'
 
 const FormAddMataKuliah = () => {
     const [Tahun, setTahun] = useState([])
@@ -23,6 +24,7 @@ const FormAddMataKuliah = () => {
     const [tglAktif, setTglAktif] = useState("")
     const [tglNonAktif, setTglNonAktif] = useState("")
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         getTahunAjaran()
@@ -64,6 +66,7 @@ const FormAddMataKuliah = () => {
     const simpanMakul = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await axios.post('v1/mataKuliah/create', {
                 code_mata_kuliah: kodeMk,
                 nama_mata_kuliah: namaMakul,
@@ -79,6 +82,7 @@ const FormAddMataKuliah = () => {
                 tanggal_aktif: tglAktif,
                 tanggal_non_aktif: tglNonAktif
             }).then(function (response) {
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -87,7 +91,13 @@ const FormAddMataKuliah = () => {
                 })
             })
         } catch (error) {
-            if (error.response) {
+            setLoading(false)
+            if (error.response.data.message) {
+                Swal.fire({
+                    title: error.response.message,
+                    icon: "error"
+                })
+            } else {
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
                     icon: "error"
@@ -121,6 +131,11 @@ const FormAddMataKuliah = () => {
 
     return (
         <div className='mt-2 container'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Tambah Mata Kuliah</h1>
             </section>

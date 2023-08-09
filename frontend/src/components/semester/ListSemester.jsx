@@ -5,6 +5,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import ReactPaginate from 'react-paginate'
 import Moment from 'react-moment'
+import Loading from '../Loading'
 
 const ListSemester = () => {
     const [Semester, setSemester] = useState([])
@@ -22,6 +23,16 @@ const ListSemester = () => {
     const [tglAktif, setTglAktif] = useState("")
     const [keterangan, setKeterangan] = useState("")
     const [id, setId] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500);
+    }, [])
+
 
     useEffect(() => {
         getDataSemester()
@@ -103,13 +114,15 @@ const ListSemester = () => {
     const simpanSmt = async (e) => {
         e.preventDefault()
         try {
+            document.getElementById('my-modal-add').checked = false
+            setLoading(true)
             await axios.post('v1/semester/create', {
                 code_tahun_ajaran: thnAjar,
                 semester: semster,
                 tanggal_aktif: tglAktif,
                 keterangan: keterangan
             }).then(function (response) {
-                document.getElementById('my-modal-add').checked = false
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -122,6 +135,7 @@ const ListSemester = () => {
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -139,13 +153,15 @@ const ListSemester = () => {
     const updateSmt = async (e) => {
         e.preventDefault()
         try {
+            document.getElementById('my-modal-edit').checked = false
+            setLoading(true)
             await axios.put(`v1/semester/update/${id}`, {
                 code_tahun_ajaran: thnAjar,
                 semester: semster,
                 tanggal_aktif: tglAktif,
                 keterangan: keterangan
             }).then(function (response) {
-                document.getElementById('my-modal-edit').checked = false
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -189,7 +205,6 @@ const ListSemester = () => {
                     axios.put(
                         `v1/semester/delete/${smtId}`
                     ).then((response) => {
-                        console.log(response.data)
                         Swal.fire({
                             title: "Terhapus",
                             text: response.data.message,
@@ -337,7 +352,11 @@ const ListSemester = () => {
                     </form>
                 </div>
             </div>
-
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Semester</h1>
             </section>

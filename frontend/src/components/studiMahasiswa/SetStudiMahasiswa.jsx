@@ -4,6 +4,7 @@ import Select from 'react-select'
 import { FaReply, FaSave } from 'react-icons/fa'
 import { Link, useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
+import Loading from '../Loading'
 
 const SetStudiMahasiswa = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -24,6 +25,7 @@ const SetStudiMahasiswa = () => {
     const [tgl, setTgl] = useState("")
     const [alasan, setAlasan] = useState("")
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         getTahunAjaran()
@@ -104,6 +106,7 @@ const SetStudiMahasiswa = () => {
     const simpanPengajuan = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await axios.post(`v1/pengajuanStudi/createAdmin`, {
                 code_tahun_ajaran: kodeTahun,
                 code_semester: kodeSemester,
@@ -115,6 +118,7 @@ const SetStudiMahasiswa = () => {
                 pengajuan: ajuan,
                 alasan: alasan
             }).then(function (response) {
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -123,6 +127,7 @@ const SetStudiMahasiswa = () => {
                 });
             })
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -139,6 +144,11 @@ const SetStudiMahasiswa = () => {
 
     return (
         <div className='mt-2 container'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Studi Mahasiswa</h1>
             </section>

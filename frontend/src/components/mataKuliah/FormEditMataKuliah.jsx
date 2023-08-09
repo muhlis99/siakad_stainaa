@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { FaReply, FaSave } from 'react-icons/fa'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import Loading from '../Loading'
 
 const FormEditMataKuliah = () => {
     const [Tahun, setTahun] = useState([])
@@ -24,6 +25,7 @@ const FormEditMataKuliah = () => {
     const [tglNonAktif, setTglNonAktif] = useState("")
     const { idMakul } = useParams()
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const getMakulById = async () => {
@@ -89,6 +91,7 @@ const FormEditMataKuliah = () => {
     const updateMakul = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await axios.put(`v1/mataKuliah/update/${idMakul}`, {
                 code_mata_kuliah: kodeMk,
                 nama_mata_kuliah: namaMakul,
@@ -104,6 +107,7 @@ const FormEditMataKuliah = () => {
                 tanggal_aktif: tglAktif,
                 tanggal_non_aktif: tglNonAktif
             }).then(function (response) {
+                setLoading(false)
                 Swal.fire({
                     title: "Berhasil",
                     text: response.data.message,
@@ -113,6 +117,7 @@ const FormEditMataKuliah = () => {
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -129,6 +134,11 @@ const FormEditMataKuliah = () => {
 
     return (
         <div className='mt-2 container'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Edit Mata Kuliah</h1>
             </section>

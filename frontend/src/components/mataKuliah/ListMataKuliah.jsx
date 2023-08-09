@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import axios from 'axios'
 import ReactPaginate from "react-paginate"
 import Swal from "sweetalert2"
+import Loading from '../Loading'
 
 const ListMataKuliah = () => {
     const [Makul, setMakul] = useState([])
@@ -15,6 +16,14 @@ const ListMataKuliah = () => {
     const [keyword, setKeyword] = useState("")
     const [query, setQuery] = useState("")
     const [msg, setMsg] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500)
+    }, [])
 
     useEffect(() => {
         getMakulAll()
@@ -82,6 +91,11 @@ const ListMataKuliah = () => {
 
     return (
         <div className='mt-2 container'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Mata Kuliah</h1>
             </section>

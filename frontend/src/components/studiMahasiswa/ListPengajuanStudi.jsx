@@ -5,6 +5,7 @@ import { FaArrowLeft, FaArrowRight, FaCheck, FaPlus, FaSearch, FaTimes } from 'r
 import { SlOptions } from 'react-icons/sl'
 import ReactPaginate from 'react-paginate'
 import { Link } from "react-router-dom"
+import Loading from '../Loading'
 
 const ListPengajuanStudi = () => {
     const [Studi, setStudi] = useState([])
@@ -26,6 +27,14 @@ const ListPengajuanStudi = () => {
     const [tgl, setTgl] = useState("")
     const [alasan, setAlasan] = useState("")
     const [status, setStatus] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500)
+    }, [])
 
     useEffect(() => {
         getDataStudi()
@@ -96,9 +105,11 @@ const ListPengajuanStudi = () => {
 
     const setujui = async (e) => {
         try {
+            setLoading(true)
             await axios.put(
                 `v1/pengajuanStudi/approveBuak/${e}`
             ).then(function (response) {
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -107,6 +118,7 @@ const ListPengajuanStudi = () => {
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -129,10 +141,11 @@ const ListPengajuanStudi = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 try {
+                    setLoading(true)
                     axios.put(
                         `v1/pengajuanStudi/deleteStatus/${ajuanId}`
                     ).then((response) => {
-                        console.log(response.data)
+                        setLoading(false)
                         Swal.fire({
                             title: "Terhapus",
                             text: response.data.message,
@@ -269,6 +282,11 @@ const ListPengajuanStudi = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
                 </div>
             </div>
             <section className='mb-5'>

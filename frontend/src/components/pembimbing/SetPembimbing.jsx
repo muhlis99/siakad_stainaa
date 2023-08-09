@@ -4,6 +4,7 @@ import Select from 'react-select'
 import { Link, useNavigate } from "react-router-dom"
 import { FaReply, FaSave } from 'react-icons/fa'
 import Swal from 'sweetalert2'
+import Loading from '../Loading'
 
 const SetPembimbing = () => {
     const [Dosen, setDosen] = useState([])
@@ -18,6 +19,7 @@ const SetPembimbing = () => {
     const [kodeProdi, setKodeProdi] = useState("")
     const [kuota, setKuota] = useState("")
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         getAutoDosen()
@@ -101,6 +103,7 @@ const SetPembimbing = () => {
                     icon: "error"
                 })
             } else {
+                setLoading(true)
                 await axios.post(`v1/pembimbingAkademik/create`, {
                     code_jenjang_pendidikan: kodeJenjang,
                     code_fakultas: kodeFakultas,
@@ -108,6 +111,7 @@ const SetPembimbing = () => {
                     dosen: nipy,
                     kouta_bimbingan: kuota
                 }).then(function (response) {
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -117,6 +121,7 @@ const SetPembimbing = () => {
                 })
             }
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -133,6 +138,11 @@ const SetPembimbing = () => {
 
     return (
         <div className='mt-2 container'>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
+            </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Pembimbing Akademik</h1>
             </section>

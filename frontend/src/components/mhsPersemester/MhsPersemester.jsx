@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import { FaClosedCaptioning, FaCog, FaExpandArrowsAlt, FaSave, FaTimes } from 'react-icons/fa'
+import Loading from '../Loading'
 
 const MhsPersemester = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -21,6 +22,14 @@ const MhsPersemester = () => {
     const [kodeSemesterNew, setKodeSemesterNew] = useState("")
     const [button, setButton] = useState("")
     const [smt, setSmt] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500)
+    }, [])
 
     useEffect(() => {
         getJenjang()
@@ -119,6 +128,8 @@ const MhsPersemester = () => {
                     icon: "error"
                 })
             } else {
+                document.getElementById('my-modal').checked = false
+                setLoading(true)
                 await axios.post(`v1/setMahasiswaSmt/create`, {
                     codeSmtOld: kodeSemesterOld,
                     codeJnjPen: kodeJenjang,
@@ -128,6 +139,7 @@ const MhsPersemester = () => {
                     codeThnAjrOld: kodeTahun,
                     codeThnAjrNew: kodeTahunNew
                 }).then(function (response) {
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -187,6 +199,11 @@ const MhsPersemester = () => {
                             <button type='submit' className="btn btn-sm btn-primary capitalize"><FaSave />Simpan</button>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
                 </div>
             </div>
             <section className='mb-5'>

@@ -4,6 +4,7 @@ import { SlOptions } from "react-icons/sl"
 import axios from 'axios'
 import ReactPaginate from 'react-paginate'
 import Swal from 'sweetalert2'
+import Loading from '../Loading'
 
 const ListKategoriNilai = () => {
     const [ListNilai, setListNilai] = useState([])
@@ -25,6 +26,14 @@ const ListKategoriNilai = () => {
     const [keterangan, setKeterangan] = useState("")
     const [judul, setJudul] = useState("")
     const [id, setId] = useState("")
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500);
+    }, [])
 
     useEffect(() => {
         getKategoriNilai()
@@ -85,6 +94,8 @@ const ListKategoriNilai = () => {
                     icon: "error"
                 })
             } else {
+                document.getElementById('my-modal').checked = false
+                setLoading(true)
                 await axios.post('v1/kategoriNilai/create', {
                     nilai_atas: nilaiAtas,
                     nilai_bawah: nilaiBawah,
@@ -94,7 +105,7 @@ const ListKategoriNilai = () => {
                     keterangan: keterangan,
                     code_tahun_ajaran: kodeTahun
                 }).then(function (response) {
-                    document.getElementById('my-modal').checked = false
+                    setLoading(false)
                     Swal.fire({
                         title: response.data.message,
                         icon: "success"
@@ -111,6 +122,7 @@ const ListKategoriNilai = () => {
                 })
             }
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.data.message,
@@ -146,6 +158,8 @@ const ListKategoriNilai = () => {
     const updateKtg = async (e) => {
         e.preventDefault()
         try {
+            document.getElementById('my-modal').checked = false
+            setLoading(true)
             await axios.put(`v1/kategoriNilai/update/${id}`, {
                 nilai_atas: nilaiAtas,
                 nilai_bawah: nilaiBawah,
@@ -155,7 +169,7 @@ const ListKategoriNilai = () => {
                 keterangan: keterangan,
                 code_tahun_ajaran: kodeTahun
             }).then(function (response) {
-                document.getElementById('my-modal').checked = false
+                setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
@@ -171,6 +185,7 @@ const ListKategoriNilai = () => {
                 })
             })
         } catch (error) {
+            setLoading(false)
             if (error.response.data.message) {
                 Swal.fire({
                     title: error.response.message,
@@ -317,79 +332,11 @@ const ListKategoriNilai = () => {
                         </div>
                     </form>
                 </div>
-                {/* <div className="modal-box relative">
-                    <button className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
-                    <form onSubmit={judul == 'Tambah' ? simpanKatNilai : updateKtg}>
-                        <h3 className="font-bold text-xl">{judul}</h3>
-                        <div className="grid lg:grid-cols-2 gap-2">
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Tahun Ajaran</span>
-                                </label>
-                                <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
-                                    <option value="">Tahun Ajaran</option>
-                                    {Tahun.map((item) => (
-                                        <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className='grid grid-cols-2 gap-2'>
-                                <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Nilai Maks</span>
-                                    </label>
-                                    <input type="number" className="input input-sm input-bordered w-full" value={nilaiAtas} onChange={(e) => setNilaiAtas(e.target.value)} />
-                                </div>
-                                <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Nilai Min</span>
-                                    </label>
-                                    <input type="number" className="input input-sm input-bordered w-full" value={nilaiBawah} onChange={(e) => setNilaiBawah(e.target.value)} />
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Nilai Huruf</span>
-                                    </label>
-                                    <input type="text" className="input input-sm input-bordered w-full" value={nilaiHuruf} onChange={(e) => setNilaiHuruf(e.target.value)} />
-                                </div>
-                                <div>
-                                    <label className="label">
-                                        <span className="text-base label-text">Interfal Skor</span>
-                                    </label>
-                                    <input type="text" className="input input-sm input-bordered w-full" value={skor} onChange={(e) => setSkor(e.target.value)} />
-                                </div>
-                            </div>
-                            <div>
-                                <label className="label">
-                                    <span className="text-base label-text">Kategori</span>
-                                </label>
-                                <select className="select select-sm select-bordered w-full" value={kategori} onChange={(e) => setKategori(e.target.value)}>
-                                    <option value="">-Kategori-</option>
-                                    <option value="Istimewa">Istimewa</option>
-                                    <option value="Sangat Baik">Sangat Baik</option>
-                                    <option value="Lebih Baik">Lebih Baik</option>
-                                    <option value="Baik">Baik</option>
-                                    <option value="Cukup Baik">Cukup Baik</option>
-                                    <option value="Lebih Cukup">Lebih Cukup</option>
-                                    <option value="Cukup">Cukup</option>
-                                    <option value="Kurang">Kurang</option>
-                                    <option value="Kurang Sekali">Kurang Sekali</option>
-                                </select>
-                            </div>
-                            <div className='col-span-2'>
-                                <label className="label">
-                                    <span className="text-base label-text">Keterangan</span>
-                                </label>
-                                <input type="text" className="input input-sm input-bordered w-full" value={keterangan} onChange={(e) => setKeterangan(e.target.value)} />
-                            </div>
-                        </div>
-                        <div className="modal-action">
-                            <button type='submit' className="btn btn-sm btn-primary">simpan</button>
-                        </div>
-                    </form>
-                </div> */}
+            </div>
+            <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
+                <div className='w-[74px] mx-auto mt-72'>
+                    <Loading />
+                </div>
             </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Kategori Nilai</h1>
@@ -475,22 +422,6 @@ const ListKategoriNilai = () => {
                                             ""
                                         )
                                     })}
-                                    {/* {ListNilai.map((ktg, index) => (
-                                        <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500'>
-                                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap" align='center'>{index + 1}</th>
-                                            <td className='px-6 py-2' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
-                                            <td className='px-6 py-2' align='center'>{ktg.nilai_huruf}</td>
-                                            <td className='px-6 py-2' align='center'>{ktg.interfal_skor}</td>
-                                            <td className='px-6 py-2' align='center'>{ktg.kategori}</td>
-                                            <td className='px-6 py-2' align='center'>{ktg.keterangan}</td>
-                                            <td className='px-6 py-2' align='center'>
-                                                <div>
-                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))} */}
                                 </tbody>
                             </table>
                         </div>
