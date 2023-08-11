@@ -28,7 +28,7 @@ const ListTahunAjaran = () => {
 
         setTimeout(() => {
             setLoading(false)
-        }, 1500);
+        }, 500);
     }, [])
 
 
@@ -96,10 +96,10 @@ const ListTahunAjaran = () => {
     let years = d.getFullYear()
     const th1 = []
     const th2 = []
-    for (let tahun1 = years; tahun1 <= years + 1; tahun1++) {
+    for (let tahun1 = 2021; tahun1 <= years + 1; tahun1++) {
         th1.push(<option key={tahun1} value={tahun1}>{tahun1}</option>)
     }
-    for (let tahun2 = years + 1; tahun2 <= years + 2; tahun2++) {
+    for (let tahun2 = 2021 + 1; tahun2 <= years + 2; tahun2++) {
         th2.push(<option key={tahun2} value={tahun2}>{tahun2}</option>)
     }
 

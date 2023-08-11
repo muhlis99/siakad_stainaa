@@ -79,6 +79,39 @@ const Sidebar = () => {
                 <Link to="/prodi" state={{ collaps: 'induk', activ: '/prodi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-sm'>Prodi</span></Link>
               </li>
               <li>
+                {active == '/tahun' || active == '/semester' || active == '/kategorinilai' ?
+                  <details open>
+                    <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
+                    <ul className='gap-1'>
+                      <li>
+                        <Link to='/tahun' state={{ collaps: 'induk', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
+                      </li>
+                      <li>
+                        <Link to="/semester" state={{ collaps: 'induk', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
+                      </li>
+                      <li>
+                        <Link to="/kategorinilai" state={{ collaps: 'induk', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
+                      </li>
+                    </ul>
+                  </details> :
+                  <details>
+                    <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
+                    <ul className='gap-1'>
+                      <li>
+                        <Link to='/tahun' state={{ collaps: 'induk', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
+                      </li>
+                      <li>
+                        <Link to="/semester" state={{ collaps: 'induk', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
+                      </li>
+                      <li>
+                        <Link to="/kategorinilai" state={{ collaps: 'induk', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
+                      </li>
+                    </ul>
+                  </details>
+                }
+
+              </li>
+              <li>
                 <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/dosen' || active == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-sm'>Dosen</span></Link>
               </li>
               <li>
@@ -102,6 +135,38 @@ const Sidebar = () => {
                   <Link to="/prodi" state={{ collaps: 'induk', activ: '/prodi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-sm'>Prodi</span></Link>
                 </li>
                 <li>
+                  {active == '/tahun' || active == '/semester' || active == '/kategorinilai' ?
+                    <details open>
+                      <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
+                      <ul className='gap-1'>
+                        <li>
+                          <Link to='/tahun' state={{ collaps: 'induk', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
+                        </li>
+                        <li>
+                          <Link to="/semester" state={{ collaps: 'induk', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
+                        </li>
+                        <li>
+                          <Link to="/kategorinilai" state={{ collaps: 'induk', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
+                        </li>
+                      </ul>
+                    </details> :
+                    <details>
+                      <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
+                      <ul className='gap-1'>
+                        <li>
+                          <Link to='/tahun' state={{ collaps: 'induk', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
+                        </li>
+                        <li>
+                          <Link to="/semester" state={{ collaps: 'induk', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
+                        </li>
+                        <li>
+                          <Link to="/kategorinilai" state={{ collaps: 'induk', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
+                        </li>
+                      </ul>
+                    </details>
+                  }
+                </li>
+                <li>
                   <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/dosen' || active == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-sm'>Dosen</span></Link>
                 </li>
                 <li>
@@ -114,39 +179,6 @@ const Sidebar = () => {
             </details>
           }
 
-        </li>
-        <li>
-          {collap == 'kurikulum' ?
-            <details open>
-              <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
-              <ul className='gap-1'>
-                <li>
-                  <Link to='/tahun' state={{ collaps: 'kurikulum', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
-                </li>
-                <li>
-                  <Link to="/semester" state={{ collaps: 'kurikulum', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
-                </li>
-                <li>
-                  <Link to="/kategorinilai" state={{ collaps: 'kurikulum', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
-                </li>
-              </ul>
-            </details>
-            :
-            <details>
-              <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
-              <ul className='gap-1'>
-                <li>
-                  <Link to='/tahun' state={{ collaps: 'kurikulum', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
-                </li>
-                <li>
-                  <Link to="/semester" state={{ collaps: 'kurikulum', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
-                </li>
-                <li>
-                  <Link to="/kategorinilai" state={{ collaps: 'kurikulum', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
-                </li>
-              </ul>
-            </details>
-          }
         </li>
         <li>
           {collap == 'kuliah' ?

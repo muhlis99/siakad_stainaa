@@ -30,7 +30,7 @@ const ListSemester = () => {
 
         setTimeout(() => {
             setLoading(false)
-        }, 1500);
+        }, 500);
     }, [])
 
 

@@ -33,7 +33,7 @@ const ListPengajuanStudi = () => {
         setLoading(true)
         setTimeout(() => {
             setLoading(false)
-        }, 1500)
+        }, 500)
     }, [])
 
     useEffect(() => {

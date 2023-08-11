@@ -29,7 +29,7 @@ const Beranda = () => {
         setLoading(true)
         setTimeout(() => {
             setLoading(false)
-        }, 1500);
+        }, 500);
     }, [])
 
 
