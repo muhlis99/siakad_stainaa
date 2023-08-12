@@ -33,13 +33,14 @@ const ListMahasiswa = () => {
         getMahasiwa()
     }, [page, keyword])
 
-    useEffect(() => {
-        getQrMahasiswa()
-    }, [Mahasiswa])
 
-    useEffect(() => {
-        getQrMhs()
-    }, [namaQr])
+    // useEffect(() => {
+    //     getQrMahasiswa()
+    // }, [Mahasiswa])
+
+    // useEffect(() => {
+    //     getQrMhs()
+    // }, [namaQr])
 
     const getMahasiwa = async () => {
         const response = await axios.get(`v1/mahasiswa/all?page=${page}&search=${keyword}`)
@@ -50,34 +51,34 @@ const ListMahasiswa = () => {
         setperPage(response.data.per_page)
     }
 
-    const getQrMahasiswa = () => {
-        var i = Mahasiswa.map(item => (
-            item.qrcode
-        ))
-        setNamaQr(i)
-    }
+    // const getQrMahasiswa = () => {
+    //     var i = Mahasiswa.map(item => (
+    //         item.qrcode
+    //     ))
+    //     setNamaQr(i)
+    // }
 
-    const getQrMhs = async () => {
-        if (namaQr != 0) {
-            let qrCode = []
-            let promises = []
-            for (let i = 0; i < namaQr.length; i++) {
-                const t = await axios.get('v1/mahasiswa/public/seeImage/mahasiswa/qrcode/' + namaQr[i], {
-                    responseType: "arraybuffer"
-                }).then((response) => {
-                    const base64 = btoa(
-                        new Uint8Array(response.data).reduce(
-                            (data, byte) => data + String.fromCharCode(byte),
-                            ''
-                        )
-                    )
-                    qrCode.push(base64)
-                })
-                promises.push(t)
-            }
-            Promise.all(promises).then(() => setPrevQr(qrCode))
-        }
-    }
+    // const getQrMhs = async () => {
+    //     if (namaQr != 0) {
+    //         let qrCode = []
+    //         let promises = []
+    //         for (let i = 0; i < namaQr.length; i++) {
+    //             const t = await axios.get('v1/mahasiswa/public/seeImage/mahasiswa/qrcode/' + namaQr[i], {
+    //                 responseType: "arraybuffer"
+    //             }).then((response) => {
+    //                 const base64 = btoa(
+    //                     new Uint8Array(response.data).reduce(
+    //                         (data, byte) => data + String.fromCharCode(byte),
+    //                         ''
+    //                     )
+    //                 )
+    //                 qrCode.push(base64)
+    //             })
+    //             promises.push(t)
+    //         }
+    //         Promise.all(promises).then(() => setPrevQr(qrCode))
+    //     }
+    // }
 
     const pageCount = Math.ceil(rows / perPage)
 
@@ -187,14 +188,14 @@ const ListMahasiswa = () => {
                                     {Mahasiswa.map((mhs, index) => (
                                         <tr key={mhs.id_mahasiswa} className='bg-white border-b text-gray-500 border-x'>
                                             <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">
-                                                {index + 1}
+                                                {(page - 1) * 10 + index + 1}
                                             </th>
                                             <td className='px-6 py-2 font-semibold'>
                                                 <div className='flex gap-3'>
                                                     <div className="avatar">
-                                                        <div className="w-16 rounded">
+                                                        {/* <div className="w-16 rounded">
                                                             {prevQr[index] ? <img src={`data:;base64,${prevQr[index]}`} alt='QR Code' /> : ""}
-                                                        </div>
+                                                        </div> */}
                                                     </div>
                                                     <div>
                                                         <h6 className='font-semibold'>{mhs.nama}</h6>
