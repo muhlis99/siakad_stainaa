@@ -186,38 +186,43 @@ const ListDosen = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Dosen.map((dsn, index) => (
-                                        <tr key={dsn.id_dosen} className='bg-white border-b text-gray-500 border-x'>
-                                            <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                            {/* <td className='px-6 py-2 font-semibold'>{dsn.nidn}</td> */}
-                                            <td className='px-6 py-2 font-semibold'>
-                                                <div className='flex gap-3'>
-                                                    <div className="avatar">
-                                                        <div className="w-16 rounded">
-                                                            {prevQr[index] ? <img src={`data:;base64,${prevQr[index]}`} alt='QR Code' /> : ""}
+                                    {Dosen.length == 0 ?
+                                        <tr className='bg-white border-b border-x text-gray-500'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='6'>Data Dosen Kosong</td>
+                                        </tr>
+                                        :
+                                        Dosen.map((dsn, index) => (
+                                            <tr key={dsn.id_dosen} className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                {/* <td className='px-6 py-2 font-semibold'>{dsn.nidn}</td> */}
+                                                <td className='px-6 py-2 font-semibold'>
+                                                    <div className='flex gap-3'>
+                                                        <div className="avatar">
+                                                            <div className="w-16 rounded">
+                                                                {prevQr[index] ? <img src={`data:;base64,${prevQr[index]}`} alt='QR Code' /> : ""}
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <h6 className='font-semibold'>{dsn.nama}</h6>
+                                                            <h6 className='font-semibold'>{dsn.nidn}</h6>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <h6 className='font-semibold'>{dsn.nama}</h6>
-                                                        <h6 className='font-semibold'>{dsn.nidn}</h6>
+                                                </td>
+                                                {/* <td className='px-6 py-2 font-semibold'>{dsn.nama}</td> */}
+                                                <td className='px-6 py-2 font-semibold'>{dsn.jenis_kelamin == "l" ? "Laki-Laki" : "Perempuan"}</td>
+                                                <td className='px-6 py-2 font-semibold'>{dsn.pendidikans[0].nama_pendidikan}</td>
+                                                <td className='px-6 py-2 font-semibold'>{dsn.alat_transportasis[0].nama_alat_transportasi}</td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div className='flex gap-1 justify-center'>
+                                                        <Link to={`/dosen/detail/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
+                                                        <Link to={`/dosen/form1/edit/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                        <Link to={`/dosen/upload1/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
+                                                        <Link to={`/dosen/print/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
+                                                        <button onClick={() => nonaktifkan(dsn.id_dosen)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            {/* <td className='px-6 py-2 font-semibold'>{dsn.nama}</td> */}
-                                            <td className='px-6 py-2 font-semibold'>{dsn.jenis_kelamin == "l" ? "Laki-Laki" : "Perempuan"}</td>
-                                            <td className='px-6 py-2 font-semibold'>{dsn.pendidikans[0].nama_pendidikan}</td>
-                                            <td className='px-6 py-2 font-semibold'>{dsn.alat_transportasis[0].nama_alat_transportasi}</td>
-                                            <td className='px-6 py-2' align='center'>
-                                                <div className='flex gap-1 justify-center'>
-                                                    <Link to={`/dosen/detail/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
-                                                    <Link to={`/dosen/form1/edit/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
-                                                    <Link to={`/dosen/upload1/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
-                                                    <Link to={`/dosen/print/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
-                                                    <button onClick={() => nonaktifkan(dsn.id_dosen)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>

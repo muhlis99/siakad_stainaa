@@ -263,22 +263,27 @@ const ListKrs = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Krs.map((item, index) => (
-                                    <tr key={index + 1} className='bg-white border text-gray-500' >
-                                        <th scope="row" className="px-2 py-2 border font-semibold whitespace-nowrap">{item.semester}</th>
-                                        <td className='px-2 py-2 font-semibold border' align='center'>{item.tahun}</td>
-                                        <td className='px-2 py-2 font-semibold border' align='center'>{item.Paketmakul}</td>
-                                        <td className='px-2 py-2 font-semibold border' align='center'>{item.jumlahTotalMahasiswa}</td>
-                                        <td className='px-2 py-2 font-semibold border' align='center'>{item.jumlahMahasiswaPaket}</td>
-                                        <td className='px-2 py-2 font-semibold border' align='center'>{item.keterangan == 'paket belum' ? <span className='badge badge-sm badge-warning opacity-80 font-semibold'>Paket Belum</span> : <span className='badge badge-sm badge-success font-semibold'>Paket Selesai</span>}</td>
-                                        <td className='px-2 py-2 border' align='center'>
-                                            <div>
-                                                <div className="tooltip" data-tip="Lihat MK Paket"><button className="btn btn-xs btn-circle text-white btn-info mr-1" onClick={() => getViewKrs(kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi)} title='Lihat MK Paket'><FaSearch /></button></div>
-                                                {item.keterangan == 'paket selesai' || item.jumlahTotalMahasiswa == 0 ? <div className="tooltip"><button className="btn btn-error btn-xs btn-circle text-white" tabIndex="-1" role="button" aria-disabled="true"><FaTimes /></button></div> : <div className="tooltip" data-tip="Paketkan Mahasiswa"><button className="btn btn-xs btn-circle text-white btn-success" onClick={() => paketkan(kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi)} title='Paketkan Mahasiswa'><FaCheck /></button></div>}
-                                            </div>
-                                        </td>
+                                {Krs.length == 0 ?
+                                    <tr className='bg-white border-b text-gray-500 border-x'>
+                                        <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Kartu Rencana Studi Kosong</td>
                                     </tr>
-                                ))
+                                    :
+                                    Krs.map((item, index) => (
+                                        <tr key={index + 1} className='bg-white border text-gray-500' >
+                                            <th scope="row" className="px-2 py-2 border font-semibold whitespace-nowrap">{item.semester}</th>
+                                            <td className='px-2 py-2 font-semibold border' align='center'>{item.tahun}</td>
+                                            <td className='px-2 py-2 font-semibold border' align='center'>{item.Paketmakul}</td>
+                                            <td className='px-2 py-2 font-semibold border' align='center'>{item.jumlahTotalMahasiswa}</td>
+                                            <td className='px-2 py-2 font-semibold border' align='center'>{item.jumlahMahasiswaPaket}</td>
+                                            <td className='px-2 py-2 font-semibold border' align='center'>{item.keterangan == 'paket belum' ? <span className='badge badge-sm badge-warning opacity-80 font-semibold'>Paket Belum</span> : <span className='badge badge-sm badge-success font-semibold'>Paket Selesai</span>}</td>
+                                            <td className='px-2 py-2 border' align='center'>
+                                                <div>
+                                                    <div className="tooltip" data-tip="Lihat MK Paket"><button className="btn btn-xs btn-circle text-white btn-info mr-1" onClick={() => getViewKrs(kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi)} title='Lihat MK Paket'><FaSearch /></button></div>
+                                                    {item.keterangan == 'paket selesai' || item.jumlahTotalMahasiswa == 0 ? <div className="tooltip"><button className="btn btn-error btn-xs btn-circle text-white" tabIndex="-1" role="button" aria-disabled="true"><FaTimes /></button></div> : <div className="tooltip" data-tip="Paketkan Mahasiswa"><button className="btn btn-xs btn-circle text-white btn-success" onClick={() => paketkan(kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi)} title='Paketkan Mahasiswa'><FaCheck /></button></div>}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
                                 }
                             </tbody>
                         </table>

@@ -430,23 +430,28 @@ const FakultasList = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Fakultas.map((faks, index) => (
-                                        <tr key={faks.id_fakultas} className='bg-white border-b text-gray-500 border-x'>
-                                            <th scope="row" className="px-6 py-2 whitespace-nowrap font-semibold">
-                                                {index + 1}
-                                            </th>
-                                            <td className='px-6 py-2 font-semibold'>{faks.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-2 font-semibold'>{faks.code_fakultas}</td>
-                                            <td className='px-6 py-2 font-semibold'>{faks.nama_fakultas}</td>
-                                            <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{faks.status}</span></td>
-                                            <td className='px-6 py-2' align='center'>
-                                                <div>
-                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalEditOpen(faks.id_fakultas)} title='Edit'><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(faks.id_fakultas)} title='Hapus'><FaTrash /></button>
-                                                </div>
-                                            </td>
+                                    {Fakultas.length == 0 ?
+                                        <tr className='bg-white border-b border-x text-gray-500'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='6'>Data Fakultas Kosong</td>
                                         </tr>
-                                    ))}
+                                        :
+                                        Fakultas.map((faks, index) => (
+                                            <tr key={faks.id_fakultas} className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" className="px-6 py-2 whitespace-nowrap font-semibold">
+                                                    {index + 1}
+                                                </th>
+                                                <td className='px-6 py-2 font-semibold'>{faks.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                                <td className='px-6 py-2 font-semibold'>{faks.code_fakultas}</td>
+                                                <td className='px-6 py-2 font-semibold'>{faks.nama_fakultas}</td>
+                                                <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{faks.status}</span></td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div>
+                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalEditOpen(faks.id_fakultas)} title='Edit'><FaEdit /></button>
+                                                        <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(faks.id_fakultas)} title='Hapus'><FaTrash /></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>

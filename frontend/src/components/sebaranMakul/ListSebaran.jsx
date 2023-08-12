@@ -27,7 +27,7 @@ const ListSebaran = () => {
     const [statusBobot, setStatusBobot] = useState("")
     const [status, setStatus] = useState("")
     const [statusMk, setStatusMk] = useState(true)
-    const [paket, setPaket] = useState(false)
+    const [paket, setPaket] = useState(true)
     const [id, setId] = useState("")
     const [jenis, setJenis] = useState("")
     const [nama, setNama] = useState("")
@@ -197,18 +197,44 @@ const ListSebaran = () => {
     const simpanSebaran = async (e) => {
         e.preventDefault()
         try {
-            if (kodeSmt == 0) {
+            setLoading(true)
+            if (kodeJenjang == 0) {
+                setLoading(false)
+                Swal.fire({
+                    title: "Jenjang Pendidikan kosong",
+                    icon: 'error'
+                })
+            } else if (kodeFakultas == 0) {
+                setLoading(false)
+                Swal.fire({
+                    title: "Fakultas kosong",
+                    icon: 'error'
+                })
+            } else if (kodeProdi == 0) {
+                setLoading(false)
+                Swal.fire({
+                    title: "Prodi kosong",
+                    icon: 'error'
+                })
+            } else if (kodeTahun == 0) {
+                setLoading(false)
+                Swal.fire({
+                    title: "Semester kosong",
+                    icon: 'error'
+                })
+            } else if (kodeSmt == 0) {
+                setLoading(false)
                 Swal.fire({
                     title: "Semester kosong",
                     icon: 'error'
                 })
             } else if (kodeNilai == 0) {
+                setLoading(false)
                 Swal.fire({
                     title: "Nilai kosong",
                     icon: 'error'
                 })
             } else {
-                setLoading(true)
                 await axios.post('v1/sebaranMataKuliah/create', {
                     id_mata_kuliah: kodeMakul,
                     code_semester: kodeSmt,
@@ -228,7 +254,7 @@ const ListSebaran = () => {
                         getMakulAll()
                         setKodeSmt("")
                         setKodeNilai("")
-                        setPaket(false)
+                        setPaket(true)
                         sebaranMakul()
                     })
                 })
@@ -299,7 +325,7 @@ const ListSebaran = () => {
         setBobot("")
         setStatusMakul("")
         setStatusMk(true)
-        setPaket(false)
+        setPaket(true)
     }
 
     const updateSebaran = async (e) => {
@@ -334,7 +360,7 @@ const ListSebaran = () => {
                     setBobot("")
                     setStatusMakul("")
                     setStatusMk(true)
-                    setPaket(false)
+                    setPaket(true)
                     sebaranMakul()
                 })
             })
@@ -701,21 +727,31 @@ const ListSebaran = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {Sebaran != 0 ? Sebaran[index].map((item, no) => (
-                                                <tr key={item.id_mata_kuliah} className='bg-white border text-gray-700' >
-                                                    <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{no + 1}</th>
-                                                    <td className='px-2 py-2 border' align='center'>{item.code_mata_kuliah}</td>
-                                                    <td className='px-2 py-2 border'>{item.nama_mata_kuliah}</td>
-                                                    <td className='px-2 py-2 border' align='center'>{item.sks}</td>
-                                                    <td className='px-2 py-2 border' align='center'>
-                                                        <div>
-                                                            <button onClick={() => getMakulById('Detail', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-info mr-1" title='Detail'><FaInfo /></button>
-                                                            <button onClick={() => getMakulById('Edit', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
-                                                            <button onClick={() => nonaktifkan(item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-error ml-1" title='Hapus'><FaTrash /></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            )) : ""}
+                                            {Sebaran != 0 ? <>
+                                                {Sebaran[index].length == 0 ?
+                                                    <tr className='bg-white border-b text-gray-500 border-x'>
+                                                        <td className='px-6 py-2 font-semibold' align='center' colSpan='5'>Data Mata Kuliah Kosong</td>
+                                                    </tr>
+                                                    :
+                                                    Sebaran[index].map((item, no) => (
+                                                        <tr key={item.id_mata_kuliah} className='bg-white border text-gray-700' >
+                                                            <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{no + 1}</th>
+                                                            <td className='px-2 py-2 border' align='center'>{item.code_mata_kuliah}</td>
+                                                            <td className='px-2 py-2 border'>{item.nama_mata_kuliah}</td>
+                                                            <td className='px-2 py-2 border' align='center'>{item.sks}</td>
+                                                            <td className='px-2 py-2 border' align='center'>
+                                                                <div>
+                                                                    <button onClick={() => getMakulById('Detail', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-info mr-1" title='Detail'><FaInfo /></button>
+                                                                    <button onClick={() => getMakulById('Edit', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
+                                                                    <button onClick={() => nonaktifkan(item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-error ml-1" title='Hapus'><FaTrash /></button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                }
+                                            </> :
+                                                ""
+                                            }
                                             <tr className='bg-white border text-gray-700'>
                                                 <td colSpan="3" className='px-2 py-2 border'>Total SKS</td>
                                                 <td colSpan="2" className='px-2 py-2 border' align='center'>{satuan[index]}</td>

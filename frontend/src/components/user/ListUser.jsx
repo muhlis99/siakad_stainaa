@@ -344,21 +344,26 @@ const ListUser = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Users.map((use, index) => (
-                                        <tr key={index} className='bg-white border-b text-gray-500 border-x'>
-                                            <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2 font-semibold'>{use.username}</td>
-                                            <td className='px-6 py-2 font-semibold'>{use.email}</td>
-                                            <td className='px-6 py-2 font-semibold'>{use.role}</td>
-                                            <td className='px-6 py-2' align='center'>
-                                                <div>
-                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalOpen('Edit', use.id)}
-                                                        title='Edit'><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(use.id)} title='Hapus'><FaTrash /></button>
-                                                </div>
-                                            </td>
+                                    {Users.length == 0 ?
+                                        <tr className='bg-white border-b border-x text-gray-500'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='5'>Data User Kosong</td>
                                         </tr>
-                                    ))}
+                                        :
+                                        Users.map((use, index) => (
+                                            <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                <td className='px-6 py-2 font-semibold'>{use.username}</td>
+                                                <td className='px-6 py-2 font-semibold'>{use.email}</td>
+                                                <td className='px-6 py-2 font-semibold'>{use.role}</td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div>
+                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalOpen('Edit', use.id)}
+                                                            title='Edit'><FaEdit /></button>
+                                                        <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(use.id)} title='Hapus'><FaTrash /></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>

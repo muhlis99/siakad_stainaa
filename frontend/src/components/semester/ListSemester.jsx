@@ -403,41 +403,46 @@ const ListSemester = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Semester.map((smt, index) => {
-                                        return kodeThn == 0 ? (
-                                            <tr key={smt.id_semester} className='bg-white border-b text-gray-500 border-x'>
-                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                                <td className='px-6 py-2 font-semibold'>Semester {smt.semester}</td>
-                                                <td className='px-6 py-2 font-semibold'>{smt.tahunAjarans[0].tahun_ajaran}</td>
-                                                <td className='px-6 py-2 font-semibold'><Moment date={smt.tanggal_aktif} format="DD MMMM YYYY" /></td>
-                                                <td className='px-6 py-2 font-semibold'>{smt.keterangan}</td>
-                                                <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{smt.status}</span></td>
-                                                <td className='px-6 py-2' align='center'>
-                                                    <div>
-                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(smt.id_semester)}><FaEdit /></button>
-                                                        <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(smt.id_semester)}><FaTrash /></button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ) : smt.code_tahun_ajaran == kodeThn ? (
-                                            <tr key={smt.id_semester} className='bg-white border-b text-gray-500 border-x'>
-                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                                <td className='px-6 py-2 font-semibold'>Semester {smt.semester}</td>
-                                                <td className='px-6 py-2 font-semibold'>{smt.tahunAjarans[0].tahun_ajaran}</td>
-                                                <td className='px-6 py-2 font-semibold'><Moment date={smt.tanggal_aktif} format="DD MMMM YYYY" /></td>
-                                                <td className='px-6 py-2 font-semibold'>{smt.keterangan}</td>
-                                                <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{smt.status}</span></td>
-                                                <td className='px-6 py-2' align='center'>
-                                                    <div>
-                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(smt.id_semester)}><FaEdit /></button>
-                                                        <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(smt.id_semester)}><FaTrash /></button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ) : (
-                                            ""
-                                        )
-                                    })}
+                                    {Semester.length == 0 ?
+                                        <tr className='bg-white border-b border-x text-gray-500'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Semester Kosong</td>
+                                        </tr>
+                                        :
+                                        Semester.map((smt, index) => {
+                                            return kodeThn == 0 ? (
+                                                <tr key={smt.id_semester} className='bg-white border-b text-gray-500 border-x'>
+                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                    <td className='px-6 py-2 font-semibold'>Semester {smt.semester}</td>
+                                                    <td className='px-6 py-2 font-semibold'>{smt.tahunAjarans[0].tahun_ajaran}</td>
+                                                    <td className='px-6 py-2 font-semibold'><Moment date={smt.tanggal_aktif} format="DD MMMM YYYY" /></td>
+                                                    <td className='px-6 py-2 font-semibold'>{smt.keterangan}</td>
+                                                    <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{smt.status}</span></td>
+                                                    <td className='px-6 py-2' align='center'>
+                                                        <div>
+                                                            <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(smt.id_semester)}><FaEdit /></button>
+                                                            <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(smt.id_semester)}><FaTrash /></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ) : smt.code_tahun_ajaran == kodeThn ? (
+                                                <tr key={smt.id_semester} className='bg-white border-b text-gray-500 border-x'>
+                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                    <td className='px-6 py-2 font-semibold'>Semester {smt.semester}</td>
+                                                    <td className='px-6 py-2 font-semibold'>{smt.tahunAjarans[0].tahun_ajaran}</td>
+                                                    <td className='px-6 py-2 font-semibold'><Moment date={smt.tanggal_aktif} format="DD MMMM YYYY" /></td>
+                                                    <td className='px-6 py-2 font-semibold'>{smt.keterangan}</td>
+                                                    <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{smt.status}</span></td>
+                                                    <td className='px-6 py-2' align='center'>
+                                                        <div>
+                                                            <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(smt.id_semester)}><FaEdit /></button>
+                                                            <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(smt.id_semester)}><FaTrash /></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ) : (
+                                                ""
+                                            )
+                                        })}
                                 </tbody>
                             </table>
                         </div>
