@@ -497,7 +497,7 @@ const ProdiList = () => {
                                         Prodi.map((prod, index) => (
                                             <tr key={prod.id_prodi} className='bg-white border-b text-gray-500 border-x'>
                                                 <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">
-                                                    {index + 1}
+                                                    {(page - 1) * 10 + index + 1}
                                                 </th>
                                                 <td className='px-6 py-2 font-semibold'>{prod.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
                                                 <td className='px-6 py-2 font-semibold'>{prod.fakultas[0].nama_fakultas}</td>

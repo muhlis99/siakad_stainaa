@@ -149,7 +149,7 @@ const ListMataKuliah = () => {
                                         Makul.map((mkl, index) => (
                                             <tr key={mkl.id_mata_kuliah} className='bg-white border-b text-gray-500 border-x'>
                                                 <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">
-                                                    {index + 1}
+                                                    {(page - 1) * 10 + index + 1}
                                                 </th>
                                                 <td className='px-6 py-2 font-semibold'>{mkl.tahunAjarans[0].tahun_ajaran}</td>
                                                 <td className='px-6 py-2 font-semibold'>{mkl.code_mata_kuliah}</td>

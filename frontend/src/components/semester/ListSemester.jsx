@@ -411,7 +411,7 @@ const ListSemester = () => {
                                         Semester.map((smt, index) => {
                                             return kodeThn == 0 ? (
                                                 <tr key={smt.id_semester} className='bg-white border-b text-gray-500 border-x'>
-                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{(page - 1) * 10 + index + 1}</th>
                                                     <td className='px-6 py-2 font-semibold'>Semester {smt.semester}</td>
                                                     <td className='px-6 py-2 font-semibold'>{smt.tahunAjarans[0].tahun_ajaran}</td>
                                                     <td className='px-6 py-2 font-semibold'><Moment date={smt.tanggal_aktif} format="DD MMMM YYYY" /></td>

@@ -121,7 +121,7 @@ const ListPembimbing = () => {
                                         :
                                         Pembimbing.map((item, index) => (
                                             <tr key={index} className='bg-white border-b text-gray-500 border-x'>
-                                                <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{(page - 1) * 10 + index + 1}</th>
                                                 <td className='px-2 py-2 font-semibold'>{item.dosens[0].nip_ynaa}</td>
                                                 <td className='px-2 py-2 font-semibold'>{item.dosens[0].nama}</td>
                                                 <td className='px-2 py-2 font-semibold'>{item.fakultas[0].nama_fakultas}</td>

@@ -438,7 +438,7 @@ const FakultasList = () => {
                                         Fakultas.map((faks, index) => (
                                             <tr key={faks.id_fakultas} className='bg-white border-b text-gray-500 border-x'>
                                                 <th scope="row" className="px-6 py-2 whitespace-nowrap font-semibold">
-                                                    {index + 1}
+                                                    {(page - 1) * 10 + index + 1}
                                                 </th>
                                                 <td className='px-6 py-2 font-semibold'>{faks.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
                                                 <td className='px-6 py-2 font-semibold'>{faks.code_fakultas}</td>

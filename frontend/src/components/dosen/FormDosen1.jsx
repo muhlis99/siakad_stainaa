@@ -94,27 +94,55 @@ const FormDosen1 = () => {
         e.preventDefault()
         try {
             setLoading(true)
-            await axios.put(`v1/dosen/createForm1/${idDsn}`, {
-                nama: namanya,
-                nidn: nidn,
-                nip_ynaa: nipy,
-                tempat_lahir: tmp,
-                tahun: thn,
-                bulan: bln,
-                tanggal: tgl,
-                jenis_kelamin: jenkel,
-                email: email,
-                no_hp: nohp,
-                no_telepon: notelp
-            }).then(function (response) {
+            let nidnLen = nidn.length
+            let nipyLen = nipy.length
+            if (nidnLen == 0) {
                 setLoading(false)
                 Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    navigate(`/dosen/form2/${stat}/${idDsn}`, { state: { collaps: 'induk', activ: '/dosen' } })
-                });
-            })
+                    title: 'NIDN Tidak Boleh Kosong',
+                    icon: "error"
+                })
+            } else if (nidnLen < 10 || nidnLen > 10) {
+                setLoading(false)
+                Swal.fire({
+                    title: 'NIDN harus 10 digit',
+                    icon: "error"
+                })
+            } else if (nipyLen = 0) {
+                setLoading(false)
+                Swal.fire({
+                    title: 'NIPYNAA Tidak Boleh Kosong',
+                    icon: "error"
+                })
+            } else if (nipyLen < 8 || nipyLen > 8) {
+                setLoading(false)
+                Swal.fire({
+                    title: 'NIPYNAA harus 8 digit',
+                    icon: "error"
+                })
+            } else {
+                await axios.put(`v1/dosen/createForm1/${idDsn}`, {
+                    nama: namanya,
+                    nidn: nidn,
+                    nip_ynaa: nipy,
+                    tempat_lahir: tmp,
+                    tahun: thn,
+                    bulan: bln,
+                    tanggal: tgl,
+                    jenis_kelamin: jenkel,
+                    email: email,
+                    no_hp: nohp,
+                    no_telepon: notelp
+                }).then(function (response) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        navigate(`/dosen/form2/${stat}/${idDsn}`, { state: { collaps: 'induk', activ: '/dosen' } })
+                    });
+                })
+            }
         } catch (error) {
             if (error.response) {
                 setLoading(false)

@@ -339,7 +339,7 @@ const ListJenjang = () => {
                                         Jenjang.map((jenj, index) => (
                                             <tr key={jenj.id_jenjang_pendidikan} className='bg-white border-b border-x text-gray-500'>
                                                 <th scope="row" className="px-6 py-2 whitespace-nowrap font-semibold border-l">
-                                                    {index + 1}
+                                                    {(page - 1) * 10 + index + 1}
                                                 </th>
                                                 <td className='px-6 py-2 font-semibold'>{jenj.code_jenjang_pendidikan}</td>
                                                 <td className='px-6 py-2 font-semibold'>{jenj.nama_jenjang_pendidikan}</td>

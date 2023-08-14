@@ -351,7 +351,7 @@ const ListUser = () => {
                                         :
                                         Users.map((use, index) => (
                                             <tr key={index} className='bg-white border-b text-gray-500 border-x'>
-                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{(page - 1) * 10 + index + 1}</th>
                                                 <td className='px-6 py-2 font-semibold'>{use.username}</td>
                                                 <td className='px-6 py-2 font-semibold'>{use.email}</td>
                                                 <td className='px-6 py-2 font-semibold'>{use.role}</td>
