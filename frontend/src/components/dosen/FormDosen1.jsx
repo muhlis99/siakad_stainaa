@@ -17,6 +17,7 @@ const FormDosen1 = () => {
     const [email, setEmail] = useState("")
     const [nohp, setNohp] = useState("")
     const [notelp, setNotelp] = useState("")
+    const [contoh, setContoh] = useState("19992606202190")
     const navigate = useNavigate()
     const { idDsn } = useParams()
     const { stat } = useParams()
@@ -64,6 +65,10 @@ const FormDosen1 = () => {
         getDosenById()
     }, [idDsn])
 
+    useEffect(() => {
+        console.log(contoh.substr(0, 4), '.', contoh.substr(4, 2), '.', contoh.substr(6, 2), '.', contoh.substr(8, 4), '.', contoh.substr(12, 2));
+    }, [])
+
     const tg = []
     for (let tanggal = 1; tanggal < 32; tanggal++) {
         if (tanggal < 10) {
@@ -90,6 +95,8 @@ const FormDosen1 = () => {
         th.push(<option key={tahun} value={tahun}>{tahun}</option>)
     }
 
+
+
     const simpanDsn = async (e) => {
         e.preventDefault()
         try {
@@ -114,10 +121,10 @@ const FormDosen1 = () => {
                     title: 'NIPYNAA Tidak Boleh Kosong',
                     icon: "error"
                 })
-            } else if (nipyLen < 8 || nipyLen > 8) {
+            } else if (nipyLen < 14 || nipyLen > 14) {
                 setLoading(false)
                 Swal.fire({
-                    title: 'NIPYNAA harus 8 digit',
+                    title: 'NIPYNAA harus 14 digit',
                     icon: "error"
                 })
             } else {
