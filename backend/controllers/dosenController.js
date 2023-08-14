@@ -738,5 +738,15 @@ module.exports = {
             catch(err => {
                 next(err)
             })
+    },
+
+    validasiEmail: async (req, res, next) => {
+        const email = req.params.email
+        const dosenUse = await dosen.findOne({
+            where: {
+                email: email
+            }
+        })
+        if (dosenUse) return res.status(401).json({ message: "Email sudah ada" })
     }
 }

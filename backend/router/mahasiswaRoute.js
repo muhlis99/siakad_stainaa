@@ -17,6 +17,7 @@ router.put('/createForm4/:id', validationForm4, validationRequest, mahasiswaCont
 router.put('/createFile/:id', mahasiswaController.createFile)
 router.put('/nonAktif/:id', mahasiswaController.nonAktif)
 router.delete('/delete/:id', mahasiswaController.delete)
+router.get('/validasiEmail/:email', mahasiswaController.validasiEmail)
 router.use('/public/seeImage/mahasiswa/ijazah', express.static(path.join('../tmp_siakad/mahasiswa/ijazah')))
 router.use('/public/seeImage/mahasiswa/kip', express.static(path.join('../tmp_siakad/mahasiswa/kip')))
 router.use('/public/seeImage/mahasiswa/kk', express.static(path.join('../tmp_siakad/mahasiswa/kk')))
