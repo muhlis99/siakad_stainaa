@@ -383,7 +383,7 @@ const FormMhs2 = () => {
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
                                         <div>
-                                            <Link to={`/mahasiswa/form1/${stat}/${idMhs}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-primary w-full capitalize rounded-md'><FaArrowLeft /><span className="">Kembali</span></Link>
+                                            <Link to={`/mahasiswa/form1/${stat}/${idMhs}`} state={{ collaps: 'induk', activ: '/mahasiswa', valid: 'no' }} className='btn btn-sm btn-primary w-full capitalize rounded-md'><FaArrowLeft /><span className="">Kembali</span></Link>
                                         </div>
                                         <div className='lg:pl-1'>
                                             <button className='btn btn-sm btn-primary w-full rounded-md capitalize'><span className="">Simpan dan lanjut</span><FaArrowRight /></button>

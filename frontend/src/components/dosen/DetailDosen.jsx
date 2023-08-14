@@ -58,7 +58,7 @@ const DetailDosen = () => {
             try {
                 const response = await axios.get(`v1/dosen/getById/${idDsn}`)
                 setNidn(response.data.data.nidn)
-                setNipy(response.data.data.nip_ynaa)
+                setNipy(response.data.data.nip_ynaa.substr(0, 4) + '.' + response.data.data.nip_ynaa.substr(4, 2) + '.' + response.data.data.nip_ynaa.substr(6, 2) + '.' + response.data.data.nip_ynaa.substr(8, 4) + '.' + response.data.data.nip_ynaa.substr(12, 2))
                 setNamanya(response.data.data.nama)
                 setTmp(response.data.data.tempat_lahir)
                 setTgl(response.data.data.tanggal_lahir)
