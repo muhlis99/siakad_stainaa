@@ -1,5 +1,4 @@
 const { body, check } = require('express-validator')
-const mahasiswa = require('../models/mahasiswaModel.js')
 
 exports.validationForm1 = [
     check('nik')
@@ -39,19 +38,7 @@ exports.validationForm1 = [
         .withMessage('email tidak boleh kosong')
         .isEmail()
         .normalizeEmail()
-        .withMessage('email tidak valid')
-        .custom(value => {
-            return mahasiswa.findOne({
-                where: {
-                    email: value
-                }
-            })
-                .then(user => {
-                    if (user) {
-                        return Promise.reject('email yang anda masukkan sudah ada')
-                    }
-                })
-        }),
+        .withMessage('email tidak valid'),
     check('no_hp')
         .notEmpty()
         .withMessage('no hp tidak boleh kosong')

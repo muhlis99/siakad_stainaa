@@ -850,9 +850,17 @@ module.exports = {
 
     },
 
+    validasiEmail: async (req, res, next) => {
+        const email = req.params.email
+        const mahasiswaUse = await mahasiswa.findOne({
+            where: {
+                email: email
+            }
+        })
+        if (mahasiswaUse) return res.status(401).json({ message: "Email sudah ada" })
+    },
+
     importEcxel: async (req, res, next) => {
-
-
         // const file = req.files.import_excel
         // if (!file) return res.status(400).json({ message: "file tidak boleh kosong" })
         // const fileSize = file.data.length

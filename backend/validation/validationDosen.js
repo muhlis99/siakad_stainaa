@@ -39,19 +39,7 @@ exports.validationForm1 = [
         .withMessage('email tidak boleh kosong')
         .isEmail()
         .normalizeEmail()
-        .withMessage('email tidak valid')
-        .custom(value => {
-            return dosen.findOne({
-                where: {
-                    email: value
-                }
-            })
-                .then(user => {
-                    if (user) {
-                        return Promise.reject('email yang anda masukkan sudah ada')
-                    }
-                })
-        }),
+        .withMessage('email tidak valid'),
     check('no_hp')
         .notEmpty()
         .withMessage('no hp tidak boleh kosong')
