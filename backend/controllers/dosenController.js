@@ -747,6 +747,10 @@ module.exports = {
                 email: email
             }
         })
-        if (dosenUse) return res.status(401).json({ message: "Email sudah ada" })
+        if (dosenUse) {
+            return res.status(401).json({ message: "Email sudah ada" })
+        } else {
+            return res.status(201).json({ message: "Email tidak ada" })
+        }
     }
 }

@@ -857,7 +857,11 @@ module.exports = {
                 email: email
             }
         })
-        if (mahasiswaUse) return res.status(401).json({ message: "Email sudah ada" })
+        if (mahasiswaUse) {
+            return res.status(401).json({ message: "Email sudah ada" })
+        } else {
+            return res.status(201).json({ message: "Email tidak ada" })
+        }
     },
 
     importEcxel: async (req, res, next) => {
