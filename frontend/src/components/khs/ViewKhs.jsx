@@ -155,30 +155,39 @@ const ViewKhs = () => {
                                         <th scope="col" className="px-1 py-2 border" align='center'>Indeks</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {ViewKhs.map((item, index) => (
-                                        <tr className='bg-white text-gray-900'>
-                                            <th scope="row" className="px-1 py-2 font-medium whitespace-nowrap border" align='center'>{index + 1}</th>
-                                            <td className='px-1 py-2 border' align='center'>{item.mataKuliahs[0].code_mata_kuliah}</td>
-                                            <td className='px-1 py-2 border'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                            <td className='px-1 py-2 border' align='center'>{item.mataKuliahs[0].sks}</td>
-                                            <td className='px-1 py-2 border' align='center'>{item.nilai_akhir}</td>
-                                            <td className='px-1 py-2 border' align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
-                                            <td className='px-1 py-2 border' align='center'>{item.kategoriNilais[0].interfal_skor}</td>
-                                            <td className='px-1 py-2 border' align='center'>{item.sksIndexs}</td>
+                                {ViewKhs.length ?
+                                    <tbody>
+                                        <tr className='bg-white border-b border-x text-gray-500'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='8'>Data KHS Kosong</td>
                                         </tr>
-                                    ))}
-                                    <tr className='bg-white text-gray-900'>
-                                        <td className='px-1 py-2 border' align='center' colSpan="3"><strong>Jumlah</strong></td>
-                                        <td className='px-1 py-2 border' align='center'>{jumSks}</td>
-                                        <td className='px-1 py-2 border' align='center' colSpan="3"></td>
-                                        <td className='px-1 py-2 border' align='center'>{jumSksIndeks}</td>
-                                    </tr>
-                                    <tr className='bg-white text-gray-900'>
-                                        <td className='px-1 py-2 border' align='center' colSpan="7"><strong>IPS (Index Prestasi Semester)</strong></td>
-                                        <td className='px-1 py-2 border' align='center'>{ips}</td>
-                                    </tr>
-                                </tbody>
+                                    </tbody>
+                                    :
+                                    <tbody>
+                                        {ViewKhs.map((item, index) => (
+                                            <tr className='bg-white text-gray-900'>
+                                                <th scope="row" className="px-1 py-2 font-medium whitespace-nowrap border" align='center'>{index + 1}</th>
+                                                <td className='px-1 py-2 border' align='center'>{item.mataKuliahs[0].code_mata_kuliah}</td>
+                                                <td className='px-1 py-2 border'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
+                                                <td className='px-1 py-2 border' align='center'>{item.mataKuliahs[0].sks}</td>
+                                                <td className='px-1 py-2 border' align='center'>{item.nilai_akhir}</td>
+                                                <td className='px-1 py-2 border' align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
+                                                <td className='px-1 py-2 border' align='center'>{item.kategoriNilais[0].interfal_skor}</td>
+                                                <td className='px-1 py-2 border' align='center'>{item.sksIndexs}</td>
+                                            </tr>
+                                        ))}
+                                        <tr className='bg-white text-gray-900'>
+                                            <td className='px-1 py-2 border' align='center' colSpan="3"><strong>Jumlah</strong></td>
+                                            <td className='px-1 py-2 border' align='center'>{jumSks}</td>
+                                            <td className='px-1 py-2 border' align='center' colSpan="3"></td>
+                                            <td className='px-1 py-2 border' align='center'>{jumSksIndeks}</td>
+                                        </tr>
+                                        <tr className='bg-white text-gray-900'>
+                                            <td className='px-1 py-2 border' align='center' colSpan="7"><strong>IPS (Index Prestasi Semester)</strong></td>
+                                            <td className='px-1 py-2 border' align='center'>{ips}</td>
+                                        </tr>
+                                    </tbody>
+                                }
+
                             </table>
                         </div>
                     </div>

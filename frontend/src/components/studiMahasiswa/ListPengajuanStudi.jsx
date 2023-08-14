@@ -334,25 +334,30 @@ const ListPengajuanStudi = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Studi.map((item, index) => (
-                                        <tr key={index} className='bg-white border-b text-gray-500 border-x'>
-                                            <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].nim}</td>
-                                            <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].nama}</td>
-                                            <td className='px-2 py-2 font-semibold'>{item.prodis[0].nama_prodi}</td>
-                                            <td className='px-2 py-2 font-semibold'>Semester {item.semesters[0].semester}</td>
-                                            <td className='px-2 py-2 font-semibold'>{item.pengajuan}</td>
-                                            <td className='px-2 py-2 font-semibold'>{item.alasan}</td>
-                                            <td className='px-2 py-2 font-semibold'>{item.status == 'disetujui1' ? <span className="badge badge-success badge-sm">Disetujui Dosen Wali</span> : item.status == 'disetujui2' ? <span className="badge badge-success badge-sm">Disetujui BAUAK</span> : item.status == 'proses' ? <span className="badge badge-warning badge-sm">Proses di Dosen Wali</span> : <span className="badge badge-error badge-sm">Tidak Disetujui</span>}</td>
-                                            <td className='px-2 py-2' align='center'>
-                                                <div>
-                                                    <button className='btn btn-info btn-xs mr-1 text-white btn-circle' onClick={() => modalOpen(item.id_pengajuan_studi)}><FaSearch /></button>
-                                                    {item.status == 'disetujui1' ? <button className="btn btn-xs btn-circle text-white btn-primary mr-1" onClick={() => setujui(item.id_pengajuan_studi)} title='Setujui'><FaCheck /></button> : <button className="btn btn-xs btn-circle text-white btn-disabled mr-1" title='Edit'><FaCheck /></button>}
-                                                    {item.status == 'tidak' ? <button className="btn btn-xs btn-circle text-white btn-disabled" title='Hapus'><FaTimes /></button> : <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(item.id_pengajuan_studi)}><FaTimes /></button>}
-                                                </div>
-                                            </td>
+                                    {Studi.length == 0 ?
+                                        <tr className='bg-white border-b text-gray-500 border-x'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='9'>Data Pengajuan Studi Mahasiswa Kosong</td>
                                         </tr>
-                                    ))}
+                                        :
+                                        Studi.map((item, index) => (
+                                            <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].nim}</td>
+                                                <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].nama}</td>
+                                                <td className='px-2 py-2 font-semibold'>{item.prodis[0].nama_prodi}</td>
+                                                <td className='px-2 py-2 font-semibold'>Semester {item.semesters[0].semester}</td>
+                                                <td className='px-2 py-2 font-semibold'>{item.pengajuan}</td>
+                                                <td className='px-2 py-2 font-semibold'>{item.alasan}</td>
+                                                <td className='px-2 py-2 font-semibold'>{item.status == 'disetujui1' ? <span className="badge badge-success badge-sm">Disetujui Dosen Wali</span> : item.status == 'disetujui2' ? <span className="badge badge-success badge-sm">Disetujui BAUAK</span> : item.status == 'proses' ? <span className="badge badge-warning badge-sm">Proses di Dosen Wali</span> : <span className="badge badge-error badge-sm">Tidak Disetujui</span>}</td>
+                                                <td className='px-2 py-2' align='center'>
+                                                    <div>
+                                                        <button className='btn btn-info btn-xs mr-1 text-white btn-circle' onClick={() => modalOpen(item.id_pengajuan_studi)}><FaSearch /></button>
+                                                        {item.status == 'disetujui1' ? <button className="btn btn-xs btn-circle text-white btn-primary mr-1" onClick={() => setujui(item.id_pengajuan_studi)} title='Setujui'><FaCheck /></button> : <button className="btn btn-xs btn-circle text-white btn-disabled mr-1" title='Edit'><FaCheck /></button>}
+                                                        {item.status == 'tidak' ? <button className="btn btn-xs btn-circle text-white btn-disabled" title='Hapus'><FaTimes /></button> : <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(item.id_pengajuan_studi)}><FaTimes /></button>}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>

@@ -290,17 +290,22 @@ const MhsPersemester = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Mahasiswa.map((mhs, index) => (
-                                        <tr key={index} className='bg-white border-b text-gray-500 border-x'>
-                                            <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2 font-semibold'>{mhs.mahasiswas[0].nim}</td>
-                                            <td className='px-6 py-2 font-semibold'>{mhs.mahasiswas[0].nama}</td>
-                                            <td className='px-6 py-2 font-semibold'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-2 font-semibold'>{mhs.fakultas[0].nama_fakultas}</td>
-                                            <td className='px-6 py-2 font-semibold'>{mhs.prodis[0].nama_prodi}</td>
-                                            <td className='px-6 py-2 font-semibold'>SEMESTER {mhs.semesters[0].semester}</td>
+                                    {Mahasiswa.length == 0 ?
+                                        <tr className='bg-white border-b text-gray-500 border-x'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Mahasiswa Kosong</td>
                                         </tr>
-                                    ))}
+                                        :
+                                        Mahasiswa.map((mhs, index) => (
+                                            <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                <td className='px-6 py-2 font-semibold'>{mhs.mahasiswas[0].nim}</td>
+                                                <td className='px-6 py-2 font-semibold'>{mhs.mahasiswas[0].nama}</td>
+                                                <td className='px-6 py-2 font-semibold'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                                <td className='px-6 py-2 font-semibold'>{mhs.fakultas[0].nama_fakultas}</td>
+                                                <td className='px-6 py-2 font-semibold'>{mhs.prodis[0].nama_prodi}</td>
+                                                <td className='px-6 py-2 font-semibold'>SEMESTER {mhs.semesters[0].semester}</td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>

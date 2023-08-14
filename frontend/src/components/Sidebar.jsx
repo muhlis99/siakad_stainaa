@@ -79,37 +79,10 @@ const Sidebar = () => {
                 <Link to="/prodi" state={{ collaps: 'induk', activ: '/prodi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-sm'>Prodi</span></Link>
               </li>
               <li>
-                {active == '/tahun' || active == '/semester' || active == '/kategorinilai' ?
-                  <details open>
-                    <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
-                    <ul className='gap-1'>
-                      <li>
-                        <Link to='/tahun' state={{ collaps: 'induk', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
-                      </li>
-                      <li>
-                        <Link to="/semester" state={{ collaps: 'induk', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
-                      </li>
-                      <li>
-                        <Link to="/kategorinilai" state={{ collaps: 'induk', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
-                      </li>
-                    </ul>
-                  </details> :
-                  <details>
-                    <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
-                    <ul className='gap-1'>
-                      <li>
-                        <Link to='/tahun' state={{ collaps: 'induk', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
-                      </li>
-                      <li>
-                        <Link to="/semester" state={{ collaps: 'induk', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
-                      </li>
-                      <li>
-                        <Link to="/kategorinilai" state={{ collaps: 'induk', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
-                      </li>
-                    </ul>
-                  </details>
-                }
-
+                <Link to='/tahun' state={{ collaps: 'induk', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
+              </li>
+              <li>
+                <Link to="/semester" state={{ collaps: 'induk', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
               </li>
               <li>
                 <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/dosen' || active == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-sm'>Dosen</span></Link>
@@ -135,36 +108,10 @@ const Sidebar = () => {
                   <Link to="/prodi" state={{ collaps: 'induk', activ: '/prodi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/prodi' ? 'active' : ''}`}><FaBookmark /> <span className='text-sm'>Prodi</span></Link>
                 </li>
                 <li>
-                  {active == '/tahun' || active == '/semester' || active == '/kategorinilai' ?
-                    <details open>
-                      <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
-                      <ul className='gap-1'>
-                        <li>
-                          <Link to='/tahun' state={{ collaps: 'induk', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
-                        </li>
-                        <li>
-                          <Link to="/semester" state={{ collaps: 'induk', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
-                        </li>
-                        <li>
-                          <Link to="/kategorinilai" state={{ collaps: 'induk', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
-                        </li>
-                      </ul>
-                    </details> :
-                    <details>
-                      <summary className='text-[#F5F5F5]'><FaStackOverflow />Kurikulum</summary>
-                      <ul className='gap-1'>
-                        <li>
-                          <Link to='/tahun' state={{ collaps: 'induk', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
-                        </li>
-                        <li>
-                          <Link to="/semester" state={{ collaps: 'induk', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
-                        </li>
-                        <li>
-                          <Link to="/kategorinilai" state={{ collaps: 'induk', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
-                        </li>
-                      </ul>
-                    </details>
-                  }
+                  <Link to='/tahun' state={{ collaps: 'induk', activ: '/tahun' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/tahun' ? 'active' : ''}`}><FaCalendarAlt /> <span className='text-sm'>Tahun Ajaran</span></Link>
+                </li>
+                <li>
+                  <Link to="/semester" state={{ collaps: 'induk', activ: '/semester' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/semester' ? 'active' : ''}`}><FaStripeS /> <span className='text-sm'>Semester</span></Link>
                 </li>
                 <li>
                   <Link to="/dosen" state={{ collaps: 'induk', activ: '/dosen' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/dosen' || active == '/dosen' ? 'active' : ''}`}><FaChalkboardTeacher /> <span className='text-sm'>Dosen</span></Link>
@@ -194,8 +141,11 @@ const Sidebar = () => {
                 <li>
                   <Link to="/studimhs" state={{ collaps: 'kuliah', activ: '/studimhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/studimhs' || active == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-sm'>Studi Mahasiswa</span></Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/pengajuanstudi" state={{ collaps: 'kuliah', activ: '/pengajuanstudi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pengajuanstudi' || active == '/pengajuanstudi' ? 'active' : ''}`}><FaFileAlt /><span className='text-sm'>Pengajuan Studi</span></Link>
+                </li> */}
+                <li>
+                  <Link to="/kategorinilai" state={{ collaps: 'kuliah', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
                 </li>
                 <li>
                   <Link to="/matakuliah" state={{ collaps: 'kuliah', activ: '/matakuliah' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/matakuliah' || active == '/matakuliah' ? 'active' : ''}`}><FaBook /> <span className='text-sm'>Mata Kuliah</span></Link>
@@ -232,8 +182,11 @@ const Sidebar = () => {
                 <li>
                   <Link to="/studimhs" state={{ collaps: 'kuliah', activ: '/studimhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/studimhs' || active == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-sm'>Studi Mahasiswa</span></Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/pengajuanstudi" state={{ collaps: 'kuliah', activ: '/pengajuanstudi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pengajuanstudi' || active == '/pengajuanstudi' ? 'active' : ''}`}><FaFileAlt /><span className='text-sm'>Pengajuan Studi</span></Link>
+                </li> */}
+                <li>
+                  <Link to="/kategorinilai" state={{ collaps: 'kuliah', activ: '/kategorinilai' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/kategorinilai' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Kategori Nilai</span></Link>
                 </li>
                 <li>
                   <Link to="/matakuliah" state={{ collaps: 'kuliah', activ: '/matakuliah' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/matakuliah' || active == '/matakuliah' ? 'active' : ''}`}><FaBook /> <span className='text-sm'>Mata Kuliah</span></Link>

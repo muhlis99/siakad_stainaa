@@ -141,24 +141,29 @@ const ListMataKuliah = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Makul.map((mkl, index) => (
-                                        <tr key={mkl.id_mata_kuliah} className='bg-white border-b text-gray-500 border-x'>
-                                            <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">
-                                                {index + 1}
-                                            </th>
-                                            <td className='px-6 py-2 font-semibold'>{mkl.tahunAjarans[0].tahun_ajaran}</td>
-                                            <td className='px-6 py-2 font-semibold'>{mkl.code_mata_kuliah}</td>
-                                            <td className='px-6 py-2 font-semibold'>{mkl.nama_mata_kuliah}</td>
-                                            <td className='px-6 py-2 font-semibold'>{mkl.sks}</td>
-                                            <td className='px-6 py-2 font-semibold'>{mkl.prodis[0].nama_prodi}</td>
-                                            <td className='px-6 py-2' align='center'>
-                                                <div>
-                                                    <Link to={`/matakuliah/edit/${mkl.id_mata_kuliah}`} state={{ collaps: 'kuliah', activ: '/matakuliah' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
-                                                    <button className="ml-1 btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(mkl.id_mata_kuliah)} title='Hapus'><FaTrash /></button>
-                                                </div>
-                                            </td>
+                                    {Makul.length == 0 ?
+                                        <tr className='bg-white border-b text-gray-500 border-x'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Mata Kuliah Kosong</td>
                                         </tr>
-                                    ))}
+                                        :
+                                        Makul.map((mkl, index) => (
+                                            <tr key={mkl.id_mata_kuliah} className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">
+                                                    {(page - 1) * 10 + index + 1}
+                                                </th>
+                                                <td className='px-6 py-2 font-semibold'>{mkl.tahunAjarans[0].tahun_ajaran}</td>
+                                                <td className='px-6 py-2 font-semibold'>{mkl.code_mata_kuliah}</td>
+                                                <td className='px-6 py-2 font-semibold'>{mkl.nama_mata_kuliah}</td>
+                                                <td className='px-6 py-2 font-semibold'>{mkl.sks}</td>
+                                                <td className='px-6 py-2 font-semibold'>{mkl.prodis[0].nama_prodi}</td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div>
+                                                        <Link to={`/matakuliah/edit/${mkl.id_mata_kuliah}`} state={{ collaps: 'kuliah', activ: '/matakuliah' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                        <button className="ml-1 btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(mkl.id_mata_kuliah)} title='Hapus'><FaTrash /></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>

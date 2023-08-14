@@ -169,19 +169,24 @@ const ListStudiMahasiswa = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Studi.map((item, index) => (
+                                    {Studi.length == 0 ?
                                         <tr className='bg-white border-b text-gray-500 border-x'>
-                                            <th scope="row" align='center' className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{item.nim}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{item.mahasiswas[0].nama}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{item.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{item.fakultas[0].nama_fakultas}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{item.prodis[0].nama_prodi}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{item.tahunAjarans[0].tahun_ajaran}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>Semester {item.semesters[0].semester}</td>
-                                            <td className="px-2 py-2 font-semibold" align='center'><span className='capitalize'>{item.status}</span></td>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='9'>Data Studi Mahasiswa Kosong</td>
                                         </tr>
-                                    ))}
+                                        :
+                                        Studi.map((item, index) => (
+                                            <tr className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" align='center' className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{item.nim}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{item.mahasiswas[0].nama}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{item.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{item.fakultas[0].nama_fakultas}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{item.prodis[0].nama_prodi}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{item.tahunAjarans[0].tahun_ajaran}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>Semester {item.semesters[0].semester}</td>
+                                                <td className="px-2 py-2 font-semibold" align='center'><span className='capitalize'>{item.status}</span></td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>

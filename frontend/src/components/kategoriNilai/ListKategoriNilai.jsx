@@ -385,43 +385,48 @@ const ListKategoriNilai = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {ListNilai.map((ktg, index) => {
-                                        return kodeThn == 0 ? (
-                                            <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500 border-x'>
-                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap" align='center'>{index + 1}</th>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.tahunAjarans[0].tahun_ajaran}</td>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_huruf}</td>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.interfal_skor}</td>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.kategori}</td>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.keterangan == 'LULUS' ? <span className='text-success'>{ktg.keterangan}</span> : <span className='text-error'>{ktg.keterangan}</span>}</td>
-                                                <td className='px-6 py-2' align='center'>
-                                                    <div>
-                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
-                                                        <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ) : ktg.code_tahun_ajaran == kodeThn ? (
-                                            <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500 border-x'>
-                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap" align='center'>{index + 1}</th>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.tahunAjarans[0].tahun_ajaran}</td>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_huruf}</td>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.interfal_skor}</td>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.kategori}</td>
-                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.keterangan == 'LULUS' ? <span className='text-success'>{ktg.keterangan}</span> : <span className='text-error'>{ktg.keterangan}</span>}</td>
-                                                <td className='px-6 py-2' align='center'>
-                                                    <div>
-                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
-                                                        <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ) : (
-                                            ""
-                                        )
-                                    })}
+                                    {ListNilai.length == 0 ?
+                                        <tr className='bg-white border-b border-x text-gray-500'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='8'>Data Kategori Nilai Kosong</td>
+                                        </tr>
+                                        :
+                                        ListNilai.map((ktg, index) => {
+                                            return kodeThn == 0 ? (
+                                                <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500 border-x'>
+                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap" align='center'>{(page - 1) * 10 + index + 1}</th>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.tahunAjarans[0].tahun_ajaran}</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_huruf}</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.interfal_skor}</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.kategori}</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.keterangan == 'LULUS' ? <span className='text-success'>{ktg.keterangan}</span> : <span className='text-error'>{ktg.keterangan}</span>}</td>
+                                                    <td className='px-6 py-2' align='center'>
+                                                        <div>
+                                                            <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
+                                                            <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ) : ktg.code_tahun_ajaran == kodeThn ? (
+                                                <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500 border-x'>
+                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap" align='center'>{index + 1}</th>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.tahunAjarans[0].tahun_ajaran}</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_huruf}</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.interfal_skor}</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.kategori}</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.keterangan == 'LULUS' ? <span className='text-success'>{ktg.keterangan}</span> : <span className='text-error'>{ktg.keterangan}</span>}</td>
+                                                    <td className='px-6 py-2' align='center'>
+                                                        <div>
+                                                            <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
+                                                            <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ) : (
+                                                ""
+                                            )
+                                        })}
                                 </tbody>
                             </table>
                         </div>

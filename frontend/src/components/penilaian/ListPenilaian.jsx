@@ -257,27 +257,32 @@ const ListPenilaian = () => {
                                     <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
                                 </tr>
                             </thead>
-                            {Makul.map((kls, index) => (
-                                <tbody key={index}>
-                                    {DataKelas != 0 ?
-                                        DataKelas[index].map((item, o) => (
-                                            <tr key={o} className='bg-white border-b text-gray-500 border-x'>
-                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{o + 1}</th>
-                                                <td className='px-6 py-2 font-semibold'>{item.mataKuliahs[0].code_mata_kuliah}</td>
-                                                <td className='px-6 py-2 font-semibold'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                                <td className='px-6 py-2 font-semibold'>Kelas {item.nama_kelas}</td>
-                                                <td className='px-6 py-2 font-semibold'>{item.jumlahMhs} Mahasiswa</td>
-                                                <td className='px-6 py-2 font-semibold'>{item.kapasitas} Peserta</td>
-                                                <td className='px-6 py-2 font-semibold' align='center'><Link to={`/detailnilai`} state={{ mk: item.code_mata_kuliah, idn: item.id_kelas, kod: item.code, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-xs btn-info btn-circle' title='Detail'><FaInfo /></Link></td>
+                            {Makul.length == 0 ?
+                                <tr className='bg-white border-b border-x text-gray-500'>
+                                    <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Kelas Kosong</td>
+                                </tr>
+                                :
+                                Makul.map((kls, index) => (
+                                    <tbody key={index}>
+                                        {DataKelas != 0 ?
+                                            DataKelas[index].map((item, o) => (
+                                                <tr key={o} className='bg-white border-b text-gray-500 border-x'>
+                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{o + 1}</th>
+                                                    <td className='px-6 py-2 font-semibold'>{item.mataKuliahs[0].code_mata_kuliah}</td>
+                                                    <td className='px-6 py-2 font-semibold'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
+                                                    <td className='px-6 py-2 font-semibold'>Kelas {item.nama_kelas}</td>
+                                                    <td className='px-6 py-2 font-semibold'>{item.jumlahMhs} Mahasiswa</td>
+                                                    <td className='px-6 py-2 font-semibold'>{item.kapasitas} Peserta</td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'><Link to={`/detailnilai`} state={{ mk: item.code_mata_kuliah, idn: item.id_kelas, kod: item.code, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-xs btn-info btn-circle' title='Detail'><FaInfo /></Link></td>
+                                                </tr>
+                                            ))
+                                            :
+                                            <tr className='bg-white border-b text-gray-500 border-x'>
+                                                <td colSpan='7' align='center' className='px-auto py-2 font-semibold'>Data Kelas Kosong</td>
                                             </tr>
-                                        ))
-                                        :
-                                        <tr className='bg-white border-b text-gray-500 border-x'>
-                                            <td colSpan='6' align='center' className='px-auto py-2 font-semibold'>Data Kelas Kosong</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            ))}
+                                        }
+                                    </tbody>
+                                ))}
                         </table>
                     </div>
                 </div>

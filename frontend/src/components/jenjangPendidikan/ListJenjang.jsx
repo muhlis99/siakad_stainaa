@@ -331,22 +331,28 @@ const ListJenjang = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Jenjang.map((jenj, index) => (
-                                        <tr key={jenj.id_jenjang_pendidikan} className='bg-white border-b border-x text-gray-500'>
-                                            <th scope="row" className="px-6 py-2 whitespace-nowrap font-semibold border-l">
-                                                {index + 1}
-                                            </th>
-                                            <td className='px-6 py-2 font-semibold'>{jenj.code_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-2 font-semibold'>{jenj.nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-2'><span className="badge badge-success badge-sm font-semibold capitalize">{jenj.status}</span></td>
-                                            <td className='px-6 py-2' align='center'>
-                                                <div>
-                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalEditOpen(jenj.id_jenjang_pendidikan)} title='Edit'><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(jenj.id_jenjang_pendidikan)} title='Hapus'><FaTrash /></button>
-                                                </div>
-                                            </td>
+                                    {Jenjang.length == 0 ?
+                                        <tr className='bg-white border-b border-x text-gray-500'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='5'>Data Jenjang Pendidikan Kosong</td>
                                         </tr>
-                                    ))}
+                                        :
+                                        Jenjang.map((jenj, index) => (
+                                            <tr key={jenj.id_jenjang_pendidikan} className='bg-white border-b border-x text-gray-500'>
+                                                <th scope="row" className="px-6 py-2 whitespace-nowrap font-semibold border-l">
+                                                    {(page - 1) * 10 + index + 1}
+                                                </th>
+                                                <td className='px-6 py-2 font-semibold'>{jenj.code_jenjang_pendidikan}</td>
+                                                <td className='px-6 py-2 font-semibold'>{jenj.nama_jenjang_pendidikan}</td>
+                                                <td className='px-6 py-2'><span className="badge badge-success badge-sm font-semibold capitalize">{jenj.status}</span></td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div>
+                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalEditOpen(jenj.id_jenjang_pendidikan)} title='Edit'><FaEdit /></button>
+                                                        <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(jenj.id_jenjang_pendidikan)} title='Hapus'><FaTrash /></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
                                 </tbody>
                             </table>
                         </div>

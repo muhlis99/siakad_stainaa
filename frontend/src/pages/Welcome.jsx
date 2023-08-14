@@ -17,9 +17,9 @@ const Welcome = () => {
               <Link to="/login" className="items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 rounded-lg sm:w-auto focus:ring-4 border border-[#2D7F5F] hover:bg-[#2D7F5F] hover:text-white">
                 Log in
               </Link>
-              <Link className="items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 rounded-lg sm:w-auto focus:ring-4 border border-[#2D7F5F] hover:bg-[#2D7F5F] hover:text-white">
+              {/* <Link className="items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 rounded-lg sm:w-auto focus:ring-4 border border-[#2D7F5F] hover:bg-[#2D7F5F] hover:text-white">
                 Informasi
-              </Link>
+              </Link> */}
             </div>
           </div>
           <div className="hidden lg:mt-0 lg:col-span-3 lg:flex">

@@ -185,21 +185,26 @@ const ListKhs = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Mahasiswa.map((mhs, index) => (
-                                        <tr key={index} className='bg-white border-b text-gray-500 border-x'>
-                                            <th scope="row" align='center' className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.mahasiswas[0].nim}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.mahasiswas[0].nama}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.fakultas[0].nama_fakultas}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.prodis[0].nama_prodi}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.tahunAjarans[0].tahun_ajaran}</td>
-                                            <td className='px-2 py-2 font-semibold' align='center'>{mhs.semesters[0].semester}</td>
-                                            <td className="px-2 py-2">
-                                                <Link to={`/view/${mhs.nim}/${kodeFakultas}/${kodeJenjang}/${kodeProdi}/${kodeSemester}/${kodeTahun}`} state={{ collaps: 'kuliah', activ: '/khs' }} className="btn btn-xs btn-info btn-circle" title='Detail'><FaSearch /></Link>
-                                            </td>
+                                    {Mahasiswa.length == 0 ?
+                                        <tr className='bg-white border-b border-x text-gray-500'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='9'>Data Mahasiswa Kosong</td>
                                         </tr>
-                                    ))}
+                                        :
+                                        Mahasiswa.map((mhs, index) => (
+                                            <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" align='center' className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{mhs.mahasiswas[0].nim}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{mhs.mahasiswas[0].nama}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{mhs.fakultas[0].nama_fakultas}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{mhs.prodis[0].nama_prodi}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{mhs.tahunAjarans[0].tahun_ajaran}</td>
+                                                <td className='px-2 py-2 font-semibold' align='center'>{mhs.semesters[0].semester}</td>
+                                                <td className="px-2 py-2">
+                                                    <Link to={`/view/${mhs.nim}/${kodeFakultas}/${kodeJenjang}/${kodeProdi}/${kodeSemester}/${kodeTahun}`} state={{ collaps: 'kuliah', activ: '/khs' }} className="btn btn-xs btn-info btn-circle" title='Detail'><FaSearch /></Link>
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>

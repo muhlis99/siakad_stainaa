@@ -28,6 +28,7 @@ const FormMhs4 = () => {
     const [prodinya, setProdinya] = useState("")
     const [kodeThn, setKodeThn] = useState("")
     const [kodeSmt, setKodeSmt] = useState("")
+    const [nim, setNim] = useState("")
     const navigate = useNavigate()
     const { idMhs } = useParams()
     const { stat } = useParams()
@@ -175,30 +176,47 @@ const FormMhs4 = () => {
     const simpanMhs = async (e) => {
         e.preventDefault()
         try {
-            setLoading(true)
-            await axios.put(`v1/mahasiswa/createForm4/${idMhs}`, {
-                nik_wali: nikWali,
-                nama_wali: namaWali,
-                tahun_w: thWali,
-                bulan_w: blWali,
-                tanggal_w: tgWali,
-                pekerjaan_wali: pkrjnWali,
-                penghasilan_wali: pndptWali,
-                pendidikan_wali: pndknWali,
-                code_jenjang_pendidikan: jenjangnya,
-                code_fakultas: fakultasnya,
-                code_prodi: prodinya,
-                code_tahun_ajaran: kodeThn,
-                code_semester: kodeSmt
-            }).then(function (response) {
+            let length = nim.length
+            if (length == 0) {
                 setLoading(false)
                 Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    navigate("/mahasiswa", { state: { collaps: 'induk', activ: '/mahasiswa' } })
-                });
-            })
+                    title: 'Nim Kosong',
+                    icon: "error"
+                })
+            } else if (length < 10 || length > 10) {
+                setLoading(false)
+                Swal.fire({
+                    title: 'Nim harus 10 digit',
+                    icon: "error"
+                })
+            } else {
+
+                setLoading(true)
+                await axios.put(`v1/mahasiswa/createForm4/${idMhs}`, {
+                    nik_wali: nikWali,
+                    nama_wali: namaWali,
+                    tahun_w: thWali,
+                    bulan_w: blWali,
+                    tanggal_w: tgWali,
+                    pekerjaan_wali: pkrjnWali,
+                    penghasilan_wali: pndptWali,
+                    pendidikan_wali: pndknWali,
+                    code_jenjang_pendidikan: jenjangnya,
+                    code_fakultas: fakultasnya,
+                    code_prodi: prodinya,
+                    code_tahun_ajaran: kodeThn,
+                    code_semester: kodeSmt,
+                    nim: nim // tambahan untuk input nim mahasiswa lama
+                }).then(function (response) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        navigate("/mahasiswa", { state: { collaps: 'induk', activ: '/mahasiswa' } })
+                    });
+                })
+            }
         } catch (error) {
             setLoading(false)
             if (error.response) {
@@ -456,6 +474,14 @@ const FormMhs4 = () => {
                                             ))}
                                         </select>
                                     </div>
+                                    {/* Tambahan untuk input mahasiswa lama */}
+                                    <div>
+                                        <label className="label">
+                                            <span className="text-base label-text">NIM</span>
+                                        </label>
+                                        <input type="number" className="input input-sm input-bordered w-full" value={nim} onChange={(e) => setNim(e.target.value)} />
+                                    </div>
+                                    {/* Tambahan untuk mahasiswa lama */}
                                 </div>
                                 <div className='mt-5 grid lg:grid-cols-2'>
                                     <div className='col-span-2 mb-5'>

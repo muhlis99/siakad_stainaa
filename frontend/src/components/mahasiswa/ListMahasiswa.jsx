@@ -33,14 +33,13 @@ const ListMahasiswa = () => {
         getMahasiwa()
     }, [page, keyword])
 
+    useEffect(() => {
+        getQrMahasiswa()
+    }, [Mahasiswa])
 
-    // useEffect(() => {
-    //     getQrMahasiswa()
-    // }, [Mahasiswa])
-
-    // useEffect(() => {
-    //     getQrMhs()
-    // }, [namaQr])
+    useEffect(() => {
+        getQrMhs()
+    }, [namaQr])
 
     const getMahasiwa = async () => {
         const response = await axios.get(`v1/mahasiswa/all?page=${page}&search=${keyword}`)
@@ -51,34 +50,34 @@ const ListMahasiswa = () => {
         setperPage(response.data.per_page)
     }
 
-    // const getQrMahasiswa = () => {
-    //     var i = Mahasiswa.map(item => (
-    //         item.qrcode
-    //     ))
-    //     setNamaQr(i)
-    // }
+    const getQrMahasiswa = () => {
+        var i = Mahasiswa.map(item => (
+            item.qrcode
+        ))
+        setNamaQr(i)
+    }
 
-    // const getQrMhs = async () => {
-    //     if (namaQr != 0) {
-    //         let qrCode = []
-    //         let promises = []
-    //         for (let i = 0; i < namaQr.length; i++) {
-    //             const t = await axios.get('v1/mahasiswa/public/seeImage/mahasiswa/qrcode/' + namaQr[i], {
-    //                 responseType: "arraybuffer"
-    //             }).then((response) => {
-    //                 const base64 = btoa(
-    //                     new Uint8Array(response.data).reduce(
-    //                         (data, byte) => data + String.fromCharCode(byte),
-    //                         ''
-    //                     )
-    //                 )
-    //                 qrCode.push(base64)
-    //             })
-    //             promises.push(t)
-    //         }
-    //         Promise.all(promises).then(() => setPrevQr(qrCode))
-    //     }
-    // }
+    const getQrMhs = async () => {
+        if (namaQr != 0) {
+            let qrCode = []
+            let promises = []
+            for (let i = 0; i < namaQr.length; i++) {
+                const t = await axios.get('v1/mahasiswa/public/seeImage/mahasiswa/qrcode/' + namaQr[i], {
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    qrCode.push(base64)
+                })
+                promises.push(t)
+            }
+            Promise.all(promises).then(() => setPrevQr(qrCode))
+        }
+    }
 
     const pageCount = Math.ceil(rows / perPage)
 
@@ -185,39 +184,45 @@ const ListMahasiswa = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Mahasiswa.map((mhs, index) => (
-                                        <tr key={mhs.id_mahasiswa} className='bg-white border-b text-gray-500 border-x'>
-                                            <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">
-                                                {(page - 1) * 10 + index + 1}
-                                            </th>
-                                            <td className='px-6 py-2 font-semibold'>
-                                                <div className='flex gap-3'>
-                                                    <div className="avatar">
-                                                        {/* <div className="w-16 rounded">
-                                                            {prevQr[index] ? <img src={`data:;base64,${prevQr[index]}`} alt='QR Code' /> : ""}
-                                                        </div> */}
-                                                    </div>
-                                                    <div>
-                                                        <h6 className='font-semibold'>{mhs.nama}</h6>
-                                                        <h6 className='font-semibold'>{mhs.nim}</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            {/* <td className='px-6 py-2 font-semibold'>{mhs.nim}{mhs.nama}</td> */}
-                                            <td className='px-6 py-2 font-semibold'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
-                                            <td className='px-6 py-2 font-semibold'>{mhs.fakultas[0].nama_fakultas}</td>
-                                            <td className='px-6 py-2 font-semibold'>{mhs.prodis[0].nama_prodi}</td>
-                                            <td className='px-6 py-2' align='center'>
-                                                <div className='flex gap-1'>
-                                                    <Link to={`/mahasiswa/detail/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
-                                                    <Link to={`/mahasiswa/form1/edit/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
-                                                    <Link to={`/mahasiswa/upload/berkas/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
-                                                    <Link to={`/mahasiswa/print/${mhs.id_mahasiswa}`} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
-                                                    {/* <button onClick={() => nonaktifkan(mhs.id_mahasiswa)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button> */}
-                                                </div>
-                                            </td>
+                                    {Mahasiswa.length == 0 ?
+                                        <tr className='bg-white border-b text-gray-500 border-x'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='6'>Data Mahasiswa Kosong</td>
                                         </tr>
-                                    ))}
+                                        :
+                                        Mahasiswa.map((mhs, index) => (
+                                            <tr key={mhs.id_mahasiswa} className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">
+                                                    {(page - 1) * 10 + index + 1}
+                                                </th>
+                                                <td className='px-6 py-2 font-semibold'>
+                                                    <div className='flex gap-3'>
+                                                        <div className="avatar">
+                                                            <div className="w-16 rounded">
+                                                                {prevQr[index] ? <img src={`data:;base64,${prevQr[index]}`} alt='QR Code' /> : ""}
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <h6 className='font-semibold'>{mhs.nama}</h6>
+                                                            <h6 className='font-semibold'>{mhs.nim}</h6>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                {/* <td className='px-6 py-2 font-semibold'>{mhs.nim}{mhs.nama}</td> */}
+                                                <td className='px-6 py-2 font-semibold'>{mhs.jenjangPendidikans[0].nama_jenjang_pendidikan}</td>
+                                                <td className='px-6 py-2 font-semibold'>{mhs.fakultas[0].nama_fakultas}</td>
+                                                <td className='px-6 py-2 font-semibold'>{mhs.prodis[0].nama_prodi}</td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div className='flex gap-1'>
+                                                        <Link to={`/mahasiswa/detail/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
+                                                        <Link to={`/mahasiswa/form1/edit/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                        <Link to={`/mahasiswa/upload/berkas/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
+                                                        <Link to={`/mahasiswa/print/${mhs.id_mahasiswa}`} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
+                                                        {/* <button onClick={() => nonaktifkan(mhs.id_mahasiswa)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button> */}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
                                 </tbody>
                             </table>
                         </div>

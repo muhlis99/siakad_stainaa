@@ -369,21 +369,26 @@ const ListTahunAjaran = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {TahunAjaran.map((thn, index) => (
-                                        <tr key={thn.id_tahun_ajaran} className='bg-white border-b text-gray-500 border-x'>
-                                            <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-6 py-2 font-semibold'>{thn.code_tahun_ajaran}</td>
-                                            <td className='px-6 py-2 font-semibold'>{thn.tahun_ajaran}</td>
-                                            <td className='px-6 py-2 font-semibold'>{thn.keterangan}</td>
-                                            <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{thn.status}</span></td>
-                                            <td className='px-6 py-2' align='center'>
-                                                <div>
-                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalOpen('Edit', thn.id_tahun_ajaran)} title='Edit'><FaEdit /></button>
-                                                    <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(thn.id_tahun_ajaran)} title='Hapus'><FaTrash /></button>
-                                                </div>
-                                            </td>
+                                    {TahunAjaran.length == 0 ?
+                                        <tr className='bg-white border-b border-x text-gray-500'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='6'>Data Tahun Ajaran Kosong</td>
                                         </tr>
-                                    ))}
+                                        :
+                                        TahunAjaran.map((thn, index) => (
+                                            <tr key={thn.id_tahun_ajaran} className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{(page - 1) * 10 + index + 1}</th>
+                                                <td className='px-6 py-2 font-semibold'>{thn.code_tahun_ajaran}</td>
+                                                <td className='px-6 py-2 font-semibold'>{thn.tahun_ajaran}</td>
+                                                <td className='px-6 py-2 font-semibold'>{thn.keterangan}</td>
+                                                <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{thn.status}</span></td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div>
+                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" onClick={() => modalOpen('Edit', thn.id_tahun_ajaran)} title='Edit'><FaEdit /></button>
+                                                        <button className="btn btn-xs btn-circle text-white btn-error" onClick={() => nonaktifkan(thn.id_tahun_ajaran)} title='Hapus'><FaTrash /></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>
