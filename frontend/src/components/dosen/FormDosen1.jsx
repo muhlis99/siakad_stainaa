@@ -95,14 +95,11 @@ const FormDosen1 = () => {
         th.push(<option key={tahun} value={tahun}>{tahun}</option>)
     }
 
-
-
     const simpanDsn = async (e) => {
         e.preventDefault()
         try {
             setLoading(true)
             let nidnLen = nidn.length
-            let nipyLen = nipy.length
             if (nidnLen == 0) {
                 setLoading(false)
                 Swal.fire({
@@ -115,7 +112,9 @@ const FormDosen1 = () => {
                     title: 'NIDN harus 10 digit',
                     icon: "error"
                 })
-            } else if (nipyLen = 0) {
+            }
+            let nipyLen = nipy.length
+            if (nipyLen == 0) {
                 setLoading(false)
                 Swal.fire({
                     title: 'NIPYNAA Tidak Boleh Kosong',
