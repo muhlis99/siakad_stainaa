@@ -107,6 +107,7 @@ app.get('/', (req, res) => {
 //  socket connection
 io.on("connection", (socket) => {
     console.log(socket.id);
+    // socket.broadcast.emit("hello", "world");
 });
 
 
