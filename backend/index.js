@@ -10,6 +10,10 @@ const db = require('./config/database.js')
 
 dotenv.config()
 const app = express()
+const http = require('http')
+const server = http.createServer(app)
+const { Server } = require('socket.io')
+const io = new Server(server)
 const sessionStore = sequelizeStore(session.Store)
 const store = new sessionStore({
     db: db
@@ -30,6 +34,7 @@ app.use(session({
 }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
 
 
 // ROUTER
@@ -59,6 +64,7 @@ const khs = require('./router/khsRoute.js')
 const pengajuanStudi = require('./router/pengajuanStudiRoute.js')
 const pembimbingAkademik = require('./router/pembimbingAkademikRoute.js')
 const herRegistrasi = require('./router/herRegistrasiRoute.js')
+const socket = require('./router/socketRoute.js')(io)
 
 app.use('/v1/login', login)
 app.use('/v1/home', home)
@@ -86,6 +92,7 @@ app.use('/v1/khs', khs)
 app.use('/v1/pengajuanStudi', pengajuanStudi)
 app.use('/v1/pembimbingAkademik', pembimbingAkademik)
 app.use('/v1/herRegistrasi', herRegistrasi)
+app.use('/v1/socket', socket)
 
 
 // default index
@@ -93,7 +100,13 @@ app.get('/', (req, res) => {
     res.send('Hello Word')
 })
 
+//  socket connection
+io.on("connection", (socket) => {
+    console.log(socket.id);
+});
+
+
 // store.sync()
-app.listen(process.env.APP_PORT, (req, res) => {
+server.listen(process.env.APP_PORT, (req, res) => {
     console.log(`APP IS RUNNING`)
 })
