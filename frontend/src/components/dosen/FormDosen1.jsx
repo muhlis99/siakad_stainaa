@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FaTimes, FaReply, FaArrowRight } from "react-icons/fa"
-import { useParams, Link, useNavigate } from "react-router-dom"
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 import Swal from "sweetalert2"
 import Loading from '../Loading'
@@ -17,11 +17,13 @@ const FormDosen1 = () => {
     const [email, setEmail] = useState("")
     const [nohp, setNohp] = useState("")
     const [notelp, setNotelp] = useState("")
-    const [contoh, setContoh] = useState("19992606202190")
+    // const [contoh, setContoh] = useState("19992606202190")
+    const [validEmail, setValidEmail] = useState("")
     const navigate = useNavigate()
     const { idDsn } = useParams()
     const { stat } = useParams()
     const [loading, setLoading] = useState(false)
+    const location = useLocation()
 
     useEffect(() => {
         const getDosenById = async () => {
@@ -66,8 +68,12 @@ const FormDosen1 = () => {
     }, [idDsn])
 
     useEffect(() => {
-        console.log(contoh.substr(0, 4), '.', contoh.substr(4, 2), '.', contoh.substr(6, 2), '.', contoh.substr(8, 4), '.', contoh.substr(12, 2));
-    }, [])
+        getValidEmail()
+    }, [email])
+
+    // useEffect(() => {
+    //     console.log(contoh.substr(0, 4), '.', contoh.substr(4, 2), '.', contoh.substr(6, 2), '.', contoh.substr(8, 4), '.', contoh.substr(12, 2));
+    // }, [])
 
     const tg = []
     for (let tanggal = 1; tanggal < 32; tanggal++) {
@@ -95,14 +101,24 @@ const FormDosen1 = () => {
         th.push(<option key={tahun} value={tahun}>{tahun}</option>)
     }
 
-
+    const getValidEmail = async () => {
+        try {
+            if (stat == 'add' & email != 0 & location.state.valid == 'ya') {
+                await axios.get(`v1/dosen/validasiEmail/${email}`)
+                setValidEmail("")
+            }
+        } catch (error) {
+            if (error.response) {
+                setValidEmail(error.response.data.message);
+            }
+        }
+    }
 
     const simpanDsn = async (e) => {
         e.preventDefault()
         try {
             setLoading(true)
             let nidnLen = nidn.length
-            let nipyLen = nipy.length
             if (nidnLen == 0) {
                 setLoading(false)
                 Swal.fire({
@@ -115,7 +131,9 @@ const FormDosen1 = () => {
                     title: 'NIDN harus 10 digit',
                     icon: "error"
                 })
-            } else if (nipyLen = 0) {
+            }
+            let nipyLen = nipy.length
+            if (nipyLen == 0) {
                 setLoading(false)
                 Swal.fire({
                     title: 'NIPYNAA Tidak Boleh Kosong',
@@ -125,6 +143,12 @@ const FormDosen1 = () => {
                 setLoading(false)
                 Swal.fire({
                     title: 'NIPYNAA harus 14 digit',
+                    icon: "error"
+                })
+            } else if (validEmail) {
+                setLoading(false)
+                Swal.fire({
+                    title: validEmail,
                     icon: "error"
                 })
             } else {

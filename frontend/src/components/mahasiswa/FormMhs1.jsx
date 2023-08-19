@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams, useNavigate } from "react-router-dom"
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom"
 import { FaTimes, FaReply, FaArrowRight } from "react-icons/fa"
 import axios from 'axios'
 import Swal from "sweetalert2"
@@ -25,10 +25,12 @@ const FormMhs1 = () => {
     const [npwp, setNpwp] = useState("")
     const [jalurp, setJalurp] = useState("")
     const [jenisp, setJenisp] = useState("")
+    const [validEmail, setValidEmail] = useState("")
     const navigate = useNavigate()
     const { idMhs } = useParams()
     const { stat } = useParams()
     const [loading, setLoading] = useState(false)
+    const location = useLocation()
 
     useEffect(() => {
         getJalur()
@@ -91,6 +93,10 @@ const FormMhs1 = () => {
         getMhsById()
     }, [idMhs, stat])
 
+    useEffect(() => {
+        getValidEmail()
+    }, [email])
+
     const getJalur = async () => {
         const response = await axios.get('v1/equipmentDsnMhs/jalurPendaftaran/all')
         setJalur(response.data.data)
@@ -127,36 +133,57 @@ const FormMhs1 = () => {
         th.push(<option key={tahun} value={tahun}>{tahun}</option>)
     }
 
+    const getValidEmail = async () => {
+        try {
+            if (stat == 'add' & email != 0 & location.state.valid == 'ya') {
+                await axios.get(`v1/mahasiswa/validasiEmail/${email}`)
+                setValidEmail("")
+            }
+        } catch (error) {
+            if (error.response) {
+                setValidEmail(error.response.data.message);
+            }
+        }
+    }
+
     const simpanMhs = async (e) => {
         e.preventDefault()
         try {
             setLoading(true)
-            await axios.put(`v1/mahasiswa/createForm1/${idMhs}`, {
-                nik: nik,
-                no_kk: kk,
-                nisn: nisn,
-                npwp: npwp,
-                nama: namanya,
-                tahun: thn,
-                bulan: bln,
-                tanggal: tgl,
-                tempat_lahir: tmp,
-                jenis_kelamin: jenkel,
-                jalur_pendaftaran: jalurp,
-                jenis_pendaftaran: jenisp,
-                penerima_kps: pkps,
-                email: email,
-                no_hp: nohp,
-                no_telepon: notelp
-            }).then(function (response) {
+            if (validEmail) {
                 setLoading(false)
                 Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    navigate(`/mahasiswa/form2/${stat}/${idMhs}`, { state: { collaps: 'induk', activ: '/mahasiswa' } })
-                });
-            })
+                    title: validEmail,
+                    icon: "error"
+                })
+            } else {
+                await axios.put(`v1/mahasiswa/createForm1/${idMhs}`, {
+                    nik: nik,
+                    no_kk: kk,
+                    nisn: nisn,
+                    npwp: npwp,
+                    nama: namanya,
+                    tahun: thn,
+                    bulan: bln,
+                    tanggal: tgl,
+                    tempat_lahir: tmp,
+                    jenis_kelamin: jenkel,
+                    jalur_pendaftaran: jalurp,
+                    jenis_pendaftaran: jenisp,
+                    penerima_kps: pkps,
+                    email: email,
+                    no_hp: nohp,
+                    no_telepon: notelp
+                }).then(function (response) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        navigate(`/mahasiswa/form2/${stat}/${idMhs}`, { state: { collaps: 'induk', activ: '/mahasiswa' } })
+                    });
+                })
+            }
         } catch (error) {
             setLoading(false)
             if (error.response) {
