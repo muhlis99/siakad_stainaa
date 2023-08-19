@@ -118,34 +118,7 @@ const FormDosen1 = () => {
         e.preventDefault()
         try {
             setLoading(true)
-            let nidnLen = nidn.length
-            if (nidnLen == 0) {
-                setLoading(false)
-                Swal.fire({
-                    title: 'NIDN Tidak Boleh Kosong',
-                    icon: "error"
-                })
-            } else if (nidnLen < 10 || nidnLen > 10) {
-                setLoading(false)
-                Swal.fire({
-                    title: 'NIDN harus 10 digit',
-                    icon: "error"
-                })
-            }
-            let nipyLen = nipy.length
-            if (nipyLen == 0) {
-                setLoading(false)
-                Swal.fire({
-                    title: 'NIPYNAA Tidak Boleh Kosong',
-                    icon: "error"
-                })
-            } else if (nipyLen < 14 || nipyLen > 14) {
-                setLoading(false)
-                Swal.fire({
-                    title: 'NIPYNAA harus 14 digit',
-                    icon: "error"
-                })
-            } else if (validEmail) {
+            if (validEmail) {
                 setLoading(false)
                 Swal.fire({
                     title: validEmail,

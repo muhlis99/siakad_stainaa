@@ -378,7 +378,7 @@ const ListKategoriNilai = () => {
                                         <th scope="col" className="px-6 py-2 text-sm" align='center'>Tahun Ajaran</th>
                                         <th scope="col" className="px-6 py-2 text-sm" align='center'>Nilai Angka</th>
                                         <th scope="col" className="px-6 py-2 text-sm" align='center'>Nilai Huruf</th>
-                                        <th scope="col" className="px-6 py-2 text-sm" align='center'>Intefal Skor</th>
+                                        <th scope="col" className="px-6 py-2 text-sm" align='center'>Interfal Skor</th>
                                         <th scope="col" className="px-6 py-2 text-sm" align='center'>Kategori</th>
                                         <th scope="col" className='px-6 py-2 text-sm' align='center'>Keterangan</th>
                                         <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
