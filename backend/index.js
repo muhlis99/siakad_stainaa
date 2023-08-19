@@ -13,12 +13,7 @@ const app = express()
 const http = require('http')
 const server = http.createServer(app)
 const { Server } = require('socket.io')
-const io = new Server(server, {
-    cors: {
-        origin: "http://localhost:5173",
-        methods: ["GET", "POST"],
-    }
-})
+const io = new Server(server)
 const sessionStore = sequelizeStore(session.Store)
 const store = new sessionStore({
     db: db
@@ -106,22 +101,8 @@ app.get('/', (req, res) => {
 })
 
 //  socket connection
-// io.on("connection", (socket) => {
-//     socket.on()
-//     console.log(socket.id);
-//     socket.broadcast.emit("hello", "world");
-// });
-
 io.on("connection", (socket) => {
-    console.log(`User Connected: ${socket.id}`);
-
-    socket.on("join_room", (data) => {
-        socket.join(data);
-    });
-
-    socket.on("send_message", (data) => {
-        socket.to(data.room).emit("receive_message", data);
-    });
+    console.log(socket.id);
 });
 
 
