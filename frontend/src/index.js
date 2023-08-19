@@ -6,7 +6,8 @@ import App from './App';
 import axios from "axios";
 
 // axios.defaults.baseURL = "https://api-siakad.stainaa.ac.id/";
-axios.defaults.baseURL = "http://localhost:4001/";
+// axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 axios.defaults.withCredentials = true;
 
 
