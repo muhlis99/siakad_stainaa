@@ -68,7 +68,8 @@ const khs = require('./router/khsRoute.js')
 const pengajuanStudi = require('./router/pengajuanStudiRoute.js')
 const pembimbingAkademik = require('./router/pembimbingAkademikRoute.js')
 const herRegistrasi = require('./router/herRegistrasiRoute.js')
-const socket = require('./router/socketRoute.js')(io)
+const pengumuman = require('./router/pengumumanRoute.js')
+const chat = require('./router/chatRoute.js')(io)
 
 app.use('/v1/login', login)
 app.use('/v1/home', home)
@@ -96,7 +97,8 @@ app.use('/v1/khs', khs)
 app.use('/v1/pengajuanStudi', pengajuanStudi)
 app.use('/v1/pembimbingAkademik', pembimbingAkademik)
 app.use('/v1/herRegistrasi', herRegistrasi)
-app.use('/v1/socket', socket)
+app.use('/v1/pengumuman', pengumuman)
+app.use('/v1/chat', chat)
 
 
 // default index
@@ -106,7 +108,7 @@ app.get('/', (req, res) => {
 
 //  socket connection
 io.on("connection", (socket) => {
-    console.log(socket.id);
+    console.log(socket.id)
     // socket.broadcast.emit("hello", "world");
 });
 
