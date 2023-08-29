@@ -94,6 +94,30 @@ module.exports = {
             })
     },
 
+    getByLevel: async (req, res, next) => {
+        const level = req.params.level
+        await pengumumanModel.findAll({
+            where: {
+                level: level
+            }
+        }).
+            then(result => {
+                if (!result) {
+                    return res.status(404).json({
+                        message: `Data pengumuman ${level} Tidak Ditemukan`,
+                        data: []
+                    })
+                }
+                res.status(201).json({
+                    message: `Data pengumuman ${level} Ditemukan`,
+                    data: result
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     post: async (req, res, next) => {
         const { tanggal_pengumuman, judul_pengumuman, pengumuman, level } = req.body
         await pengumumanModel.create({
