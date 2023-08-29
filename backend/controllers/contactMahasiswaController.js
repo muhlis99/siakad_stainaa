@@ -44,6 +44,29 @@ module.exports = {
         })
     },
 
+    checkContactMahasiswa: async (req, res, next) => {
+        const email = req.params.email
+        await contactMahasiswaModel.findOne({
+            where: {
+                email: email,
+                status: "aktif"
+            }
+        }).then(result => {
+            if (!result) {
+                return res.status(404).json({
+                    message: "Data contact mahasiswa tidak ditemukan",
+                    data: null
+                })
+            }
+            res.status(201).json({
+                message: "Data contact mahasiswa Ditemukan",
+                data: result
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
     registrasiContactMahasiswa: async (req, res, next) => {
         const { username, email } = req.body
         let codeContact = "mhs" + Math.floor(100000000 + Math.random() * 900000000)

@@ -43,6 +43,29 @@ module.exports = {
         })
     },
 
+    checkContactDosen: async (req, res, next) => {
+        const email = req.params.email
+        await contactDosenModel.findOne({
+            where: {
+                email: email,
+                status: "aktif"
+            }
+        }).then(result => {
+            if (!result) {
+                return res.status(404).json({
+                    message: "Data contact dosen tidak ditemukan",
+                    data: null
+                })
+            }
+            res.status(201).json({
+                message: "Data contact dosenDitemukan",
+                data: result
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
     registrasiContactDosen: async (req, res, next) => {
         const { username, email } = req.body
         let codeContact = "dns" + Math.floor(100000000 + Math.random() * 900000000)
