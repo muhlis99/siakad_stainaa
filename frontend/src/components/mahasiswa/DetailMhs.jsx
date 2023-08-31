@@ -374,7 +374,6 @@ const DetailMhs = () => {
 
     const openImage = (img, nam) => {
         document.getElementById('my-modal').checked = true
-        console.log(img);
         setModal(img)
         setNameFile(nam + namanya)
     }
@@ -804,7 +803,10 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">foto mahasiswa</span>
                                 </label>
-                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevFoto ? '' : 'hidden'}`} onClick={() => openImage(prevFoto, 'FOTO_')}>Detail</button>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevFoto ? '' : 'hidden'}`} onClick={() => openImage(prevFoto, 'FOTO_')}>Detail</button>
+                                    <a className={`btn btn-sm btn-primary w-full mb-2 ${prevFoto ? '' : 'hidden'}`} download={'FOTO_' + namanya} href={`data:image/png;base64,${prevFoto}`}>download</a>
+                                </div>
                                 {prevFoto ? (
                                     <div className="avatar">
                                         <div className="w-full  rounded">
@@ -817,7 +819,10 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan kartu keluarga</span>
                                 </label>
-                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKk ? '' : 'hidden'}`} onClick={() => openImage(prevKk, 'SCANKK_')}>Detail</button>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKk ? '' : 'hidden'}`} onClick={() => openImage(prevKk, 'SCANKK_')}>Detail</button>
+                                    <a className={`btn btn-sm btn-primary w-full mb-2 ${prevKk ? '' : 'hidden'}`} download={'SCANKK_' + namanya} href={`data:image/png;base64,${prevKk}`}>download</a>
+                                </div>
                                 <div className="avatar">
                                     {prevKk ? (
                                         <div className="w-full rounded">
@@ -830,7 +835,10 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan ktp</span>
                                 </label>
-                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKtp ? '' : 'hidden'}`} onClick={() => openImage(prevKtp, 'KTP_')}>Detail</button>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKtp ? '' : 'hidden'}`} onClick={() => openImage(prevKtp, 'KTP_')}>Detail</button>
+                                    <a className={`btn btn-sm btn-primary w-full mb-2 ${prevKtp ? '' : 'hidden'}`} download={'KTP_' + namanya} href={`data:image/png;base64,${prevKtp}`}>download</a>
+                                </div>
                                 <div className="avatar">
                                     {prevKtp ? (
                                         <div className="w-full rounded">
@@ -843,7 +851,10 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan ijazah</span>
                                 </label>
-                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevIjazah ? '' : 'hidden'}`} onClick={() => openImage(prevIjazah, 'IJAZAH_')}>Detail</button>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevIjazah ? '' : 'hidden'}`} onClick={() => openImage(prevIjazah, 'IJAZAH_')}>Detail</button>
+                                    <a className={`btn btn-sm btn-primary w-full mb-2 ${prevIjazah ? '' : 'hidden'}`} download={'IJAZAH_' + namanya} href={`data:image/png;base64,${prevIjazah}`}>download</a>
+                                </div>
                                 <div className="avatar">
                                     {prevIjazah ? (
                                         <div className="w-full rounded">
@@ -856,7 +867,10 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">scan kip</span>
                                 </label>
-                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKip ? '' : 'hidden'}`} onClick={() => openImage(prevKip, 'KIP_')}>Detail</button>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKip ? '' : 'hidden'}`} onClick={() => openImage(prevKip, 'KIP_')}>Detail</button>
+                                    <a className={`btn btn-sm btn-primary w-full mb-2 ${prevKip ? '' : 'hidden'}`} download={'KIP_' + namanya} href={`data:image/png;base64,${prevKip}`}>download</a>
+                                </div>
                                 <div className="avatar">
                                     {prevKip ? (
                                         <div className="w-full rounded">
@@ -869,7 +883,10 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">QR Code</span>
                                 </label>
-                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevQrCode ? '' : 'hidden'}`} onClick={() => openImage(prevQrCode, 'QR_')}>Detail</button>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevQrCode ? '' : 'hidden'}`} onClick={() => openImage(prevQrCode, 'QR_')}>Detail</button>
+                                    <a className={`btn btn-sm btn-primary w-full mb-2 ${prevQrCode ? '' : 'hidden'}`} download={'QR_' + namanya} href={`data:image/png;base64,${prevQrCode}`}>download</a>
+                                </div>
                                 <div className="avatar">
                                     {prevQrCode ? (
                                         <div className="w-full rounded">
@@ -882,7 +899,10 @@ const DetailMhs = () => {
                                 <label className="label">
                                     <span className="text-base label-text uppercase font-bold">Scan KTM</span>
                                 </label>
-                                <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKtm ? '' : 'hidden'}`} onClick={() => openImage(prevKtm, 'KTM_')}>Detail</button>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button className={`btn btn-sm w-full btn-primary cursor-pointer mb-2 ${prevKtm ? '' : 'hidden'}`} onClick={() => openImage(prevKtm, 'KTM_')}>Detail</button>
+                                    <a className={`btn btn-sm btn-primary w-full mb-2 ${prevKtm ? '' : 'hidden'}`} download={'KTM_' + namanya} href={`data:image/png;base64,${prevKtm}`}>download</a>
+                                </div>
                                 <div className="avatar drop-shadow-lg">
                                     {prevKtm ? (
                                         <div className="w-full rounded drop-shadow-lg">
