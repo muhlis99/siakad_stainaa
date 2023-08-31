@@ -158,6 +158,7 @@ const FormDosen2 = () => {
             })
         } catch (error) {
             if (error.response) {
+                setLoading(false)
                 Swal.fire({
                     title: error.response.data.errors[0].msg,
                     icon: "error"
