@@ -5,8 +5,8 @@ const router = express.Router()
 const socketSendMessage = function (io) {
     router.post("/sendMessage", async (req, res) => {
         const { from_contact, to_contact, text_message, id_detail_contact } = req.body
-        const date = new Date().toJSON()
-        // const date = new Date().toISOString().replace(/T/, ' ')
+        // const date = new Date().toJSON()
+        const date = new Date().toISOString().replace(/T/, ' ')
         const sendMessage = {
             text: text_message,
             date: date
