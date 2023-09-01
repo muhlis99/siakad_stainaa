@@ -22,7 +22,7 @@ const socketSendMessage = function (io) {
         if (!postMessage) {
             res.json({ message: "message not exits" }).status(401)
         }
-        io.emit("send_message", sendMessage)
+        io.broadcast.emit("send_message", sendMessage)
         res.status(201).json({
             message: "message is delivered"
         })
