@@ -155,7 +155,7 @@ const ViewKhs = () => {
                                         <th scope="col" className="px-1 py-2 border" align='center'>Indeks</th>
                                     </tr>
                                 </thead>
-                                {ViewKhs.length ?
+                                {ViewKhs.length == 0 ?
                                     <tbody>
                                         <tr className='bg-white border-b border-x text-gray-500'>
                                             <td className='px-6 py-2 font-semibold' align='center' colSpan='8'>Data KHS Kosong</td>
