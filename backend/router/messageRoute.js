@@ -6,7 +6,6 @@ const socketSendMessage = function (io) {
     router.post("/sendMessage", async (req, res) => {
         const { from_contact, to_contact, text_message, id_detail_contact } = req.body
         const date = new Date().toJSON()
-        // const date = new Date().toISOString().replace(/T/, ' ')
         const sendMessage = {
             text: text_message,
             date: date
@@ -20,11 +19,14 @@ const socketSendMessage = function (io) {
             id_detail_contact: id_detail_contact
         })
         if (!postMessage) {
-            res.json({ message: "message not exits" }).status(401)
+            res.json({
+                message: "message not exits"
+            }).status(401)
         }
-        io.emit("send_message", sendMessage)
+        io.broadcast.emit("send_message", sendMessage)
         res.status(201).json({
-            message: "message is delivered"
+            message: "message is delivered",
+
         })
     })
 
@@ -40,7 +42,8 @@ router.get("/historyMessage/:contact/:member", async (req, res) => {
         }
     }).then(result => {
         res.status(201).json({
-            message: result
+            message: "data berhasil",
+            data: result
         })
     }).catch(err => {
         next(err)

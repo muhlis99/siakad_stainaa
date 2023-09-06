@@ -71,7 +71,7 @@ const herRegistrasi = require('./router/herRegistrasiRoute.js')
 const pengumuman = require('./router/pengumumanRoute.js')
 const contactDosen = require('./router/contactDosenRoute.js')
 const contactMahasiswa = require('./router/contactMahasiswaRoute.js')
-const chat = require('./router/chatRoute.js')(io)
+const message = require('./router/messageRoute.js')(io)
 
 app.use('/v1/login', login)
 app.use('/v1/home', home)
@@ -102,7 +102,7 @@ app.use('/v1/herRegistrasi', herRegistrasi)
 app.use('/v1/pengumuman', pengumuman)
 app.use('/v1/contactDosen', contactDosen)
 app.use('/v1/contactMahasiswa', contactMahasiswa)
-app.use('/v1/chat', chat)
+app.use('/v1/message', message)
 
 
 // default index
