@@ -6,10 +6,10 @@ const socketSendMessage = function (io) {
     router.post("/sendMessage", async (req, res) => {
         const { from_contact, to_contact, text_message, id_detail_contact } = req.body
         const date = new Date().toJSON()
-        const sendMessage = {
-            text: text_message,
-            date: date
-        }
+        // const sendMessage = {
+        //     text: text_message,
+        //     date: date
+        // }
         const postMessage = await chatMessageModel.create({
             from_contact: from_contact,
             to_contact: to_contact,
@@ -23,7 +23,10 @@ const socketSendMessage = function (io) {
                 message: "message not exits"
             }).status(401)
         }
-        io.broadcast.emit("send_message", sendMessage)
+
+
+        // io.to(user.socketId).emit("send_message", sendMessage)
+        // io.broadcast.emit("send_message", sendMessage)
         res.status(201).json({
             message: "message is delivered",
 
@@ -33,12 +36,12 @@ const socketSendMessage = function (io) {
     return router
 }
 
-router.get("/historyMessage/:contact/:member", async (req, res) => {
+router.get("/historyMessage/:contact", async (req, res) => {
     const { contact, member } = req.params
     await chatMessageModel.findAll({
         where: {
             from_contact: contact,
-            to_contact: member
+            // to_contact: member
         }
     }).then(result => {
         res.status(201).json({
