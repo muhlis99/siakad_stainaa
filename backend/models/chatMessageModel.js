@@ -8,10 +8,10 @@ const chatMessage = db.define('chatMessage', {
         autoIncrement: true,
         primaryKey: true
     },
-    'from_contact': {
+    'message_id': {
         type: DataTypes.TEXT,
     },
-    'to_contact': {
+    'sender_id': {
         type: DataTypes.TEXT
     },
     'text_message': {

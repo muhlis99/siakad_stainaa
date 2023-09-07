@@ -4,15 +4,15 @@ const router = express.Router()
 
 const socketSendMessage = function (io) {
     router.post("/sendMessage", async (req, res) => {
-        const { from_contact, to_contact, text_message, id_detail_contact } = req.body
+        const { message_id, sender_id, text_message, id_detail_contact } = req.body
         const date = new Date().toJSON()
         // const sendMessage = {
         //     text: text_message,
         //     date: date
         // }
         const postMessage = await chatMessageModel.create({
-            from_contact: from_contact,
-            to_contact: to_contact,
+            message_id: message_id,
+            sender_id: sender_id,
             text_message: text_message,
             sent_datetime: date,
             read_message: "0",
@@ -36,12 +36,11 @@ const socketSendMessage = function (io) {
     return router
 }
 
-router.get("/historyMessage/:contact", async (req, res) => {
-    const { contact, member } = req.params
+router.get("/historyMessage/:message_id", async (req, res) => {
+    const { message_id } = req.params
     await chatMessageModel.findAll({
         where: {
-            from_contact: contact,
-            // to_contact: member
+            message_id: message_id,
         }
     }).then(result => {
         res.status(201).json({

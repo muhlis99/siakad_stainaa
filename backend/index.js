@@ -134,6 +134,7 @@ io.on("connection", (socket) => {
         io.emit("get-users", activeUsers);
     });
 
+
     socket.on("send-message", (data) => {
         const { receiverId } = data;
         const user = activeUsers.find((user) => user.userId === receiverId);

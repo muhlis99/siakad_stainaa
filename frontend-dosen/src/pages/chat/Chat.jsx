@@ -12,12 +12,14 @@ import { Navigate } from "react-router-dom"
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { io } from "socket.io-client"
+import { format } from "timeago.js";
 
 const Chat = () => {
     const [emot, setEmot] = useState(false)
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
-    const [kontak, setKontak] = useState([])
+    const [messageId, setmessageId] = useState("")
+    const [senderId, setsenderId] = useState("")
     const [status, setStatus] = useState("")
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
@@ -25,7 +27,7 @@ const Chat = () => {
     const [listPesan, setListPesan] = useState([])
 
     useEffect(() => {
-        cekKontakDosen()
+        cekmessageIdDosen()
     }, [user])
 
     useEffect(() => {
@@ -34,21 +36,31 @@ const Chat = () => {
 
     useEffect(() => {
         const socket = io('http://localhost:4001');
-        socket.on('connect', (data) => {
+        socket.on('connection', (data) => {
             console.log('socket connected');
         })
     }, [])
 
+    // useEffect(() => {
+    //     socket.current = io("http://localhost:4001");
+    //     socket.current.emit("new-user-add", contact);
+    //     socket.current.on("get-users", (users) => {
+    //         setOnlineUsers(users)
+    //         console.log(onlineUsers)
+    //     })
+    // }, [])
+
     useEffect(() => {
         getPesan()
-    }, [kontak])
+    }, [messageId])
 
-    const cekKontakDosen = async () => {
+    const cekmessageIdDosen = async () => {
         try {
             if (user) {
                 setEmail(user.data.email)
                 const response = await axios.get(`v1/contactDosen/checkContactDosen/${user.data.email}`)
-                setKontak(response.data.data.code_contact_dosen);
+                setsenderId(response.data.data.code_contact_dosen)
+                console.log(response.data.data.code_contact_dosen)
             }
         } catch (error) {
             setStatus(error.response.status)
@@ -68,7 +80,7 @@ const Chat = () => {
                     icon: "success"
                 }).then(() => {
                     setUsername("")
-                    cekKontakDosen()
+                    cekmessageIdDosen()
                     setStatus("")
                 })
             })
@@ -94,9 +106,9 @@ const Chat = () => {
 
     const kirimPesan = async (e) => {
         e.preventDefault()
-        await axios.post('v1/chat/sendMessage', {
-            from_contact: kontak,
-            to_contact: 'mhs389742654',
+        await axios.post('v1/message/sendMessage', {
+            message_id: "123456789",
+            sender_id: senderId,
             text_message: pesan,
             id_detail_contact: 1
         }).then(function () {
@@ -107,12 +119,14 @@ const Chat = () => {
     }
 
     const getPesan = async () => {
-        if (kontak) {
-            const response = await axios.get(`v1/chat/historyMessage/${kontak}/mhs389742654`)
-            setListPesan(response.data.message)
-            // console.log(response.data)
-        }
+        // if (messageId) {
+        const messageId = "123456789"
+        const response = await axios.get(`v1/message/historyMessage/${messageId}`)
+        setListPesan(response.data.data)
+        // console.log(response.data)
+        // }
     }
+
 
     return (
         <Layout>
@@ -125,7 +139,7 @@ const Chat = () => {
                                     <Col>
                                         <Row className=''>
                                             <Col lg="auto" className='mx-auto'>
-                                                <h6 style={{ marginTop: '120px' }}>Anda belum melakukan registrasi kontak</h6>
+                                                <h6 style={{ marginTop: '120px' }}>Anda belum melakukan registrasi messageId</h6>
                                                 <div>
                                                     <Form onSubmit={simpanReg}>
                                                         <Form.Group className="mb-3">
@@ -176,30 +190,13 @@ const Chat = () => {
                                     </Col>
                                     <Col lg="8">
                                         <div className="pt-3 pe-3 overflow-auto position-relative" id='message' style={{ height: '353px' }}>
-                                            {/* <div className="d-flex flex-row justify-content-start">
-                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                                                    alt="avatar 1" style={{ width: '45px', height: '100%' }} />
-                                                <div>
-                                                    <p className="small p-2 ms-3 mb-1 rounded-3"
-                                                        style={{ backgroundColor: '#f5f6f7' }}>Lorem ipsum
-                                                        dolor
-                                                        sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                                        incididunt ut labore et
-                                                        dolore
-                                                        magna aliqua.</p>
-                                                    <p className="small ms-3 mb-3 rounded-3 text-muted float-end">12:00 PM | Aug
-                                                        13</p>
-                                                </div>
-                                            </div> */}
 
                                             {listPesan.map((chat) => (
-                                                <div key={chat.id_chat_message} className="d-flex flex-row justify-content-end">
+                                                <div key={chat.id_chat_message} className={chat.sender_id === senderId ? "d-flex flex-row justify-content-end" : "d-flex flex-row justify-content-start"} >
                                                     <div>
-                                                        <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">{chat.text_message}</p>
-                                                        <p className="small me-3 mb-3 rounded-3 text-muted">{chat.sent_datetime}</p>
+                                                        <p className={`small p-2 me-3 mb-1 text-white rounded-3 ${chat.sender_id === senderId ? "bg-primary" : "bg-warning"}`}>{chat.text_message}</p>
+                                                        <p className="small me-3 mb-3 rounded-3 text-muted">{format(chat.sent_datetime)}</p>
                                                     </div>
-                                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                                                        alt="avatar 1" style={{ width: '45px', height: '100%' }} />
                                                 </div>
                                             ))}
 
