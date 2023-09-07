@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Dashboard from "./pages/Dashboard"
-import Chat from "./pages/chat/Chat"
 import Login from "./pages/Login"
-import InputNilai from "./pages/khs/InputNilai"
+import Dashboard from "./pages/Dashboard"
+import Profil from "./pages/profil/Profil"
+import KRS from "./pages/krs/KRS"
+import Jadwal from "./pages/jadwal/Jadwal"
 import Table from "./pages/khs/Table"
-import Input from "./pages/khs/Input"
+import Chat from "./pages/chat/Chat"
 
 function App() {
 
@@ -14,10 +15,11 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Dashboard />} />
+          <Route path="/profil" element={<Profil />} />
+          <Route path="/karturencanastudi" element={<KRS />} />
+          <Route path="/kartuhasilstudi" element={<Table />} />
+          <Route path="/jadwalkuliah" element={<Jadwal />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/inputnilai" element={<InputNilai />} />
-          <Route path="/table" element={<Table />} />
-          <Route path="/input" element={<Input />} />
         </Routes>
       </BrowserRouter>
     </>

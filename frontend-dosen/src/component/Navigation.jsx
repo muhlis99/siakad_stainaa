@@ -68,11 +68,13 @@ const Navigation = () => {
                 <Container>
                     <Nav className="me-auto">
                         <Link to="/" className="nav-link text-light">Dashboard</Link>
+                        <Link to="/profil" className="nav-link text-light">Profil</Link>
                         <NavDropdown title={
-                            <span className="text-light">Dropdown</span>
+                            <span className="text-light">Perkuliahan</span>
                         } id="basic-nav-dropdown">
-                            <Link to="/table" className="dropdown-item">KHS</Link>
-                            <Link to="/input" className="dropdown-item">cek</Link>
+                            <Link to="/karturencanastudi" className="dropdown-item">Kartu Rencana Studi</Link>
+                            <Link to="/jadwalkuliah" className="dropdown-item">Jadwal Kuliah</Link>
+                            <Link to="/kartuhasilstudi" className="dropdown-item">Kartu Hasil Studi</Link>
                         </NavDropdown>
                         <Link to="/chat" className="nav-link text-light">Chat</Link>
                     </Nav>
