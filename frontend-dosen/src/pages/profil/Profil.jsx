@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import Layout from '../Layout'
-import { Row } from 'react-bootstrap'
+import { Row, Col, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../features/authSlice"
 import { Navigate } from "react-router-dom"
@@ -21,7 +21,17 @@ const Profil = () => {
                     <h3 className="page-title">Profil</h3>
                 </div>
                 <Row>
-
+                    <Col>
+                        <Card className='shadow'>
+                            <Card.Body>
+                                <Row>
+                                    <Col lg="3" className='bg-danger'>
+                                        jajajaaj
+                                    </Col>
+                                </Row>
+                            </Card.Body>
+                        </Card>
+                    </Col>
                 </Row>
             </div>}
 

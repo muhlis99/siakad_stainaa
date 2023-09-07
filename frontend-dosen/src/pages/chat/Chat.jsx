@@ -119,7 +119,7 @@ const Chat = () => {
             {isError ? <Navigate to="/login" /> :
                 <div className="content-wrapper">
                     {status ?
-                        <Card>
+                        <Card className='shadow'>
                             <Card.Body>
                                 <Row style={{ height: '400px' }}>
                                     <Col>
@@ -142,7 +142,7 @@ const Chat = () => {
                             </Card.Body>
                         </Card>
                         :
-                        <Card id="chat3">
+                        <Card className='shadow' id="chat3">
                             <Card.Body>
                                 <Row>
                                     <Col lg="4">
