@@ -17,20 +17,22 @@ const socketSendMessage = function (io) {
             sent_datetime: date,
             read_message: "0",
             id_detail_contact: id_detail_contact
+        }).then(result => {
+            if (!result) {
+                res.json({
+                    message: "message not exits"
+                }).status(401)
+            }
+            res.status(201).json({
+                message: "message is delivered",
+                data: result
+            })
         })
-        if (!postMessage) {
-            res.json({
-                message: "message not exits"
-            }).status(401)
-        }
 
 
         // io.to(user.socketId).emit("send_message", sendMessage)
         // io.broadcast.emit("send_message", sendMessage)
-        res.status(201).json({
-            message: "message is delivered",
 
-        })
     })
 
     return router

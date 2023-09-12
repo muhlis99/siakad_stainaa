@@ -25,7 +25,8 @@ const store = new sessionStore({
 app.use(fileUpload())
 app.use(cors({
     credentials: true,
-    origin: process.env.APP_ORIGIN,
+    // origin: process.env.APP_ORIGIN,
+    origin: ['http://localhost:3000', 'http://localhost:5000'],
 }))
 app.use(session({
     secret: process.env.SESS_SECRET,
@@ -112,39 +113,34 @@ app.get('/', (req, res) => {
 
 
 //  socket connection
-let activeUsers = []
+// let activeUsers = []
+let onlineUser = []
 io.on("connection", (socket) => {
-    // add new User
-    socket.on("new-user-add", (newUserId) => {
-        // if user is not added previously
-        if (!activeUsers.some((user) => user.userId === newUserId)) {
-            activeUsers.push({ userId: newUserId, socketId: socket.id });
-            console.log("New User Connected", activeUsers);
-        }
-        // send all active users to new user
-        console.log("conncet users", activeUsers);
-        io.emit("get-users", activeUsers);
-    });
+    socket.on("addNewUser", (userId) => {
+        !onlineUser.some(user => user.userId === userId) &&
+            onlineUser.push({
+                userId,
+                socketId: socket.id
+            })
+        console.log("onlineUser", onlineUser);
+        io.emit("getOnlineUser", onlineUser)
+    })
 
-    socket.on("disconnect", () => {
-        // remove user from active users
-        activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);
-        console.log("User Disconnected", activeUsers);
-        // send all active users to all users
-        io.emit("get-users", activeUsers);
-    });
-
-
-    socket.on("send-message", (data) => {
-        const { receiverId } = data;
-        const user = activeUsers.find((user) => user.userId === receiverId);
-        console.log("Sending from socket to :", receiverId)
-        console.log("Data: ", data)
+    socket.on("sendMessage", (message) => {
+        const user = onlineUser.find((user => user.userId === message.reciptenId))
         if (user) {
-            io.to(user.socketId).emit("recieve-message", data);
+            io.to(user.socketId).emit("getMessage", message)
         }
     })
-});
+
+    socket.on("disconnet", () => {
+        onlineUser = onlineUser.filter(user => user.socketId !== socket.id)
+        io.emit("getOnlineUser", onlineUser)
+        console.log("disconnect", onlineUser);
+
+    })
+
+})
 
 
 // store.sync()
