@@ -7,6 +7,7 @@ import EmojiPicker from 'emoji-picker-react'
 import { PiPaperPlaneRightFill } from "react-icons/pi"
 import { io } from "socket.io-client"
 import "../../assets/css/Chat.css"
+import face from "../../assets/images/faces/face1.jpg"
 
 
 const ChatBox = (props) => {
@@ -115,12 +116,12 @@ const ChatBox = (props) => {
         }
     }
 
-    const onEmojiClick = (e) => {
+    const onEmojiClick = (e, o) => {
         let sym = e.unified.split("-")
         let codesArray = []
         sym.forEach((el) => codesArray.push("0x" + el))
         let emoji = String.fromCodePoint(...codesArray)
-        setPesan(pesan + emoji)
+        setPesan(pesan + [emoji])
         setEmot(false)
     }
 
@@ -143,6 +144,19 @@ const ChatBox = (props) => {
 
     return (
         <>
+            <div className='p-1 border-bottom'>
+                <div className="d-flex flex-row">
+                    <div>
+                        <img src={face}
+                            alt="avatar" className="d-flex align-self-center me-3"
+                            width="30" />
+                        <span className="badge bg-success badge-dot"></span>
+                    </div>
+                    <div className="pt-0">
+                        <p className="fw-bold mb-0 text-secondary ">Marie Horwitz</p>
+                    </div>
+                </div>
+            </div>
             <div
                 className="pt-3 pe-3 overflow-auto position-relative faq-body" id='message' style={{ height: '353px' }}>
                 {listPesan.map((chat, index) => (
@@ -158,7 +172,7 @@ const ChatBox = (props) => {
             </div>
             <form onSubmit={kirimPesan}>
                 <div className="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2">
-                    <a className="me-3 text-muted" onClick={emoji}><FaSmile /></a>
+                    <a href='#' className="me-3 fs-4 text-black-50" onClick={emoji}><FaSmile /></a>
                     <input type="text" className="form-control form-control-sm" value={pesan} onChange={(e) => setPesan(e.target.value)}
                         placeholder="Type message" />
                     <button type='submit' className="ms-3 btn btn-primary btn-sm rounded-circle"><PiPaperPlaneRightFill /></button>

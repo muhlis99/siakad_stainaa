@@ -70,8 +70,7 @@ const pengajuanStudi = require('./router/pengajuanStudiRoute.js')
 const pembimbingAkademik = require('./router/pembimbingAkademikRoute.js')
 const herRegistrasi = require('./router/herRegistrasiRoute.js')
 const pengumuman = require('./router/pengumumanRoute.js')
-const contactDosen = require('./router/contactDosenRoute.js')
-const contactMahasiswa = require('./router/contactMahasiswaRoute.js')
+const kontak = require('./router/kontakRoute.js')
 const message = require('./router/messageRoute.js')(io)
 
 app.use('/v1/login', login)
@@ -101,8 +100,7 @@ app.use('/v1/pengajuanStudi', pengajuanStudi)
 app.use('/v1/pembimbingAkademik', pembimbingAkademik)
 app.use('/v1/herRegistrasi', herRegistrasi)
 app.use('/v1/pengumuman', pengumuman)
-app.use('/v1/contactDosen', contactDosen)
-app.use('/v1/contactMahasiswa', contactMahasiswa)
+app.use('/v1/kontak', kontak)
 app.use('/v1/message', message)
 
 
@@ -113,9 +111,9 @@ app.get('/', (req, res) => {
 
 
 //  socket connection
-// let activeUsers = []
 let onlineUser = []
 io.on("connection", (socket) => {
+    console.log('a user connected');
     socket.on("addNewUser", (userId) => {
         !onlineUser.some(user => user.userId === userId) &&
             onlineUser.push({
@@ -137,7 +135,6 @@ io.on("connection", (socket) => {
         onlineUser = onlineUser.filter(user => user.socketId !== socket.id)
         io.emit("getOnlineUser", onlineUser)
         console.log("disconnect", onlineUser);
-
     })
 
 })

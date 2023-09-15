@@ -2,27 +2,29 @@ const { Sequelize, DataTypes } = require('sequelize')
 const db = require('../config/database.js')
 
 
-const contactMahasiswa = db.define('contactmahasiswa', {
-    'id_chat_contact_mahasiswa': {
+const chatMessage = db.define('message', {
+    'id_message': {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    'code_contact_mahasiswa': {
+    'code_message': {
         type: DataTypes.TEXT,
     },
-    'username': {
+    'sender_id': {
         type: DataTypes.TEXT
     },
-    'email': {
+    'text_message': {
         type: DataTypes.TEXT
     },
-    'status': {
-        type: DataTypes.ENUM,
-        values: ['aktif', 'tidak']
+    'sent_datetime': {
+        type: DataTypes.TEXT
+    },
+    'read_message': {
+        type: DataTypes.TEXT
     }
 }, {
-    tableName: 'tb_chat_contact_mahasiswa',
+    tableName: 'tb_message',
     freezeTableName: true,
     timestamps: false,
     underscored: true,
@@ -31,4 +33,4 @@ const contactMahasiswa = db.define('contactmahasiswa', {
 
 
 
-module.exports = contactMahasiswa
+module.exports = chatMessage
