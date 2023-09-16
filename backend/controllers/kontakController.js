@@ -7,20 +7,26 @@ module.exports = {
     getKontak: async (req, res, next) => {
         const kontak = req.query.codekontak
         const level = req.query.level
+        const dataMember = await db.query(`SELECT * FROM tb_detail_kontak WHERE kontak="${kontak}" AND status="aktif"`, {
+            nest: true,
+            type: QueryTypes.SELECT
+        })
+        const datas = dataMember.map(i => { return i.member_kontak })
         await kontakModel.findAll({
             where: {
                 code_kontak: {
-                    [Op.not]: kontak,
+                    [Op.not]: kontak && datas,
+                    // [Op.not]: datas,
                 },
                 level: {
                     [Op.not]: level
                 },
                 status: "aktif"
             }
-        }).then(datas => {
+        }).then(result => {
             res.status(201).json({
                 message: "Get all kontak",
-                data: datas
+                data: result
             })
         }).catch(err => {
             console.log(err);

@@ -955,6 +955,52 @@ module.exports = {
         //             })
         //     ))
         // })
-    }
+    },
 
+    //  user
+    getByNim: async (req, res, next) => {
+        const nim = req.params.nim
+        const mahasiswaUse = await mahasiswa.findOne({
+            include: [{
+                model: jenjangPendidikanModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                model: negara
+            }, {
+                model: provinsi
+            }, {
+                model: kabupaten
+            }, {
+                model: kecamatan
+            }, {
+                model: desa
+            }],
+            where: {
+                nim: nim,
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                if (!result) {
+                    return res.status(404).json({
+                        message: "Data Mahasiswa Tidak Ditemukan",
+                        data: []
+                    })
+                }
+                res.status(201).json({
+                    message: "Data Mahasiswa Ditemukan",
+                    data: result
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
 }
+

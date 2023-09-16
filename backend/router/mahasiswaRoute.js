@@ -25,5 +25,7 @@ router.use('/public/seeImage/mahasiswa/ktp', express.static(path.join('../tmp_si
 router.use('/public/seeImage/mahasiswa/diri', express.static(path.join('../tmp_siakad/mahasiswa/diri')))
 router.use('/public/seeImage/mahasiswa/ktm', express.static(path.join('../tmp_siakad/mahasiswa/ktm')))
 router.use('/public/seeImage/mahasiswa/qrcode', express.static(path.join('../tmp_siakad/mahasiswa/qrcode')))
+//  user 
+router.get('/getByNim/:nim', mahasiswaController.getByNim)
 
 module.exports = router
