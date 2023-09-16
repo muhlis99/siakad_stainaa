@@ -1,46 +1,43 @@
 const express = require("express")
-const chatMessageModel = require('../models/chatMessageModel.js')
+const messageModel = require('../models/messageModel.js')
 const router = express.Router()
 
 const socketSendMessage = function (io) {
     router.post("/sendMessage", async (req, res) => {
-        const { message_id, sender_id, text_message, id_detail_contact } = req.body
+        const { code_message, sender_id, text_message } = req.body
         const date = new Date().toJSON()
-        // const sendMessage = {
-        //     text: text_message,
-        //     date: date
-        // }
-        const postMessage = await chatMessageModel.create({
-            message_id: message_id,
+        const postMessage = await messageModel.create({
+            code_message: code_message,
             sender_id: sender_id,
             text_message: text_message,
             sent_datetime: date,
             read_message: "0",
-            id_detail_contact: id_detail_contact
+        }).then(result => {
+            if (!result) {
+                res.json({
+                    message: "message not exits"
+                }).status(401)
+            }
+            res.status(201).json({
+                message: "message is delivered",
+                data: result
+            })
         })
-        if (!postMessage) {
-            res.json({
-                message: "message not exits"
-            }).status(401)
-        }
 
 
         // io.to(user.socketId).emit("send_message", sendMessage)
         // io.broadcast.emit("send_message", sendMessage)
-        res.status(201).json({
-            message: "message is delivered",
 
-        })
     })
 
     return router
 }
 
-router.get("/historyMessage/:message_id", async (req, res) => {
-    const { message_id } = req.params
-    await chatMessageModel.findAll({
+router.get("/historyMessage/:code_message", async (req, res) => {
+    const { code_message } = req.params
+    await messageModel.findAll({
         where: {
-            message_id: message_id,
+            code_message: code_message,
         }
     }).then(result => {
         res.status(201).json({

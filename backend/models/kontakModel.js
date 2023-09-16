@@ -2,13 +2,13 @@ const { Sequelize, DataTypes } = require('sequelize')
 const db = require('../config/database.js')
 
 
-const contactDosen = db.define('contactDosen', {
-    'id_chat_contact_dosen': {
+const kontak = db.define('kontak', {
+    'id_kontak': {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    'code_contact_dosen': {
+    'code_kontak': {
         type: DataTypes.TEXT,
     },
     'username': {
@@ -20,9 +20,13 @@ const contactDosen = db.define('contactDosen', {
     'status': {
         type: DataTypes.ENUM,
         values: ['aktif', 'tidak']
+    },
+    'level': {
+        type: DataTypes.ENUM,
+        values: ['dosen', 'mahasiswa']
     }
 }, {
-    tableName: 'tb_chat_contact_dosen',
+    tableName: 'tb_kontak',
     freezeTableName: true,
     timestamps: false,
     underscored: true,
@@ -31,4 +35,4 @@ const contactDosen = db.define('contactDosen', {
 
 
 
-module.exports = contactDosen
+module.exports = kontak

@@ -1,0 +1,28 @@
+.faq-body {
+      overflow-y: scroll;
+    }
+
+    .faq-body::-webkit-scrollbar {
+      width: 7px;
+    }
+    .faq-body::-webkit-scrollbar-thumb {
+      background-color: rgba(0,0,0,0.4);
+      border-radius: 10rem;
+      border: 1px solid #fff;
+    }
+
+
+    .faq-body::-webkit-scrollbar-track-piece:start {
+      background: transparent;
+    }
+
+    .faq-body::-webkit-scrollbar-track-piece:end {
+      background: transparent;
+    }
+    .faq-question {
+      padding: 20px;
+      border-bottom: 1px solid #000;
+      line-height: 1.3;
+      color: #15191b;
+      font-size: 0.8rem;
+    }

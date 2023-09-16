@@ -25,7 +25,8 @@ const store = new sessionStore({
 app.use(fileUpload())
 app.use(cors({
     credentials: true,
-    origin: process.env.APP_ORIGIN,
+    // origin: process.env.APP_ORIGIN,
+    origin: ['http://localhost:3000', 'http://localhost:5000'],
 }))
 app.use(session({
     secret: process.env.SESS_SECRET,
@@ -69,8 +70,7 @@ const pengajuanStudi = require('./router/pengajuanStudiRoute.js')
 const pembimbingAkademik = require('./router/pembimbingAkademikRoute.js')
 const herRegistrasi = require('./router/herRegistrasiRoute.js')
 const pengumuman = require('./router/pengumumanRoute.js')
-const contactDosen = require('./router/contactDosenRoute.js')
-const contactMahasiswa = require('./router/contactMahasiswaRoute.js')
+const kontak = require('./router/kontakRoute.js')
 const message = require('./router/messageRoute.js')(io)
 
 app.use('/v1/login', login)
@@ -100,8 +100,7 @@ app.use('/v1/pengajuanStudi', pengajuanStudi)
 app.use('/v1/pembimbingAkademik', pembimbingAkademik)
 app.use('/v1/herRegistrasi', herRegistrasi)
 app.use('/v1/pengumuman', pengumuman)
-app.use('/v1/contactDosen', contactDosen)
-app.use('/v1/contactMahasiswa', contactMahasiswa)
+app.use('/v1/kontak', kontak)
 app.use('/v1/message', message)
 
 
@@ -112,39 +111,33 @@ app.get('/', (req, res) => {
 
 
 //  socket connection
-let activeUsers = []
+let onlineUser = []
 io.on("connection", (socket) => {
-    // add new User
-    socket.on("new-user-add", (newUserId) => {
-        // if user is not added previously
-        if (!activeUsers.some((user) => user.userId === newUserId)) {
-            activeUsers.push({ userId: newUserId, socketId: socket.id });
-            console.log("New User Connected", activeUsers);
-        }
-        // send all active users to new user
-        console.log("conncet users", activeUsers);
-        io.emit("get-users", activeUsers);
-    });
+    console.log('a user connected');
+    socket.on("addNewUser", (userId) => {
+        !onlineUser.some(user => user.userId === userId) &&
+            onlineUser.push({
+                userId,
+                socketId: socket.id
+            })
+        console.log("onlineUser", onlineUser);
+        io.emit("getOnlineUser", onlineUser)
+    })
 
-    socket.on("disconnect", () => {
-        // remove user from active users
-        activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);
-        console.log("User Disconnected", activeUsers);
-        // send all active users to all users
-        io.emit("get-users", activeUsers);
-    });
-
-
-    socket.on("send-message", (data) => {
-        const { receiverId } = data;
-        const user = activeUsers.find((user) => user.userId === receiverId);
-        console.log("Sending from socket to :", receiverId)
-        console.log("Data: ", data)
+    socket.on("sendMessage", (message) => {
+        const user = onlineUser.find((user => user.userId === message.reciptenId))
         if (user) {
-            io.to(user.socketId).emit("recieve-message", data);
+            io.to(user.socketId).emit("getMessage", message)
         }
     })
-});
+
+    socket.on("disconnet", () => {
+        onlineUser = onlineUser.filter(user => user.socketId !== socket.id)
+        io.emit("getOnlineUser", onlineUser)
+        console.log("disconnect", onlineUser);
+    })
+
+})
 
 
 // store.sync()
