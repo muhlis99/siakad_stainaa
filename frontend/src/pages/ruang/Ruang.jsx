@@ -8,7 +8,7 @@ import { getMe } from "../../features/authSlice"
 const Ruang = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { isError, isSuccess } = useSelector((state) => state.auth)
+    const { isError } = useSelector((state) => state.auth)
 
     useEffect(() => {
         dispatch(getMe())

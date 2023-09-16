@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { LogOut, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
+import { FaPlus } from "react-icons/fa"
 
 const Navigation = () => {
     const dispatch = useDispatch()
@@ -43,7 +44,9 @@ const Navigation = () => {
                                 className="rounded-circle"
                             />
                         </div>
-                        <h3 className="mt-2 font-weight-bold">SIAKAD STAINAA</h3>
+                        <div className="d-xs-none">
+                            <h3 className="mt-2 font-weight-bold">SIAKAD STAINAA</h3>
+                        </div>
                     </Link>
                     <div className="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                         <nav className="navbar-nav navbar-nav-right">
@@ -72,6 +75,7 @@ const Navigation = () => {
                         <NavDropdown title={
                             <span className="text-light">Perkuliahan</span>
                         } id="basic-nav-dropdown">
+                            <Link to="/pengumuman" className="dropdown-item">Pengumuman</Link>
                             <Link to="/karturencanastudi" className="dropdown-item">Kartu Rencana Studi</Link>
                             <Link to="/jadwalkuliah" className="dropdown-item">Jadwal Kuliah</Link>
                             <Link to="/kartuhasilstudi" className="dropdown-item">Kartu Hasil Studi</Link>

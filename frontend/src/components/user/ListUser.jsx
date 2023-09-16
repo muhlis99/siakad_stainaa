@@ -239,6 +239,8 @@ const ListUser = () => {
                                         <select className="select select-sm select-bordered w-full" value={role} onChange={(e) => setRole(e.target.value)}>
                                             <option value="">Role</option>
                                             <option value="admin">Admin</option>
+                                            <option value="bauak">BAUAK</option>
+                                            <option value="operator">Operator</option>
                                             <option value="dosen">Dosen</option>
                                             <option value="mahasiswa">Mahasiswa</option>
                                         </select>

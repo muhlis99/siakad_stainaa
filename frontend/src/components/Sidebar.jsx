@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import stainaa from "../assets/img/stainaa.png"
 import { Link, useLocation } from "react-router-dom"
+import { useSelector } from "react-redux"
 import {
   FaHome,
   FaUniversity,
@@ -33,7 +34,7 @@ import {
 
 const Sidebar = () => {
   const location = useLocation()
-
+  const { user } = useSelector((state) => state.auth)
   const [collap, setCollaps] = useState("")
   const [active, setActive] = useState("")
 
@@ -213,26 +214,29 @@ const Sidebar = () => {
             </details>
           }
         </li>
-        <li>
-          {collap == 'user' ?
-            <details open>
-              <summary className='text-[#F5F5F5]'><FaUsers />Pengguna</summary>
-              <ul className='gap-2'>
-                <li>
-                  <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-sm'>Users</span></Link>
-                </li>
-              </ul>
-            </details> :
-            <details>
-              <summary className='text-[#F5F5F5]'><FaUsers />Pengguna</summary>
-              <ul className='gap-2'>
-                <li>
-                  <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-sm'>Users</span></Link>
-                </li>
-              </ul>
-            </details>
-          }
-        </li>
+        {user && user.data.role == 'admin' ?
+          <li>
+            {collap == 'user' ?
+              <details open>
+                <summary className='text-[#F5F5F5]'><FaUsers />Pengguna</summary>
+                <ul className='gap-2'>
+                  <li>
+                    <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-sm'>Users</span></Link>
+                  </li>
+                </ul>
+              </details> :
+              <details>
+                <summary className='text-[#F5F5F5]'><FaUsers />Pengguna</summary>
+                <ul className='gap-2'>
+                  <li>
+                    <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-sm'>Users</span></Link>
+                  </li>
+                </ul>
+              </details>
+            }
+          </li> : ""
+        }
+
       </ul>
     </div>
   )
