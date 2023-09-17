@@ -10,4 +10,9 @@ router.post('/create', validationJadwalKuliah, validationRequest, jadwalKuliahCo
 router.put('/update/:id', validationJadwalKuliah, validationRequest, jadwalKuliahController.put)
 router.put('/deleteStatus/:id', jadwalKuliahController.deleteStatus)
 
+// user mahasiswa 
+router.get('/getJadwalMahasiswa/:nim', jadwalKuliahController.getJadwalMahasiswa)
+
+
+
 module.exports = router 
