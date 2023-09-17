@@ -4,6 +4,7 @@ import { Row, Col, Card, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../features/authSlice"
 import { Navigate } from "react-router-dom"
+import { FaRegClipboard, FaRegFile } from 'react-icons/fa'
 
 const Dashboard = () => {
     const dispatch = useDispatch()
@@ -21,65 +22,82 @@ const Dashboard = () => {
                     <h3 className="page-title">Dashboard</h3>
                 </div>
                 <Row>
-                    <Col lg="6">
-                        <Card className='shadow-sm'>
-                            <Card.Body>
-                                <Card.Title>Hai, Selamat datang!</Card.Title>
-                                <Card.Text>
+                    <Col lg="6 mb-2 p-1">
+                        <Card className='shadow rounded-3 text-white bg-primary'>
+                            <Card.Body className='p-4'>
+                                <h3 className='mb-2'>Hai, Selamat datang!</h3>
+                                <Card.Text className='fs-6'>
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati illum hic quis, quos neque laborum nemo sint impedit accusantium.
                                 </Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col lg="3">
-                        <Card className='shadow-sm'>
-                            <Card.Body></Card.Body>
+                    <Col lg="3" className='mb-2  p-1'>
+                        <Card className='shadow-sm bg-success'>
+                            <Card.Body>
+                                <FaRegFile className='h1 float-end opacity-50' />
+                                <h6 className="text-white text-uppercase mt-0">IPS</h6>
+                                <h2 className='fw-bold text-white'>1,587</h2>
+                                <span className="text-white">Indeks Prestasi Semester</span>
+                            </Card.Body>
                         </Card>
                     </Col>
-                    <Col lg="3">
-                        <Card className='shadow-sm'>
-                            <Card.Body></Card.Body>
+                    <Col lg="3" className='mb-2  p-1'>
+                        <Card className='shadow-sm bg-success'>
+                            <Card.Body>
+                                <FaRegFile className='h1 float-end opacity-50' />
+                                <h6 className="text-white text-uppercase mt-0">IPK</h6>
+                                <h2 className='fw-bold text-white'>1,587</h2>
+                                <span className="text-white">Indeks Prestasi Kumulatif</span>
+                            </Card.Body>
                         </Card>
                     </Col>
                 </Row>
                 <Row className='mt-4'>
-                    <Col lg="9">
+                    <Col lg="9" className='p-1'>
                         <Card className='shadow-sm'>
                             <Card.Header>Jadwal Kuliah minggu ini</Card.Header>
-                            <Card.Body>
-                                <Table>
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td colSpan={2}>Larry the Bird</td>
-                                            <td>@twitter</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
+                            <Card.Body className='p-3'>
+                                <div className="table-responsive mt-1">
+                                    <Table striped>
+                                        <thead>
+                                            <tr style={{ background: '#C5E1D4' }}>
+                                                <th className='fw-bold py-3'>#</th>
+                                                <th className='fw-bold py-3'>Mata Kuliah</th>
+                                                <th className='fw-bold py-3'>SKS</th>
+                                                <th className='fw-bold py-3'>Status MK</th>
+                                                <th className='fw-bold py-3'>Paket</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr className='border'>
+                                                <th scope='row' className='py-2'>1</th>
+                                                <td className='py-2'>Mark</td>
+                                                <td className='py-2'>Otto</td>
+                                                <td className='py-2'>@mdo</td>
+                                                <td className='py-2'><span className="badge rounded-pill text-bg-success">Paket</span></td>
+                                            </tr>
+                                            <tr className='border'>
+                                                <th scope='row' className='py-2'>2</th>
+                                                <td className='py-2'>Jacob</td>
+                                                <td className='py-2'>Thornton</td>
+                                                <td className='py-2'>@fat</td>
+                                                <td className='py-2'><span className="badge rounded-pill text-bg-success">Paket</span></td>
+                                            </tr>
+                                            <tr className='border'>
+                                                <th scope='row' className='py-2'>3</th>
+                                                <td className='py-2'>Larry the Bird</td>
+                                                <td className='py-2'>Larry the Bird</td>
+                                                <td className='py-2'>Larry the Bird</td>
+                                                <td className='py-2'><span className="badge rounded-pill text-bg-success">Paket</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                </div>
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col lg="3">
+                    <Col lg="3" className='p-1'>
                         <Row>
                             <Col lg="12">
                                 <Card className='shadow-sm'>

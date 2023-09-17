@@ -8,7 +8,7 @@ import { getMe } from "../../features/authSlice"
 const Prodi = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { isError, isSuccess, message } = useSelector((state) => state.auth)
+    const { isError } = useSelector((state) => state.auth)
 
     useEffect(() => {
         dispatch(getMe())

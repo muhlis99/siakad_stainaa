@@ -8,9 +8,9 @@ var infoColor = getComputedStyle(document.body).getPropertyValue('--info');
 var darkColor = getComputedStyle(document.body).getPropertyValue('--dark');
 var lightColor = getComputedStyle(document.body).getPropertyValue('--light');
 
-(function ($) {
+(function($) {
   'use strict';
-  $(function () {
+  $(function() {
     var body = $('body');
     var contentWrapper = $('.content-wrapper');
     var scroller = $('.container-scroller');
@@ -46,19 +46,19 @@ var lightColor = getComputedStyle(document.body).getPropertyValue('--light');
     }
 
     var current = location.pathname.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');
-    $('.nav li a', sidebar).each(function () {
+    $('.nav li a', sidebar).each(function() {
       var $this = $(this);
       addActiveClass($this);
     })
 
-    $('.horizontal-menu .nav li > a').each(function () {
+    $('.horizontal-menu .nav li > a').each(function() {
       var $this = $(this);
       addActiveClass($this);
     })
 
     //Close other submenu in sidebar on opening any
 
-    sidebar.on('show.bs.collapse', '.collapse', function () {
+    sidebar.on('show.bs.collapse', '.collapse', function() {
       sidebar.find('.collapse.show').collapse('hide');
     });
 
@@ -81,7 +81,7 @@ var lightColor = getComputedStyle(document.body).getPropertyValue('--light');
       }
     }
 
-    $('[data-toggle="minimize"]').on("click", function () {
+    $('[data-toggle="minimize"]').on("click", function() {
       if ((body.hasClass('sidebar-toggle-display')) || (body.hasClass('sidebar-absolute'))) {
         body.toggleClass('sidebar-hidden');
       } else {
@@ -91,6 +91,6 @@ var lightColor = getComputedStyle(document.body).getPropertyValue('--light');
 
     //checkbox and radios
     $(".form-check label, .form-radio label").append('<i class="input-helper"></i>');
-
+  
   });
 })(jQuery);
