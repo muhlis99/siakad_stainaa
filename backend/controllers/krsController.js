@@ -3,7 +3,8 @@ const mataKuliahModel = require('../models/mataKuliahModel.js')
 const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 const semesterModel = require('../models/semesterModel.js')
 const historyMahasiswa = require('../models/historyMahasiswaModel.js')
-const { Op } = require('sequelize')
+const { Op, Sequelize } = require('sequelize')
+const mahasiswaModel = require('../models/mahasiswaModel.js')
 
 module.exports = {
     getAll: async (req, res, next) => {
@@ -295,6 +296,142 @@ module.exports = {
                 })
             }
         }
+    },
+
+    //  user mahasiswa
+    viewKrsMahasiswaNow: async (req, res, next) => {
+        const nim = req.params.nim
+        const data = await historyMahasiswa.findOne({
+            include: [
+                {
+                    model: mahasiswaModel,
+                    attributes: ["nama"]
+                },
+                {
+                    model: semesterModel,
+                    attributes: ['semester']
+                },
+                {
+                    model: tahunAjaranModel,
+                    attributes: ["tahun_ajaran"]
+                }
+            ],
+            where: {
+                nim: nim,
+                status: "aktif"
+            }
+        })
+        await krsModel.findAll({
+            include: [
+                {
+                    model: mataKuliahModel,
+                    attributes: ["code_mata_kuliah", "nama_mata_kuliah",
+                        "status_bobot_makul", "status_makul", "sks",
+                        [Sequelize.fn('SUM', Sequelize.cast(Sequelize.col('sks'), 'integer')), 'total_sks']
+                    ],
+                    where: {
+                        code_tahun_ajaran: data.code_tahun_ajaran,
+                        code_semester: data.code_semester,
+                        code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                        code_fakultas: data.code_fakultas,
+                        code_prodi: data.code_prodi,
+                        status: "aktif",
+                        status_makul: "paket"
+                    }
+                }
+            ],
+            where: {
+                nim: nim,
+                code_tahun_ajaran: data.code_tahun_ajaran,
+                code_semester: data.code_semester,
+                code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                code_fakultas: data.code_fakultas,
+                code_prodi: data.code_prodi,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "data krs success",
+                identitas: {
+                    nim: nim,
+                    nama: data.mahasiswas[0].nama,
+                    semester: data.semesters[0].semester,
+                    tahun_ajaran: data.tahunAjarans[0].tahun_ajaran,
+                },
+                data: result
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+
+
+    viewKrsMahasiswaHistory: async (req, res, next) => {
+        const nim = req.params.nim
+        const tahunAjaran = req.params.tahunAjaran
+        const semester = req.params.semester
+        const data = await historyMahasiswa.findOne({
+            include: [
+                {
+                    model: mahasiswaModel,
+                    attributes: ["nama"]
+                },
+                {
+                    model: semesterModel,
+                    attributes: ['semester']
+                },
+                {
+                    model: tahunAjaranModel,
+                    attributes: ["tahun_ajaran"]
+                }
+            ],
+            where: {
+                nim: nim,
+                status: "aktif"
+            }
+        })
+        await krsModel.findAll({
+            include: [
+                {
+                    model: mataKuliahModel,
+                    attributes: ["code_mata_kuliah", "nama_mata_kuliah",
+                        "status_bobot_makul", "status_makul", "sks",
+                        [Sequelize.fn('SUM', Sequelize.cast(Sequelize.col('sks'), 'integer')), 'total_sks']
+                    ],
+                    where: {
+                        code_tahun_ajaran: tahunAjaran,
+                        code_semester: semester,
+                        code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                        code_fakultas: data.code_fakultas,
+                        code_prodi: data.code_prodi,
+                        status: "aktif",
+                        status_makul: "paket"
+                    }
+                }
+            ],
+            where: {
+                nim: nim,
+                code_tahun_ajaran: tahunAjaran,
+                code_semester: semester,
+                code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                code_fakultas: data.code_fakultas,
+                code_prodi: data.code_prodi,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "data krs success",
+                identitas: {
+                    nim: nim,
+                    nama: data.mahasiswas[0].nama,
+                    semester: semester,
+                    tahun_ajaran: tahunAjaran,
+                },
+                data: result
+            })
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
 }

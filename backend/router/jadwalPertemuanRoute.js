@@ -12,4 +12,8 @@ router.put('/deleteStatus/:id', jadwalPertemuanController.deleteStatus)
 router.put('/setJenisPertemuan', jadwalPertemuanController.setJenisPertemuan)
 router.put('/setMetodePembelajaran', jadwalPertemuanController.setMetodePembelajaran)
 
+
+// user mahasiswa 
+router.get('/getJadwaPertemuanlMahasiswa/:codeJadwalKuliah', jadwalPertemuanController.getJadwaPertemuanlMahasiswa)
+
 module.exports = router

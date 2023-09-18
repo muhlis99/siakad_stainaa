@@ -3,6 +3,12 @@ const jadwalKuliahModel = require('../models/jadwalKuliahModel.js')
 const jadwalPertemuanModel = require('../models/jadwalPertemuanModel.js')
 const path = require('path')
 const fs = require('fs')
+const mahasiswaModel = require("../models/mahasiswaModel.js")
+const semesterModel = require("../models/semesterModel.js")
+const tahunAjaranModel = require("../models/tahunAjaranModel.js")
+const fakultasModel = require("../models/fakultasModel.js")
+const prodiModel = require("../models/prodiModel.js")
+const historyMahasiswa = require("../models/historyMahasiswaModel.js")
 
 
 module.exports = {
@@ -251,6 +257,22 @@ module.exports = {
         }).catch(err => {
             next(err)
         })
+    },
+
+    //  user mahasiswa
+    getJadwaPertemuanlMahasiswa: async (req, res, next) => {
+        const codeJadwalKuliah = req.params.codeJadwalKuliah
+        const dataJadwalKuliah = await jadwalKuliahModel.findOne({
+            where: {
+                code_jadwal_kuliah: codeJadwalKuliah,
+                status: "aktif"
+            }
+        })
+        const date = new Date(dataJadwalKuliah.tanggal_mulai)
+        var days = ['minggu', 'sennin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
+        let days = 7 - date.getDay() + indexHari;
+        let nextDay = new Date(date.setDate(date.getDate() + days))
+        console.log(nextDay);
     }
 
 }

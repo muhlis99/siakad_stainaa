@@ -9,6 +9,9 @@ const ruangModel = require('../models/ruangModel.js')
 const fakultasModel = require("../models/fakultasModel.js")
 const jenjangPendidikanModel = require("../models/jenjangPendidikanModel.js")
 const dosenModel = require("../models/dosenModel.js")
+const historyMahasiswa = require("../models/historyMahasiswaModel.js")
+const krsModel = require("../models/krsModel.js")
+const mahasiswaModel = require("../models/mahasiswaModel.js")
 
 
 module.exports = {
@@ -399,6 +402,79 @@ module.exports = {
             catch(err => {
                 next(err)
             })
+    },
 
+    // user mahasiswa
+    getJadwalMahasiswa: async (req, res, next) => {
+        const nim = req.params.nim
+        const dataMahasiswa = await historyMahasiswa.findOne({
+            include: [{
+                model: mahasiswaModel,
+                attributes: ["nama"]
+            }, {
+                model: semesterModel,
+                attributes: ['semester']
+            }, {
+                model: tahunAjaranModel,
+                attributes: ["tahun_ajaran"]
+            }, {
+                model: fakultasModel,
+                attributes: ["nama_fakultas"]
+            }, {
+                model: prodiModel,
+                attributes: ["nama_prodi"]
+            }],
+            where: {
+                nim: nim,
+                status: "aktif"
+            }
+        })
+        if (!dataMahasiswa) return res.status(201).json({ message: "mahasiswa tidak ditemukan" })
+        const dataKrsMahasiswa = await krsModel.findAll({
+            where: {
+                nim: nim,
+                code_jenjang_pendidikan: dataMahasiswa.code_jenjang_pendidikan,
+                code_fakultas: dataMahasiswa.code_fakultas,
+                code_prodi: dataMahasiswa.code_prodi,
+                code_tahun_ajaran: dataMahasiswa.code_tahun_ajaran,
+                code_semester: dataMahasiswa.code_semester,
+                status: "aktif"
+            }
+        })
+        const dataMakulMahasiswa = dataKrsMahasiswa.map(i => { return i.code_mata_kuliah })
+
+        await jadwalKuliahModel.findAll({
+            include: [
+                // {
+                //     model: kelasModel,
+                //     attributes: ["code_kelas", "nama_kelas"],
+                //     where: { status: "aktif" }
+                // },
+                {
+                    model: mataKuliahModel,
+                    attributes: ["code_mata_kuliah", "nama_mata_kuliah"],
+                    where: { status: "aktif" }
+                }
+            ],
+            where: {
+                code_mata_kuliah: dataMakulMahasiswa,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "Data jadwal kuliah mahasiswa successfuly",
+                identitas: {
+                    nim: nim,
+                    nama: dataMahasiswa.mahasiswas[0].nama,
+                    semester: dataMahasiswa.semesters[0].semester,
+                    tahun_ajaran: dataMahasiswa.tahunAjarans[0].tahun_ajaran,
+                    fakultas: dataMahasiswa.fakultas[0].nama_fakultas,
+                    prodi: dataMahasiswa.prodis[0].nama_prodi
+                },
+                data: result
+            })
+        }).catch(err => {
+            next(err)
+        })
     }
 }
