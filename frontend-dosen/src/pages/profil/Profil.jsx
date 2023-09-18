@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../Layout'
 import { Row, Col, Card, Image } from 'react-bootstrap'
-import gambar from "../../assets/images/noimage.png"
+import gambar from "../../assets/images/noimage.svg"
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../features/authSlice"
 import { Navigate } from "react-router-dom"
@@ -10,6 +10,7 @@ import axios from 'axios'
 
 const Profil = () => {
     const dispatch = useDispatch()
+    const { isError, user } = useSelector((state) => state.auth)
     const [nim, setNim] = useState("")
     const [noKk, setNoKk] = useState("")
     const [nik, setNik] = useState("")
@@ -71,6 +72,20 @@ const Profil = () => {
     const [hasilW, setHasilW] = useState("")
     const [kodeDidikW, setKodeDidikW] = useState("")
     const [didikW, setDidikW] = useState("")
+    const [foto, setFoto] = useState("")
+    const [prevFoto, setPrevFoto] = useState("")
+    const [qrCode, setQrCode] = useState("")
+    const [prevQrCode, setPrevQrCode] = useState("")
+    const [scanKtp, setScanKtp] = useState("")
+    const [prevScanKtp, setPrevScanKtp] = useState("")
+    const [scanKk, setScanKk] = useState("")
+    const [prevScanKk, setPrevScanKk] = useState("")
+    const [scanIjazah, setScanIjazah] = useState("")
+    const [prevScanIjazah, setPrevScanIjazah] = useState("")
+    const [scanKtm, setScanKtm] = useState("")
+    const [prevScanKtm, setPrevScanKtm] = useState("")
+    const [scanKip, setScanKip] = useState("")
+    const [prevScanKip, setPrevScanKip] = useState("")
 
     useEffect(() => {
         dispatch(getMe())
@@ -80,64 +95,71 @@ const Profil = () => {
     useEffect(() => {
         const getDataProfil = async () => {
             try {
-                const response = await axios.get(`v1/mahasiswa/getById/23`)
-                setNim(response.data.data.nim)
-                setNoKk(response.data.data.no_kk)
-                setNik(response.data.data.nik)
-                setNama(response.data.data.nama)
-                setTmpLahir(response.data.data.tempat_lahir)
-                setTglLahir(response.data.data.tanggal_lahir)
-                setJenis(response.data.data.jenis_kelamin)
-                setEmail(response.data.data.email)
-                setNoHp(response.data.data.no_hp)
-                setNoTelp(response.data.data.no_telepon)
-                setNisn(response.data.data.nisn)
-                setPenKps(response.data.data.penerima_kps)
-                setNoKps(response.data.data.no_kps)
-                setNpwp(response.data.data.npwp)
-                setKodeJalurPen(response.data.data.jalur_pendaftaran)
-                setKodeJenisPen(response.data.data.jenis_pendaftaran)
-                setJenjang(response.data.data.jenjangPendidikans[0].nama_jenjang_pendidikan)
-                setFakultas(response.data.data.fakultas[0].nama_fakultas)
-                setProdi(response.data.data.prodis[0].nama_prodi)
-                setJalan(response.data.data.jalan)
-                setDusun(response.data.data.dusun)
-                setRtRw(response.data.data.rt + "/" + response.data.data.rw)
-                setKodePos(response.data.data.kode_pos)
-                setKodeJenTin(response.data.data.jenis_tinggal)
-                setKodeAlat(response.data.data.alat_transportasi)
-                setDesa(response.data.data.desas[0].nama_desa)
-                setKecamatan(response.data.data.kecamatans[0].nama_kecamatan)
-                setKabupaten(response.data.data.kabupatens[0].nama_kabupaten)
-                setProvinsi(response.data.data.provinsis[0].nama_provinsi)
-                setNegara(response.data.data.negaras[0].nama_negara)
-                setNikA(response.data.data.nik_ayah)
-                setNmA(response.data.data.nama_ayah)
-                setTglLahirA(response.data.data.tanggal_lahir_ayah)
-                setKodeKerjaA(response.data.data.pekerjaan_ayah)
-                setKodeHasilA(response.data.data.penghasilan_ayah)
-                setKodeDidikA(response.data.data.pendidikan_ayah)
-                setNikI(response.data.data.nik_ibu)
-                setNmI(response.data.data.nama_ibu)
-                setTglLahirI(response.data.data.tanggal_lahir_ibu)
-                setKodeKerjaI(response.data.data.pekerjaan_ibu)
-                setKodeHasilI(response.data.data.penghasilan_ibu)
-                setKodeDidikI(response.data.data.pendidikan_ibu)
-                setNikW(response.data.data.nik_wali)
-                setNmW(response.data.data.nama_wali)
-                setTglLahirW(response.data.data.tanggal_lahir_wali)
-                setKodeKerjaW(response.data.data.pekerjaan_wali)
-                setKodeHasilW(response.data.data.penghasilan_wali)
-                setKodeDidikW(response.data.data.pendidikan_wali)
+                if (user) {
+                    const response = await axios.get(`v1/mahasiswa/getByNim/${user.data.username}`)
+                    setNim(response.data.data.nim)
+                    setNoKk(response.data.data.no_kk)
+                    setNik(response.data.data.nik)
+                    setNama(response.data.data.nama)
+                    setTmpLahir(response.data.data.tempat_lahir)
+                    setTglLahir(response.data.data.tanggal_lahir)
+                    setJenis(response.data.data.jenis_kelamin)
+                    setEmail(response.data.data.email)
+                    setNoHp(response.data.data.no_hp)
+                    setNoTelp(response.data.data.no_telepon)
+                    setNisn(response.data.data.nisn)
+                    setPenKps(response.data.data.penerima_kps)
+                    setNoKps(response.data.data.no_kps)
+                    setNpwp(response.data.data.npwp)
+                    setKodeJalurPen(response.data.data.jalur_pendaftaran)
+                    setKodeJenisPen(response.data.data.jenis_pendaftaran)
+                    setJenjang(response.data.data.jenjangPendidikans[0].nama_jenjang_pendidikan)
+                    setFakultas(response.data.data.fakultas[0].nama_fakultas)
+                    setProdi(response.data.data.prodis[0].nama_prodi)
+                    setJalan(response.data.data.jalan)
+                    setDusun(response.data.data.dusun)
+                    setRtRw(response.data.data.rt + "/" + response.data.data.rw)
+                    setKodePos(response.data.data.kode_pos)
+                    setKodeJenTin(response.data.data.jenis_tinggal)
+                    setKodeAlat(response.data.data.alat_transportasi)
+                    setDesa(response.data.data.desas[0].nama_desa)
+                    setKecamatan(response.data.data.kecamatans[0].nama_kecamatan)
+                    setKabupaten(response.data.data.kabupatens[0].nama_kabupaten)
+                    setProvinsi(response.data.data.provinsis[0].nama_provinsi)
+                    setNegara(response.data.data.negaras[0].nama_negara)
+                    setNikA(response.data.data.nik_ayah)
+                    setNmA(response.data.data.nama_ayah)
+                    setTglLahirA(response.data.data.tanggal_lahir_ayah)
+                    setKodeKerjaA(response.data.data.pekerjaan_ayah)
+                    setKodeHasilA(response.data.data.penghasilan_ayah)
+                    setKodeDidikA(response.data.data.pendidikan_ayah)
+                    setNikI(response.data.data.nik_ibu)
+                    setNmI(response.data.data.nama_ibu)
+                    setTglLahirI(response.data.data.tanggal_lahir_ibu)
+                    setKodeKerjaI(response.data.data.pekerjaan_ibu)
+                    setKodeHasilI(response.data.data.penghasilan_ibu)
+                    setKodeDidikI(response.data.data.pendidikan_ibu)
+                    setNikW(response.data.data.nik_wali)
+                    setNmW(response.data.data.nama_wali)
+                    setTglLahirW(response.data.data.tanggal_lahir_wali)
+                    setKodeKerjaW(response.data.data.pekerjaan_wali)
+                    setKodeHasilW(response.data.data.penghasilan_wali)
+                    setKodeDidikW(response.data.data.pendidikan_wali)
+                    setFoto(response.data.data.foto_diri)
+                    setQrCode(response.data.data.qrcode)
+                    setScanKtp(response.data.data.foto_ktp)
+                    setScanKk(response.data.data.foto_kk)
+                    setScanIjazah(response.data.data.foto_ijazah)
+                    scanKtm(response.data.data.foto_ktm)
+                    scanKip(response.data.data.foto_kip)
+                }
             } catch (error) {
 
             }
         }
 
         getDataProfil()
-    }, [])
-
-    const { isError } = useSelector((state) => state.auth)
+    }, [user])
 
     useEffect(() => {
         getJalur()
@@ -154,6 +176,16 @@ const Profil = () => {
         getPenghasilanWali()
         getPendidikanWali()
     }, [kodeJalurPen, kodeJenisPen, kodeJenTin, kodeAlat, kodeKerjaA, kodeHasilA, kodeDidikA, kodeKerjaI, kodeHasilI, kodeDidikI, kodeKerjaW, kodeHasilW, kodeDidikW,])
+
+    useEffect(() => {
+        prevFotoDiri()
+        getQrCode()
+        prevKtp()
+        prevKk()
+        prevIjazah()
+        prevKtm()
+        prevKip
+    }, [foto, qrCode, scanKtp, scanKk, scanIjazah, scanKtm, scanKip])
 
     const getJalur = async () => {
         if (kodeJalurPen) {
@@ -246,6 +278,146 @@ const Profil = () => {
         }
     }
 
+    const prevFotoDiri = async () => {
+        try {
+            if (foto) {
+                await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/diri/${foto}`, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevFoto(base64)
+                })
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const getQrCode = async () => {
+        try {
+            if (qrCode) {
+                await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/qrcode/${qrCode}`, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevQrCode(base64)
+                })
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const prevKtp = async () => {
+        try {
+            if (scanKtp) {
+                await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/ktp/${scanKtp}`, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevScanKtp(base64)
+                })
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const prevKk = async () => {
+        try {
+            if (scanKk) {
+                await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/kk/${scanKk}`, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevScanKk(base64)
+                })
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const prevIjazah = async () => {
+        try {
+            if (scanIjazah) {
+                await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/kk/${scanIjazah}`, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevScanIjazah(base64)
+                })
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const prevKtm = async () => {
+        try {
+            if (scanKtm) {
+                await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/ktm/${scanKtm}`, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevScanKtm(base64)
+                })
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const prevKip = async () => {
+        try {
+            if (scanKip) {
+                await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/kip/${scanKip}`, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevScanKip(base64)
+                })
+            }
+        } catch (error) {
+
+        }
+    }
+
     return (
         <Layout>
             {isError ? <Navigate to="/login" /> : <div className="content-wrapper">
@@ -257,25 +429,58 @@ const Profil = () => {
                         <Row>
                             <Col lg="2">
                                 <Row className='mb-3'>
-                                    <Col>
+                                    <Col lg="12">
                                         <Card className='shadow'>
                                             <Card.Body className='p-0'>
-                                                <Image src={gambar} thumbnail />
+                                                {prevFoto ? <Image src={`data:;base64,${prevFoto}`} thumbnail /> : <Image src={gambar} thumbnail />}
                                             </Card.Body>
                                         </Card>
                                     </Col>
-                                </Row>
-                                <Row className='mb-3'>
-                                    <Col>
-                                        <Card className='shadow'>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
                                             <Card.Body className='p-0'>
-                                                <Image src={gambar} thumbnail />
+                                                {prevQrCode ? <Image src={`data:;base64,${prevQrCode}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
+                                            <Card.Body className='p-0'>
+                                                {prevScanKtp ? <Image src={`data:;base64,${prevScanKtp}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
+                                            <Card.Body className='p-0'>
+                                                {prevScanKk ? <Image src={`data:;base64,${prevScanKk}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
+                                            <Card.Body className='p-0'>
+                                                {prevScanIjazah ? <Image src={`data:;base64,${prevScanIjazah}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
+                                            <Card.Body className='p-0'>
+                                                {prevScanKtm ? <Image src={`data:;base64,${prevScanKtm}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
+                                            <Card.Body className='p-0'>
+                                                {prevScanKip ? <Image src={`data:;base64,${prevScanKip}`} thumbnail /> : <Image src={gambar} thumbnail />}
                                             </Card.Body>
                                         </Card>
                                     </Col>
                                 </Row>
                             </Col>
-                            <Col>
+                            <Col lg="10" sm="12">
                                 <Card className='shadow mb-3'>
                                     <Card.Header>
                                         <p className='h3'>Detail Diri</p>

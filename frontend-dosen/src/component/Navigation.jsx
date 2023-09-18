@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap"
 import logo from "../assets/images/stainaa.png"
 import face from "../assets/images/faces/face1.jpg"
@@ -5,12 +6,32 @@ import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { LogOut, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
-import { FaPlus } from "react-icons/fa"
+import axios from "axios"
 
 const Navigation = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { user } = useSelector((state) => state.auth)
+    const [nama, setNama] = useState("")
+    // const []
+
+    useEffect(() => {
+        const getDataSession = async () => {
+            try {
+                if (user) {
+                    if (user.data.role == 'mahasiswa') {
+                        const response = await axios.get(`v1/mahasiswa/getByNim/${user.data.username}`)
+                        setNama(response.data.data.nama)
+                    } else {
+                        setNama(user.data.username)
+                    }
+                }
+            } catch (error) {
+
+            }
+        }
+        getDataSession()
+    }, [user])
 
     const logOut = () => {
         Swal.fire({
@@ -56,7 +77,7 @@ const Navigation = () => {
                                         <img src={face} alt="image" />
                                     </div>
                                     <div className="nav-profile-text">
-                                        <p className="text-black font-weight-semibold m-0">{user && user.data.username} </p>
+                                        <p className="text-black font-weight-semibold m-0">{nama} </p>
                                         <span className="font-13 online-color">{user && user.data.role}</span>
                                     </div>
                                 </>
@@ -79,6 +100,7 @@ const Navigation = () => {
                             <Link to="/karturencanastudi" className="dropdown-item">Kartu Rencana Studi</Link>
                             <Link to="/jadwalkuliah" className="dropdown-item">Jadwal Kuliah</Link>
                             <Link to="/kartuhasilstudi" className="dropdown-item">Kartu Hasil Studi</Link>
+                            <Link to="/berhentistudi" className="dropdown-item">Berhenti Studi</Link>
                         </NavDropdown>
                         <Link to="/chat" className="nav-link text-light">Chat</Link>
                     </Nav>

@@ -7,6 +7,7 @@ import Jadwal from "./pages/jadwal/Jadwal"
 import Chat from "./pages/chat/Chat"
 import ListPengumuman from "./pages/pengumuman/ListPengumuman"
 import KHS from "./pages/khs/KHS"
+import Berhenti from "./pages/berhentiStudi/Berhenti"
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/jadwalkuliah" element={<Jadwal />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/pengumuman" element={<ListPengumuman />} />
+          <Route path="/berhentistudi" element={<Berhenti />} />
         </Routes>
       </BrowserRouter>
     </>
