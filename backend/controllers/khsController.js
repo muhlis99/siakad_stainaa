@@ -214,9 +214,123 @@ module.exports = {
 
             })
         }).catch(err => {
-            res.json(err)
+            next(err)
         })
     },
 
+    //  user mahasiswa
+    viewKhsMahasiswa: async (req, res, next) => {
+        const nim = req.params.nim
+        const tahunAjaran = req.params.codeThnAjr
+        const dataMahasiswa = await historyMahasiswa.findOne({
+            include: [
+                {
+                    model: mahasiswaModel,
+                    attributes: ["nama"]
+                },
+                {
+                    model: semesterModel,
+                    attributes: ['semester']
+                },
+                {
+                    model: tahunAjaranModel,
+                    attributes: ["tahun_ajaran"]
+                },
+                {
+                    model: prodiModel,
+                    attributes: ["nama_prodi"]
+                },
+                {
+                    model: fakultasModel,
+                    attributes: ["nama_fakultas"]
+                },
+                {
+                    model: jenjangPendidikanModel,
+                    attributes: ["nama_jenjang_pendidikan"]
+                }
+            ],
+            where: {
+                nim: nim,
+                status: "aktif"
+            }
+        })
+        const totalSks = await nilaiKuliahModel.sum('mataKuliahs.sks', {
+            include: [
+                {
+                    attributes: ["id_mata_kuliah", "code_mata_kuliah", "nama_mata_kuliah", "sks"],
+                    model: mataKuliahModel,
+                    where: {
+                        code_tahun_ajaran: tahunAjaran,
+                        status: "aktif"
+                    }
+                }
+            ],
+            where: {
+                code_tahun_ajaran: tahunAjaran,
+                nim: nim,
+                status: "aktif"
+            }
+        })
+
+        const queryTotalSksIndex = await db.query(`SELECT SUM( tb_mata_kuliah.sks*tb_kategori_nilai.interfal_skor) AS total FROM tb_nilai_kuliah
+        INNER JOIN tb_mata_kuliah ON tb_nilai_kuliah.code_mata_kuliah=tb_mata_kuliah.code_mata_kuliah INNER JOIN tb_kategori_nilai ON
+        tb_nilai_kuliah.code_kategori_nilai=tb_kategori_nilai.code_kategori_nilai WHERE tb_nilai_kuliah.code_tahun_ajaran="${tahunAjaran}" 
+        AND tb_nilai_kuliah.nim="${nim}" AND tb_mata_kuliah.code_tahun_ajaran="${tahunAjaran}"AND tb_mata_kuliah.status="aktif"`, {
+            nest: true,
+            type: QueryTypes.SELECT
+        })
+        if (!queryTotalSksIndex) res.status(404).json({ message: "data tidak ditemukan" })
+        const totalSksIndex = queryTotalSksIndex[0].total
+        const ipSemester = totalSksIndex / totalSks
+
+        await nilaiKuliahModel.findAll({
+            include: [
+                {
+                    attributes: ["id_mata_kuliah", "code_mata_kuliah", "nama_mata_kuliah", "sks"],
+                    model: mataKuliahModel,
+                    where: {
+                        code_tahun_ajaran: tahunAjaran,
+                        status: "aktif"
+                    }
+                },
+                {
+                    attributes: ["id_kategori_nilai", "nilai_huruf", "interfal_skor"],
+                    model: kategoriNilaiModel,
+                    where: { status: "aktif" }
+                },
+            ],
+            attributes: [
+                'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
+                [Sequelize.literal('(mataKuliahs.sks*kategoriNilais.interfal_skor)'), 'sksIndexs']
+            ],
+            where: {
+                code_tahun_ajaran: tahunAjaran,
+                nim: nim,
+                status: 'aktif'
+            },
+        }).then(result => {
+            res.status(201).json({
+                message: "data KHS berhasil ditemukan",
+                identitas: {
+                    nim: nim,
+                    mahasiswa: dataMahasiswa.mahasiswas[0].nama,
+                    prodi: dataMahasiswa.prodis[0].nama_prodi,
+                    fakultas: dataMahasiswa.fakultas[0].nama_fakultas,
+                    jenjangPendidikan: dataMahasiswa.jenjangPendidikans[0].nama_jenjang_pendidikan,
+                    semester: dataMahasiswa.semesters[0].semester,
+                    tahunAjaran: tahunAjaran,
+                },
+                nilaiAkhir: {
+                    jumlahSks: totalSks,
+                    jumlahSksIndex: totalSksIndex,
+                    IPS: ipSemester,
+                },
+                data: result,
+
+            })
+        }).catch(err => {
+            next(err)
+        })
+    }
 
 }
