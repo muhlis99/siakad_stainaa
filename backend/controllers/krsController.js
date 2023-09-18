@@ -390,6 +390,7 @@ module.exports = {
                 status: "aktif"
             }
         })
+        if (!data) return res.status(404).json({ message: "data mahasiswa tidak ditemukan" })
         await krsModel.findAll({
             include: [
                 {
