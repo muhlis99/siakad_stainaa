@@ -430,7 +430,7 @@ module.exports = {
                 status: "aktif"
             }
         })
-        if (!dataMahasiswa) return res.status(201).json({ message: "mahasiswa tidak ditemukan" })
+        if (!dataMahasiswa) return res.status(404).json({ message: "mahasiswa tidak ditemukan" })
         const dataKrsMahasiswa = await krsModel.findAll({
             where: {
                 nim: nim,
@@ -442,6 +442,7 @@ module.exports = {
                 status: "aktif"
             }
         })
+        if (!dataKrsMahasiswa) return res.status(404).json({ message: "data tidak ditemukan" })
         const dataMakulMahasiswa = dataKrsMahasiswa.map(i => { return i.code_mata_kuliah })
         const dataJadwalKuliah = await jadwalKuliahModel.findAll({
             where: {
