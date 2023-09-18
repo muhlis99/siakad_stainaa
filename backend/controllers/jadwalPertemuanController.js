@@ -257,22 +257,6 @@ module.exports = {
         }).catch(err => {
             next(err)
         })
-    },
-
-    //  user mahasiswa
-    getJadwaPertemuanlMahasiswa: async (req, res, next) => {
-        const codeJadwalKuliah = req.params.codeJadwalKuliah
-        const dataJadwalKuliah = await jadwalKuliahModel.findOne({
-            where: {
-                code_jadwal_kuliah: codeJadwalKuliah,
-                status: "aktif"
-            }
-        })
-        const date = new Date(dataJadwalKuliah.tanggal_mulai)
-        var days = ['minggu', 'sennin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
-        let days = 7 - date.getDay() + indexHari;
-        let nextDay = new Date(date.setDate(date.getDate() + days))
-        console.log(nextDay);
     }
 
 }

@@ -12,6 +12,7 @@ const dosenModel = require("../models/dosenModel.js")
 const historyMahasiswa = require("../models/historyMahasiswaModel.js")
 const krsModel = require("../models/krsModel.js")
 const mahasiswaModel = require("../models/mahasiswaModel.js")
+const jadwalPertemuanModel = require("../models/jadwalPertemuanModel.js")
 
 
 module.exports = {
@@ -442,22 +443,28 @@ module.exports = {
             }
         })
         const dataMakulMahasiswa = dataKrsMahasiswa.map(i => { return i.code_mata_kuliah })
-
-        await jadwalKuliahModel.findAll({
-            include: [
-                // {
-                //     model: kelasModel,
-                //     attributes: ["code_kelas", "nama_kelas"],
-                //     where: { status: "aktif" }
-                // },
-                {
-                    model: mataKuliahModel,
-                    attributes: ["code_mata_kuliah", "nama_mata_kuliah"],
-                    where: { status: "aktif" }
-                }
-            ],
+        const dataJadwalKuliah = await jadwalKuliahModel.findAll({
             where: {
                 code_mata_kuliah: dataMakulMahasiswa,
+                status: "aktif"
+            }
+        })
+        const dataCodeJadwalKuliah = dataJadwalKuliah.map(t => { return t.code_jadwal_kuliah })
+        let dataDate = []
+        for (let index = 1; index <= 7; index++) {
+            const date = new Date()
+            let days = 7 - date.getDay() + index;
+            let nextDay = new Date(date.setDate(date.getDate() + days)).toISOString().substring(0, 10)
+            dataDate.push(nextDay)
+        }
+        await jadwalPertemuanModel.findAll({
+            include: [{
+                model: jadwalKuliahModel,
+                status: "aktif"
+            }],
+            where: {
+                code_jadwal_kuliah: dataCodeJadwalKuliah,
+                tanggal_pertemuan: dataDate,
                 status: "aktif"
             }
         }).then(result => {
@@ -473,7 +480,7 @@ module.exports = {
                 },
                 data: result
             })
-        }).catch(err => {
+        }).then(err => {
             next(err)
         })
     }
