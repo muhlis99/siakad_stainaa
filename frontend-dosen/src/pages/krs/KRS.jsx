@@ -1,18 +1,36 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../Layout'
 import { Row, Col, Card, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../features/authSlice"
 import { Navigate } from "react-router-dom"
+import axios from 'axios'
 
 const KRS = () => {
     const dispatch = useDispatch()
+    const { isError, user } = useSelector((state) => state.auth)
+    const [biodataNama, setBiodataNama] = useState("")
+    const [dataKrs, setDataKrs] = useState("")
 
     useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
 
-    const { isError, user } = useSelector((state) => state.auth)
+
+    useEffect(() => {
+        const getDataKrs = async () => {
+            try {
+                if (user) {
+                    const response = await axios.get(`v1/krs/viewKrsMahasiswaNow/${user.data.username}`)
+                    console.log(response);
+                }
+            } catch (error) {
+
+            }
+        }
+        getDataKrs()
+    }, [user])
+
 
     return (
         <Layout>
