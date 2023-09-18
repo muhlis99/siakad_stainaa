@@ -450,6 +450,7 @@ module.exports = {
                 status: "aktif"
             }
         })
+        if (!dataJadwalKuliah) return res.status(404).json({ message: "data tidak ditemukan" })
         const dataCodeJadwalKuliah = dataJadwalKuliah.map(t => { return t.code_jadwal_kuliah })
         let dataDate = []
         for (let index = 1; index <= 7; index++) {
