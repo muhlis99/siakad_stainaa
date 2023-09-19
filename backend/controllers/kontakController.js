@@ -97,10 +97,11 @@ module.exports = {
 
     createMemberKontak: async (req, res, next) => {
         const { kontak, memberKontak } = req.body
-        const data = await db.query(`SELECT * FROM tb_detail_kontak WHERE member_kontak="${kontak}"`, {
+        const data = await db.query(`SELECT * FROM tb_detail_kontak WHERE member_kontak="${kontak}" AND kontak="${memberKontak}"`, {
             nest: true,
             type: QueryTypes.SELECT
         })
+        console.log(data[0])
         if (data[0] == null) {
             const codeKontak = "dsn-mhs" + Math.floor(100000000000 + Math.random() * 900000000000)
             await db.query(`INSERT INTO tb_detail_kontak (id_detail_kontak,kontak,member_kontak,status,code_detail_kontak) VALUES (DEFAULT,"${kontak}","${memberKontak}","aktif","${codeKontak}")`)
@@ -108,7 +109,7 @@ module.exports = {
                     res.status(201).json({ message: "Data kontak member berhasil disimpan" })
                 })
         } else {
-            if (memberKontak == data[0].kontak) {
+            if (memberKontak === data[0].kontak || kontak === data[0].member_kontak) {
                 const codeDetailKontak = data[0].code_detail_kontak
                 await db.query(`INSERT INTO tb_detail_kontak (id_detail_kontak,kontak,member_kontak,status,code_detail_kontak) VALUES (DEFAULT,"${kontak}","${memberKontak}","aktif","${codeDetailKontak}")`)
                     .then(result => {

@@ -14,14 +14,15 @@ import Swal from 'sweetalert2'
 import { FaSmile, FaTimes } from "react-icons/fa"
 import { io } from "socket.io-client"
 import { PiPaperPlaneRightFill } from "react-icons/pi"
-import { format } from "timeago.js";
+import { format } from "timeago.js"
+import EmojiPicker from 'emoji-picker-react'
 // import ChatBox from "./ChatBox"
 import { FaPlus } from 'react-icons/fa'
 
 
 const Chat = () => {
     const dispatch = useDispatch()
-    const { isError, user } = useSelector((state) => state.auth)
+    const { isError, user, role } = useSelector((state) => state.auth)
     const [status, setStatus] = useState("")
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
@@ -30,8 +31,9 @@ const Chat = () => {
 
     const [listPesan, setListPesan] = useState([])
     const [listTambahDaftarKontak, setListTambahDaftarKontak] = useState([])
-    const [listDaftarKontak, setListDaftarKOntak] = useState([])
+    const [listDaftarKontak, setListDaftarKontak] = useState([])
     const [NamaRecipient, setNamaRecipient] = useState(".........")
+    const [reciptenId, setReciptenId] = useState("")
     const [senderId, setsenderId] = useState("")
     const [messageId, setmessageId] = useState("")
     const [pesan, setPesan] = useState("")
@@ -90,9 +92,7 @@ const Chat = () => {
 
 
     useEffect(() => {
-        const newSocket = io("ws://localhost:4001/", {
-            transports: ["websocket"]
-        })
+        const newSocket = io("http://localhost:4001")
         setSocket(newSocket)
         return () => {
             newSocket.disconnect()
@@ -102,7 +102,6 @@ const Chat = () => {
     // get user to socket server
     useEffect(() => {
         if (socket === null) return
-        console.log(senderId)
         socket.emit("addNewUser", senderId)
         socket.on("getOnlineUser", (res) => {
             setOnlineUser(res)
@@ -114,16 +113,10 @@ const Chat = () => {
 
     // send message to socket server
     useEffect(() => {
-        let reciptenId = ""
-        if (senderId == "dns932610220") {
-            reciptenId = "mhs389742654"
-        } else {
-            reciptenId = "dns932610220"
-        }
         if (socket === null) return
         console.log(reciptenId);
         socket.emit("sendMessage", { ...newMassage, reciptenId })
-    }, [newMassage])
+    }, [newMassage, socket, reciptenId])
 
     //  recive messge 
     useEffect(() => {
@@ -141,7 +134,7 @@ const Chat = () => {
         try {
             if (user) {
                 setEmail(user.data.email)
-                setLevel(user.data.level)
+                setLevel(user.data.role)
                 const response = await axios.get(`v1/kontak/checkKontak/${user.data.email}`)
                 setsenderId(response.data.data.code_kontak)
                 setNamaChat(response.data.data.username)
@@ -150,6 +143,7 @@ const Chat = () => {
             setStatus(error.response.status)
         }
     }
+
     const simpanReg = async (e) => {
         e.preventDefault()
         try {
@@ -185,16 +179,17 @@ const Chat = () => {
     const loopListDaftarKontak = async () => {
         try {
             const response = await axios.get(`/v1/kontak/getMemberByKontak/?kontak=${senderId}`)
-            setListDaftarKOntak(response.data.data)
+            setListDaftarKontak(response.data.data)
         } catch (error) {
             console.log(error)
         }
     }
 
-    const tambahDaftarKontak = async (i) => {
+    const tambahDaftarKontak = async (e) => {
+        console.log(e);
         await axios.post(`/v1/kontak/createMemberKontak`, {
             kontak: senderId,
-            memberKontak: i
+            memberKontak: e
         }).then(function () {
             loopListtambahDaftarKontak()
             loopListDaftarKontak()
@@ -207,17 +202,16 @@ const Chat = () => {
             setListPesan(response.data.data)
         }
     }
-
     const kirimPesan = async (e) => {
         e.preventDefault()
         if (pesan != 0) {
             await axios.post('v1/message/sendMessage', {
-                message_id: messageId,
+                code_message: messageId,
                 sender_id: senderId,
                 text_message: pesan,
-                id_detail_contact: 1
             }).then(function (el) {
                 setNewMassage(el.data.data)
+                // getPesan()
                 getPesan()
                 setPesan("")
                 setEmot(false)
@@ -352,7 +346,7 @@ const Chat = () => {
                                                                 :
                                                                 listDaftarKontak.map((list, index) => (
                                                                     <li key={list.id_detail_kontak} className="p-2  border-bottom border-dark"
-                                                                        onClick={() => setmessageId(list.code_detail_kontak) || setNamaRecipient(list.username)}
+                                                                        onClick={() => setmessageId(list.code_detail_kontak) || setNamaRecipient(list.username) || setReciptenId(list.member_kontak)}
                                                                     >
                                                                         <a href='#' className="d-flex justify-content-between text-decoration-none">
                                                                             <div className="d-flex flex-row">
@@ -396,7 +390,6 @@ const Chat = () => {
                                     <Card.Body>
                                         <div
                                             className="pt-3 pe-3 overflow-auto position-relative faq-body" id='message' style={{ height: '353px' }}>
-
                                             {listPesan.length == 0
                                                 ?
                                                 <Row>
