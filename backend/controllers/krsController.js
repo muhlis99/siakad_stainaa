@@ -427,7 +427,7 @@ module.exports = {
                     nim: nim,
                     nama: data.mahasiswas[0].nama,
                     semester: data.semesters[0].semester,
-                    tahun_ajaran: tahunAjaran,
+                    tahun_ajaran: data.tahunAjarans[0].tahun_ajaran,
                 },
                 data: result
             })
