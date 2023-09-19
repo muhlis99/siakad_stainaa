@@ -9,5 +9,8 @@ route.get('/totalDosen', homeController.totalDosen)
 route.get('/totalProdi', homeController.totalProdi)
 route.get('/diagramMahasiswa', homeController.diagramMahasiswa)
 route.get('/diagramDosen', homeController.diagramDosen)
+route.get('/jadwalKuliahNowMahasiswa/:nim', homeController.jadwalKuliahNowMahasiswa)
+route.get('/totalSksDanProdi/:nim', homeController.totalSksDanProdi)
+
 
 module.exports = route

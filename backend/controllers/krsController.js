@@ -321,6 +321,7 @@ module.exports = {
                 status: "aktif"
             }
         })
+        if (!data) return res.status(404).json({ message: "data tidak ditemukan" })
         await krsModel.findAll({
             include: [
                 {
@@ -390,6 +391,7 @@ module.exports = {
                 status: "aktif"
             }
         })
+        if (!data) return res.status(404).json({ message: "data mahasiswa tidak ditemukan" })
         await krsModel.findAll({
             include: [
                 {
@@ -424,7 +426,7 @@ module.exports = {
                 identitas: {
                     nim: nim,
                     nama: data.mahasiswas[0].nama,
-                    semester: semester,
+                    semester: data.semesters[0].semester,
                     tahun_ajaran: tahunAjaran,
                 },
                 data: result

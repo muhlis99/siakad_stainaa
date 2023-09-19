@@ -254,6 +254,7 @@ module.exports = {
                 status: "aktif"
             }
         })
+        if (!dataMahasiswa) return res.status(404).json({ message: "data mahasiswa tidak ditemukan" })
         const totalSks = await nilaiKuliahModel.sum('mataKuliahs.sks', {
             include: [
                 {
@@ -271,7 +272,7 @@ module.exports = {
                 status: "aktif"
             }
         })
-
+        if (!totalSks) return res.status(404).json({ message: "data  tidak ditemukan" })
         const queryTotalSksIndex = await db.query(`SELECT SUM( tb_mata_kuliah.sks*tb_kategori_nilai.interfal_skor) AS total FROM tb_nilai_kuliah
         INNER JOIN tb_mata_kuliah ON tb_nilai_kuliah.code_mata_kuliah=tb_mata_kuliah.code_mata_kuliah INNER JOIN tb_kategori_nilai ON
         tb_nilai_kuliah.code_kategori_nilai=tb_kategori_nilai.code_kategori_nilai WHERE tb_nilai_kuliah.code_tahun_ajaran="${tahunAjaran}" 
