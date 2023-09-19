@@ -1,5 +1,5 @@
 const pengumumanModel = require('../models/pengumumanModel.js')
-const { Op } = require('sequelize')
+const { Op, Sequelize } = require('sequelize')
 
 module.exports = {
     get: async (req, res, next) => {
@@ -96,9 +96,14 @@ module.exports = {
 
     getByLevel: async (req, res, next) => {
         const level = req.params.level
+        const dateFirst = req.params.dateFirst
+        const dateSecond = req.params.dateSecond
         await pengumumanModel.findAll({
             where: {
-                level: level
+                level: level,
+                tanggal_pengumuman: {
+                    [Op.between]: [dateFirst, dateSecond]
+                }
             }
         }).
             then(result => {
