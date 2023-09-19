@@ -487,215 +487,215 @@ const Profil = () => {
                                     </Card.Header>
                                     <Card.Body>
                                         <Row>
-                                            <Col lg="6" className='p-0'>
+                                            <Col lg="6">
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>nim</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{nim}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>no kk</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{noKk}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>nik</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{nik}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>nama</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{nama}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>tempat lahir</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{tmpLahir}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>tanggal lahir</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{tglLahir}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>jenis kelamin</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{jenis == 'l' ? 'laki-laki' : 'perempuan'}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>email</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fw-bolder'>{email}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>no hp/wa</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{noHp}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>no telepon</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{noTelp}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                            <Col lg="6" className='p-0'>
+                                            <Col lg="6">
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>nisn</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{nisn}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>penerima kps</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{penKps}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>no kps</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{noKps == "" ? "-" : noKps}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>npwp</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{npwp == "" ? "-" : npwp}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>jalur pendaftaran</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{jalurPen}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>jenis pendaftaran</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{jenisPen}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>jenjang pendidikan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{jenjang}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>fakultas</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{fakultas}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>prodi</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{prodi}</span></Card.Text>
                                                     </Col>
                                                 </Row>
@@ -709,127 +709,127 @@ const Profil = () => {
                                     </Card.Header>
                                     <Card.Body>
                                         <Row>
-                                            <Col lg="6" className='p-0'>
+                                            <Col lg="6">
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>jalan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{jalan}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>dusun</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{dusun}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>rt/rw</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{rtRw}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>kode pos</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{kodePos}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>jenis tinggal</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{jenTin}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>alat transportasi</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{alat}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                            <Col lg="6" className='p-0'>
+                                            <Col lg="6">
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>desa</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{desa}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>kecamatan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{kecamatan}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>kabuapten</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{kabupaten}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>provinsi</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{provinsi}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>negara</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{negara}</span></Card.Text>
                                                     </Col>
                                                 </Row>
@@ -843,138 +843,138 @@ const Profil = () => {
                                     </Card.Header>
                                     <Card.Body>
                                         <Row>
-                                            <Col lg="6" className='p-0'>
+                                            <Col lg="6">
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>nik ayah</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{nikA}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>nama ayah</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{nmA}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>tanggal lahir</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{tglLahirA}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>pekerjaan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{pekerjaanA}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>penghasilan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{hasilA}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>pendidikan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{didikA}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                            <Col lg="6" className='p-0'>
+                                            <Col lg="6">
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>nik ibu</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{nikI}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>nama ibu</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{nmI}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>tanggal lahir</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{tglLahirI}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>pekerjaan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{pekerjaanI}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>penghasilan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{hasilI}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>pendidikan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{didikI}</span></Card.Text>
                                                     </Col>
                                                 </Row>
@@ -988,72 +988,72 @@ const Profil = () => {
                                     </Card.Header>
                                     <Card.Body>
                                         <Row>
-                                            <Col lg="6" className='p-0'>
+                                            <Col lg="6">
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>nik wali</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{nikW}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>nama wali</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{nmW}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>tanggal lahir</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{tglLahirW}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                            <Col lg="6" className='p-0'>
+                                            <Col lg="6">
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>pekerjaan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{pekerjaanW}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>penghasilan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{hasilW}</span></Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-3'>
-                                                    <Col lg="5" md="5" sm="5" xs="5">
+                                                    <Col className='p-0' lg="5" md="5" sm="5" xs="5">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>pendidikan</span></Card.Text>
                                                     </Col>
-                                                    <Col lg="1" md="1" sm="1" xs="1">
+                                                    <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>:</span></Card.Text>
                                                     </Col>
-                                                    <Col>
+                                                    <Col className='p-0'>
                                                         <Card.Text><span className='fs-6 fw-bolder text-uppercase'>{didikW}</span></Card.Text>
                                                     </Col>
                                                 </Row>

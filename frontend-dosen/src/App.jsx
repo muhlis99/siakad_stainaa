@@ -3,6 +3,7 @@ import Login from "./pages/Login"
 import Dashboard from "./pages/Dashboard"
 import Profil from "./pages/profil/Profil"
 import KRS from "./pages/krs/KRS"
+import HistoryKrs from "./pages/krs/HistoryKrs"
 import Jadwal from "./pages/jadwal/Jadwal"
 import Chat from "./pages/chat/Chat"
 import ListPengumuman from "./pages/pengumuman/ListPengumuman"
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/profil" element={<Profil />} />
           <Route path="/karturencanastudi" element={<KRS />} />
+          <Route path="/historykrs" element={<HistoryKrs />} />
           <Route path="/kartuhasilstudi" element={<KHS />} />
           <Route path="/jadwalkuliah" element={<Jadwal />} />
           <Route path="/chat" element={<Chat />} />
