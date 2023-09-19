@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import Layout from '../Layout'
 import { Row, Col, Card, Button, Form, Image } from 'react-bootstrap'
 import face from "../../assets/images/male.svg"
+import chatBlank from "../../assets/images/noChat.svg"
 import dataBlank from "../../assets/images/noData.svg"
 import "../../assets/css/demo_2/chat.css"
 import "../../assets/css/Chat.css"
@@ -29,6 +30,8 @@ const Chat = () => {
 
     const [listPesan, setListPesan] = useState([])
     const [listTambahDaftarKontak, setListTambahDaftarKontak] = useState([])
+    const [listDaftarKontak, setListDaftarKOntak] = useState([])
+    const [NamaRecipient, setNamaRecipient] = useState(".........")
     const [senderId, setsenderId] = useState("")
     const [messageId, setmessageId] = useState("")
     const [pesan, setPesan] = useState("")
@@ -51,6 +54,9 @@ const Chat = () => {
         loopListtambahDaftarKontak()
     }, [senderId, level])
 
+    useEffect(() => {
+        loopListDaftarKontak()
+    }, [senderId])
 
     useEffect(() => {
         dispatch(getMe())
@@ -171,7 +177,6 @@ const Chat = () => {
         try {
             const response = await axios.get(`/v1/kontak/getKontak?codekontak=${senderId}&level=${level}`)
             setListTambahDaftarKontak(response.data.data)
-            console.log(response.data.data);
         } catch (error) {
             console.log(error)
         }
@@ -179,9 +184,10 @@ const Chat = () => {
 
     const loopListDaftarKontak = async () => {
         try {
-
+            const response = await axios.get(`/v1/kontak/getMemberByKontak/?kontak=${senderId}`)
+            setListDaftarKOntak(response.data.data)
         } catch (error) {
-
+            console.log(error)
         }
     }
 
@@ -191,10 +197,11 @@ const Chat = () => {
             memberKontak: i
         }).then(function () {
             loopListtambahDaftarKontak()
+            loopListDaftarKontak()
         })
     }
 
-    const getPesan = async () => {
+    const getPesan = async (e) => {
         if (messageId) {
             const response = await axios.get(`v1/message/historyMessage/${messageId}`)
             setListPesan(response.data.data)
@@ -262,10 +269,9 @@ const Chat = () => {
                                                             <div className="d-flex">
                                                                 <Image src={face} width={40} roundedCircle alt='image' />
                                                                 <div>
-                                                                    <p className="mt-2 ms-1 mb-0 fw-bold fs-sm">{namaChat}</p>
+                                                                    <p className="mt-2 ms-1 mb-0 fw-bold fs-sm text-secondary">{namaChat}</p>
                                                                 </div>
                                                             </div>
-
                                                         </Col>
                                                         <Col lg={2}>
                                                             <div className='ms-1 mt-2 float-end d-flex'>
@@ -303,13 +309,10 @@ const Chat = () => {
                                                                         </div>
                                                                     </a>
                                                                 </li>
-
                                                             ))
                                                         }
-
                                                     </ul>
                                                 </div>
-
                                             </div>
                                         </Card.Body>
                                     </Card>
@@ -341,21 +344,33 @@ const Chat = () => {
                                             <div className="">
                                                 <div className="overflow-auto position-relative faq-body" style={{ height: '365px' }}>
                                                     <ul className="list-unstyled mb-0">
-                                                        <li className="p-2  border-bottom">
-                                                            <a href="#" className="d-flex justify-content-between text-decoration-none">
-                                                                <div className="d-flex flex-row">
-                                                                    <div>
-                                                                        <img src={face}
-                                                                            alt="avatar" className="d-flex align-self-center me-3"
-                                                                            width="40" />
-                                                                        <span className="badge bg-success badge-dot"></span>
-                                                                    </div>
-                                                                    <div className="pt-2">
-                                                                        <p className="fw-bold mb-0 text-secondary">Marie Horwitz</p>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
+
+                                                        <ul className="list-unstyled mb-0">
+                                                            {listDaftarKontak.length == 0
+                                                                ?
+                                                                <Image src={dataBlank} width={200} />
+                                                                :
+                                                                listDaftarKontak.map((list, index) => (
+                                                                    <li key={list.id_detail_kontak} className="p-2  border-bottom border-dark"
+                                                                        onClick={() => setmessageId(list.code_detail_kontak) || setNamaRecipient(list.username)}
+                                                                    >
+                                                                        <a href='#' className="d-flex justify-content-between text-decoration-none">
+                                                                            <div className="d-flex flex-row">
+                                                                                <div>
+                                                                                    <img src={face}
+                                                                                        alt="avatar" className="d-flex align-self-center me-3 rounded-circle"
+                                                                                        width="40" />
+                                                                                    <span className="badge bg-success badge-dot"></span>
+                                                                                </div>
+                                                                                <div className="pt-2">
+                                                                                    <p className="fw-bold mb-0 text-secondary">{list.username}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </li>
+                                                                ))
+                                                            }
+                                                        </ul>
                                                     </ul>
                                                 </div>
 
@@ -373,7 +388,7 @@ const Chat = () => {
                                                         width="32" />
                                                 </div>
                                                 <div className="pt-2">
-                                                    <p className="fw-bold mb-0 text-secondary ">Marie Horwitz</p>
+                                                    <p className="fw-bold mb-0 text-secondary ">{NamaRecipient}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -381,16 +396,27 @@ const Chat = () => {
                                     <Card.Body>
                                         <div
                                             className="pt-3 pe-3 overflow-auto position-relative faq-body" id='message' style={{ height: '353px' }}>
-                                            {listPesan.map((chat, index) => (
-                                                <div
-                                                    ref={scroll}
-                                                    key={index} className={chat.sender_id === senderId ? "d-flex flex-row justify-content-end mb-2" : "d-flex flex-row justify-content-start mb-2"} >
-                                                    <div>
-                                                        <p className={`small p-2 me-3 mb-1 text-white rounded-3 ${chat.sender_id === senderId ? "bg-primary" : "bg-warning"}`}>{chat.text_message}</p>
-                                                        <p className="small me-3 mb-3 rounded-3 text-muted">{format(chat.sent_datetime)}</p>
+
+                                            {listPesan.length == 0
+                                                ?
+                                                <Row>
+                                                    <Col>
+                                                        <div className='d-flex justify-content-center mt-5'>
+                                                            <Image src={chatBlank} width={500} />
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                                :
+                                                listPesan.map((chat, index) => (
+                                                    <div
+                                                        ref={scroll}
+                                                        key={index} className={chat.sender_id === senderId ? "d-flex flex-row justify-content-end mb-2" : "d-flex flex-row justify-content-start mb-2"} >
+                                                        <div>
+                                                            <p className={`small p-2 me-3 mb-1 text-white rounded-3 ${chat.sender_id === senderId ? "bg-primary" : "bg-warning"}`}>{chat.text_message}</p>
+                                                            <p className="small me-3 mb-3 rounded-3 text-muted">{format(chat.sent_datetime)}</p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            ))}
+                                                ))}
                                         </div>
                                         <form onSubmit={kirimPesan}>
                                             <div className="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2">

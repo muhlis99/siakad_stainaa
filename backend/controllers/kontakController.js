@@ -35,7 +35,7 @@ module.exports = {
 
     getMemberByKontak: async (req, res, next) => {
         const kontak = req.query.kontak
-        await db.query(`SELECT * FROM tb_detail_kontak INNER JOIN tb_kontak ON tb_detail_kontak.kontak=tb_kontak.code_kontak WHERE tb_detail_kontak.kontak="${kontak}"`, {
+        await db.query(`SELECT * FROM tb_detail_kontak INNER JOIN tb_kontak ON tb_detail_kontak.member_kontak=tb_kontak.code_kontak WHERE tb_detail_kontak.kontak="${kontak}"`, {
             nest: true,
             type: QueryTypes.SELECT
         }).then(result => {
