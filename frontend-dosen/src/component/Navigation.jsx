@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap"
 import logo from "../assets/images/stainaa.png"
 import face from "../assets/images/faces/face1.jpg"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { LogOut, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
@@ -13,7 +13,7 @@ const Navigation = () => {
     const navigate = useNavigate()
     const { user } = useSelector((state) => state.auth)
     const [nama, setNama] = useState("")
-    // const []
+    const location = useLocation()
 
     useEffect(() => {
         const getDataSession = async () => {
@@ -88,25 +88,26 @@ const Navigation = () => {
                     </div>
                 </Container>
             </Navbar>
-            <Navbar bg="primary" className="bottom-navbar p-0">
+            <Navbar bg="primary" className="bottom-navbar p-0 navbar-light">
                 <Container>
                     <Nav className="me-auto">
-                        <Link to="/" className="nav-link text-light">Dashboard</Link>
-                        <Link to="/profil" className="nav-link text-light">Profil</Link>
+                        <Link to="/" className={`nav-link text-light ${location.pathname == '/' ? 'active fw-bold' : ''} `}>Dashboard</Link>
+                        <Link to="/profil" className={`nav-link text-light ${location.pathname == '/profil' ? 'active fw-bold' : ''} `}>Profil</Link>
                         <NavDropdown title={
                             <span className="text-light">Perkuliahan</span>
                         } id="basic-nav-dropdown">
-                            <Link to="/pengumuman" className="dropdown-item">Pengumuman</Link>
-                            <Link to="/karturencanastudi" className="dropdown-item">Kartu Rencana Studi</Link>
-                            <Link to="/jadwalkuliah" className="dropdown-item">Jadwal Kuliah</Link>
-                            <Link to="/kartuhasilstudi" className="dropdown-item">Kartu Hasil Studi</Link>
-                            <Link to="/berhentistudi" className="dropdown-item">Berhenti Studi</Link>
+                            <Link to="/pengumuman" className={`dropdown-item ${location.pathname == '/pengumuman' ? 'active' : ''}`}>Pengumuman</Link>
+                            <Link to="/karturencanastudi" className={`dropdown-item ${location.pathname == '/karturencanastudi' ? 'active' : ''}`}>Kartu Rencana Studi</Link>
+                            <Link to="/historykrs" className={`dropdown-item ${location.pathname == '/historykrs' ? 'active' : ''}`}>History Kartu Rencana Studi</Link>
+                            <Link to="/jadwalkuliah" className={`dropdown-item ${location.pathname == '/jadwalkuliah' ? 'active' : ''}`}>Jadwal Kuliah</Link>
+                            <Link to="/kartuhasilstudi" className={`dropdown-item ${location.pathname == '/kartuhasilstudi' ? 'active' : ''}`}>Kartu Hasil Studi</Link>
+                            <Link to="/berhentistudi" className={`dropdown-item ${location.pathname == '/berhentistudi' ? 'active' : ''}`}>Berhenti Studi</Link>
                         </NavDropdown>
-                        <Link to="/chat" className="nav-link text-light">Chat</Link>
+                        <Link to="/chat" className={`nav-link text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Chat</Link>
                     </Nav>
                 </Container>
             </Navbar>
-        </div>
+        </div >
     )
 }
 

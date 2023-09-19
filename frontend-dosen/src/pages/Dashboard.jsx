@@ -56,7 +56,7 @@ const Dashboard = () => {
                 <Row className='mt-4'>
                     <Col lg="9" className='p-1'>
                         <Card className='shadow-sm'>
-                            <Card.Header>Jadwal Kuliah minggu ini</Card.Header>
+                            <Card.Header>Jadwal Kuliah Hari ini</Card.Header>
                             <Card.Body className='p-3'>
                                 <div className="table-responsive mt-1">
                                     <Table striped>
