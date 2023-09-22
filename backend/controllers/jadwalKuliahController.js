@@ -460,10 +460,20 @@ module.exports = {
             dataDate.push(nextDay)
         }
         await jadwalPertemuanModel.findAll({
-            include: [{
-                model: jadwalKuliahModel,
-                status: "aktif"
-            }],
+            include: [
+                {
+                    model: jadwalKuliahModel,
+                    status: "aktif",
+                    include: [{
+                        model: mataKuliahModel,
+                        status: "aktif"
+                    }, {
+                        model: ruangModel,
+                        status: "aktif"
+                    }]
+                },
+
+            ],
             where: {
                 code_jadwal_kuliah: dataCodeJadwalKuliah,
                 tanggal_pertemuan: dataDate,

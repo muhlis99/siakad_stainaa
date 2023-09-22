@@ -53,12 +53,12 @@ const Chat = () => {
     }, [user])
 
     useEffect(() => {
-        loopListtambahDaftarKontak()
-    }, [senderId, level])
-
-    useEffect(() => {
         loopListDaftarKontak()
     }, [senderId])
+
+    useEffect(() => {
+        loopListtambahDaftarKontak()
+    }, [senderId, level])
 
     useEffect(() => {
         dispatch(getMe())
@@ -94,9 +94,9 @@ const Chat = () => {
     useEffect(() => {
         const newSocket = io("http://localhost:4001")
         setSocket(newSocket)
-        return () => {
-            newSocket.disconnect()
-        }
+        // return () => {
+        //     newSocket.disconnect()
+        // }
     }, [])
 
     // get user to socket server
@@ -113,8 +113,8 @@ const Chat = () => {
 
     // send message to socket server
     useEffect(() => {
+        // const oneline = onlineUser.find((user) => console.log(user.userId, newMassage, reciptenId))
         if (socket === null) return
-        console.log(reciptenId);
         socket.emit("sendMessage", { ...newMassage, reciptenId })
     }, [newMassage, socket, reciptenId])
 
@@ -169,8 +169,10 @@ const Chat = () => {
 
     const loopListtambahDaftarKontak = async () => {
         try {
-            const response = await axios.get(`/v1/kontak/getKontak?codekontak=${senderId}&level=${level}`)
-            setListTambahDaftarKontak(response.data.data)
+            if (senderId && level) {
+                const response = await axios.get(`/v1/kontak/getKontak?codekontak=${senderId}&level=${level}`)
+                setListTambahDaftarKontak(response.data.data)
+            }
         } catch (error) {
             console.log(error)
         }
@@ -178,15 +180,26 @@ const Chat = () => {
 
     const loopListDaftarKontak = async () => {
         try {
-            const response = await axios.get(`/v1/kontak/getMemberByKontak/?kontak=${senderId}`)
-            setListDaftarKontak(response.data.data)
+            if (senderId) {
+                const response = await axios.get(`/v1/kontak/getMemberByKontak/?kontak=${senderId}`)
+                setListDaftarKontak(response.data.data)
+            }
         } catch (error) {
             console.log(error)
         }
     }
 
+    const setKontakPenerima = async (e, a, b) => {
+        // setmessageId) || setNamaRecipient() || setReciptenId()
+        setmessageId("")
+        setNamaRecipient("")
+        setReciptenId("")
+        setmessageId(e)
+        setNamaRecipient(a)
+        setReciptenId(b)
+    }
+
     const tambahDaftarKontak = async (e) => {
-        console.log(e);
         await axios.post(`/v1/kontak/createMemberKontak`, {
             kontak: senderId,
             memberKontak: e
@@ -346,7 +359,9 @@ const Chat = () => {
                                                                 :
                                                                 listDaftarKontak.map((list, index) => (
                                                                     <li key={list.id_detail_kontak} className="p-2  border-bottom border-dark"
-                                                                        onClick={() => setmessageId(list.code_detail_kontak) || setNamaRecipient(list.username) || setReciptenId(list.member_kontak)}
+                                                                        onClick={() => setKontakPenerima(list.code_detail_kontak, list.username, list.member_kontak)
+                                                                            // setmessageId) || setNamaRecipient() || setReciptenId()
+                                                                        }
                                                                     >
                                                                         <a href='#' className="d-flex justify-content-between text-decoration-none">
                                                                             <div className="d-flex flex-row">
@@ -390,7 +405,7 @@ const Chat = () => {
                                     <Card.Body>
                                         <div
                                             className="pt-3 pe-3 overflow-auto position-relative faq-body" id='message' style={{ height: '353px' }}>
-                                            {listPesan.length == 0
+                                            {listPesan.length == 0 || newMassage.length == 0
                                                 ?
                                                 <Row>
                                                     <Col>
