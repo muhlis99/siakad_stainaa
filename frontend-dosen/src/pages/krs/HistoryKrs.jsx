@@ -49,7 +49,6 @@ const HistoryKrs = () => {
                 const response = await axios.get(`v1/krs/viewKrsMahasiswaHistory/${user.data.username}/${kodeTahun}/${kodeSemester}`)
                 setBiodata(response.data.identitas)
                 setRiwayat(response.data.data[0].mataKuliahs)
-                console.log(response.data.data[0].mataKuliahs.length)
             }
         }
         getHistoryKrs()
