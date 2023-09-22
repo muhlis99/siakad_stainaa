@@ -9,8 +9,8 @@ import axios from 'axios'
 const KRS = () => {
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
-    const [biodata, setBiodata] = useState("")
-    const [dataKrs, setDataKrs] = useState("")
+    const [biodata, setBiodata] = useState([])
+    const [dataKrs, setDataKrs] = useState([])
 
     useEffect(() => {
         dispatch(getMe())
