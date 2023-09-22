@@ -7,12 +7,12 @@ import { Navigate } from "react-router-dom"
 
 const Jadwal = () => {
     const dispatch = useDispatch()
+    const { isError, user } = useSelector((state) => state.auth)
 
     useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
 
-    const { isError, user } = useSelector((state) => state.auth)
 
     return (
         <Layout>

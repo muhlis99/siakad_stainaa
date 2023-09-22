@@ -49,7 +49,6 @@ const HistoryKrs = () => {
                 const response = await axios.get(`v1/krs/viewKrsMahasiswaHistory/${user.data.username}/${kodeTahun}/${kodeSemester}`)
                 setBiodata(response.data.identitas)
                 setRiwayat(response.data.data[0].mataKuliahs)
-                console.log(response.data.data[0].mataKuliahs.length)
             }
         }
         getHistoryKrs()
@@ -62,10 +61,12 @@ const HistoryKrs = () => {
 
     const getDataSemester = async () => {
         if (kodeTahun) {
+            setKodeSemester("")
             const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahun}`)
             setSemester(response.data.data)
         } else {
             setSemester([])
+            setKodeSemester('')
         }
     }
 
@@ -79,7 +80,7 @@ const HistoryKrs = () => {
                     <Col>
                         <Card className='shadow mb-3'>
                             <Card.Body className='justify'>
-                                <Row>
+                                <Row className='mb-2 py-3 ps-3 shadow-sm rounded-end border-start border-2 border-secondary' style={{ background: '#f1f2f3' }}>
                                     <Col lg="6" sm="12">
                                         <Row className='mb-2'>
                                             <Col className='p-0' lg="3" md="3" sm="5" xs="5">
@@ -150,9 +151,9 @@ const HistoryKrs = () => {
                                 <Row className='mt-1'>
                                     <Col className='p-1'>
                                         <div className="table-responsive">
-                                            <Table striped>
+                                            <Table striped hover>
                                                 <thead>
-                                                    <tr style={{ background: '#C5E1D4' }}>
+                                                    <tr className='border-bottom-3' style={{ background: '#c8ccd0' }}>
                                                         <th className='fw-bold py-3'>#</th>
                                                         <th className='fw-bold py-3'>Kode MK</th>
                                                         <th className='fw-bold py-3'>Mata Kuliah</th>
@@ -173,7 +174,7 @@ const HistoryKrs = () => {
                                                         </tr>
                                                     )) :
                                                         <tr className='border'>
-                                                            <td colSpan={6} align='center'>KRS anda belum diaktifkan pada semester {biodata.semester}</td>
+                                                            <td colSpan={6} align='center'>{kodeSemester && riwayat < 1 ? <span>KRS semester {kodeSemester.substr(7)} belum diaktifkan</span> : kodeSemester == 0 ? <span className='text-danger'>Anda harus memilih semester untuk melihat KRS</span> : ""}</td>
                                                         </tr>
                                                     }
                                                 </tbody>
