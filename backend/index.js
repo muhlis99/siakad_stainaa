@@ -113,7 +113,7 @@ app.get('/', (req, res) => {
 //  socket connection
 let onlineUser = []
 io.on("connection", (socket) => {
-    console.log('a user connected');
+    console.log('a user connected')
     socket.on("addNewUser", (userId) => {
         !onlineUser.some(user => user.userId === userId) &&
             onlineUser.push({
