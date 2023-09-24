@@ -27,13 +27,16 @@ const Chat = () => {
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [level, setLevel] = useState("")
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useState(false)
+    const [showForm, setShowForm] = useState(false)
 
     const [listPesan, setListPesan] = useState([])
     const [listTambahDaftarKontak, setListTambahDaftarKontak] = useState([])
     const [listDaftarKontak, setListDaftarKontak] = useState([])
-    const [NamaRecipient, setNamaRecipient] = useState(".........")
+    const [NamaRecipient, setNamaRecipient] = useState("________")
     const [reciptenId, setReciptenId] = useState("")
+    const [imageRecipten, setImageRecipten] = useState("")
+    const [prevImagesReciptenes, setPrevImagesReciptenes] = useState("")
     const [senderId, setsenderId] = useState("")
     const [messageId, setmessageId] = useState("")
     const [pesan, setPesan] = useState("")
@@ -43,10 +46,16 @@ const Chat = () => {
     const [socket, setSocket] = useState(null)
     const [namaKontak, setNamaKontak] = useState(false)
     const [namaChat, setNamaChat] = useState("")
-
+    const [kontakImage, setKontakImage] = useState("")
+    const [prevKontakImage, setPrevKontakImage] = useState("")
+    const [listImage, setlistImage] = useState([])
+    const [listImageTambahKontak, setlistImageTambahKontak] = useState([])
+    const [prevListImageTambahKontak, setPrevListImageTambahKontak] = useState([])
+    const [listKontakImage, setlistKontakImage] = useState([])
+    const [listKontakImageDafatarKontak, setlistKontakImageDafatarKontak] = useState([])
+    const [prevListKontakImageDafatarKontak, setPrevListKontakImageDafatarKontak] = useState([])
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
-
 
     useEffect(() => {
         cekmessageIdKontak()
@@ -61,12 +70,39 @@ const Chat = () => {
     }, [senderId, level])
 
     useEffect(() => {
+        kontakImages()
+    }, [kontakImage])
+
+
+    useEffect(() => {
+        getDafatrKontakImage()
+    }, [listKontakImage])
+
+    useEffect(() => {
+        getListImageDaftarKontak()
+    }, [listKontakImageDafatarKontak])
+
+    useEffect(() => {
+        getImageKontak()
+    }, [listImage])
+
+    useEffect(() => {
+        getListImageKontak()
+    }, [listImageTambahKontak])
+
+
+    useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
 
     useEffect(() => {
         getPesan()
     }, [messageId])
+
+    useEffect(() => {
+        imagesReciptens()
+    }, [imageRecipten])
+
 
     const emoji = () => {
         if (emot) {
@@ -94,9 +130,9 @@ const Chat = () => {
     useEffect(() => {
         const newSocket = io("http://localhost:4001")
         setSocket(newSocket)
-        // return () => {
-        //     newSocket.disconnect()
-        // }
+        return () => {
+            newSocket.disconnect()
+        }
     }, [])
 
     // get user to socket server
@@ -138,9 +174,107 @@ const Chat = () => {
                 const response = await axios.get(`v1/kontak/checkKontak/${user.data.email}`)
                 setsenderId(response.data.data.code_kontak)
                 setNamaChat(response.data.data.username)
+                setKontakImage(response.data.data.image)
             }
         } catch (error) {
             setStatus(error.response.status)
+        }
+    }
+
+    const kontakImages = async () => {
+        try {
+            if (kontakImage) {
+                await axios.get(`v1/kontak/public/seeImage/kontak/${kontakImage}`, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevKontakImage(base64)
+                })
+            }
+        } catch (error) {
+        }
+    }
+
+    const imagesReciptens = async () => {
+        try {
+            if (imageRecipten) {
+                await axios.get(`v1/kontak/public/seeImage/kontak/${imageRecipten}`, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevImagesReciptenes(base64)
+                })
+            }
+        } catch (error) {
+        }
+    }
+
+    const getDafatrKontakImage = () => {
+        var i = listKontakImage.map(item => (
+            item.image
+        ))
+        setlistKontakImageDafatarKontak(i)
+    }
+
+    const getListImageDaftarKontak = async () => {
+        if (listKontakImageDafatarKontak != 0) {
+            let imagesKontak = []
+            let promises = []
+            for (let i = 0; i < listKontakImageDafatarKontak.length; i++) {
+                const t = await axios.get('v1/kontak/public/seeImage/kontak/' + listKontakImageDafatarKontak[i], {
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    imagesKontak.push(base64)
+                })
+                promises.push(t)
+            }
+            Promise.all(promises).then(() => setPrevListKontakImageDafatarKontak(imagesKontak))
+        }
+    }
+
+
+    const getImageKontak = () => {
+        var i = listImage.map(item => (
+            item.image
+        ))
+        setlistImageTambahKontak(i)
+    }
+
+    const getListImageKontak = async () => {
+        if (listImageTambahKontak != 0) {
+            let imagesKontak = []
+            let promises = []
+            for (let i = 0; i < listImageTambahKontak.length; i++) {
+                const t = await axios.get('v1/kontak/public/seeImage/kontak/' + listImageTambahKontak[i], {
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    imagesKontak.push(base64)
+                })
+                promises.push(t)
+            }
+            Promise.all(promises).then(() => setPrevListImageTambahKontak(imagesKontak))
         }
     }
 
@@ -172,6 +306,7 @@ const Chat = () => {
             if (senderId && level) {
                 const response = await axios.get(`/v1/kontak/getKontak?codekontak=${senderId}&level=${level}`)
                 setListTambahDaftarKontak(response.data.data)
+                setlistImage(response.data.data)
             }
         } catch (error) {
             console.log(error)
@@ -183,20 +318,23 @@ const Chat = () => {
             if (senderId) {
                 const response = await axios.get(`/v1/kontak/getMemberByKontak/?kontak=${senderId}`)
                 setListDaftarKontak(response.data.data)
+                setlistKontakImage(response.data.data)
             }
         } catch (error) {
             console.log(error)
         }
     }
 
-    const setKontakPenerima = async (e, a, b) => {
-        // setmessageId) || setNamaRecipient() || setReciptenId()
+    const setKontakPenerima = async (e, a, b, c) => {
+        setShowForm(true)
         setmessageId("")
         setNamaRecipient("")
         setReciptenId("")
+        setImageRecipten("")
         setmessageId(e)
         setNamaRecipient(a)
         setReciptenId(b)
+        setImageRecipten(c)
     }
 
     const tambahDaftarKontak = async (e) => {
@@ -224,7 +362,6 @@ const Chat = () => {
                 text_message: pesan,
             }).then(function (el) {
                 setNewMassage(el.data.data)
-                // getPesan()
                 getPesan()
                 setPesan("")
                 setEmot(false)
@@ -232,6 +369,7 @@ const Chat = () => {
         }
     }
 
+    console.log(listPesan);
     return (
         <Layout>
             {isError ? <Navigate to="/login" /> :
@@ -274,7 +412,7 @@ const Chat = () => {
                                                     <Row>
                                                         <Col lg={10}>
                                                             <div className="d-flex">
-                                                                <Image src={face} width={40} roundedCircle alt='image' />
+                                                                {prevKontakImage ? <Image src={`data:;base64,${prevKontakImage}`} thumbnail width={40} roundedCircle alt='image' /> : <Image src={face} width={40} roundedCircle alt='image' thumbnail />}
                                                                 <div>
                                                                     <p className="mt-2 ms-1 mb-0 fw-bold fs-sm text-secondary">{namaChat}</p>
                                                                 </div>
@@ -298,16 +436,17 @@ const Chat = () => {
                                                     <ul className="list-unstyled mb-0">
                                                         {listTambahDaftarKontak.length == 0
                                                             ?
-                                                            <Image src={dataBlank} width={200} />
+                                                            <li className='d-flex justify-content-center'>
+                                                                <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                            </li>
                                                             :
                                                             listTambahDaftarKontak.map((datas, index) => (
                                                                 <li key={datas.id_kontak} className="p-2  border-bottom border-dark" onClick={() => tambahDaftarKontak(datas.code_kontak)}>
                                                                     <a href='#' className="d-flex justify-content-between text-decoration-none">
                                                                         <div className="d-flex flex-row">
                                                                             <div>
-                                                                                <img src={face}
-                                                                                    alt="avatar" className="d-flex align-self-center me-3 rounded-circle"
-                                                                                    width="40" />
+                                                                                {prevListImageTambahKontak[index] ? <img src={`data:;base64,${prevListImageTambahKontak[index]}`} alt='kontak' className="d-flex align-self-center me-3 rounded-circle border border-dark"
+                                                                                    width="40" /> : ""}
                                                                                 <span className="badge bg-success badge-dot"></span>
                                                                             </div>
                                                                             <div className="pt-2">
@@ -331,7 +470,7 @@ const Chat = () => {
                                                     <Row>
                                                         <Col lg={10}>
                                                             <div className="d-flex">
-                                                                <Image src={face} width={40} roundedCircle alt='image' />
+                                                                {prevKontakImage ? <Image src={`data:;base64,${prevKontakImage}`} thumbnail width={40} roundedCircle alt='image' /> : <Image src={face} width={40} roundedCircle alt='image' thumbnail />}
                                                                 <div>
                                                                     <p className="mt-2 ms-3 mb-0 fw-bold fs-sm text-secondary">{namaChat}</p>
                                                                 </div>
@@ -347,32 +486,31 @@ const Chat = () => {
                                                 </Col>
                                             </Row>
                                         </Card.Header>
-                                        <Card.Body>
+                                        <Card.Body className='p-0'>
                                             <div className="">
                                                 <div className="overflow-auto position-relative faq-body" style={{ height: '365px' }}>
                                                     <ul className="list-unstyled mb-0">
-
                                                         <ul className="list-unstyled mb-0">
                                                             {listDaftarKontak.length == 0
                                                                 ?
-                                                                <Image src={dataBlank} width={200} />
+                                                                <li className='d-flex justify-content-center'>
+                                                                    <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                                </li>
                                                                 :
                                                                 listDaftarKontak.map((list, index) => (
-                                                                    <li key={list.id_detail_kontak} className="p-2  border-bottom border-dark"
-                                                                        onClick={() => setKontakPenerima(list.code_detail_kontak, list.username, list.member_kontak)
-                                                                            // setmessageId) || setNamaRecipient() || setReciptenId()
+                                                                    <li key={list.id_detail_kontak} className={`p-2  border-bottom border-dark mt-1 mb-1 ${list.username == NamaRecipient ? 'bg-primary' : ''}`}
+                                                                        onClick={() => setKontakPenerima(list.code_detail_kontak, list.username, list.member_kontak, list.image)
                                                                         }
                                                                     >
-                                                                        <a href='#' className="d-flex justify-content-between text-decoration-none">
+                                                                        <a href='#' className="d-flex justify-content-between text-decoration-none ">
                                                                             <div className="d-flex flex-row">
                                                                                 <div>
-                                                                                    <img src={face}
-                                                                                        alt="avatar" className="d-flex align-self-center me-3 rounded-circle"
-                                                                                        width="40" />
+                                                                                    {prevListKontakImageDafatarKontak[index] ? <img src={`data:;base64,${prevListKontakImageDafatarKontak[index]}`} alt='kontak' className="d-flex align-self-center me-3 rounded-circle border border-dark"
+                                                                                        width="40" /> : ""}
                                                                                     <span className="badge bg-success badge-dot"></span>
                                                                                 </div>
                                                                                 <div className="pt-2">
-                                                                                    <p className="fw-bold mb-0 text-secondary">{list.username}</p>
+                                                                                    <p className={`fw-bold mb-0 ${list.username == NamaRecipient ? 'text-white' : 'text-secondary'}`}>{list.username}</p>
                                                                                 </div>
                                                                             </div>
                                                                         </a>
@@ -392,9 +530,8 @@ const Chat = () => {
                                         <div className='p-1'>
                                             <div className="d-flex flex-row">
                                                 <div>
-                                                    <img src={face}
-                                                        alt="avatar" className="d-flex align-self-center me-3 shadow-sm rounded-circle"
-                                                        width="32" />
+                                                    {prevImagesReciptenes ? <img src={`data:;base64,${prevImagesReciptenes}`} alt='kontak' className="d-flex align-self-center me-3 rounded-circle border border-secondary"
+                                                        width="40" /> : ""}
                                                 </div>
                                                 <div className="pt-2">
                                                     <p className="fw-bold mb-0 text-secondary ">{NamaRecipient}</p>
@@ -405,7 +542,7 @@ const Chat = () => {
                                     <Card.Body>
                                         <div
                                             className="pt-3 pe-3 overflow-auto position-relative faq-body" id='message' style={{ height: '353px' }}>
-                                            {listPesan.length == 0 || newMassage.length == 0
+                                            {listPesan.length == 0 || listPesan[0].reciptenId == ""
                                                 ?
                                                 <Row>
                                                     <Col>
@@ -416,33 +553,39 @@ const Chat = () => {
                                                 </Row>
                                                 :
                                                 listPesan.map((chat, index) => (
-                                                    <div
+                                                    < div
                                                         ref={scroll}
                                                         key={index} className={chat.sender_id === senderId ? "d-flex flex-row justify-content-end mb-2" : "d-flex flex-row justify-content-start mb-2"} >
                                                         <div>
-                                                            <p className={`small p-2 me-3 mb-1 text-white rounded-3 ${chat.sender_id === senderId ? "bg-primary" : "bg-warning"}`}>{chat.text_message}</p>
+                                                            <p className={`small p-2 me-3 mb-1 text-white rounded-3 ${chat.sender_id === senderId ? "bg-primary" : "bg-warning"}`}>
+                                                                {chat.text_message}
+                                                            </p>
                                                             <p className="small me-3 mb-3 rounded-3 text-muted">{format(chat.sent_datetime)}</p>
                                                         </div>
                                                     </div>
                                                 ))}
                                         </div>
-                                        <form onSubmit={kirimPesan}>
-                                            <div className="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2">
-                                                <a href='#' className="me-3 fs-4 text-black-50" onClick={emoji}><FaSmile /></a>
-                                                <input type="text" className="form-control form-control-sm" value={pesan} onChange={(e) => setPesan(e.target.value)}
-                                                    placeholder="Type message" />
-                                                <button type='submit' className="ms-3 btn btn-primary btn-sm rounded-circle"><PiPaperPlaneRightFill /></button>
-                                                {
-                                                    emot ?
-                                                        <div className='position-absolute top-0'>
-                                                            <EmojiPicker onEmojiClick={onEmojiClick} searchDisabled height={400} emojiStyle='facebook' />
-                                                        </div>
-                                                        :
-                                                        ""
-                                                }
+                                        {showForm ?
+                                            <form onSubmit={kirimPesan}>
+                                                <div className="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2">
+                                                    <a href='#' className="me-3 fs-4 text-black-50" onClick={emoji}><FaSmile /></a>
+                                                    <input type="text" className="form-control form-control-sm" value={pesan} onChange={(e) => setPesan(e.target.value)}
+                                                        placeholder="Type message" />
+                                                    <button type='submit' className="ms-3 btn btn-primary btn-sm rounded-circle"><PiPaperPlaneRightFill /></button>
+                                                    {
+                                                        emot ?
+                                                            <div className='position-absolute top-0'>
+                                                                <EmojiPicker onEmojiClick={onEmojiClick} searchDisabled height={400} emojiStyle='facebook' />
+                                                            </div>
+                                                            :
+                                                            ""
+                                                    }
 
-                                            </div>
-                                        </form>
+                                                </div>
+                                            </form>
+                                            :
+                                            ""
+                                        }
                                     </Card.Body>
                                 </Card>
                             </Col>

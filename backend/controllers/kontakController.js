@@ -1,7 +1,9 @@
 const kontakModel = require('../models/kontakModel.js')
 const { Sequelize, Op, DataTypes, QueryTypes } = require('sequelize')
 const db = require('../config/database.js')
-
+const { createCanvas, loadImage } = require("canvas");
+const path = require('path')
+const fs = require('fs')
 
 module.exports = {
     getKontak: async (req, res, next) => {
@@ -73,6 +75,7 @@ module.exports = {
 
     registrasiKontak: async (req, res, next) => {
         const { username, email, level } = req.body
+
         let newLevel = ""
         if (level == "mahasiswa") {
             newLevel = "mhs"
@@ -80,12 +83,24 @@ module.exports = {
             newLevel = "dsn"
         }
         let codeKontak = newLevel + Math.floor(100000000 + Math.random() * 900000000)
+
+        const text = username.substring(0, 2).toUpperCase()
+        const nameFile = Buffer.from(text).toString('base64url') + text + newLevel + ".png"
+        const canvas = createCanvas(300, 300)
+        const context = canvas.getContext('2d')
+        context.fillStyle = "#000000"
+        context.font = '150px Impact'
+        context.fillText(text, 60, 200)
+        const buffer = canvas.toBuffer('image/png')
+        fs.writeFileSync(`../tmp_siakad/kontak/${nameFile}`, buffer)
+
         await kontakModel.create({
             code_kontak: codeKontak,
             username: username,
             email: email,
             status: "aktif",
-            level: level
+            level: level,
+            image: nameFile
         }).then(result => {
             res.status(201).json({
                 message: "Data registrasi berhasil disimpan"
@@ -93,6 +108,7 @@ module.exports = {
         }).catch(err => {
             console.log(err)
         })
+
     },
 
     createMemberKontak: async (req, res, next) => {
