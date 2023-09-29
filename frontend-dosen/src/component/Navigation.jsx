@@ -78,7 +78,7 @@ const Navigation = () => {
                                     </div>
                                     <div className="nav-profile-text">
                                         <p className="text-black font-weight-semibold m-0">{nama} </p>
-                                        <span className="font-13 online-color">{user && user.data.role}</span>
+                                        <span className="font-13 online-color text-capitalize">{user && user.data.role}</span>
                                     </div>
                                 </>
                             }>
@@ -88,7 +88,7 @@ const Navigation = () => {
                     </div>
                 </Container>
             </Navbar>
-            <Navbar bg="primary" className="bottom-navbar p-0 navbar-light">
+            <Navbar bg="primary" className="bottom-navbar p-0 navbar-light shadow">
                 <Container>
                     <Nav className="me-auto">
                         <Link to="/" className={`nav-link text-light ${location.pathname == '/' ? 'active fw-bold' : ''} `}>Dashboard</Link>
