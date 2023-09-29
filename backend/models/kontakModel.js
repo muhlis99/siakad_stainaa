@@ -24,6 +24,9 @@ const kontak = db.define('kontak', {
     'level': {
         type: DataTypes.ENUM,
         values: ['dosen', 'mahasiswa']
+    },
+    'image': {
+        type: DataTypes.TEXT
     }
 }, {
     tableName: 'tb_kontak',
