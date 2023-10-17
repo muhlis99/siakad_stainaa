@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../Layout'
-import { Row, Col, Card, Table } from 'react-bootstrap'
+import dataBlank from "../../assets/images/noData.svg"
+import { Row, Col, Card, Table, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../features/authSlice"
 import { Navigate } from "react-router-dom"
@@ -42,7 +43,7 @@ const KRS = () => {
                     <Col>
                         <Card className='shadow mb-4'>
                             <Card.Body className='justify'>
-                                <Row>
+                                <Row className='mb-3 py-4 ps-3 shadow-sm rounded-end' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 3px' }}>
                                     <Col lg="6" sm="12">
                                         <Row className='mb-2'>
                                             <Col className='p-0' lg="3" md="3" sm="5" xs="5">
@@ -92,40 +93,43 @@ const KRS = () => {
                                         </Row>
                                     </Col>
                                 </Row>
-                            </Card.Body>
-                        </Card>
-                        <Card className='shadow rounded'>
-                            <Card.Body>
-                                <div className="table-responsive">
-                                    <Table striped>
-                                        <thead>
-                                            <tr style={{ background: '#C5E1D4' }}>
-                                                <th className='fw-bold py-3'>#</th>
-                                                <th className='fw-bold py-3'>Kode MK</th>
-                                                <th className='fw-bold py-3'>Mata Kuliah</th>
-                                                <th className='fw-bold py-3'>SKS</th>
-                                                <th className='fw-bold py-3'>Bobot MK</th>
-                                                <th className='fw-bold py-3'>Status MK</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {dataKrs ? dataKrs.map((item, index) => (
-                                                <tr key={item.code_mata_kuliah} className='border'>
-                                                    <th scope='row' className='py-2'>{index + 1}</th>
-                                                    <td className='py-2'>{item.code_mata_kuliah}</td>
-                                                    <td className='py-2'>{item.nama_mata_kuliah}</td>
-                                                    <td className='py-2'>{item.sks}</td>
-                                                    <td className='py-2'>{item.status_bobot_makul}</td>
-                                                    <td className='py-2 text-capitalize'>{item.status_makul}</td>
-                                                </tr>
-                                            )) :
-                                                <tr className='border'>
-                                                    <td colSpan={6} align='center'>Saat ini KRS belum diaktifkan</td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </Table>
-                                </div>
+                                <Row className='mt-4'>
+                                    <Col className='p-0'>
+                                        <div className="table-responsive">
+                                            <Table hover>
+                                                <thead>
+                                                    <tr >
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>#</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kode MK</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>SKS</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Bobot MK</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status MK</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {dataKrs ? dataKrs.map((item, index) => (
+                                                        <tr key={item.code_mata_kuliah} className='border'>
+                                                            <th scope='row' className='py-2'>{index + 1}</th>
+                                                            <td className='py-2'>{item.code_mata_kuliah}</td>
+                                                            <td className='py-2'>{item.nama_mata_kuliah}</td>
+                                                            <td className='py-2'>{item.sks}</td>
+                                                            <td className='py-2'>{item.status_bobot_makul}</td>
+                                                            <td className='py-2 text-capitalize'>{item.status_makul}</td>
+                                                        </tr>
+                                                    )) :
+                                                        <tr className='border'>
+                                                            <td colSpan={6} align='center'>
+                                                                <Image src={dataBlank} thumbnail width={150} />
+                                                                <p className='fw-bold text-muted'>Tidak Ada Data</p>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </Table>
+                                        </div>
+                                    </Col>
+                                </Row>
                             </Card.Body>
                         </Card>
                     </Col>

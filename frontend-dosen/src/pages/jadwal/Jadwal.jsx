@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../Layout'
-import { Row, Col, Card, Table } from 'react-bootstrap'
+import { Row, Col, Card, Table, Image } from 'react-bootstrap'
+import dataBlank from "../../assets/images/noData.svg"
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../features/authSlice"
 import { Navigate } from "react-router-dom"
@@ -43,7 +44,7 @@ const Jadwal = () => {
                     <Col>
                         <Card className='shadow mb-4 rounded-3'>
                             <Card.Body className='justify'>
-                                <Row className='mb-5 py-3 ps-3 shadow-sm rounded-end-3 border-start border-2 border-secondary' style={{ background: '#f1f2f3' }}>
+                                <Row className='mb-5 py-4 ps-3 shadow-sm rounded-end-3 border-start border-2 border-secondary' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 3px' }}>
                                     <Col lg="6" sm="12">
                                         <Row className='mb-2'>
                                             <Col className='p-0' lg="3" md="3" sm="5" xs="5">
@@ -115,22 +116,25 @@ const Jadwal = () => {
                                         </Row>
                                     </Col>
                                 </Row>
-                                <Row className='shadow-sm'>
-                                    <Table striped hover>
+                                <Row>
+                                    <Table hover>
                                         <thead>
-                                            <tr className='border-bottom-3' style={{ background: '#c8ccd0' }}>
-                                                <th className='fw-bold py-3 text-center'>#</th>
-                                                <th className='fw-bold py-3 text-center'>Hari</th>
-                                                <th className='fw-bold py-3 text-center'>Tanggal</th>
-                                                <th className='fw-bold py-3 text-center'>Jam</th>
-                                                <th className='fw-bold py-3 text-center'>Mata Kuliah</th>
-                                                <th className='fw-bold py-3 text-center'>Jenis Pertemuan</th>
-                                                <th className='fw-bold py-3 text-center'>Pembelajaran</th>
-                                                <th className='fw-bold py-3 text-center'>Ruang</th>
+                                            <tr className='border-bottom-3'>
+                                                <th colSpan={8} className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jadwal Kuliah Mingguan</th>
+                                            </tr>
+                                            <tr className='border-bottom-3'>
+                                                <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>#</th>
+                                                <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Hari</th>
+                                                <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Tanggal</th>
+                                                <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jam</th>
+                                                <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
+                                                <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jenis Pertemuan</th>
+                                                <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Pembelajaran</th>
+                                                <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Ruang</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {dataJadwal.map((item, index) => (
+                                            {dataJadwal.length >= 1 ? dataJadwal.map((item, index) => (
                                                 <tr key={item.id_jadwal_pertemuan} className='border'>
                                                     <th scope='row' className='py-2 text-center'>{index + 1}</th>
                                                     <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].hari}</td>
@@ -141,7 +145,14 @@ const Jadwal = () => {
                                                     <td className='py-2 text-capitalize' align='center'>{item.metode_pembelajaran}</td>
                                                     <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
                                                 </tr>
-                                            ))}
+                                            )) :
+                                                <tr className='border'>
+                                                    <td colSpan={8} align='center'>
+                                                        <Image src={dataBlank} thumbnail width={150} />
+                                                        <p className='fw-bold text-muted'>Tidak Ada Data</p>
+                                                    </td>
+                                                </tr>
+                                            }
                                         </tbody>
                                     </Table>
                                 </Row>

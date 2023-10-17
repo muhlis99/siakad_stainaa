@@ -231,19 +231,19 @@ const KHS = () => {
                                         <div className="table-responsive shadow-sm">
                                             <Table hover>
                                                 <thead>
-                                                    <tr style={{ background: '#c8ccd0' }}>
-                                                        <th className='fw-bold py-2 border text-center' rowSpan={2}>#</th>
-                                                        <th className='fw-bold py-2 border text-center' rowSpan={2}>Kode MK</th>
-                                                        <th className='fw-bold py-2 border text-center' rowSpan={2}>Mata Kuliah</th>
-                                                        <th className='fw-bold py-2 border text-center'>Bobot MK</th>
-                                                        <th className='fw-bold py-2 border text-center' colSpan={3}>Nilai</th>
-                                                        <th className='fw-bold py-2 border text-center' rowSpan={2}>SKS*Indeks</th>
+                                                    <tr>
+                                                        <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }} rowSpan={2}>#</th>
+                                                        <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }} rowSpan={2}>Kode MK</th>
+                                                        <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }} rowSpan={2}>Mata Kuliah</th>
+                                                        <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }}>Bobot MK</th>
+                                                        <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }} colSpan={3}>Nilai</th>
+                                                        <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }} rowSpan={2}>SKS*Indeks</th>
                                                     </tr>
-                                                    <tr style={{ background: '#c8ccd0' }}>
-                                                        <th className='fw-bold py-2 border text-center'>(SKS)</th>
-                                                        <th className='fw-bold py-2 border text-center'>Angka</th>
-                                                        <th className='fw-bold py-2 border text-center'>Huruf</th>
-                                                        <th className='fw-bold py-2 border text-center'>Indeks</th>
+                                                    <tr>
+                                                        <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }}>(SKS)</th>
+                                                        <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }}>Angka</th>
+                                                        <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }}>Huruf</th>
+                                                        <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }}>Indeks</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

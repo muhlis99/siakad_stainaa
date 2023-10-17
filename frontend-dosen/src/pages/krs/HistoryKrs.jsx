@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../Layout'
-import { Row, Col, Card, Table } from 'react-bootstrap'
+import { Row, Col, Card, Table, Image } from 'react-bootstrap'
+import dataBlank from "../../assets/images/noData.svg"
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../features/authSlice"
 import { Navigate } from "react-router-dom"
@@ -80,7 +81,7 @@ const HistoryKrs = () => {
                     <Col>
                         <Card className='shadow mb-3'>
                             <Card.Body className='justify'>
-                                <Row className='mb-2 py-3 ps-3 shadow-sm rounded-end border-start border-2 border-secondary' style={{ background: '#f1f2f3' }}>
+                                <Row className='mb-2 py-4 ps-3 shadow-sm rounded-end border-start border-2 border-secondary' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 3px' }}>
                                     <Col lg="6" sm="12">
                                         <Row className='mb-2'>
                                             <Col className='p-0' lg="3" md="3" sm="5" xs="5">
@@ -151,15 +152,15 @@ const HistoryKrs = () => {
                                 <Row className='mt-1'>
                                     <Col className='p-1'>
                                         <div className="table-responsive">
-                                            <Table striped hover>
+                                            <Table hover>
                                                 <thead>
-                                                    <tr className='border-bottom-3' style={{ background: '#c8ccd0' }}>
-                                                        <th className='fw-bold py-3'>#</th>
-                                                        <th className='fw-bold py-3'>Kode MK</th>
-                                                        <th className='fw-bold py-3'>Mata Kuliah</th>
-                                                        <th className='fw-bold py-3'>SKS</th>
-                                                        <th className='fw-bold py-3'>Bobot MK</th>
-                                                        <th className='fw-bold py-3'>Status MK</th>
+                                                    <tr className='border-bottom-3'>
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>#</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kode MK</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>SKS</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Bobot MK</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status MK</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -174,7 +175,10 @@ const HistoryKrs = () => {
                                                         </tr>
                                                     )) :
                                                         <tr className='border'>
-                                                            <td colSpan={6} align='center'>{kodeSemester && riwayat < 1 ? <span>KRS semester {kodeSemester.substr(7)} belum diaktifkan</span> : kodeSemester == 0 ? <span className='text-danger'>Anda harus memilih semester untuk melihat KRS</span> : ""}</td>
+                                                            <td colSpan={6} align='center'>
+                                                                <Image src={dataBlank} thumbnail width={150} />
+                                                                <p className='fw-bold text-muted'>Tidak Ada Data</p>
+                                                            </td>
                                                         </tr>
                                                     }
                                                 </tbody>
