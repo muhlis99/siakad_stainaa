@@ -1,20 +1,43 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../Layout'
-import { Row, Col, Card } from 'react-bootstrap'
-import { useDispatch, useSelector } from "react-redux"
-import { getMe } from "../../features/authSlice"
-import { Navigate } from "react-router-dom"
-import "../../assets/css/timeline.css"
-import { FaBullhorn } from 'react-icons/fa'
+import { Row, Col, Card, Dropdown, DropdownButton, Image, Modal, Button } from 'react-bootstrap'
+import dataBlank from "../../assets/images/noData.svg"
+import { useDispatch, useSelector } from 'react-redux'
+import { getMe } from '../../features/authSlice'
+import { Link, Navigate } from 'react-router-dom'
+import '../../assets/css/timeline.css'
+import { FaCalendarAlt, FaRegCalendarAlt } from 'react-icons/fa'
 import axios from 'axios'
+import 'react-date-range/dist/styles.css'
+import 'react-date-range/dist/theme/default.css'
+import { DateRange } from 'react-date-range'
+import { addDays } from 'date-fns'
+import moment from 'moment'
 
 const ListPengumuman = () => {
+    const day = new Date().getDate() - 1
     const [role, setRole] = useState("")
-    const [Pengumuman, setPengumuman] = useState("")
-    const [filterBulan, setFilterBulan] = useState("")
-    const [filterTahun, setFilterTahun] = useState("")
+    const [Pengumuman, setPengumuman] = useState([])
+    const [filter, setFilter] = useState("")
+    const [judul, setJudul] = useState("")
+    const [tanggal, setTanggal] = useState("")
+    const [isi, setIsi] = useState("")
+    const [show, setShow] = useState(false)
+    const [state, setState] = useState([
+        {
+            startDate: addDays(new Date(), '-' + day),
+            endDate: new Date(),
+            key: 'selection'
+        }
+    ])
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
+
+    useEffect(() => {
+        if (state) {
+            setFilter(moment(state[0].startDate).format('YYYY-MM-DD') + '/' + moment(state[0].endDate).format('YYYY-MM-DD'))
+        }
+    }, [state])
 
     useEffect(() => {
         dispatch(getMe())
@@ -30,88 +53,104 @@ const ListPengumuman = () => {
 
     useEffect(() => {
         getPengumuman()
-    }, [role])
+    }, [role, filter])
 
-    useEffect(() => {
-        const u = new Date()
-        setFilterBulan('0' + u.getMonth())
-        setFilterTahun(u.getFullYear());
-
-    }, [])
-
-    const color = ['bg-secondary', 'bg-primary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info']
+    // const color = ['bg-secondary', 'bg-primary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info']
 
     const getPengumuman = async () => {
         if (role) {
-            const response = await axios.get(`v1/pengumuman/getByLevel/${role}`)
+            const response = await axios.get(`v1/pengumuman/getByLevel/${role}/${filter}`)
             setPengumuman(response.data.data)
         }
     }
 
-    const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
-    const bl = []
-    for (let bulan = 0; bulan < 12; bulan++) {
-        if (bulan < 10) {
-            bl.push(<option key={bulan} value={"0" + bulan}>{namaBulan[bulan]}</option>)
-        } else {
-            bl.push(<option key={bulan} value={bulan}>{namaBulan[bulan]}</option>)
-        }
-    }
-
-    const d = new Date()
-    let year = d.getFullYear()
-    const th = []
-    for (let tahun = year - 5; tahun <= year; tahun++) {
-        th.push(<option key={tahun} value={tahun}>{tahun}</option>)
+    const handleClose = () => setShow(false)
+    const handleShow = async (e) => {
+        const response = await axios.get(`v1/pengumuman/getById/${e}`)
+        setJudul(response.data.data.judul_pengumuman)
+        setIsi(response.data.data.pengumuman)
+        setTanggal(response.data.data.tanggal_pengumuman)
+        setShow(true)
     }
 
     return (
         <Layout>
             {isError ? <Navigate to="/login" /> : <div className="content-wrapper">
+                <Modal
+                    show={show}
+                    onHide={handleClose}
+                    backdrop="static"
+                    keyboard={false}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>{judul}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p><FaRegCalendarAlt /> {moment(tanggal).format('DD MMMM YYYY')}</p>
+                        <p>{isi}</p>
+                    </Modal.Body>
+                </Modal>
+
                 <Row>
                     <Col lg="8" sm="12">
                         <div className="page-header">
                             <h3 className="page-title">Pengumuman</h3>
                         </div>
                     </Col>
-                    <Col lg="4" sm="12" className='mb-4 d-flex gap-2'>
-                        <select className="form-select" aria-label="Default select example" value={filterBulan} onChange={(e) => setFilterBulan(e.target.value)}>
-                            {/* <option selected>Bulan</option> */}
-                            {bl}
-                        </select>
-                        <select className="form-select" aria-label="Default select example" value={filterTahun} onChange={(e) => setFilterTahun(e.target.value)}>
-                            {/* <option selected>Tahun</option> */}
-                            {th}
-                        </select>
+                    <Col lg="4" sm="12" className='mb-4'>
+                        <DropdownButton variant='light' className='float-end border border-dark rounded picker pe-0' autoClose="outside" align="end" title={<>
+                            {filter} <FaCalendarAlt className='ms-1 Stext-muted' />
+                        </>}>
+                            <Dropdown.Item className='p-0'>
+                                <DateRange
+                                    editableDateInputs={true}
+                                    onChange={item => setState([item.selection])}
+                                    moveRangeOnFirstSelection={false}
+                                    ranges={state}
+                                    months={1}
+                                    direction='horizontal'
+                                />
+                            </Dropdown.Item>
+                        </DropdownButton>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <section className="">
-                            <ul className="timeline-with-icons">
-                                {Pengumuman.length != 0 ? Pengumuman.map((item, index) => (
-                                    <li key={item.id_pengumuman} className="timeline-item mb-3">
-                                        <span className={`timeline-icon ${color[index]}`}>
-                                            <FaBullhorn className='fa-sm fa-fw' />
-                                        </span>
-                                        <Card className='shadow ms-3'>
-                                            <Card.Body>
-                                                <p className="h5 fw-bold">{item.judul_pengumuman}</p>
-                                                <p className="text-muted mb-2 fw-bold">{item.tanggal_pengumuman}</p>
-                                                <p className="text-muted">
-                                                    {item.pengumuman}
-                                                </p>
-                                            </Card.Body>
-                                        </Card>
-                                    </li>
-                                )) : ""}
-                            </ul>
-                        </section>
+                        <Card className='shadow rounded-4'>
+                            <Card.Body>
+                                {Pengumuman.length != 0 ?
+                                    <div className="timeline">
+                                        {Pengumuman.map((item, index) => (
+                                            <div key={item.id_pengumuman} className="timeline-row">
+                                                <div className="timeline-time">
+                                                    {moment(item.tanggal_pengumuman).locale('id', {
+                                                        months: 'Januari_Februari_Maret_April_Mei_Juni_Juli_Agustus_September_Oktober_November_Desember'.split('_'),
+                                                    }).format('DD MMMM YYYY')}
+                                                </div>
+                                                <div className="timeline-content shadow rounded-1">
+                                                    <h4 className='text-capitalize'>{item.judul_pengumuman}</h4>
+                                                    <p style={{ textAlign: 'justify' }}>{item.pengumuman.substr(1, 108)}<Link className='fst-italic text-decoration-none text-dark' onClick={() => handleShow(item.id_pengumuman)}>....Baca selengkapnya</Link></p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    :
+                                    <div className='text-center'>
+                                        <div>
+                                            <Image src={dataBlank} width={200} />
+                                        </div>
+                                        <Card.Text className='fw-bold text-muted'>Tidak ada pengumuman</Card.Text>
+                                    </div>
+                                }
+                            </Card.Body>
+                        </Card>
                     </Col>
                 </Row>
             </div>
             }
-        </Layout>
+        </Layout >
     )
 }
 

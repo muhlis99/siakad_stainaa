@@ -4,8 +4,6 @@ import { Provider } from "react-redux"
 import { store } from "./app/store"
 import App from './App.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './assets/vendors/mdi/css/materialdesignicons.min.css'
-import './assets/css/demo_2/style.css'
 import axios from 'axios'
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL

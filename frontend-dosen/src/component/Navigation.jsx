@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { LogOut, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
 import axios from "axios"
+import { FaTh } from "react-icons/fa"
 
 const Navigation = () => {
     const dispatch = useDispatch()
@@ -56,17 +57,15 @@ const Navigation = () => {
             <Navbar className="top-navbar p-0">
                 <Container>
                     <Link to="/" className="navbar-brand d-flex gap-2">
-                        <div className="shadow rounded-circle">
-                            <img
-                                alt=""
-                                src={logo}
-                                width="45"
-                                height="45"
-                                className="rounded-circle"
-                            />
-                        </div>
+                        <img
+                            alt=""
+                            src={logo}
+                            width="45"
+                            height="45"
+                            className="rounded-circle shadow"
+                        />
                         <div className="d-xs-none">
-                            <h3 className="mt-2 font-weight-bold">SIAKAD STAINAA</h3>
+                            <h3 className="mt-2 font-weight-bold" style={{ color: '#5E7C60' }}>SIAKAD STAINAA</h3>
                         </div>
                     </Link>
                     <div className="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -76,19 +75,23 @@ const Navigation = () => {
                                     <div className="nav-profile-img">
                                         <img src={face} alt="image" />
                                     </div>
-                                    <div className="nav-profile-text">
-                                        <p className="text-black font-weight-semibold m-0">{nama} </p>
-                                        <span className="font-13 online-color text-capitalize">{user && user.data.role}</span>
+                                    <div className="nav-profile-text" style={{ color: '#5E7C60' }}>
+                                        <p className="font-weight-semibold m-0">{nama} </p>
+                                        <span className="font-13 text-capitalize">{user && user.data.role}</span>
                                     </div>
                                 </>
                             }>
                                 <NavDropdown.Item onClick={logOut}>Logout</NavDropdown.Item>
                             </NavDropdown>
                         </nav>
+                        <button className="bg-danger navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                            data-toggle="horizontal-menu-toggle">
+                            <span><FaTh /></span>
+                        </button>
                     </div>
                 </Container>
             </Navbar>
-            <Navbar bg="primary" className="bottom-navbar p-0 navbar-light shadow">
+            <Navbar className="bottom-navbar p-0 navbar-light shadow" style={{ background: '#5E7C60' }}>
                 <Container>
                     <Nav className="me-auto">
                         <Link to="/" className={`nav-link text-light ${location.pathname == '/' ? 'active fw-bold' : ''} `}>Dashboard</Link>
@@ -101,7 +104,7 @@ const Navigation = () => {
                             <Link to="/historykrs" className={`dropdown-item ${location.pathname == '/historykrs' ? 'active' : ''}`}>History Kartu Rencana Studi</Link>
                             <Link to="/jadwalkuliah" className={`dropdown-item ${location.pathname == '/jadwalkuliah' ? 'active' : ''}`}>Jadwal Kuliah</Link>
                             <Link to="/kartuhasilstudi" className={`dropdown-item ${location.pathname == '/kartuhasilstudi' ? 'active' : ''}`}>Kartu Hasil Studi</Link>
-                            <Link to="/berhentistudi" className={`dropdown-item ${location.pathname == '/berhentistudi' ? 'active' : ''}`}>Berhenti Studi</Link>
+                            <Link to="/pengajuanstudi" className={`dropdown-item ${location.pathname == '/berhentistudi' ? 'active' : ''}`}>Pengajuan Studi</Link>
                         </NavDropdown>
                         <Link to="/chat" className={`nav-link text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Chat</Link>
                     </Nav>

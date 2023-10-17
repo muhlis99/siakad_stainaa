@@ -9,6 +9,8 @@ import Chat from "./pages/chat/Chat"
 import ListPengumuman from "./pages/pengumuman/ListPengumuman"
 import KHS from "./pages/khs/KHS"
 import Berhenti from "./pages/berhentiStudi/Berhenti"
+import TambahPengajuan from "./pages/berhentiStudi/TambahPengajuan"
+import UpdatePengajuan from "./pages/berhentiStudi/UpdatePengajuan"
 
 function App() {
   return (
@@ -24,7 +26,9 @@ function App() {
           <Route path="/jadwalkuliah" element={<Jadwal />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/pengumuman" element={<ListPengumuman />} />
-          <Route path="/berhentistudi" element={<Berhenti />} />
+          <Route path="/pengajuanstudi" element={<Berhenti />} />
+          <Route path="/tambahpengajuan" element={<TambahPengajuan />} />
+          <Route path="/updatepengajuan" element={<UpdatePengajuan />} />
         </Routes>
       </BrowserRouter>
     </>

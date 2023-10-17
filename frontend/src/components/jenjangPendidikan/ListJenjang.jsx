@@ -179,28 +179,29 @@ const ListJenjang = () => {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Ya, hapus!',
             cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                try {
-                    setLoading(true)
-                    axios.put(
-                        `v1/jenjangPendidikan/deleteStatus/${jenjangId}`
-                    ).then((response) => {
-                        setLoading(false)
-                        Swal.fire({
-                            title: "Terhapus",
-                            text: response.data.message,
-                            icon: "success"
-                        }).then(() => {
-                            getJenjang()
-                        });
-                    })
+        }).
+            then((result) => {
+                if (result.isConfirmed) {
+                    try {
+                        setLoading(true)
+                        axios.put(
+                            `v1/jenjangPendidikan/deleteStatus/${jenjangId}`
+                        ).then((response) => {
+                            setLoading(false)
+                            Swal.fire({
+                                title: "Terhapus",
+                                text: response.data.message,
+                                icon: "success"
+                            }).then(() => {
+                                getJenjang()
+                            });
+                        })
 
-                } catch (error) {
+                    } catch (error) {
 
+                    }
                 }
-            }
-        })
+            })
     }
 
     return (

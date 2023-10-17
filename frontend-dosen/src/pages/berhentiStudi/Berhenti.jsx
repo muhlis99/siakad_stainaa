@@ -3,9 +3,11 @@ import Layout from '../Layout'
 import { Row, Col, Card, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../features/authSlice"
-import { Navigate } from "react-router-dom"
-import { FaInfo, FaTimes } from "react-icons/fa"
+import { Link, Navigate } from "react-router-dom"
+import { FaEdit, FaTimes } from "react-icons/fa"
 import axios from 'axios'
+import moment from 'moment'
+import Swal from 'sweetalert2'
 
 const Berhenti = () => {
     const dispatch = useDispatch()
@@ -27,6 +29,38 @@ const Berhenti = () => {
         }
     }
 
+    const hapusPengajuan = (pengajuanId) => {
+        Swal.fire({
+            title: "Hapus data ini?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.put(
+                        `v1/pengajuanStudi/deleteMahasiswa/${pengajuanId}`
+                    ).then((response) => {
+                        Swal.fire({
+                            title: "Terhapus",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            getAllPengajuan()
+                        });
+                    })
+
+                } catch (error) {
+
+                }
+            }
+        })
+    }
+
     return (
         <Layout>
             {isError ? <Navigate to="/login" /> : <div className="content-wrapper">
@@ -37,6 +71,9 @@ const Berhenti = () => {
                     <Col>
                         <Card className='shadow rounded-3'>
                             <Card.Body>
+                                <div className='mb-2'>
+                                    <Link to='/tambahpengajuan' className='btn btn-sm btn-info'>Tambahkan</Link>
+                                </div>
                                 <div className="table-responsive">
                                     <Table striped>
                                         <thead>
@@ -50,21 +87,26 @@ const Berhenti = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {Pengajuan.map((item, index) => (
-                                                <tr key={item.id_pengajuan_studi} className='border'>
-                                                    <th scope='row' className='py-2 text-center'>{index + 1}</th>
-                                                    <td className='py-2'>{item.tahunAjarans[0].tahun_ajaran}</td>
-                                                    <td className='py-2 text-capitalize'>{item.pengajuan}</td>
-                                                    <td className='py-2'>{item.tanggal_pengajuan}</td>
-                                                    <td className='py-2 text-capitalize'>{item.status}</td>
-                                                    <td className='py-2'>
-                                                        <div className='d-flex gap-1'>
-                                                            <button className='btn p-1 shadow-sm rounded-circle btn-sm btn-info'><FaInfo /></button>
-                                                            <button className='btn p-1 shadow-sm rounded-circle btn-sm btn-danger'><FaTimes /></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
+                                            {Pengajuan.length == 0 ?
+                                                <tr>
+                                                    <td colSpan={6} align='center'>Data Kosong</td>
+                                                </tr> :
+
+                                                Pengajuan.map((item, index) => (
+                                                    <tr key={item.id_pengajuan_studi} className='border'>
+                                                        <th scope='row' className='py-2 text-center'>{index + 1}</th>
+                                                        <td className='py-2'>{item.tahunAjarans[0].tahun_ajaran}</td>
+                                                        <td className='py-2 text-capitalize'>{item.pengajuan}</td>
+                                                        <td className='py-2'>{moment(item.tanggal_pengajuan).format('DD MMMM YYYY')}</td>
+                                                        <td className='py-2 text-capitalize'>{item.status == 'tidak' ? 'Dibatalkan' : item.status == 'proses' ? 'proses validasi dosen Wali' : item.status == 'disetujui1' ? 'Disetujui oleh dosen wali' : 'disetujui oleh BAUAK'}</td>
+                                                        <td className='py-2'>
+                                                            <div className='d-flex gap-1'>
+                                                                <Link to='/updatepengajuan' state={{ idnya: item.id_pengajuan_studi }} className={`btn p-1 shadow-sm rounded-circle btn-sm btn-warning ${item.status == 'tidak' ? 'disabled' : ''}`} style={{ background: '#FFC107', borderColor: '#FFC107' }}><FaEdit /></Link>
+                                                                <button onClick={() => hapusPengajuan(item.id_pengajuan_studi)} className={`btn p-1 shadow-sm rounded-circle btn-sm btn-danger ${item.status == 'tidak' ? 'disabled' : ''}`}><FaTimes /></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
                                         </tbody>
                                     </Table>
                                 </div>
@@ -73,7 +115,7 @@ const Berhenti = () => {
                     </Col>
                 </Row>
             </div>}
-        </Layout>
+        </Layout >
     )
 }
 

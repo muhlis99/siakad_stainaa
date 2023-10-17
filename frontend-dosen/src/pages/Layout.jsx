@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
                 <Navigation />
                 <div className=" page-body-wrapper">
                     <Container>
-                        <div className="main-panel">
+                        <div className="main-panel" style={{ color: '#5E7C60' }}>
                             {children}
                         </div>
                     </Container>
