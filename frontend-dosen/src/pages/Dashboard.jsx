@@ -45,21 +45,22 @@ const Dashboard = () => {
         <Layout>
             {isError ? <Navigate to="/login" /> : <div className="content-wrapper">
                 <div className="page-header">
-                    <h3 className="page-title">Dashboard</h3>
+                    <h2 className='fs-4 fw-semibold' >Dashboard</h2>
+
                 </div>
                 <Row>
-                    <Col lg="6 mb-2 p-1">
-                        <Card className='shadow rounded-4 h-100'>
+                    <Col lg="6 mb-2 p-1" >
+                        <Card className=' rounded-4 h-100' >
                             <Card.Body className='p-4'>
                                 <h3 style={{ color: '#5E7C60' }}>Hai, Selamat datang!</h3>
-                                <Card.Text className='small'>
+                                <Card.Text className='small font-monospace'>
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati illum hic quis, quos neque laborum nemo sint impedit accusantium.
                                 </Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
                     <Col lg="3" className='mb-2  p-1'>
-                        <div className="card h-100 shadow rounded-4">
+                        <div className="card h-100  rounded-4">
                             <div className="card-body">
                                 <Row>
                                     <Col lg="12">
@@ -73,7 +74,7 @@ const Dashboard = () => {
                         </div>
                     </Col>
                     <Col lg="3" className='mb-2  p-1'>
-                        <div className="card h-100 shadow rounded-4">
+                        <div className="card h-100  rounded-4">
                             <div className="card-body">
                                 <p className='h2'><FaFileContract /></p>
                                 <h6 className="card-title">{Prodi.totalSks}</h6>
@@ -117,7 +118,7 @@ const Dashboard = () => {
                 </Row>
             </div>}
 
-        </Layout>
+        </Layout >
     )
 }
 
