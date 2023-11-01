@@ -135,7 +135,10 @@ module.exports = {
         const dataCodeJadwalKuliah = dataJadwalKuliah.map(n => { return n.code_jadwal_kuliah })
         await jadwalPertemuanModel.findAll({
             include: [{
-                model: jadwalKuliahModel
+                model: jadwalKuliahModel,
+                include: [{
+                    model: mataKuliahModel
+                }]
             }],
             where: {
                 tanggal_pertemuan: date,
