@@ -4,11 +4,12 @@ import { Row, Col, Card, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../features/authSlice"
 import { Navigate } from "react-router-dom"
-import { FaGlobe, FaRegClipboard, FaRegFile } from 'react-icons/fa'
+import { FaBookmark, FaFileContract } from 'react-icons/fa'
 import axios from 'axios'
 
 const Dashboard = () => {
     const [Prodi, SetProdi] = useState([])
+    const [Jadwal, setJadwal] = useState([])
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
 
@@ -22,11 +23,21 @@ const Dashboard = () => {
                 const response = await axios.get(`v1/home/totalSksDanProdi/${user.data.username}`)
                 SetProdi(response.data.data)
             } catch (error) {
+            }
+        }
+        getTotalSKSProdi()
+    }, [user])
+
+    useEffect(() => {
+        const getJadwalNow = async () => {
+            try {
+                const response = await axios.get(`v1/home/jadwalKuliahNowMahasiswa/${user.data.username}`)
+                setJadwal(response.data.data)
+            } catch (error) {
 
             }
         }
-
-        getTotalSKSProdi()
+        getJadwalNow()
     }, [user])
 
 
@@ -52,8 +63,9 @@ const Dashboard = () => {
                             <div className="card-body">
                                 <Row>
                                     <Col lg="12">
-                                        <div className="lead mb-2">Prodi</div>
-                                        <h6 className='card-title'>{Prodi.prodi}</h6>
+                                        <p className='h2'><FaBookmark /></p>
+                                        <h6 className='small fw-bold'>{Prodi.prodi}</h6>
+                                        <h6 className="small">Program Studi</h6>
                                     </Col>
                                     <Col></Col>
                                 </Row>
@@ -63,8 +75,9 @@ const Dashboard = () => {
                     <Col lg="3" className='mb-2  p-1'>
                         <div className="card h-100 shadow rounded-4">
                             <div className="card-body">
-                                <div className="lead mb-2">Total SKS</div>
-                                <h2 className="card-title">{Prodi.totalSks}</h2>
+                                <p className='h2'><FaFileContract /></p>
+                                <h6 className="card-title">{Prodi.totalSks}</h6>
+                                <h6 className="small">Total SKS</h6>
                             </div>
                         </div>
                     </Col>
@@ -72,29 +85,29 @@ const Dashboard = () => {
                 <Row className='mt-3'>
                     <Col lg="12" className='p-1'>
                         <Card className='shadow-sm'>
-                            <Card.Header>Jadwal Kuliah Hari ini</Card.Header>
+                            <Card.Header className='fw-bold' style={{ color: '#5E7C60' }}>Jadwal Kuliah Hari ini</Card.Header>
                             <Card.Body className='p-3'>
                                 <div className="table-responsive mt-1">
                                     <Table striped>
                                         <thead>
                                             <tr style={{ background: '#E9EAE1' }}>
-                                                <th className='fw-bold py-3'>#</th>
-                                                <th className='fw-bold py-3'>Jam</th>
-                                                <th className='fw-bold py-3'>Mata Kuliah</th>
-                                                <th className='fw-bold py-3'>SKS</th>
-                                                <th className='fw-bold py-3'>Status MK</th>
-                                                <th className='fw-bold py-3'>Paket</th>
+                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>#</th>
+                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Jam</th>
+                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
+                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Jenis Pertemuan</th>
+                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Pembelejaran</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr className='border'>
-                                                <th scope='row' className='py-2'>1</th>
-                                                <td className='py-2'>Mark</td>
-                                                <td className='py-2'>Otto</td>
-                                                <td className='py-2'>@mdo</td>
-                                                <td className='py-2'>@mdo</td>
-                                                <td className='py-2'><span className="badge rounded-pill text-bg-success">Paket</span></td>
-                                            </tr>
+                                            {Jadwal.map((item, index) => (
+                                                <tr key={item.id_jadwal_pertemuan} className='border'>
+                                                    <th scope='row' className='py-2'>{index + 1}</th>
+                                                    <td className='py-2'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</td>
+                                                    <td className='py-2'>{item.jadwalKuliahs[0].code_mata_kuliah}</td>
+                                                    <td className='py-2 text-uppercase'>{item.jenis_pertemuan}</td>
+                                                    <td className='py-2'>{item.metode_pembelajaran}</td>
+                                                </tr>
+                                            ))}
                                         </tbody>
                                     </Table>
                                 </div>

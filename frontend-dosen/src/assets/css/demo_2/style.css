@@ -21822,7 +21822,7 @@ dl li {
 }
 @media (max-width: 767.98px) {
   .container-scroller .page-body-wrapper {
-    padding-top: 300px;
+    padding-top: 100px;
   }
   .horizontal-menu .bottom-navbar.header-toggled {
     display: block;

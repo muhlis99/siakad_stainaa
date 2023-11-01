@@ -81,7 +81,7 @@ const HistoryKrs = () => {
                     <Col>
                         <Card className='shadow mb-3'>
                             <Card.Body className='justify'>
-                                <Row className='mb-2 py-4 ps-3 shadow-sm rounded-end border-start border-2 border-secondary' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 3px' }}>
+                                <Row className='mb-2 py-4 ps-3 shadow-sm rounded-end' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 2px' }}>
                                     <Col lg="6" sm="12">
                                         <Row className='mb-2'>
                                             <Col className='p-0' lg="3" md="3" sm="5" xs="5">
