@@ -53,7 +53,7 @@ const Dashboard = () => {
                         <Card className=' rounded-4 h-100' >
                             <Card.Body className='p-4'>
                                 <h3 style={{ color: '#5E7C60' }}>Hai, Selamat datang!</h3>
-                                <Card.Text className='small font-monospace'>
+                                <Card.Text className='small'>
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati illum hic quis, quos neque laborum nemo sint impedit accusantium.
                                 </Card.Text>
                             </Card.Body>
