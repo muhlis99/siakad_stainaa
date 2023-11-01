@@ -57,14 +57,9 @@ const Navigation = () => {
             <Navbar className="top-navbar p-0">
                 <Container>
                     <Link to="/" className="navbar-brand d-flex gap-2">
-                        <img
-                            alt=""
-                            src={logo}
-                            width="45"
-                            height="45"
-                            className="rounded-circle shadow"
-                        />
-                        <div className="d-xs-none">
+                        {/*  */}
+                        <div className="bg-red-800 h-11 w-11 my-auto rounded-full shadow-xl"><img src={logo} width={44} /></div>
+                        <div className="hidden lg:block">
                             <h3 className="mt-2 font-weight-bold" style={{ color: '#5E7C60' }}>SIAKAD STAINAA</h3>
                         </div>
                     </Link>
@@ -99,14 +94,14 @@ const Navigation = () => {
                         <NavDropdown title={
                             <span className="text-light">Perkuliahan</span>
                         } id="basic-nav-dropdown">
-                            <Link to="/pengumuman" className={`dropdown-item ${location.pathname == '/pengumuman' ? 'active' : ''}`}>Pengumuman</Link>
+                            {/* <Link to="/pengumuman" className={`dropdown-item ${location.pathname == '/pengumuman' ? 'active' : ''}`}>Pengumuman</Link> */}
                             <Link to="/karturencanastudi" className={`dropdown-item ${location.pathname == '/karturencanastudi' ? 'active' : ''}`}>Kartu Rencana Studi</Link>
                             <Link to="/historykrs" className={`dropdown-item ${location.pathname == '/historykrs' ? 'active' : ''}`}>History Kartu Rencana Studi</Link>
                             <Link to="/jadwalkuliah" className={`dropdown-item ${location.pathname == '/jadwalkuliah' ? 'active' : ''}`}>Jadwal Kuliah</Link>
                             <Link to="/kartuhasilstudi" className={`dropdown-item ${location.pathname == '/kartuhasilstudi' ? 'active' : ''}`}>Kartu Hasil Studi</Link>
                             <Link to="/pengajuanstudi" className={`dropdown-item ${location.pathname == '/berhentistudi' ? 'active' : ''}`}>Pengajuan Studi</Link>
                         </NavDropdown>
-                        <Link to="/chat" className={`nav-link text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Chat</Link>
+                        {/* <Link to="/chat" className={`nav-link text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Chat</Link> */}
                     </Nav>
                 </Container>
             </Navbar>

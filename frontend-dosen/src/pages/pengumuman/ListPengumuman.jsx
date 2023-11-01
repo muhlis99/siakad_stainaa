@@ -100,9 +100,11 @@ const ListPengumuman = () => {
                         </div>
                     </Col>
                     <Col lg="4" sm="12" className='mb-4'>
-                        <DropdownButton variant='light' className='float-end border border-dark rounded picker pe-0' autoClose="outside" align="end" title={<>
-                            {filter} <FaCalendarAlt className='ms-1 Stext-muted' />
-                        </>}>
+                        <DropdownButton variant='light' className='float-right border border-black rounded' autoClose="outside" align="end" title={
+                            <div className='inline-flex items-center'>
+                                <span>{filter}</span> <FaCalendarAlt className='ms-1 Stext-muted' />
+                            </div>
+                        }>
                             <Dropdown.Item className='p-0'>
                                 <DateRange
                                     editableDateInputs={true}
@@ -139,7 +141,7 @@ const ListPengumuman = () => {
                                     :
                                     <div className='text-center'>
                                         <div>
-                                            <Image src={dataBlank} width={200} />
+                                            <Image src={dataBlank} width={200} className='mx-auto' />
                                         </div>
                                         <Card.Text className='fw-bold text-muted'>Tidak ada pengumuman</Card.Text>
                                     </div>

@@ -39,6 +39,24 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
     }
 })
 
+export const ResetPass = createAsyncThunk("user/ResetPass", async (user, thunkAPI) => {
+    try {
+        const response = await axios.put(`v1/login/resetPasswordByForgot/${user.id}`, {
+            newPassword: user.newPass,
+            confirmNewPassword: user.confirmPass
+        })
+        return response.data
+    } catch (error) {
+        if (error.response.data.message) {
+            const message = error.response.data.message
+            return thunkAPI.rejectWithValue(message)
+        } else {
+            const message = error.response.data.errors[0].msg
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+})
+
 export const LogOut = createAsyncThunk("user/LogOut", async () => {
     await axios.delete('v1/login/out')
 })
@@ -63,6 +81,7 @@ export const authSlice = createSlice({
             state.isError = true
             state.message = action.payload
         })
+
         builder.addCase(getMe.pending, (state) => {
             state.isLoading = true
         })
@@ -72,6 +91,20 @@ export const authSlice = createSlice({
             state.user = action.payload
         })
         builder.addCase(getMe.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+        })
+
+        builder.addCase(ResetPass.pending, (state) => {
+            state.isLoading = true
+        })
+        builder.addCase(ResetPass.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.user = action.payload
+        })
+        builder.addCase(ResetPass.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload

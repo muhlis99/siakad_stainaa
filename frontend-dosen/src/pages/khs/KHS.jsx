@@ -221,7 +221,7 @@ const KHS = () => {
                                                 </select>
                                             </div>
                                             <div className="col">
-                                                <button className='btn btn-sm btn-primary mt-2' onClick={handleGeneratePdf}><FaPrint /> Cetak KHS</button>
+                                                <button className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2' onClick={handleGeneratePdf}><FaPrint /> &nbsp; <span>Cetak KHS</span></button>
                                             </div>
                                         </Row>
                                     </Col>

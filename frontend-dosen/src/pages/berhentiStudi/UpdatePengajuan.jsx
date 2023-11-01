@@ -120,7 +120,7 @@ const UpdatePengajuan = () => {
                                 <Col>
                                     <Card className='shadow-sm'>
                                         <Card.Body>
-                                            <Row>
+                                            <Row className='mb-5'>
                                                 <Col lg="6" className="mb-2">
                                                     <Row>
                                                         <label htmlFor="periode" className="col-sm-4 col-form-label h6"><strong>Periode</strong></label>
@@ -180,11 +180,16 @@ const UpdatePengajuan = () => {
                                                     </Row>
                                                 </Col>
                                             </Row>
+                                            <hr />
+                                            <Row>
+                                                <Col>
+                                                    <Link to='/pengajuanstudi' className='bg-[#DC3545] py-1 px-2 rounded no-underline text-white inline-flex items-center'><FaReply /> &nbsp;<span>Kembali</span></Link>
+                                                </Col>
+                                                <Col>
+                                                    <button className='bg-[#17A2B8] py-1 px-2 float-right rounded no-underline text-white inline-flex items-center'><FaEdit /> &nbsp; <span>Edit</span></button>
+                                                </Col>
+                                            </Row>
                                         </Card.Body>
-                                        <Card.Footer>
-                                            <Link to='/pengajuanstudi' className='btn btn-sm btn-danger'><FaReply /> Kembali</Link>
-                                            <button className='btn btn-sm btn-info float-end'><FaEdit />  Edit</button>
-                                        </Card.Footer>
                                     </Card>
                                 </Col>
                             </Row>

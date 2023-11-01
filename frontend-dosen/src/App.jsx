@@ -11,6 +11,9 @@ import KHS from "./pages/khs/KHS"
 import Berhenti from "./pages/berhentiStudi/Berhenti"
 import TambahPengajuan from "./pages/berhentiStudi/TambahPengajuan"
 import UpdatePengajuan from "./pages/berhentiStudi/UpdatePengajuan"
+import Forgot from "./pages/Forgot"
+import Verification from "./pages/Verification"
+import ChangePassword from "./pages/ChangePassword"
 
 function App() {
   return (
@@ -29,6 +32,9 @@ function App() {
           <Route path="/pengajuanstudi" element={<Berhenti />} />
           <Route path="/tambahpengajuan" element={<TambahPengajuan />} />
           <Route path="/updatepengajuan" element={<UpdatePengajuan />} />
+          <Route path="/forgot" element={<Forgot />} />
+          <Route path="/verification" element={<Verification />} />
+          <Route path="/changepass" element={<ChangePassword />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -4,7 +4,7 @@ import { Row, Col, Card, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../features/authSlice"
 import { Link, Navigate } from "react-router-dom"
-import { FaEdit, FaTimes } from "react-icons/fa"
+import { FaEdit, FaPlus, FaTimes } from "react-icons/fa"
 import axios from 'axios'
 import moment from 'moment'
 import Swal from 'sweetalert2'
@@ -72,18 +72,18 @@ const Berhenti = () => {
                         <Card className='shadow rounded-3'>
                             <Card.Body>
                                 <div className='mb-2'>
-                                    <Link to='/tambahpengajuan' className='btn btn-sm btn-info'>Tambahkan</Link>
+                                    <Link to='/tambahpengajuan' className='bg-[#17A2B8] py-1 px-2 rounded no-underline text-white inline-flex items-center'><FaPlus />&nbsp;<span> Tambahkan</span></Link>
                                 </div>
                                 <div className="table-responsive">
                                     <Table striped>
                                         <thead>
-                                            <tr className='border-bottom-3' style={{ background: '#c8ccd0' }}>
-                                                <th className='fw-bold py-3 text-center'>#</th>
-                                                <th className='fw-bold py-3'>Periode</th>
-                                                <th className='fw-bold py-3'>Status yang diajukan</th>
-                                                <th className='fw-bold py-3'>Tgl Pengajuan</th>
-                                                <th className='fw-bold py-3'>Status</th>
-                                                <th className='fw-bold py-3'>Aksi</th>
+                                            <tr className='border-bottom-3'>
+                                                <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>#</th>
+                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Periode</th>
+                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status yang diajukan</th>
+                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Tgl Pengajuan</th>
+                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status</th>
+                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -91,7 +91,6 @@ const Berhenti = () => {
                                                 <tr>
                                                     <td colSpan={6} align='center'>Data Kosong</td>
                                                 </tr> :
-
                                                 Pengajuan.map((item, index) => (
                                                     <tr key={item.id_pengajuan_studi} className='border'>
                                                         <th scope='row' className='py-2 text-center'>{index + 1}</th>
@@ -101,8 +100,8 @@ const Berhenti = () => {
                                                         <td className='py-2 text-capitalize'>{item.status == 'tidak' ? 'Dibatalkan' : item.status == 'proses' ? 'proses validasi dosen Wali' : item.status == 'disetujui1' ? 'Disetujui oleh dosen wali' : 'disetujui oleh BAUAK'}</td>
                                                         <td className='py-2'>
                                                             <div className='d-flex gap-1'>
-                                                                <Link to='/updatepengajuan' state={{ idnya: item.id_pengajuan_studi }} className={`btn p-1 shadow-sm rounded-circle btn-sm btn-warning ${item.status == 'tidak' ? 'disabled' : ''}`} style={{ background: '#FFC107', borderColor: '#FFC107' }}><FaEdit /></Link>
-                                                                <button onClick={() => hapusPengajuan(item.id_pengajuan_studi)} className={`btn p-1 shadow-sm rounded-circle btn-sm btn-danger ${item.status == 'tidak' ? 'disabled' : ''}`}><FaTimes /></button>
+                                                                {item.status == 'tidak' ? <Link className="p-2 rounded-full text-black bg-[#FFC107]" disabled><FaEdit /></Link> : <Link to='/updatepengajuan' state={{ idnya: item.id_pengajuan_studi }} className="p-2 rounded-full text-black bg-[#FFC107]"><FaEdit /></Link>}
+                                                                {item.status == 'tidak' ? <button className="p-2 rounded-full text-white bg-[#DC3545]" disabled><FaTimes /></button> : <button onClick={() => hapusPengajuan(item.id_pengajuan_studi)} className={`p-2 rounded-full text-white bg-[#DC3545]`}><FaTimes /></button>}
                                                             </div>
                                                         </td>
                                                     </tr>
