@@ -709,33 +709,38 @@ module.exports = {
 
         //----------- foto kip------------- //
         let fileNameFotoKip = ""
-        if (mahasiswaUse.foto_kip === "") {
-            const file = req.files.foto_kip
-            if (!file) return res.status(400).json({ message: "foto kip tidak boleh kosong" })
-            const fileSize = file.data.length
-            const ext = path.extname(file.name)
-            fileNameFotoKip = "foto_kip" + id + file.md5 + ext
-            const allowedType = ['.png', '.jpg', '.jpeg']
-            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto kip yang anda upload tidak valid" })
-            if (fileSize > 5000000) return res.status(422).json({ msg: "file foto kip yang anda upload tidak boleh lebih dari 5 mb" })
-            file.mv(`../tmp_siakad/mahasiswa/kip/${fileNameFotoKip}`, (err) => {
-                if (err) return res.status(500).json({ message: err.message })
-            })
+        if (req.files.foto_kip == null) {
+            fileNameFotoKip = ""
         } else {
-            const file = req.files.foto_kip
-            if (!file) return res.status(400).json({ message: "foto kip tidak boleh kosong" })
-            const fileSize = file.data.length
-            const ext = path.extname(file.name)
-            fileNameFotoKip = "foto_kip" + id + file.md5 + ext
-            const allowedType = ['.png', '.jpg', '.jpeg']
-            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto kip yang anda upload tidak valid" })
-            if (fileSize > 5000000) return res.status(422).json({ message: "file foto kip yang anda upload tidak boleh lebih dari 5 mb" })
-            const filepath = `../tmp_siakad/mahasiswa/kip/${mahasiswaUse.foto_kip}`
-            fs.unlinkSync(filepath)
-            file.mv(`../tmp_siakad/mahasiswa/kip/${fileNameFotoKip}`, (err) => {
-                if (err) return res.status(500).json({ message: err.message })
-            })
+            if (mahasiswaUse.foto_kip === "") {
+                const file = req.files.foto_kip
+                // if (!file) return res.status(400).json({ message: "foto kip tidak boleh kosong" })
+                const fileSize = file.data.length
+                const ext = path.extname(file.name)
+                fileNameFotoKip = "foto_kip" + id + file.md5 + ext
+                const allowedType = ['.png', '.jpg', '.jpeg']
+                if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto kip yang anda upload tidak valid" })
+                if (fileSize > 5000000) return res.status(422).json({ msg: "file foto kip yang anda upload tidak boleh lebih dari 5 mb" })
+                file.mv(`../tmp_siakad/mahasiswa/kip/${fileNameFotoKip}`, (err) => {
+                    if (err) return res.status(500).json({ message: err.message })
+                })
+            } else {
+                const file = req.files.foto_kip
+                // if (!file) return res.status(400).json({ message: "foto kip tidak boleh kosong" })
+                const fileSize = file.data.length
+                const ext = path.extname(file.name)
+                fileNameFotoKip = "foto_kip" + id + file.md5 + ext
+                const allowedType = ['.png', '.jpg', '.jpeg']
+                if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "file foto kip yang anda upload tidak valid" })
+                if (fileSize > 5000000) return res.status(422).json({ message: "file foto kip yang anda upload tidak boleh lebih dari 5 mb" })
+                const filepath = `../tmp_siakad/mahasiswa/kip/${mahasiswaUse.foto_kip}`
+                fs.unlinkSync(filepath)
+                file.mv(`../tmp_siakad/mahasiswa/kip/${fileNameFotoKip}`, (err) => {
+                    if (err) return res.status(500).json({ message: err.message })
+                })
+            }
         }
+
         // ---------------- end foto kip --------------//
 
         //----------- foto ktm------------- //

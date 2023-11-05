@@ -322,14 +322,37 @@ module.exports = {
             }
         })
         if (!data) return res.status(404).json({ message: "data tidak ditemukan" })
+        const totalSKS = await krsModel.sum('mataKuliahs.sks', {
+            include: [
+                {
+                    model: mataKuliahModel,
+                    where: {
+                        code_tahun_ajaran: data.code_tahun_ajaran,
+                        code_semester: data.code_semester,
+                        code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                        code_fakultas: data.code_fakultas,
+                        code_prodi: data.code_prodi,
+                        status: "aktif",
+                        status_makul: "paket"
+                    }
+                }
+            ],
+            where: {
+                nim: nim,
+                code_tahun_ajaran: data.code_tahun_ajaran,
+                code_semester: data.code_semester,
+                code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                code_fakultas: data.code_fakultas,
+                code_prodi: data.code_prodi,
+                status: "aktif"
+            }
+        })
         await krsModel.findAll({
             include: [
                 {
                     model: mataKuliahModel,
                     attributes: ["code_mata_kuliah", "nama_mata_kuliah",
-                        "status_bobot_makul", "status_makul", "sks",
-                        [Sequelize.fn('SUM', Sequelize.cast(Sequelize.col('sks'), 'integer')), 'total_sks']
-                    ],
+                        "status_bobot_makul", "status_makul", "sks"],
                     where: {
                         code_tahun_ajaran: data.code_tahun_ajaran,
                         code_semester: data.code_semester,
@@ -358,6 +381,7 @@ module.exports = {
                     nama: data.mahasiswas[0].nama,
                     semester: data.semesters[0].semester,
                     tahun_ajaran: data.tahunAjarans[0].tahun_ajaran,
+                    total_sks: totalSKS
                 },
                 data: result
             })
@@ -392,14 +416,37 @@ module.exports = {
             }
         })
         if (!data) return res.status(404).json({ message: "data mahasiswa tidak ditemukan" })
+        const totalSKS = await krsModel.sum('mataKuliahs.sks', {
+            include: [
+                {
+                    model: mataKuliahModel,
+                    where: {
+                        code_tahun_ajaran: data.code_tahun_ajaran,
+                        code_semester: data.code_semester,
+                        code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                        code_fakultas: data.code_fakultas,
+                        code_prodi: data.code_prodi,
+                        status: "aktif",
+                        status_makul: "paket"
+                    }
+                }
+            ],
+            where: {
+                nim: nim,
+                code_tahun_ajaran: data.code_tahun_ajaran,
+                code_semester: data.code_semester,
+                code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                code_fakultas: data.code_fakultas,
+                code_prodi: data.code_prodi,
+                status: "aktif"
+            }
+        })
         await krsModel.findAll({
             include: [
                 {
                     model: mataKuliahModel,
                     attributes: ["code_mata_kuliah", "nama_mata_kuliah",
-                        "status_bobot_makul", "status_makul", "sks",
-                        [Sequelize.fn('SUM', Sequelize.cast(Sequelize.col('sks'), 'integer')), 'total_sks']
-                    ],
+                        "status_bobot_makul", "status_makul", "sks"],
                     where: {
                         code_tahun_ajaran: tahunAjaran,
                         code_semester: semester,
@@ -428,6 +475,7 @@ module.exports = {
                     nama: data.mahasiswas[0].nama,
                     semester: data.semesters[0].semester,
                     tahun_ajaran: data.tahunAjarans[0].tahun_ajaran,
+                    total_sks: totalSKS
                 },
                 data: result
             })

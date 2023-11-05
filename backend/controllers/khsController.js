@@ -209,8 +209,8 @@ module.exports = {
                 tahunAjaran: thnAjr.tahun_ajaran,
                 jumlahSks: totalSks,
                 jumlahSksIndex: totalSksIndex,
-                // IPS: ipSemester.toFixed(2)
-                IPS: ipSemester
+                IPS: ipSemester.toFixed(2)
+                // IPS: ipSemester
 
             })
         }).catch(err => {
@@ -324,7 +324,9 @@ module.exports = {
                 nilaiAkhir: {
                     jumlahSks: totalSks,
                     jumlahSksIndex: totalSksIndex,
-                    IPS: ipSemester,
+                    // IPS: ipSemester,
+                    IPS: ipSemester.toFixed(2)
+
                 },
                 data: result,
 
