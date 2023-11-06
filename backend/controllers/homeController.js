@@ -178,7 +178,8 @@ module.exports = {
         await mataKuliahModel.sum('sks', {
             where: {
                 code_mata_kuliah: dataCodeMataKuliah,
-                status: "aktif"
+                status: "aktif",
+                status_makul: "paket"
             }
         }).then(result => {
             res.status(201).json({

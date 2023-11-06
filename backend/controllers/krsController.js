@@ -322,35 +322,37 @@ module.exports = {
             }
         })
         if (!data) return res.status(404).json({ message: "data tidak ditemukan" })
-        await krsModel.findAll({
-            include: [
-                {
-                    model: mataKuliahModel,
-                    attributes: ["code_mata_kuliah", "nama_mata_kuliah",
-                        "status_bobot_makul", "status_makul", "sks",
-                        [Sequelize.fn('SUM', Sequelize.cast(Sequelize.col('sks'), 'integer')), 'total_sks']
-                    ],
-                    where: {
-                        code_tahun_ajaran: data.code_tahun_ajaran,
-                        code_semester: data.code_semester,
-                        code_jenjang_pendidikan: data.code_jenjang_pendidikan,
-                        code_fakultas: data.code_fakultas,
-                        code_prodi: data.code_prodi,
-                        status: "aktif",
-                        status_makul: "paket"
+        await krsModel.findAll(
+            {
+                include: [
+                    {
+                        model: mataKuliahModel,
+                        attributes: ["code_mata_kuliah", "nama_mata_kuliah",
+                            "status_bobot_makul", "status_makul", "sks",
+                            // [Sequelize.fn('SUM', Sequelize.cast(Sequelize.col('sks'), 'integer')), 'total_sks']
+                        ],
+                        where: {
+                            code_tahun_ajaran: data.code_tahun_ajaran,
+                            code_semester: data.code_semester,
+                            code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                            code_fakultas: data.code_fakultas,
+                            code_prodi: data.code_prodi,
+                            status: "aktif",
+                            status_makul: "paket"
+                        }
                     }
+                ],
+                where: {
+                    nim: nim,
+                    code_tahun_ajaran: data.code_tahun_ajaran,
+                    code_semester: data.code_semester,
+                    code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                    code_fakultas: data.code_fakultas,
+                    code_prodi: data.code_prodi,
+                    status: "aktif"
                 }
-            ],
-            where: {
-                nim: nim,
-                code_tahun_ajaran: data.code_tahun_ajaran,
-                code_semester: data.code_semester,
-                code_jenjang_pendidikan: data.code_jenjang_pendidikan,
-                code_fakultas: data.code_fakultas,
-                code_prodi: data.code_prodi,
-                status: "aktif"
             }
-        }).then(result => {
+        ).then(result => {
             res.status(201).json({
                 message: "data krs success",
                 identitas: {
@@ -398,7 +400,7 @@ module.exports = {
                     model: mataKuliahModel,
                     attributes: ["code_mata_kuliah", "nama_mata_kuliah",
                         "status_bobot_makul", "status_makul", "sks",
-                        [Sequelize.fn('SUM', Sequelize.cast(Sequelize.col('sks'), 'integer')), 'total_sks']
+                        // [Sequelize.fn('SUM', Sequelize.cast(Sequelize.col('sks'), 'integer')), 'total_sks']
                     ],
                     where: {
                         code_tahun_ajaran: tahunAjaran,

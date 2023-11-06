@@ -25,7 +25,7 @@ module.exports = {
     },
     fontFamily: {
       'sans': ['Dosis', 'sans-serif'],
-      'serif': ['ui-serif', 'Georgia'],
+      'serif': ['times new roman', 'Georgia'],
       'mono': ['ui-monospace', 'SFMono-Regular'],
       'display': ['Oswald'],
       'body': ['"Open Sans"'],

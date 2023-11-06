@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap"
 import logo from "../assets/images/stainaa.png"
-import face from "../assets/images/faces/face1.jpg"
+import face from "../assets/images/man2.png"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { LogOut, reset } from "../features/authSlice"
@@ -23,6 +23,7 @@ const Navigation = () => {
                     if (user.data.role == 'mahasiswa') {
                         const response = await axios.get(`v1/mahasiswa/getByNim/${user.data.username}`)
                         setNama(response.data.data.nama)
+                        console.log(response.data.data);
                     } else {
                         setNama(user.data.username)
                     }
@@ -58,7 +59,7 @@ const Navigation = () => {
                 <Container>
                     <Link to="/" className="navbar-brand d-flex gap-2">
                         {/*  */}
-                        <div className="bg-red-800 h-11 w-11 my-auto rounded-full shadow-xl"><img src={logo} width={44} /></div>
+                        <div className=" h-11 w-11 my-auto rounded-full shadow-xl"><img src={logo} width={44} /></div>
                         <div className="hidden lg:block">
                             <h3 className="mt-2 font-weight-bold" style={{ color: '#5E7C60' }}>SIAKAD STAINAA</h3>
                         </div>
@@ -68,7 +69,7 @@ const Navigation = () => {
                             <NavDropdown className="nav-profile" id="nav-dropdown-dark-example" title={
                                 <>
                                     <div className="nav-profile-img">
-                                        <img src={face} alt="image" />
+                                        <img src={face} alt="image" width={1} />
                                     </div>
                                     <div className="nav-profile-text" style={{ color: '#5E7C60' }}>
                                         <p className="font-weight-semibold m-0">{nama} </p>

@@ -46,7 +46,7 @@ const Login = () => {
                     </div>
                     <div className='pt-2'>
                         <h2 className='text-3xl mb-3 text-[#2D7F5F] font-bold hidden md:block md:mt-16 lg:block lg:mt-20'>SELAMAT DATANG</h2>
-                        <p className='text-gray-500 hidden md:block md:mb-4 lg:block'>Sistem Akademik Sekolah Tinggi <br />Agama Islam Nurul Abror Al-Robbaniyin</p>
+                        <p className='text-gray-500 hidden md:block md:mb-4 lg:block'>Sistem Informasi Akademik Sekolah Tinggi <br />Agama Islam Nurul Abror Al-Robbaniyin</p>
                         <form onSubmit={Auth} className='w-full lg:w-1/2'>
                             <div className='mb-4'>
                                 <div className="relative mt-2 rounded-md shadow-sm">

@@ -232,7 +232,7 @@ const FormUpload = () => {
         formData.append("foto_ktp", ktp)
         formData.append("foto_ijazah", ijazah)
         formData.append("foto_kip", kip)
-        formData.append("foto_ktm", kip)
+        formData.append("foto_ktm", ktm)
         try {
             if (foto == fotos) {
                 Swal.fire({
@@ -252,11 +252,6 @@ const FormUpload = () => {
             } else if (ijazah == ijazahs) {
                 Swal.fire({
                     title: "Scan Ijazah Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (kip == kips) {
-                Swal.fire({
-                    title: "Scan KIP Tidak Boleh Kosong",
                     icon: "warning"
                 })
             } else if (ktm == ktms) {

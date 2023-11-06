@@ -52,6 +52,28 @@ const ChangePassword = () => {
         }
     }
 
+    const batalkan = () => {
+        Swal.fire({
+            title: "Yakin untuk membatalkan?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, batalkan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Dibatalkan",
+                    icon: "success"
+                }).then(() => {
+                    navigate('/login')
+                });
+            }
+        })
+    }
+
 
     return (
         <div className='min-h-screen font-sans'>
@@ -98,7 +120,7 @@ const ChangePassword = () => {
                             <button className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-8 rounded">
                                 Simpan
                             </button>
-                            <button className="bg-red-500 hover:bg-red-700 text-white py-1 px-8 rounded">
+                            <button type='button' onClick={batalkan} className="bg-red-500 hover:bg-red-700 text-white py-1 px-8 rounded">
                                 Batal
                             </button>
                         </div>

@@ -137,7 +137,7 @@ const Sidebar = () => {
                   <Link to="/setmhs" state={{ collaps: 'kuliah', activ: '/setmhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-sm'>Set MHS Persemester</span></Link>
                 </li>
                 <li>
-                  <Link to="/pembimbingakademik" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pembimbingakademik' || active == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-sm'>Pembimbing Akadmik</span></Link>
+                  <Link to="/pembimbingakademik" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pembimbingakademik' || active == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-sm'>Pembimbing Akademik</span></Link>
                 </li>
                 <li>
                   <Link to="/studimhs" state={{ collaps: 'kuliah', activ: '/studimhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/studimhs' || active == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-sm'>Studi Mahasiswa</span></Link>
@@ -178,7 +178,7 @@ const Sidebar = () => {
                   <Link to="/setmhs" state={{ collaps: 'kuliah', activ: '/setmhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/setmhs' ? 'active' : ''}`}><FaNetworkWired /> <span className='text-sm'>Set MHS Persemester</span></Link>
                 </li>
                 <li>
-                  <Link to="/pembimbingakademik" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pembimbingakademik' || active == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-sm'>Pembimbing Akadmik</span></Link>
+                  <Link to="/pembimbingakademik" state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pembimbingakademik' || active == '/pembimbingakademik' ? 'active' : ''}`}><FaHandHolding /><span className='text-sm'>Pembimbing Akademik</span></Link>
                 </li>
                 <li>
                   <Link to="/studimhs" state={{ collaps: 'kuliah', activ: '/studimhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/studimhs' || active == '/studimhs' ? 'active' : ''}`}><FaFileAlt /><span className='text-sm'>Studi Mahasiswa</span></Link>

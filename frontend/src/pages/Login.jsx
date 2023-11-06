@@ -71,7 +71,7 @@ const Login = () => {
                     <div className="w-full lg:w-1/2 flex flex-col bg-no-repeat bg-50% bg-center" style={{ backgroundImage: `url(${stainaa})` }}></div>
                     <div className="w-full lg:w-1/2 py-16 px-12">
                         <h2 className='text-3xl mb-3 text-[#2D7F5F] font-bold'>SELAMAT DATANG</h2>
-                        <p className='text-gray-500'>Sistem Akademik Sekolah Tinggi <br />Agama Islam Nurul Abror Al-Robbaniyin</p>
+                        <p className='text-gray-500'>Sistem Informasi Akademik Sekolah Tinggi <br />Agama Islam Nurul Abror Al-Robbaniyin</p>
                         <form onSubmit={Auth}>
                             <div className="mt-5 form-control">
                                 <div className="input-group">

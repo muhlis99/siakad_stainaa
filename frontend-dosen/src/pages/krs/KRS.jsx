@@ -24,7 +24,7 @@ const KRS = () => {
                 if (user) {
                     const response = await axios.get(`v1/krs/viewKrsMahasiswaNow/${user.data.username}`)
                     setBiodata(response.data.identitas)
-                    setDataKrs(response.data.data[0].mataKuliahs)
+                    setDataKrs(response.data.data)
                 }
             } catch (error) {
 
@@ -111,11 +111,11 @@ const KRS = () => {
                                                     {dataKrs ? dataKrs.map((item, index) => (
                                                         <tr key={item.code_mata_kuliah} className='border'>
                                                             <th scope='row' className='py-2'>{index + 1}</th>
-                                                            <td className='py-2'>{item.code_mata_kuliah}</td>
-                                                            <td className='py-2'>{item.nama_mata_kuliah}</td>
-                                                            <td className='py-2'>{item.sks}</td>
-                                                            <td className='py-2'>{item.status_bobot_makul}</td>
-                                                            <td className='py-2 text-capitalize'>{item.status_makul}</td>
+                                                            <td className='py-2'>{item.mataKuliahs[0].code_mata_kuliah}</td>
+                                                            <td className='py-2'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
+                                                            <td className='py-2'>{item.mataKuliahs[0].sks}</td>
+                                                            <td className='py-2'>{item.mataKuliahs[0].status_bobot_makul}</td>
+                                                            <td className='py-2 text-capitalize'>{item.mataKuliahs[0].status_makul}</td>
                                                         </tr>
                                                     )) :
                                                         <tr className='border'>

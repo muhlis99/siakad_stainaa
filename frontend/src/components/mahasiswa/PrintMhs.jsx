@@ -282,314 +282,611 @@ const PrintMhs = () => {
     return (
         <div className="container mt-3 font-sans">
             <section ref={el => (componentRef = el)}>
-                <div className="card">
-                    <div className="card-body p-4">
-                        <div className='mb-36'>
-                            <img src={kop} alt="" className='absolute left-0 right-0 top-0' />
+                <div className='mb-2'>
+                    <img src={kop} alt="" />
+                </div>
+                <hr className='border-1 mx-2 mb-2' />
+                <div className='mb-1 mx-5'><h1 className='uppercase'>Identitas Diri </h1></div>
+                <div className='px-5 mb-2'>
+                    <div className='grid grid-cols-2 mt-2'>
+                        <div className=''>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>NIm</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{nim}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>NIK</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{nik}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>NO KK</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{kk}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>NAMA</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{namanya}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>tempat lahir</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{tmp}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{tgl + "-" + bln + "-" + thn}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>jenis kelamin</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{jenkel == "l" ? "laki-laki" : "perempuan"}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>email</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs '>{email}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>no hp</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs '>{nohp}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>No telepon</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs '>{notelp}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>nisn</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{nisn}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <hr className='w-full' />
-                        <div className='grid lg:grid-cols-2'>
-                            <div className='col-span-2'><h1 className='uppercase'>Identitas Diri </h1></div>
-                            <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>NIm</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{nim}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>NIK</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{nik}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>NO KK</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{kk}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>NAMA</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{namanya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>tempat lahir</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{tmp}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{tgl + "-" + bln + "-" + thn}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>jenis kelamin</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{jenkel == "l" ? "laki-laki" : "perempuan"}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>email</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs '>{email}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>no hp</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs '>{nohp}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>No telepon</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs '>{notelp}</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>nisn</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{nisn}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>Penerima KPS</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{pkps}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>no kps</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{nokps}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>npwp</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{npwp}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>Jalur Pendaftaran</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{jalurPendaftaran}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>jenis pendaftaran</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{jenisPendaftaran}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>jenjang pendidikan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{jenjangnya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>fakultas</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{fakultasnya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>prodi</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{prodinya}</span></td>
-                                        </tr>
-                                        {/* <tr>
-                                            <td><span className='text-xs  uppercase'>mulai semester</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{semester}</span></td>
-                                        </tr> */}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div><h1 className='uppercase  '>detail alamat</h1></div>
-                        <div className="grid lg:grid-cols-2">
-                            <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>jalan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{jalan}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>Dusun</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{dusun} {"rt " + rt}/{"rw " + rw}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>kode pos</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{kodepos}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>Jenis tinggal</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{jenisTinggal}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>alat transportsi</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{alatTransportasi}</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>desa</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{desanya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>kecamatan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{kecamatannya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>Kabupaten</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{kabupatennya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>provinsi</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{provinsinya}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>negara</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{negaranya}</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div><h1 className='uppercase  '>detail orang tua</h1></div>
-                        <div className="grid lg:grid-cols-2">
-                            <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>nik </span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{nikAyah}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>nama Ayah</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{namaAyah}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{tgAyah + "-" + blAyah + "-" + thAyah}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>pekerjaan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{pekerjaanAyah}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>penghasilan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{penghasilanAyah}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>pendidikan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{pendidikanAyah}</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>nik </span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{nikIbu}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>nama Ibu</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{namaIbu}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{tgIbu + "-" + blIbu + "-" + thIbu}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>pekerjaan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{pekerjaanIbu}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>penghasilan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{penghasilanIbu}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>pendidikan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{pendidikanIbu}</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div><h1 className='uppercase  '>detail wali</h1></div>
-                        <div className="grid lg:grid-cols-2">
-                            <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>nik </span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{nikWali}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>nama Wali</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{namaWali}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{tgWali + "-" + blWali + "-" + thWali}</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>pekerjaan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{pekerjaanWali}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>penghasilan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{penghasilanWali}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span className='text-xs  uppercase'>pendidikan</span></td>
-                                            <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
-                                            <td><span className='text-xs  uppercase'>{pendidikanWali}</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div className=''>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>Penerima KPS</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{pkps}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>no kps</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{nokps}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>npwp</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{npwp}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>Jalur Pendaftaran</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{jalurPendaftaran}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>jenis pendaftaran</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{jenisPendaftaran}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>jenjang pendidikan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{jenjangnya}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>fakultas</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{fakultasnya}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>prodi</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{prodinya}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
+                <hr className='border-1 mx-2 mb-2' />
+                <div className="mb-1 mx-5"><h1 className='uppercase  '>detail alamat</h1></div>
+                <div className="px-5 mb-2">
+                    <div className='grid grid-cols-2 mt-2'>
+                        <div className=''>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>jalan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{jalan}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>Dusun</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{dusun} {"rt " + rt}/{"rw " + rw}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>kode pos</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{kodepos}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>Jenis tinggal</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{jenisTinggal}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>alat transportsi</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{alatTransportasi}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className=''>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>desa</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{desanya}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>kecamatan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{kecamatannya}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>Kabupaten</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{kabupatennya}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>provinsi</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{provinsinya}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>negara</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{negaranya}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <hr className='border-1 mx-2 mb-2' />
+                <div className='mb-1 mx-5'><h1 className='uppercase  '>detail orang tua</h1></div>
+                <div className="px-5 mb-2">
+                    <div className='grid grid-cols-2 mt-2'>
+                        <div className=''>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>nik </span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{nikAyah}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>nama Ayah</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{namaAyah}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{tgAyah + "-" + blAyah + "-" + thAyah}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>pekerjaan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{pekerjaanAyah}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>penghasilan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{penghasilanAyah}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>pendidikan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{pendidikanAyah}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className=''>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>nik </span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{nikIbu}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>nama Ibu</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{namaIbu}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{tgIbu + "-" + blIbu + "-" + thIbu}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>pekerjaan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{pekerjaanIbu}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>penghasilan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{penghasilanIbu}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>pendidikan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{pendidikanIbu}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <hr className='border-1 mx-2 mb-2' />
+                <div className='mb-1 mx-5'><h1 className='uppercase  '>detail wali</h1></div>
+                <div className="px-5 mb-2">
+                    <div className='grid grid-cols-2 mt-2'>
+                        <div className=''>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>nik </span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{nikWali}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>nama Wali</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{namaWali}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{tgWali + "-" + blWali + "-" + thWali}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className=''>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>pekerjaan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{pekerjaanWali}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>penghasilan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{penghasilanWali}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span className='text-xs  uppercase'>pendidikan</span></td>
+                                        <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                        <td><span className='text-xs  uppercase'>{pendidikanWali}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {/* <div className='grid lg:grid-cols-2'>
+                    <div className='col-span-2'><h1 className='uppercase'>Identitas Diri </h1></div>
+                    <div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>NIm</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{nim}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>NIK</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{nik}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>NO KK</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{kk}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>NAMA</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{namanya}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>tempat lahir</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{tmp}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{tgl + "-" + bln + "-" + thn}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>jenis kelamin</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{jenkel == "l" ? "laki-laki" : "perempuan"}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>email</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs '>{email}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>no hp</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs '>{nohp}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>No telepon</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs '>{notelp}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>nisn</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{nisn}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>Penerima KPS</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{pkps}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>no kps</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{nokps}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>npwp</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{npwp}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>Jalur Pendaftaran</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{jalurPendaftaran}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>jenis pendaftaran</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{jenisPendaftaran}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>jenjang pendidikan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{jenjangnya}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>fakultas</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{fakultasnya}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>prodi</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{prodinya}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div><h1 className='uppercase  '>detail alamat</h1></div>
+                <div className="grid lg:grid-cols-2">
+                    <div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>jalan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{jalan}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>Dusun</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{dusun} {"rt " + rt}/{"rw " + rw}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>kode pos</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{kodepos}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>Jenis tinggal</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{jenisTinggal}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>alat transportsi</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{alatTransportasi}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>desa</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{desanya}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>kecamatan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{kecamatannya}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>Kabupaten</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{kabupatennya}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>provinsi</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{provinsinya}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>negara</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{negaranya}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div><h1 className='uppercase  '>detail orang tua</h1></div>
+                <div className="grid lg:grid-cols-2">
+                    <div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>nik </span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{nikAyah}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>nama Ayah</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{namaAyah}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{tgAyah + "-" + blAyah + "-" + thAyah}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>pekerjaan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{pekerjaanAyah}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>penghasilan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{penghasilanAyah}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>pendidikan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{pendidikanAyah}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>nik </span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{nikIbu}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>nama Ibu</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{namaIbu}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{tgIbu + "-" + blIbu + "-" + thIbu}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>pekerjaan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{pekerjaanIbu}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>penghasilan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{penghasilanIbu}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>pendidikan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{pendidikanIbu}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div><h1 className='uppercase  '>detail wali</h1></div>
+                <div className="grid lg:grid-cols-2">
+                    <div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>nik </span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{nikWali}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>nama Wali</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{namaWali}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>tanggal lahir</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{tgWali + "-" + blWali + "-" + thWali}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>pekerjaan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{pekerjaanWali}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>penghasilan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{penghasilanWali}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span className='text-xs  uppercase'>pendidikan</span></td>
+                                    <td><span className='text-xs '>&nbsp;:&nbsp;</span></td>
+                                    <td><span className='text-xs  uppercase'>{pendidikanWali}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div> */}
             </section>
         </div>
     )

@@ -31,7 +31,6 @@ const ViewKhs = () => {
                 setViewKhs(response.data.data)
                 setJumSks(response.data.jumlahSks)
                 setJumSksIndex(response.data.jumlahSksIndex)
-                setJumSksIndex(response.data.jumlahSksIndex)
                 setIps(response.data.IPS)
                 setNim(response.data.nim)
                 setNama(response.data.mahasiswa)
