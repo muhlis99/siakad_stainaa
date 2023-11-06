@@ -412,6 +412,8 @@ module.exports = {
                 }
             ],
             where: {
+                code_tahun_ajaran: tahunAjaran,
+                code_semester: semester,
                 nim: nim,
                 status: "aktif"
             }
@@ -422,13 +424,13 @@ module.exports = {
                 {
                     model: mataKuliahModel,
                     where: {
-                        code_tahun_ajaran: data.code_tahun_ajaran,
-                        code_semester: data.code_semester,
+                        code_tahun_ajaran: tahunAjaran,
+                        code_semester: semester,
                         code_jenjang_pendidikan: data.code_jenjang_pendidikan,
                         code_fakultas: data.code_fakultas,
                         code_prodi: data.code_prodi,
-                        status: "aktif",
-                        status_makul: "paket"
+                        status_makul: "paket",
+                        status: "aktif"
                     }
                 }
             ],
