@@ -252,7 +252,6 @@ const ListRuang = () => {
                                 <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
                                         <th scope="col" className="px-6 py-2 text-sm">#</th>
-                                        <th scope="col" className="px-6 py-2 text-sm">Kode Ruang</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Nama Ruang</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Lokasi</th>
                                         <th scope="col" className='px-6 py-2 text-sm'>Status</th>
@@ -262,13 +261,12 @@ const ListRuang = () => {
                                 <tbody>
                                     {RuangList.length == 0 ?
                                         <tr className='bg-white border-b border-x text-gray-500'>
-                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='6'>Data Ruang Kosong</td>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='5'>Data Ruang Kosong</td>
                                         </tr>
                                         :
                                         RuangList.map((rng, index) => (
                                             <tr key={rng.id_ruang} className='bg-white border-b text-gray-500 border-x'>
                                                 <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{(page - 1) * 10 + index + 1}</th>
-                                                <td className='px-6 py-2 font-semibold'>{rng.code_ruang}</td>
                                                 <td className='px-6 py-2 font-semibold'>{rng.nama_ruang}</td>
                                                 <td className='px-6 py-2 font-semibold'>{rng.lokasi}</td>
                                                 <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{rng.status}</span></td>

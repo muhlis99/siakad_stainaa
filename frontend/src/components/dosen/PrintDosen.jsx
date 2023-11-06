@@ -29,6 +29,8 @@ const PrintDosen = () => {
     const [alatTransportasi, setAlatTransportasi] = useState("")
     const [pendidikan, setPendidikan] = useState("")
     const [inPrintPreview, setInPrintPreview] = useState(false)
+    const [fotos, setFotos] = useState("")
+    const [prevFoto, setPrevFoto] = useState("")
     let componentRef = useRef(null)
     const { idDsn } = useParams()
 
@@ -55,12 +57,17 @@ const PrintDosen = () => {
                 setAlat(response.data.data.alat_transportasi)
                 setPndkn(response.data.data.pendidikan_terakhir)
                 setStatusPg(response.data.data.status_kepegawaian)
+                setFotos(response.data.data.foto_diri)
             } catch (error) {
 
             }
         }
         getDsnById()
     }, [idDsn])
+
+    useEffect(() => {
+        fotoDiri()
+    }, [fotos])
 
     useEffect(() => {
         alatTransportasiByCode()
@@ -88,6 +95,27 @@ const PrintDosen = () => {
         }
     }
 
+    const fotoDiri = async () => {
+        try {
+            if (fotos != 0) {
+                await axios.get(`v1/dosen/public/seeImage/dosen/diri/${fotos}`, {
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPrevFoto(base64)
+                })
+
+            }
+        } catch (error) {
+
+        }
+    }
+
     const handlePrint = useReactToPrint({
         content: () => componentRef,
         onAfterPrint: () => setInPrintPreview(window.close())
@@ -112,7 +140,16 @@ const PrintDosen = () => {
                     </div>
                     <div className='w-full flex'>
                         <div className='p-3'>
-                            <img src={jenkel == "l" ? male : female} width={200} alt="" />
+                            <div className="avatar">
+                                <div className="w-52 rounded-full">
+                                    {prevFoto ? (
+                                        <img src={`data:;base64,${prevFoto}`} alt="Foto Dosen" />
+                                    ) : (
+
+                                        <img src={jenkel == "l" ? male : female} width={200} alt="Foto Dosen" />
+                                    )}
+                                </div>
+                            </div>
                         </div>
                         <div className='p-3'>
                             <table className='my-4'>
