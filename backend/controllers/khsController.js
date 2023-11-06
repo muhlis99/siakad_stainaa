@@ -209,8 +209,8 @@ module.exports = {
                 tahunAjaran: thnAjr.tahun_ajaran,
                 jumlahSks: totalSks,
                 jumlahSksIndex: totalSksIndex,
-                // IPS: ipSemester.toFixed(2)
-                IPS: ipSemester
+                IPS: ipSemester.toFixed(2)
+                // IPS: ipSemester
 
             })
         }).catch(err => {
@@ -255,6 +255,12 @@ module.exports = {
             }
         })
         if (!dataMahasiswa) return res.status(404).json({ message: "data mahasiswa tidak ditemukan" })
+        const thnAjr = await tahunAjaranModel.findOne({
+            where: {
+                code_tahun_ajaran: tahunAjaran,
+                status: "aktif"
+            }
+        })
         const totalSks = await nilaiKuliahModel.sum('mataKuliahs.sks', {
             include: [
                 {
@@ -319,12 +325,14 @@ module.exports = {
                     fakultas: dataMahasiswa.fakultas[0].nama_fakultas,
                     jenjangPendidikan: dataMahasiswa.jenjangPendidikans[0].nama_jenjang_pendidikan,
                     semester: dataMahasiswa.semesters[0].semester,
-                    tahunAjaran: tahunAjaran,
+                    tahunAjaran: thnAjr.tahun_ajaran,
                 },
                 nilaiAkhir: {
                     jumlahSks: totalSks,
                     jumlahSksIndex: totalSksIndex,
-                    IPS: ipSemester,
+                    // IPS: ipSemester,
+                    IPS: ipSemester.toFixed(2)
+
                 },
                 data: result,
 
