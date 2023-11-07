@@ -120,6 +120,7 @@ module.exports = {
         const dataKrsMahasiswa = await krsModel.findAll({
             where: {
                 nim: nim,
+                status_krs: "setuju",
                 status: "aktif"
             }
         })
@@ -170,6 +171,7 @@ module.exports = {
         const dataKrsMahasiswa = await krsModel.findAll({
             where: {
                 nim: nim,
+                status_krs: "setuju",
                 status: "aktif"
             }
         })

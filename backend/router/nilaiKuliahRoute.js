@@ -7,6 +7,8 @@ router.get('/getMhsByKelas/:codeKls', nilaiKuliahController.getMhsByKelas)
 router.get('/deteksiIndexNilai/:nilaiAkhir/:codeThnAjr', nilaiKuliahController.deteksiIndexNilai)
 router.post('/create', nilaiKuliahController.post)
 router.put('/update', nilaiKuliahController.put)
+// user dosen
+
 
 
 module.exports = router

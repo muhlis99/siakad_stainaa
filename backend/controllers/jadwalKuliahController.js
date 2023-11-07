@@ -439,6 +439,7 @@ module.exports = {
                 code_prodi: dataMahasiswa.code_prodi,
                 code_tahun_ajaran: dataMahasiswa.code_tahun_ajaran,
                 code_semester: dataMahasiswa.code_semester,
+                status_krs: "setuju",
                 status: "aktif"
             }
         })

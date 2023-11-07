@@ -73,6 +73,8 @@ module.exports = {
                 code_jenjang_pendidikan: jenjangPendik,
                 code_fakultas: fakultas,
                 code_prodi: prodi,
+                status_pengajuan_krs: "tidak",
+                status_krs: "",
                 status: "aktif"
             },
             group: ['nim'],
@@ -206,6 +208,8 @@ module.exports = {
                 code_jenjang_pendidikan: jenjPen,
                 code_fakultas: fks,
                 code_prodi: prd,
+                status_pengajuan_krs: "tidak",
+                status_krs: "",
                 status: "aktif"
             }
         })
@@ -217,6 +221,8 @@ module.exports = {
                 code_jenjang_pendidikan: jenjPen,
                 code_fakultas: fks,
                 code_prodi: prd,
+                status_pengajuan_krs: "tidak",
+                status_krs: "",
                 status: "aktif"
             })
             const validasiMakulKrs = makulKrs.map(al => {
@@ -251,7 +257,8 @@ module.exports = {
                         code_jenjang_pendidikan: jenjPen,
                         code_fakultas: fks,
                         code_prodi: prd,
-                        status_krs: "setuju",
+                        status_pengajuan_krs: "tidak",
+                        status_krs: "",
                         status: "aktif"
                     }
                 })
@@ -280,7 +287,8 @@ module.exports = {
                         code_jenjang_pendidikan: jenjPen,
                         code_fakultas: fks,
                         code_prodi: prd,
-                        status_krs: "setuju",
+                        status_pengajuan_krs: "tidak",
+                        status_krs: "",
                         status: "aktif"
                     }
                 })
@@ -309,11 +317,17 @@ module.exports = {
                 },
                 {
                     model: semesterModel,
-                    attributes: ['semester']
+                    attributes: ['semester'],
+                    where: {
+                        status: "aktif"
+                    }
                 },
                 {
                     model: tahunAjaranModel,
-                    attributes: ["tahun_ajaran"]
+                    attributes: ["tahun_ajaran"],
+                    where: {
+                        status: "aktif"
+                    }
                 }
             ],
             where: {
@@ -485,6 +499,81 @@ module.exports = {
         }).catch(err => {
             console.log(err)
         })
+    },
+
+    pengajuanKrsMahasiswa: async (req, res, next) => {
+        const nim = req.params.nim
+        const data = await historyMahasiswa.findOne({
+            include: [
+                {
+                    model: mahasiswaModel,
+                    attributes: ["nama"]
+                },
+                {
+                    model: semesterModel,
+                    attributes: ['semester'],
+                    where: {
+                        status: "aktif"
+                    }
+                },
+                {
+                    model: tahunAjaranModel,
+                    attributes: ["tahun_ajaran"],
+                    where: {
+                        status: "aktif"
+                    }
+                }
+            ],
+            where: {
+                nim: nim,
+                status: "aktif"
+            }
+        })
+        if (!data) return res.status(404).json({ message: "data tidak ditemukan" })
+        const dataPengajuanKrs = await krsModel.findAll({
+            include: [
+                {
+                    model: mataKuliahModel,
+                    where: {
+                        code_tahun_ajaran: data.code_tahun_ajaran,
+                        code_semester: data.code_semester,
+                        code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                        code_fakultas: data.code_fakultas,
+                        code_prodi: data.code_prodi,
+                        status: "aktif",
+                        status_makul: "paket"
+                    }
+                }
+            ],
+            where: {
+                nim: nim,
+                code_tahun_ajaran: data.code_tahun_ajaran,
+                code_semester: data.code_semester,
+                code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                code_fakultas: data.code_fakultas,
+                code_prodi: data.code_prodi,
+                status_pengajuan_krs: "tidak",
+                status_krs: "",
+                status: "aktif"
+            }
+        })
+        const datas = dataPengajuanKrs.map(el => {
+            return {
+                id_krs: el.id_krs,
+                status_pengajuan_krs: "diajukan"
+            }
+        })
+
+        if (datas.length === 0) return res.status(401).json({ message: "data tidak ditemukan" })
+        const updateData = await krsModel.bulkCreate(datas, {
+            updateOnDuplicate: ["status_pengajuan_krs"],
+        })
+
+        if (updateData) {
+            res.status(201).json({
+                message: "data berhasil diupdate"
+            })
+        }
     }
 
 }

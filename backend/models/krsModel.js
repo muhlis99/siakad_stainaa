@@ -42,6 +42,10 @@ const krsModel = db.define('krs', {
         type: DataTypes.ENUM,
         values: ['setuju', 'tidak']
     },
+    'status_pengajuan_krs': {
+        type: DataTypes.ENUM,
+        values: ['diajukan', 'tidak']
+    },
     'status': {
         type: DataTypes.ENUM,
         values: ['aktif', 'tidak']

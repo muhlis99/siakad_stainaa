@@ -269,7 +269,8 @@ module.exports = {
                 code_semester: code_semester,
                 code_jenjang_pendidikan: code_jenjang_pendidikan,
                 code_fakultas: code_fakultas,
-                code_prodi: code_prodi
+                code_prodi: code_prodi,
+                status: "aktif"
             }
         })
         if (validasiSebaran) return res.status(404).json({ message: "KRS sudah aktif" })
