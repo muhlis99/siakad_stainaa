@@ -455,6 +455,7 @@ module.exports = {
                 code_jenjang_pendidikan: data.code_jenjang_pendidikan,
                 code_fakultas: data.code_fakultas,
                 code_prodi: data.code_prodi,
+                status_krs: "setuju",
                 status: "aktif"
             }
         })
