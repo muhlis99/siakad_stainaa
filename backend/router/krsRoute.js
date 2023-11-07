@@ -8,6 +8,7 @@ router.post('/create/:thnAjr/:smt/:jenjPen/:fks/:prd', krsController.post)
 
 // user mahasiswa
 router.get('/viewKrsMahasiswaNow/:nim', krsController.viewKrsMahasiswaNow)
+router.put('/pengajuanKrsMahasiswa/:nim', krsController.pengajuanKrsMahasiswa)
 router.get('/viewKrsMahasiswaHistory/:nim/:tahunAjaran/:semester', krsController.viewKrsMahasiswaHistory)
 
 module.exports = router
