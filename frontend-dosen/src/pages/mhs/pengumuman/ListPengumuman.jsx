@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Layout from '../Layout'
+import Layout from '../../Layout'
 import { Row, Col, Card, Dropdown, DropdownButton, Image, Modal, Button } from 'react-bootstrap'
-import dataBlank from "../../assets/images/noData.svg"
+import dataBlank from "../../../assets/images/noData.svg"
 import { useDispatch, useSelector } from 'react-redux'
-import { getMe } from '../../features/authSlice'
+import { getMe } from '../../../features/authSlice'
 import { Link, Navigate } from 'react-router-dom'
-import '../../assets/css/timeline.css'
+import '../../../assets/css/timeline.css'
 import { FaCalendarAlt, FaRegCalendarAlt } from 'react-icons/fa'
 import axios from 'axios'
 import 'react-date-range/dist/styles.css'
