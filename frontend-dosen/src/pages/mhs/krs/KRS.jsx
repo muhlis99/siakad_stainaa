@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
 import { Navigate } from "react-router-dom"
 import axios from 'axios'
+import { FaUpload } from 'react-icons/fa'
 
 const KRS = () => {
     const dispatch = useDispatch()
@@ -164,6 +165,15 @@ const KRS = () => {
                                     </Col>
                                 </Row>
                             </Card.Body>
+                            <Card.Footer>
+                                <Row>
+                                    <Col>
+                                        {/* <button className='btn btn-sm btn-primary'> Ajukan</button> */}
+                                        <button className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2 float-right' ><FaUpload /> &nbsp; <span>Ajukan</span></button>
+                                    </Col>
+                                </Row>
+
+                            </Card.Footer>
                         </Card>
                     </Col>
                 </Row>
