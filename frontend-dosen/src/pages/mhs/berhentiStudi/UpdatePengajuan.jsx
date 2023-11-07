@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import Layout from '../Layout'
+import Layout from '../../Layout'
 import { useDispatch, useSelector } from "react-redux"
-import { getMe } from "../../features/authSlice"
+import { getMe } from "../../../features/authSlice"
 import { Row, Col, Card, Form } from 'react-bootstrap'
-import { Link, Navigate, useNavigate } from "react-router-dom"
-import { FaReply, FaSave } from "react-icons/fa"
+import { Link, Navigate, useLocation } from "react-router-dom"
+import { FaReply, FaEdit } from "react-icons/fa"
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import moment from "moment"
 
-const TambahPengajuan = () => {
+const UpdatePengajuan = () => {
     const dispatch = useDispatch()
     const [validated, setValidated] = useState(false)
     const { isError, user } = useSelector((state) => state.auth)
@@ -24,11 +23,27 @@ const TambahPengajuan = () => {
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [tglPengajuan, setTglPengajuan] = useState("")
-    const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
-        setTglPengajuan(moment().format('YYYY-MM-DD'))
-    }, [])
+        const getPengajuanById = async () => {
+            try {
+                const response = await axios.get(`v1/pengajuanStudi/getMahasiswaById/${location.state.idnya}`)
+                setKodeTahun(response.data.data.code_tahun_ajaran)
+                setKodeSemester(response.data.data.code_semester)
+                setStatusStudi(response.data.data.pengajuan)
+                setAlasan(response.data.data.alasan)
+                setTglPengajuan(response.data.data.tanggal_pengajuan)
+                setNim(response.data.data.nim)
+                setKodeJenjang(response.data.data.code_jenjang_pendidikan)
+                setKodeFakultas(response.data.data.code_fakultas)
+                setKodeProdi(response.data.data.code_prodi)
+            } catch (error) {
+
+            }
+        }
+        getPengajuanById()
+    }, [location])
 
     useEffect(() => {
         dispatch(getMe())
@@ -41,10 +56,6 @@ const TambahPengajuan = () => {
     useEffect(() => {
         getDataSemester()
     }, [kodeTahun])
-
-    useEffect(() => {
-        getBiodataMHS()
-    }, [user])
 
     const getDataTahun = async () => {
         const response = await axios.get('v1/tahunAjaran/all')
@@ -62,20 +73,6 @@ const TambahPengajuan = () => {
         }
     }
 
-    const getBiodataMHS = async () => {
-        try {
-            if (user) {
-                const response = await axios.get(`v1/mahasiswa/getByNim/${user.data.username}`)
-                setNim(response.data.data.nim)
-                setKodeJenjang(response.data.data.code_jenjang_pendidikan)
-                setKodeFakultas(response.data.data.code_fakultas)
-                setKodeProdi(response.data.data.code_prodi)
-            }
-        } catch (error) {
-
-        }
-    }
-
     const simpanPengajuan = async (e) => {
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
@@ -84,7 +81,7 @@ const TambahPengajuan = () => {
         } else {
             e.preventDefault();
             try {
-                await axios.post('v1/pengajuanStudi/createMahasiswa', {
+                await axios.put(`v1/pengajuanStudi/updateMahasiswa/${location.state.idnya}`, {
                     code_tahun_ajaran: kodeTahun,
                     code_semester: kodeSemester,
                     code_jenjang_pendidikan: kodeJenjang,
@@ -98,8 +95,6 @@ const TambahPengajuan = () => {
                     Swal.fire({
                         title: 'Berhasil',
                         icon: 'success'
-                    }).then(() => {
-                        navigate('/pengajuanstudi')
                     })
                 })
             } catch (error) {
@@ -191,7 +186,7 @@ const TambahPengajuan = () => {
                                                     <Link to='/pengajuanstudi' className='bg-[#DC3545] py-1 px-2 rounded no-underline text-white inline-flex items-center'><FaReply /> &nbsp;<span>Kembali</span></Link>
                                                 </Col>
                                                 <Col>
-                                                    <button className='bg-[#17A2B8] py-1 px-2 float-right rounded no-underline text-white inline-flex items-center'><FaSave /> &nbsp; <span>Simpan</span></button>
+                                                    <button className='bg-[#17A2B8] py-1 px-2 float-right rounded no-underline text-white inline-flex items-center'><FaEdit /> &nbsp; <span>Edit</span></button>
                                                 </Col>
                                             </Row>
                                         </Card.Body>
@@ -205,4 +200,4 @@ const TambahPengajuan = () => {
     )
 }
 
-export default TambahPengajuan
+export default UpdatePengajuan

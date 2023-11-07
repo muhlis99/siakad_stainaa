@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Layout from '../Layout'
+import Layout from '../../Layout'
 import { Row, Col, Card, Table, Image } from 'react-bootstrap'
-import dataBlank from "../../assets/images/noData.svg"
+import dataBlank from "../../../assets/images/noData.svg"
 import { useDispatch, useSelector } from "react-redux"
-import { getMe } from "../../features/authSlice"
+import { getMe } from "../../../features/authSlice"
 import { Navigate } from "react-router-dom"
 import axios from 'axios'
 

@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react'
-import Layout from '../Layout'
+import Layout from '../../Layout'
 import jsPDF from 'jspdf'
 import { Row, Col, Card, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
-import { getMe } from "../../features/authSlice"
+import { getMe } from "../../../features/authSlice"
 import { Navigate } from "react-router-dom"
 import { FaPrint } from "react-icons/fa";
 import axios from 'axios'
-import kop from "../../assets/images/kop.png"
+import kop from "../../../assets/images/kop.png"
 
 const KHS = () => {
     const dispatch = useDispatch()

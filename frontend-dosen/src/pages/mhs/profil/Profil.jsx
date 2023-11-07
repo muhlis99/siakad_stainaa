@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import Layout from '../Layout'
+import Layout from '../../Layout'
 import { Row, Col, Card, Image } from 'react-bootstrap'
-import gambar from "../../assets/images/noimage.svg"
+import gambar from "../../../assets/images/noimage.svg"
 import { useDispatch, useSelector } from "react-redux"
-import { getMe } from "../../features/authSlice"
+import { getMe } from "../../../features/authSlice"
 import { Navigate } from "react-router-dom"
 import axios from 'axios'
 
