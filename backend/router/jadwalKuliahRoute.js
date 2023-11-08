@@ -13,6 +13,10 @@ router.put('/deleteStatus/:id', jadwalKuliahController.deleteStatus)
 // user mahasiswa 
 router.get('/getJadwalMahasiswa/:nim', jadwalKuliahController.getJadwalMahasiswa)
 
+// user dosen 
+router.get('/jadwalKuliahDosen/:thnAjr/:smt/:jenjPen/:fks/:prd/:nipy', jadwalKuliahController.jadwalKuliahDosen)
+router.get('/getJadwalPertemuanKuliahDosen/:thnAjr/:smt/:jenjPen/:fks/:prd/:nipy', jadwalKuliahController.getJadwalPertemuanKuliahDosen)
+router.put('/updateJadwalPertemuanDosen/:id', jadwalKuliahController.updateJadwalPertemuanDosen)
 
 
 module.exports = router 

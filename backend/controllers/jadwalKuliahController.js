@@ -497,5 +497,169 @@ module.exports = {
         }).then(err => {
             next(err)
         })
+    },
+
+    // user dosen
+    jadwalKuliahDosen: async (req, res, next) => {
+        const { thnAjr, smt, jenjPen, fks, prd, nipy } = req.params
+        const dataDosenUse = await dosenModel.findOne({
+            where: {
+                nip_ynaa: nipy,
+                status: "aktif"
+            }
+        })
+        if (!dataDosenUse) return res.status(404).json({ message: "data tidak ditemukan" })
+        await jadwalKuliahModel.findAll({
+            attributes: ["id_jadwal_kuliah", "code_jadwal_kuliah", "code_mata_kuliah", "code_jenjang_pendidikan",
+                "code_fakultas", "code_prodi", "code_semester", "code_tahun_ajaran", "code_kelas", "code_ruang", "status"],
+            where: {
+                dosen_pengajar: nipy,
+                code_tahun_ajaran: thnAjr,
+                code_semester: smt,
+                code_jenjang_pendidikan: jenjPen,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "Data jadwal kuliah Dosen successfuly",
+                data: result
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
+    getJadwalPertemuanKuliahDosen: async (req, res, next) => {
+        const { thnAjr, smt, jenjPen, fks, prd, nipy } = req.params
+        const dataDosen = await dosenModel.findOne({
+            where: {
+                nip_ynaa: nipy,
+                status: "aktif"
+            }
+        })
+        if (!dataDosen) return res.status(404).json({ message: "dsoen tidak ditemukan" })
+        const dataJadwalKuliah = await jadwalKuliahModel.findAll({
+            where: {
+                code_tahun_ajaran: thnAjr,
+                code_semester: smt,
+                code_jenjang_pendidikan: jenjPen,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            }
+        })
+        if (!dataJadwalKuliah) return res.status(404).json({ message: "data tidak ditemukan" })
+        const dataCodeJadwalKuliah = dataJadwalKuliah.map(t => { return t.code_jadwal_kuliah })
+        let dataDate = []
+        for (let index = 1; index <= 7; index++) {
+            // const timeElapsed = Date.now()
+            const date = new Date()
+            let days = 7 - date.getDate() + index;
+            let nextDay = new Date(date.setDate(date.getDate() + days)).toISOString().substring(0, 10)
+            dataDate.push(nextDay)
+        }
+        await jadwalPertemuanModel.findAll({
+            include: [
+                {
+                    model: jadwalKuliahModel,
+                    status: "aktif",
+                    include: [{
+                        model: mataKuliahModel,
+                        status: "aktif"
+                    }, {
+                        model: ruangModel,
+                        status: "aktif"
+                    }]
+                },
+
+            ],
+            where: {
+                code_jadwal_kuliah: dataCodeJadwalKuliah,
+                tanggal_pertemuan: dataDate,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "Data jadwal kuliah Dosen successfuly",
+                identitas: {
+                    nipy: dataDosen.nip_ynaa,
+                    nama: dataDosen.nama,
+                },
+                data: result
+            })
+        }).then(err => {
+            next(err)
+        })
+    },
+
+    updateJadwalPertemuanDosen: async (req, res, next) => {
+        const id = req.params.id
+        const jadawalPertemuanUse = await jadwalPertemuanModel.findOne({
+            include: [{
+                model: jadwalKuliahModel,
+                where: { status: "aktif" }
+            }],
+            where: {
+                id_jadwal_pertemuan: id,
+                status: "aktif"
+            }
+        })
+        if (!jadawalPertemuanUse) return res.status(401).json({ message: "Data jadwal pertemuan tidak ditemukan" })
+
+        let fileNameLampiranMateri = ""
+        if (req.files != null) {
+            if (jadawalPertemuanUse.lampiran_materi === "") {
+                const file = req.files.lampiran_materi
+                const fileSize = file.data.length
+                const ext = path.extname(file.name)
+                fileNameLampiranMateri = "lampiran_materi" + id + file.md5 + ext
+                const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls']
+                if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
+                if (fileSize > 5000000) return res.status(422).json({ msg: "lampiran materi diri yang anda upload tidak boleh lebih dari 5 mb" })
+                file.mv(`../tmp_siakad/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
+                    if (err) return res.status(500).json({ message: err.message })
+                })
+            } else {
+                const file = req.files.lampiran_materi
+                const fileSize = file.data.length
+                const ext = path.extname(file.name)
+                fileNameLampiranMateri = "lampiran_materi" + id + file.md5 + ext
+                const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls']
+                if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
+                if (fileSize > 5000000) return res.status(422).json({ message: "lampiran materi yang anda upload tidak boleh lebih dari 5 mb" })
+                const filepath = `../tmp_siakad/lampiranMateri/${jadawalPertemuanUse.lampiran_materi}`
+                fs.unlinkSync(filepath)
+                file.mv(`../tmp_siakad/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
+                    if (err) return res.status(500).json({ message: err.message })
+                })
+            }
+        } else {
+            fileNameLampiranMateri = ""
+        }
+
+        const { metode_pembelajaran, url_online, rencana_materi, status_pertemuan } = req.body
+
+        try {
+            await jadwalPertemuanModel.update({
+                metode_pembelajaran: metode_pembelajaran,
+                url_online: url_online,
+                rencana_materi: rencana_materi,
+                lampiran_materi: fileNameLampiranMateri,
+                status_pertemuan: status_pertemuan,
+            }, {
+                where: {
+                    id_jadwal_pertemuan: id
+                }
+            })
+                .then(result => {
+                    res.status(200).json({
+                        message: "data jadwal pertemuan berhasil diupdate",
+                    })
+                })
+        } catch (error) {
+            next(error)
+        }
     }
 }
