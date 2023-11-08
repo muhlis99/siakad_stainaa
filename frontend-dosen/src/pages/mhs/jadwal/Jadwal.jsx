@@ -120,7 +120,7 @@ const Jadwal = () => {
                                     <Table hover>
                                         <thead>
                                             <tr className='border-bottom-3'>
-                                                <th colSpan={8} className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jadwal Kuliah Mingguan</th>
+                                                <th colSpan={9} className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jadwal Kuliah Mingguan</th>
                                             </tr>
                                             <tr className='border-bottom-3'>
                                                 <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>#</th>
@@ -130,6 +130,7 @@ const Jadwal = () => {
                                                 <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
                                                 <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jenis Pertemuan</th>
                                                 <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Pembelajaran</th>
+                                                <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>URL</th>
                                                 <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Ruang</th>
                                             </tr>
                                         </thead>
@@ -143,6 +144,9 @@ const Jadwal = () => {
                                                     <td className='py-2' align='center'>{item.jadwalKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                     <td className='py-2 text-capitalize' align='center'>{item.jenis_pertemuan}</td>
                                                     <td className='py-2 text-capitalize' align='center'>{item.metode_pembelajaran}</td>
+                                                    <td className='py-2 text-capitalize' align='center'>{item.url_online == "" ?
+                                                        <div className='bg-red-700 text-white rounded-lg py-1'><span className='font-bold'>URL tidak ada</span></div>
+                                                        : item.url_online}</td>
                                                     <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
                                                 </tr>
                                             )) :
