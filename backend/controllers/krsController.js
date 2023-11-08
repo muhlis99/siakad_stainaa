@@ -429,7 +429,7 @@ module.exports = {
                 code_tahun_ajaran: tahunAjaran,
                 code_semester: semester,
                 nim: nim,
-                status: "aktif"
+                // status: "aktif"
             }
         })
         if (!data) return res.status(404).json({ message: "data mahasiswa tidak ditemukan" })
