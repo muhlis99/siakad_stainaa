@@ -752,5 +752,46 @@ module.exports = {
         } else {
             return res.status(201).json({ message: "Email tidak ada" })
         }
-    }
+    },
+
+    // user dosen
+    getByNipy: async (req, res, next) => {
+        const nipy = req.params.nipy
+        await dosen.findOne({
+            include: [{
+                model: pendidikan
+            }, {
+                model: alatTransportasi
+            }, {
+                model: negara
+            }, {
+                model: provinsi
+            }, {
+                model: kabupaten
+            }, {
+                model: kecamatan
+            }, {
+                model: desa
+            }],
+            where: {
+                nip_ynaa: nipy,
+                status: 'aktif'
+            }
+        }).
+            then(getByNipy => {
+                if (!getByNipy) {
+                    return res.status(404).json({
+                        message: "Data dosen Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data dosen Ditemukan",
+                    data: getByNipy
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
 }

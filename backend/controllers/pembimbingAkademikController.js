@@ -474,7 +474,73 @@ module.exports = {
         }).catch(err => {
             next(err)
         })
-
-
     },
+
+    //  user dosen
+    dosenPembimbingAkademik: async (req, res, next) => {
+        const { codeJnjPen, codeFks, codePrd, nipy } = req.params
+        const dosenUse = await dosenModel.findOne({
+            where: {
+                nip_ynaa: nipy,
+                status: "aktif"
+            }
+        })
+        if (!dosenUse) return res.status(404).json({ message: "Data Tidak Ditemukan" })
+        const dataPembimbing = await pembimbingAkademik.findOne({
+            include: [{
+                attributes: ["id_dosen", "nip_ynaa", "nama"],
+                model: dosenModel,
+                where: {
+                    status: "aktif"
+                },
+            }, {
+                model: jenjangPendidikanModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            },],
+            where: {
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
+                dosen: nipy,
+                status: "aktif"
+            }
+        })
+        if (!dataPembimbing) return res.status(404).json({ message: "Data Tidak Ditemukan" })
+        await detailPembimbingAkademik.findAll({
+            include: [
+                {
+                    attributes: ["id_mahasiswa", "nim", "nama"],
+                    model: mahasiswaModel,
+                    where: {
+                        status: "aktif"
+                    }
+                }
+            ],
+            where: {
+                code_pembimbing_akademik: dataPembimbing.code_pembimbing_akademik,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "Data ditemukan",
+                identitas: {
+                    nip_ynaa: dataPembimbing.dosens[0].nip_ynaa,
+                    nama: dataPembimbing.dosens[0].nama,
+                    kouta_bimbingan: dataPembimbing.kouta_bimbingan,
+                    jenjang_pendidikan: dataPembimbing.jenjangPendidikans[0].nama_jenjang_pendidikan,
+                    fakultas: dataPembimbing.fakultas[0].nama_fakultas,
+                    prodi: dataPembimbing.prodis[0].nama_prodi
+                },
+                data: result
+            })
+        }).catch(err => {
+            next(err)
+        })
+    }
 }

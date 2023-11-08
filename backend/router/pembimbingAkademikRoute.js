@@ -14,4 +14,7 @@ router.post('/createDetail', pembimbingAkademikController.postDetail)
 router.put('/updateDetail/:id', pembimbingAkademikController.putDetail)
 router.put('/deleteDetail/:id', pembimbingAkademikController.deleteDetail)
 
+// dosen
+router.get('/dosenPembimbingAkademik/:codeJnjPen/:codeFks/:codePrd/:nipy', pembimbingAkademikController.dosenPembimbingAkademik)
+
 module.exports = router
