@@ -186,11 +186,13 @@ const KRS = () => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <div className='flex justify-center'>
-                                            {button &&
-                                                <button type='button' onClick={simpanPengajuan} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2 float-right' ><FaUpload /> &nbsp; <span>Ajukan</span></button>
-                                            }
-                                        </div>
+                                        {dataKrs ?
+                                            <div className='flex justify-center'>
+                                                {button &&
+                                                    <button type='button' onClick={simpanPengajuan} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2 float-right' ><FaUpload /> &nbsp; <span>Ajukan</span></button>
+                                                }
+                                            </div> : ""
+                                        }
                                     </Col>
                                 </Row>
                             </Card.Body>
