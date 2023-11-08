@@ -455,8 +455,9 @@ module.exports = {
         const dataCodeJadwalKuliah = dataJadwalKuliah.map(t => { return t.code_jadwal_kuliah })
         let dataDate = []
         for (let index = 1; index <= 7; index++) {
+            // const timeElapsed = Date.now()
             const date = new Date()
-            let days = 7 - date.getDay() + index;
+            let days = 7 - date.getDate() + index;
             let nextDay = new Date(date.setDate(date.getDate() + days)).toISOString().substring(0, 10)
             dataDate.push(nextDay)
         }
