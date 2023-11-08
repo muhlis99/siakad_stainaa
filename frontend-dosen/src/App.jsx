@@ -7,6 +7,7 @@ import ChangePassword from "./pages/ChangePassword"
 import Profil from "./pages/mhs/profil/Profil"
 import KRS from "./pages/mhs/krs/KRS"
 import HistoryKrs from "./pages/mhs/krs/HistoryKrs"
+import NonPaket from "./pages/mhs/krs/NonPaket"
 import Jadwal from "./pages/mhs/jadwal/Jadwal"
 import Chat from "./pages/chat/Chat"
 import ListPengumuman from "./pages/mhs/pengumuman/ListPengumuman"
@@ -25,6 +26,7 @@ function App() {
           <Route path="/profil" element={<Profil />} />
           <Route path="/karturencanastudi" element={<KRS />} />
           <Route path="/historykrs" element={<HistoryKrs />} />
+          <Route path="/nonpaket" element={<NonPaket />} />
           <Route path="/kartuhasilstudi" element={<KHS />} />
           <Route path="/jadwalkuliah" element={<Jadwal />} />
           <Route path="/chat" element={<Chat />} />

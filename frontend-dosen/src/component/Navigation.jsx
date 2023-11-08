@@ -23,7 +23,6 @@ const Navigation = () => {
                     if (user.data.role == 'mahasiswa') {
                         const response = await axios.get(`v1/mahasiswa/getByNim/${user.data.username}`)
                         setNama(response.data.data.nama)
-                        console.log(response.data.data);
                     } else {
                         setNama(user.data.username)
                     }
@@ -95,23 +94,22 @@ const Navigation = () => {
                         <NavDropdown align="end" title={
                             <span className="text-light">Perkuliahan</span>
                         } id="basic-nav-dropdown">
-                            {/* <Link to="/pengumuman" className={`dropdown-item ${location.pathname == '/pengumuman' ? 'active' : ''}`}>Pengumuman</Link> */}
+                            <Link to="/pengumuman" className={`dropdown-item ${location.pathname == '/pengumuman' ? 'active' : ''}`}>Pengumuman</Link>
                             <div className="dropdown dropend">
-                                <button className="w-full text-[16px] dropdown-toggle text-left pl-6 hover:bg-[#D5D6C6] hover:text-white py-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button className="w-full text-[16px] dropdown-toggle text-left px-6 hover:bg-[#D5D6C6] hover:text-white py-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     Kartu Rencana Studi
                                 </button>
                                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <li><Link to="/karturencanastudi" className={`dropdown-item ${location.pathname == '/karturencanastudi' ? 'active' : ''}`}>Paket</Link></li>
-                                    <li><a className="dropdown-item" href="#">Non Paket</a></li>
+                                    <li><Link to="/nonpaket" className={`dropdown-item ${location.pathname == '/nonpaket' ? 'active' : ''}`} >Non Paket</Link></li>
+                                    <li><Link to="/historykrs" className={`dropdown-item ${location.pathname == '/historykrs' ? 'active' : ''}`}>History</Link></li>
                                 </ul>
                             </div>
-                            {/* <Link to="/karturencanastudi" className={`dropdown-item ${location.pathname == '/karturencanastudi' ? 'active' : ''}`}>Kartu Rencana Studi</Link> */}
-                            <Link to="/historykrs" className={`dropdown-item ${location.pathname == '/historykrs' ? 'active' : ''}`}>History Kartu Rencana Studi</Link>
                             <Link to="/jadwalkuliah" className={`dropdown-item ${location.pathname == '/jadwalkuliah' ? 'active' : ''}`}>Jadwal Kuliah</Link>
                             <Link to="/kartuhasilstudi" className={`dropdown-item ${location.pathname == '/kartuhasilstudi' ? 'active' : ''}`}>Kartu Hasil Studi</Link>
                             <Link to="/pengajuanstudi" className={`dropdown-item ${location.pathname == '/berhentistudi' ? 'active' : ''}`}>Pengajuan Studi</Link>
                         </NavDropdown>
-                        {/* <Link to="/chat" className={`nav-link text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Chat</Link> */}
+                        <Link to="/chat" className={`nav-link text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link>
                     </Nav>
                 </Container>
             </Navbar>
