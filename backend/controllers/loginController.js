@@ -1,6 +1,7 @@
 const user = require('../models/loginModel.js')
 const argon = require('argon2')
 const nodemailer = require('nodemailer')
+const smtpTransport = require('nodemailer-smtp-transport')
 
 module.exports = {
     login: async (req, res, next) => {
@@ -52,7 +53,7 @@ module.exports = {
         }
     },
 
-    forgot: async (req, res, nest) => {
+    forgot: async (req, res, next) => {
         const email = req.body.email
         let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
         const emailUse = await user.findOne({
@@ -63,13 +64,24 @@ module.exports = {
         })
         if (!emailUse) return res.status(404).json({ message: "Tidak dapat menemukan akun email anda" })
         let testAccount = await nodemailer.createTestAccount()
-        let transporter = nodemailer.createTransport({
+        let transporter = nodemailer.createTransport(smtpTransport({
+            // host: "mail.stainaa.ac.id",
+            // port: 465,
+            // secureConnection: false,
+            // tls: {
+            //     rejectUnauthorized: false
+            // },
+            // auth: {
+            //     user: "stainaa@stainaa.ac.id",
+            //     // pass: "FGGQ44AHAPI5JJCE",
+            //     pass : "@stainaa2021"
+            // },
             service: "gmail",
             auth: {
                 user: "muhammadbwi13@gmail.com",
                 pass: "xzhltcpsznbllacw",
             }
-        })
+        }))
 
         try {
             await user.update({
@@ -87,7 +99,7 @@ module.exports = {
                 })
 
             await transporter.sendMail({
-                from: 'muhammadbwi13@gmail.com',
+                from: '"stainaa@stainaa.ac.id',
                 to: `${email}`,
                 subject: "Atur Ulang Kata Kunci Apliaksi Mahasiswa STAINAA",
                 text: 'jangan disebarakan pada orang lain',
@@ -110,7 +122,8 @@ module.exports = {
             })
 
         } catch (err) {
-            next(err)
+            console.log(err);
+            // next(err)
         }
     },
 
