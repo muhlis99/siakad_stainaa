@@ -8,6 +8,9 @@ const prodiModel = require('../models/prodiModel')
 const mahasiswaModel = require('../models/mahasiswaModel')
 const historyMahasiswa = require('../models/historyMahasiswaModel')
 const detailStudi = require('../models/detailStudiModel')
+const pembimbingAkademik = require('../models/pembimbingAkademikModel.js')
+const detailPembimbingAkademik = require('../models/detailPembimbingAkademikModel.js')
+const dosenModel = require('../models/dosenModel.js')
 
 
 module.exports = {
@@ -1176,4 +1179,69 @@ module.exports = {
                 next(err)
             })
     },
+
+    // user dosen
+    pengajuanStudiByPemdik: async (req, res, next) => {
+        const { codeThnAjr, codeSmt, codeJnjPen, codeFks, codePrd, nipy } = req.params
+        const dosenUse = await dosenModel.findOne({
+            where: {
+                nip_ynaa: nipy,
+                status: "aktif"
+            }
+        })
+        if (!dosenUse) return res.status(404).json({ message: "Data Tidak Ditemukan" })
+        const dataPembimbing = await pembimbingAkademik.findOne({
+            include: [{
+                model: dosenModel,
+                where: {
+                    status: "aktif"
+                },
+            }, {
+                model: jenjangPendidikanModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            },],
+            where: {
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
+                dosen: nipy,
+                status: "aktif"
+            }
+        })
+        if (!dataPembimbing) return res.status(404).json({ message: "Data Tidak Ditemukan" })
+        const dataPemdik = await detailPembimbingAkademik.findAll({
+            where: {
+                code_pembimbing_akademik: dataPembimbing.code_pembimbing_akademik,
+                status: "aktif"
+            }
+        })
+        const dataCodePemdik = dataPemdik.map(el => { return el.nim })
+        if (dataCodePemdik.length == 0 || dataCodePemdik == null) return res.status(401).json({ message: "data tidak ditemukan" })
+        await pengajuanStudi.findAll({
+            where: {
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
+                code_tahun_ajaran: codeThnAjr,
+                code_semester: codeSmt,
+                nim: dataCodePemdik,
+                status: {
+                    [Op.ne]: 'disetujui2'
+                }
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "data Pengajuan Studi succesfuly",
+                data: result
+            })
+        }).catch(err => {
+            next(err)
+        })
+    }
 }

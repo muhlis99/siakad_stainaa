@@ -21,6 +21,9 @@ router.post('/createMahasiswa', validationPengajuanStudi, validationRequest, pen
 router.put('/updateMahasiswa/:id', validationPengajuanStudi, validationRequest, pengajuanStudiController.putMahasiswa)
 router.put('/deleteMahasiswa/:id', pengajuanStudiController.deleteMahasiswa)
 
+//  dosen
+router.get('/pengajuanStudiByPemdik/:codeThnAjr/:codeSmt/:codeJnjPen/:codeFks/:codePrd/:nipy', pengajuanStudiController.pengajuanStudiByPemdik)
+
 
 
 module.exports = router

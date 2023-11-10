@@ -28,6 +28,8 @@ route.use('/public/seeImage/dosen/skDariPimpinanPt', express.static(path.join('.
 route.use('/public/seeImage/dosen/skAktifMelaksanakanTridmaPt', express.static(path.join('../tmp_siakad/dosen/skAktifMelaksanakanTridmaPt')))
 route.use('/public/seeImage/dosen/qrCode', express.static(path.join('../tmp_siakad/dosen/qrcode')))
 
+// user dosen
+route.get('/getByNipy/:nipy', dosenController.getByNipy)
 
 
 module.exports = route
