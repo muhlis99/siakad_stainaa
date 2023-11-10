@@ -477,7 +477,7 @@ module.exports = {
     },
 
     //  user dosen
-    dosenPembimbingAkademik: async (req, res, next) => {
+    mahasiswaByDosenPembimbing: async (req, res, next) => {
         const { codeJnjPen, codeFks, codePrd, nipy } = req.params
         const dosenUse = await dosenModel.findOne({
             where: {

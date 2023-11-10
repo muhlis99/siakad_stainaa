@@ -531,7 +531,7 @@ module.exports = {
         })
     },
 
-    getJadwalPertemuanKuliahDosen: async (req, res, next) => {
+    JadwalPertemuanDosen: async (req, res, next) => {
         const { thnAjr, smt, jenjPen, fks, prd, nipy } = req.params
         const dataDosen = await dosenModel.findOne({
             where: {

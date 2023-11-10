@@ -15,6 +15,6 @@ router.put('/updateDetail/:id', pembimbingAkademikController.putDetail)
 router.put('/deleteDetail/:id', pembimbingAkademikController.deleteDetail)
 
 // dosen
-router.get('/dosenPembimbingAkademik/:codeJnjPen/:codeFks/:codePrd/:nipy', pembimbingAkademikController.dosenPembimbingAkademik)
+router.get('/mahasiswaByDosenPembimbing/:codeJnjPen/:codeFks/:codePrd/:nipy', pembimbingAkademikController.mahasiswaByDosenPembimbing)
 
 module.exports = router
