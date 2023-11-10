@@ -15,7 +15,7 @@ router.get('/getJadwalMahasiswa/:nim', jadwalKuliahController.getJadwalMahasiswa
 
 // user dosen 
 router.get('/jadwalKuliahDosen/:thnAjr/:smt/:jenjPen/:fks/:prd/:nipy', jadwalKuliahController.jadwalKuliahDosen)
-router.get('/getJadwalPertemuanKuliahDosen/:thnAjr/:smt/:jenjPen/:fks/:prd/:nipy', jadwalKuliahController.getJadwalPertemuanKuliahDosen)
+router.get('/JadwalPertemuanDosen/:thnAjr/:smt/:jenjPen/:fks/:prd/:nipy', jadwalKuliahController.JadwalPertemuanDosen)
 router.put('/updateJadwalPertemuanDosen/:id', jadwalKuliahController.updateJadwalPertemuanDosen)
 
 

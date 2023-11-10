@@ -5,6 +5,9 @@ const semesterModel = require('../models/semesterModel.js')
 const historyMahasiswa = require('../models/historyMahasiswaModel.js')
 const { Op, Sequelize } = require('sequelize')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
+const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
+const fakultasModel = require('../models/fakultasModel.js')
+const prodiModel = require('../models/prodiModel.js')
 
 module.exports = {
     getAll: async (req, res, next) => {
@@ -361,6 +364,7 @@ module.exports = {
                 status: "aktif"
             }
         })
+        if (totalSKS == null) return res.status(404).json({ message: "data tidak ditemukan" })
         await krsModel.findAll({
             include: [
                 {
@@ -459,6 +463,7 @@ module.exports = {
                 status: "aktif"
             }
         })
+        if (totalSKS == null) return res.status(404).json({ message: "data tidak ditemukan" })
         await krsModel.findAll({
             include: [
                 {
@@ -523,7 +528,28 @@ module.exports = {
                     where: {
                         status: "aktif"
                     }
-                }
+                },
+                {
+                    model: jenjangPendidikanModel,
+                    attributes: ["code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
+                    where: {
+                        status: "aktif"
+                    }
+                },
+                {
+                    model: fakultasModel,
+                    attributes: ["code_fakultas", "nama_fakultas"],
+                    where: {
+                        status: "aktif"
+                    }
+                },
+                {
+                    model: prodiModel,
+                    attributes: ["code_prodi", "nama_prodi"],
+                    where: {
+                        status: "aktif"
+                    }
+                },
             ],
             where: {
                 nim: nim,
@@ -575,6 +601,213 @@ module.exports = {
                 message: "data berhasil diupdate"
             })
         }
-    }
+    },
+
+    // user dosen
+    viewKrsMahasiswaByPemdik: async (req, res, next) => {
+        const nim = req.params.nim
+        const tahunAjaran = req.params.tahunAjaran
+        const mahasiswaUse = await historyMahasiswa.findOne({
+            include: [
+                {
+                    model: mahasiswaModel,
+                    attributes: ["nim", "nama"]
+                },
+                {
+                    model: jenjangPendidikanModel,
+                    attributes: ["code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
+                },
+                {
+                    model: fakultasModel,
+                    attributes: ["code_fakultas", "nama_fakultas"],
+                },
+                {
+                    model: prodiModel,
+                    attributes: ["code_prodi", "nama_prodi"],
+                },
+                {
+                    model: semesterModel,
+                    attributes: ['code_semester', 'semester'],
+                },
+                {
+                    model: tahunAjaranModel,
+                    attributes: ["code_tahun_ajaran", "tahun_ajaran"],
+                }
+            ],
+            where: {
+                nim: nim,
+                code_tahun_ajaran: tahunAjaran
+            }
+        })
+        if (!mahasiswaUse) return res.status(404).json({ message: "data mahasiswa tidak ditemukan" })
+
+        const totalSKS = await krsModel.sum('mataKuliahs.sks', {
+            include: [
+                {
+                    model: mataKuliahModel,
+                    where: {
+                        code_tahun_ajaran: tahunAjaran,
+                        code_semester: mahasiswaUse.semesters[0].code_semester,
+                        code_jenjang_pendidikan: mahasiswaUse.jenjangPendidikans[0].code_jenjang_pendidikan,
+                        code_fakultas: mahasiswaUse.fakultas[0].code_fakultas,
+                        code_prodi: mahasiswaUse.prodis[0].code_prodi,
+                        status_makul: "paket",
+                        status: "aktif"
+                    }
+                }
+            ],
+            where: {
+                nim: nim,
+                code_tahun_ajaran: tahunAjaran,
+                code_semester: mahasiswaUse.semesters[0].code_semester,
+                code_jenjang_pendidikan: mahasiswaUse.jenjangPendidikans[0].code_jenjang_pendidikan,
+                code_fakultas: mahasiswaUse.fakultas[0].code_fakultas,
+                code_prodi: mahasiswaUse.prodis[0].code_prodi,
+                status_krs: "setuju",
+                status: "aktif"
+            }
+        })
+        if (totalSKS == null) return res.status(404).json({ message: "data tidak ditemukan" })
+        await krsModel.findAll({
+            include: [
+                {
+                    model: mataKuliahModel,
+                    attributes: ["code_mata_kuliah", "nama_mata_kuliah",
+                        "status_bobot_makul", "status_makul", "sks"],
+                    where: {
+                        code_tahun_ajaran: tahunAjaran,
+                        code_semester: mahasiswaUse.semesters[0].code_semester,
+                        code_jenjang_pendidikan: mahasiswaUse.jenjangPendidikans[0].code_jenjang_pendidikan,
+                        code_fakultas: mahasiswaUse.fakultas[0].code_fakultas,
+                        code_prodi: mahasiswaUse.prodis[0].code_prodi,
+                        status: "aktif",
+                        status_makul: "paket"
+                    }
+                }
+            ],
+            where: {
+                nim: nim,
+                code_tahun_ajaran: tahunAjaran,
+                code_semester: mahasiswaUse.semesters[0].code_semester,
+                code_jenjang_pendidikan: mahasiswaUse.jenjangPendidikans[0].code_jenjang_pendidikan,
+                code_fakultas: mahasiswaUse.fakultas[0].code_fakultas,
+                code_prodi: mahasiswaUse.prodis[0].code_prodi,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "data krs success",
+                identitas: {
+                    nim: nim,
+                    nama: mahasiswaUse.mahasiswas[0].nama,
+                    semester: mahasiswaUse.semesters[0].semester,
+                    tahun_ajaran: tahunAjaran,
+                    code_jenjang_pendidikan: mahasiswaUse.jenjangPendidikans[0].nama_jenjang_pendidikan,
+                    code_fakultas: mahasiswaUse.fakultas[0].nama_fakultas,
+                    code_prodi: mahasiswaUse.prodis[0].nama_prodi,
+                    total_sks: totalSKS
+                },
+                data: result
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+
+    approveKrsMahasiswaByPemdik: async (req, res, next) => {
+        const { nim, statusKrs, tahunAjaran } = req.body
+        const data = await historyMahasiswa.findOne({
+            include: [
+                {
+                    model: mahasiswaModel,
+                    attributes: ["nama"]
+                },
+                {
+                    model: semesterModel,
+                    attributes: ['code_semester', 'semester'],
+                    where: {
+                        status: "aktif"
+                    }
+                },
+                {
+                    model: tahunAjaranModel,
+                    attributes: ["tahun_ajaran"],
+                    where: {
+                        status: "aktif"
+                    }
+                },
+                {
+                    model: jenjangPendidikanModel,
+                    attributes: ["code_jenjang_pendidikan", "nama_jenjang_pendidikan"],
+                    where: {
+                        status: "aktif"
+                    }
+                },
+                {
+                    model: fakultasModel,
+                    attributes: ["code_fakultas", "nama_fakultas"],
+                    where: {
+                        status: "aktif"
+                    }
+                },
+                {
+                    model: prodiModel,
+                    attributes: ["code_prodi", "nama_prodi"],
+                    where: {
+                        status: "aktif"
+                    }
+                },
+            ],
+            where: {
+                nim: nim,
+                code_tahun_ajaran: tahunAjaran,
+                status: "aktif"
+            }
+        })
+        if (!data) return res.status(404).json({ message: "data tidak ditemukan" })
+        const dataPengajuanKrs = await krsModel.findAll({
+            include: [
+                {
+                    model: mataKuliahModel,
+                    where: {
+                        code_tahun_ajaran: tahunAjaran,
+                        code_semester: data.semesters[0].code_semester,
+                        code_jenjang_pendidikan: data.jenjangPendidikans[0].code_jenjang_pendidikan,
+                        code_fakultas: data.fakultas[0].code_fakultas,
+                        code_prodi: data.prodis[0].code_prodi,
+                        status: "aktif",
+                        status_makul: "paket"
+                    }
+                }
+            ],
+            where: {
+                nim: nim,
+                code_tahun_ajaran: data.code_tahun_ajaran,
+                code_semester: data.semesters[0].code_semester,
+                code_jenjang_pendidikan: data.jenjangPendidikans[0].code_jenjang_pendidikan,
+                code_fakultas: data.fakultas[0].code_fakultas,
+                code_prodi: data.prodis[0].code_prodi,
+                status_pengajuan_krs: "diajukan",
+                status_krs: "",
+                status: "aktif"
+            }
+        })
+        const datas = dataPengajuanKrs.map(el => {
+            return {
+                id_krs: el.id_krs,
+                status_krs: statusKrs
+            }
+        })
+        if (datas.length === 0) return res.status(401).json({ message: "data tidak ditemukan" })
+        const updateData = await krsModel.bulkCreate(datas, {
+            updateOnDuplicate: ["status_krs"],
+        })
+
+        if (updateData) {
+            res.status(201).json({
+                message: "data berhasil diupdate"
+            })
+        }
+    },
 
 }

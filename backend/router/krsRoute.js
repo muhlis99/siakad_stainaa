@@ -11,4 +11,7 @@ router.get('/viewKrsMahasiswaNow/:nim', krsController.viewKrsMahasiswaNow)
 router.put('/pengajuanKrsMahasiswa/:nim', krsController.pengajuanKrsMahasiswa)
 router.get('/viewKrsMahasiswaHistory/:nim/:tahunAjaran/:semester', krsController.viewKrsMahasiswaHistory)
 
+// user dosen
+router.get('/viewKrsMahasiswaByPemdik/:nim/:tahunAjaran', krsController.viewKrsMahasiswaByPemdik)
+router.put('/approveKrsMahasiswaByPemdik', krsController.approveKrsMahasiswaByPemdik)
 module.exports = router
