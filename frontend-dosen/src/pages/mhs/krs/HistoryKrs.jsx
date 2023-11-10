@@ -18,6 +18,7 @@ const HistoryKrs = () => {
     const [nama, setNama] = useState("")
     const [biodata, setBiodata] = useState("")
     const [riwayat, setRiwayat] = useState("")
+    const [total, setTotal] = useState(true)
 
     useEffect(() => {
         dispatch(getMe())
@@ -50,6 +51,11 @@ const HistoryKrs = () => {
                 const response = await axios.get(`v1/krs/viewKrsMahasiswaHistory/${user.data.username}/${kodeTahun}/${kodeSemester}`)
                 setBiodata(response.data.identitas)
                 setRiwayat(response.data.data)
+                if (response.data.data[0].status_krs == "") {
+                    setTotal(false)
+                } else {
+                    setTotal(true)
+                }
             }
         }
         getHistoryKrs()
@@ -175,14 +181,16 @@ const HistoryKrs = () => {
                                                                 <td className='py-2 text-capitalize'>{item.mataKuliahs[0].status_makul}</td>
                                                             </tr>
                                                         ))}
-                                                        <tr className='border'>
-                                                            <td colSpan={3} align='center' className='font-bold'>
-                                                                Total SKS
-                                                            </td>
-                                                            <td colSpan={3} className='font-bold'>
-                                                                {biodata.total_sks}
-                                                            </td>
-                                                        </tr>
+                                                        {total &&
+                                                            <tr className='border'>
+                                                                <td colSpan={3} align='center' className='font-bold'>
+                                                                    Total SKS
+                                                                </td>
+                                                                <td colSpan={3} className='font-bold'>
+                                                                    {biodata.total_sks}
+                                                                </td>
+                                                            </tr>
+                                                        }
                                                     </tbody>
                                                     :
                                                     <tbody>
@@ -194,25 +202,6 @@ const HistoryKrs = () => {
                                                         </tr>
                                                     </tbody>
                                                 }
-                                                {/* <tbody>
-                                                    {riwayat.length >= 1 ? riwayat.map((item, index) => (
-                                                        <tr key={item.code_mata_kuliah} className='border'>
-                                                            <th scope='row' className='py-2'>{index + 1}</th>
-                                                            <td className='py-2'>{item.mataKuliahs[0].code_mata_kuliah}</td>
-                                                            <td className='py-2'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                                            <td className='py-2'>{item.mataKuliahs[0].sks}</td>
-                                                            <td className='py-2'>{item.mataKuliahs[0].status_bobot_makul}</td>
-                                                            <td className='py-2 text-capitalize'>{item.mataKuliahs[0].status_makul}</td>
-                                                        </tr>
-                                                    )) :
-                                                        <tr className='border'>
-                                                            <td colSpan={6} align='center'>
-                                                                <Image src={dataBlank} thumbnail width={150} />
-                                                                <p className='fw-bold text-muted'>Tidak Ada Data</p>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                </tbody> */}
                                             </Table>
                                         </div>
                                     </Col>

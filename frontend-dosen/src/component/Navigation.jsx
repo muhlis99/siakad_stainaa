@@ -23,7 +23,8 @@ const Navigation = () => {
                     if (user.data.role == 'mahasiswa') {
                         const response = await axios.get(`v1/mahasiswa/getByNim/${user.data.username}`)
                         setNama(response.data.data.nama)
-                    } else {
+                    } else if (user.data.role == 'dosen') {
+                        // const response = await axios.get(`v1/dosen/getByNipy/${user.data.username}`)
                         setNama(user.data.username)
                     }
                 }
