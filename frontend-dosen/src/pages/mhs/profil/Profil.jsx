@@ -427,7 +427,7 @@ const Profil = () => {
                 <Row>
                     <Col>
                         <Row>
-                            <Col lg="2">
+                            <Col lg="2" className='hidden lg:block'>
                                 <Row className='mb-3'>
                                     <Col lg="12">
                                         <Card className='shadow'>
@@ -1061,6 +1061,59 @@ const Profil = () => {
                                         </Row>
                                     </Card.Body>
                                 </Card>
+                            </Col>
+                            <Col lg="2" className='block lg:hidden mt-2'>
+                                <Row className='mb-3'>
+                                    <Col lg="12">
+                                        <Card className='shadow'>
+                                            <Card.Body className='p-0'>
+                                                {prevFoto ? <Image src={`data:;base64,${prevFoto}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
+                                            <Card.Body className='p-0'>
+                                                {prevQrCode ? <Image src={`data:;base64,${prevQrCode}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
+                                            <Card.Body className='p-0'>
+                                                {prevScanKtp ? <Image src={`data:;base64,${prevScanKtp}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
+                                            <Card.Body className='p-0'>
+                                                {prevScanKk ? <Image src={`data:;base64,${prevScanKk}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
+                                            <Card.Body className='p-0'>
+                                                {prevScanIjazah ? <Image src={`data:;base64,${prevScanIjazah}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
+                                            <Card.Body className='p-0'>
+                                                {prevScanKtm ? <Image src={`data:;base64,${prevScanKtm}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="12">
+                                        <Card className='shadow mt-1'>
+                                            <Card.Body className='p-0'>
+                                                {prevScanKip ? <Image src={`data:;base64,${prevScanKip}`} thumbnail /> : <Image src={gambar} thumbnail />}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
                     </Col>

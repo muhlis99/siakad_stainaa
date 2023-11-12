@@ -36,7 +36,13 @@ const Login = () => {
             }
         }
         dispatch(reset())
-    }, [user, isSuccess, navigate, message, dispatch])
+        if (isError) {
+            Swal.fire({
+                title: message,
+                icon: 'error'
+            })
+        }
+    }, [user, isSuccess, isError, navigate, message, dispatch])
 
     const Auth = (e) => {
         e.preventDefault()
