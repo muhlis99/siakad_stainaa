@@ -118,6 +118,16 @@ const Navigation = () => {
                         </Nav> : <Nav className="me-auto">
                             <Link to="/home" className={`nav-link text-light ${location.pathname == '/home' ? 'active fw-bold' : ''} `}>Dashboard</Link>
                             <Link to="/profile" className={`nav-link text-light ${location.pathname == '/profile' ? 'active fw-bold' : ''} `}>Profil</Link>
+                            <NavDropdown align="end" title={
+                                <span className="text-light">Perkuliahan</span>
+                            } id="basic-nav-dropdown">
+                                <Link to="/pengumuman" className={`dropdown-item ${location.pathname == '/pengumuman' ? 'active' : ''}`}>Pengumuman</Link>
+                                <Link to="/mhsasuh" className={`dropdown-item ${location.pathname == '/mhsasuh' ? 'active' : ''}`}>Mahasiswa Asuh</Link>
+                                <Link to="/krsmhs" className={`dropdown-item ${location.pathname == '/krsmhs' || location.pathname == '/viewkrs' ? 'active' : ''}`}>Kartu Rencana Studi</Link>
+                                <Link to="/jadwal" className={`dropdown-item ${location.pathname == '/jadwal' ? 'active' : ''}`}>Jadwal Kuliah</Link>
+                                <Link to="/penilaian" className={`dropdown-item ${location.pathname == '/penilaian' ? 'active' : ''}`}>Penilaian</Link>
+                                <Link to="/studimhs" className={`dropdown-item ${location.pathname == '/studimhs' ? 'active' : ''}`}>Studi Mahasiswa</Link>
+                            </NavDropdown>
                         </Nav>
                     }
                 </Container>

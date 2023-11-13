@@ -12,7 +12,7 @@ import KRS from "./pages/mhs/krs/KRS"
 import HistoryKrs from "./pages/mhs/krs/HistoryKrs"
 import NonPaket from "./pages/mhs/krs/NonPaket"
 import Jadwal from "./pages/mhs/jadwal/Jadwal"
-import ListPengumuman from "./pages/mhs/pengumuman/ListPengumuman"
+import ListPengumuman from "./pages/pengumuman/ListPengumuman"
 import KHS from "./pages/mhs/khs/KHS"
 import Berhenti from "./pages/mhs/berhentiStudi/Berhenti"
 import TambahPengajuan from "./pages/mhs/berhentiStudi/TambahPengajuan"
@@ -21,6 +21,9 @@ import UpdatePengajuan from "./pages/mhs/berhentiStudi/UpdatePengajuan"
 // Dosen
 import Home from "./pages/dosen/Home"
 import Profile from "./pages/dosen/profile/Profile"
+import MahasiswaAsuh from "./pages/dosen/mhsAsuh/MahasiswaAsuh"
+import ListMahasiswa from "./pages/dosen/KRS/ListMahasiswa"
+import DetailKrs from "./pages/dosen/KRS/DetailKrs"
 
 function App() {
   return (
@@ -33,6 +36,7 @@ function App() {
           <Route path="/verification" element={<Verification />} />
           <Route path="/changepass" element={<ChangePassword />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/pengumuman" element={<ListPengumuman />} />
 
           {/* Route Mahasiswa */}
           <Route path="/" element={<Dashboard />} />
@@ -42,7 +46,6 @@ function App() {
           <Route path="/nonpaket" element={<NonPaket />} />
           <Route path="/kartuhasilstudi" element={<KHS />} />
           <Route path="/jadwalkuliah" element={<Jadwal />} />
-          <Route path="/pengumuman" element={<ListPengumuman />} />
           <Route path="/pengajuanstudi" element={<Berhenti />} />
           <Route path="/tambahpengajuan" element={<TambahPengajuan />} />
           <Route path="/updatepengajuan" element={<UpdatePengajuan />} />
@@ -51,6 +54,9 @@ function App() {
           {/* Route Dosen */}
           <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/mhsasuh" element={<MahasiswaAsuh />} />
+          <Route path="/krsmhs" element={<ListMahasiswa />} />
+          <Route path="/viewkrs" element={<DetailKrs />} />
         </Routes>
 
       </BrowserRouter>
