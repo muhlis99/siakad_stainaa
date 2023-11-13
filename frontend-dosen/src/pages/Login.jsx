@@ -17,15 +17,32 @@ const Login = () => {
 
     useEffect(() => {
         if (user || isSuccess) {
-            Swal.fire({
-                title: user.message,
-                icon: 'success'
-            }).then(() => {
-                navigate("/")
-            })
+            if (user.role == 'admin') {
+                Swal.fire({
+                    title: 'Mohon login dengan akun anda!',
+                    icon: 'error'
+                })
+            } else {
+                Swal.fire({
+                    title: user.message,
+                    icon: 'success'
+                }).then(() => {
+                    if (user.role == 'mahasiswa') {
+                        navigate("/")
+                    } else if (user.role == 'dosen') {
+                        navigate("/home")
+                    }
+                })
+            }
         }
         dispatch(reset())
-    }, [user, isSuccess, navigate, message, dispatch])
+        if (isError) {
+            Swal.fire({
+                title: message,
+                icon: 'error'
+            })
+        }
+    }, [user, isSuccess, isError, navigate, message, dispatch])
 
     const Auth = (e) => {
         e.preventDefault()
@@ -39,15 +56,15 @@ const Login = () => {
     return (
         <div className="min-h-screen py-14">
             <title>Login</title>
-            <div className="container mx-auto">
+            <div className="mx-auto w-full lg:w-2/3 lg:mt-16">
                 <div className="grid lg:grid-cols-2">
                     <div className='flex justify-center'>
-                        <img src={stainaa} alt="" className='w-36 md:w-auto lg:w-auto' />
+                        <img src={stainaa} alt="" className='w-36 md:w-auto lg:w-56 mx-auto lg:ml-44' />
                     </div>
-                    <div className='pt-2'>
-                        <h2 className='text-3xl mb-3 text-[#2D7F5F] font-bold hidden md:block md:mt-16 lg:block lg:mt-20'>SELAMAT DATANG</h2>
+                    <div className='pt-2 px-3'>
+                        <h2 className='text-3xl mb-3 text-[#2D7F5F] font-bold hidden md:block md:mt-14 lg:block lg:mt-12'>SELAMAT DATANG</h2>
                         <p className='text-gray-500 hidden md:block md:mb-4 lg:block'>Sistem Informasi Akademik Sekolah Tinggi <br />Agama Islam Nurul Abror Al-Robbaniyin</p>
-                        <form onSubmit={Auth} className='w-full lg:w-1/2'>
+                        <form onSubmit={Auth} className='w-full lg:w-2/3'>
                             <div className='mb-4'>
                                 <div className="relative mt-2 rounded-md shadow-sm">
                                     <input

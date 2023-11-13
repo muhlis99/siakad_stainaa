@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import Layout from './Layout'
+import Layout from '../Layout'
 import { Row, Col, Card, Table, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
-import { getMe } from "../features/authSlice"
-import dataBlank from "../assets/images/noData.svg"
+import { getMe } from "../../features/authSlice"
+import dataBlank from "../../assets/images/noData.svg"
 import { Navigate } from "react-router-dom"
-import { FaBookmark, FaFileContract } from 'react-icons/fa'
-import { FaGraduationCap } from "react-icons/fa6"
 import axios from 'axios'
+import { FaFileContract } from 'react-icons/fa'
+import { FaGraduationCap } from "react-icons/fa6"
 
 const Dashboard = () => {
     const [Prodi, SetProdi] = useState([])
@@ -45,46 +45,10 @@ const Dashboard = () => {
 
     return (
         <Layout>
-            {isError ? <Navigate to="/login" /> : <div className="content-wrapper">
+            {isError ? <Navigate to="/login" replace /> : <div className="content-wrapper">
                 <div className="page-header">
                     <h2 className='fs-4 fw-semibold' >Dashboard</h2>
-
                 </div>
-                {/* <Row>
-                    <Col lg="6 mb-2 p-1" >
-                        <Card className=' rounded-4' >
-                            <Card.Body className='p-4'>
-                                <h3 style={{ color: '#5E7C60' }}>Hai, Selamat datang!</h3>
-                                <Card.Text className='small'>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati illum hic quis, quos neque laborum nemo sint impedit accusantium.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col lg="3" className='mb-2  p-1'>
-                        <div className="card  rounded-4">
-                            <div className="card-body">
-                                <Row>
-                                    <Col lg="12">
-                                        <p className='h2'><FaBookmark /></p>
-                                        <h6 className='small fw-bold'>{Prodi.prodi}</h6>
-                                        <h6 className="small">Program Studi</h6>
-                                    </Col>
-                                    <Col></Col>
-                                </Row>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col lg="3" className='mb-2  p-1'>
-                        <div className="card rounded-4">
-                            <div className="card-body ">
-                                <p className='h2'><FaFileContract /></p>
-                                <h6 className="card-title">{Prodi.totalSks}</h6>
-                                <h6 className="small">Total SKS</h6>
-                            </div>
-                        </div>
-                    </Col>
-                </Row> */}
 
                 <Row>
                     <Col>

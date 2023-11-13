@@ -137,7 +137,7 @@ const KRS = () => {
                                                         <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status KRS</th>
                                                     </tr>
                                                 </thead>
-                                                {dataKrs ?
+                                                {dataKrs.length > 0 ?
                                                     <tbody>
                                                         {
                                                             dataKrs.map((item, index) => (
@@ -173,7 +173,7 @@ const KRS = () => {
                                                     </tbody> :
                                                     <tbody>
                                                         <tr className='border'>
-                                                            <td colSpan={6} align='center'>
+                                                            <td colSpan={7} align='center'>
                                                                 <Image src={dataBlank} thumbnail width={150} />
                                                                 <p className='fw-bold text-muted'>Tidak Ada Data</p>
                                                             </td>
@@ -186,7 +186,7 @@ const KRS = () => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        {dataKrs ?
+                                        {dataKrs.length > 0 ?
                                             <div className='flex justify-center'>
                                                 {button &&
                                                     <button type='button' onClick={simpanPengajuan} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2 float-right' ><FaUpload /> &nbsp; <span>Ajukan</span></button>
@@ -201,9 +201,13 @@ const KRS = () => {
                                     <Col>
                                         <div>
                                             <span className='font-bold'>Informasi :</span><br />
-                                            <span className='font-bold text-[14px]'>- KRS ini adalah KRS paket yang telah dicentang otomatis oleh sistem</span><br />
+                                            {dataKrs.length > 0 ?
+                                                <span className='font-bold text-[14px]'>- KRS ini adalah KRS paket yang telah dicentang otomatis oleh sistem</span>
+                                                :
+                                                <span className='font-bold text-[14px]'>- Untuk saat ini KRS masih belum diaktifkan</span>
+                                            }
                                             {pesan &&
-                                                <span className='font-bold text-[14px]'>- KRS telah diajukan, silakan tunggu untuk informasi lebih lanjut</span>
+                                                <><br /><span className='font-bold text-[14px]'>- KRS telah diajukan, silakan tunggu untuk informasi lebih lanjut</span></>
                                             }
                                         </div>
                                     </Col>
