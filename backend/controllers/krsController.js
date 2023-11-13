@@ -663,11 +663,10 @@ module.exports = {
                 code_jenjang_pendidikan: mahasiswaUse.jenjangPendidikans[0].code_jenjang_pendidikan,
                 code_fakultas: mahasiswaUse.fakultas[0].code_fakultas,
                 code_prodi: mahasiswaUse.prodis[0].code_prodi,
-                status_krs: "setuju",
+                // status_krs: "setuju",
                 status: "aktif"
             }
         })
-        if (totalSKS == null) return res.status(404).json({ message: "data tidak ditemukan" })
         await krsModel.findAll({
             include: [
                 {
