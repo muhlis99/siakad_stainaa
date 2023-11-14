@@ -146,6 +146,7 @@ const JadwalDosen = () => {
     }
 
     const loadFile = (e) => {
+        // console.log(e)
         const file = e.target.files[0]
         setLampiran(file)
     }
@@ -419,9 +420,13 @@ const JadwalDosen = () => {
                                                                 <td className='py-2' align='center'>{item.jadwalKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                                 <td className='py-2 text-capitalize' align='center'>{item.jenis_pertemuan}</td>
                                                                 <td className='py-2 text-capitalize' align='center'>{item.metode_pembelajaran}</td>
-                                                                <td className='py-2 text-capitalize' align='center'>{item.url_online == "" ?
+                                                                <td className='py-2' align='center'>{item.url_online == "" ?
                                                                     <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL tidak ada</span>
-                                                                    : item.url_online}
+                                                                    :
+                                                                    <Link to="https://www.ponpesnaa.net" target='blank'>
+                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">buka url</span>
+                                                                    </Link>
+                                                                }
                                                                 </td>
                                                                 <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
                                                                 <td className='py-2 text-capitalize' align='center'>
