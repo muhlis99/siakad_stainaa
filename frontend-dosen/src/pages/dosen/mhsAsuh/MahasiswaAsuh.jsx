@@ -36,10 +36,6 @@ const MahasiswaAsuh = () => {
     }, [kodeJenjang, kodeFakultas])
 
     useEffect(() => {
-        getProdi()
-    }, [kodeFakultas])
-
-    useEffect(() => {
         getMhsAsuh()
     }, [kodeJenjang, kodeFakultas, kodeProdi, username])
 

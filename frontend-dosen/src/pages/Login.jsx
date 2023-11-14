@@ -17,23 +17,16 @@ const Login = () => {
 
     useEffect(() => {
         if (user || isSuccess) {
-            if (user.role == 'admin') {
-                Swal.fire({
-                    title: 'Mohon login dengan akun anda!',
-                    icon: 'error'
-                })
-            } else {
-                Swal.fire({
-                    title: user.message,
-                    icon: 'success'
-                }).then(() => {
-                    if (user.role == 'mahasiswa') {
-                        navigate("/")
-                    } else if (user.role == 'dosen') {
-                        navigate("/home")
-                    }
-                })
-            }
+            Swal.fire({
+                title: user.message,
+                icon: 'success'
+            }).then(() => {
+                if (user.role == 'mahasiswa') {
+                    navigate("/")
+                } else if (user.role == 'dosen') {
+                    navigate("/home")
+                }
+            })
         }
         dispatch(reset())
         if (isError) {

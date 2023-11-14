@@ -7,6 +7,7 @@ import { Navigate, useLocation } from "react-router-dom"
 import dataBlank from "../../../assets/images/noData.svg"
 import axios from 'axios'
 import { FaCheck } from 'react-icons/fa'
+import Swal from 'sweetalert2'
 
 const DetailKrs = () => {
     const [Tahun, setTahun] = useState([])
@@ -71,13 +72,36 @@ const DetailKrs = () => {
         }
     }
 
-    // const simpanPersetujuan = async () => {
-    //     try {
-    //         await axios.p
-    //     } catch (error) {
+    const simpanPersetujuan = () => {
+        Swal.fire({
+            title: "Anda Yakin?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, setujui',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.put(`v1/krs/approveKrsMahasiswaByPemdik`, {
+                        nim: location.state,
+                        tahunAjaran: kodeTahun,
+                        status_krs: 'setuju'
+                    }).then(function (response) {
+                        Swal.fire({
+                            title: "KRS Berhasil Disetujui",
+                            icon: "success"
+                        }).then(() => {
+                            getKrsMhs()
+                        })
+                    })
+                } catch (error) {
 
-    //     }
-    // }
+                }
+            }
+        })
+    }
 
     return (
         <Layout>
@@ -255,7 +279,7 @@ const DetailKrs = () => {
                                         <Col>
                                             {RencanaStudi.length > 0 ?
                                                 <div className='flex justify-center'>
-                                                    {button && <button type='button' className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2 float-right' ><FaCheck /> &nbsp; <span>Setujui</span></button>}
+                                                    {button && <button type='button' onClick={simpanPersetujuan} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2 float-right' ><FaCheck /> &nbsp; <span>Setujui</span></button>}
                                                 </div>
                                                 : ""}
                                         </Col>

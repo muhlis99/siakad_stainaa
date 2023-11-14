@@ -24,6 +24,9 @@ import Profile from "./pages/dosen/profile/Profile"
 import MahasiswaAsuh from "./pages/dosen/mhsAsuh/MahasiswaAsuh"
 import ListMahasiswa from "./pages/dosen/KRS/ListMahasiswa"
 import DetailKrs from "./pages/dosen/KRS/DetailKrs"
+import JadwalDosen from "./pages/dosen/jadwalDosen/JadwalDosen"
+import ListKelas from "./pages/dosen/penilaian/ListKelas"
+import ListPengajuan from "./pages/dosen/pengajuanStudi/ListPengajuan"
 
 function App() {
   return (
@@ -57,6 +60,9 @@ function App() {
           <Route path="/mhsasuh" element={<MahasiswaAsuh />} />
           <Route path="/krsmhs" element={<ListMahasiswa />} />
           <Route path="/viewkrs" element={<DetailKrs />} />
+          <Route path="/jadwal" element={<JadwalDosen />} />
+          <Route path="/penilaian" element={<ListKelas />} />
+          <Route path="/studimhs" element={<ListPengajuan />} />
         </Routes>
 
       </BrowserRouter>
