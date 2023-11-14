@@ -7,6 +7,7 @@ import { Link, Navigate } from "react-router-dom"
 import axios from 'axios'
 import moment from 'moment'
 import { FaEdit, FaSearch } from 'react-icons/fa'
+import { MdOpenInNew } from 'react-icons/md'
 import Swal from 'sweetalert2'
 
 const JadwalDosen = () => {
@@ -146,7 +147,6 @@ const JadwalDosen = () => {
     }
 
     const loadFile = (e) => {
-        // console.log(e)
         const file = e.target.files[0]
         setLampiran(file)
     }
@@ -243,8 +243,8 @@ const JadwalDosen = () => {
                                             <Col className='p-0' lg="3" md="3" sm="5" xs="5">
                                                 <Card.Text className='fw-bold text-uppercase'>URL Online</Card.Text>
                                             </Col>
-                                            <Col className='p-0'>
-                                                <Card.Text className='fw-bold text-uppercase'>:&nbsp;{detailJadwal.url_online}</Card.Text>
+                                            <Col className='p-0 flex gap-2'>
+                                                <Card.Text className='fw-bold'>:&nbsp;{detailJadwal.url_online}</Card.Text> <Link to={detailJadwal.url_online} target='blank' title='Buka URL' className='text-black'><MdOpenInNew /></Link>
                                             </Col>
                                         </Row>
                                         <Row className='mb-2 px-3'>
@@ -305,11 +305,11 @@ const JadwalDosen = () => {
                                         </div>
                                         <div className="mb-3 col-lg-6">
                                             <label htmlFor="form6" className="form-label">URL Online</label>
-                                            <input type="text" className="form-control" id="form6" value={url} onChange={(e) => setUrl(e.target.value)} />
+                                            <input type="text" className="form-control" id="form6" value={url} onChange={(e) => setUrl(e.target.value)} placeholder='https://www.example.com' />
                                         </div>
                                         <div className="mb-3 col-lg-6">
                                             <label htmlFor="form7" className="form-label">Rencana Materi</label>
-                                            <input type="text" className="form-control" id="form7" value={rencana} onChange={(e) => setRencana(e.target.value)} />
+                                            <input type="text" className="form-control" id="form7" value={rencana} onChange={(e) => setRencana(e.target.value)} placeholder='Rencana Materi' />
                                         </div>
                                         <div className="mb-3 col-lg-6">
                                             <label htmlFor="formFile" className="form-label">Lampiran Materi</label>
