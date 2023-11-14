@@ -145,7 +145,7 @@ const Jadwal = () => {
                                                     <td className='py-2 text-capitalize' align='center'>{item.jenis_pertemuan}</td>
                                                     <td className='py-2 text-capitalize' align='center'>{item.metode_pembelajaran}</td>
                                                     <td className='py-2 text-capitalize' align='center'>{item.url_online == "" ?
-                                                        <div className='bg-red-700 text-white rounded-lg py-1'><span className='font-bold'>URL tidak ada</span></div>
+                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL tidak ada</span>
                                                         : item.url_online}</td>
                                                     <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
                                                 </tr>

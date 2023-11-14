@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Layout from '../../Layout'
-import { Row, Col, Card, Dropdown, DropdownButton, Image, Modal } from 'react-bootstrap'
-import dataBlank from "../../../assets/images/noData.svg"
+import Layout from '../Layout'
+import { Row, Col, Card, Dropdown, DropdownButton, Image, Modal, Button } from 'react-bootstrap'
+import dataBlank from "../../assets/images/noData.svg"
 import { useDispatch, useSelector } from 'react-redux'
-import { getMe } from '../../../features/authSlice'
+import { getMe } from '../../features/authSlice'
 import { Link, Navigate } from 'react-router-dom'
-import '../../../assets/css/timeline.css'
+import '../../assets/css/timeline.css'
 import { FaCalendarAlt, FaRegCalendarAlt } from 'react-icons/fa'
 import axios from 'axios'
 import 'react-date-range/dist/styles.css'
@@ -14,7 +14,7 @@ import { DateRange } from 'react-date-range'
 import { addDays } from 'date-fns'
 import moment from 'moment'
 
-const Pengumuman = () => {
+const ListPengumuman = () => {
     const day = new Date().getDate() - 1
     const [role, setRole] = useState("")
     const [Pengumuman, setPengumuman] = useState([])
@@ -55,6 +55,8 @@ const Pengumuman = () => {
         getPengumuman()
     }, [role, filter])
 
+    // const color = ['bg-secondary', 'bg-primary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info']
+
     const getPengumuman = async () => {
         if (role) {
             const response = await axios.get(`v1/pengumuman/getByLevel/${role}/${filter}`)
@@ -86,7 +88,9 @@ const Pengumuman = () => {
                         <Modal.Title>{judul}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <p><FaRegCalendarAlt /> {moment(tanggal).format('DD MMMM YYYY')}</p>
+                        <div className='mb-2'>
+                            <span className='inline-flex items-center'><FaRegCalendarAlt />&nbsp;{moment(tanggal).format('DD MMMM YYYY')}</span>
+                        </div>
                         <p>{isi}</p>
                     </Modal.Body>
                 </Modal>
@@ -131,7 +135,7 @@ const Pengumuman = () => {
                                                 </div>
                                                 <div className="timeline-content shadow rounded-1">
                                                     <h4 className='text-capitalize'>{item.judul_pengumuman}</h4>
-                                                    <p style={{ textAlign: 'justify' }}>{item.pengumuman.substr(1, 108)}<Link className='fst-italic text-decoration-none text-dark' onClick={() => handleShow(item.id_pengumuman)}>....Baca selengkapnya</Link></p>
+                                                    <p style={{ textAlign: 'justify' }}>{item.pengumuman.substr(0, 108)}<Link className='fst-italic text-decoration-none text-dark' onClick={() => handleShow(item.id_pengumuman)}>....Baca selengkapnya</Link></p>
                                                 </div>
                                             </div>
                                         ))}
@@ -154,4 +158,4 @@ const Pengumuman = () => {
     )
 }
 
-export default Pengumuman
+export default ListPengumuman
