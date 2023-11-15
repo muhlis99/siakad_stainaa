@@ -4,8 +4,8 @@ import { Row, Col, Card, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
 import { Link, Navigate } from "react-router-dom"
-import { BsInputCursor } from "react-icons/bs"
 import axios from 'axios'
+import { FaSearch } from 'react-icons/fa'
 
 const ListKelas = () => {
     const { isError, user } = useSelector((state) => state.auth)
@@ -233,7 +233,7 @@ const ListKelas = () => {
                                                                         <td className='py-2'>{item.jumlahMhs} Mahasiswa</td>
                                                                         <td className='py-2'>{item.kapasitas} Mahasiswa</td>
                                                                         <td className='py-2'>
-                                                                            <button className='bg-[#17A2B8] py-2 px-2 rounded text-white inline-flex items-center mt-2'><BsInputCursor /> &nbsp; <span>Input Nilai</span></button>
+                                                                            <Link to='/detailnilai' state={{ kodeMk: item.code_mata_kuliah, idKelas: item.id_kelas, kodeKls: item.code }} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch /></Link>
                                                                         </td>
                                                                     </tr>
                                                                 ))

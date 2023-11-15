@@ -30,10 +30,14 @@ const Login = () => {
         }
         dispatch(reset())
         if (isError) {
-            Swal.fire({
-                title: message,
-                icon: 'error'
-            })
+            if (user) {
+                Swal.fire({
+                    title: message,
+                    icon: 'error'
+                })
+            } else {
+                ""
+            }
         }
     }, [user, isSuccess, isError, navigate, message, dispatch])
 
