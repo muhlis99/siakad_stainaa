@@ -542,5 +542,29 @@ module.exports = {
         }).catch(err => {
             next(err)
         })
+    },
+
+    verifikasiDosenPembimbing: async (req, res, next) => {
+        const nipy = req.params.nipy
+        const dosenUse = await dosenModel.findOne({
+            where: {
+                nip_ynaa: nipy,
+                status: "aktif"
+            }
+        })
+        if (!dosenUse) return res.status(404).json({ message: "Data Tidak Ditemukan" })
+        await pembimbingAkademik.findOne({
+            where: {
+                dosen: nipy,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "Data ditemukan",
+                data: result
+            })
+        }).catch(err => {
+            next(err)
+        })
     }
 }

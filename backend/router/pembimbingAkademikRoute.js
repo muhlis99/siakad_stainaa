@@ -16,5 +16,6 @@ router.put('/deleteDetail/:id', pembimbingAkademikController.deleteDetail)
 
 // dosen
 router.get('/mahasiswaByDosenPembimbing/:codeJnjPen/:codeFks/:codePrd/:nipy', pembimbingAkademikController.mahasiswaByDosenPembimbing)
+router.get('/verifikasiDosenPembimbing/:nipy', pembimbingAkademikController.verifikasiDosenPembimbing)
 
 module.exports = router
