@@ -27,6 +27,9 @@ import DetailKrs from "./pages/dosen/KRS/DetailKrs"
 import JadwalDosen from "./pages/dosen/jadwalDosen/JadwalDosen"
 import ListKelas from "./pages/dosen/penilaian/ListKelas"
 import ListPengajuan from "./pages/dosen/pengajuanStudi/ListPengajuan"
+import InfoNilai from "./pages/dosen/penilaian/InfoNilai"
+import InputNilai from "./pages/dosen/penilaian/InputNilai"
+import EditNilai from "./pages/dosen/penilaian/EditNilai"
 
 function App() {
   return (
@@ -63,6 +66,9 @@ function App() {
           <Route path="/jadwal" element={<JadwalDosen />} />
           <Route path="/penilaian" element={<ListKelas />} />
           <Route path="/studimhs" element={<ListPengajuan />} />
+          <Route path="/detailnilai" element={<InfoNilai />} />
+          <Route path="/inputNilai" element={<InputNilai />} />
+          <Route path="/editNilai" element={<EditNilai />} />
         </Routes>
 
       </BrowserRouter>

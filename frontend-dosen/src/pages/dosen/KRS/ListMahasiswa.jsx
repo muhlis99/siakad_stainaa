@@ -158,7 +158,7 @@ const ListMahasiswa = () => {
                                                                         <td className='py-2 text-capitalize'>{item.mahasiswas[0].nama}</td>
                                                                         <td className='py-2 text-capitalize'>{identitas.prodi}</td>
                                                                         <td className='py-2 text-capitalize'>
-                                                                            <Link to="/viewkrs" state={item.nim} className='bg-[#17A2B8] py-1 px-1 rounded-full text-white inline-flex items-center mt-2'><FaSearch className='text-[15px]' /></Link>
+                                                                            <Link to="/viewkrs" state={item.nim} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch className='text-[15px]' /></Link>
                                                                         </td>
                                                                     </tr>
                                                                 ))}
