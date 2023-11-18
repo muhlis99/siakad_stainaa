@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./pages/Login"
 import Chat from "./pages/chat/Chat"
+import Dashboard from "./pages/Dashboard"
 
 // Mahasiswa
-import Dashboard from "./pages/mhs/Dashboard"
 import Forgot from "./pages/Forgot"
 import Verification from "./pages/Verification"
 import ChangePassword from "./pages/ChangePassword"
@@ -43,9 +43,9 @@ function App() {
           <Route path="/changepass" element={<ChangePassword />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/pengumuman" element={<ListPengumuman />} />
+          <Route path="/" element={<Dashboard />} />
 
           {/* Route Mahasiswa */}
-          <Route path="/" element={<Dashboard />} />
           <Route path="/profil" element={<Profil />} />
           <Route path="/karturencanastudi" element={<KRS />} />
           <Route path="/historykrs" element={<HistoryKrs />} />

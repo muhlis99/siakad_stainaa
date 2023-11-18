@@ -21,11 +21,7 @@ const Login = () => {
                 title: user.message,
                 icon: 'success'
             }).then(() => {
-                if (user.role == 'mahasiswa') {
-                    navigate("/")
-                } else if (user.role == 'dosen') {
-                    navigate("/home")
-                }
+                navigate("/")
             })
         }
         dispatch(reset())
