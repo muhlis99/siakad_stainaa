@@ -181,7 +181,9 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { code_jenjang_pendidikan, code_fakultas, code_dikti_prodi, nama_prodi } = req.body
+        const { code_jenjang_pendidikan, code_fakultas,
+            // code_dikti_prodi,
+            nama_prodi } = req.body
         let code = ""
         if (nama_prodi === "TEKNIK ELECTRO") {
             code = "TE"
@@ -201,7 +203,7 @@ module.exports = {
             where: {
                 code_jenjang_pendidikan: code_jenjang_pendidikan,
                 code_fakultas: code_fakultas,
-                code_dikti_prodi: code_dikti_prodi,
+                // code_dikti_prodi: "",
                 nama_prodi: nama_prodi,
                 code_prodi: codeProdi,
                 status: "aktif"
@@ -211,8 +213,8 @@ module.exports = {
         await prodi.create({
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
-            code_prodi: codeProdi,
-            code_dikti_prodi: code_dikti_prodi,
+            // code_prodi: codeProdi,
+            // code_dikti_prodi: "",
             nama_prodi: nama_prodi,
             status: "aktif"
         }).
@@ -228,7 +230,9 @@ module.exports = {
 
     put: async (req, res, next) => {
         const id = req.params.id
-        const { code_jenjang_pendidikan, code_fakultas, code_dikti_prodi, nama_prodi } = req.body
+        const { code_jenjang_pendidikan, code_fakultas,
+            // code_dikti_prodi, 
+            nama_prodi } = req.body
         const prodiUse = await prodi.findOne({
             include: [{
                 model: jenjangPendidikanModel,
@@ -273,8 +277,8 @@ module.exports = {
         await prodi.update({
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
-            // code_prodi: codeProdi,
-            code_dikti_prodi: code_dikti_prodi,
+            code_prodi: codeProdi,
+            // code_dikti_prodi: code_dikti_prodi,
             nama_prodi: nama_prodi,
         }, {
             where: {
