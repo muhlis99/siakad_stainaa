@@ -11,7 +11,8 @@ const fs = require('fs')
 const readXlsxFile = require('read-excel-file/node')
 const QRCode = require("qrcode");
 const { createCanvas, loadImage } = require("canvas");
-
+const registrasi = require('../models/loginModel.js')
+const argon = require('argon2')
 
 module.exports = {
     get: async (req, res, next) => {
@@ -532,6 +533,16 @@ module.exports = {
             where: {
                 id_mahasiswa: id
             }
+        })
+
+        const hashPassword = await argon.hash(nim)
+        const akunMahasiswa = await registrasi.create({
+            username: nim,
+            email: mahasiswaUse.email,
+            password: hashPassword,
+            role: "mahasiswa",
+            verify_code: "",
+            status: "aktif"
         })
 
         const dataHistoryMhs = await historyMahasiswa.findOne({
