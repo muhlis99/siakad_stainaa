@@ -6,6 +6,8 @@ const path = require('path')
 const fs = require('fs')
 const QRCode = require("qrcode");
 const { createCanvas, loadImage } = require("canvas");
+const registrasi = require('../models/loginModel.js')
+const argon = require('argon2')
 
 module.exports = {
     getAll: async (req, res, next) => {
@@ -320,6 +322,16 @@ module.exports = {
             dataQrCode = "dosenQrcode" + Buffer.from(nip_ynaa).toString('base64url')
             mainQrCode(nip_ynaa, dataQrCode)
         }
+
+        const hashPassword = await argon.hash(dosenUse.nip_ynaa)
+        const akunDosen = await registrasi.create({
+            username: dosenUse.nip_ynaa,
+            email: dosenUse.email,
+            password: hashPassword,
+            role: "dosen",
+            verify_code: "",
+            status: "aktif"
+        })
 
         await dosen.update({
             alamat_lengkap: alamat_lengkap,

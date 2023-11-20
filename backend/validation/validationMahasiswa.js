@@ -41,18 +41,18 @@ exports.validationForm1 = [
         .withMessage('email tidak valid'),
     check('no_hp')
         .notEmpty()
-        .withMessage('no hp tidak boleh kosong')
+        .withMessage('no handpone tidak boleh kosong')
         .isInt()
-        .withMessage('no hp harus berupa angka')
-        .isLength({ min: 12, max: 12 })
-        .withMessage('no hp yang anda masukkan harus  12 digit'),
+        .withMessage('no handpone harus berupa angka')
+        .isLength({ min: 9, max: 12 })
+        .withMessage('no handpone yang anda masukkan harus minimal  9 digit'),
     check('no_telepon')
         .notEmpty()
         .withMessage('no telepon tidak boleh kosong')
         .isInt()
         .withMessage('no telepon harus berupa angka')
-        .isLength({ min: 12, max: 12 })
-        .withMessage('no telepon yang anda masukkan harus  12 digit'),
+        .isLength({ min: 9, max: 12 })
+        .withMessage('no telepon yang anda masukkan harus minimal  9 digit'),
     check('nisn')
         .notEmpty()
         .withMessage('nisn tidak boleh kosong')
@@ -84,13 +84,13 @@ exports.validationForm2 = [
     check('rw')
         .notEmpty()
         .withMessage('rw tidak boleh kosong'),
-    check('kode_pos')
-        .notEmpty()
-        .withMessage('kode_pos tidak boleh kosong')
-        .isInt()
-        .withMessage('kode pos harus berupa angka')
-        .isLength({ min: 5 })
-        .withMessage('kode pos tidak boleh kurang dari 5 digit '),
+    // check('kode_pos')
+    //     .notEmpty()
+    //     .withMessage('kode_pos tidak boleh kosong')
+    //     .isInt()
+    //     .withMessage('kode pos harus berupa angka')
+    //     .isLength({ min: 5 })
+    //     .withMessage('kode pos tidak boleh kurang dari 5 digit '),
     check('negara')
         .notEmpty()
         .withMessage('negara tidak boleh kosong'),

@@ -1,4 +1,4 @@
-const {body, check } = require('express-validator')
+const { body, check } = require('express-validator')
 
 exports.validationProdi = [
     check('code_jenjang_pendidikan')
@@ -7,9 +7,9 @@ exports.validationProdi = [
     check('code_fakultas')
         .notEmpty()
         .withMessage('code fakultas tidak boleh kosong'),
-    check('code_dikti_prodi')
-        .notEmpty()
-        .withMessage('code dikti prodi tidak boleh kosong'),
+    // check('code_dikti_prodi')
+    //     .notEmpty()
+    //     .withMessage('code dikti prodi tidak boleh kosong'),
     check('nama_prodi')
         .notEmpty()
         .withMessage('nama prodi tidak boleh kosong')

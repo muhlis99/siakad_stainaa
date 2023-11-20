@@ -145,20 +145,24 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { code_jenjang_pendidikan, code_dikti_fakultas, nama_fakultas } = req.body
+        const { code_jenjang_pendidikan,
+            // code_dikti_fakultas,
+            nama_fakultas } = req.body
         let code = ""
         if (nama_fakultas === "AGAMA ISLAM") {
-            code = "AI"
+            code = "FAI"
         } else if (nama_fakultas === "AKUNTANSI") {
-            code = "AK"
+            code = "FAK"
         } else if (nama_fakultas === "TEKNOLOGI INFORMASI") {
-            code = "TI"
+            code = "FTI"
         } else if (nama_fakultas === "KOMUNIKASI") {
-            code = "KM"
+            code = "FKM"
         } else if (nama_fakultas === "PSIKOLOGI") {
-            code = "PS"
+            code = "FPS"
+        } else if (nama_fakultas === "MUAMALAH") {
+            code = "FMU"
         } else if (nama_fakultas === "HUKUM") {
-            code = "HK"
+            code = "FHK"
         } else {
             code = ""
         }
@@ -172,8 +176,8 @@ module.exports = {
         if (duplicateData) return res.status(401).json({ message: "Data fakultas sudah ada" })
         await fakultas.create({
             code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: codefakultas,
-            code_dikti_fakultas: code_dikti_fakultas,
+            // code_fakultas: codefakultas,
+            code_dikti_fakultas: "",
             nama_fakultas: nama_fakultas,
             status: "aktif"
         }).
@@ -189,7 +193,9 @@ module.exports = {
 
     put: async (req, res, next) => {
         const id = req.params.id
-        const { code_jenjang_pendidikan, code_dikti_fakultas, nama_fakultas } = req.body
+        const { code_jenjang_pendidikan,
+            // code_dikti_fakultas, 
+            nama_fakultas } = req.body
         const fakultasUse = await fakultas.findOne({
             include: [{
                 model: jenjangPendidikan,
@@ -204,17 +210,19 @@ module.exports = {
         if (!fakultasUse) return res.status(401).json({ message: "Data Fakultas tidak ditemukan" })
         let code = ""
         if (nama_fakultas === "AGAMA ISLAM") {
-            code = "AI"
+            code = "FAI"
         } else if (nama_fakultas === "AKUNTANSI") {
-            code = "AK"
+            code = "FAK"
         } else if (nama_fakultas === "TEKNOLOGI INFORMASI") {
-            code = "TI"
+            code = "FTI"
         } else if (nama_fakultas === "KOMUNIKASI") {
-            code = "KM"
+            code = "FKM"
         } else if (nama_fakultas === "PSIKOLOGI") {
-            code = "PS"
+            code = "FPS"
+        } else if (nama_fakultas === "MUAMALAH") {
+            code = "FMU"
         } else if (nama_fakultas === "HUKUM") {
-            code = "HK"
+            code = "FHK"
         } else {
             code = ""
         }
@@ -229,8 +237,8 @@ module.exports = {
         if (duplicateData) return res.status(401).json({ message: "Data fakultas sudah ada" })
         await fakultas.update({
             code_jenjang_pendidikan: code_jenjang_pendidikan,
-            // code_fakultas: codefakultas,
-            code_dikti_fakultas: code_dikti_fakultas,
+            code_fakultas: codefakultas,
+            // code_dikti_fakultas: code_dikti_fakultas,
             nama_fakultas: nama_fakultas
         }, {
             where: {
