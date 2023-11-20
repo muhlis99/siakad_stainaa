@@ -255,7 +255,7 @@ const Profile = () => {
 
     return (
         <Layout>
-            {isError ? <Navigate to="/login" replace /> : <div className="content-wrapper">
+            {isError ? <Navigate to="/login" /> : <div className="content-wrapper">
                 <div className="page-header">
                     <h3 className="page-title">Profil</h3>
                 </div>

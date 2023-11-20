@@ -89,7 +89,6 @@ const FakultasList = () => {
             document.getElementById('my-modal-add').checked = false;
             await axios.post('v1/fakultas/create', {
                 code_jenjang_pendidikan: kodeJenjang,
-                code_dikti_fakultas: kodeDikti,
                 nama_fakultas: namaFak
             }).then(function (response) {
                 setLoading(false)
@@ -156,7 +155,6 @@ const FakultasList = () => {
             await axios.put(
                 `v1/fakultas/update/${id}`, {
                 code_jenjang_pendidikan: kodeJenjang,
-                code_dikti_fakultas: kodeDikti,
                 nama_fakultas: namaFak
             }).then(function (response) {
                 setLoading(false)
@@ -264,21 +262,6 @@ const FakultasList = () => {
                                     </div>
                                     <div>
                                         <label className="label">
-                                            <span className="text-base label-text font-semibold">Kode Dikti Fakultas</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            placeholder="Kode Dikti Fakultas"
-                                            value={kodeDikti}
-                                            onChange={(e) => setKodeDikti(e.target.value)}
-                                            className="input input-sm input-bordered w-full"
-                                        />
-                                        {errors && kodeDikti.length <= 0 ?
-                                            <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
-                                        }
-                                    </div>
-                                    <div>
-                                        <label className="label">
                                             <span className="text-base label-text font-semibold">Fakultas</span>
                                         </label>
                                         <select
@@ -288,6 +271,7 @@ const FakultasList = () => {
                                         >
                                             <option disabled value={""}>-Pilih Fakultas-</option>
                                             <option>AGAMA ISLAM</option>
+                                            <option>MUAMALAH</option>
                                             <option>AKUNTANSI</option>
                                             <option>HUKUM</option>
                                             <option>TEKNOLOGI INFORMASI</option>
@@ -341,21 +325,6 @@ const FakultasList = () => {
                                     </div>
                                     <div>
                                         <label className="label">
-                                            <span className="text-base label-text font-semibold">Kode Dikti Fakultas</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            placeholder="Kode Dikti Fakultas"
-                                            value={kodeDikti}
-                                            onChange={(e) => setKodeDikti(e.target.value)}
-                                            className="input input-sm input-bordered w-full"
-                                        />
-                                        {errors && kodeDikti.length <= 0 ?
-                                            <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
-                                        }
-                                    </div>
-                                    <div>
-                                        <label className="label">
                                             <span className="text-base label-text font-semibold">Fakultas</span>
                                         </label>
                                         <select
@@ -365,6 +334,7 @@ const FakultasList = () => {
                                         >
                                             <option disabled value={""}>-Pilih Fakultas-</option>
                                             <option>AGAMA ISLAM</option>
+                                            <option>MUAMALAH</option>
                                             <option>AKUNTANSI</option>
                                             <option>HUKUM</option>
                                             <option>TEKNOLOGI INFORMASI</option>

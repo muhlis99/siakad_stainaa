@@ -85,7 +85,7 @@ const Dashboard = () => {
 
     return (
         <Layout>
-            {isError ? <Navigate to="/login" replace /> : <div className="content-wrapper">
+            {isError ? <Navigate to="/login" /> : <div className="content-wrapper">
                 <div className="page-header">
                     <h2 className='fs-4 fw-semibold' >Dashboard</h2>
                 </div>
