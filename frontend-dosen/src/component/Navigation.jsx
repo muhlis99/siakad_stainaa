@@ -154,6 +154,7 @@ const Navigation = () => {
                                     <Link to="/studimhs" className={`dropdown-item ${location.pathname == '/studimhs' ? 'active' : ''}`}>Studi Mahasiswa</Link>
                                 }
                             </NavDropdown>
+                            <Link to="/chat" className={`nav-link text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link>
                         </Nav>
                     }
                 </Container>
