@@ -93,7 +93,6 @@ const ProdiList = () => {
             await axios.post('v1/prodi/create', {
                 code_jenjang_pendidikan: kodeJenj,
                 code_fakultas: kodeFaks,
-                code_dikti_prodi: kodeDikti,
                 nama_prodi: namaProdi
             }).then(function (response) {
                 setLoading(false)
@@ -175,7 +174,6 @@ const ProdiList = () => {
             await axios.put(`v1/prodi/update/${id}`, {
                 code_jenjang_pendidikan: kodeJenj,
                 code_fakultas: kodeFaks,
-                code_dikti_prodi: kodeDikti,
                 nama_prodi: namaProdi
             }).then(function (response) {
                 setLoading(false)
@@ -305,21 +303,6 @@ const ProdiList = () => {
                                     </div>
                                     <div>
                                         <label className="label">
-                                            <span className="text-base label-text font-semibold">Kode Dikti Prodi</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            placeholder='Kode Dikti'
-                                            value={kodeDikti}
-                                            onChange={(e) => setKodeDikti(e.target.value)}
-                                            className="input input-sm input-bordered w-full"
-                                        />
-                                        {errors && kodeDikti.length <= 0 ?
-                                            <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
-                                        }
-                                    </div>
-                                    <div>
-                                        <label className="label">
                                             <span className="text-base label-text font-semibold">Prodi</span>
                                         </label>
                                         <select
@@ -395,21 +378,6 @@ const ProdiList = () => {
 
                                         </select>
                                         {errors && kodeFaks.length <= 0 ?
-                                            <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
-                                        }
-                                    </div>
-                                    <div>
-                                        <label className="label">
-                                            <span className="text-base label-text font-semibold">Kode Dikti Prodi</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            placeholder='Kode Dikti'
-                                            value={kodeDikti}
-                                            onChange={(e) => setKodeDikti(e.target.value)}
-                                            className="input input-sm input-bordered w-full"
-                                        />
-                                        {errors && kodeDikti.length <= 0 ?
                                             <span className='mt-2 text-red-700 text-xs'>Tidak Boleh Kosong</span> : ""
                                         }
                                     </div>
