@@ -78,7 +78,7 @@ const Navigation = () => {
         <div className="horizontal-menu">
             <Navbar className="top-navbar p-0">
                 <Container>
-                    <Link to="/" className="navbar-brand d-flex gap-2">
+                    <Link to="/dashboard" className="navbar-brand d-flex gap-2">
                         {/*  */}
                         <div className=" h-11 w-11 my-auto rounded-full shadow-xl"><img src={logo} width={44} /></div>
                         <div className="hidden lg:block">
@@ -112,7 +112,7 @@ const Navigation = () => {
                 <Container>
                     {level == 'mahasiswa' ?
                         <Nav className="me-auto">
-                            <Link to="/" className={`nav-link text-light ${location.pathname == '/' ? 'active fw-bold' : ''} `}>Dashboard</Link>
+                            <Link to="/dashboard" className={`nav-link text-light ${location.pathname == '/dashboard' ? 'active fw-bold' : ''} `}>Dashboard</Link>
                             <Link to="/profil" className={`nav-link text-light ${location.pathname == '/profil' ? 'active fw-bold' : ''} `}>Profil</Link>
                             <NavDropdown align="end" title={
                                 <span className="text-light">Perkuliahan</span>
@@ -136,7 +136,7 @@ const Navigation = () => {
                         </Nav>
                         :
                         <Nav className="me-auto">
-                            <Link to="/" className={`nav-link text-light ${location.pathname == '/' ? 'active fw-bold' : ''} `}>Dashboard</Link>
+                            <Link to="/dashboard" className={`nav-link text-light ${location.pathname == '/dashboard' ? 'active fw-bold' : ''} `}>Dashboard</Link>
                             <Link to="/profile" className={`nav-link text-light ${location.pathname == '/profile' ? 'active fw-bold' : ''} `}>Profil</Link>
                             <NavDropdown align="end" title={
                                 <span className="text-light">Perkuliahan</span>

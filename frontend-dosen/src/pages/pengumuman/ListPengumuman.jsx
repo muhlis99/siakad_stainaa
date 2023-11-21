@@ -8,6 +8,7 @@ import { Link, Navigate } from 'react-router-dom'
 import '../../assets/css/timeline.css'
 import { FaCalendarAlt, FaRegCalendarAlt } from 'react-icons/fa'
 import axios from 'axios'
+import { format } from "timeago.js"
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import { DateRange } from 'react-date-range'
@@ -122,6 +123,30 @@ const ListPengumuman = () => {
                 </Row>
                 <Row>
                     <Col>
+                        <ul className='timeline'>
+                            {Pengumuman.map((item, index) => (
+                                <li>
+                                    <Card>
+                                        <Card.Header className='py-2'>
+
+                                            <Card.Title className='my-auto' style={{ color: '#5E7C60' }}>{item.judul_pengumuman}</Card.Title>
+                                            {/* {format(item.tanggal_pengumuman)} */}
+                                        </Card.Header>
+                                        <Card.Body className='py-2'>
+                                            {moment(item.tanggal_pengumuman).locale('id', {
+                                                months: 'Januari_Februari_Maret_April_Mei_Juni_Juli_Agustus_September_Oktober_November_Desember'.split('_'),
+                                            }).format('DD MMMM YYYY')}
+                                            <p className='text-[16px]' style={{ textAlign: ' justify' }}>{item.pengumuman.substr(0, 200)}<Link className='fst-italic text-decoration-none text-dark' onClick={() => handleShow(item.id_pengumuman)}>....Baca selengkapnya</Link></p>
+                                        </Card.Body>
+                                    </Card>
+                                </li>
+                            ))}
+                        </ul>
+                    </Col>
+                </Row>
+
+                {/* <Row>
+                    <Col>
                         <Card className='shadow rounded-4'>
                             <Card.Body>
                                 {Pengumuman.length != 0 ?
@@ -151,7 +176,7 @@ const ListPengumuman = () => {
                             </Card.Body>
                         </Card>
                     </Col>
-                </Row>
+                </Row> */}
             </div>
             }
         </Layout >

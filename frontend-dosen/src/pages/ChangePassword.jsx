@@ -24,7 +24,7 @@ const ChangePassword = () => {
                 title: user.message,
                 icon: 'success'
             }).then(() => {
-                navigate("/")
+                navigate("/dashboard")
             })
         }
         dispatch(reset())

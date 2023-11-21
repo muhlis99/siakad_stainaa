@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./pages/Login"
 import Chat from "./pages/chat/Chat"
 import Dashboard from "./pages/Dashboard"
+import Home from "./pages/Home"
 
 // Mahasiswa
 import Forgot from "./pages/Forgot"
@@ -19,7 +20,6 @@ import TambahPengajuan from "./pages/mhs/berhentiStudi/TambahPengajuan"
 import UpdatePengajuan from "./pages/mhs/berhentiStudi/UpdatePengajuan"
 
 // Dosen
-import Home from "./pages/dosen/Home"
 import Profile from "./pages/dosen/profile/Profile"
 import MahasiswaAsuh from "./pages/dosen/mhsAsuh/MahasiswaAsuh"
 import ListMahasiswa from "./pages/dosen/KRS/ListMahasiswa"
@@ -37,13 +37,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Route */}
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/verification" element={<Verification />} />
           <Route path="/changepass" element={<ChangePassword />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/pengumuman" element={<ListPengumuman />} />
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
           {/* Route Mahasiswa */}
           <Route path="/profil" element={<Profil />} />
@@ -58,7 +59,6 @@ function App() {
 
 
           {/* Route Dosen */}
-          <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/mhsasuh" element={<MahasiswaAsuh />} />
           <Route path="/krsmhs" element={<ListMahasiswa />} />

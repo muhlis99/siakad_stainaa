@@ -3,8 +3,9 @@ import Layout from './Layout'
 import { Row, Col, Card, Table, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../features/authSlice"
+import { LogOut, reset } from "../features/authSlice"
 import dataBlank from "../assets/images/noData.svg"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import { FaFileContract } from 'react-icons/fa'
 import { FaGraduationCap } from "react-icons/fa6"
@@ -19,12 +20,24 @@ const Dashboard = () => {
     const [pages, setPages] = useState(0)
     const [rows, setrows] = useState(0)
     const [keyword, setKeyword] = useState("")
-    const [query, setQuery] = useState("")
-    const [msg, setMsg] = useState("")
     const [level, setLevel] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const logOut = () => {
+            dispatch(LogOut())
+            dispatch(reset())
+            navigate("/login")
+        }
+        if (user) {
+            if (user.data.role == 'admin') {
+                logOut()
+            }
+        }
+    }, [user])
 
     useEffect(() => {
         if (user) {
@@ -81,7 +94,6 @@ const Dashboard = () => {
         const response = await axios.get('v1/tahunAjaran/all')
         setTahun(response.data.data)
     }
-
 
     return (
         <Layout>

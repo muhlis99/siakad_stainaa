@@ -17,23 +17,26 @@ const Login = () => {
 
     useEffect(() => {
         if (user || isSuccess) {
-            Swal.fire({
-                title: user.message,
-                icon: 'success'
-            }).then(() => {
-                navigate("/")
-            })
+            if (user.role == 'admin') {
+                Swal.fire({
+                    title: 'Mohon Login dengan akun anda',
+                    icon: 'error'
+                })
+            } else if (user.role == 'dosen' || user.role == 'mahasiswa') {
+                Swal.fire({
+                    title: user.message,
+                    icon: 'success'
+                }).then(() => {
+                    navigate("/dashboard")
+                })
+            }
         }
         dispatch(reset())
         if (isError) {
-            if (user) {
-                Swal.fire({
-                    title: message,
-                    icon: 'error'
-                })
-            } else {
-                ""
-            }
+            Swal.fire({
+                title: message,
+                icon: 'error'
+            })
         }
     }, [user, isSuccess, isError, navigate, message, dispatch])
 
