@@ -169,6 +169,9 @@ const Sidebar = () => {
                 <li>
                   <Link to="/khs" state={{ collaps: 'kuliah', activ: '/khs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/khs' || active == '/khs' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-sm'>Kartu Hasil Studi</span></Link>
                 </li>
+                <li>
+                  <Link to="/pengumuman" state={{ collaps: 'kuliah', activ: '/pengumuman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pengumuman' || active == '/pengumuman' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-sm'>Pengumuman</span></Link>
+                </li>
               </ul>
             </details> :
             <details>
@@ -209,6 +212,9 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link to="/khs" state={{ collaps: 'kuliah', activ: '/khs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/khs' || active == '/khs' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-sm'>Kartu Hasil Studi</span></Link>
+                </li>
+                <li>
+                  <Link to="/pengumuman" state={{ collaps: 'kuliah', activ: '/pengumuman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pengumuman' || active == '/pengumuman' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-sm'>Pengumuman</span></Link>
                 </li>
               </ul>
             </details>

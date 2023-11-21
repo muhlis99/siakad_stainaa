@@ -181,7 +181,7 @@ const JadwalDosen = () => {
 
     return (
         <Layout>
-            {isError ? <Navigate to="/login" replace />
+            {isError ? <Navigate to="/login" />
                 :
                 <div className="content-wrapper">
                     <Modal
