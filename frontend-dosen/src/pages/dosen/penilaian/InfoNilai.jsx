@@ -47,6 +47,7 @@ const InfoNilai = () => {
 
     return (
         <Layout>
+            <title>Penilaian</title>
             {isError ? <Navigate to="/login" />
                 :
                 <div className="content-wrapper">
@@ -152,7 +153,13 @@ const InfoNilai = () => {
                                                                     <td className='py-2 border px-1 text-capitalize' align='center'>{item.nilai_jumlah}</td>
                                                                     <td className='py-2 border px-1 text-capitalize' align='center'>{item.nilai_akhir}</td>
                                                                     <td className='py-2 border px-1 text-capitalize' align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
-                                                                    <td className='py-2 border text-capitalize' align='center'>{item.kategoriNilais[0].keterangan}</td>
+                                                                    <td className='py-2 border text-capitalize' align='center'>
+                                                                        {item.kategoriNilais[0].keterangan == 'LULUS' ?
+                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.kategoriNilais[0].keterangan}</span>
+                                                                            :
+                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.kategoriNilais[0].keterangan}</span>
+                                                                        }
+                                                                    </td>
                                                                 </tr>
                                                             ))}
                                                         </tbody>

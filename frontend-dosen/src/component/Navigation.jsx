@@ -75,7 +75,7 @@ const Navigation = () => {
     }
 
     return (
-        <div className="horizontal-menu">
+        <div className="horizontal-menu z-10 w-full">
             <Navbar className="top-navbar p-0">
                 <Container>
                     <Link to="/dashboard" className="navbar-brand d-flex gap-2">
@@ -130,32 +130,35 @@ const Navigation = () => {
                                 </div>
                                 <Link to="/jadwalkuliah" className={`dropdown-item ${location.pathname == '/jadwalkuliah' ? 'active' : ''}`}>Jadwal Kuliah</Link>
                                 <Link to="/kartuhasilstudi" className={`dropdown-item ${location.pathname == '/kartuhasilstudi' ? 'active' : ''}`}>Kartu Hasil Studi</Link>
-                                <Link to="/pengajuanstudi" className={`dropdown-item ${location.pathname == '/berhentistudi' ? 'active' : ''}`}>Pengajuan Studi</Link>
+                                <Link to="/pengajuanstudi" className={`dropdown-item ${location.pathname == '/pengajuanstudi' || location.pathname == '/tambahpengajuan' || location.pathname == '/updatepengajuan' ? 'active' : ''}`}>Pengajuan Studi</Link>
                             </NavDropdown>
                             <Link to="/chat" className={`nav-link text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link>
                         </Nav>
-                        :
-                        <Nav className="me-auto">
-                            <Link to="/dashboard" className={`nav-link text-light ${location.pathname == '/dashboard' ? 'active fw-bold' : ''} `}>Dashboard</Link>
-                            <Link to="/profile" className={`nav-link text-light ${location.pathname == '/profile' ? 'active fw-bold' : ''} `}>Profil</Link>
-                            <NavDropdown align="end" title={
-                                <span className="text-light">Perkuliahan</span>
-                            } id="basic-nav-dropdown">
-                                <Link to="/pengumuman" className={`dropdown-item ${location.pathname == '/pengumuman' ? 'active' : ''}`}>Pengumuman</Link>
-                                {dosen &&
-                                    <>
-                                        <Link to="/mhsasuh" className={`dropdown-item ${location.pathname == '/mhsasuh' ? 'active' : ''}`}>Mahasiswa Asuh</Link>
-                                        <Link to="/krsmhs" className={`dropdown-item ${location.pathname == '/krsmhs' || location.pathname == '/viewkrs' ? 'active' : ''}`}>Kartu Rencana Studi</Link>
-                                    </>
-                                }
-                                <Link to="/jadwal" className={`dropdown-item ${location.pathname == '/jadwal' ? 'active' : ''}`}>Jadwal Kuliah</Link>
-                                <Link to="/penilaian" className={`dropdown-item ${location.pathname == '/penilaian' ? 'active' : ''}`}>Penilaian</Link>
-                                {dosen &&
-                                    <Link to="/studimhs" className={`dropdown-item ${location.pathname == '/studimhs' ? 'active' : ''}`}>Studi Mahasiswa</Link>
-                                }
-                            </NavDropdown>
-                            <Link to="/chat" className={`nav-link text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link>
-                        </Nav>
+                        : level == 'dosen' ?
+                            <Nav className="me-auto">
+                                <Link to="/dashboard" className={`nav-link text-light ${location.pathname == '/dashboard' ? 'active fw-bold' : ''} `}>Dashboard</Link>
+                                <Link to="/profile" className={`nav-link text-light ${location.pathname == '/profile' ? 'active fw-bold' : ''} `}>Profil</Link>
+                                <NavDropdown align="end" title={
+                                    <span className="text-light">Perkuliahan</span>
+                                } id="basic-nav-dropdown">
+                                    <Link to="/pengumuman" className={`dropdown-item ${location.pathname == '/pengumuman' ? 'active' : ''}`}>Pengumuman</Link>
+                                    {dosen &&
+                                        <>
+                                            <Link to="/mhsasuh" className={`dropdown-item ${location.pathname == '/mhsasuh' ? 'active' : ''}`}>Mahasiswa Asuh</Link>
+                                            <Link to="/krsmhs" className={`dropdown-item ${location.pathname == '/krsmhs' || location.pathname == '/viewkrs' ? 'active' : ''}`}>Kartu Rencana Studi</Link>
+                                        </>
+                                    }
+                                    <Link to="/jadwal" className={`dropdown-item ${location.pathname == '/jadwal' ? 'active' : ''}`}>Jadwal Kuliah</Link>
+                                    <Link to="/penilaian" className={`dropdown-item ${location.pathname == '/penilaian' || location.pathname == '/detailnilai' ? 'active' : ''}`}>Penilaian</Link>
+                                    {dosen &&
+                                        <Link to="/studimhs" className={`dropdown-item ${location.pathname == '/studimhs' ? 'active' : ''}`}>Studi Mahasiswa</Link>
+                                    }
+                                </NavDropdown>
+                                <Link to="/chat" className={`nav-link text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link>
+                            </Nav>
+                            : <Nav className="me-auto h-8">
+
+                            </Nav>
                     }
                 </Container>
             </Navbar>

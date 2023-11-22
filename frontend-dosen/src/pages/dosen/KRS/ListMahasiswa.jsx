@@ -7,6 +7,7 @@ import dataBlank from "../../../assets/images/noData.svg"
 import { Link, Navigate } from "react-router-dom"
 import axios from 'axios'
 import { FaSearch } from 'react-icons/fa'
+import { Circles } from "react-loader-spinner"
 
 const ListMahasiswa = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -20,6 +21,14 @@ const ListMahasiswa = () => {
     const [Mahasiswa, setMahasiswa] = useState([])
     const { isError, user } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
+    const [load, setLoad] = useState(false)
+
+    useEffect(() => {
+        setLoad(true)
+        setTimeout(() => {
+            setLoad(false)
+        }, 500);
+    }, [])
 
     useEffect(() => {
         if (user) {
@@ -92,92 +101,115 @@ const ListMahasiswa = () => {
 
     return (
         <Layout>
+            <title>KRS Mahasiswa</title>
             {isError ? <Navigate to="/login" />
                 :
-                <div className="content-wrapper">
-                    <div className="page-header">
-                        <h3 className="page-title">KRS Mahasiswa</h3>
-                    </div>
-                    <div>
-                        <Row>
-                            <Col>
-                                <Card className='shadow'>
-                                    <Card.Body className='p-4'>
-                                        <Row>
-                                            <Col lg='4'>
-                                                <select className="form-select" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
-                                                    <option value="">Jenjang Pendidikan</option>
-                                                    {Jenjang.map((item) => (
-                                                        <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
-                                                    ))}
-                                                </select>
-                                            </Col>
-                                            <Col lg='4'>
-                                                <select className="form-select" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
-                                                    <option value="">Fakultas</option>
-                                                    {Fakultas.map((item) => (
-                                                        <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
-                                                    ))}
-                                                </select>
-                                            </Col>
-                                            <Col lg='4'>
-                                                <select className="form-select" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
-                                                    <option value="">Prodi</option>
-                                                    {Prodi.map((item) => (
-                                                        <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
-                                                    ))}
-                                                </select>
-                                            </Col>
-                                        </Row>
-                                        <Row className='mt-5'>
-                                            {kodeJenjang && kodeFakultas && kodeProdi ?
-                                                <Col>
-                                                    <Row >
-                                                        <Col className='p-0'>
-                                                            <div className='table-responsive' >
-                                                                <Table hover>
-                                                                    <thead>
-                                                                        <tr className='border'>
-                                                                            <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>#</th>
-                                                                            <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}><span>NIM</span></th>
-                                                                            <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>Nama</th>
-                                                                            <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>Prodi</th>
-                                                                            <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>Aksi</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        {Mahasiswa.length > 0 ? Mahasiswa.map((item, index) => (
-                                                                            <tr className='border' key={item.id_detail_pembimbing_akademik}>
-                                                                                <th scope='row' className='py-2'>{index + 1}</th>
-                                                                                <td className='py-2 text-capitalize'>{item.nim}</td>
-                                                                                <td className='py-2 text-capitalize'>{item.mahasiswas[0].nama}</td>
-                                                                                <td className='py-2 text-capitalize'>{identitas.prodi}</td>
-                                                                                <td className='py-2 text-capitalize'>
-                                                                                    <Link to="/viewkrs" state={item.nim} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch className='text-[15px]' /></Link>
-                                                                                </td>
-                                                                            </tr>
-                                                                        )) :
-                                                                            <tr className='border'>
-                                                                                <td className='py-2' colSpan={5} align='center'>
-                                                                                    <Image src={dataBlank} thumbnail width={150} />
-                                                                                    <p className='fw-bold text-muted'>Tidak Ada Data</p>
-                                                                                </td>
-                                                                            </tr>
-                                                                        }
-                                                                    </tbody>
-                                                                </Table>
-                                                            </div>
+                <>
+                    {load ?
+                        <div className='h-100 absolute z-50 left-0 right-0 top-0 w-full bg-[#E9EAE1] flex justify-center items-center' style={{ height: '100%' }}>
+                            <div className=''>
+                                <Circles
+                                    height="80"
+                                    width="80"
+                                    color="#000"
+                                    ariaLabel="circles-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClass=""
+                                    visible={true}
+                                />
+                            </div>
+                        </div>
+                        :
+                        <div className="content-wrapper">
+                            <div className="page-header">
+                                <h3 className="page-title">KRS Mahasiswa</h3>
+                            </div>
+                            <div>
+                                <Row>
+                                    <Col>
+                                        <Card className='shadow'>
+                                            <Card.Body className='p-4'>
+                                                <Row>
+                                                    <Col lg='4'>
+                                                        <select className="form-select" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
+                                                            <option>Jenjang Pendidikan</option>
+                                                            {Jenjang.map((item) => (
+                                                                <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
+                                                            ))}
+                                                        </select>
+                                                    </Col>
+                                                    <Col lg='4'>
+                                                        <select className="form-select" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
+                                                            <option>Fakultas</option>
+                                                            {Fakultas.map((item) => (
+                                                                <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
+                                                            ))}
+                                                        </select>
+                                                    </Col>
+                                                    <Col lg='4'>
+                                                        <select className="form-select" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
+                                                            <option>Prodi</option>
+                                                            {Prodi.map((item) => (
+                                                                <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
+                                                            ))}
+                                                        </select>
+                                                    </Col>
+                                                </Row>
+                                            </Card.Body>
+                                        </Card>
+                                        {kodeJenjang && kodeFakultas && kodeProdi ?
+                                            <Card className="mt-3 shadow">
+                                                <Card.Body>
+                                                    <Row className=''>
+                                                        <Col>
+                                                            <Row >
+                                                                <Col className='p-0'>
+                                                                    <div className='table-responsive' >
+                                                                        <Table hover>
+                                                                            <thead>
+                                                                                <tr className='border'>
+                                                                                    <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>#</th>
+                                                                                    <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}><span>NIM</span></th>
+                                                                                    <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>Nama</th>
+                                                                                    <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>Prodi</th>
+                                                                                    <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>Aksi</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                {Mahasiswa.length > 0 ? Mahasiswa.map((item, index) => (
+                                                                                    <tr className='border' key={item.id_detail_pembimbing_akademik}>
+                                                                                        <th scope='row' className='py-2'>{index + 1}</th>
+                                                                                        <td className='py-2 text-capitalize'>{item.nim}</td>
+                                                                                        <td className='py-2 text-capitalize'>{item.mahasiswas[0].nama}</td>
+                                                                                        <td className='py-2 text-capitalize'>{identitas.prodi}</td>
+                                                                                        <td className='py-2 text-capitalize'>
+                                                                                            <Link to="/viewkrs" state={item.nim} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch className='text-[15px]' /></Link>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                )) :
+                                                                                    <tr className='border'>
+                                                                                        <td className='py-2' colSpan={5} align='center'>
+                                                                                            <Image src={dataBlank} thumbnail width={150} />
+                                                                                            <p className='fw-bold text-muted'>Tidak Ada Data</p>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                }
+                                                                            </tbody>
+                                                                        </Table>
+                                                                    </div>
+                                                                </Col>
+                                                            </Row>
                                                         </Col>
                                                     </Row>
-                                                </Col>
-                                                : ""}
-                                        </Row>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        </Row>
-                    </div>
-                </div>
+                                                </Card.Body>
+                                            </Card>
+                                            : ""}
+                                    </Col>
+                                </Row>
+                            </div>
+                        </div>
+                    }
+                </>
             }
         </Layout>
     )

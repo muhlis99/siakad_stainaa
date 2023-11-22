@@ -10,14 +10,9 @@ const Home = () => {
     const { user } = useSelector((state) => state.auth)
 
     useEffect(() => {
-        if (user) {
-            if (user.data) {
-                navigate('/dashboard')
-            }
-        } else {
-            navigate('/login')
-        }
-    }, [user])
+        navigate('/login')
+
+    }, [])
 
     return (
         <></>

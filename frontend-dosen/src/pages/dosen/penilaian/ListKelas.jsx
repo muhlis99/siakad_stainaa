@@ -6,6 +6,7 @@ import { getMe } from "../../../features/authSlice"
 import { Link, Navigate } from "react-router-dom"
 import axios from 'axios'
 import { FaSearch } from 'react-icons/fa'
+import { Circles } from "react-loader-spinner"
 
 const ListKelas = () => {
     const { isError, user } = useSelector((state) => state.auth)
@@ -24,6 +25,14 @@ const ListKelas = () => {
     const [MataKuliah, setMataKuliah] = useState([])
     const [kodeMakul, setKodeMakul] = useState([])
     const [DataKelas, setDataKelas] = useState([])
+    const [load, setLoad] = useState(false)
+
+    useEffect(() => {
+        setLoad(true)
+        setTimeout(() => {
+            setLoad(false)
+        }, 500);
+    }, [])
 
     useEffect(() => {
         if (user) {
@@ -150,107 +159,133 @@ const ListKelas = () => {
 
     return (
         <Layout>
+            <title>Penilaian</title>
             {isError ? <Navigate to="/login" />
                 :
-                <div className="content-wrapper">
-                    <div className="page-header">
-                        <h3 className="page-title">Penilaian</h3>
-                    </div>
-                    <Row>
-                        <Col>
-                            <Card>
-                                <Card.Body className='p-3'>
-                                    <Row>
-                                        <Col>
-                                            <div className="grid lg:grid-cols-5 gap-2">
-                                                <div>
-                                                    <select className="form-select" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
-                                                        <option value="">Jenjang Pendidikan</option>
-                                                        {Jenjang.map((item) => (
-                                                            <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <select className="form-select" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
-                                                        <option value="">Fakultas</option>
-                                                        {Fakultas.map((item) => (
-                                                            <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <select className="form-select" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
-                                                        <option value="">Prodi</option>
-                                                        {Prodi.map((item) => (
-                                                            <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <select className="form-select" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
-                                                        <option value="">Periode</option>
-                                                        {Tahun.map((item) => (
-                                                            <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <select className="form-select" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
-                                                        <option value="">Semester</option>
-                                                        {Semester.map((item) => (
-                                                            <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <Row className='mt-5'>
-                                        <Col>
-                                            <div className="table-responsive">
-                                                <Table hover>
-                                                    <thead>
-                                                        <tr className='border'>
-                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>#</th>
-                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kode Mata Kuliah</th>
-                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
-                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kelas</th>
-                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Jumlah Mahasiswa</th>
-                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kapasitas</th>
-                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Aksi</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {
-                                                            MataKuliah.map((mkl, index) => (
-                                                                DataKelas.length != 0 ? DataKelas[index].map((item) => (
-                                                                    <tr key={item.id_kelas} className='border'>
-                                                                        <th scope='row' className='py-2'>{index + 1}</th>
-                                                                        <td className='py-2'>{item.code_mata_kuliah}</td>
-                                                                        <td className='py-2'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                        <td className='py-2'>{item.nama_kelas}</td>
-                                                                        <td className='py-2'>{item.jumlahMhs} Mahasiswa</td>
-                                                                        <td className='py-2'>{item.kapasitas} Mahasiswa</td>
-                                                                        <td className='py-2'>
-                                                                            <Link to='/detailnilai' state={{ kodeMk: item.code_mata_kuliah, idKelas: item.id_kelas, kodeKls: item.code }} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch /></Link>
-                                                                        </td>
-                                                                    </tr>
-                                                                ))
-                                                                    : ""
-                                                            ))
+                <>
+                    {load ?
+                        <div className='h-100 absolute z-50 left-0 right-0 top-0 w-full bg-[#E9EAE1] flex justify-center items-center' style={{ height: '100%' }}>
+                            <div className=''>
+                                <Circles
+                                    height="80"
+                                    width="80"
+                                    color="#000"
+                                    ariaLabel="circles-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClass=""
+                                    visible={true}
+                                />
+                            </div>
+                        </div>
+                        :
+                        <div className="content-wrapper">
+                            <div className="page-header">
+                                <h3 className="page-title">Penilaian</h3>
+                            </div>
+                            <Row>
+                                <Col>
+                                    <Card className="shadow">
+                                        <Card.Body className='p-3'>
+                                            <Row>
+                                                <Col>
+                                                    <div className="grid lg:grid-cols-5 gap-2">
+                                                        <div>
+                                                            <select className="form-select" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
+                                                                <option value="">Jenjang Pendidikan</option>
+                                                                {Jenjang.map((item) => (
+                                                                    <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <select className="form-select" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
+                                                                <option value="">Fakultas</option>
+                                                                {Fakultas.map((item) => (
+                                                                    <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <select className="form-select" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
+                                                                <option value="">Prodi</option>
+                                                                {Prodi.map((item) => (
+                                                                    <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <select className="form-select" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                                                <option value="">Periode</option>
+                                                                {Tahun.map((item) => (
+                                                                    <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <select className="form-select" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
+                                                                <option value="">Semester</option>
+                                                                {Semester.map((item) => (
+                                                                    <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </Col>
+                                            </Row>
 
-                                                        }
-                                                    </tbody>
-                                                </Table>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                </div>
+                                        </Card.Body>
+                                    </Card>
+                                    {kodeJenjang && kodeFakultas && kodeProdi && kodeTahun && kodeSemester ?
+                                        <Card className="shadow mt-3">
+                                            <Card.Body className="px-3">
+                                                <Row>
+                                                    <Col>
+                                                        <div className="table-responsive">
+                                                            <Table hover>
+                                                                <thead>
+                                                                    <tr className='border'>
+                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>#</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kode Mata Kuliah</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kelas</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Jumlah Mahasiswa</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kapasitas</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Aksi</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {
+                                                                        MataKuliah.map((mkl, index) => (
+                                                                            DataKelas.length != 0 ? DataKelas[index].map((item) => (
+                                                                                <tr key={item.id_kelas} className='border'>
+                                                                                    <th scope='row' className='py-2'>{index + 1}</th>
+                                                                                    <td className='py-2'>{item.code_mata_kuliah}</td>
+                                                                                    <td className='py-2'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                                    <td className='py-2'>{item.nama_kelas}</td>
+                                                                                    <td className='py-2'>{item.jumlahMhs} Mahasiswa</td>
+                                                                                    <td className='py-2'>{item.kapasitas} Mahasiswa</td>
+                                                                                    <td className='py-2'>
+                                                                                        <Link to='/detailnilai' state={{ kodeMk: item.code_mata_kuliah, idKelas: item.id_kelas, kodeKls: item.code }} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch /></Link>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            ))
+                                                                                : ""
+                                                                        ))
+
+                                                                    }
+                                                                </tbody>
+                                                            </Table>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </Card.Body>
+                                        </Card>
+                                        : ""}
+                                </Col>
+                            </Row>
+                        </div>
+                    }
+                </>
             }
         </Layout>
     )

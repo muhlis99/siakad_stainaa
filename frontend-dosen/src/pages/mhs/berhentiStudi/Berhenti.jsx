@@ -8,11 +8,20 @@ import { FaEdit, FaPlus, FaTimes } from "react-icons/fa"
 import axios from 'axios'
 import moment from 'moment'
 import Swal from 'sweetalert2'
+import { Circles } from "react-loader-spinner"
 
 const Berhenti = () => {
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
     const [Pengajuan, setPengajuan] = useState([])
+    const [load, setLoad] = useState(false)
+
+    useEffect(() => {
+        setLoad(true)
+        setTimeout(() => {
+            setLoad(false)
+        }, 500);
+    }, [])
 
     useEffect(() => {
         dispatch(getMe())
@@ -63,57 +72,78 @@ const Berhenti = () => {
 
     return (
         <Layout>
-            {isError ? <Navigate to="/login" /> : <div className="content-wrapper">
-                <div className="page-header d-flex gap-2">
-                    <h3 className="page-title">Riwayat Studi Mahasiswa</h3>
-                </div>
-                <Row>
-                    <Col>
-                        <Card className='shadow rounded-3'>
-                            <Card.Body>
-                                <div className='mb-2'>
-                                    <Link to='/tambahpengajuan' className='bg-[#17A2B8] py-1 px-2 rounded no-underline text-white inline-flex items-center'><FaPlus />&nbsp;<span> Tambahkan</span></Link>
-                                </div>
-                                <div className="table-responsive">
-                                    <Table striped>
-                                        <thead>
-                                            <tr className='border-bottom-3'>
-                                                <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>#</th>
-                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Periode</th>
-                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status yang diajukan</th>
-                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Tgl Pengajuan</th>
-                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status</th>
-                                                <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {Pengajuan.length == 0 ?
-                                                <tr>
-                                                    <td colSpan={6} align='center'>Data Kosong</td>
-                                                </tr> :
-                                                Pengajuan.map((item, index) => (
-                                                    <tr key={item.id_pengajuan_studi} className='border'>
-                                                        <th scope='row' className='py-2 text-center'>{index + 1}</th>
-                                                        <td className='py-2'>{item.tahunAjarans[0].tahun_ajaran}</td>
-                                                        <td className='py-2 text-capitalize'>{item.pengajuan}</td>
-                                                        <td className='py-2'>{moment(item.tanggal_pengajuan).format('DD MMMM YYYY')}</td>
-                                                        <td className='py-2 text-capitalize'>{item.status == 'tidak' ? 'Dibatalkan' : item.status == 'proses' ? 'proses validasi dosen Wali' : item.status == 'disetujui1' ? 'Disetujui oleh dosen wali' : 'disetujui oleh BAUAK'}</td>
-                                                        <td className='py-2'>
-                                                            <div className='d-flex gap-1'>
-                                                                {item.status == 'tidak' ? <Link className="p-2 rounded-full text-black bg-[#FFC107]" disabled><FaEdit /></Link> : <Link to='/updatepengajuan' state={{ idnya: item.id_pengajuan_studi }} className="p-2 rounded-full text-black bg-[#FFC107]"><FaEdit /></Link>}
-                                                                {item.status == 'tidak' ? <button className="p-2 rounded-full text-white bg-[#DC3545]" disabled><FaTimes /></button> : <button onClick={() => hapusPengajuan(item.id_pengajuan_studi)} className={`p-2 rounded-full text-white bg-[#DC3545]`}><FaTimes /></button>}
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            </div>}
+            <title>Riwayat Studi Mahasiswa</title>
+            {isError ? <Navigate to="/login" /> :
+                <>
+                    {load ?
+                        <div className='h-100 absolute z-50 left-0 right-0 top-0 w-full bg-[#E9EAE1] flex justify-center items-center' style={{ height: '100%' }}>
+                            <div className=''>
+                                <Circles
+                                    height="80"
+                                    width="80"
+                                    color="#000"
+                                    ariaLabel="circles-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClass=""
+                                    visible={true}
+                                />
+                            </div>
+                        </div>
+                        :
+                        <div className="content-wrapper">
+                            <div className="page-header d-flex gap-2">
+                                <h3 className="page-title">Riwayat Studi Mahasiswa</h3>
+                            </div>
+                            <Row>
+                                <Col>
+                                    <Card className='shadow rounded-3'>
+                                        <Card.Body>
+                                            <div className='mb-2'>
+                                                <Link to='/tambahpengajuan' className='bg-[#17A2B8] py-1 px-2 rounded no-underline text-white inline-flex items-center'><FaPlus />&nbsp;<span> Tambahkan</span></Link>
+                                            </div>
+                                            <div className="table-responsive">
+                                                <Table striped>
+                                                    <thead>
+                                                        <tr className='border-bottom-3'>
+                                                            <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>#</th>
+                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Periode</th>
+                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status yang diajukan</th>
+                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Tgl Pengajuan</th>
+                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status</th>
+                                                            <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Aksi</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {Pengajuan.length == 0 ?
+                                                            <tr>
+                                                                <td colSpan={6} align='center'>Data Kosong</td>
+                                                            </tr> :
+                                                            Pengajuan.map((item, index) => (
+                                                                <tr key={item.id_pengajuan_studi} className='border'>
+                                                                    <th scope='row' className='py-2 text-center'>{index + 1}</th>
+                                                                    <td className='py-2'>{item.tahunAjarans[0].tahun_ajaran}</td>
+                                                                    <td className='py-2 text-capitalize'>{item.pengajuan}</td>
+                                                                    <td className='py-2'>{moment(item.tanggal_pengajuan).format('DD MMMM YYYY')}</td>
+                                                                    <td className='py-2 text-capitalize'>{item.status == 'tidak' ? 'Dibatalkan' : item.status == 'proses' ? 'proses validasi dosen Wali' : item.status == 'disetujui1' ? 'Disetujui oleh dosen wali' : 'disetujui oleh BAUAK'}</td>
+                                                                    <td className='py-2'>
+                                                                        <div className='d-flex gap-1'>
+                                                                            {item.status == 'tidak' ? <Link className="p-2 rounded-full text-black bg-[#FFC107]" disabled><FaEdit /></Link> : <Link to='/updatepengajuan' state={{ idnya: item.id_pengajuan_studi }} className="p-2 rounded-full text-black bg-[#FFC107]"><FaEdit /></Link>}
+                                                                            {item.status == 'tidak' ? <button className="p-2 rounded-full text-white bg-[#DC3545]" disabled><FaTimes /></button> : <button onClick={() => hapusPengajuan(item.id_pengajuan_studi)} className={`p-2 rounded-full text-white bg-[#DC3545]`}><FaTimes /></button>}
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                    </tbody>
+                                                </Table>
+                                            </div>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            </Row>
+                        </div>
+                    }
+                </>
+            }
         </Layout >
     )
 }

@@ -18,7 +18,7 @@ import { format } from "timeago.js"
 import EmojiPicker from 'emoji-picker-react'
 // import ChatBox from "./ChatBox"
 import { FaPlus } from 'react-icons/fa'
-
+import { Circles } from "react-loader-spinner"
 
 const Chat = () => {
     const dispatch = useDispatch()
@@ -56,6 +56,14 @@ const Chat = () => {
     const [prevListKontakImageDafatarKontak, setPrevListKontakImageDafatarKontak] = useState([])
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
+    const [load, setLoad] = useState(false)
+
+    useEffect(() => {
+        setLoad(true)
+        setTimeout(() => {
+            setLoad(false)
+        }, 500);
+    }, [])
 
     useEffect(() => {
         cekmessageIdKontak()
@@ -373,226 +381,244 @@ const Chat = () => {
     return (
         <Layout>
             {isError ? <Navigate to="/login" /> :
-                <div className="content-wrapper">
-                    {status ?
-                        <Card className='shadow'>
-                            <Card.Body>
-                                <Row style={{ height: '400px' }}>
-                                    <Col>
-                                        <Row className=''>
-                                            <Col lg="auto" className='mx-auto'>
-                                                <h6 style={{ marginTop: '120px' }}>Anda belum melakukan registrasi messageId</h6>
-                                                <div>
-                                                    <Form onSubmit={simpanReg}>
-                                                        <Form.Group className="mb-3">
-                                                            <Form.Label>nama kontak</Form.Label>
-                                                            <Form.Control type="text" size='sm'
-                                                                value={username}
-                                                                onChange={(e) => e.target.value.length > 15 ? setNamaKontak(true) : setUsername(e.target.value) || e.target.value.length > 15 ? setNamaKontak(true) : setNamaKontak(false)}
-                                                                placeholder="Masukkan username anda" />
-                                                            {namaKontak && <p className='text-danger'>Nama harus 15 karakter</p>}
-                                                        </Form.Group>
-                                                        <Button type='submit' variant='info' size='sm' className='mx-auto'>Simpan</Button>
-                                                    </Form>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </Col>
-                                </Row>
-                            </Card.Body>
-                        </Card>
+                <>
+                    {load ?
+                        <div className='h-100 absolute z-50 left-0 right-0 top-0 w-full bg-[#E9EAE1] flex justify-center items-center' style={{ height: '100%' }}>
+                            <div className=''>
+                                <Circles
+                                    height="80"
+                                    width="80"
+                                    color="#000"
+                                    ariaLabel="circles-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClass=""
+                                    visible={true}
+                                />
+                            </div>
+                        </div>
                         :
-                        <Row>
-                            <Col className='d-flex'>
-                                {show ?
-                                    <Card className='w-30' id="chat3">
-                                        <Card.Header>
-                                            <Row>
-                                                <Col>
-                                                    <Row>
-                                                        <Col lg={10}>
-                                                            <div className="d-flex">
-                                                                {prevKontakImage ? <Image src={`data:;base64,${prevKontakImage}`} thumbnail width={40} roundedCircle alt='image' /> : <Image src={face} width={40} roundedCircle alt='image' thumbnail />}
-                                                                <div>
-                                                                    <p className="mt-2 ms-1 mb-0 fw-bold fs-sm text-secondary">{namaChat}</p>
-                                                                </div>
-                                                            </div>
-                                                        </Col>
-                                                        <Col lg={2}>
-                                                            <div className='ms-1 mt-2 float-end d-flex'>
-                                                                <button className='btn btn-secondary btn-xs p-1' title='Kembali kedaftar kontak Anda' onClick={handleClose}><FaTimes /></button>
-                                                            </div>
-                                                        </Col>
-                                                    </Row>
-                                                </Col>
-                                            </Row>
-                                        </Card.Header>
-                                        <Card.Body style={{ background: '#e6e6e6' }}>
-                                            <div className="">
-                                                <div className="overflow-auto position-relative faq-body" style={{ height: '365px' }}>
-                                                    <div className='text-center'>
-                                                        <p className='fw-bold text-secondary'>Tambah Daftar Kontak Anda</p>
-                                                    </div>
-                                                    <ul className="list-unstyled mb-0">
-                                                        {listTambahDaftarKontak.length == 0
-                                                            ?
-                                                            <li className='d-flex justify-content-center'>
-                                                                <Image src={dataBlank} className='mt-4 ' width={150} />
-                                                            </li>
-                                                            :
-                                                            listTambahDaftarKontak.map((datas, index) => (
-                                                                <li key={datas.id_kontak} className="p-2  border-bottom border-dark" onClick={() => tambahDaftarKontak(datas.code_kontak)}>
-                                                                    <a href='#' className="d-flex justify-content-between text-decoration-none">
-                                                                        <div className="d-flex flex-row">
-                                                                            <div>
-                                                                                {prevListImageTambahKontak[index] ? <img src={`data:;base64,${prevListImageTambahKontak[index]}`} alt='kontak' className="d-flex align-self-center me-3 rounded-circle border border-dark"
-                                                                                    width="40" /> : ""}
-                                                                                <span className="badge bg-success badge-dot"></span>
-                                                                            </div>
-                                                                            <div className="pt-2">
-                                                                                <p className="fw-bold mb-0 text-secondary">{datas.username}</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </a>
-                                                                </li>
-                                                            ))
-                                                        }
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </Card.Body>
-                                    </Card>
-                                    :
-                                    <Card className='w-30' id="chat3">
-                                        <Card.Header>
-                                            <Row>
-                                                <Col>
-                                                    <Row>
-                                                        <Col lg={10}>
-                                                            <div className="d-flex">
-                                                                {prevKontakImage ? <Image src={`data:;base64,${prevKontakImage}`} thumbnail width={40} roundedCircle alt='image' /> : <Image src={face} width={40} roundedCircle alt='image' thumbnail />}
-                                                                <div>
-                                                                    <p className="mt-2 ms-3 mb-0 fw-bold fs-sm text-secondary">{namaChat}</p>
-                                                                </div>
-                                                            </div>
-
-                                                        </Col>
-                                                        <Col lg={2}>
-                                                            <div className='ms-1 mt-2 float-end d-flex'>
-                                                                <button className='btn btn-secondary btn-xs p-1' title='Tambah Daftar Kontak Anda' onClick={handleShow}><FaPlus /></button>
-                                                            </div>
-                                                        </Col>
-                                                    </Row>
-                                                </Col>
-                                            </Row>
-                                        </Card.Header>
-                                        <Card.Body className='p-0'>
-                                            <div className="">
-                                                <div className="overflow-auto position-relative faq-body" style={{ height: '365px' }}>
-                                                    <ul className="list-unstyled mb-0">
-                                                        <ul className="list-unstyled mb-0">
-                                                            {listDaftarKontak.length == 0
-                                                                ?
-                                                                <li className='d-flex justify-content-center'>
-                                                                    <Image src={dataBlank} className='mt-4 ' width={150} />
-                                                                </li>
-                                                                :
-                                                                listDaftarKontak.map((list, index) => (
-                                                                    <li key={list.id_detail_kontak} className={`p-2  border-bottom border-dark mt-1 mb-1 ${list.username == NamaRecipient ? 'bg-primary' : ''}`}
-                                                                        onClick={() => setKontakPenerima(list.code_detail_kontak, list.username, list.member_kontak, list.image)
-                                                                        }
-                                                                    >
-                                                                        <a href='#' className="d-flex justify-content-between text-decoration-none ">
-                                                                            <div className="d-flex flex-row">
-                                                                                <div>
-                                                                                    {prevListKontakImageDafatarKontak[index] ? <img src={`data:;base64,${prevListKontakImageDafatarKontak[index]}`} alt='kontak' className="d-flex align-self-center me-3 rounded-circle border border-dark"
-                                                                                        width="40" /> : ""}
-                                                                                    <span className="badge bg-success badge-dot"></span>
-                                                                                </div>
-                                                                                <div className="pt-2">
-                                                                                    <p className={`fw-bold mb-0 ${list.username == NamaRecipient ? 'text-white' : 'text-secondary'}`}>{list.username}</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </a>
-                                                                    </li>
-                                                                ))
-                                                            }
-                                                        </ul>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-                                        </Card.Body>
-                                    </Card>}
-
-                                <Card className='w-75 '>
-                                    <Card.Header>
-                                        <div className='p-1'>
-                                            <div className="d-flex flex-row">
-                                                <div>
-                                                    {prevImagesReciptenes ? <img src={`data:;base64,${prevImagesReciptenes}`} alt='kontak' className="d-flex align-self-center me-3 rounded-circle border border-secondary"
-                                                        width="40" /> : ""}
-                                                </div>
-                                                <div className="pt-2">
-                                                    <p className="fw-bold mb-0 text-secondary ">{NamaRecipient}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Card.Header>
+                        <div className="content-wrapper">
+                            {status ?
+                                <Card className='shadow'>
                                     <Card.Body>
-                                        <div
-                                            className="pt-3 pe-3 overflow-auto position-relative faq-body" id='message' style={{ height: '353px' }}>
-                                            {listPesan.length == 0 || listPesan[0].reciptenId == ""
-                                                ?
-                                                <Row>
-                                                    <Col>
-                                                        <div className='d-flex justify-content-center mt-5'>
-                                                            <Image src={chatBlank} width={500} />
+                                        <Row style={{ height: '400px' }}>
+                                            <Col>
+                                                <Row className=''>
+                                                    <Col lg="auto" className='mx-auto'>
+                                                        <h6 style={{ marginTop: '120px' }}>Anda belum melakukan registrasi messageId</h6>
+                                                        <div>
+                                                            <Form onSubmit={simpanReg}>
+                                                                <Form.Group className="mb-3">
+                                                                    <Form.Label>nama kontak</Form.Label>
+                                                                    <Form.Control type="text" size='sm'
+                                                                        value={username}
+                                                                        onChange={(e) => e.target.value.length > 15 ? setNamaKontak(true) : setUsername(e.target.value) || e.target.value.length > 15 ? setNamaKontak(true) : setNamaKontak(false)}
+                                                                        placeholder="Masukkan username anda" />
+                                                                    {namaKontak && <p className='text-danger'>Nama harus 15 karakter</p>}
+                                                                </Form.Group>
+                                                                <Button type='submit' variant='info' size='sm' className='mx-auto'>Simpan</Button>
+                                                            </Form>
                                                         </div>
                                                     </Col>
                                                 </Row>
-                                                :
-                                                listPesan.map((chat, index) => (
-                                                    < div
-                                                        ref={scroll}
-                                                        key={index} className={chat.sender_id === senderId ? "d-flex flex-row justify-content-end mb-2" : "d-flex flex-row justify-content-start mb-2"} >
-                                                        <div>
-                                                            <p className={`small p-2 me-3 mb-1 text-white rounded-3 ${chat.sender_id === senderId ? "bg-primary" : "bg-warning"}`}>
-                                                                {chat.text_message}
-                                                            </p>
-                                                            <p className="small me-3 mb-3 rounded-3 text-muted">{format(chat.sent_datetime)}</p>
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                        </div>
-                                        {showForm ?
-                                            <form onSubmit={kirimPesan}>
-                                                <div className="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2">
-                                                    <a href='#' className="me-3 fs-4 text-black-50" onClick={emoji}><FaSmile /></a>
-                                                    <input type="text" className="form-control form-control-sm" value={pesan} onChange={(e) => setPesan(e.target.value)}
-                                                        placeholder="Type message" />
-                                                    <button type='submit' className="ms-3 btn btn-primary btn-sm rounded-circle"><PiPaperPlaneRightFill /></button>
-                                                    {
-                                                        emot ?
-                                                            <div className='position-absolute top-0'>
-                                                                <EmojiPicker onEmojiClick={onEmojiClick} searchDisabled height={400} emojiStyle='facebook' />
-                                                            </div>
-                                                            :
-                                                            ""
-                                                    }
-
-                                                </div>
-                                            </form>
-                                            :
-                                            ""
-                                        }
+                                            </Col>
+                                        </Row>
                                     </Card.Body>
                                 </Card>
-                            </Col>
-                        </Row>
+                                :
+                                <Row>
+                                    <Col className='d-flex'>
+                                        {show ?
+                                            <Card className='w-30' id="chat3">
+                                                <Card.Header>
+                                                    <Row>
+                                                        <Col>
+                                                            <Row>
+                                                                <Col lg={10}>
+                                                                    <div className="d-flex">
+                                                                        {prevKontakImage ? <Image src={`data:;base64,${prevKontakImage}`} thumbnail width={40} roundedCircle alt='image' /> : <Image src={face} width={40} roundedCircle alt='image' thumbnail />}
+                                                                        <div>
+                                                                            <p className="mt-2 ms-1 mb-0 fw-bold fs-sm text-secondary">{namaChat}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </Col>
+                                                                <Col lg={2}>
+                                                                    <div className='ms-1 mt-2 float-end d-flex'>
+                                                                        <button className='btn btn-secondary btn-xs p-1' title='Kembali kedaftar kontak Anda' onClick={handleClose}><FaTimes /></button>
+                                                                    </div>
+                                                                </Col>
+                                                            </Row>
+                                                        </Col>
+                                                    </Row>
+                                                </Card.Header>
+                                                <Card.Body style={{ background: '#e6e6e6' }}>
+                                                    <div className="">
+                                                        <div className="overflow-auto position-relative faq-body" style={{ height: '365px' }}>
+                                                            <div className='text-center'>
+                                                                <p className='fw-bold text-secondary'>Tambah Daftar Kontak Anda</p>
+                                                            </div>
+                                                            <ul className="list-unstyled mb-0">
+                                                                {listTambahDaftarKontak.length == 0
+                                                                    ?
+                                                                    <li className='d-flex justify-content-center'>
+                                                                        <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                                    </li>
+                                                                    :
+                                                                    listTambahDaftarKontak.map((datas, index) => (
+                                                                        <li key={datas.id_kontak} className="p-2  border-bottom border-dark" onClick={() => tambahDaftarKontak(datas.code_kontak)}>
+                                                                            <a href='#' className="d-flex justify-content-between text-decoration-none">
+                                                                                <div className="d-flex flex-row">
+                                                                                    <div>
+                                                                                        {prevListImageTambahKontak[index] ? <img src={`data:;base64,${prevListImageTambahKontak[index]}`} alt='kontak' className="d-flex align-self-center me-3 rounded-circle border border-dark"
+                                                                                            width="40" /> : ""}
+                                                                                        <span className="badge bg-success badge-dot"></span>
+                                                                                    </div>
+                                                                                    <div className="pt-2">
+                                                                                        <p className="fw-bold mb-0 text-secondary">{datas.username}</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </li>
+                                                                    ))
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </Card.Body>
+                                            </Card>
+                                            :
+                                            <Card className='w-30' id="chat3">
+                                                <Card.Header>
+                                                    <Row>
+                                                        <Col>
+                                                            <Row>
+                                                                <Col lg={10}>
+                                                                    <div className="d-flex">
+                                                                        {prevKontakImage ? <Image src={`data:;base64,${prevKontakImage}`} thumbnail width={40} roundedCircle alt='image' /> : <Image src={face} width={40} roundedCircle alt='image' thumbnail />}
+                                                                        <div>
+                                                                            <p className="mt-2 ms-3 mb-0 fw-bold fs-sm text-secondary">{namaChat}</p>
+                                                                        </div>
+                                                                    </div>
 
+                                                                </Col>
+                                                                <Col lg={2}>
+                                                                    <div className='ms-1 mt-2 float-end d-flex'>
+                                                                        <button className='btn btn-secondary btn-xs p-1' title='Tambah Daftar Kontak Anda' onClick={handleShow}><FaPlus /></button>
+                                                                    </div>
+                                                                </Col>
+                                                            </Row>
+                                                        </Col>
+                                                    </Row>
+                                                </Card.Header>
+                                                <Card.Body className='p-0'>
+                                                    <div className="">
+                                                        <div className="overflow-auto position-relative faq-body" style={{ height: '365px' }}>
+                                                            <ul className="list-unstyled mb-0">
+                                                                <ul className="list-unstyled mb-0">
+                                                                    {listDaftarKontak.length == 0
+                                                                        ?
+                                                                        <li className='d-flex justify-content-center'>
+                                                                            <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                                        </li>
+                                                                        :
+                                                                        listDaftarKontak.map((list, index) => (
+                                                                            <li key={list.id_detail_kontak} className={`p-2  border-bottom border-dark mt-1 mb-1 ${list.username == NamaRecipient ? 'bg-primary' : ''}`}
+                                                                                onClick={() => setKontakPenerima(list.code_detail_kontak, list.username, list.member_kontak, list.image)
+                                                                                }
+                                                                            >
+                                                                                <a href='#' className="d-flex justify-content-between text-decoration-none ">
+                                                                                    <div className="d-flex flex-row">
+                                                                                        <div>
+                                                                                            {prevListKontakImageDafatarKontak[index] ? <img src={`data:;base64,${prevListKontakImageDafatarKontak[index]}`} alt='kontak' className="d-flex align-self-center me-3 rounded-circle border border-dark"
+                                                                                                width="40" /> : ""}
+                                                                                            <span className="badge bg-success badge-dot"></span>
+                                                                                        </div>
+                                                                                        <div className="pt-2">
+                                                                                            <p className={`fw-bold mb-0 ${list.username == NamaRecipient ? 'text-white' : 'text-secondary'}`}>{list.username}</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </li>
+                                                                        ))
+                                                                    }
+                                                                </ul>
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                </Card.Body>
+                                            </Card>}
+
+                                        <Card className='w-75 '>
+                                            <Card.Header>
+                                                <div className='p-1'>
+                                                    <div className="d-flex flex-row">
+                                                        <div>
+                                                            {prevImagesReciptenes ? <img src={`data:;base64,${prevImagesReciptenes}`} alt='kontak' className="d-flex align-self-center me-3 rounded-circle border border-secondary"
+                                                                width="40" /> : ""}
+                                                        </div>
+                                                        <div className="pt-2">
+                                                            <p className="fw-bold mb-0 text-secondary ">{NamaRecipient}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Card.Header>
+                                            <Card.Body>
+                                                <div
+                                                    className="pt-3 pe-3 overflow-auto position-relative faq-body" id='message' style={{ height: '353px' }}>
+                                                    {listPesan.length == 0 || listPesan[0].reciptenId == ""
+                                                        ?
+                                                        <Row>
+                                                            <Col>
+                                                                <div className='d-flex justify-content-center mt-5'>
+                                                                    <Image src={chatBlank} width={500} />
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+                                                        :
+                                                        listPesan.map((chat, index) => (
+                                                            < div
+                                                                ref={scroll}
+                                                                key={index} className={chat.sender_id === senderId ? "d-flex flex-row justify-content-end mb-2" : "d-flex flex-row justify-content-start mb-2"} >
+                                                                <div>
+                                                                    <p className={`small p-2 me-3 mb-1 text-white rounded-3 ${chat.sender_id === senderId ? "bg-primary" : "bg-warning"}`}>
+                                                                        {chat.text_message}
+                                                                    </p>
+                                                                    <p className="small me-3 mb-3 rounded-3 text-muted">{format(chat.sent_datetime)}</p>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                </div>
+                                                {showForm ?
+                                                    <form onSubmit={kirimPesan}>
+                                                        <div className="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2">
+                                                            <a href='#' className="me-3 fs-4 text-black-50" onClick={emoji}><FaSmile /></a>
+                                                            <input type="text" className="form-control form-control-sm" value={pesan} onChange={(e) => setPesan(e.target.value)}
+                                                                placeholder="Type message" />
+                                                            <button type='submit' className="ms-3 btn btn-primary btn-sm rounded-circle"><PiPaperPlaneRightFill /></button>
+                                                            {
+                                                                emot ?
+                                                                    <div className='position-absolute top-0'>
+                                                                        <EmojiPicker onEmojiClick={onEmojiClick} searchDisabled height={400} emojiStyle='facebook' />
+                                                                    </div>
+                                                                    :
+                                                                    ""
+                                                            }
+
+                                                        </div>
+                                                    </form>
+                                                    :
+                                                    ""
+                                                }
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                </Row>
+
+                            }
+                        </div>
                     }
-                </div>
+                </>
             }
         </Layout >
     )
