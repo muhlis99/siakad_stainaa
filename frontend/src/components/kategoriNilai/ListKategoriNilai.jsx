@@ -83,7 +83,7 @@ const ListKategoriNilai = () => {
     const simpanKatNilai = async (e) => {
         e.preventDefault()
         try {
-            if (nilaiBawah > nilaiAtas) {
+            if (nilaiBawah < nilaiAtas) {
                 Swal.fire({
                     title: "Nilai minimal melebihi nilai maksimal",
                     icon: "error"
