@@ -193,6 +193,42 @@ module.exports = {
             })
     },
 
+    salinData: async (req, res, next) => {
+        const { code_tahun_ajaran_baru, code_tahun_ajaran_lama } = req.body
+
+
+        const kategoriNilaiModelUse = await kategoriNilaiModel.findOne({
+            where: {
+                code_tahun_ajaran: code_tahun_ajaran,
+                code_kategori_nilai: codekategoriNilai,
+                nilai_atas: nilai_atas,
+                nilai_bawah: nilai_bawah,
+                nilai_huruf: nilai_huruf,
+                interfal_skor: interfal_skor,
+            }
+        })
+        if (kategoriNilaiModelUse) return res.status(401).json({ message: "data kategori Nilai sudah ada" })
+        await kategoriNilaiModel.create({
+            code_tahun_ajaran: code_tahun_ajaran,
+            code_kategori_nilai: codekategoriNilai,
+            nilai_atas: nilai_atas,
+            nilai_bawah: nilai_bawah,
+            nilai_huruf: nilai_huruf,
+            interfal_skor: interfal_skor,
+            kategori: kategori,
+            keterangan: keterangan,
+            status: "aktif",
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "Data kategori Nilai success Ditambahkan",
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     put: async (req, res, next) => {
         const id = req.params.id
         const kategoriNilaiModelUse = await kategoriNilaiModel.findOne({
