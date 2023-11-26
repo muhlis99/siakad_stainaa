@@ -24,10 +24,12 @@ module.exports = {
                 attributes: ['nim', 'nama'],
                 model: mahasiswaModel,
                 where: { status: "aktif" }
-            }, {
-                model: mataKuliahModel,
-                where: { status: "aktif" }
-            }, {
+            },
+            // {
+            //     model: mataKuliahModel,
+            //     where: { status: "aktif" }
+            // },
+            {
                 model: kelasModel,
                 where: { status: "aktif" }
             }, {
