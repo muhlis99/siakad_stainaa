@@ -13,6 +13,7 @@ const historyMahasiswa = require("../models/historyMahasiswaModel.js")
 const krsModel = require("../models/krsModel.js")
 const mahasiswaModel = require("../models/mahasiswaModel.js")
 const jadwalPertemuanModel = require("../models/jadwalPertemuanModel.js")
+const sebaranMataKuliah = require('../models/sebaranMataKuliah.js')
 const path = require('path')
 const fs = require('fs')
 
@@ -20,7 +21,7 @@ const fs = require('fs')
 module.exports = {
     get: async (req, res, next) => {
         const { thnAjr, smt, jenjPen, fks, prd, } = req.params
-        await mataKuliahModel.findAll({
+        await sebaranMataKuliah.findAll({
             include: [{
                 model: semesterModel,
                 where: { status: "aktif" }
@@ -28,21 +29,28 @@ module.exports = {
                 model: tahunAjaranModel,
                 where: { status: "aktif" }
             }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
+                model: mataKuliahModel,
+                where: {
+                    code_jenjang_pendidikan: jenjPen,
+                    code_fakultas: fks,
+                    code_prodi: prd,
+                },
+                include: [
+                    {
+                        model: prodiModel,
+                        where: { status: "aktif" }
+                    }, {
+                        model: fakultasModel,
+                        where: { status: "aktif" }
+                    }, {
+                        model: jenjangPendidikanModel,
+                        where: { status: "aktif" }
+                    }
+                ]
             }],
             where: {
                 code_tahun_ajaran: thnAjr,
                 code_semester: smt,
-                code_jenjang_pendidikan: jenjPen,
-                code_fakultas: fks,
-                code_prodi: prd,
                 status_makul: "paket",
                 status_bobot_makul: "wajib",
                 status: "aktif"

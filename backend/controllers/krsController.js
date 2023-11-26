@@ -8,7 +8,6 @@ const mahasiswaModel = require('../models/mahasiswaModel.js')
 const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
-const sebaranMatakuliah = require('../models/sebaranMataKuliah.js')
 const sebaranMataKuliah = require('../models/sebaranMataKuliah.js')
 
 
