@@ -12,6 +12,7 @@ const ListSebaran = () => {
     const [Program, setProgram] = useState([])
     const [Tahun, setTahun] = useState([])
     const [Semester, setSemester] = useState([])
+    const [Semesters, setSemesters] = useState([])
     const [ListNilai, setListNilai] = useState([])
     const [Makul, setMakul] = useState([])
     const [smt, setSmt] = useState([])
@@ -89,6 +90,10 @@ const ListSebaran = () => {
     useEffect(() => {
         getDataSemester()
     }, [kodeProdi, kodeTahun])
+
+    useEffect(() => {
+        getDataSemester2()
+    }, [kodeProdi, kodeThnOld])
 
     useEffect(() => {
         getKategoriNilai()
@@ -173,6 +178,13 @@ const ListSebaran = () => {
         }
     }
 
+    const getDataSemester2 = async () => {
+        if (kodeProdi != 0 & kodeThnOld != 0) {
+            const response = await axios.get(`v1/sebaranMataKuliah/smtByThnAjr/${kodeThnOld}`)
+            setSemesters(response.data.data)
+        }
+    }
+
     const getCodeSemester = () => {
         var i = Semester.map(item => ({
             kode: item.code_semester
@@ -202,7 +214,9 @@ const ListSebaran = () => {
 
     const modalSalinData = async (e, f, g) => {
         setKodeThnNow(e)
+        // console.log(e)
         setKodeSmtNow(f)
+        // console.log(f)
         setSmtNow(g)
         document.getElementById('modal-salin').checked = true
     }
@@ -358,7 +372,7 @@ const ListSebaran = () => {
                 })
             })
         } catch (error) {
-
+            console.log(error);
         }
     }
 
@@ -652,7 +666,7 @@ const ListSebaran = () => {
                                     </label>
                                     <select className='my-1 select select-bordered select-sm w-full' value={kodeSmtOld} onChange={(e) => setKodeSmtOld(e.target.value)}>
                                         <option value="">Semester</option>
-                                        {Semester.map((item) => (
+                                        {Semesters.map((item) => (
                                             <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
                                         ))}
                                     </select>

@@ -145,6 +145,7 @@ const ListKelas = () => {
             const response = await axios.get(`v1/kelasKuliah/allMatakuliah/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
             setDataKelas([])
             setMakul(response.data.data)
+            console.log(response.data.data)
             setTitle("")
         } else {
             setMakul([])
