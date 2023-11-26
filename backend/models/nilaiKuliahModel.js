@@ -9,6 +9,7 @@ const semesterModel = require('./semesterModel.js')
 const jenjangPendidikanModel = require('./jenjangPendidikanModel.js')
 const fakultasModel = require('./fakultasModel.js')
 const prodiModel = require('./prodiModel.js')
+const sebaranMataKuliah = require('./sebaranMataKuliah.js')
 
 const nilaiKuliahModel = db.define('nilaiKuliah', {
     'id_nilai_kuliah': {
@@ -77,8 +78,8 @@ const nilaiKuliahModel = db.define('nilaiKuliah', {
 })
 
 // mata kuliah
-mataKuliahModel.belongsTo(nilaiKuliahModel, { foreignKey: 'code_mata_kuliah' })
-nilaiKuliahModel.hasMany(mataKuliahModel, { sourceKey: 'code_mata_kuliah', foreignKey: 'code_mata_kuliah' })
+sebaranMataKuliah.belongsTo(nilaiKuliahModel, { foreignKey: 'code_mata_kuliah' })
+nilaiKuliahModel.hasMany(sebaranMataKuliah, { sourceKey: 'code_mata_kuliah', foreignKey: 'code_mata_kuliah' })
 // mahasiswa
 mahasiswaModel.belongsTo(nilaiKuliahModel, { foreignKey: 'nim' })
 nilaiKuliahModel.hasMany(mahasiswaModel, { sourceKey: 'nim', foreignKey: 'nim' })

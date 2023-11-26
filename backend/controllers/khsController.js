@@ -8,6 +8,7 @@ const kategoriNilaiModel = require('../models/kategoriNilaiModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
+const sebaranMataKuliah = require('../models/sebaranMataKuliah.js')
 const { Sequelize, Op, literal, QueryTypes } = require('sequelize')
 const db = require('../config/database.js')
 
@@ -100,19 +101,21 @@ module.exports = {
             }
         })
 
-        const totalSks = await nilaiKuliahModel.sum('mataKuliahs.sks', {
+        const totalSks = await nilaiKuliahModel.sum('sebaranMataKuliahs.mataKuliahs.sks', {
             include: [
                 {
-                    attributes: ["id_mata_kuliah", "code_mata_kuliah", "nama_mata_kuliah", "sks"],
-                    model: mataKuliahModel,
+                    model: sebaranMataKuliah,
                     where: {
                         code_tahun_ajaran: codeThnAjr,
                         code_semester: codeSmt,
+                        status: "aktif"
+                    },
+                    include: [{
+                        model: mataKuliahModel,
                         code_jenjang_pendidikan: codeJnjPen,
                         code_fakultas: codeFks,
                         code_prodi: codePrd,
-                        status: "aktif"
-                    }
+                    }]
                 }
             ],
             where: {
@@ -127,31 +130,34 @@ module.exports = {
         })
 
         const queryTotalSksIndex = await db.query(`SELECT SUM( tb_mata_kuliah.sks*tb_kategori_nilai.interfal_skor) AS total FROM tb_nilai_kuliah
-        INNER JOIN tb_mata_kuliah ON tb_nilai_kuliah.code_mata_kuliah=tb_mata_kuliah.code_mata_kuliah INNER JOIN tb_kategori_nilai ON
-        tb_nilai_kuliah.code_kategori_nilai=tb_kategori_nilai.code_kategori_nilai WHERE tb_nilai_kuliah.code_tahun_ajaran="${codeThnAjr}" 
+        INNER JOIN tb_sebaran_mata_kuliah ON tb_nilai_kuliah.code_mata_kuliah=tb_sebaran_mata_kuliah.code_mata_kuliah INNER JOIN tb_kategori_nilai ON
+        tb_nilai_kuliah.code_kategori_nilai=tb_kategori_nilai.code_kategori_nilai INNER JOIN tb_mata_kuliah ON tb_sebaran_mata_kuliah.code_mata_kuliah=tb_mata_kuliah.code_mata_kuliah
+        WHERE tb_nilai_kuliah.code_tahun_ajaran="${codeThnAjr}" 
         AND tb_nilai_kuliah.code_semester="${codeSmt}" AND tb_nilai_kuliah.code_jenjang_pendidikan="${codeJnjPen}" 
         AND tb_nilai_kuliah.code_fakultas="${codeFks}" AND tb_nilai_kuliah.code_prodi="${codePrd}" AND tb_nilai_kuliah.status="aktif" AND tb_nilai_kuliah.nim="${nim}"
-        AND tb_mata_kuliah.code_tahun_ajaran="${codeThnAjr}" AND tb_mata_kuliah.code_semester="${codeSmt}" AND tb_mata_kuliah.code_jenjang_pendidikan="${codeJnjPen}" 
+        AND tb_sebaran_mata_kuliah.code_tahun_ajaran="${codeThnAjr}" AND tb_sebaran_mata_kuliah.code_semester="${codeSmt}" AND tb_mata_kuliah.code_jenjang_pendidikan="${codeJnjPen}" 
         AND tb_mata_kuliah.code_fakultas="${codeFks}" AND tb_mata_kuliah.code_prodi="${codePrd}" AND tb_mata_kuliah.status="aktif"`, {
             nest: true,
             type: QueryTypes.SELECT
         })
+
         const totalSksIndex = queryTotalSksIndex[0].total
         const ipSemester = totalSksIndex / totalSks
-
         await nilaiKuliahModel.findAll({
             include: [
                 {
-                    attributes: ["id_mata_kuliah", "code_mata_kuliah", "nama_mata_kuliah", "sks"],
-                    model: mataKuliahModel,
+                    model: sebaranMataKuliah,
                     where: {
                         code_tahun_ajaran: codeThnAjr,
                         code_semester: codeSmt,
+                        status: "aktif"
+                    },
+                    include: [{
+                        model: mataKuliahModel,
                         code_jenjang_pendidikan: codeJnjPen,
                         code_fakultas: codeFks,
                         code_prodi: codePrd,
-                        status: "aktif"
-                    }
+                    }]
                 },
                 {
                     attributes: ["id_kategori_nilai", "nilai_huruf", "interfal_skor"],
@@ -186,7 +192,7 @@ module.exports = {
             ],
             attributes: [
                 'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
-                [Sequelize.literal('(mataKuliahs.sks*kategoriNilais.interfal_skor)'), 'sksIndexs']
+                [Sequelize.literal('(sebaranMataKuliahs.mataKuliahs.sks*kategoriNilais.interfal_skor)'), 'sksIndexs']
             ],
             where: {
                 code_tahun_ajaran: codeThnAjr,
