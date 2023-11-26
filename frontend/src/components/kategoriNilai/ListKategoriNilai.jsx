@@ -44,7 +44,7 @@ const ListKategoriNilai = () => {
     }, [])
 
     const getKategoriNilai = async () => {
-        const response = await axios.get(`v1/kategoriNilai/all?page=${page}&search=${keyword}`)
+        const response = await axios.get(`v1/kategoriNilai/all?page=${page}&search=${keyword}&codeThnAjr=${kodeThn}`)
         setListNilai(response.data.data)
         setPage(response.data.current_page)
         setrows(response.data.total_data)
@@ -83,7 +83,7 @@ const ListKategoriNilai = () => {
     const simpanKatNilai = async (e) => {
         e.preventDefault()
         try {
-            if (nilaiBawah > nilaiAtas) {
+            if (nilaiBawah < nilaiAtas) {
                 Swal.fire({
                     title: "Nilai minimal melebihi nilai maksimal",
                     icon: "error"
