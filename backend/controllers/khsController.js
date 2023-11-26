@@ -192,7 +192,7 @@ module.exports = {
             ],
             attributes: [
                 'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
-                [Sequelize.literal('(sebaranMataKuliahs.mataKuliahs.sks*kategoriNilais.interfal_skor)'), 'sksIndexs']
+                [Sequelize.literal('(sks*interfal_skor)'), 'sksIndexs']
             ],
             where: {
                 code_tahun_ajaran: codeThnAjr,
