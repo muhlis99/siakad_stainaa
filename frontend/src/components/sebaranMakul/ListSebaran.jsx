@@ -145,9 +145,13 @@ const ListSebaran = () => {
     }
 
     const getMakulAll = async () => {
-        if (kodeFakultas != 0 & kodeJenjang != 0 & kodeProdi != 0 & kodeTahun != 0) {
-            const response = await axios.get(`v1/sebaranMataKuliah/autocompleteMakul/${kodeTahun}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
-            setMakul(response.data.data)
+        try {
+            if (kodeFakultas != 0 & kodeJenjang != 0 & kodeProdi != 0 & kodeTahun != 0) {
+                const response = await axios.get(`v1/sebaranMataKuliah/autocompleteMakul/${kodeTahun}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+                setMakul(response.data.data)
+            }
+        } catch (error) {
+
         }
     }
 
@@ -172,16 +176,24 @@ const ListSebaran = () => {
     }
 
     const getDataSemester = async () => {
-        if (kodeProdi != 0 & kodeTahun != 0) {
-            const response = await axios.get(`v1/sebaranMataKuliah/smtByThnAjr/${kodeTahun}`)
-            setSemester(response.data.data)
+        try {
+            if (kodeProdi != 0 & kodeTahun != 0) {
+                const response = await axios.get(`v1/sebaranMataKuliah/smtByThnAjr/${kodeTahun}`)
+                setSemester(response.data.data)
+            }
+        } catch (error) {
+
         }
     }
 
     const getDataSemester2 = async () => {
-        if (kodeProdi != 0 & kodeThnOld != 0) {
-            const response = await axios.get(`v1/sebaranMataKuliah/smtByThnAjr/${kodeThnOld}`)
-            setSemesters(response.data.data)
+        try {
+            if (kodeProdi != 0 & kodeThnOld != 0) {
+                const response = await axios.get(`v1/sebaranMataKuliah/smtByThnAjr/${kodeThnOld}`)
+                setSemesters(response.data.data)
+            }
+        } catch (error) {
+
         }
     }
 

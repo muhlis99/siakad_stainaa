@@ -95,6 +95,7 @@ const ListKrs = () => {
 
     const getViewKrs = async (a, b, c, d, e) => {
         const response = await axios.get(`v1/krs/viewAll/${a}/${b}/${c}/${d}/${e}`)
+        console.log(response.data.data.rows);
         setView(response.data.data.rows)
         setTotal(response.data.data.count)
         document.getElementById('my-modal').checked = true
@@ -151,15 +152,15 @@ const ListKrs = () => {
                                 </thead>
                                 <tbody>
                                     {view.map((item, index) => (
-                                        <tr key={item.id_mata_kuliah} className='bg-white border-b text-gray-500'>
+                                        <tr key={item.id_sebaran} className='bg-white border-b text-gray-500'>
                                             <th scope="row" className="px-2 py-2 font-medium whitespace-nowrap">
                                                 {index + 1}
                                             </th>
-                                            <td className='px-2 py-2'>{item.nama_mata_kuliah}</td>
-                                            <td className='px-2 py-2' align='center'>{item.sks}</td>
-                                            <td className='px-2 py-2' align='center'>{item.sks_praktek}</td>
-                                            <td className='px-2 py-2' align='center'>{item.sks_prak_lapangan}</td>
-                                            <td className='px-2 py-2' align='center'>{item.sks_simulasi}</td>
+                                            <td className='px-2 py-2'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
+                                            <td className='px-2 py-2' align='center'>{item.mataKuliahs[0].sks}</td>
+                                            <td className='px-2 py-2' align='center'>{item.mataKuliahs[0].sks_praktek}</td>
+                                            <td className='px-2 py-2' align='center'>{item.mataKuliahs[0].sks_prak_lapangan}</td>
+                                            <td className='px-2 py-2' align='center'>{item.mataKuliahs[0].sks_simulasi}</td>
                                             <td className='px-2 py-2' align='center'>{item.status_makul == 'paket' ? <span className='badge badge-sm badge-default'>Paket</span> : <span className='badge badge-sm badge-jingga opacity-80'>Non Paket</span>}</td>
                                         </tr>
                                     ))}
