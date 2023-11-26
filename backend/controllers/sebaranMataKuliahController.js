@@ -6,6 +6,7 @@ const mataKuliahModel = require('../models/mataKuliahModel.js')
 const kategoriNilaiModel = require('../models/kategoriNilaiModel.js')
 const semesterModel = require('../models/semesterModel.js')
 const krsModel = require('../models/krsModel.js')
+const sebaranMataKuliah = require('../models/sebaranMataKuliah.js')
 
 const { Op, Sequelize } = require('sequelize')
 
@@ -16,32 +17,25 @@ module.exports = {
         const sebaranProdi = req.query.sebaranProdi || null
         const sebaranSemester = req.query.sebaranSemester || 0
         const sebaranTahunAjaran = req.query.sebaranTahunAjaran || 0
-        const totalSKS = await mataKuliahModel.sum('sks', {
+        const totalSKS = await sebaranMataKuliah.sum('mataKuliahs.sks', {
+            include: [{
+                model: mataKuliahModel,
+                where: {
+                    code_jenjang_pendidikan: sebaranJenPen,
+                    code_fakultas: sebaranFks,
+                    code_prodi: sebaranProdi,
+                }
+            }],
             where: {
-                code_jenjang_pendidikan: sebaranJenPen,
-                code_fakultas: sebaranFks,
-                code_prodi: sebaranProdi,
                 code_semester: sebaranSemester,
                 code_tahun_ajaran: sebaranTahunAjaran,
                 status: "aktif"
             }
         })
-        await mataKuliahModel.findAll({
-            attributes: ['id_mata_kuliah', 'code_mata_kuliah', 'nama_mata_kuliah', 'sks', 'status'],
+        await sebaranMataKuliah.findAll({
             include: [
                 {
-                    attributes: ['code_jenjang_pendidikan', 'nama_jenjang_pendidikan'],
-                    model: jenjangPendidikanModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    attributes: ['code_fakultas', 'nama_fakultas'],
-                    model: fakultasModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    attributes: ['code_prodi', 'nama_prodi'],
-                    model: prodiModel,
+                    model: mataKuliahModel,
                     where: { status: "aktif" }
                 },
                 {
@@ -50,26 +44,22 @@ module.exports = {
                     where: { status: "aktif" }
                 },
                 {
-                    attributes: ['code_kategori_nilai', 'kategori'],
-                    model: kategoriNilaiModel,
+                    attributes: ['code_semester', 'semester'],
+                    model: semesterModel,
                     where: { status: "aktif" }
                 },
                 {
-                    attributes: ['code_semester', 'semester'],
-                    model: semesterModel,
+                    attributes: ['code_kategori_nilai', 'kategori'],
+                    model: kategoriNilaiModel,
                     where: { status: "aktif" }
                 }
             ],
             where: {
-                code_jenjang_pendidikan: sebaranJenPen,
-                code_fakultas: sebaranFks,
-                code_prodi: sebaranProdi,
-                code_semester: sebaranSemester,
                 code_tahun_ajaran: sebaranTahunAjaran,
                 status: "aktif"
             },
             order: [
-                ["id_mata_kuliah", "DESC"]
+                ["id_sebaran", "DESC"]
             ]
         }).
             then(result => {
@@ -86,18 +76,10 @@ module.exports = {
 
     getById: async (req, res, next) => {
         const id = req.params.id
-        await mataKuliahModel.findOne({
+        await sebaranMataKuliah.findOne({
             include: [
                 {
-                    model: jenjangPendidikanModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: fakultasModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: prodiModel,
+                    model: mataKuliahModel,
                     where: { status: "aktif" }
                 },
                 {
@@ -114,19 +96,19 @@ module.exports = {
                 }
             ],
             where: {
-                id_mata_kuliah: id,
+                id_sebaran: id,
                 status: "aktif"
             }
         }).
             then(getById => {
                 if (!getById) {
                     return res.status(404).json({
-                        message: "Data mata kuliah Tidak Ditemukan",
+                        message: "Data sebaran mata kuliah Tidak Ditemukan",
                         data: null
                     })
                 }
                 res.status(201).json({
-                    message: "Data mata kuliah Ditemukan",
+                    message: "Data sebaran mata kuliah Ditemukan",
                     data: getById
                 })
             }).
@@ -138,17 +120,21 @@ module.exports = {
     autocompleteMakul: async (req, res, next) => {
         const { codeThnAjr, codeJnjPen, codeFks, codePrd } = req.params
         const search = req.query.search || ""
-
-        await mataKuliahModel.findAll({
+        const matkulSebaran = await sebaranMataKuliah.findAll({
             where: {
                 code_tahun_ajaran: codeThnAjr,
+                status: "aktif"
+            }
+        })
+        const datas = matkulSebaran.map(el => { return el.code_mata_kuliah })
+        await mataKuliahModel.findAll({
+            where: {
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
                 code_prodi: codePrd,
-                code_semester: "",
-                code_kategori_nilai: "",
-                status_bobot_makul: "",
-                status_makul: "",
+                code_mata_kuliah: {
+                    [Op.notIn]: datas
+                },
                 status: "aktif"
             }
         }).
