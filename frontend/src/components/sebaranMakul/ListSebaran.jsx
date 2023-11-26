@@ -646,8 +646,8 @@ const ListSebaran = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-3">
                     <div className="card-body p-4">
                         <form onSubmit={simpanSebaran}>
-                            <div className='flex gap-2'>
-                                <div className='basis-1/3'>
+                            <div className='grid lg:grid-cols-5 gap-4'>
+                                <div>
                                     <label className="label">
                                         <span className="text-base label-text font-semibold">Mata Kuliah</span>
                                     </label>
@@ -660,33 +660,33 @@ const ListSebaran = () => {
                                         id='input-select'
                                     />
                                 </div>
-                                <div className='basis-1/3'>
+                                <div>
                                     <label className="label">
                                         <span className="text-base label-text font-semibold">Semester</span>
                                     </label>
-                                    <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeSmt} onChange={(e) => setKodeSmt(e.target.value)}>
+                                    <select className='my-1 select select-bordered select-sm w-full' value={kodeSmt} onChange={(e) => setKodeSmt(e.target.value)}>
                                         <option value="">Semester</option>
                                         {Semester.map((item) => (
                                             <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
                                         ))}
                                     </select>
                                 </div>
-                                <div className='basis-1/3'>
+                                <div>
                                     <label className="label">
                                         <span className="text-base label-text font-semibold">Nilai Min</span>
                                     </label>
-                                    <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeNilai} onChange={(e) => setKodeNilai(e.target.value)}>
+                                    <select className='my-1 select select-bordered select-sm w-full' value={kodeNilai} onChange={(e) => setKodeNilai(e.target.value)}>
                                         <option value="">Nilai</option>
                                         {ListNilai.map((item) => (
                                             <option key={item.id_kategori_nilai} value={item.code_kategori_nilai}>{item.nilai_huruf} ({item.nilai_bawah} - {item.nilai_atas})</option>
                                         ))}
                                     </select>
                                 </div>
-                                <div className="basis-2/5">
+                                <div>
                                     <label className="label">
                                         <span className="text-base label-text font-semibold">Opsi Tambahan</span>
                                     </label>
-                                    <div className='flex gap-3'>
+                                    <div className='flex gap-2'>
                                         <div className="form-control">
                                             <label className="cursor-pointer label">
                                                 <input type="checkbox" checked={statusMk} onChange={(e) => setStatusMk(e.target.checked)} className="checkbox checkbox-sm checkbox-success mr-1" />
@@ -699,10 +699,10 @@ const ListSebaran = () => {
                                                 <span className="label-text">Paket MK</span>
                                             </label>
                                         </div>
-                                        <div>
-                                            <button className='btn btn-sm btn-primary capitalize rounded-md'><FaPlus /><span>Tambah</span></button>
-                                        </div>
                                     </div>
+                                </div>
+                                <div className='flex justify-center items-center'>
+                                    <button className='btn btn-sm btn-primary capitalize rounded-md'><FaPlus /><span>Tambah</span></button>
                                 </div>
                             </div>
                         </form>
