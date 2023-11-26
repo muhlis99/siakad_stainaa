@@ -1,8 +1,6 @@
 const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
-const tahunAjaranModel = require('../models/tahunAjaranModel.js')
-const kategoriNilaiModel = require('../models/kategoriNilaiModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
 const { Op } = require('sequelize')
 
@@ -24,10 +22,6 @@ module.exports = {
                 },
                 {
                     model: prodiModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: tahunAjaranModel,
                     where: { status: "aktif" }
                 }
             ],
@@ -75,10 +69,6 @@ module.exports = {
                 },
                 {
                     model: prodiModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: tahunAjaranModel,
                     where: { status: "aktif" }
                 }
             ],
@@ -129,7 +119,7 @@ module.exports = {
                 })
             }).
             catch(err => {
-                next(err)
+                console.log(err)
             })
     },
 
@@ -147,10 +137,6 @@ module.exports = {
                 },
                 {
                     model: prodiModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: tahunAjaranModel,
                     where: { status: "aktif" }
                 }
             ],
@@ -177,14 +163,14 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { code_mata_kuliah, nama_mata_kuliah, jenis_mata_kuliah, code_jenjang_pendidikan, code_fakultas,
-            code_prodi, code_tahun_ajaran, code_kategori_nilai, sks, sks_praktek, sks_prak_lapangan,
-            sks_simulasi, tanggal_aktif, tanggal_non_aktif } = req.body
+        const { code_mata_kuliah, nama_mata_kuliah, jenis_mata_kuliah, code_jenjang_pendidikan,
+            code_fakultas, code_prodi, sks, sks_praktek, sks_prak_lapangan,
+            sks_simulasi, tanggal_aktif } = req.body
 
         const mataKuliahUse = await mataKuliahModel.findOne({
             where: {
-                nama_mata_kuliah: nama_mata_kuliah,
                 code_mata_kuliah: code_mata_kuliah,
+                nama_mata_kuliah: nama_mata_kuliah,
                 jenis_mata_kuliah: jenis_mata_kuliah,
                 code_prodi: code_prodi,
                 status: "aktif"
@@ -198,16 +184,11 @@ module.exports = {
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
-            code_tahun_ajaran: code_tahun_ajaran,
-            code_kategori_nilai: code_kategori_nilai,
             sks: sks,
             sks_praktek: sks_praktek,
             sks_prak_lapangan: sks_prak_lapangan,
             sks_simulasi: sks_simulasi,
             tanggal_aktif: tanggal_aktif,
-            tanggal_non_aktif: tanggal_non_aktif,
-            status_bobot_makul: "",
-            status_makul: "",
             status: "aktif"
         }).
             then(result => {
@@ -235,11 +216,7 @@ module.exports = {
                 {
                     model: prodiModel,
                     where: { status: "aktif" }
-                },
-                {
-                    model: tahunAjaranModel,
-                    where: { status: "aktif" }
-                },
+                }
             ],
             where: {
                 id_mata_kuliah: id,
@@ -247,9 +224,9 @@ module.exports = {
             }
         })
         if (!mataKuliahUse) return res.status(401).json({ message: "Data Mata Kuliah tidak ditemukan" })
-        const { code_mata_kuliah, nama_mata_kuliah, jenis_mata_kuliah, code_jenjang_pendidikan, code_fakultas,
-            code_prodi, code_tahun_ajaran, code_kategori_nilai, sks, sks_praktek, sks_prak_lapangan,
-            sks_simulasi, tanggal_aktif, tanggal_non_aktif } = req.body
+        const { code_mata_kuliah, nama_mata_kuliah, jenis_mata_kuliah,
+            code_jenjang_pendidikan, code_fakultas, code_prodi, code_kategori_nilai,
+            sks, sks_praktek, sks_prak_lapangan, sks_simulasi, tanggal_aktif } = req.body
         const mataKuliahDuplicate = await mataKuliahModel.findOne({
             where: {
                 code_mata_kuliah: code_mata_kuliah,
@@ -267,16 +244,12 @@ module.exports = {
             code_jenjang_pendidikan: code_jenjang_pendidikan,
             code_fakultas: code_fakultas,
             code_prodi: code_prodi,
-            code_tahun_ajaran: code_tahun_ajaran,
             code_kategori_nilai: code_kategori_nilai,
             sks: sks,
             sks_praktek: sks_praktek,
             sks_prak_lapangan: sks_prak_lapangan,
             sks_simulasi: sks_simulasi,
             tanggal_aktif: tanggal_aktif,
-            tanggal_non_aktif: tanggal_non_aktif,
-            status_bobot_makul: "",
-            status_makul: "",
             status: "aktif"
         }, {
             where: {
@@ -307,14 +280,6 @@ module.exports = {
                 },
                 {
                     model: prodiModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: tahunAjaranModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: kategoriNilaiModel,
                     where: { status: "aktif" }
                 }
             ],

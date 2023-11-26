@@ -13,16 +13,10 @@ exports.validationMataKuliah = [
     check('code_prodi')
         .notEmpty()
         .withMessage('prodi tidak boleh kosong'),
-    check('code_tahun_ajaran')
-        .notEmpty()
-        .withMessage('tahun ajaran tidak boleh kosong'),
     check('sks')
         .notEmpty()
         .withMessage('sks tidak boleh kosong'),
     check('tanggal_aktif')
         .notEmpty()
         .withMessage('tanggal aktif tidak boleh kosong'),
-    check('tanggal_non_aktif')
-        .notEmpty()
-        .withMessage('tanggal non aktif tidak boleh kosong'),
 ]
