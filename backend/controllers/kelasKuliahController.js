@@ -76,31 +76,32 @@ module.exports = {
     getKelasByMakul: async (req, res, next) => {
         const { codeThnAjr, codeSmt, jnjPen, codeFks, codePrd, codeMakul } = req.params
         await kelasModel.findAll({
-            include: [{
-                attributes: ['code_jenjang_pendidikan'],
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ['code_fakultas'],
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ['code_prodi'],
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ['code_mata_kuliah', 'nama_mata_kuliah'],
-                model: mataKuliahModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ['code_tahun_ajaran'],
-                model: tahunAjaranModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ['code_semester'],
-                model: semesterModel,
-                where: { status: "aktif" }
-            }],
+            include: [
+                {
+                    attributes: ['code_jenjang_pendidikan'],
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_fakultas'],
+                    model: fakultasModel,
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_prodi'],
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_mata_kuliah', 'nama_mata_kuliah'],
+                    model: mataKuliahModel,
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_tahun_ajaran'],
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_semester'],
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                }],
             attributes: [
                 'id_kelas', 'kapasitas', 'nama_kelas', 'code_mata_kuliah', ['code_kelas', 'code'],
                 [Sequelize.literal('(select count(*) from tb_kelas_detail where code_kelas = code)'), 'jumlahMhs']
@@ -320,20 +321,8 @@ module.exports = {
         const { code_jenjang_pendidikan, code_fakultas, code_tahun_ajaran,
             code_prodi, code_semester, nama_kelas, hurufKelas, kapasitas, jumlahPeserta, jenkel } = req.body
 
-        const makul = await mataKuliahModel.findAll({
+        const makul = await sebaranMatakuliahModel.findAll({
             include: [{
-                attributes: ['code_jenjang_pendidikan'],
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ['code_fakultas'],
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ['code_prodi'],
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
                 attributes: ['code_tahun_ajaran'],
                 model: tahunAjaranModel,
                 where: { status: "aktif" }
@@ -341,14 +330,33 @@ module.exports = {
                 attributes: ['code_semester'],
                 model: semesterModel,
                 where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
+                where: {
+                    code_jenjang_pendidikan: code_jenjang_pendidikan,
+                    code_fakultas: code_fakultas,
+                    code_prodi: code_prodi,
+                },
+                include: [
+                    {
+                        attributes: ['code_jenjang_pendidikan'],
+                        model: jenjangPendidikanModel,
+                        where: { status: "aktif" }
+                    }, {
+                        attributes: ['code_fakultas'],
+                        model: fakultasModel,
+                        where: { status: "aktif" }
+                    }, {
+                        attributes: ['code_prodi'],
+                        model: prodiModel,
+                        where: { status: "aktif" }
+                    },
+                ]
             }],
             attributes: ['code_mata_kuliah'],
             where: {
                 code_tahun_ajaran: code_tahun_ajaran,
                 code_semester: code_semester,
-                code_jenjang_pendidikan: code_jenjang_pendidikan,
-                code_fakultas: code_fakultas,
-                code_prodi: code_prodi,
                 status_makul: "paket",
                 status_bobot_makul: "wajib"
             }
@@ -360,7 +368,7 @@ module.exports = {
         nmKelas.unshift("")
         nama_kelas.splice(-1)
 
-        console.log(nmKelas);
+        // console.log(makul);
         const dataCreateKelas = makul.map(al => {
             const codeMakul = al.code_mata_kuliah
             nama_kelas.map(async el => {
