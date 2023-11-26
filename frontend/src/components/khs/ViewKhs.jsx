@@ -25,29 +25,29 @@ const ViewKhs = () => {
 
 
     useEffect(() => {
-        const getViewKhs = async () => {
-            try {
-                const response = await axios.get(`v1/khs/viewKhs/${kodeThn}/${kodeSmt}/${kodeJnjg}/${kodeFk}/${kodeProdi}/${nim}`)
-                console.log(response.data);
-                // setViewKhs(response.data.data)
-                // setJumSks(response.data.jumlahSks)
-                // setJumSksIndex(response.data.jumlahSksIndex)
-                // setIps(response.data.IPS)
-                // setNim(response.data.nim)
-                // setNama(response.data.mahasiswa)
-                // setJenjang(response.data.jenjangPendidikan)
-                // setFakultas(response.data.fakultas)
-                // setProdi(response.data.prodi)
-                // setTahun(response.data.tahunAjaran)
-                // setSemt(response.data.semester)
-            } catch (error) {
-
-            }
-        }
         getViewKhs()
     }, [nim, kodeFk, kodeJnjg, kodeProdi, kodeSmt, kodeThn])
 
 
+    const getViewKhs = async () => {
+        try {
+            const response = await axios.get(`v1/khs/viewKhs/${kodeThn}/${kodeSmt}/${kodeJnjg}/${kodeFk}/${kodeProdi}/${nim}`)
+            console.log(response.data);
+            // setViewKhs(response.data.data)
+            // setJumSks(response.data.jumlahSks)
+            // setJumSksIndex(response.data.jumlahSksIndex)
+            // setIps(response.data.IPS)
+            // setNim(response.data.nim)
+            // setNama(response.data.mahasiswa)
+            // setJenjang(response.data.jenjangPendidikan)
+            // setFakultas(response.data.fakultas)
+            // setProdi(response.data.prodi)
+            // setTahun(response.data.tahunAjaran)
+            // setSemt(response.data.semester)
+        } catch (error) {
+
+        }
+    }
 
     return (
         <div className='mt-2 container'>
