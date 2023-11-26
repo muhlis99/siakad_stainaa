@@ -162,7 +162,7 @@ module.exports = {
                 {
                     attributes: ["id_kategori_nilai", "nilai_huruf", "interfal_skor"],
                     model: kategoriNilaiModel,
-                    where: { status: "aktif" }
+                    where: { status: "aktif", code_tahun_ajaran: codeThnAjr }
                 },
                 {
                     attributes: ['nim', 'nama'],
