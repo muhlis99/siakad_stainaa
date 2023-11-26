@@ -32,18 +32,17 @@ const ViewKhs = () => {
     const getViewKhs = async () => {
         try {
             const response = await axios.get(`v1/khs/viewKhs/${kodeThn}/${kodeSmt}/${kodeJnjg}/${kodeFk}/${kodeProdi}/${nim}`)
-            console.log(response.data);
-            // setViewKhs(response.data.data)
-            // setJumSks(response.data.jumlahSks)
-            // setJumSksIndex(response.data.jumlahSksIndex)
-            // setIps(response.data.IPS)
-            // setNim(response.data.nim)
-            // setNama(response.data.mahasiswa)
-            // setJenjang(response.data.jenjangPendidikan)
-            // setFakultas(response.data.fakultas)
-            // setProdi(response.data.prodi)
-            // setTahun(response.data.tahunAjaran)
-            // setSemt(response.data.semester)
+            setViewKhs(response.data.data)
+            setJumSks(response.data.jumlahSks)
+            setJumSksIndex(response.data.jumlahSksIndex)
+            setIps(response.data.IPS)
+            setNim(response.data.nim)
+            setNama(response.data.mahasiswa)
+            setJenjang(response.data.jenjangPendidikan)
+            setFakultas(response.data.fakultas)
+            setProdi(response.data.prodi)
+            setTahun(response.data.tahunAjaran)
+            setSemt(response.data.semester)
         } catch (error) {
 
         }
@@ -55,7 +54,7 @@ const ViewKhs = () => {
                 <h1 className='text-2xl font-bold'>Kartu Hasil Studi</h1>
             </section>
             <section>
-                {/* <div className="card bg-base-100 card-border-blacked shadow-md mb-2">
+                <div className="card bg-base-100 card-border-blacked shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className='py-2'>
                             <Link to="/khs" state={{ jen: kodeJnjg, fak: kodeFk, pro: kodeProdi, thn: kodeThn, sem: kodeSmt, collaps: 'kuliah', activ: '/khs' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> Kembali</Link>
@@ -164,11 +163,11 @@ const ViewKhs = () => {
                                     :
                                     <tbody>
                                         {ViewKhs.map((item, index) => (
-                                            <tr className='bg-white text-gray-900'>
+                                            <tr key={item.id_nilai_kuliah} className='bg-white text-gray-900'>
                                                 <th scope="row" className="px-1 py-2 font-medium whitespace-nowrap border" align='center'>{index + 1}</th>
-                                                <td className='px-1 py-2 border' align='center'>{item.mataKuliahs[0].code_mata_kuliah}</td>
-                                                <td className='px-1 py-2 border'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                                <td className='px-1 py-2 border' align='center'>{item.mataKuliahs[0].sks}</td>
+                                                <td className='px-1 py-2 border' align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].code_mata_kuliah}</td>
+                                                <td className='px-1 py-2 border'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                <td className='px-1 py-2 border' align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
                                                 <td className='px-1 py-2 border' align='center'>{item.nilai_akhir}</td>
                                                 <td className='px-1 py-2 border' align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
                                                 <td className='px-1 py-2 border' align='center'>{item.kategoriNilais[0].interfal_skor}</td>
@@ -191,7 +190,7 @@ const ViewKhs = () => {
                             </table>
                         </div>
                     </div>
-                </div> */}
+                </div>
             </section >
         </div>
     )
