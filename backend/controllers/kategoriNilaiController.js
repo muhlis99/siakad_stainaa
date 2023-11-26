@@ -195,38 +195,31 @@ module.exports = {
 
     salinData: async (req, res, next) => {
         const { code_tahun_ajaran_baru, code_tahun_ajaran_lama } = req.body
-
-
-        const kategoriNilaiModelUse = await kategoriNilaiModel.findOne({
+        const dataLawas = await kategoriNilaiModel.findAll({
             where: {
-                code_tahun_ajaran: code_tahun_ajaran,
-                code_kategori_nilai: codekategoriNilai,
-                nilai_atas: nilai_atas,
-                nilai_bawah: nilai_bawah,
-                nilai_huruf: nilai_huruf,
-                interfal_skor: interfal_skor,
+                code_tahun_ajaran: code_tahun_ajaran_lama,
+                status: "aktif"
             }
         })
-        if (kategoriNilaiModelUse) return res.status(401).json({ message: "data kategori Nilai sudah ada" })
-        await kategoriNilaiModel.create({
-            code_tahun_ajaran: code_tahun_ajaran,
-            code_kategori_nilai: codekategoriNilai,
-            nilai_atas: nilai_atas,
-            nilai_bawah: nilai_bawah,
-            nilai_huruf: nilai_huruf,
-            interfal_skor: interfal_skor,
-            kategori: kategori,
-            keterangan: keterangan,
-            status: "aktif",
-        }).
-            then(result => {
-                res.status(201).json({
-                    message: "Data kategori Nilai success Ditambahkan",
-                })
-            }).
-            catch(err => {
-                next(err)
+        const datasLawas = dataLawas.map(async el => {
+            await kategoriNilaiModel.create({
+                code_tahun_ajaran: code_tahun_ajaran_baru,
+                code_kategori_nilai: el.code_kategori_nilai,
+                nilai_atas: el.nilai_atas,
+                nilai_bawah: el.nilai_bawah,
+                nilai_huruf: el.nilai_huruf,
+                interfal_skor: el.interfal_skor,
+                kategori: el.kategori,
+                keterangan: el.keterangan,
+                status: el.status,
             })
+        })
+        if (datasLawas) {
+            return res.status(201).json({ message: "Data kategori Nilai succes ditambahkan" })
+        } else {
+            return res.status(401).json({ message: "Data kategori Nilai succes ditambahkan" })
+        }
+
     },
 
     put: async (req, res, next) => {
