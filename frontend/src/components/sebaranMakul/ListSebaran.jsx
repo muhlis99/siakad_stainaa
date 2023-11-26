@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { FaPlus, FaEdit, FaTimes, FaSave, FaInfo, FaTrash } from 'react-icons/fa'
+import { FaPlus, FaEdit, FaTimes, FaSave, FaInfo, FaTrash, FaCopy } from 'react-icons/fa'
 // import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -21,8 +21,13 @@ const ListSebaran = () => {
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
+    const [kodeThnNow, setKodeThnNow] = useState("")
+    const [kodeThnOld, setKodeThnOld] = useState("")
     const [kodeMakul, setKodeMakul] = useState("")
     const [kodeSmt, setKodeSmt] = useState("")
+    const [smtNow, setSmtNow] = useState("")
+    const [kodeSmtNow, setKodeSmtNow] = useState("")
+    const [kodeSmtOld, setKodeSmtOld] = useState("")
     const [kodeNilai, setKodeNilai] = useState("")
     const [statusBobot, setStatusBobot] = useState("")
     const [status, setStatus] = useState("")
@@ -143,13 +148,14 @@ const ListSebaran = () => {
 
     const options = () => {
         var i = Makul.map(item => ({
-            value: item.id_mata_kuliah,
+            value: item.code_mata_kuliah,
             label: item.code_mata_kuliah + " | " + item.nama_mata_kuliah,
         }))
         setSelect2(i)
     }
 
     const onchange = (e) => {
+        console.log(e ? e.value : "");
         setKodeMakul(e ? e.value : "")
     }
 
@@ -164,7 +170,6 @@ const ListSebaran = () => {
         if (kodeProdi != 0 & kodeTahun != 0) {
             const response = await axios.get(`v1/sebaranMataKuliah/smtByThnAjr/${kodeTahun}`)
             setSemester(response.data.data)
-            console.log(response.data.data);
         }
     }
 
@@ -189,13 +194,17 @@ const ListSebaran = () => {
                 )
             }
             if (smt.length != 0) {
-                // Promise.all(promises).then(() => setSebaran(sebar))
-                Promise.all(promises).then(() => console.log(sebar))
-
-
+                Promise.all(promises).then(() => setSebaran(sebar))
                 Promise.all(promises).then(() => setSatuan(sksnya))
             }
         }
+    }
+
+    const modalSalinData = async (e, f, g) => {
+        setKodeThnNow(e)
+        setKodeSmtNow(f)
+        setSmtNow(g)
+        document.getElementById('modal-salin').checked = true
     }
 
     const simpanSebaran = async (e) => {
@@ -240,15 +249,12 @@ const ListSebaran = () => {
                 })
             } else {
                 await axios.post('v1/sebaranMataKuliah/create', {
-                    id_mata_kuliah: kodeMakul,
                     code_semester: kodeSmt,
                     code_kategori_nilai: kodeNilai,
                     status_bobot_makul: statusBobot,
                     status_makul: status,
                     code_tahun_ajaran: kodeTahun,
-                    code_jenjang_pendidikan: kodeJenjang,
-                    code_fakultas: kodeFakultas,
-                    code_prodi: kodeProdi
+                    code_mata_kuliah: kodeMakul
                 }).then(function (response) {
                     setLoading(false)
                     Swal.fire({
@@ -330,6 +336,36 @@ const ListSebaran = () => {
         setStatusMakul("")
         setStatusMk(true)
         setPaket(true)
+    }
+
+    const salinDataSebaran = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        try {
+            await axios.post(`v1/sebaranMataKuliah/salinData`, {
+                code_tahun_ajaran_baru: kodeThnNow,
+                code_semester_baru: kodeSmtNow,
+                code_tahun_ajaran_lama: kodeThnOld,
+                code_semester_lama: kodeSmtOld
+            }).then(function (response) {
+                setLoading(false)
+                Swal.fire({
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    modalClose()
+                    sebaranMakul()
+                })
+            })
+        } catch (error) {
+
+        }
+    }
+
+    const modalClose = () => {
+        document.getElementById('modal-salin').checked = false
+        setKodeSmtOld("")
+        setKodeThnOld("")
     }
 
     const updateSebaran = async (e) => {
@@ -588,6 +624,49 @@ const ListSebaran = () => {
                     </div>
                 </div>
             </div>
+
+            <input type="checkbox" id="modal-salin" className="modal-toggle" />
+            <div className="modal">
+                <div className="modal-box grid p-0 rounded-md">
+                    <form onSubmit={salinDataSebaran}>
+                        <div className='bg-base-200 border-b-2 p-3'>
+                            <h3 className="font-bold text-xl mb-1">Salin Data Sebaran Semester {smtNow}</h3>
+                            <button type='button' className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
+                        </div>
+                        <div className="mb-2">
+                            <div className="py-4 px-4">
+                                <div>
+                                    <label className="label flex-initial w-64">
+                                        <span className="text-base label-text font-semibold">Tahun Ajaran</span>
+                                    </label>
+                                    <select className='my-1 select select-bordered select-sm w-full' value={kodeThnOld} onChange={(e) => setKodeThnOld(e.target.value)}>
+                                        <option value="">Tahun Ajaran</option>
+                                        {Tahun.map((item) => (
+                                            <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="label">
+                                        <span className="text-base label-text font-semibold">Semester</span>
+                                    </label>
+                                    <select className='my-1 select select-bordered select-sm w-full' value={kodeSmtOld} onChange={(e) => setKodeSmtOld(e.target.value)}>
+                                        <option value="">Semester</option>
+                                        {Semester.map((item) => (
+                                            <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='p-3 border-t-2 text-center'>
+                            <button type='submit' className="btn btn-sm btn-primary capitalize"><FaSave /> Simpan</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
             <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
                 <div className='w-[74px] mx-auto mt-72'>
                     <Loading />
@@ -734,15 +813,20 @@ const ListSebaran = () => {
                                             {Sebaran != 0 ? <>
                                                 {Sebaran[index].length == 0 ?
                                                     <tr className='bg-white border-b text-gray-500 border-x'>
-                                                        <td className='px-6 py-2 font-semibold' align='center' colSpan='5'>Data Mata Kuliah Kosong</td>
+                                                        <td className='px-6 py-2' align='center' colSpan='5'>
+                                                            <p className=' font-semibold'>Data Mata Kuliah Kosong</p>
+                                                            <div className='mt-1'>
+                                                                <button className='btn btn-sm btn-primary capitalize rounded-md' onClick={() => modalSalinData(items.code_tahun_ajaran, items.code_semester, items.semester)}><FaCopy /><span>Salin Data</span></button>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                     :
                                                     Sebaran[index].map((item, no) => (
-                                                        <tr key={item.id_mata_kuliah} className='bg-white border text-gray-700' >
+                                                        <tr key={item.id_sebaran} className='bg-white border text-gray-700' >
                                                             <th scope="row" className="px-2 py-2 border font-medium whitespace-nowrap">{no + 1}</th>
                                                             <td className='px-2 py-2 border' align='center'>{item.code_mata_kuliah}</td>
-                                                            <td className='px-2 py-2 border'>{item.nama_mata_kuliah}</td>
-                                                            <td className='px-2 py-2 border' align='center'>{item.sks}</td>
+                                                            <td className='px-2 py-2 border'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
+                                                            <td className='px-2 py-2 border' align='center'>{item.mataKuliahs[0].sks}</td>
                                                             <td className='px-2 py-2 border' align='center'>
                                                                 <div>
                                                                     <button onClick={() => getMakulById('Detail', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-info mr-1" title='Detail'><FaInfo /></button>
