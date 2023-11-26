@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaPlus, FaSearch, FaEdit, FaTrash, FaArrowLeft, FaArrowRight, FaTimes, FaSave } from "react-icons/fa"
+import { FaPlus, FaSearch, FaEdit, FaTrash, FaArrowLeft, FaArrowRight, FaTimes, FaSave, FaCopy, FaKeyboard } from "react-icons/fa"
 import { SlOptions } from "react-icons/sl"
 import axios from 'axios'
 import ReactPaginate from 'react-paginate'
@@ -26,7 +26,10 @@ const ListKategoriNilai = () => {
     const [keterangan, setKeterangan] = useState("")
     const [judul, setJudul] = useState("")
     const [id, setId] = useState("")
+    const [kodeThnNow, setKodeThnNow] = useState("")
+    const [kodeThnOld, setKodeThnOld] = useState("")
     const [loading, setLoading] = useState(false)
+    const [formSalin, setFormSali] = useState(false)
 
     useEffect(() => {
         setLoading(true)
@@ -37,7 +40,7 @@ const ListKategoriNilai = () => {
 
     useEffect(() => {
         getKategoriNilai()
-    }, [page, keyword])
+    }, [page, keyword, kodeThn])
 
     useEffect(() => {
         getTahunAjaran()
@@ -73,6 +76,8 @@ const ListKategoriNilai = () => {
     const getTahunAjaran = async () => {
         const response = await axios.get('v1/tahunAjaran/all')
         setTahun(response.data.data)
+        setKodeThn(response.data.data[0].code_tahun_ajaran)
+        setKodeThnNow(response.data.data[0].code_tahun_ajaran)
     }
 
     const modalAddOpen = () => {
@@ -200,6 +205,29 @@ const ListKategoriNilai = () => {
         }
     }
 
+    const salinKategoriNilai = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        try {
+            await axios.post(`v1/kategoriNilai/salinData`, {
+                code_tahun_ajaran_lama: kodeThnOld,
+                code_tahun_ajaran_baru: kodeThnNow
+            }).then(function (response) {
+                setLoading(false)
+                console.log(response.data);
+                // Swal.fire({
+                //     title: 'Berhasil',
+                //     icon: 'success'
+                // }).then(() => {
+                //     modalClose()
+                //     getKategoriNilai()
+                // })
+            })
+        } catch (error) {
+
+        }
+    }
+
     const modalClose = () => {
         document.getElementById('my-modal').checked = false
         setId("")
@@ -210,6 +238,7 @@ const ListKategoriNilai = () => {
         setSkor("")
         setKategori("")
         setKeterangan("")
+        setFormSali(false)
     }
 
     const nonaktifkan = (ktgId) => {
@@ -249,88 +278,149 @@ const ListKategoriNilai = () => {
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box grid p-0 rounded-md">
-                    <form onSubmit={judul == 'Tambah' ? simpanKatNilai : updateKtg}>
-                        <div className='bg-base-200 border-b-2 p-3'>
-                            <h3 className="font-bold text-xl mb-1">{judul}</h3>
-                            <button type='button' className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
-                        </div>
-                        <div className='mb-2'>
-                            <div className="py-4 px-4">
-                                <div className="grid lg:grid-cols-2 gap-2">
-                                    <div>
+                    {formSalin ?
+                        <form onSubmit={salinKategoriNilai}>
+                            <div className='bg-base-200 border-b-2 p-3'>
+                                <h3 className="font-bold text-xl mb-1">{judul}</h3>
+                                <button type='button' className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
+                            </div>
+                            <div className='mb-2 px-4'>
+                                <div>
+                                    <button type='button' className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2' onClick={() => setFormSali(false)}><FaKeyboard /> &nbsp; <span>Input Manual</span></button>
+                                </div>
+                            </div>
+                            <hr />
+                            <div className="mb-2">
+                                <div className="py-4 px-4">
+                                    <div className='mb-2'>
                                         <label className="label">
-                                            <span className="text-base label-text font-semibold">Tahun Ajaran</span>
+                                            <span className="text-base label-text font-semibold">Tahun Ajaran Saat Ini</span>
                                         </label>
-                                        <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                        <select className="select select-sm select-bordered w-full" value={kodeThnNow} onChange={(e) => setKodeThnNow(e.target.value)}>
                                             <option value="">Tahun Ajaran</option>
                                             {Tahun.map((item) => (
                                                 <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
                                             ))}
                                         </select>
                                     </div>
-                                    <div className='grid grid-cols-2 gap-2'>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text font-semibold">Nilai Maks</span>
-                                            </label>
-                                            <input type="number" className="input input-sm input-bordered w-full" value={nilaiAtas} onChange={(e) => setNilaiAtas(e.target.value)} />
-                                        </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text font-semibold">Nilai Min</span>
-                                            </label>
-                                            <input type="number" className="input input-sm input-bordered w-full" value={nilaiBawah} onChange={(e) => setNilaiBawah(e.target.value)} />
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-2">
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text font-semibold">Nilai Huruf</span>
-                                            </label>
-                                            <input type="text" className="input input-sm input-bordered w-full" value={nilaiHuruf} onChange={(e) => setNilaiHuruf(e.target.value)} />
-                                        </div>
-                                        <div>
-                                            <label className="label">
-                                                <span className="text-base label-text font-semibold">Interfal Skor</span>
-                                            </label>
-                                            <input type="text" className="input input-sm input-bordered w-full" value={skor} onChange={(e) => setSkor(e.target.value)} />
-                                        </div>
+                                    <hr />
+                                    <div className=''>
+                                        <label className="label">
+                                            <span className="text-base label-text font-semibold">Salin kategori nilai dari</span>
+                                        </label>
                                     </div>
                                     <div>
                                         <label className="label">
-                                            <span className="text-base label-text font-semibold">Kategori</span>
+                                            <span className="text-base label-text font-semibold">Tahun Ajaran</span>
                                         </label>
-                                        <select className="select select-sm select-bordered w-full" value={kategori} onChange={(e) => setKategori(e.target.value)}>
-                                            <option value="">-Kategori-</option>
-                                            <option value="Istimewa">Istimewa</option>
-                                            <option value="Sangat Baik">Sangat Baik</option>
-                                            <option value="Lebih Baik">Lebih Baik</option>
-                                            <option value="Baik">Baik</option>
-                                            <option value="Cukup Baik">Cukup Baik</option>
-                                            <option value="Lebih Cukup">Lebih Cukup</option>
-                                            <option value="Cukup">Cukup</option>
-                                            <option value="Kurang">Kurang</option>
-                                            <option value="Kurang Sekali">Kurang Sekali</option>
+                                        <select className="select select-sm select-bordered w-full" value={kodeThnOld} onChange={(e) => setKodeThnOld(e.target.value)}>
+                                            <option value="">Tahun Ajaran</option>
+                                            {Tahun.map((item) => (
+                                                <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                            ))}
                                         </select>
-                                    </div>
-                                    <div className='col-span-2'>
-                                        <label className="label">
-                                            <span className="text-base label-text font-semibold">Keterangan</span>
-                                        </label>
-                                        <textarea
-                                            className="textarea textarea-bordered w-full"
-                                            placeholder="Masukkan Keterangan"
-                                            value={keterangan}
-                                            onChange={(e) => setKeterangan(e.target.value)}
-                                        ></textarea>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className='p-3 border-t-2 text-center'>
-                            <button type='submit' className="btn btn-sm btn-primary capitalize">{judul == 'Tambah' ? <FaSave /> : <FaEdit />}{judul == 'Tambah' ? 'Simpan' : 'Edit'}</button>
-                        </div>
-                    </form>
+                            <div className='p-3 border-t-2 text-center'>
+                                <button type='submit' className="btn btn-sm btn-primary capitalize"><FaSave /> Simpan</button>
+                            </div>
+                        </form>
+                        :
+                        <form onSubmit={judul == 'Tambah' ? simpanKatNilai : updateKtg}>
+                            <div className='bg-base-200 border-b-2 p-3'>
+                                <h3 className="font-bold text-xl mb-1">{judul}</h3>
+                                <button type='button' className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
+                            </div>
+                            {judul == 'Tambah' ?
+                                <>
+                                    <div className='mb-2 px-4'>
+                                        <div>
+                                            <button type='button' className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2' onClick={() => setFormSali(true)}><FaCopy /> &nbsp; <span>Salin Kategori</span></button>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </> : ""
+                            }
+                            <div className='mb-2'>
+                                <div className="py-4 px-4">
+                                    <div className="grid lg:grid-cols-2 gap-2">
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text font-semibold">Tahun Ajaran</span>
+                                            </label>
+                                            <select className="select select-sm select-bordered w-full" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                                <option value="">Tahun Ajaran</option>
+                                                {Tahun.map((item) => (
+                                                    <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className='grid grid-cols-2 gap-2'>
+                                            <div>
+                                                <label className="label">
+                                                    <span className="text-base label-text font-semibold">Nilai Maks</span>
+                                                </label>
+                                                <input type="number" className="input input-sm input-bordered w-full" value={nilaiAtas} onChange={(e) => setNilaiAtas(e.target.value)} />
+                                            </div>
+                                            <div>
+                                                <label className="label">
+                                                    <span className="text-base label-text font-semibold">Nilai Min</span>
+                                                </label>
+                                                <input type="number" className="input input-sm input-bordered w-full" value={nilaiBawah} onChange={(e) => setNilaiBawah(e.target.value)} />
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <div>
+                                                <label className="label">
+                                                    <span className="text-base label-text font-semibold">Nilai Huruf</span>
+                                                </label>
+                                                <input type="text" className="input input-sm input-bordered w-full" value={nilaiHuruf} onChange={(e) => setNilaiHuruf(e.target.value)} />
+                                            </div>
+                                            <div>
+                                                <label className="label">
+                                                    <span className="text-base label-text font-semibold">Interfal Skor</span>
+                                                </label>
+                                                <input type="text" className="input input-sm input-bordered w-full" value={skor} onChange={(e) => setSkor(e.target.value)} />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text font-semibold">Kategori</span>
+                                            </label>
+                                            <select className="select select-sm select-bordered w-full" value={kategori} onChange={(e) => setKategori(e.target.value)}>
+                                                <option value="">-Kategori-</option>
+                                                <option value="Istimewa">Istimewa</option>
+                                                <option value="Sangat Baik">Sangat Baik</option>
+                                                <option value="Lebih Baik">Lebih Baik</option>
+                                                <option value="Baik">Baik</option>
+                                                <option value="Cukup Baik">Cukup Baik</option>
+                                                <option value="Lebih Cukup">Lebih Cukup</option>
+                                                <option value="Cukup">Cukup</option>
+                                                <option value="Kurang">Kurang</option>
+                                                <option value="Kurang Sekali">Kurang Sekali</option>
+                                            </select>
+                                        </div>
+                                        <div className='col-span-2'>
+                                            <label className="label">
+                                                <span className="text-base label-text font-semibold">Keterangan</span>
+                                            </label>
+                                            <textarea
+                                                className="textarea textarea-bordered w-full"
+                                                placeholder="Masukkan Keterangan"
+                                                value={keterangan}
+                                                onChange={(e) => setKeterangan(e.target.value)}
+                                            ></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='p-3 border-t-2 text-center'>
+                                <button type='submit' className="btn btn-sm btn-primary capitalize">{judul == 'Tambah' ? <FaSave /> : <FaEdit />}{judul == 'Tambah' ? 'Simpan' : 'Edit'}</button>
+                            </div>
+                        </form>
+                    }
+
                 </div>
             </div>
             <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
@@ -348,7 +438,6 @@ const ListKategoriNilai = () => {
                             <div className='flex gap-2'>
                                 <button className="btn btn-success btn-sm capitalize rounded-md" onClick={modalAddOpen}><FaPlus /> <span>tambah data</span></button>
                                 <select className='select select-sm select-bordered max-w-xs' value={kodeThn} onChange={(e) => setKodeThn(e.target.value)}>
-                                    <option value="">Semua</option>
                                     {Tahun.map((item) => (
                                         <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
                                     ))}
@@ -390,43 +479,23 @@ const ListKategoriNilai = () => {
                                             <td className='px-6 py-2 font-semibold' align='center' colSpan='8'>Data Kategori Nilai Kosong</td>
                                         </tr>
                                         :
-                                        ListNilai.map((ktg, index) => {
-                                            return kodeThn == 0 ? (
-                                                <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500 border-x'>
-                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap" align='center'>{(page - 1) * 10 + index + 1}</th>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.tahunAjarans[0].tahun_ajaran}</td>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_huruf}</td>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.interfal_skor}</td>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.kategori}</td>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.keterangan == 'LULUS' ? <span className='text-success'>{ktg.keterangan}</span> : <span className='text-error'>{ktg.keterangan}</span>}</td>
-                                                    <td className='px-6 py-2' align='center'>
-                                                        <div>
-                                                            <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
-                                                            <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ) : ktg.code_tahun_ajaran == kodeThn ? (
-                                                <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500 border-x'>
-                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap" align='center'>{index + 1}</th>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.tahunAjarans[0].tahun_ajaran}</td>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_huruf}</td>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.interfal_skor}</td>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.kategori}</td>
-                                                    <td className='px-6 py-2 font-semibold' align='center'>{ktg.keterangan == 'LULUS' ? <span className='text-success'>{ktg.keterangan}</span> : <span className='text-error'>{ktg.keterangan}</span>}</td>
-                                                    <td className='px-6 py-2' align='center'>
-                                                        <div>
-                                                            <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
-                                                            <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ) : (
-                                                ""
-                                            )
-                                        })}
+                                        ListNilai.map((ktg, index) => (
+                                            <tr key={ktg.id_kategori_nilai} className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap" align='center'>{(page - 1) * 10 + index + 1}</th>
+                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.tahunAjarans[0].tahun_ajaran}</td>
+                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_bawah} - {ktg.nilai_atas}</td>
+                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.nilai_huruf}</td>
+                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.interfal_skor}</td>
+                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.kategori}</td>
+                                                <td className='px-6 py-2 font-semibold' align='center'>{ktg.keterangan == 'LULUS' ? <span className='text-success'>{ktg.keterangan}</span> : <span className='text-error'>{ktg.keterangan}</span>}</td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div>
+                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(ktg.id_kategori_nilai, 'Edit')}><FaEdit /></button>
+                                                        <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(ktg.id_kategori_nilai)}><FaTrash /></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>
