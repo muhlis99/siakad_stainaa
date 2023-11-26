@@ -37,6 +37,9 @@ const InputNilaiMhs = () => {
         let data = [...inputFields]
         data[index][event.target.name] = Math.max(Number(min), Math.min(Number(max), Number(event.target.value)))
         setInputFields(data)
+        let tgs = data[0].tugas > 0 ? 1 : 0
+        let uas = data[0].uas > 0 ? 1 : 0
+        console.log(tgs)
     }
 
     useEffect(() => {
