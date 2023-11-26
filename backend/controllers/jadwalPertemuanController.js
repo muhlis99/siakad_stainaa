@@ -3,13 +3,6 @@ const jadwalKuliahModel = require('../models/jadwalKuliahModel.js')
 const jadwalPertemuanModel = require('../models/jadwalPertemuanModel.js')
 const path = require('path')
 const fs = require('fs')
-const mahasiswaModel = require("../models/mahasiswaModel.js")
-const semesterModel = require("../models/semesterModel.js")
-const tahunAjaranModel = require("../models/tahunAjaranModel.js")
-const fakultasModel = require("../models/fakultasModel.js")
-const prodiModel = require("../models/prodiModel.js")
-const historyMahasiswa = require("../models/historyMahasiswaModel.js")
-
 
 module.exports = {
     get: async (req, res, next) => {

@@ -99,12 +99,15 @@ module.exports = {
                 model: ruangModel,
                 where: { status: "aktif" }
             }, {
-                model: mataKuliahModel,
+                model: sebaranMataKuliah,
                 where: {
                     status_makul: "paket",
                     status_bobot_makul: "wajib",
                     status: "aktif"
-                }
+                },
+                include: [
+                    { model: mataKuliahModel }
+                ]
             }, {
                 model: dosenModel,
                 as: "dosenPengajar"
