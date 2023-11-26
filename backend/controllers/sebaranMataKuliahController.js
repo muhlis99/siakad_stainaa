@@ -224,56 +224,22 @@ module.exports = {
     },
 
     post: async (req, res, next) => {
-        const { id_mata_kuliah, code_tahun_ajaran, code_semester,
-            code_jenjang_pendidikan, code_fakultas, code_prodi,
+        const { code_tahun_ajaran, code_semester, code_mata_kuliah,
             code_kategori_nilai, status_makul, status_bobot_makul } = req.body
-        const validasiSebaran = await krsModel.findOne({
-            include: [
-                {
-                    model: jenjangPendidikanModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: fakultasModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: prodiModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: tahunAjaranModel,
-                    where: { status: "aktif" }
-                },
-                {
-                    model: semesterModel,
-                    where: { status: "aktif" }
-                }
-            ],
-            where: {
-                code_tahun_ajaran: code_tahun_ajaran,
-                code_semester: code_semester,
-                code_jenjang_pendidikan: code_jenjang_pendidikan,
-                code_fakultas: code_fakultas,
-                code_prodi: code_prodi,
-                status: "aktif"
-            }
-        })
-        if (validasiSebaran) return res.status(404).json({ message: "KRS sudah aktif" })
-
-        await mataKuliahModel.update({
+        let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+        await sebaranMataKuliah.create({
+            code_sebaran: randomNumber,
+            code_mata_kuliah: code_mata_kuliah,
+            code_tahun_ajaran: code_tahun_ajaran,
             code_semester: code_semester,
             code_kategori_nilai: code_kategori_nilai,
             status_makul: status_makul,
             status_bobot_makul: status_bobot_makul,
-        }, {
-            where: {
-                id_mata_kuliah: id_mata_kuliah
-            }
+            status: "aktif"
         }).
             then(result => {
                 res.status(201).json({
-                    message: "Data mata kuliah success Ditambahkan",
+                    message: "Data sebaran  mata kuliah success Ditambahkan",
                 })
             }).
             catch(err => {
@@ -281,22 +247,53 @@ module.exports = {
             })
     },
 
+    salinData: async (req, res, next) => {
+        const { code_tahun_ajaran_baru, code_semester_baru,
+            code_tahun_ajaran_lama, code_semester_lama } = req.body
+        const dataLawas = await sebaranMataKuliah.findAll({
+            where: {
+                code_tahun_ajaran: code_tahun_ajaran_lama,
+                code_semester: code_semester_lama,
+                status: "aktif"
+            }
+        })
+        const datasLawas = dataLawas.map(async el => {
+            let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+            await sebaranMataKuliah.create({
+                code_sebaran: randomNumber,
+                code_mata_kuliah: el.code_mata_kuliah,
+                code_kategori_nilai: el.code_kategori_nilai,
+                code_tahun_ajaran: code_tahun_ajaran_baru,
+                code_semester: code_semester_baru,
+                status_makul: el.status_makul,
+                status_bobot_makul: el.status_bobot_makul,
+                status: el.status,
+            })
+        })
+        if (datasLawas) {
+            return res.status(201).json({ message: "Data seberan mata kuliah succes ditambahkan" })
+        } else {
+            return res.status(401).json({ message: "Data seberan mata kuliah succes ditambahkan" })
+        }
+    },
+
     put: async (req, res, next) => {
         const id = req.params.id
-        const { code_semester, code_kategori_nilai, status_makul, status_bobot_makul } = req.body
-        await mataKuliahModel.update({
+        const { code_semester, code_tahun_ajaran, code_kategori_nilai, status_makul, status_bobot_makul } = req.body
+        await sebaranMataKuliah.update({
             code_semester: code_semester,
+            code_tahun_ajaran: code_tahun_ajaran,
             code_kategori_nilai: code_kategori_nilai,
             status_makul: status_makul,
             status_bobot_makul: status_bobot_makul,
         }, {
             where: {
-                id_mata_kuliah: id
+                id_sebaran: id
             }
         }).
             then(result => {
                 res.status(201).json({
-                    message: "Data mata kuliah success Diupdate",
+                    message: "Data sebaran mata kuliah success Diupdate",
                 })
             }).
             catch(err => {
@@ -306,27 +303,23 @@ module.exports = {
 
     delete: async (req, res, next) => {
         const id = req.params.id
-        const mataKuliahUse = await mataKuliahModel.findOne({
+        const mataKuliahUse = await sebaranMataKuliah.findOne({
             where: {
-                id_mata_kuliah: id,
+                id_sebaran: id,
                 status: "aktif"
             }
         })
         if (!mataKuliahUse) return res.status(401).json({ message: "Data sebaran mata kuliah tidak ditemukan" })
-        await mataKuliahModel.update({
-            code_semester: "",
-            code_kategori_nilai: "",
-            status_makul: "",
-            status_bobot_makul: "",
-            status: "aktif"
+        await sebaranMataKuliah.update({
+            status: "tidak"
         }, {
             where: {
-                id_mata_kuliah: id
+                id_sebaran: id
             }
         }).
             then(result => {
                 res.status(201).json({
-                    message: "data mata kuliah succes dihapus"
+                    message: "data sebaran mata kuliah succes dihapus"
                 })
             }).
             catch(err => {
