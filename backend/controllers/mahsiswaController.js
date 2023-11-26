@@ -260,10 +260,27 @@ module.exports = {
             foto_kip: "",
             status: "",
         }).
-            then(result => {
+            then(async result => {
+                const lastIdHstory = await historyMahasiswa.create({
+                    nim: "",
+                    code_tahun_ajaran: "",
+                    code_semester: "",
+                    code_jenjang_pendidikan: "",
+                    code_fakultas: "",
+                    code_prodi: "",
+                })
+                const lastIdLogin = await registrasi.create({
+                    username: "",
+                    email: "",
+                    password: "",
+                    role: "",
+                    verify_code: ""
+                })
                 res.status(201).json({
                     message: "Data Mahasiswa First success Ditambahkan",
-                    data: result.id_mahasiswa
+                    data: result.id_mahasiswa,
+                    dataHistoryMhs: lastIdHstory.id_history,
+                    dataLoginMhs: lastIdLogin.id
                 })
             }).
             catch(err => {
@@ -458,8 +475,8 @@ module.exports = {
         }
 
         const { nik_wali, nama_wali, pekerjaan_wali, penghasilan_wali, pendidikan_wali, tanggal_w, bulan_w, tahun_w,
-            code_jenjang_pendidikan, code_fakultas, code_prodi, code_semester, code_tahun_ajaran
-        } = req.body
+            code_jenjang_pendidikan, code_fakultas, code_prodi, code_semester, code_tahun_ajaran,
+            idLogin, idHistory } = req.body
         const id = req.params.id
         const tanggal_lahir_wali = tahun_w + "-" + bulan_w + "-" + tanggal_w
         const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
@@ -533,36 +550,23 @@ module.exports = {
             where: {
                 id_mahasiswa: id
             }
-        })
-
-        const hashPassword = await argon.hash(nim)
-        const akunMahasiswa = await registrasi.create({
-            username: nim,
-            email: mahasiswaUse.email,
-            password: hashPassword,
-            role: "mahasiswa",
-            verify_code: "",
-            status: "aktif"
-        })
-
-        const dataHistoryMhs = await historyMahasiswa.findOne({
-            where: {
-                nim: nim,
-                code_tahun_ajaran: code_tahun_ajaran,
-                code_semester: code_semester,
-                code_jenjang_pendidikan: code_jenjang_pendidikan,
-                code_fakultas: code_fakultas,
-                code_prodi: code_prodi,
+        }).then(async result => {
+            const hashPassword = await argon.hash(nim)
+            const akunMahasiswa = await registrasi.update({
+                username: nim,
+                email: mahasiswaUse.email,
+                password: hashPassword,
+                role: "mahasiswa",
+                verify_code: "",
                 status: "aktif"
-            }
-        })
-        if (dataHistoryMhs) {
-            res.status(201).json({
-                message: "Data Mahasiswa success di tambahkan form 4"
+            }, {
+                where: {
+                    id: idLogin
+                }
             })
-        } else {
+
             let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
-            await historyMahasiswa.create({
+            await historyMahasiswa.update({
                 code_history: randomNumber,
                 nim: nim,
                 code_tahun_ajaran: code_tahun_ajaran,
@@ -571,16 +575,18 @@ module.exports = {
                 code_fakultas: code_fakultas,
                 code_prodi: code_prodi,
                 status: "aktif"
-            }).
-                then(result => {
-                    res.status(201).json({
-                        message: "Data Mahasiswa success di tambahkan form 4"
-                    })
-                }).
-                catch(err => {
-                    next(err)
-                })
-        }
+            }, {
+                where: {
+                    id_history: idHistory
+                }
+            })
+
+            res.status(201).json({
+                message: "Data Mahasiswa success di tambahkan form 4"
+            })
+        })
+
+
     },
 
     createFile: async (req, res, next) => {

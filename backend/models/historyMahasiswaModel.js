@@ -37,6 +37,14 @@ const historyMahasiswa = db.define('historyMahasiswa', {
     'status': {
         type: DataTypes.ENUM,
         values: ['aktif', 'tidak']
+    },
+    'lastId': {
+        type: DataTypes.VIRTUAL,
+        get() {
+            return this.id_history;
+        }, set(value) {
+            throw new Error('Do not try to set the `id mahasiswa` value!');
+        }
     }
 }, {
     tableName: 'tb_history_mahasiswa',
