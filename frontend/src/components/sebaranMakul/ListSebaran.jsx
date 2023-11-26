@@ -164,6 +164,7 @@ const ListSebaran = () => {
         if (kodeProdi != 0 & kodeTahun != 0) {
             const response = await axios.get(`v1/sebaranMataKuliah/smtByThnAjr/${kodeTahun}`)
             setSemester(response.data.data)
+            console.log(response.data.data);
         }
     }
 
@@ -188,7 +189,10 @@ const ListSebaran = () => {
                 )
             }
             if (smt.length != 0) {
-                Promise.all(promises).then(() => setSebaran(sebar))
+                // Promise.all(promises).then(() => setSebaran(sebar))
+                Promise.all(promises).then(() => console.log(sebar))
+
+
                 Promise.all(promises).then(() => setSatuan(sksnya))
             }
         }
