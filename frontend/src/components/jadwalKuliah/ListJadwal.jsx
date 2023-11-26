@@ -102,10 +102,14 @@ const ListJadwal = () => {
     }
 
     const getMataKuliah = async () => {
-        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0) {
-            const response = await axios.get(`v1/jadwalKuliah/all/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
-            setDataKelas([])
-            setMakul(response.data.data)
+        try {
+            if (kodeJenjang & kodeFakultas & kodeProdi & kodeSemester & kodeTahun) {
+                const response = await axios.get(`v1/jadwalKuliah/all/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+                setDataKelas([])
+                setMakul(response.data.data)
+            }
+        } catch (error) {
+
         }
     }
 
@@ -200,34 +204,6 @@ const ListJadwal = () => {
                                 </select>
                             </div>
                         </div>
-                        {/* <div className="grid gap-2">
-                            <div className='mt-4'>
-                                {Makul.map((mk, index) => (
-                                    <div key={mk.id_mata_kuliah} className="collapse bg-[#2D7F5F] pb-0 rounded-lg mb-2">
-                                        <input type="checkbox" checked className='p-0 min-h-0' readOnly />
-                                        <div className="collapse-title p-2 min-h-0 text-white flex gap-2">
-                                            <span>[{mk.code_mata_kuliah}] | {mk.nama_mata_kuliah} | SKS {mk.sks}</span>
-                                        </div>
-                                        {DataKelas != 0 ? DataKelas[index].map((item, o) => (
-                                            <div key={o} className="grid grid-cols-4 gap-2 px-4 py-2 bg-base-200">
-                                                <div className='flex gap-2' title={`Kelas ${item.nama_kelas}`}>
-                                                    <span className='my-auto text-md'><FaHotel /></span><span className='my-auto'>{item.nama_kelas}</span>
-                                                </div>
-                                                <div className='flex gap-2 justify-center' title={`Kapasitas ${item.kapasitas}`}>
-                                                    <span className='my-auto text-md'><FaCouch /></span><span className='my-auto'>{item.kapasitas}</span>
-                                                </div>
-                                                <div className='flex gap-2 justify-center' title={`Jumlah MHS ${item.jumlahMhs}`}>
-                                                    <span className='my-auto text-md'><FaUsers /></span><span className='my-auto'>{item.jumlahMhs}</span>
-                                                </div>
-                                                <div>
-                                                    <Link to={`/detailjadwal`} state={{ thn: kodeTahun, sem: kodeSemester, jen: kodeJenjang, fak: kodeFakultas, pro: kodeProdi, mak: item.code_mata_kuliah, kls: item.code, idn: item.id_kelas, collaps: 'kuliah', activ: '/jadwalkuliah' }} className='btn btn-xs btn-info btn-circle float-right' title='Detail'><FaInfo /></Link>
-                                                </div>
-                                            </div>
-                                        )) : ""}
-                                    </div>
-                                ))}
-                            </div>
-                        </div> */}
                     </div>
                 </div>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
@@ -246,9 +222,11 @@ const ListJadwal = () => {
                                     </tr>
                                 </thead>
                                 {Makul.length == 0 ?
-                                    <tr className='bg-white border-b border-x text-gray-500'>
-                                        <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Jadwal Kuliah Kosong</td>
-                                    </tr>
+                                    <tbody>
+                                        <tr className='bg-white border-b border-x text-gray-500'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Jadwal Kuliah Kosong</td>
+                                        </tr>
+                                    </tbody>
                                     :
                                     Makul.map((kls, index) => (
                                         <tbody key={index}>
