@@ -10,27 +10,17 @@ const kelasKuliahModel = require('../models/kelasKuliahModel.js')
 const kelasDetailKuliahModel = require('../models/kelasDetailKuliahModel.js')
 const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
+const sebaranMatakuliahModel = require('../models/sebaranMataKuliah.js')
+
 const { Op, QueryTypes, Sequelize, literal } = require('sequelize')
 
 
 module.exports = {
     getAllMatakuliah: async (req, res, next) => {
         const { codeThnAjr, codeSmt, jnjPen, codeFks, codePrd } = req.params
-        await mataKuliahModel.findAll({
-            attributes: ['id_mata_kuliah', 'code_mata_kuliah', 'nama_mata_kuliah', 'sks'],
+        await sebaranMatakuliahModel.findAll({
+            attributes: ['code_mata_kuliah'],
             include: [{
-                attributes: ['code_jenjang_pendidikan'],
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ['code_fakultas'],
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ['code_prodi'],
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
                 attributes: ['code_tahun_ajaran'],
                 model: tahunAjaranModel,
                 where: { status: "aktif" }
@@ -38,17 +28,37 @@ module.exports = {
                 attributes: ['code_semester'],
                 model: semesterModel,
                 where: { status: "aktif" }
+            }, {
+                model: mataKuliahModel,
+                include: [
+                    {
+                        attributes: ['code_jenjang_pendidikan'],
+                        model: jenjangPendidikanModel,
+                        where: { status: "aktif" }
+                    }, {
+                        attributes: ['code_fakultas'],
+                        model: fakultasModel,
+                        where: { status: "aktif" }
+                    }, {
+                        attributes: ['code_prodi'],
+                        model: prodiModel,
+                        where: { status: "aktif" }
+                    },
+                ],
+                where: {
+                    code_jenjang_pendidikan: jnjPen,
+                    code_fakultas: codeFks,
+                    code_prodi: codePrd,
+                    status: "aktif"
+                }
             }],
             where: {
                 code_tahun_ajaran: codeThnAjr,
                 code_semester: codeSmt,
-                code_jenjang_pendidikan: jnjPen,
-                code_fakultas: codeFks,
-                code_prodi: codePrd,
                 status: "aktif"
             },
             order: [
-                ["id_mata_kuliah", "DESC"]
+                ["id_sebaran", "DESC"]
             ]
         }).
             then(result => {
