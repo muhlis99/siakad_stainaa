@@ -102,14 +102,9 @@ const ListMataKuliah = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="flex justify-between">
                             <div>
                                 <Link to="/matakuliah/add" state={{ collaps: 'kuliah', activ: '/matakuliah' }} className="btn btn-success btn-sm capitalize rounded-md"><FaPlus /> <span className='ml-1'>tambah data</span></Link>
-                            </div>
-                            <div>
-                                {/* <select className="select select-bordered select-xs max-w-xs">
-                                    <option value="">Tahun Ajaran</option>
-                                </select> */}
                             </div>
                             <div>
                                 <div className="form-control">
@@ -132,7 +127,7 @@ const ListMataKuliah = () => {
                                 <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
                                         <th scope="col" className="px-6 py-2 text-sm">#</th>
-                                        <th scope="col" className="px-6 py-2 text-sm">Tahun Ajaran</th>
+                                        {/* <th scope="col" className="px-6 py-2 text-sm">Tahun Ajaran</th> */}
                                         <th scope="col" className="px-6 py-2 text-sm">Kode</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Nama</th>
                                         <th scope="col" className="px-6 py-2 text-sm">SKS</th>
@@ -151,7 +146,7 @@ const ListMataKuliah = () => {
                                                 <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">
                                                     {(page - 1) * 10 + index + 1}
                                                 </th>
-                                                <td className='px-6 py-2 font-semibold'>{mkl.tahunAjarans[0].tahun_ajaran}</td>
+                                                {/* <td className='px-6 py-2 font-semibold'>{mkl.tahunAjarans[0].tahun_ajaran}</td> */}
                                                 <td className='px-6 py-2 font-semibold'>{mkl.code_mata_kuliah}</td>
                                                 <td className='px-6 py-2 font-semibold'>{mkl.nama_mata_kuliah}</td>
                                                 <td className='px-6 py-2 font-semibold'>{mkl.sks}</td>
