@@ -102,22 +102,20 @@ const ListJadwal = () => {
     }
 
     const getMataKuliah = async () => {
-        try {
-            if (kodeJenjang & kodeFakultas & kodeProdi & kodeSemester & kodeTahun) {
-                const response = await axios.get(`v1/jadwalKuliah/all/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
-                setDataKelas([])
-                setMakul(response.data.data)
-            }
-        } catch (error) {
-
+        if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0) {
+            const response = await axios.get(`v1/jadwalKuliah/all/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+            // setDataKelas([])
+            setMakul(response.data.data)
+            // console.log(response.data.data);
         }
     }
 
     const getKodeMakul = () => {
         var i = Makul.map(item => (
-            item.code_mata_kuliah
+            item.mataKuliahs[0].code_mata_kuliah
         ))
         setKodeMakul(i)
+        console.log(i);
     }
 
     const getDataKelas = async () => {

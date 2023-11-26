@@ -167,7 +167,7 @@ const ListKhs = () => {
                         </div>
                     </div>
                 </div>
-                <div className="card bg-base-100 card-bordered shadow-md mt-2">
+                <div className="card bg-base-100 card-bordered shadow-md mt-2 mb-2">
                     <div className="card-body p-4">
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
