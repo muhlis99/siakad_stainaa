@@ -99,12 +99,24 @@ module.exports = {
                 model: ruangModel,
                 where: { status: "aktif" }
             }, {
-                model: mataKuliahModel,
+                model: sebaranMataKuliah,
                 where: {
+                    code_tahun_ajaran: thnAjr,
+                    code_semester: smt,
                     status_makul: "paket",
                     status_bobot_makul: "wajib",
                     status: "aktif"
-                }
+                },
+                include: [
+                    {
+                        model: mataKuliahModel,
+                        where: {
+                            code_jenjang_pendidikan: jenjPen,
+                            code_fakultas: fks,
+                            code_prodi: prd,
+                        }
+                    }
+                ]
             }, {
                 model: dosenModel,
                 as: "dosenPengajar"
