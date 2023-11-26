@@ -25,6 +25,14 @@ const loginModel = db.define('login', {
     'status': {
         type: DataTypes.ENUM,
         values: ['aktif', 'tidak']
+    },
+    'lastId': {
+        type: DataTypes.VIRTUAL,
+        get() {
+            return this.id;
+        }, set(value) {
+            throw new Error('Do not try to set the `id mahasiswa` value!');
+        }
     }
 }, {
     tableName: 'tb_login',

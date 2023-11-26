@@ -36,7 +36,12 @@ module.exports = {
             include: [
                 {
                     model: mataKuliahModel,
-                    where: { status: "aktif" }
+                    where: {
+                        code_jenjang_pendidikan: sebaranJenPen,
+                        code_fakultas: sebaranFks,
+                        code_prodi: sebaranProdi,
+                        status: "aktif"
+                    }
                 },
                 {
                     attributes: ['code_tahun_ajaran', 'tahun_ajaran'],
