@@ -10,6 +10,7 @@ route.get('/smtByThnAjr/:thnAjr', sebaranMataKuliahController.smtByThnAjr)
 route.get('/katNilaiByThnAjr/:thnAjr', sebaranMataKuliahController.katNilaiByThnAjr)
 route.get('/autocompleteMakul/:codeThnAjr/:codeJnjPen/:codeFks/:codePrd', sebaranMataKuliahController.autocompleteMakul)
 route.post('/create', sebaranMataKuliahController.post)
+route.post('/salinData', sebaranMataKuliahController.salinData)
 route.put('/update/:id', sebaranMataKuliahController.put)
 route.put('/delete/:id', sebaranMataKuliahController.delete)
 
