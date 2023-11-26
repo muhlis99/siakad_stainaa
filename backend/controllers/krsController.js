@@ -8,6 +8,9 @@ const mahasiswaModel = require('../models/mahasiswaModel.js')
 const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
+const sebaranMatakuliah = require('../models/sebaranMataKuliah.js')
+const sebaranMataKuliah = require('../models/sebaranMataKuliah.js')
+
 
 module.exports = {
     getAll: async (req, res, next) => {
@@ -34,22 +37,29 @@ module.exports = {
             }
         })
 
-        const paketmakul = await mataKuliahModel.findAndCountAll({
+        const paketmakul = await sebaranMataKuliah.findAndCountAll({
             where: {
                 code_tahun_ajaran: tahunAjaran,
                 code_semester: semester,
-                code_jenjang_pendidikan: jenjangPendik,
-                code_fakultas: fakultas,
-                code_prodi: prodi,
                 status_makul: "paket",
                 status_bobot_makul: "wajib",
                 status: "aktif"
             },
-            include: [{
-                model: semesterModel,
-                attributes: ['semester'],
-                status: "aktif"
-            }]
+            include: [
+                {
+                    model: semesterModel,
+                    attributes: ['semester'],
+                    status: "aktif"
+                },
+                {
+                    model: mataKuliahModel,
+                    where: {
+                        code_jenjang_pendidikan: jenjangPendik,
+                        code_fakultas: fakultas,
+                        code_prodi: prodi,
+                    }
+                }
+            ]
         })
 
         if (paketmakul.count == 0) return res.status(401).json({ message: "data tidak ditemukan" })
@@ -139,13 +149,18 @@ module.exports = {
         const fks = req.params.fks
         const prd = req.params.prd
 
-        await mataKuliahModel.findAndCountAll({
+        await sebaranMataKuliah.findAndCountAll({
+            include: [{
+                model: mataKuliahModel,
+                where: {
+                    code_jenjang_pendidikan: jenjPen,
+                    code_fakultas: fks,
+                    code_prodi: prd,
+                }
+            }],
             where: {
                 code_tahun_ajaran: thnAjr,
                 code_semester: smt,
-                code_jenjang_pendidikan: jenjPen,
-                code_fakultas: fks,
-                code_prodi: prd,
                 status_bobot_makul: "wajib",
                 status_makul: "paket",
                 status: "aktif"
@@ -172,18 +187,25 @@ module.exports = {
         const prd = req.params.prd
 
 
-        const makul = await mataKuliahModel.findAll({
+        const makul = await sebaranMataKuliah.findAll({
             attributes: ['code_mata_kuliah'],
             where: {
                 code_tahun_ajaran: thnAjr,
                 code_semester: smt,
-                code_jenjang_pendidikan: jenjPen,
-                code_fakultas: fks,
-                code_prodi: prd,
                 status_bobot_makul: "wajib",
                 status_makul: "paket",
                 status: "aktif"
-            }
+            },
+            include: [
+                {
+                    model: mataKuliahModel,
+                    where: {
+                        code_jenjang_pendidikan: jenjPen,
+                        code_fakultas: fks,
+                        code_prodi: prd,
+                    }
+                }
+            ]
         })
 
 
@@ -231,20 +253,25 @@ module.exports = {
             const validasiMakulKrs = makulKrs.map(al => {
                 return al.code_mata_kuliah
             })
-            const paketmakulNew = await mataKuliahModel.findAll({
+            const paketmakulNew = await sebaranMataKuliah.findAll({
                 where: {
                     code_tahun_ajaran: thnAjr,
                     code_semester: smt,
-                    code_jenjang_pendidikan: jenjPen,
-                    code_fakultas: fks,
-                    code_prodi: prd,
                     status_bobot_makul: "wajib",
                     status_makul: "paket",
                     status: "aktif",
                     code_mata_kuliah: {
                         [Op.notIn]: validasiMakulKrs
                     }
-                }
+                },
+                include: [{
+                    model: mataKuliahModel,
+                    where: {
+                        code_jenjang_pendidikan: jenjPen,
+                        code_fakultas: fks,
+                        code_prodi: prd,
+                    }
+                }]
             })
 
             const data_body = paketmakulNew.map(Dn => {
