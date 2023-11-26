@@ -32,7 +32,7 @@ const ViewKhs = () => {
     const getViewKhs = async () => {
         try {
             const response = await axios.get(`v1/khs/viewKhs/${kodeThn}/${kodeSmt}/${kodeJnjg}/${kodeFk}/${kodeProdi}/${nim}`)
-            console.log(response.data);
+            console.log(response.data.data);
             // setViewKhs(response.data.data)
             // setJumSks(response.data.jumlahSks)
             // setJumSksIndex(response.data.jumlahSksIndex)
@@ -134,7 +134,7 @@ const ViewKhs = () => {
 
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <div className="card bg-base-100 card-border-blacked shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className="overflow-x-auto mb-2">
@@ -166,9 +166,9 @@ const ViewKhs = () => {
                                         {ViewKhs.map((item, index) => (
                                             <tr className='bg-white text-gray-900'>
                                                 <th scope="row" className="px-1 py-2 font-medium whitespace-nowrap border" align='center'>{index + 1}</th>
-                                                <td className='px-1 py-2 border' align='center'>{item.mataKuliahs[0].code_mata_kuliah}</td>
-                                                <td className='px-1 py-2 border'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                                <td className='px-1 py-2 border' align='center'>{item.mataKuliahs[0].sks}</td>
+                                                <td className='px-1 py-2 border' align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].code_mata_kuliah}</td>
+                                                <td className='px-1 py-2 border'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                <td className='px-1 py-2 border' align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
                                                 <td className='px-1 py-2 border' align='center'>{item.nilai_akhir}</td>
                                                 <td className='px-1 py-2 border' align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
                                                 <td className='px-1 py-2 border' align='center'>{item.kategoriNilais[0].interfal_skor}</td>
@@ -191,7 +191,7 @@ const ViewKhs = () => {
                             </table>
                         </div>
                     </div>
-                </div> */}
+                </div>
             </section >
         </div>
     )
