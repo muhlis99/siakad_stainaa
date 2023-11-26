@@ -36,14 +36,14 @@ const ListSemester = () => {
 
     useEffect(() => {
         getDataSemester()
-    }, [page, keyword])
+    }, [page, keyword, kodeThn])
 
     useEffect(() => {
         getTahunAjaran()
     }, [])
 
     const getDataSemester = async () => {
-        const response = await axios.get(`v1/semester/all?page=${page}&search=${keyword}`)
+        const response = await axios.get(`v1/semester/all?page=${page}&search=${keyword}&codeThnAjr=${kodeThn}`)
         setSemester(response.data.data)
         setPage(response.data.current_page)
         setrows(response.data.total_data)
@@ -54,6 +54,7 @@ const ListSemester = () => {
     const getTahunAjaran = async () => {
         const response = await axios.get(`v1/tahunAjaran/all`)
         setTahun(response.data.data)
+        setKodeThn(response.data.data[0].code_tahun_ajaran)
     }
 
     const pageCount = Math.ceil(rows / perPage);
@@ -408,41 +409,22 @@ const ListSemester = () => {
                                             <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Semester Kosong</td>
                                         </tr>
                                         :
-                                        Semester.map((smt, index) => {
-                                            return kodeThn == 0 ? (
-                                                <tr key={smt.id_semester} className='bg-white border-b text-gray-500 border-x'>
-                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{(page - 1) * 10 + index + 1}</th>
-                                                    <td className='px-6 py-2 font-semibold'>Semester {smt.semester}</td>
-                                                    <td className='px-6 py-2 font-semibold'>{smt.tahunAjarans[0].tahun_ajaran}</td>
-                                                    <td className='px-6 py-2 font-semibold'><Moment date={smt.tanggal_aktif} format="DD MMMM YYYY" /></td>
-                                                    <td className='px-6 py-2 font-semibold'>{smt.keterangan}</td>
-                                                    <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{smt.status}</span></td>
-                                                    <td className='px-6 py-2' align='center'>
-                                                        <div>
-                                                            <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(smt.id_semester)}><FaEdit /></button>
-                                                            <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(smt.id_semester)}><FaTrash /></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ) : smt.code_tahun_ajaran == kodeThn ? (
-                                                <tr key={smt.id_semester} className='bg-white border-b text-gray-500 border-x'>
-                                                    <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                                    <td className='px-6 py-2 font-semibold'>Semester {smt.semester}</td>
-                                                    <td className='px-6 py-2 font-semibold'>{smt.tahunAjarans[0].tahun_ajaran}</td>
-                                                    <td className='px-6 py-2 font-semibold'><Moment date={smt.tanggal_aktif} format="DD MMMM YYYY" /></td>
-                                                    <td className='px-6 py-2 font-semibold'>{smt.keterangan}</td>
-                                                    <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{smt.status}</span></td>
-                                                    <td className='px-6 py-2' align='center'>
-                                                        <div>
-                                                            <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(smt.id_semester)}><FaEdit /></button>
-                                                            <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(smt.id_semester)}><FaTrash /></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ) : (
-                                                ""
-                                            )
-                                        })}
+                                        Semester.map((smt, index) => (
+                                            <tr key={smt.id_semester} className='bg-white border-b text-gray-500 border-x'>
+                                                <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{(page - 1) * 10 + index + 1}</th>
+                                                <td className='px-6 py-2 font-semibold'>Semester {smt.semester}</td>
+                                                <td className='px-6 py-2 font-semibold'>{smt.tahunAjarans[0].tahun_ajaran}</td>
+                                                <td className='px-6 py-2 font-semibold'><Moment date={smt.tanggal_aktif} format="DD MMMM YYYY" /></td>
+                                                <td className='px-6 py-2 font-semibold'>{smt.keterangan}</td>
+                                                <td className='px-6 py-2 font-semibold'><span className="badge badge-success badge-sm font-semibold capitalize">{smt.status}</span></td>
+                                                <td className='px-6 py-2' align='center'>
+                                                    <div>
+                                                        <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit' onClick={() => modalEditOpen(smt.id_semester)}><FaEdit /></button>
+                                                        <button className="btn btn-xs btn-circle text-white btn-error" title='Hapus' onClick={() => nonaktifkan(smt.id_semester)}><FaTrash /></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>
