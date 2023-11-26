@@ -431,7 +431,7 @@ module.exports = {
                                 limit: perPage,
                                 group: ['nim']
                             })
-                            return await Promise.all(al.map(p => {
+                            return await Promise.all(al.map(async p => {
                                 let random = Math.floor(100 + Math.random() * 900)
                                 let datas = {
                                     code_kelas: elment.code_kelas,
@@ -439,7 +439,7 @@ module.exports = {
                                     nim: p.nim,
                                     status: "aktif"
                                 }
-                                kelasDetailKuliahModel.bulkCreate([datas])
+                                await kelasDetailKuliahModel.bulkCreate([datas])
                             }))
                         })
                     })
