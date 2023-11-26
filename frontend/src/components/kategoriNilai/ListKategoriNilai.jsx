@@ -209,19 +209,19 @@ const ListKategoriNilai = () => {
         e.preventDefault()
         setLoading(true)
         try {
+            modalClose()
             await axios.post(`v1/kategoriNilai/salinData`, {
                 code_tahun_ajaran_lama: kodeThnOld,
                 code_tahun_ajaran_baru: kodeThnNow
             }).then(function (response) {
                 setLoading(false)
-                console.log(response.data);
-                // Swal.fire({
-                //     title: 'Berhasil',
-                //     icon: 'success'
-                // }).then(() => {
-                //     modalClose()
-                //     getKategoriNilai()
-                // })
+                Swal.fire({
+                    title: response.data.message,
+                    icon: 'success'
+                }).then(() => {
+                    modalClose()
+                    getKategoriNilai()
+                })
             })
         } catch (error) {
 
@@ -239,6 +239,9 @@ const ListKategoriNilai = () => {
         setKategori("")
         setKeterangan("")
         setFormSali(false)
+        setKodeThnNow("")
+        setKodeThnOld("")
+        getTahunAjaran()
     }
 
     const nonaktifkan = (ktgId) => {
