@@ -53,6 +53,7 @@ const FormAturJadwal = () => {
         const getJadwalByKelas = async () => {
             try {
                 const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
+                console.log(response);
                 setPesan(response.data.message)
                 setTglMulai(response.data.data.tanggal_mulai)
                 setTglSelesai(response.data.data.tanggal_selesai)

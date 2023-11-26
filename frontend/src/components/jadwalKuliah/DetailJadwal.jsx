@@ -26,19 +26,19 @@ const DetailJadwal = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    console.log(location.state);
 
     useEffect(() => {
         const getJadwalByKelas = async () => {
             try {
                 const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
+                console.log(response.data.data.tahunAjarans[0].tahun_ajaran);
                 setTahun(response.data.data.tahunAjarans[0].tahun_ajaran)
                 setSemester(response.data.data.semesters[0].semester)
                 setJenjang(response.data.data.jenjangPendidikans[0].nama_jenjang_pendidikan)
                 setFakultas(response.data.data.fakultas[0].nama_fakultas)
                 setProdi(response.data.data.prodis[0].nama_prodi)
                 setKelas(response.data.data.kelas[0].nama_kelas)
-                setMakul(response.data.data.mataKuliahs[0].nama_mata_kuliah)
+                setMakul(response.data.data.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah)
                 setTglMulai(response.data.data.tanggal_mulai)
                 setTglSelesai(response.data.data.tanggal_selesai)
                 setJumPertemuan(response.data.data.jumlah_pertemuan)

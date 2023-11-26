@@ -220,7 +220,7 @@ const UpdateNilaiMhs = () => {
                 <h1 className='text-2xl font-bold'>Penilaian Mahasiswa</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md">
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <form onSubmit={simpanNilai}>
                             <div className="grid grid-cols-2 gap-3 mb-5 p-3 rounded-md">

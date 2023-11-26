@@ -134,7 +134,7 @@ const ViewKhs = () => {
                         </div>
                     </div>
                 </div>
-                <div className="card bg-base-100 card-border-blacked shadow-md">
+                <div className="card bg-base-100 card-border-blacked shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm">
@@ -192,7 +192,7 @@ const ViewKhs = () => {
                     </div>
                 </div>
             </section >
-        </div >
+        </div>
     )
 }
 
