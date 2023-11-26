@@ -25,28 +25,29 @@ const ViewKhs = () => {
 
 
     useEffect(() => {
-        const getViewKhs = async () => {
-            try {
-                const response = await axios.get(`v1/khs/viewKhs/${kodeThn}/${kodeSmt}/${kodeJnjg}/${kodeFk}/${kodeProdi}/${nim}`)
-                setViewKhs(response.data.data)
-                setJumSks(response.data.jumlahSks)
-                setJumSksIndex(response.data.jumlahSksIndex)
-                setIps(response.data.IPS)
-                setNim(response.data.nim)
-                setNama(response.data.mahasiswa)
-                setJenjang(response.data.jenjangPendidikan)
-                setFakultas(response.data.fakultas)
-                setProdi(response.data.prodi)
-                setTahun(response.data.tahunAjaran)
-                setSemt(response.data.semester)
-            } catch (error) {
-
-            }
-        }
         getViewKhs()
     }, [nim, kodeFk, kodeJnjg, kodeProdi, kodeSmt, kodeThn])
 
 
+    const getViewKhs = async () => {
+        try {
+            const response = await axios.get(`v1/khs/viewKhs/${kodeThn}/${kodeSmt}/${kodeJnjg}/${kodeFk}/${kodeProdi}/${nim}`)
+            console.log(response.data);
+            // setViewKhs(response.data.data)
+            // setJumSks(response.data.jumlahSks)
+            // setJumSksIndex(response.data.jumlahSksIndex)
+            // setIps(response.data.IPS)
+            // setNim(response.data.nim)
+            // setNama(response.data.mahasiswa)
+            // setJenjang(response.data.jenjangPendidikan)
+            // setFakultas(response.data.fakultas)
+            // setProdi(response.data.prodi)
+            // setTahun(response.data.tahunAjaran)
+            // setSemt(response.data.semester)
+        } catch (error) {
+
+        }
+    }
 
     return (
         <div className='mt-2 container'>
@@ -54,7 +55,7 @@ const ViewKhs = () => {
                 <h1 className='text-2xl font-bold'>Kartu Hasil Studi</h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-border-blacked shadow-md mb-2">
+                {/* <div className="card bg-base-100 card-border-blacked shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className='py-2'>
                             <Link to="/khs" state={{ jen: kodeJnjg, fak: kodeFk, pro: kodeProdi, thn: kodeThn, sem: kodeSmt, collaps: 'kuliah', activ: '/khs' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> Kembali</Link>
@@ -190,7 +191,7 @@ const ViewKhs = () => {
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </section >
         </div>
     )
