@@ -34,13 +34,12 @@ const FormMhs4 = () => {
     const location = useLocation()
 
     useEffect(() => {
-        console.log(location.state);
         getPekerjaan()
         getPenghasilan()
         getPendidikan()
         getJenjangPendidikan()
         getTahunAjaran()
-    }, [location])
+    }, [])
 
     useEffect(() => {
         const getMhsById = async () => {

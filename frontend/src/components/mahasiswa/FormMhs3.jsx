@@ -35,11 +35,10 @@ const FormMhs3 = () => {
     const location = useLocation()
 
     useEffect(() => {
-        console.log(location.state);
         getPekerjaan()
         getPenghasilan()
         getPendidikan()
-    }, [location])
+    }, [])
 
     useEffect(() => {
         const getMhsById = async () => {

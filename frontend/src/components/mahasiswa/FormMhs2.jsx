@@ -31,7 +31,6 @@ const FormMhs2 = () => {
     const location = useLocation()
 
     useEffect(() => {
-        console.log(location.state);
         getNegara()
     }, [])
 
