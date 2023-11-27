@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { FaTimes, FaReply, FaArrowRight, FaArrowLeft } from "react-icons/fa"
 import axios from 'axios'
 import Swal from "sweetalert2";
@@ -27,15 +27,19 @@ const FormMhs2 = () => {
     const [jenting, setJenting] = useState("")
     const [alat, setAlat] = useState("")
     const navigate = useNavigate()
-    const { idMhs } = useParams()
-    const { stat } = useParams()
     const [loading, setLoading] = useState(false)
+    const location = useLocation()
+
+    useEffect(() => {
+        console.log(location.state);
+        getNegara()
+    }, [])
 
     useEffect(() => {
         const getMhsById = async () => {
             try {
-                if (stat === "edit") {
-                    const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
+                if (location.state.stat === "edit") {
+                    const response = await axios.get(`v1/mahasiswa/getById/${location.state.idMhs}`)
                     setNamanya(response.data.data.nama)
                     setNegaranya(response.data.data.negara)
                     setProvinsinya(response.data.data.provinsis[0].code_provinsi)
@@ -50,7 +54,7 @@ const FormMhs2 = () => {
                     setJenting(response.data.data.jenis_tinggal)
                     setAlat(response.data.data.alat_transportasi)
                 } else {
-                    const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
+                    const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${location.state.idMhs}`)
                     setNamanya(response.data.data.nama)
                     setNegaranya(response.data.data.negaras[0].code_negara)
                     setProvinsinya(response.data.data.provinsis[0].code_provinsi)
@@ -70,11 +74,8 @@ const FormMhs2 = () => {
             }
         }
         getMhsById()
-    }, [idMhs])
+    }, [location])
 
-    useEffect(() => {
-        getNegara()
-    }, [])
 
     useEffect(() => {
         getProvinsiByNegara()
@@ -144,7 +145,7 @@ const FormMhs2 = () => {
         e.preventDefault()
         try {
             setLoading(true)
-            await axios.put(`v1/mahasiswa/createForm2/${idMhs}`, {
+            await axios.put(`v1/mahasiswa/createForm2/${location.state.idMhs}`, {
                 jalan: jalannya,
                 dusun: dusunnya,
                 rt: rtnya,
@@ -163,7 +164,7 @@ const FormMhs2 = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate(`/mahasiswa/form3/${stat}/${idMhs}`, { state: { collaps: 'induk', activ: '/mahasiswa' } })
+                    navigate(`/mahasiswa/form3`, { state: { collaps: 'induk', activ: '/mahasiswa', stat: location.state.stat, idMhs: location.state.idMhs, history: location.state.history, reg: location.state.reg } })
                 });
             })
         } catch (error) {
@@ -378,12 +379,12 @@ const FormMhs2 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type="button" className='btn btn-sm btn-error capitalize rounded-md' onClick={() => batal(idMhs)}><FaTimes /> <span className="">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> <span className=''>Kembali Ke Data Mahasiswa</span></Link>}
+                                    {location.state.stat == "add" ? <button type="button" className='btn btn-sm btn-error capitalize rounded-md' onClick={() => batal(location.state.idMhs)}><FaTimes /> <span className="">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> <span className=''>Kembali Ke Data Mahasiswa</span></Link>}
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
                                         <div>
-                                            <Link to={`/mahasiswa/form1/${stat}/${idMhs}`} state={{ collaps: 'induk', activ: '/mahasiswa', valid: 'no' }} className='btn btn-sm btn-primary w-full capitalize rounded-md'><FaArrowLeft /><span className="">Kembali</span></Link>
+                                            <Link to={`/mahasiswa/form1`} state={{ collaps: 'induk', activ: '/mahasiswa', valid: 'no', stat: location.state.stat, idMhs: location.state.idMhs, history: location.state.history, reg: location.state.reg }} className='btn btn-sm btn-primary w-full capitalize rounded-md'><FaArrowLeft /><span className="">Kembali</span></Link>
                                         </div>
                                         <div className='lg:pl-1'>
                                             <button className='btn btn-sm btn-primary w-full rounded-md capitalize'><span className="">Simpan dan lanjut</span><FaArrowRight /></button>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams, useNavigate, useLocation } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { FaTimes, FaReply, FaArrowRight } from "react-icons/fa"
 import axios from 'axios'
 import Swal from "sweetalert2"
@@ -27,14 +27,13 @@ const FormMhs1 = () => {
     const [jenisp, setJenisp] = useState("")
     const [validEmail, setValidEmail] = useState("")
     const navigate = useNavigate()
-    const { idMhs } = useParams()
-    const { stat } = useParams()
     const [loading, setLoading] = useState(false)
     const location = useLocation()
 
     useEffect(() => {
         getJalur()
-    }, [])
+        console.log(location.state)
+    }, [location])
 
     useEffect(() => {
         getJenis()
@@ -43,8 +42,8 @@ const FormMhs1 = () => {
     useEffect(() => {
         const getMhsById = async () => {
             try {
-                if (stat === "edit") {
-                    const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
+                if (location.state.stat === "edit") {
+                    const response = await axios.get(`v1/mahasiswa/getById/${location.state.idMhs}`)
                     let tglLahir = response.data.data.tanggal_lahir
                     const tgArray = tglLahir.split("-")
                     setNik(response.data.data.nik)
@@ -65,9 +64,10 @@ const FormMhs1 = () => {
                     setJalurp(response.data.data.jalur_pendaftaran)
                     setJenisp(response.data.data.jenis_pendaftaran)
                 } else {
-                    const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
+                    const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${location.state.idMhs}`)
                     let tglLahir = response.data.data.tanggal_lahir
                     const tgArray = tglLahir.split("-")
+                    console.log(response.data.data.lastId);
                     setNik(response.data.data.nik)
                     setNamanya(response.data.data.nama)
                     setTmp(response.data.data.tempat_lahir)
@@ -91,7 +91,7 @@ const FormMhs1 = () => {
             }
         }
         getMhsById()
-    }, [idMhs, stat])
+    }, [location])
 
     useEffect(() => {
         getValidEmail()
@@ -135,7 +135,7 @@ const FormMhs1 = () => {
 
     const getValidEmail = async () => {
         try {
-            if (stat == 'add' & email != 0 & location.state.valid == 'ya') {
+            if (location.state.stat == 'add' & email != 0 & location.state.valid == 'ya') {
                 await axios.get(`v1/mahasiswa/validasiEmail/${email}`)
                 setValidEmail("")
             }
@@ -157,7 +157,7 @@ const FormMhs1 = () => {
                     icon: "error"
                 })
             } else {
-                await axios.put(`v1/mahasiswa/createForm1/${idMhs}`, {
+                await axios.put(`v1/mahasiswa/createForm1/${location.state.idMhs}`, {
                     nik: nik,
                     no_kk: kk,
                     nisn: nisn,
@@ -180,7 +180,7 @@ const FormMhs1 = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        navigate(`/mahasiswa/form2/${stat}/${idMhs}`, { state: { collaps: 'induk', activ: '/mahasiswa' } })
+                        navigate(`/mahasiswa/form2`, { state: { collaps: 'induk', activ: '/mahasiswa', stat: location.state.stat, idMhs: location.state.idMhs, history: location.state.history, reg: location.state.reg } })
                     });
                 })
             }
@@ -377,7 +377,7 @@ const FormMhs1 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-error rounded-md capitalize' onClick={() => batal(idMhs)}><FaTimes /> <span className="">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error rounded-md capitalize'><FaReply /> <span className=''>Kembali Ke Data Mahasiswa</span></Link>}
+                                    {location.state.stat == "add" ? <button type='button' className='btn btn-sm btn-error rounded-md capitalize' onClick={() => batal(location.state.idMhs)}><FaTimes /> <span className="">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error rounded-md capitalize'><FaReply /> <span className=''>Kembali Ke Data Mahasiswa</span></Link>}
                                 </div>
                                 <div>
                                     <div className='float-right'>

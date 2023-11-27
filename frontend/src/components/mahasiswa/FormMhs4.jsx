@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams, useNavigate } from "react-router-dom"
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom"
 import { FaTimes, FaReply, FaArrowRight, FaArrowLeft, FaMale, FaFemale, FaSave } from "react-icons/fa"
 import axios from 'axios'
 import Swal from "sweetalert2"
@@ -30,15 +30,23 @@ const FormMhs4 = () => {
     const [kodeSmt, setKodeSmt] = useState("")
     const [nim, setNim] = useState("")
     const navigate = useNavigate()
-    const { idMhs } = useParams()
-    const { stat } = useParams()
     const [loading, setLoading] = useState(false)
+    const location = useLocation()
+
+    useEffect(() => {
+        console.log(location.state);
+        getPekerjaan()
+        getPenghasilan()
+        getPendidikan()
+        getJenjangPendidikan()
+        getTahunAjaran()
+    }, [location])
 
     useEffect(() => {
         const getMhsById = async () => {
             try {
-                if (stat === "edit") {
-                    const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
+                if (location.state.stat === "edit") {
+                    const response = await axios.get(`v1/mahasiswa/getById/${location.state.idMhs}`)
                     let tglLahirWali = response.data.data.tanggal_lahir_wali
                     const tglWali = tglLahirWali.split("-")
                     setNamanya(response.data.data.nama)
@@ -57,7 +65,7 @@ const FormMhs4 = () => {
                     setKodeThn(response.data.data.code_tahun_ajaran)
                     setKodeSmt(response.data.data.code_semester)
                 } else {
-                    const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
+                    const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${location.state.idMhs}`)
                     let tglLahirWali = response.data.data.tanggal_lahir_wali
                     const tglWali = tglLahirWali.split("-")
                     setNamanya(response.data.data.nama)
@@ -81,15 +89,7 @@ const FormMhs4 = () => {
             }
         }
         getMhsById()
-    }, [idMhs])
-
-    useEffect(() => {
-        getPekerjaan()
-        getPenghasilan()
-        getPendidikan()
-        getJenjangPendidikan()
-        getTahunAjaran()
-    }, [])
+    }, [location])
 
     useEffect(() => {
         getFakultasByJenjang()
@@ -194,7 +194,7 @@ const FormMhs4 = () => {
             } else {
 
                 setLoading(true)
-                await axios.put(`v1/mahasiswa/createForm4/${idMhs}`, {
+                await axios.put(`v1/mahasiswa/createForm4/${location.state.idMhs}`, {
                     nik_wali: nikWali,
                     nama_wali: namaWali,
                     tahun_w: thWali,
@@ -208,7 +208,9 @@ const FormMhs4 = () => {
                     code_prodi: prodinya,
                     code_tahun_ajaran: kodeThn,
                     code_semester: kodeSmt,
-                    nim: nim // tambahan untuk input nim mahasiswa lama
+                    nim: nim, // tambahan untuk input nim mahasiswa lama
+                    idLogin: location.state.reg,
+                    idHistory: location.state.history
                 }).then(function (response) {
                     setLoading(false)
                     Swal.fire({
@@ -264,8 +266,8 @@ const FormMhs4 = () => {
 
     const salinAyah = async () => {
         try {
-            if (stat === "edit") {
-                const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
+            if (location.state.stat === "edit") {
+                const response = await axios.get(`v1/mahasiswa/getById/${location.state.idMhs}`)
                 let tglLahirAyah = response.data.data.tanggal_lahir_ayah
                 const tglAyah = tglLahirAyah.split("-")
                 setNikWali(response.data.data.nik_ayah)
@@ -277,7 +279,7 @@ const FormMhs4 = () => {
                 setPndptWali(response.data.data.penghasilan_ayah)
                 setPndknWali(response.data.data.pendidikan_ayah)
             } else {
-                const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
+                const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${location.state.idMhs}`)
                 let tglLahirAyah = response.data.data.tanggal_lahir_ayah
                 const tglAyah = tglLahirAyah.split("-")
                 setNikWali(response.data.data.nik_ayah)
@@ -296,8 +298,8 @@ const FormMhs4 = () => {
 
     const salinIbu = async () => {
         try {
-            if (stat === "edit") {
-                const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
+            if (location.state.stat === "edit") {
+                const response = await axios.get(`v1/mahasiswa/getById/${location.state.idMhs}`)
                 let tglLahirIbu = response.data.data.tanggal_lahir_ibu
                 const tglIbu = tglLahirIbu.split("-")
                 setNikWali(response.data.data.nik_ibu)
@@ -310,7 +312,7 @@ const FormMhs4 = () => {
                 setPndptWali(response.data.data.penghasilan_ibu)
                 setPndknWali(response.data.data.pendidikan_ibu)
             } else {
-                const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
+                const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${location.state.idMhs}`)
                 let tglLahirIbu = response.data.data.tanggal_lahir_ibu
                 const tglIbu = tglLahirIbu.split("-")
                 setNikWali(response.data.data.nik_ibu)
@@ -492,12 +494,12 @@ const FormMhs4 = () => {
                                         <hr />
                                     </div>
                                     <div>
-                                        {stat == "add" ? <button type='button' className='btn btn-sm btn-error capitalize rounded-md' onClick={() => batal(idMhs)}><FaTimes /> <span className="">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> <span className=''>Kembali Ke Data Mahasiswa</span></Link>}
+                                        {location.state.stat == "add" ? <button type='button' className='btn btn-sm btn-error capitalize rounded-md' onClick={() => batal(location.state.idMhs)}><FaTimes /> <span className="">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> <span className=''>Kembali Ke Data Mahasiswa</span></Link>}
                                     </div>
                                     <div>
                                         <div className='grid lg:grid-flow-col gap-1 float-right'>
                                             <div>
-                                                <Link to={`/mahasiswa/form3/${stat}/${idMhs}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-primary w-full capitalize rounded-md'><FaArrowLeft /><span className="">Kembali</span></Link>
+                                                <Link to={`/mahasiswa/form3`} state={{ collaps: 'induk', activ: '/mahasiswa', stat: location.state.stat, idMhs: location.state.idMhs, history: location.state.history, reg: location.state.reg }} className='btn btn-sm btn-primary w-full capitalize rounded-md'><FaArrowLeft /><span className="">Kembali</span></Link>
                                             </div>
                                             <div className='lg:pl-1'>
                                                 <button className='btn btn-sm btn-success w-full capitalize rounded-md'><FaSave /><span className="">Selesai</span></button>

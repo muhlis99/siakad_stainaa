@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { FaTimes, FaReply, FaArrowRight, FaArrowLeft } from "react-icons/fa"
 import axios from "axios"
 import Swal from "sweetalert2"
@@ -27,15 +27,25 @@ const FormMhs3 = () => {
     const [pndptIbu, setPndptIbu] = useState("")
     const [pndknIbu, setPndknIbu] = useState("")
     const navigate = useNavigate()
-    const { idMhs } = useParams()
-    const { stat } = useParams()
+    // const { idMhs } = useParams()
+    // const { stat } = useParams()
+    // const { history } = useParams()
+    // const { reg } = useParams()
     const [loading, setLoading] = useState(false)
+    const location = useLocation()
+
+    useEffect(() => {
+        console.log(location.state);
+        getPekerjaan()
+        getPenghasilan()
+        getPendidikan()
+    }, [location])
 
     useEffect(() => {
         const getMhsById = async () => {
             try {
-                if (stat === "edit") {
-                    const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
+                if (location.state.stat === "edit") {
+                    const response = await axios.get(`v1/mahasiswa/getById/${location.state.idMhs}`)
                     let tglLahirAyah = response.data.data.tanggal_lahir_ayah
                     const tglAyah = tglLahirAyah.split("-")
                     let tglLahirIbu = response.data.data.tanggal_lahir_ibu
@@ -58,7 +68,7 @@ const FormMhs3 = () => {
                     setPndptIbu(response.data.data.penghasilan_ibu)
                     setPndknIbu(response.data.data.pendidikan_ibu)
                 } else {
-                    const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${idMhs}`)
+                    const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${location.state.idMhs}`)
                     let tglLahirAyah = response.data.data.tanggal_lahir_ayah
                     const tglAyah = tglLahirAyah.split("-")
                     let tglLahirIbu = response.data.data.tanggal_lahir_ibu
@@ -86,13 +96,7 @@ const FormMhs3 = () => {
             }
         }
         getMhsById()
-    }, [idMhs])
-
-    useEffect(() => {
-        getPekerjaan()
-        getPenghasilan()
-        getPendidikan()
-    }, [])
+    }, [location])
 
     const getPekerjaan = async () => {
         const response = await axios.get('v1/equipmentDsnMhs/pekerjaan/all')
@@ -139,7 +143,7 @@ const FormMhs3 = () => {
         e.preventDefault()
         try {
             setLoading(true)
-            await axios.put(`v1/mahasiswa/createForm3/${idMhs}`, {
+            await axios.put(`v1/mahasiswa/createForm3/${location.state.idMhs}`, {
                 nik_ayah: nikAyah,
                 nama_ayah: namaAyah,
                 tahun_a: thAyah,
@@ -162,7 +166,7 @@ const FormMhs3 = () => {
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
-                    navigate(`/mahasiswa/form4/${stat}/${idMhs}`, { state: { collaps: 'induk', activ: '/mahasiswa' } })
+                    navigate(`/mahasiswa/form4`, { state: { collaps: 'induk', activ: '/mahasiswa', stat: location.state.stat, idMhs: location.state.idMhs, history: location.state.history, reg: location.state.reg } })
                 });
             })
         } catch (error) {
@@ -376,12 +380,12 @@ const FormMhs3 = () => {
                                     <hr />
                                 </div>
                                 <div>
-                                    {stat == "add" ? <button type='button' className='btn btn-sm btn-error rounded-md capitalize' onClick={() => batal(idMhs)}><FaTimes /> <span className="">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error rounded-md capitalize'><FaReply /> <span className=''>Kembali Ke Data Mahasiswa</span></Link>}
+                                    {location.state.stat == "add" ? <button type='button' className='btn btn-sm btn-error rounded-md capitalize' onClick={() => batal(location.state.idMhs)}><FaTimes /> <span className="">Batal</span></button> : <Link to="/mahasiswa" state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-error rounded-md capitalize'><FaReply /> <span className=''>Kembali Ke Data Mahasiswa</span></Link>}
                                 </div>
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
                                         <div>
-                                            <Link to={`/mahasiswa/form2/${stat}/${idMhs}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className='btn btn-sm btn-primary w-full rounded-md capitalize'><FaArrowLeft /><span className="ml-1">Kembali</span></Link>
+                                            <Link to={`/mahasiswa/form2`} state={{ collaps: 'induk', activ: '/mahasiswa', stat: location.state.stat, idMhs: location.state.idMhs, history: location.state.history, reg: location.state.reg }} className='btn btn-sm btn-primary w-full rounded-md capitalize'><FaArrowLeft /><span className="ml-1">Kembali</span></Link>
                                         </div>
                                         <div className='lg:pl-1'>
                                             <button className='btn btn-sm btn-primary w-full rounded-md capitalize'><span className="mr-1">Simpan dan lanjut</span><FaArrowRight /></button>
