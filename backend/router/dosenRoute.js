@@ -14,6 +14,7 @@ route.put('/createForm1/:id', validationForm1, validationRequest, dosenControlle
 route.put('/createForm2/:id', validationForm2, validationRequest, dosenController.createForm2)
 route.put('/createFromUpload1/:id', dosenController.createFromUpload1)
 route.put('/createFromUpload2/:id', dosenController.createFromUpload2)
+route.get('/getIdLoginDosen/:email', dosenController.getIdLoginDosen)
 route.put('/nonAktif/:id', dosenController.nonAktif)
 route.delete('/delete/:id', dosenController.delete)
 route.get('/validasiEmail/:email', dosenController.validasiEmail)
