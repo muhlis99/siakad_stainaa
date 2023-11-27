@@ -20,6 +20,8 @@ const ListMahasiswa = () => {
     const [msg, setMsg] = useState("")
     const [idMhs, setIdMhs] = useState("")
     const [stat, setStat] = useState("")
+    const [history, setHistory] = useState("")
+    const [reg, setReg] = useState("")
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -100,6 +102,9 @@ const ListMahasiswa = () => {
     const tbMhs = async () => {
         setLoading(true)
         const response = await axios.post('v1/mahasiswa/createFirst')
+        console.log(response.data);
+        setHistory(response.data.dataHistoryMhs)
+        setReg(response.data.dataLoginMhs)
         setIdMhs(response.data.data)
         setStat("add")
     }
@@ -138,7 +143,7 @@ const ListMahasiswa = () => {
 
     return (
         <div className='mt-2 container'>
-            {idMhs && <Navigate to={`form1/${stat}/${idMhs}`} state={{ collaps: 'induk', activ: '/mahasiswa', valid: 'ya' }} />}
+            {idMhs && <Navigate to={`form1/`} state={{ collaps: 'induk', activ: '/mahasiswa', valid: 'ya', stat: stat, idMhs: idMhs, history: history, reg: reg }} />}
             <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
                 <div className='w-[74px] mx-auto mt-72'>
                     <Loading />
@@ -214,7 +219,7 @@ const ListMahasiswa = () => {
                                                 <td className='px-6 py-2' align='center'>
                                                     <div className='flex gap-1'>
                                                         <Link to={`/mahasiswa/detail/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
-                                                        <Link to={`/mahasiswa/form1/edit/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa', valid: 'no' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                        <Link to={`/mahasiswa/form1`} state={{ collaps: 'induk', activ: '/mahasiswa', valid: 'no', stat: 'edit', idMhs: mhs.id_mahasiswa, history: "", reg: "" }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
                                                         <Link to={`/mahasiswa/upload/berkas/${mhs.id_mahasiswa}`} state={{ collaps: 'induk', activ: '/mahasiswa' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
                                                         <Link to={`/mahasiswa/print/${mhs.id_mahasiswa}`} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
                                                         {/* <button onClick={() => nonaktifkan(mhs.id_mahasiswa)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button> */}

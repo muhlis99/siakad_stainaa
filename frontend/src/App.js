@@ -77,11 +77,11 @@ function App() {
           <Route path="/fakultas" element={<Fakultas />} />
           <Route path="/prodi" element={<Prodi />} />
           <Route path="/mahasiswa" element={<Mahasiswa />} />
-          <Route path="/mahasiswa/form1/:stat/:idMhs" element={<Form1 />} />
-          <Route path="/mahasiswa/form2/:stat/:idMhs" element={<Form2 />} />
-          <Route path="/mahasiswa/form3/:stat/:idMhs" element={<Form3 />} />
-          <Route path="/mahasiswa/form4/:stat/:idMhs" element={<Form4 />} />
-          <Route path="/mahasiswa/upload/:stat/:idMhs" element={<Upload />} />
+          <Route path="/mahasiswa/form1" element={<Form1 />} />
+          <Route path="/mahasiswa/form2" element={<Form2 />} />
+          <Route path="/mahasiswa/form3" element={<Form3 />} />
+          <Route path="/mahasiswa/form4" element={<Form4 />} />
+          <Route path="/mahasiswa/upload/:idMhs" element={<Upload />} />
           <Route path="/mahasiswa/detail/:idMhs" element={<Detail />} />
           <Route path="/mahasiswa/print/:idMhs" element={<PrintMhs />} />
           <Route path="/dosen" element={<Dosen />} />
