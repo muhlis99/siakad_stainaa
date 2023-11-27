@@ -17,6 +17,7 @@ const FormMhs1 = () => {
     const [kk, setKk] = useState("")
     const [jenkel, setJenkel] = useState("")
     const [email, setEmail] = useState("")
+    const [email2, setEmail2] = useState("")
     const [nohp, setNohp] = useState("")
     const [notelp, setNotelp] = useState("")
     const [nisn, setNisn] = useState("")
@@ -25,6 +26,13 @@ const FormMhs1 = () => {
     const [npwp, setNpwp] = useState("")
     const [jalurp, setJalurp] = useState("")
     const [jenisp, setJenisp] = useState("")
+    const [jenjangnya, setJenjangnya] = useState("")
+    const [fakultasnya, setFakultasnya] = useState("")
+    const [prodinya, setProdinya] = useState("")
+    const [kodeThn, setKodeThn] = useState("")
+    const [kodeSmt, setKodeSmt] = useState("")
+    const [LoginHistory, setLoginHistory] = useState([])
+    const [nim, setNim] = useState("")
     const [validEmail, setValidEmail] = useState("")
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
@@ -32,8 +40,7 @@ const FormMhs1 = () => {
 
     useEffect(() => {
         getJalur()
-        console.log(location.state)
-    }, [location])
+    }, [])
 
     useEffect(() => {
         getJenis()
@@ -47,6 +54,12 @@ const FormMhs1 = () => {
                     let tglLahir = response.data.data.tanggal_lahir
                     const tgArray = tglLahir.split("-")
                     setNik(response.data.data.nik)
+                    setNim(response.data.data.nim)
+                    setJenjangnya(response.data.data.code_jenjang_pendidikan)
+                    setFakultasnya(response.data.data.code_fakultas)
+                    setProdinya(response.data.data.code_prodi)
+                    setKodeThn(response.data.data.code_tahun_ajaran)
+                    setKodeSmt(response.data.data.code_semester)
                     setNamanya(response.data.data.nama)
                     setTmp(response.data.data.tempat_lahir)
                     setTgl(tgArray[2])
@@ -55,6 +68,7 @@ const FormMhs1 = () => {
                     setKk(response.data.data.no_kk)
                     setJenkel(response.data.data.jenis_kelamin)
                     setEmail(response.data.data.email)
+                    setEmail2(response.data.data.email)
                     setNohp(response.data.data.no_hp)
                     setNotelp(response.data.data.no_telepon)
                     setNisn(response.data.data.nisn)
@@ -67,8 +81,13 @@ const FormMhs1 = () => {
                     const response = await axios.get(`v1/mahasiswa/getByCreateFirst/${location.state.idMhs}`)
                     let tglLahir = response.data.data.tanggal_lahir
                     const tgArray = tglLahir.split("-")
-                    console.log(response.data.data.lastId);
                     setNik(response.data.data.nik)
+                    setNim(response.data.data.nim)
+                    setJenjangnya(response.data.data.code_jenjang_pendidikan)
+                    setFakultasnya(response.data.data.code_fakultas)
+                    setProdinya(response.data.data.code_prodi)
+                    setKodeThn(response.data.data.code_tahun_ajaran)
+                    setKodeSmt(response.data.data.code_semester)
                     setNamanya(response.data.data.nama)
                     setTmp(response.data.data.tempat_lahir)
                     setTgl(tgArray[2])
@@ -77,6 +96,7 @@ const FormMhs1 = () => {
                     setKk(response.data.data.no_kk)
                     setJenkel(response.data.data.jenis_kelamin)
                     setEmail(response.data.data.email)
+                    setEmail2(response.data.data.email)
                     setNohp(response.data.data.no_hp)
                     setNotelp(response.data.data.no_telepon)
                     setNisn(response.data.data.nisn)
@@ -94,8 +114,24 @@ const FormMhs1 = () => {
     }, [location])
 
     useEffect(() => {
+        getDataLoginHistory()
+    }, [location, email2, nim, kodeThn, kodeSmt, jenjangnya, fakultasnya, prodinya])
+
+    useEffect(() => {
         getValidEmail()
     }, [email])
+
+    const getDataLoginHistory = async () => {
+        try {
+            if (location.state.stat == 'edit' && nim) {
+                const response = await axios.get(`v1/mahasiswa/getIdLoginAndHistoryMhs/${email2}/${nim}/${kodeThn}/${kodeSmt}/${jenjangnya}/${fakultasnya}/${prodinya}`)
+                setLoginHistory(response.data)
+            }
+        } catch (error) {
+
+        }
+
+    }
 
     const getJalur = async () => {
         const response = await axios.get('v1/equipmentDsnMhs/jalurPendaftaran/all')
@@ -180,7 +216,11 @@ const FormMhs1 = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        navigate(`/mahasiswa/form2`, { state: { collaps: 'induk', activ: '/mahasiswa', stat: location.state.stat, idMhs: location.state.idMhs, history: location.state.history, reg: location.state.reg } })
+                        if (location.state.stat == 'edit') {
+                            navigate(`/mahasiswa/form2`, { state: { collaps: 'induk', activ: '/mahasiswa', stat: location.state.stat, idMhs: location.state.idMhs, history: LoginHistory.dataIdHistory, reg: LoginHistory.dataIdlogin } })
+                        } else {
+                            navigate(`/mahasiswa/form2`, { state: { collaps: 'induk', activ: '/mahasiswa', stat: location.state.stat, idMhs: location.state.idMhs, history: location.state.history, reg: location.state.reg } })
+                        }
                     });
                 })
             }

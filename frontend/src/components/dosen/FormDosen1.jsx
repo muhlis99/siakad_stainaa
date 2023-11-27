@@ -9,15 +9,18 @@ const FormDosen1 = () => {
     const [nidn, setNidn] = useState("")
     const [namanya, setNamanya] = useState("")
     const [nipy, setNipy] = useState("")
+    const [nipy2, setNipy2] = useState("")
     const [tmp, setTmp] = useState("")
     const [tgl, setTgl] = useState("")
     const [bln, setBln] = useState("")
     const [thn, setThn] = useState("")
     const [jenkel, setJenkel] = useState("")
     const [email, setEmail] = useState("")
+    const [email2, setEmail2] = useState("")
     const [nohp, setNohp] = useState("")
     const [notelp, setNotelp] = useState("")
     const [validEmail, setValidEmail] = useState("")
+    const [login, setLogin] = useState("")
     const navigate = useNavigate()
     const { idDsn } = useParams()
     const { stat } = useParams()
@@ -31,6 +34,7 @@ const FormDosen1 = () => {
                     const response = await axios.get(`v1/dosen/getById/${idDsn}`)
                     setNidn(response.data.data.nidn)
                     setNipy(response.data.data.nip_ynaa)
+                    setNipy2(response.data.data.nip_ynaa)
                     setNamanya(response.data.data.nama)
                     setTmp(response.data.data.tempat_lahir)
                     let tglLahir = response.data.data.tanggal_lahir
@@ -40,12 +44,14 @@ const FormDosen1 = () => {
                     setThn(tgArray[0])
                     setJenkel(response.data.data.jenis_kelamin)
                     setEmail(response.data.data.email)
+                    setEmail2(response.data.data.email)
                     setNohp(response.data.data.no_hp)
                     setNotelp(response.data.data.no_telepon)
                 } else {
                     const response = await axios.get(`v1/dosen/getByCreateFirst/${idDsn}`)
                     setNidn(response.data.data.nidn)
                     setNipy(response.data.data.nip_ynaa)
+                    setNipy2(response.data.data.nip_ynaa)
                     setNamanya(response.data.data.nama)
                     setTmp(response.data.data.tempat_lahir)
                     let tglLahir = response.data.data.tanggal_lahir
@@ -55,6 +61,7 @@ const FormDosen1 = () => {
                     setThn(tgArray[0])
                     setJenkel(response.data.data.jenis_kelamin)
                     setEmail(response.data.data.email)
+                    setEmail2(response.data.data.email)
                     setNohp(response.data.data.no_hp)
                     setNotelp(response.data.data.no_telepon)
                 }
@@ -69,6 +76,10 @@ const FormDosen1 = () => {
     useEffect(() => {
         getValidEmail()
     }, [email])
+
+    useEffect(() => {
+        getLoginDosen()
+    }, [location, nipy2, email2])
 
     const tg = []
     for (let tanggal = 1; tanggal < 32; tanggal++) {
@@ -109,6 +120,17 @@ const FormDosen1 = () => {
         }
     }
 
+    const getLoginDosen = async () => {
+        try {
+            if (location.state.stat == 'edit' && nipy2 != 0) {
+                const response = await axios.get(`v1/dosen/getIdLoginDosen/${email2}`)
+                setLogin(response.data.data)
+            }
+        } catch (error) {
+
+        }
+    }
+
     const simpanDsn = async (e) => {
         e.preventDefault()
         try {
@@ -138,7 +160,11 @@ const FormDosen1 = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        navigate(`/dosen/form2/${stat}/${idDsn}`, { state: { collaps: 'induk', activ: '/dosen' } })
+                        if (location.state.stat == 'edit') {
+                            navigate(`/dosen/form2/${stat}/${idDsn}`, { state: { collaps: 'induk', activ: '/dosen', stat: location.state.stat, idLogin: login } })
+                        } else {
+                            navigate(`/dosen/form2/${stat}/${idDsn}`, { state: { collaps: 'induk', activ: '/dosen', stat: location.state.stat, idLogin: location.state.idLogin } })
+                        }
                     });
                 })
             }
@@ -174,7 +200,11 @@ const FormDosen1 = () => {
                             text: response.data.message,
                             icon: "success"
                         }).then(() => {
-                            navigate("/dosen", { state: { collaps: 'induk', activ: '/dosen' } })
+                            if (location.state.stat == 'edit') {
+                                navigate("/dosen", { state: { collaps: 'induk', activ: '/dosen' } })
+                            } else {
+                                navigate("/dosen", { state: { collaps: 'induk', activ: '/dosen' } })
+                            }
                         });
                     })
                 } catch (error) {

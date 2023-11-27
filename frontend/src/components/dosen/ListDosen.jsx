@@ -20,6 +20,7 @@ const ListDosen = () => {
     const [msg, setMsg] = useState("")
     const [idDsn, setIdDsn] = useState("")
     const [stat, setStat] = useState("")
+    const [dataLogin, setDataLogin] = useState("")
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -83,6 +84,7 @@ const ListDosen = () => {
         setLoading(true)
         const response = await axios.post('v1/dosen/createFirts')
         setIdDsn(response.data.data)
+        setDataLogin(response.data.dataLoginMhs)
         setStat("add")
     }
 
@@ -120,7 +122,6 @@ const ListDosen = () => {
                     axios.put(
                         `v1/dosen/nonAktif/${dsnId}`
                     ).then((response) => {
-                        console.log(response.data)
                         Swal.fire({
                             title: "Terhapus",
                             text: response.data.message,
@@ -139,7 +140,7 @@ const ListDosen = () => {
 
     return (
         <div className='mt-2 container'>
-            {idDsn && <Navigate to={`form1/${stat}/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen', valid: 'ya' }} />}
+            {idDsn && <Navigate to={`form1/${stat}/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen', valid: 'ya', stat: 'add', idLogin: dataLogin }} />}
             <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
                 <div className='w-[74px] mx-auto mt-72'>
                     <Loading />
@@ -215,7 +216,7 @@ const ListDosen = () => {
                                                 <td className='px-6 py-2' align='center'>
                                                     <div className='flex gap-1 justify-center'>
                                                         <Link to={`/dosen/detail/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-info" title='Detail'><FaInfo /></Link>
-                                                        <Link to={`/dosen/form1/edit/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen', valid: 'no' }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
+                                                        <Link to={`/dosen/form1/edit/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen', valid: 'no', stat: 'edit', idLogin: "" }} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></Link>
                                                         <Link to={`/dosen/upload1/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} className="btn btn-xs btn-circle text-white btn-primary" title='Upload Berkas'><FaImages /></Link>
                                                         <Link to={`/dosen/print/${dsn.id_dosen}`} state={{ collaps: 'induk', activ: '/dosen' }} target='_blank' className="btn btn-xs btn-circle text-white btn-secondary" title='Print Berkas'><FaPrint /></Link>
                                                         <button onClick={() => nonaktifkan(dsn.id_dosen)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTrash /></button>
