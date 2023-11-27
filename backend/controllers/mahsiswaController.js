@@ -812,6 +812,33 @@ module.exports = {
         }
     },
 
+    getIdLoginAndHistoryMhs: async (req, res, next) => {
+        const { email, thn, smt, nim,
+            jnjpen, fks, prd } = req.params
+        const idLogin = await registrasi.findOne({
+            where: {
+                email: email,
+                status: "aktif"
+            }
+        })
+        const idHistory = await historyMahasiswa.findOne({
+            where: {
+                nim: nim,
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnjpen,
+                code_fakultas: fks,
+                code_prodi: prd,
+            }
+        })
+        if (!idHistory) return res.status(401).json({ message: "data tidak di temukan" })
+        res.status(201).json({
+            message: "data id login dan id history mhs",
+            dataIdlogin: idLogin.id,
+            dataIdHistory: idHistory.id_history
+        })
+    },
+
     nonAktif: async (req, res, next) => {
         const id = req.params.id
         const mahasiswaUse = await mahasiswa.findOne({

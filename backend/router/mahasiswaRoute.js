@@ -15,6 +15,7 @@ router.put('/createForm2/:id', validationForm2, validationRequest, mahasiswaCont
 router.put('/createForm3/:id', validationForm3, validationRequest, mahasiswaController.createForm3)
 router.put('/createForm4/:id', validationForm4, validationRequest, mahasiswaController.createForm4)
 router.put('/createFile/:id', mahasiswaController.createFile)
+router.get('/getIdLoginAndHistoryMhs/:email/:nim/:thn/:smt/:jnjpen/:fks/:prd', mahasiswaController.getIdLoginAndHistoryMhs)
 router.put('/nonAktif/:id', mahasiswaController.nonAktif)
 router.delete('/delete/:id', mahasiswaController.delete)
 router.get('/validasiEmail/:email', mahasiswaController.validasiEmail)
