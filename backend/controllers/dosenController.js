@@ -188,10 +188,19 @@ module.exports = {
             status_kepegawaian: "",
             status: ""
         }).
-            then(result => {
+            then(async result => {
+                const lastIdLogin = await registrasi.create({
+                    username: "",
+                    email: "",
+                    password: "",
+                    role: "",
+                    verify_code: ""
+                })
                 res.status(201).json({
                     message: "Data dosen First success Ditambahkan",
-                    data: result.id_dosen
+                    data: result.id_dosen,
+                    dataLoginMhs: lastIdLogin.id
+
                 })
             }).
             catch(err => {
@@ -303,7 +312,7 @@ module.exports = {
         const id = req.params.id
         const { alamat_lengkap, desa, kecamatan,
             kabupaten, provinsi, negara, kode_pos, alat_transportasi,
-            pendidikan_terakhir, status_kepegawaian } = req.body
+            pendidikan_terakhir, status_kepegawaian, idLogin } = req.body
         const dosenUse = await dosen.findOne({
             where: {
                 id_dosen: id
@@ -322,16 +331,6 @@ module.exports = {
             dataQrCode = "dosenQrcode" + Buffer.from(nip_ynaa).toString('base64url')
             mainQrCode(nip_ynaa, dataQrCode)
         }
-
-        const hashPassword = await argon.hash(dosenUse.nip_ynaa)
-        const akunDosen = await registrasi.create({
-            username: dosenUse.nip_ynaa,
-            email: dosenUse.email,
-            password: hashPassword,
-            role: "dosen",
-            verify_code: "",
-            status: "aktif"
-        })
 
         await dosen.update({
             alamat_lengkap: alamat_lengkap,
@@ -352,13 +351,26 @@ module.exports = {
                 id_dosen: id
             }
         }).
-            then(result => {
+            then(async result => {
+                const hashPassword = await argon.hash(dosenUse.nip_ynaa)
+                const akunDosen = await registrasi.update({
+                    username: dosenUse.nip_ynaa,
+                    email: dosenUse.email,
+                    password: hashPassword,
+                    role: "dosen",
+                    verify_code: "",
+                    status: "aktif"
+                }, {
+                    where: {
+                        id: idLogin
+                    }
+                })
                 res.status(201).json({
                     message: "Data dosen success di tambahkan form 2"
                 })
             }).
             catch(err => {
-                next(err)
+                console.log(err)
             })
     },
 
