@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FaTimes, FaReply, FaArrowLeft, FaCheck } from "react-icons/fa"
-import { useParams, Link, useNavigate } from "react-router-dom"
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 import Swal from "sweetalert2"
 import Loading from '../Loading'
@@ -28,6 +28,7 @@ const FormDosen2 = () => {
     const { idDsn } = useParams()
     const { stat } = useParams()
     const [loading, setLoading] = useState(false)
+    const location = useLocation()
 
     useEffect(() => {
         const getDosenById = async () => {
@@ -146,7 +147,8 @@ const FormDosen2 = () => {
                 kode_pos: kodepos,
                 alat_transportasi: alat,
                 pendidikan_terakhir: pndkn,
-                status_kepegawaian: statusPg
+                status_kepegawaian: statusPg,
+                idLogin: location.state.idLogin
             }).then(function (response) {
                 setLoading(false)
                 Swal.fire({
@@ -329,7 +331,7 @@ const FormDosen2 = () => {
                                 <div>
                                     <div className='grid lg:grid-flow-col gap-1 float-right'>
                                         <div>
-                                            <Link to={`/dosen/form1/${stat}/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen', valid: 'no' }} className='btn btn-sm rounded-md btn-primary w-full capitalize'><FaArrowLeft /><span>Kembali</span></Link>
+                                            <Link to={`/dosen/form1/${stat}/${idDsn}`} state={{ collaps: 'induk', activ: '/dosen', valid: 'no', stat: location.state.stat, idLogin: location.state.idLogin }} className='btn btn-sm rounded-md btn-primary w-full capitalize'><FaArrowLeft /><span>Kembali</span></Link>
                                         </div>
                                         <div className='lg:pl-1'>
                                             <button className='btn btn-sm rounded-md btn-success w-full capitalize'><FaCheck /><span className="">Selesai</span></button>
