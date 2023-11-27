@@ -168,7 +168,8 @@ module.exports = {
                     attributes: ['nim', 'nama'],
                     model: mahasiswaModel,
                     where: { status: "aktif" }
-                }, {
+                },
+                {
                     model: tahunAjaranModel,
                     attributes: ['code_tahun_ajaran', 'tahun_ajaran'],
                     where: { status: "aktif" }

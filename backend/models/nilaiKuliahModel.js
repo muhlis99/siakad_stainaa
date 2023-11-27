@@ -47,6 +47,18 @@ const nilaiKuliahModel = db.define('nilaiKuliah', {
     'nim': {
         type: DataTypes.TEXT
     },
+    'nilai_presentasi': {
+        type: DataTypes.TEXT
+    },
+    'nilai_penguasaan_materi': {
+        type: DataTypes.TEXT
+    },
+    'nilai_slide_power_point': {
+        type: DataTypes.TEXT
+    },
+    'nilai_keaktifan': {
+        type: DataTypes.TEXT
+    },
     'nilai_hadir': {
         type: DataTypes.TEXT,
     },
