@@ -818,6 +818,7 @@ module.exports = {
         const idLogin = await registrasi.findOne({
             where: {
                 email: email,
+                role: "mahasiswa",
                 status: "aktif"
             }
         })
@@ -829,6 +830,7 @@ module.exports = {
                 code_jenjang_pendidikan: jnjpen,
                 code_fakultas: fks,
                 code_prodi: prd,
+                status: "aktif"
             }
         })
         if (!idHistory) return res.status(401).json({ message: "data tidak di temukan" })

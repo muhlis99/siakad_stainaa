@@ -708,6 +708,22 @@ module.exports = {
         }
     },
 
+    getIdLoginDosen: async (req, res, next) => {
+        const email = req.params.email
+        const idLogin = await registrasi.findOne({
+            where: {
+                email: email,
+                role: "dosen",
+                status: "aktif"
+            }
+        })
+        if (!idLogin) return res.status(401).json({ message: "data tidak ditemukan" })
+        res.status(200).json({
+            message: "Data file dosen berhasil ditambahkan",
+            data: idLogin.id
+        })
+    },
+
     nonAktif: async (req, res, next) => {
         const id = req.params.id
         const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
