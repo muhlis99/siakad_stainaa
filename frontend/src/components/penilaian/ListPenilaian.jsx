@@ -258,9 +258,11 @@ const ListPenilaian = () => {
                                 </tr>
                             </thead>
                             {Makul.length == 0 ?
-                                <tr className='bg-white border-b border-x text-gray-500'>
-                                    <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Kelas Kosong</td>
-                                </tr>
+                                <tbody>
+                                    <tr className='bg-white border-b border-x text-gray-500'>
+                                        <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Kelas Kosong</td>
+                                    </tr>
+                                </tbody>
                                 :
                                 Makul.map((kls, index) => (
                                     <tbody key={index}>
