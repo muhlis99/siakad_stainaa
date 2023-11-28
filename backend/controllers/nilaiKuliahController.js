@@ -15,39 +15,44 @@ const prodiModel = require('../models/prodiModel.js')
 
 module.exports = {
     get: async (req, res, next) => {
-        const { codeMakul, codeKls } = req.query
+        const { codeMakul, codeKls, codeThnAjr } = req.query
         await nilaiKuliahModel.findAll({
-            include: [{
-                model: kategoriNilaiModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ['nim', 'nama'],
-                model: mahasiswaModel,
-                where: { status: "aktif" }
-            },
-            // {
-            //     model: mataKuliahModel,
-            //     where: { status: "aktif" }
-            // },
-            {
-                model: kelasModel,
-                where: { status: "aktif" }
-            }, {
-                model: tahunAjaranModel,
-                where: { status: "aktif" }
-            }, {
-                model: semesterModel,
-                where: { status: "aktif" }
-            }, {
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }],
+            include: [
+                {
+                    model: kategoriNilaiModel,
+                    where: {
+                        code_tahun_ajaran: codeThnAjr,
+                        status: "aktif"
+                    }
+                },
+                {
+                    attributes: ['nim', 'nama'],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                },
+                // {
+                //     model: mataKuliahModel,
+                //     where: { status: "aktif" }
+                // },
+                {
+                    model: kelasModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: tahunAjaranModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: semesterModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: fakultasModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }],
             where: {
                 code_mata_kuliah: codeMakul,
                 code_kelas: codeKls,

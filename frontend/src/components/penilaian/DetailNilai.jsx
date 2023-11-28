@@ -26,13 +26,7 @@ const DetailNilai = () => {
 
     useEffect(() => {
         getMahasiswa()
-    }, [location.state])
-
-    const getMahasiswa = async () => {
-        const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.mk}&codeKls=${location.state.kod}`)
-        setMahasiswa(response.data.data)
-        setJuml(response.data.data.length)
-    }
+    }, [location.state, kodeTahun])
 
     const getKelasById = async () => {
         const response = await axios.get(`v1/kelasKuliah/getKelasById/${location.state.idn}`)
@@ -49,6 +43,13 @@ const DetailNilai = () => {
         setKodeTahun(response.data.data.code_tahun_ajaran)
         setKodeSemester(response.data.data.code_semester)
     }
+
+    const getMahasiswa = async () => {
+        const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.mk}&codeKls=${location.state.kod}&codeThnAjr=${location.state.kodeThn}`)
+        setMahasiswa(response.data.data)
+        setJuml(response.data.data.length)
+    }
+
 
     return (
         <div className='mt-2 container'>

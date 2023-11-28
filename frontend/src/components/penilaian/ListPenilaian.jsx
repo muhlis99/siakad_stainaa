@@ -275,7 +275,7 @@ const ListPenilaian = () => {
                                                     <td className='px-6 py-2 font-semibold'>Kelas {item.nama_kelas}</td>
                                                     <td className='px-6 py-2 font-semibold'>{item.jumlahMhs} Mahasiswa</td>
                                                     <td className='px-6 py-2 font-semibold'>{item.kapasitas} Peserta</td>
-                                                    <td className='px-6 py-2 font-semibold' align='center'><Link to={`/detailnilai`} state={{ mk: item.code_mata_kuliah, idn: item.id_kelas, kod: item.code, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-xs btn-info btn-circle' title='Detail'><FaInfo /></Link></td>
+                                                    <td className='px-6 py-2 font-semibold' align='center'><Link to={`/detailnilai`} state={{ mk: item.code_mata_kuliah, idn: item.id_kelas, kod: item.code, kodeThn: kodeTahun, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-xs btn-info btn-circle' title='Detail'><FaInfo /></Link></td>
                                                 </tr>
                                             ))
                                             :

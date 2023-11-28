@@ -22,6 +22,7 @@ const UpdateNilaiMhs = () => {
     const [fakul, setFakul] = useState("")
     const [prodi, setProdi] = useState("")
     const [tahun, setTahun] = useState("")
+    const [kodeTahun, setKodeTahun] = useState("")
     const [presentasi, setPresentasi] = useState([])
     const [checkedpres, setCheckedpres] = useState(false)
     const [materi, setMateri] = useState([])
@@ -46,29 +47,6 @@ const UpdateNilaiMhs = () => {
     const min = 0
     const max = 100
 
-    useEffect(() => {
-        console.log(jumlahKolom);
-        getJumlahKolom()
-    }, [kolom])
-
-    const getJumlahKolom = () => {
-        let klm = []
-        klm.push(
-            kolom.nilai_presentasi && 1,
-            kolom.nilai_penguasaan_materi && 1,
-            kolom.nilai_slide_power_point && 1,
-            kolom.nilai_keaktifan && 1,
-            kolom.nilai_tugas && 1,
-            kolom.nilai_uts && 1,
-            kolom.nilai_uas && 1,
-            kolom.nilai_hadir && 1,
-        )
-        let i = klm.filter(function (number) {
-            return number == 1
-        })
-        setjumlahKolom(i)
-    }
-
     const handleFormChange = (index, event) => {
         let data = [...inputFields]
         data[index][event.target.name] = Math.max(Number(min), Math.min(Number(max), Number(event.target.value)))
@@ -81,7 +59,11 @@ const UpdateNilaiMhs = () => {
 
     useEffect(() => {
         getMahasiswa()
-    }, [location.state])
+    }, [location.state, kodeTahun])
+
+    useEffect(() => {
+        getJumlahKolom()
+    }, [kolom])
 
     useEffect(() => {
         addFields()
@@ -157,17 +139,36 @@ const UpdateNilaiMhs = () => {
         setNmKls(response.data.data.nama_kelas)
         setNmMk(response.data.data.mataKuliahs[0].nama_mata_kuliah)
         setSem(response.data.data.semesters[0].semester)
+        setKodeTahun(response.data.data.code_tahun_ajaran)
     }
 
     const getMahasiswa = async () => {
         try {
-            const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.mk}&codeKls=${location.state.kod}`)
+            const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.mk}&codeKls=${location.state.kod}&codeThnAjr=${location.state.thn}`)
             setKolom(response.data.data[0])
             setMahasiswa(response.data.data)
             setJmlMhs(response.data.data.length)
         } catch (error) {
 
         }
+    }
+
+    const getJumlahKolom = () => {
+        let klm = []
+        klm.push(
+            kolom.nilai_presentasi && 1,
+            kolom.nilai_penguasaan_materi && 1,
+            kolom.nilai_slide_power_point && 1,
+            kolom.nilai_keaktifan && 1,
+            kolom.nilai_tugas && 1,
+            kolom.nilai_uts && 1,
+            kolom.nilai_uas && 1,
+            kolom.nilai_hadir && 1,
+        )
+        let i = klm.filter(function (number) {
+            return number == 1
+        })
+        setjumlahKolom(i)
     }
 
     const getPresentasi = () => {
@@ -241,10 +242,7 @@ const UpdateNilaiMhs = () => {
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'A'))
             for (var i = 0; i < document.getElementsByName('presentasi').length; i++) {
-                let k = document.getElementsByName('presentasi')[i].value = ''
-                k = ""
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].presentasi = ""
             }
         }
@@ -261,7 +259,6 @@ const UpdateNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'B'))
             for (var i = 0; i < document.getElementsByName('materi').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].materi = ""
             }
         }
@@ -278,7 +275,6 @@ const UpdateNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'C'))
             for (var i = 0; i < document.getElementsByName('pptx').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].pptx = ""
             }
         }
@@ -295,7 +291,6 @@ const UpdateNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'D'))
             for (var i = 0; i < document.getElementsByName('keaktifan').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].keaktifan = ""
             }
         }
@@ -312,7 +307,6 @@ const UpdateNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'E'))
             for (var i = 0; i < document.getElementsByName('tugas').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].tugas = ""
             }
         }
@@ -329,7 +323,6 @@ const UpdateNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'F'))
             for (var i = 0; i < document.getElementsByName('uts').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].uts = ""
             }
         }
@@ -347,7 +340,6 @@ const UpdateNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'G'))
             for (var i = 0; i < document.getElementsByName('uas').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].uas = ""
             }
         }
@@ -364,7 +356,6 @@ const UpdateNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'H'))
             for (var i = 0; i < document.getElementsByName('absen').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].absen = ""
             }
         }
@@ -436,30 +427,37 @@ const UpdateNilaiMhs = () => {
         e.preventDefault()
         try {
             setLoading(true)
-            await axios.put('v1/nilaiKuliah/update',
-                Mahasiswa.map((item, index) => ({
-                    id_nilai_kuliah: item.id_nilai_kuliah,
-                    code_kategori_nilai: kodeNilai[index],
-                    nilai_presentasi: inputFields[index].presentasi,
-                    nilai_penguasaan_materi: inputFields[index].materi,
-                    nilai_slide_power_point: inputFields[index].pptx,
-                    nilai_keaktifan: inputFields[index].keaktifan,
-                    nilai_hadir: inputFields[index].absen,
-                    nilai_tugas: inputFields[index].tugas,
-                    nilai_uts: inputFields[index].uts,
-                    nilai_uas: inputFields[index].uas,
-                    nilai_jumlah: nilaiSum[index],
-                    nilai_akhir: nilaiAkhir[index]
-                }))
-            ).then(function (response) {
-                setLoading(false)
+            if (kodeNilai.length != Mahasiswa.length) {
                 Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    navigate(`/detailnilai`, { state: { mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' } })
-                });
-            })
+                    icon: 'error',
+                    title: 'Input Nilai Belum Tuntas',
+                })
+            } else {
+                await axios.put('v1/nilaiKuliah/update',
+                    Mahasiswa.map((item, index) => ({
+                        id_nilai_kuliah: item.id_nilai_kuliah,
+                        code_kategori_nilai: kodeNilai[index],
+                        nilai_presentasi: inputFields[index].presentasi,
+                        nilai_penguasaan_materi: inputFields[index].materi,
+                        nilai_slide_power_point: inputFields[index].pptx,
+                        nilai_keaktifan: inputFields[index].keaktifan,
+                        nilai_hadir: inputFields[index].absen,
+                        nilai_tugas: inputFields[index].tugas,
+                        nilai_uts: inputFields[index].uts,
+                        nilai_uas: inputFields[index].uas,
+                        nilai_jumlah: nilaiSum[index],
+                        nilai_akhir: nilaiAkhir[index]
+                    }))
+                ).then(function (response) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        navigate(`/detailnilai`, { state: { mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, kodeThn: location.state.thn, collaps: 'kuliah', activ: '/penilaian' } })
+                    });
+                })
+            }
         } catch (error) {
             setLoading(false)
             if (error.response) {
@@ -560,7 +558,7 @@ const UpdateNilaiMhs = () => {
                             <div className="grid">
                                 <div className='mb-2'>
                                     <div className='float-right flex gap-2'>
-                                        <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> Kembali</Link>
+                                        <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, kodeThn: location.state.thn, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> Kembali</Link>
                                         {jmlMhs == null ? "" : <button className='btn btn-sm btn-primary capitalize rounded-md'><FaEdit /> update</button>}
                                     </div>
                                 </div>

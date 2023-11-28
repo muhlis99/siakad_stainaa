@@ -231,7 +231,7 @@ const ListJadwal = () => {
                                             {DataKelas != 0 ?
                                                 DataKelas[index].map((item, o) => (
                                                     <tr key={o} className='bg-white border-b text-gray-500 border-x'>
-                                                        <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{o + 1}</th>
+                                                        <th scope="row" className="px-6 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
                                                         <td className='px-6 py-2 font-semibold'>{item.mataKuliahs[0].code_mata_kuliah}</td>
                                                         <td className='px-6 py-2 font-semibold'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
                                                         <td className='px-6 py-2 font-semibold'>Kelas {item.nama_kelas}</td>

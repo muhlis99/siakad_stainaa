@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
-import { useParams, useNavigate, useLocation, Link } from 'react-router-dom'
+import { useParams, useNavigate, useLocation, Link, json } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { FaReply, FaSave } from 'react-icons/fa'
 import Loading from '../Loading'
@@ -99,7 +99,6 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'A'))
             for (var i = 0; i < document.getElementsByName('presentasi').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].presentasi = ""
             }
         }
@@ -116,7 +115,6 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'B'))
             for (var i = 0; i < document.getElementsByName('materi').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].materi = ""
             }
         }
@@ -133,7 +131,6 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'C'))
             for (var i = 0; i < document.getElementsByName('pptx').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].pptx = ""
             }
         }
@@ -150,7 +147,6 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'D'))
             for (var i = 0; i < document.getElementsByName('keaktifan').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].keaktifan = ""
             }
         }
@@ -167,7 +163,6 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'E'))
             for (var i = 0; i < document.getElementsByName('tugas').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].tugas = ""
             }
         }
@@ -184,7 +179,6 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'F'))
             for (var i = 0; i < document.getElementsByName('uts').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].uts = ""
             }
         }
@@ -202,7 +196,6 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'G'))
             for (var i = 0; i < document.getElementsByName('uas').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].uas = ""
             }
         }
@@ -219,7 +212,6 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'H'))
             for (var i = 0; i < document.getElementsByName('absen').length; i++) {
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].absen = ""
             }
         }
@@ -292,7 +284,6 @@ const InputNilaiMhs = () => {
     const getUts = () => {
         let newfield = []
         inputFields.map(item => {
-            // console.log(item.uts);
             newfield.push(parseInt(item.uts))
         }
         )
@@ -380,38 +371,46 @@ const InputNilaiMhs = () => {
     const simpanNilai = async (e) => {
         e.preventDefault()
         try {
-            setLoading(true)
-            await axios.post('v1/nilaiKuliah/create',
-                Mahasiswa.map((item, index) => ({
-                    code_kelas: location.state.kod,
-                    code_mata_kuliah: location.state.mk,
-                    code_kategori_nilai: kodeNilai[index],
-                    code_tahun_ajaran: location.state.thn,
-                    code_semester: location.state.smt,
-                    code_jenjang_pendidikan: location.state.jen,
-                    code_fakultas: location.state.fak,
-                    code_prodi: location.state.pro,
-                    nim: item.nim,
-                    nilai_presentasi: inputFields[index].presentasi,
-                    nilai_penguasaan_materi: inputFields[index].materi,
-                    nilai_slide_power_point: inputFields[index].pptx,
-                    nilai_keaktifan: inputFields[index].keaktifan,
-                    nilai_hadir: inputFields[index].absen,
-                    nilai_tugas: inputFields[index].tugas,
-                    nilai_uts: inputFields[index].uts,
-                    nilai_uas: inputFields[index].uas,
-                    nilai_jumlah: nilaiSum[index],
-                    nilai_akhir: nilaiAkhir[index]
-                }))
-            ).then(function (response) {
-                setLoading(false)
+            // setLoading(true)
+            if (kodeNilai.length != Mahasiswa.length) {
                 Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    navigate(`/detailnilai`, { state: { mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' } })
-                });
-            })
+                    icon: 'error',
+                    title: 'Input Nilai Belum Tuntas',
+                })
+            } else {
+
+                await axios.post('v1/nilaiKuliah/create',
+                    Mahasiswa.map((item, index) => ({
+                        code_kelas: location.state.kod,
+                        code_mata_kuliah: location.state.mk,
+                        code_kategori_nilai: kodeNilai[index],
+                        code_tahun_ajaran: location.state.thn,
+                        code_semester: location.state.smt,
+                        code_jenjang_pendidikan: location.state.jen,
+                        code_fakultas: location.state.fak,
+                        code_prodi: location.state.pro,
+                        nim: item.nim,
+                        nilai_presentasi: inputFields[index].presentasi,
+                        nilai_penguasaan_materi: inputFields[index].materi,
+                        nilai_slide_power_point: inputFields[index].pptx,
+                        nilai_keaktifan: inputFields[index].keaktifan,
+                        nilai_hadir: inputFields[index].absen,
+                        nilai_tugas: inputFields[index].tugas,
+                        nilai_uts: inputFields[index].uts,
+                        nilai_uas: inputFields[index].uas,
+                        nilai_jumlah: nilaiSum[index],
+                        nilai_akhir: nilaiAkhir[index]
+                    }))
+                ).then(function (response) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        navigate(`/detailnilai`, { state: { mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, kodeThn: location.state.thn, collaps: 'kuliah', activ: '/penilaian' } })
+                    });
+                })
+            }
         } catch (error) {
             setLoading(false)
             if (error.response) {
@@ -512,7 +511,7 @@ const InputNilaiMhs = () => {
                             <div className="grid">
                                 <div className='mb-2'>
                                     <div className='float-right flex gap-2'>
-                                        <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> Kembali</Link>
+                                        <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, kodeThn: location.state.thn, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> Kembali</Link>
                                         {jmlMhs == null ? "" : <button className='btn btn-sm btn-primary capitalize rounded-md'><FaSave /> simpan</button>}
                                     </div>
                                 </div>
