@@ -129,6 +129,10 @@ module.exports = {
                 code_fakultas: el.code_fakultas,
                 code_prodi: el.code_prodi,
                 nim: el.nim,
+                nilai_presentasi: el.nilai_presentasi,
+                nilai_penguasaan_materi: el.nilai_penguasaan_materi,
+                nilai_slide_power_point: el.nilai_slide_power_point,
+                nilai_keaktifan: el.nilai_keaktifan,
                 nilai_hadir: el.nilai_hadir,
                 nilai_tugas: el.nilai_tugas,
                 nilai_uts: el.nilai_uts,
@@ -158,6 +162,10 @@ module.exports = {
             let element = {
                 id_nilai_kuliah: el.id_nilai_kuliah,
                 code_kategori_nilai: el.code_kategori_nilai,
+                nilai_presentasi: el.nilai_presentasi,
+                nilai_penguasaan_materi: el.nilai_penguasaan_materi,
+                nilai_slide_power_point: el.nilai_slide_power_point,
+                nilai_keaktifan: el.nilai_keaktifan,
                 nilai_hadir: el.nilai_hadir,
                 nilai_tugas: el.nilai_tugas,
                 nilai_uts: el.nilai_uts,
@@ -169,7 +177,8 @@ module.exports = {
             return element
         })
         await nilaiKuliahModel.bulkCreate(dataNilai, {
-            updateOnDuplicate: ["code_kategori_nilai", "nilai_hadir", "nilai_tugas", "nilai_uts", "nilai_uas", "nilai_jumlah", "nilai_akhir"],
+            updateOnDuplicate: ["code_kategori_nilai", "nilai_hadir", "nilai_tugas", "nilai_uts", "nilai_uas", "nilai_jumlah", "nilai_akhir"
+                , "nilai_presentasi", "nilai_penguasaan_materi", "nilai_slide_power_point", "nilai_keaktifan"],
         }).
             then(result => {
                 res.status(200).json({
