@@ -41,14 +41,9 @@ const InputNilaiMhs = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
-    const tugasRef = useRef()
 
     const min = 0
     const max = 100
-
-    useEffect(() => {
-        console.log(jumlahKolom.length);
-    }, [jumlahKolom])
 
     const handleFormChange = (index, event) => {
         let data = [...inputFields]
@@ -397,6 +392,10 @@ const InputNilaiMhs = () => {
                     code_fakultas: location.state.fak,
                     code_prodi: location.state.pro,
                     nim: item.nim,
+                    nilai_presentasi: inputFields[index].presentasi,
+                    nilai_penguasaan_materi: inputFields[index].materi,
+                    nilai_slide_power_point: inputFields[index].pptx,
+                    nilai_keaktifan: inputFields[index].keaktifan,
                     nilai_hadir: inputFields[index].absen,
                     nilai_tugas: inputFields[index].tugas,
                     nilai_uts: inputFields[index].uts,

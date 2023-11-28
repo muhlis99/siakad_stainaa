@@ -23,6 +23,7 @@ const SetMhsPerpembimbing = () => {
     const [nim, setNim] = useState("")
     const location = useLocation()
     const [loading, setLoading] = useState(false)
+    const [show, setShow] = useState(false)
 
     useEffect(() => {
         const getDataDsn = async () => {
@@ -91,46 +92,36 @@ const SetMhsPerpembimbing = () => {
     const simpanMahasiswa = async (e) => {
         e.preventDefault()
         try {
-            // if (nim == 0) {
-            //     Swal.fire({
-            //         title: "Mahasiswa Tidak Boleh Kosong",
-            //         icon: "error"
-            //     })
-            // } else if (kuota == jumlah) {
-            //     Swal.fire({
-            //         title: "Jumlah Mahasiswa telah melebihi kapasitas bimbingan",
-            //         icon: "error"
-            //     })
-            // } else {
-            document.getElementById('my-modal').checked = false
-            setLoading(true)
-            await axios.post('v1/pembimbingAkademik/createDetail', {
-                code_pembimbing_akademik: kodeBimbing,
-                nim: nim,
-            }).then(function (response) {
-                setLoading(false)
+            if (nim == 0) {
                 Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    getMhsPerPembimbing()
-                    getMahasiswa()
-                    setNim("")
-                });
-            })
-            // }
-        } catch (error) {
-            if (error.response.data.message) {
+                    title: "Mahasiswa Tidak Boleh Kosong",
+                    icon: "error"
+                })
+            } else if (kuota == jumlah) {
                 Swal.fire({
-                    title: error.response.data.message,
+                    title: "Jumlah Mahasiswa telah melebihi kapasitas bimbingan",
                     icon: "error"
                 })
             } else {
-                Swal.fire({
-                    title: error.response.data.errors[0].msg,
-                    icon: "error"
+                setLoading(true)
+                await axios.post('v1/pembimbingAkademik/createDetail', {
+                    code_pembimbing_akademik: kodeBimbing,
+                    nim: nim,
+                }).then(function (response) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        getMhsPerPembimbing()
+                        getMahasiswa()
+                        setNim("")
+                        setShow(false)
+                    });
                 })
             }
+        } catch (error) {
+
         }
     }
 
@@ -138,38 +129,6 @@ const SetMhsPerpembimbing = () => {
 
     return (
         <div className='mt-2 container'>
-            <input type="checkbox" id="my-modal" className="modal-toggle" />
-            <div className="modal">
-                <div className="modal-box grid p-0 rounded-md">
-                    <form onSubmit={simpanMahasiswa}>
-                        <div className='bg-base-200 border-b-2 p-3'>
-                            <h3 className="font-bold text-xl mb-1">Tambah Mahasiswa</h3>
-                            <button type='button' className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
-                        </div>
-                        <div className='mb-2'>
-                            <div className="py-4 px-4">
-                                <div className="">
-                                    <label className="label">
-                                        <span className="text-base label-text font-semibold">Mahasiswa</span>
-                                    </label>
-                                    <Select
-                                        className="basic-single rounded-md w-full"
-                                        classNamePrefix="select"
-                                        options={select2}
-                                        onChange={onchange}
-                                        isClearable={isClearable}
-                                        placeholder="Cari Mahasiswa"
-                                        noOptionsMessage={() => "Tidak Ada"}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='p-3 border-t-2 text-center'>
-                            <button type='submit' className="btn btn-sm btn-primary capitalize"><FaSave />simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
             <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
                 <div className='w-[74px] mx-auto mt-72'>
                     <Loading />
@@ -250,9 +209,27 @@ const SetMhsPerpembimbing = () => {
                 </div>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <div className=''>
-                            <button className='btn btn-sm btn-primary capitalize rounded-md' onClick={modalOpen}><FaPlus />Tambah</button>
-                        </div>
+                        {show ?
+                            <form onSubmit={simpanMahasiswa}>
+                                <div className='flex gap-2 w-1/2 bg-white'>
+                                    <Select
+                                        className="basic-single rounded-md w-full"
+                                        classNamePrefix="select"
+                                        options={select2}
+                                        onChange={onchange}
+                                        isClearable={isClearable}
+                                        placeholder="Cari Mahasiswa"
+                                        noOptionsMessage={() => "Tidak Ada"}
+                                    />
+                                    <button type='submit' className="btn btn-sm btn-primary capitalize"><FaSave />simpan</button>
+                                </div>
+                            </form>
+                            :
+                            <div>
+                                <button className='btn btn-sm btn-primary capitalize rounded-md' onClick={() => setShow(true)}><FaPlus />Tambah Data</button>
+                            </div>
+                        }
+
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className='text-gray-700 bg-[#d4cece]'>

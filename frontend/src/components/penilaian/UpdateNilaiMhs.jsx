@@ -17,21 +17,57 @@ const UpdateNilaiMhs = () => {
     const [ket, setKet] = useState([])
     const [kodeNilai, setKodeNilai] = useState([])
     const [nilaiSum, setNilaiSum] = useState([])
-    const [jumlahMhs, setJumlahMhs] = useState("")
+    const [kolom, setKolom] = useState([])
     const [inputFields, setInputFields] = useState([])
     const [fakul, setFakul] = useState("")
     const [prodi, setProdi] = useState("")
     const [tahun, setTahun] = useState("")
+    const [presentasi, setPresentasi] = useState([])
+    const [checkedpres, setCheckedpres] = useState(false)
+    const [materi, setMateri] = useState([])
+    const [checkedmtr, setCheckedmtr] = useState(false)
     const [tugas, setTugas] = useState([])
+    const [checkedtgs, setCheckedtgs] = useState(false)
+    const [pptx, setPptx] = useState([])
+    const [checkedppt, setCheckedppt] = useState(false)
+    const [keaktifan, setKeaktifan] = useState([])
+    const [checkedaktif, setCheckedaktif] = useState(false)
     const [uts, setUts] = useState([])
+    const [checkedUts, setCheckedUts] = useState(false)
     const [uas, setUas] = useState([])
+    const [checkedUas, setCheckedUas] = useState(false)
     const [absen, setAbsen] = useState([])
+    const [checkedAbsen, setCheckedAbsen] = useState(false)
+    const [jumlahKolom, setjumlahKolom] = useState([])
     const location = useLocation()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
 
     const min = 0
     const max = 100
+
+    useEffect(() => {
+        console.log(jumlahKolom);
+        getJumlahKolom()
+    }, [kolom])
+
+    const getJumlahKolom = () => {
+        let klm = []
+        klm.push(
+            kolom.nilai_presentasi && 1,
+            kolom.nilai_penguasaan_materi && 1,
+            kolom.nilai_slide_power_point && 1,
+            kolom.nilai_keaktifan && 1,
+            kolom.nilai_tugas && 1,
+            kolom.nilai_uts && 1,
+            kolom.nilai_uas && 1,
+            kolom.nilai_hadir && 1,
+        )
+        let i = klm.filter(function (number) {
+            return number == 1
+        })
+        setjumlahKolom(i)
+    }
 
     const handleFormChange = (index, event) => {
         let data = [...inputFields]
@@ -49,9 +85,13 @@ const UpdateNilaiMhs = () => {
 
     useEffect(() => {
         addFields()
-    }, [jmlMhs])
+    }, [jmlMhs, Mahasiswa])
 
     useEffect(() => {
+        getPresentasi()
+        getMateri()
+        getPptx()
+        getKeaktifan()
         getTugas()
         getAbsen()
         getUas()
@@ -61,11 +101,52 @@ const UpdateNilaiMhs = () => {
     useEffect(() => {
         getAverage()
         getSum()
-    }, [inputFields])
+    }, [inputFields, jumlahKolom])
 
     useEffect(() => {
         cekNilai()
     }, [nilaiAkhir, location.state])
+
+    const addFields = () => {
+        let newfield = []
+        Mahasiswa.map(item => {
+            newfield.push({
+                presentasi: parseInt(item.nilai_presentasi),
+                materi: parseInt(item.nilai_penguasaan_materi),
+                pptx: parseInt(item.nilai_slide_power_point),
+                keaktifan: parseInt(item.nilai_keaktifan),
+                tugas: parseInt(item.nilai_tugas),
+                uts: parseInt(item.nilai_uts),
+                uas: parseInt(item.nilai_uas),
+                absen: parseInt(item.nilai_hadir)
+            })
+            if (item.nilai_presentasi) {
+                setCheckedpres(true)
+            }
+            if (item.nilai_penguasaan_materi) {
+                setCheckedmtr(true)
+            }
+            if (item.nilai_slide_power_point) {
+                setCheckedppt(true)
+            }
+            if (item.nilai_keaktifan) {
+                setCheckedaktif(true)
+            }
+            if (item.nilai_tugas) {
+                setCheckedtgs(true)
+            }
+            if (item.nilai_uts) {
+                setCheckedUts(true)
+            }
+            if (item.nilai_uas) {
+                setCheckedUas(true)
+            }
+            if (item.nilai_hadir) {
+                setCheckedAbsen(true)
+            }
+        })
+        setInputFields(newfield)
+    }
 
     const getKelasById = async () => {
         const response = await axios.get(`v1/kelasKuliah/getKelasById/${location.state.idn}`)
@@ -81,6 +162,7 @@ const UpdateNilaiMhs = () => {
     const getMahasiswa = async () => {
         try {
             const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.mk}&codeKls=${location.state.kod}`)
+            setKolom(response.data.data[0])
             setMahasiswa(response.data.data)
             setJmlMhs(response.data.data.length)
         } catch (error) {
@@ -88,12 +170,36 @@ const UpdateNilaiMhs = () => {
         }
     }
 
-    const addFields = () => {
+    const getPresentasi = () => {
         let newfield = []
-        Mahasiswa.map(item => (
-            newfield.push({ tugas: parseInt(item.nilai_tugas), uts: parseInt(item.nilai_uts), uas: parseInt(item.nilai_uas), absen: parseInt(item.nilai_hadir) })
+        inputFields.map(item => (
+            newfield.push(parseInt(item.presentasi))
         ))
-        setInputFields(newfield)
+        setPresentasi(newfield)
+    }
+
+    const getMateri = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.materi))
+        ))
+        setMateri(newfield)
+    }
+
+    const getPptx = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.pptx))
+        ))
+        setPptx(newfield)
+    }
+
+    const getKeaktifan = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.keaktifan))
+        ))
+        setKeaktifan(newfield)
     }
 
     const getTugas = () => {
@@ -128,28 +234,180 @@ const UpdateNilaiMhs = () => {
         setAbsen(newfield)
     }
 
+    const handleChangePres = () => {
+        setCheckedpres(!checkedpres)
+        if (!checkedpres) {
+            setjumlahKolom([...jumlahKolom, 'A'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'A'))
+            for (var i = 0; i < document.getElementsByName('presentasi').length; i++) {
+                let k = document.getElementsByName('presentasi')[i].value = ''
+                k = ""
+                let datas = inputFields[i]
+                console.log(datas);
+                inputFields[i].presentasi = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('presentasi').length; i++) {
+            document.getElementsByName('presentasi')[i].disabled = false;
+        }
+    }
+
+    const handleChangeMateri = () => {
+        setCheckedmtr(!checkedmtr)
+        if (!checkedmtr) {
+            setjumlahKolom([...jumlahKolom, 'B'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'B'))
+            for (var i = 0; i < document.getElementsByName('materi').length; i++) {
+                let datas = inputFields[i]
+                console.log(datas);
+                inputFields[i].materi = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('materi').length; i++) {
+            document.getElementsByName('materi')[i].disabled = false;
+        }
+    }
+
+    const handleChangePptx = () => {
+        setCheckedppt(!checkedppt)
+        if (!checkedppt) {
+            setjumlahKolom([...jumlahKolom, 'C'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'C'))
+            for (var i = 0; i < document.getElementsByName('pptx').length; i++) {
+                let datas = inputFields[i]
+                console.log(datas);
+                inputFields[i].pptx = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('pptx').length; i++) {
+            document.getElementsByName('pptx')[i].disabled = false;
+        }
+    }
+
+    const handleChangeAktif = () => {
+        setCheckedaktif(!checkedaktif)
+        if (!checkedaktif) {
+            setjumlahKolom([...jumlahKolom, 'D'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'D'))
+            for (var i = 0; i < document.getElementsByName('keaktifan').length; i++) {
+                let datas = inputFields[i]
+                console.log(datas);
+                inputFields[i].keaktifan = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('keaktifan').length; i++) {
+            document.getElementsByName('keaktifan')[i].disabled = false;
+        }
+    }
+
+    const handleChangeTgs = () => {
+        setCheckedtgs(!checkedtgs)
+        if (!checkedtgs) {
+            setjumlahKolom([...jumlahKolom, 'E'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'E'))
+            for (var i = 0; i < document.getElementsByName('tugas').length; i++) {
+                let datas = inputFields[i]
+                console.log(datas);
+                inputFields[i].tugas = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('tugas').length; i++) {
+            document.getElementsByName('tugas')[i].disabled = false;
+        }
+    }
+
+    const handleChangeUts = () => {
+        setCheckedUts(!checkedUts)
+        if (!checkedUts) {
+            setjumlahKolom([...jumlahKolom, 'F'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'F'))
+            for (var i = 0; i < document.getElementsByName('uts').length; i++) {
+                let datas = inputFields[i]
+                console.log(datas);
+                inputFields[i].uts = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('uts').length; i++) {
+            document.getElementsByName('uts')[i].disabled = false;
+
+        }
+    }
+
+    const handleChangeUas = () => {
+        setCheckedUas(!checkedUas)
+        if (!checkedUas) {
+            setjumlahKolom([...jumlahKolom, 'G'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'G'))
+            for (var i = 0; i < document.getElementsByName('uas').length; i++) {
+                let datas = inputFields[i]
+                console.log(datas);
+                inputFields[i].uas = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('uas').length; i++) {
+            document.getElementsByName('uas')[i].disabled = false;
+        }
+    }
+
+    const handleChangeAbsen = () => {
+        setCheckedAbsen(!checkedAbsen)
+        if (!checkedAbsen) {
+            setjumlahKolom([...jumlahKolom, 'H'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'H'))
+            for (var i = 0; i < document.getElementsByName('absen').length; i++) {
+                let datas = inputFields[i]
+                console.log(datas);
+                inputFields[i].absen = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('absen').length; i++) {
+            document.getElementsByName('absen')[i].disabled = false;
+        }
+    }
+
     const getAverage = () => {
-        const i = inputFields.map(el => {
-            let tugas = parseInt(el.tugas) || 0
-            let hadir = parseInt(el.absen) || 0
-            let uts = parseInt(el.uts) || 0
-            let uas = parseInt(el.uas) || 0
-            let rataRata = (tugas + hadir + uts + uas) / 4
-            return rataRata
-        })
-        setNIlaiAkhir(i)
+        if (jumlahKolom.length != 0) {
+            const i = inputFields.map(el => {
+                let presentasi = parseInt(el.presentasi) || 0
+                let materi = parseInt(el.materi) || 0
+                let pptx = parseInt(el.pptx) || 0
+                let keaktifan = parseInt(el.keaktifan) || 0
+                let tugas = parseInt(el.tugas) || 0
+                let hadir = parseInt(el.absen) || 0
+                let uts = parseInt(el.uts) || 0
+                let uas = parseInt(el.uas) || 0
+                let rataRata = (presentasi + materi + pptx + keaktifan + tugas + hadir + uts + uas) / jumlahKolom.length
+                return rataRata
+            })
+            setNIlaiAkhir(i)
+        }
     }
 
     const getSum = () => {
-        const i = inputFields.map(el => {
-            let tugas = parseInt(el.tugas) || 0
-            let hadir = parseInt(el.absen) || 0
-            let uts = parseInt(el.uts) || 0
-            let uas = parseInt(el.uas) || 0
-            var sum = (tugas + hadir + uts + uas)
-            return sum
-        })
-        setNilaiSum(i)
+        if (jumlahKolom.length != 0) {
+            const i = inputFields.map(el => {
+                let presentasi = parseInt(el.presentasi) || 0
+                let materi = parseInt(el.materi) || 0
+                let pptx = parseInt(el.pptx) || 0
+                let keaktifan = parseInt(el.keaktifan) || 0
+                let tugas = parseInt(el.tugas) || 0
+                let hadir = parseInt(el.absen) || 0
+                let uts = parseInt(el.uts) || 0
+                let uas = parseInt(el.uas) || 0
+                var sum = (presentasi + materi + pptx + keaktifan + tugas + hadir + uts + uas)
+                return sum
+            })
+            setNilaiSum(i)
+        }
+
     }
 
     const cekNilai = async () => {
@@ -182,6 +440,10 @@ const UpdateNilaiMhs = () => {
                 Mahasiswa.map((item, index) => ({
                     id_nilai_kuliah: item.id_nilai_kuliah,
                     code_kategori_nilai: kodeNilai[index],
+                    nilai_presentasi: inputFields[index].presentasi,
+                    nilai_penguasaan_materi: inputFields[index].materi,
+                    nilai_slide_power_point: inputFields[index].pptx,
+                    nilai_keaktifan: inputFields[index].keaktifan,
                     nilai_hadir: inputFields[index].absen,
                     nilai_tugas: inputFields[index].tugas,
                     nilai_uts: inputFields[index].uts,
@@ -305,14 +567,130 @@ const UpdateNilaiMhs = () => {
                                 <div className="overflow-x-auto mb-2">
                                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                         <thead className='text-gray-700 bg-[#F2F2F2]'>
-                                            <tr>
+                                            <tr className='h-28'>
                                                 <th scope="col" align='center' className="px-3 py-3 border w-10">#</th>
                                                 <th scope="col" align='center' className="px-3 py-3 border w-16">NIM</th>
                                                 <th scope="col" align='center' className="px-3 py-3 border">Nama</th>
-                                                <th scope="col" align='center' className="px-3 py-3 border w-28">Tugas Individu</th>
-                                                <th scope="col" align='center' className="px-3 py-3 border w-28">UTS</th>
-                                                <th scope="col" align='center' className='px-3 py-3 border w-28'>UAS</th>
-                                                <th scope="col" align='center' className='px-3 py-3 border w-28'>Absen</th>
+                                                <th scope='col' align='center' className='py-3 border w-10'>
+                                                    <div className='flex gap-1 items-center justify-center'>
+                                                        <div className="form-control">
+                                                            <label className="cursor-pointer label justify-center">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={checkedpres}
+                                                                    onChange={() => handleChangePres()}
+                                                                    className="checkbox checkbox-success checkbox-xs rounded-none"
+                                                                />
+                                                            </label>
+                                                        </div>
+                                                        <span className='text-[13px] -rotate-90'>Presentasi</span>
+                                                    </div>
+                                                </th>
+                                                <th scope='col' align='center' className='py-3 border w-10'>
+                                                    <div className='flex gap-1 items-center justify-center'>
+                                                        <div className="form-control">
+                                                            <label className="cursor-pointer label justify-center">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={checkedmtr}
+                                                                    onChange={() => handleChangeMateri()}
+                                                                    className="checkbox checkbox-success checkbox-xs rounded-none"
+                                                                />
+                                                            </label>
+                                                        </div>
+                                                        <span className='text-[13px] -rotate-90'>Penguasaan</span>
+                                                    </div>
+                                                </th>
+                                                <th scope='col' align='center' className='py-3 border w-10'>
+                                                    <div className='flex gap-1 items-center justify-center'>
+                                                        <div className="form-control">
+                                                            <label className="cursor-pointer label justify-center">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={checkedppt}
+                                                                    onChange={() => handleChangePptx()}
+                                                                    className="checkbox checkbox-success checkbox-xs rounded-none"
+                                                                />
+                                                            </label>
+                                                        </div>
+                                                        <span className='text-[13px] -rotate-90'>Power&nbsp;Point</span>
+                                                    </div>
+                                                </th>
+                                                <th scope='col' align='center' className='py-3 border w-10'>
+                                                    <div className='flex gap-1 items-center justify-center'>
+                                                        <div className="form-control">
+                                                            <label className="cursor-pointer label justify-center">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={checkedaktif}
+                                                                    onChange={() => handleChangeAktif()}
+                                                                    className="checkbox checkbox-success checkbox-xs rounded-none"
+                                                                />
+                                                            </label>
+                                                        </div>
+                                                        <span className='text-[13px] -rotate-90'>Keaktifan</span>
+                                                    </div>
+                                                </th>
+                                                <th scope="col" align='center' className="py-3 border w-10">
+                                                    <div className='flex gap-1 items-center justify-center'>
+                                                        <div className="form-control">
+                                                            <label className="cursor-pointer label justify-center">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={checkedtgs}
+                                                                    onChange={() => handleChangeTgs()}
+                                                                    className="checkbox checkbox-success checkbox-xs rounded-none"
+                                                                />
+                                                            </label>
+                                                        </div>
+                                                        <span className='text-[13px] -rotate-90'>Tugas</span>
+                                                    </div>
+                                                </th>
+                                                <th scope="col" align='center' className="py-3 border w-10">
+                                                    <div className='flex gap-1 items-center justify-center'>
+                                                        <div className="form-control">
+                                                            <label className="cursor-pointer label justify-center">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={checkedUts}
+                                                                    onChange={handleChangeUts}
+                                                                    className="checkbox checkbox-success checkbox-xs rounded-none"
+                                                                />
+                                                            </label>
+                                                        </div>
+                                                        <span className='text-[13px] -rotate-90'>UTS</span>
+                                                    </div>
+                                                </th>
+                                                <th scope="col" align='center' className='py-3 border w-10'>
+                                                    <div className='flex gap-1 items-center justify-center'>
+                                                        <div className="form-control">
+                                                            <label className="cursor-pointer label justify-center">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={checkedUas}
+                                                                    onChange={handleChangeUas}
+                                                                    className="checkbox checkbox-success checkbox-xs rounded-none"
+                                                                />
+                                                            </label>
+                                                        </div>
+                                                        <span className='text-[13px] -rotate-90'>UAS</span>
+                                                    </div>
+                                                </th>
+                                                <th scope="col" align='center' className='py-3 border w-10'>
+                                                    <div className='flex gap-1 items-center justify-center'>
+                                                        <div className="form-control">
+                                                            <label className="cursor-pointer label justify-center">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={checkedAbsen}
+                                                                    onChange={handleChangeAbsen}
+                                                                    className="checkbox checkbox-success checkbox-xs rounded-none"
+                                                                />
+                                                            </label>
+                                                        </div>
+                                                        <span className='text-[13px] -rotate-90'>Absen</span>
+                                                    </div>
+                                                </th>
                                                 <th scope="col" align='center' className='px-3 py-3 border w-28'>Jumlah</th>
                                                 <th scope="col" align='center' className='px-3 py-3 border w-20'>Nilai</th>
                                                 <th scope="col" align='center' className='px-3 py-3 border w-20'>Grade</th>
@@ -326,16 +704,28 @@ const UpdateNilaiMhs = () => {
                                                     <td className='px-2 py-2 border'>{mhs.nim}</td>
                                                     <td className='px-2 py-2 border'>{mhs.mahasiswas[0].nama}</td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='tugas' value={tugas[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='presentasi' value={presentasi[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[70px]' disabled={!checkedpres} />
                                                     </td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='uts' value={uts[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='materi' value={materi[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[70px]' disabled={!checkedmtr} />
                                                     </td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='uas' value={uas[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='pptx' value={pptx[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[70px]' disabled={!checkedppt} />
                                                     </td>
                                                     <td className='px-2 py-2 border'>
-                                                        <input type="number" name='absen' value={absen[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[94px]' />
+                                                        <input type="number" name='keaktifan' value={keaktifan[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[70px]' disabled={!checkedaktif} />
+                                                    </td>
+                                                    <td className='px-2 py-2 border'>
+                                                        <input type="number" name='tugas' value={tugas[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[70px]' disabled={!checkedtgs} />
+                                                    </td>
+                                                    <td className='px-2 py-2 border'>
+                                                        <input type="number" name='uts' value={uts[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[70px]' disabled={!checkedUts} />
+                                                    </td>
+                                                    <td className='px-2 py-2 border'>
+                                                        <input type="number" name='uas' value={uas[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[70px]' disabled={!checkedUas} />
+                                                    </td>
+                                                    <td className='px-2 py-2 border'>
+                                                        <input type="number" name='absen' value={absen[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[70px]' disabled={!checkedAbsen} />
                                                     </td>
                                                     <td className='px-2 py-2 border'>{nilaiSum[index] == 0 ? "" : nilaiSum[index]}</td>
                                                     <td className='px-2 py-2 border'>{nilaiAkhir[index] == "0" ? "" : nilaiAkhir[index]}</td>

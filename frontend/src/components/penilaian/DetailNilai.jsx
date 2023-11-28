@@ -144,7 +144,11 @@ const DetailNilai = () => {
                                             <th scope="col" align='center' className="px-3 py-3 border w-10">#</th>
                                             <th scope="col" align='center' className="px-3 py-3 border w-16">NIM</th>
                                             <th scope="col" align='center' className="px-3 py-3 border">Nama</th>
-                                            <th scope="col" align='center' className="px-3 py-3 border w-28">Tugas Individu</th>
+                                            <th scope="col" align='center' className="px-3 py-3 border w-28">Presentasi</th>
+                                            <th scope="col" align='center' className="px-3 py-3 border w-28">Penguasaan Materi</th>
+                                            <th scope="col" align='center' className="px-3 py-3 border w-28">Power Point</th>
+                                            <th scope="col" align='center' className="px-3 py-3 border w-28">Keaktifan</th>
+                                            <th scope="col" align='center' className="px-3 py-3 border w-28">Tugas</th>
                                             <th scope="col" align='center' className="px-3 py-3 border w-28">UTS</th>
                                             <th scope="col" align='center' className='px-3 py-3 border w-28'>UAS</th>
                                             <th scope="col" align='center' className='px-3 py-3 border w-28'>Absen</th>
@@ -166,6 +170,10 @@ const DetailNilai = () => {
                                                     <td className='px-2 py-2 border' align='center'>{index + 1}</td>
                                                     <td className='px-2 py-2 border'>{mhs.nim}</td>
                                                     <td className='px-2 py-2 border'>{mhs.mahasiswas[0].nama}</td>
+                                                    <td className='px-2 py-2 border'>{mhs.nilai_presentasi}</td>
+                                                    <td className='px-2 py-2 border'>{mhs.nilai_penguasaan_materi}</td>
+                                                    <td className='px-2 py-2 border'>{mhs.nilai_slide_power_point}</td>
+                                                    <td className='px-2 py-2 border'>{mhs.nilai_keaktifan}</td>
                                                     <td className='px-2 py-2 border'>{mhs.nilai_tugas}</td>
                                                     <td className='px-2 py-2 border'>{mhs.nilai_uts}</td>
                                                     <td className='px-2 py-2 border'>{mhs.nilai_uas}</td>
