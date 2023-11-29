@@ -42,7 +42,7 @@ module.exports = {
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
                 code_prodi: codePrd,
-                status: "aktif"
+                // status: "aktif"
             }
         }).
             then(result => {

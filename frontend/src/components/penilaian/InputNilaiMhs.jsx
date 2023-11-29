@@ -77,7 +77,7 @@ const InputNilaiMhs = () => {
     useEffect(() => {
         getAverage()
         getSum()
-    }, [inputFields, jumlahKolom])
+    }, [inputFields, jumlahKolom, presentasi, materi, pptx, keaktifan, tugas, uts, uas, absen])
 
     useEffect(() => {
         cekNilai()
@@ -98,7 +98,10 @@ const InputNilaiMhs = () => {
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'A'))
             for (var i = 0; i < document.getElementsByName('presentasi').length; i++) {
+                let g = document.getElementsByName('presentasi')[i].value = ''
+                setPresentasi([])
                 let datas = inputFields[i]
+                console.log(datas);
                 inputFields[i].presentasi = ""
             }
         }
@@ -115,6 +118,7 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'B'))
             for (var i = 0; i < document.getElementsByName('materi').length; i++) {
                 let datas = inputFields[i]
+                console.log(datas);
                 inputFields[i].materi = ""
             }
         }
@@ -131,6 +135,7 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'C'))
             for (var i = 0; i < document.getElementsByName('pptx').length; i++) {
                 let datas = inputFields[i]
+                console.log(datas);
                 inputFields[i].pptx = ""
             }
         }
@@ -147,6 +152,7 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'D'))
             for (var i = 0; i < document.getElementsByName('keaktifan').length; i++) {
                 let datas = inputFields[i]
+                console.log(datas);
                 inputFields[i].keaktifan = ""
             }
         }
@@ -163,6 +169,7 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'E'))
             for (var i = 0; i < document.getElementsByName('tugas').length; i++) {
                 let datas = inputFields[i]
+                console.log(datas);
                 inputFields[i].tugas = ""
             }
         }
@@ -179,6 +186,7 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'F'))
             for (var i = 0; i < document.getElementsByName('uts').length; i++) {
                 let datas = inputFields[i]
+                console.log(datas);
                 inputFields[i].uts = ""
             }
         }
@@ -196,6 +204,7 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'G'))
             for (var i = 0; i < document.getElementsByName('uas').length; i++) {
                 let datas = inputFields[i]
+                console.log(datas);
                 inputFields[i].uas = ""
             }
         }
@@ -212,6 +221,7 @@ const InputNilaiMhs = () => {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'H'))
             for (var i = 0; i < document.getElementsByName('absen').length; i++) {
                 let datas = inputFields[i]
+                console.log(datas);
                 inputFields[i].absen = ""
             }
         }

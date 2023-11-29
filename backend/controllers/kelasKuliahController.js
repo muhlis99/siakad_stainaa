@@ -372,6 +372,7 @@ module.exports = {
         nmKelas.unshift("")
         nama_kelas.splice(-1)
 
+
         const dataCreateKelas = makul.map(al => {
             const codeMakul = al.code_mata_kuliah
             nama_kelas.map(async el => {
@@ -450,12 +451,12 @@ module.exports = {
             })
         })
 
-        if (dataCreateKelas) {
-            res.status(201).json({
-                message: "data kelas kuliah succses ditambahkan"
-            })
-        }
+        // if (dataCreateKelas) {
+        // }
 
+        // res.status(201).json({
+        //     message: "data kelas kuliah succses ditambahkan"
+        // })
 
     },
 
