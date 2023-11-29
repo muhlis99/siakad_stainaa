@@ -372,7 +372,6 @@ module.exports = {
         nmKelas.unshift("")
         nama_kelas.splice(-1)
 
-        // console.log(makul);
         const dataCreateKelas = makul.map(al => {
             const codeMakul = al.code_mata_kuliah
             nama_kelas.map(async el => {
@@ -435,7 +434,7 @@ module.exports = {
                                 limit: perPage,
                                 group: ['nim']
                             })
-                            return await Promise.all(al.map(async p => {
+                            const dataInsert = al.map(p => {
                                 let random = Math.floor(100 + Math.random() * 900)
                                 let datas = {
                                     code_kelas: elment.code_kelas,
@@ -443,8 +442,9 @@ module.exports = {
                                     nim: p.nim,
                                     status: "aktif"
                                 }
-                                await kelasDetailKuliahModel.bulkCreate([datas])
-                            }))
+                                return datas
+                            })
+                            await kelasDetailKuliahModel.bulkCreate(dataInsert)
                         })
                     })
             })

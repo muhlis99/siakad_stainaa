@@ -280,10 +280,12 @@ module.exports = {
             }, {
                 model: kelasModel,
                 where: { status: "aktif" }
-            }, {
-                model: mataKuliahModel,
+            },
+            {
+                model: sebaranMataKuliah,
                 where: { status: "aktif" }
-            }],
+            }
+            ],
             where: {
                 id_jadwal_kuliah: id,
                 status: "aktif"
@@ -343,6 +345,7 @@ module.exports = {
                 code_ruang: code_ruang,
                 jam_mulai: jam_mulai,
                 jam_selesai: jam_selesai,
+                jumlah_pertemuan: jumlah_pertemuan,
                 status: 'aktif'
             }
         })
@@ -375,7 +378,7 @@ module.exports = {
                 message: "Data jadwal Kuliah success Diupdate",
             })
         }).catch(err => {
-            next(err)
+            console.log(err)
         })
     },
 
