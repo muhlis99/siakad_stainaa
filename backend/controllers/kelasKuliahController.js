@@ -390,58 +390,61 @@ module.exports = {
                     code_tahun_ajaran: code_tahun_ajaran,
                     status: "aktif"
                 }
-                const insertKelas = await kelasModel.bulkCreate([data])
-                insertKelas.map(async dtsKls => {
-                    const dataKRS = await krsModel.findAll({
-                        include: [
-                            {
-                                model: jenjangPendidikanModel,
-                                where: { status: "aktif" }
-                            }, {
-                                model: fakultasModel,
-                                where: { status: "aktif" }
-                            }, {
-                                model: prodiModel,
-                                where: { status: "aktif" }
-                            }, {
-                                model: tahunAjaranModel,
-                                where: { status: "aktif" }
-                            }, {
-                                model: semesterModel,
-                                where: { status: "aktif" }
-                            }, {
-                                model: mahasiswaModel,
+                await kelasModel.bulkCreate([data])
+                    .then(all => {
+                        all.map(async elment => {
+                            const dataKRS = await krsModel.findAll({
+                                include: [
+                                    {
+                                        model: jenjangPendidikanModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: fakultasModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: prodiModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: tahunAjaranModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: semesterModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: mahasiswaModel,
+                                        where: {
+                                            jenis_kelamin: jenkel,
+                                            status: "aktif"
+                                        }
+                                    }
+                                ],
                                 where: {
-                                    jenis_kelamin: jenkel,
+                                    code_jenjang_pendidikan: code_jenjang_pendidikan,
+                                    code_fakultas: code_fakultas,
+                                    code_prodi: code_prodi,
+                                    code_tahun_ajaran: code_tahun_ajaran,
+                                    code_semester: code_semester,
                                     status: "aktif"
-                                }
-                            }
-                        ],
-                        where: {
-                            code_jenjang_pendidikan: code_jenjang_pendidikan,
-                            code_fakultas: code_fakultas,
-                            code_prodi: code_prodi,
-                            code_tahun_ajaran: code_tahun_ajaran,
-                            code_semester: code_semester,
-                            status: "aktif"
-                        },
-                        offset: offset,
-                        limit: perPage,
-                        group: ['nim']
-                    }).then(async results => {
-                        await Promise.all(results.map(async p => {
-                            let random = Math.floor(100 + Math.random() * 900)
-                            let datas = {
-                                code_kelas: elment.code_kelas,
-                                code_kelas_detail: jenkel + random,
-                                nim: p.nim,
-                                status: "aktif"
-                            }
-                            console.log(p.nim);
-                            return await kelasDetailKuliahModel.bulkCreate([datas])
-                        }))
+                                },
+                                offset: offset,
+                                limit: perPage,
+                                group: ['nim']
+                            }).then(async results => {
+                                await Promise.all(results.map(async p => {
+                                    let random = Math.floor(100 + Math.random() * 900)
+                                    let datas = {
+                                        code_kelas: elment.code_kelas,
+                                        code_kelas_detail: jenkel + random,
+                                        nim: p.nim,
+                                        status: "aktif"
+                                    }
+                                    console.log(p.nim);
+                                    return await kelasDetailKuliahModel.bulkCreate([datas])
+                                }))
+                            })
+
+                        })
                     })
-                })
             })
         })
 
