@@ -129,100 +129,166 @@ module.exports = {
             }
         })
 
-        const queryTotalSksIndex = await db.query(`SELECT SUM( tb_mata_kuliah.sks*tb_kategori_nilai.interfal_skor) AS total FROM tb_nilai_kuliah
-        INNER JOIN tb_sebaran_mata_kuliah ON tb_nilai_kuliah.code_mata_kuliah=tb_sebaran_mata_kuliah.code_mata_kuliah INNER JOIN tb_kategori_nilai ON
-        tb_nilai_kuliah.code_kategori_nilai=tb_kategori_nilai.code_kategori_nilai INNER JOIN tb_mata_kuliah ON tb_sebaran_mata_kuliah.code_mata_kuliah=tb_mata_kuliah.code_mata_kuliah
-        WHERE tb_nilai_kuliah.code_tahun_ajaran="${codeThnAjr}" AND tb_nilai_kuliah.nim = "${nim}"
-        AND tb_nilai_kuliah.code_semester="${codeSmt}" AND tb_nilai_kuliah.code_jenjang_pendidikan="${codeJnjPen}" 
-        AND tb_nilai_kuliah.code_fakultas="${codeFks}" AND tb_nilai_kuliah.code_prodi="${codePrd}" AND tb_nilai_kuliah.status="aktif" AND tb_nilai_kuliah.nim="${nim}"
-        AND tb_sebaran_mata_kuliah.code_tahun_ajaran="${codeThnAjr}" AND tb_sebaran_mata_kuliah.code_semester="${codeSmt}" AND tb_mata_kuliah.code_jenjang_pendidikan="${codeJnjPen}" 
-        AND tb_mata_kuliah.code_fakultas="${codeFks}" AND tb_mata_kuliah.code_prodi="${codePrd}" AND tb_mata_kuliah.status="aktif"`, {
-            nest: true,
-            type: QueryTypes.SELECT
-        })
-        console.log(queryTotalSksIndex);
-        const totalSksIndex = queryTotalSksIndex[0].total
-        const ipSemester = totalSksIndex / totalSks
-        // await nilaiKuliahModel.findAll({
-        //     include: [
-        //         {
-        //             model: sebaranMataKuliah,
-        //             where: {
-        //                 code_tahun_ajaran: codeThnAjr,
-        //                 code_semester: codeSmt,
-        //                 status: "aktif"
-        //             },
-        //             include: [{
-        //                 model: mataKuliahModel,
-        //                 code_jenjang_pendidikan: codeJnjPen,
-        //                 code_fakultas: codeFks,
-        //                 code_prodi: codePrd,
-        //             }]
-        //         },
-        //         {
-        //             attributes: ["id_kategori_nilai", "nilai_huruf", "interfal_skor"],
-        //             model: kategoriNilaiModel,
-        //             where: { status: "aktif", code_tahun_ajaran: codeThnAjr }
-        //         },
-        //         {
-        //             attributes: ['nim', 'nama'],
-        //             model: mahasiswaModel,
-        //             where: { status: "aktif" }
-        //         },
-        //         {
-        //             model: tahunAjaranModel,
-        //             attributes: ['code_tahun_ajaran', 'tahun_ajaran'],
-        //             where: { status: "aktif" }
-        //         }, {
-        //             model: semesterModel,
-        //             attributes: ['code_semester', 'semester'],
-        //             where: { status: "aktif" }
-        //         }, {
-        //             attributes: ['code_jenjang_pendidikan', 'nama_jenjang_pendidikan'],
-        //             model: jenjangPendidikanModel,
-        //             where: { status: "aktif" }
-        //         }, {
-        //             model: fakultasModel,
-        //             attributes: ['code_fakultas', 'nama_fakultas',],
-        //             where: { status: "aktif" }
-        //         }, {
-        //             attributes: ['code_prodi', 'nama_prodi'],
-        //             model: prodiModel,
-        //             where: { status: "aktif" }
-        //         }
-        //     ],
-        //     attributes: [
-        //         'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
-        //         [Sequelize.literal('(sks*interfal_skor)'), 'sksIndexs']
-        //     ],
-        //     where: {
-        //         code_tahun_ajaran: codeThnAjr,
-        //         code_semester: codeSmt,
-        //         code_jenjang_pendidikan: codeJnjPen,
-        //         code_fakultas: codeFks,
-        //         code_prodi: codePrd,
-        //         nim: nim,
-        //         status: 'aktif'
-        //     },
-        // }).then(result => {
-        //     res.status(201).json({
-        //         data: result,
-        //         nim: mhs.nim,
-        //         mahasiswa: mhs.nama,
-        //         prodi: prd.nama_prodi,
-        //         fakultas: fks.nama_fakultas,
-        //         jenjangPendidikan: jenjPen.nama_jenjang_pendidikan,
-        //         semester: smt.semester,
-        //         tahunAjaran: thnAjr.tahun_ajaran,
-        //         jumlahSks: totalSks,
-        //         jumlahSksIndex: totalSksIndex,
-        //         IPS: ipSemester.toFixed(2)
-        //         // IPS: ipSemester
-
-        //     })
-        // }).catch(err => {
-        //     console.log(err)
+        // const queryTotalSksIndex = await db.query(`SELECT SUM( tb_mata_kuliah.sks*tb_kategori_nilai.interfal_skor) AS total FROM tb_nilai_kuliah
+        // INNER JOIN tb_sebaran_mata_kuliah ON tb_nilai_kuliah.code_mata_kuliah=tb_sebaran_mata_kuliah.code_mata_kuliah INNER JOIN tb_kategori_nilai ON
+        // tb_nilai_kuliah.code_kategori_nilai=tb_kategori_nilai.code_kategori_nilai INNER JOIN tb_mata_kuliah ON tb_sebaran_mata_kuliah.code_mata_kuliah=tb_mata_kuliah.code_mata_kuliah
+        // WHERE tb_nilai_kuliah.code_tahun_ajaran="${codeThnAjr}" AND tb_nilai_kuliah.code_semester="${codeSmt}" AND tb_nilai_kuliah.code_jenjang_pendidikan="${codeJnjPen}" 
+        // AND tb_nilai_kuliah.code_fakultas="${codeFks}" AND tb_nilai_kuliah.code_prodi="${codePrd}" AND tb_nilai_kuliah.status="aktif" AND tb_nilai_kuliah.nim="${nim}"
+        // AND tb_sebaran_mata_kuliah.code_tahun_ajaran="${codeThnAjr}" AND tb_sebaran_mata_kuliah.code_semester="${codeSmt}" AND tb_mata_kuliah.code_jenjang_pendidikan="${codeJnjPen}" 
+        // AND tb_mata_kuliah.code_fakultas="${codeFks}" AND tb_mata_kuliah.code_prodi="${codePrd}" AND tb_mata_kuliah.status="aktif"`, {
+        //     nest: true,
+        //     type: QueryTypes.SELECT
         // })
+
+        const datasQueryTotalSksIndex = await nilaiKuliahModel.findAll({
+            include: [
+                {
+                    model: sebaranMataKuliah,
+                    where: {
+                        code_tahun_ajaran: codeThnAjr,
+                        code_semester: codeSmt,
+                        status: "aktif"
+                    },
+                    include: [{
+                        model: mataKuliahModel,
+                        code_jenjang_pendidikan: codeJnjPen,
+                        code_fakultas: codeFks,
+                        code_prodi: codePrd,
+                    }]
+                },
+                {
+                    attributes: ["id_kategori_nilai", "nilai_huruf", "interfal_skor"],
+                    model: kategoriNilaiModel,
+                    where: { status: "aktif", code_tahun_ajaran: codeThnAjr }
+                },
+                {
+                    attributes: ['nim', 'nama'],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: tahunAjaranModel,
+                    attributes: ['code_tahun_ajaran', 'tahun_ajaran'],
+                    where: { status: "aktif" }
+                }, {
+                    model: semesterModel,
+                    attributes: ['code_semester', 'semester'],
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_jenjang_pendidikan', 'nama_jenjang_pendidikan'],
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: fakultasModel,
+                    attributes: ['code_fakultas', 'nama_fakultas',],
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_prodi', 'nama_prodi'],
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            attributes: [
+                'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
+                [Sequelize.literal('(sks*interfal_skor)'), 'sksIndexs']
+            ],
+            where: {
+                code_tahun_ajaran: codeThnAjr,
+                code_semester: codeSmt,
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
+                nim: nim,
+                status: 'aktif'
+            },
+        })
+
+        const datasQueryTotalSksIndexs = datasQueryTotalSksIndex.map(el => { return el.get("sksIndexs") })
+        const queryTotalSksIndex = datasQueryTotalSksIndexs.reduce((i, e) => {
+            return i + e
+        })
+        const totalSksIndex = queryTotalSksIndex
+        const ipSemester = totalSksIndex / totalSks
+        await nilaiKuliahModel.findAll({
+            include: [
+                {
+                    model: sebaranMataKuliah,
+                    where: {
+                        code_tahun_ajaran: codeThnAjr,
+                        code_semester: codeSmt,
+                        status: "aktif"
+                    },
+                    include: [{
+                        model: mataKuliahModel,
+                        code_jenjang_pendidikan: codeJnjPen,
+                        code_fakultas: codeFks,
+                        code_prodi: codePrd,
+                    }]
+                },
+                {
+                    attributes: ["id_kategori_nilai", "nilai_huruf", "interfal_skor"],
+                    model: kategoriNilaiModel,
+                    where: { status: "aktif", code_tahun_ajaran: codeThnAjr }
+                },
+                {
+                    attributes: ['nim', 'nama'],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: tahunAjaranModel,
+                    attributes: ['code_tahun_ajaran', 'tahun_ajaran'],
+                    where: { status: "aktif" }
+                }, {
+                    model: semesterModel,
+                    attributes: ['code_semester', 'semester'],
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_jenjang_pendidikan', 'nama_jenjang_pendidikan'],
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: fakultasModel,
+                    attributes: ['code_fakultas', 'nama_fakultas',],
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_prodi', 'nama_prodi'],
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            attributes: [
+                'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
+                [Sequelize.literal('(sks*interfal_skor)'), 'sksIndexs']
+            ],
+            where: {
+                code_tahun_ajaran: codeThnAjr,
+                code_semester: codeSmt,
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
+                nim: nim,
+                status: 'aktif'
+            },
+        }).then(result => {
+            res.status(201).json({
+                data: result,
+                nim: mhs.nim,
+                mahasiswa: mhs.nama,
+                prodi: prd.nama_prodi,
+                fakultas: fks.nama_fakultas,
+                jenjangPendidikan: jenjPen.nama_jenjang_pendidikan,
+                semester: smt.semester,
+                tahunAjaran: thnAjr.tahun_ajaran,
+                jumlahSks: totalSks,
+                jumlahSksIndex: totalSksIndex.toFixed(2),
+                IPS: ipSemester.toFixed(2)
+                // IPS: ipSemester
+
+            })
+        }).catch(err => {
+            console.log(err)
+        })
     },
 
     //  user mahasiswa
