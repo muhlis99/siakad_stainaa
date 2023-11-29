@@ -12,7 +12,7 @@ const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
 const sebaranMatakuliahModel = require('../models/sebaranMataKuliah.js')
 
-const { Op, QueryTypes, Sequelize, literal } = require('sequelize')
+const { Op, QueryTypes, Sequelize, literal, cast } = require('sequelize')
 
 
 module.exports = {
@@ -198,13 +198,17 @@ module.exports = {
                 }, {
                     attributes: ["nim", "nama", "jenis_kelamin"],
                     model: mahasiswaModel,
-                    where: { status: "aktif" }
+                    where: { status: "aktif" },
+
                 }
             ],
             where: {
                 code_kelas: codeKls,
-                status: "aktif"
-            }
+                status: "aktif",
+            },
+            order: [
+                ["nim", "ASC"]
+            ]
         }).
             then(result => {
                 res.status(200).json({
@@ -213,7 +217,7 @@ module.exports = {
                 })
             }).
             catch(err => {
-                next(err)
+                console.log(err)
             })
     },
 

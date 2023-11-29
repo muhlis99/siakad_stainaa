@@ -59,7 +59,7 @@ module.exports = {
                 status: "aktif"
             },
             order: [
-                ["id_nilai_kuliah", "DESC"]
+                ["nim", "ASC"]
             ]
         }).
             then(result => {

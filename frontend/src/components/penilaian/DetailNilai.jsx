@@ -22,11 +22,12 @@ const DetailNilai = () => {
 
     useEffect(() => {
         getKelasById()
+        console.log(location.state)
     }, [location.state])
 
     useEffect(() => {
         getMahasiswa()
-    }, [location.state, kodeTahun])
+    }, [location.state])
 
     const getKelasById = async () => {
         const response = await axios.get(`v1/kelasKuliah/getKelasById/${location.state.idn}`)
