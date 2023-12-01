@@ -406,7 +406,7 @@ module.exports = {
                                         model: prodiModel,
                                         where: { status: "aktif" }
                                     }, {
-                                        model: mataKuliahModel,
+                                        model: sebaranMatakuliahModel,
                                         where: { status: "aktif" }
                                     }, {
                                         model: tahunAjaranModel,

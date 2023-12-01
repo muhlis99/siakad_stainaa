@@ -519,7 +519,7 @@ module.exports = {
                 status: "aktif"
             }
         })
-        if (totalSKS == null) return res.status(404).json({ message: "data tidak ditemukan" })
+        if (totalSKS == null) return res.status(404).json({ message: "data jumlah krs tidak ditemukan" })
         await krsModel.findAll({
             include: [
                 {
@@ -620,16 +620,22 @@ module.exports = {
         const dataPengajuanKrs = await krsModel.findAll({
             include: [
                 {
-                    model: mataKuliahModel,
+                    model: sebaranMataKuliah,
                     where: {
                         code_tahun_ajaran: data.code_tahun_ajaran,
                         code_semester: data.code_semester,
-                        code_jenjang_pendidikan: data.code_jenjang_pendidikan,
-                        code_fakultas: data.code_fakultas,
-                        code_prodi: data.code_prodi,
                         status: "aktif",
-                        status_makul: "paket"
-                    }
+                        status_makul: "paket",
+                        status_bobot_makul: "wajib"
+                    },
+                    include: [{
+                        model: mataKuliahModel,
+                        where: {
+                            code_jenjang_pendidikan: data.code_jenjang_pendidikan,
+                            code_fakultas: data.code_fakultas,
+                            code_prodi: data.code_prodi,
+                        }
+                    }]
                 }
             ],
             where: {
