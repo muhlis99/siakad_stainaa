@@ -12,19 +12,19 @@ const { Op } = require('sequelize')
 
 module.exports = {
     autocompleteDosenPengajar: async (req, res, next) => {
-        const dataJadwalKuliah = await jadwalKuliahModel.findAll({
-            include: [{
-                model: dosenModel,
-                status: "aktif",
-                as: "dosenPengajar"
-            }],
-            where: {
-                status: "aktif"
-            }
-        })
-        const dataDosenPengajar = dataJadwalKuliah.map(i => {
-            return i.dosen_pengajar
-        })
+        // const dataJadwalKuliah = await jadwalKuliahModel.findAll({
+        //     include: [{
+        //         model: dosenModel,
+        //         status: "aktif",
+        //         as: "dosenPengajar"
+        //     }],
+        //     where: {
+        //         status: "aktif"
+        //     }
+        // })
+        // const dataDosenPengajar = dataJadwalKuliah.map(i => {
+        //     return i.dosen_pengajar
+        // })
 
         await dosenModel.findAll({
             where: {
