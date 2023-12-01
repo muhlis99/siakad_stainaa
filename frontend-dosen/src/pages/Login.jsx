@@ -27,7 +27,7 @@ const Login = () => {
     useEffect(() => {
         if (user || isSuccess) {
             setLoad(false)
-            if (user.role == 'admin') {
+            if (user.role == 'admin' && user.role == 'bauak' && user.role == 'operator') {
                 Swal.fire({
                     title: 'Mohon Login dengan akun anda',
                     icon: 'error'

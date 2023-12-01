@@ -312,8 +312,7 @@ const ListSebaran = () => {
             if (f != null) {
                 setJudul(e)
                 const response = await axios.get(`v1/sebaranMataKuliah/getById/${f}`)
-                console.log(response.data.data);
-                setId(response.data.data.id_mata_kuliah)
+                setId(response.data.data.id_sebaran)
                 setNama(response.data.data.mataKuliahs[0].nama_mata_kuliah)
                 setJenis(response.data.data.mataKuliahs[0].jenis_mata_kuliah)
                 setSmtr(response.data.data.semesters[0].semester)
@@ -590,17 +589,6 @@ const ListSebaran = () => {
                                         </div>
                                         <div className="col-span-2">
                                             <div className="grid grid-cols-2 gap-2">
-                                                <div>
-                                                    <label className="label flex-initial w-64">
-                                                        <span className="text-base label-text font-semibold">Tahun Ajaran</span>
-                                                    </label>
-                                                    <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeTahunAjaran} onChange={(e) => setKodeTahunAjaran(e.target.value)}>
-                                                        <option value="">Tahun Ajaran</option>
-                                                        {Tahun.map((item) => (
-                                                            <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
                                                 <div>
                                                     <label className="label">
                                                         <span className="text-base label-text font-semibold">Semester</span>
