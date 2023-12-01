@@ -7,6 +7,8 @@ const jadwalKuliahModel = require("../models/jadwalKuliahModel")
 const krsModel = require('../models/krsModel')
 const mataKuliahModel = require("../models/mataKuliahModel")
 const historyMahasiswa = require("../models/historyMahasiswaModel")
+const sebaranMataKuliah = require("../models/sebaranMataKuliah")
+const ruangModel = require("../models/ruangModel")
 
 module.exports = {
     totalMahasiswaPutera: async (req, res, next) => {
@@ -115,11 +117,27 @@ module.exports = {
     },
 
     jadwalKuliahNowMahasiswa: async (req, res, next) => {
-        const date = new Date().toISOString().substring(0, 10)
+        const date = new Date().toLocaleDateString('en-CA')
         const nim = req.params.nim
+        const dataMahasiswa = await historyMahasiswa.findOne({
+            include: [{
+                model: mahasiswaModel,
+                attributes: ["nama"]
+            }, {
+                model: prodiModel,
+                attributes: ["nama_prodi"]
+            }],
+            where: {
+                nim: nim,
+                status: "aktif"
+            }
+        })
+        if (!dataMahasiswa) return res.status(404).json({ message: "mahasiswa tidak ditemukan" })
         const dataKrsMahasiswa = await krsModel.findAll({
             where: {
                 nim: nim,
+                code_tahun_ajaran: dataMahasiswa.code_tahun_ajaran,
+                code_semester: dataMahasiswa.code_semester,
                 status_krs: "setuju",
                 status: "aktif"
             }
@@ -135,12 +153,30 @@ module.exports = {
         if (!dataJadwalKuliah) return res.status(404).json({ message: "data tidak ditemukan" })
         const dataCodeJadwalKuliah = dataJadwalKuliah.map(n => { return n.code_jadwal_kuliah })
         await jadwalPertemuanModel.findAll({
-            include: [{
-                model: jadwalKuliahModel,
-                include: [{
-                    model: mataKuliahModel
-                }]
-            }],
+            include: [
+                {
+                    attributes: ['id_jadwal_kuliah',
+                        'code_jadwal_kuliah', 'code_kelas',
+                        'code_ruang', 'hari', 'jam_mulai', 'jam_selesai',
+                        'dosen_pengajar', 'dosen_pengganti'],
+                    model: jadwalKuliahModel,
+                    status: "aktif",
+                    include: [{
+                        attributes: ['id_sebaran',
+                            'code_sebaran', 'status_makul',
+                            'status_bobot_makul'],
+                        model: sebaranMataKuliah,
+                        status: "aktif",
+                        include: [{
+                            model: mataKuliahModel
+                        }]
+                    }, {
+                        model: ruangModel,
+                        status: "aktif"
+                    }]
+                },
+
+            ],
             where: {
                 tanggal_pertemuan: date,
                 code_jadwal_kuliah: dataCodeJadwalKuliah,
@@ -170,6 +206,8 @@ module.exports = {
         if (!dataProdiMahasiswa) return res.status(404).json({ message: "data mahsiswa tidak ditemukan" })
         const dataKrsMahasiswa = await krsModel.findAll({
             where: {
+                code_tahun_ajaran: dataProdiMahasiswa.code_tahun_ajaran,
+                code_semester: dataProdiMahasiswa.code_semester,
                 nim: nim,
                 status_krs: "setuju",
                 status: "aktif"
@@ -177,11 +215,15 @@ module.exports = {
         })
         if (!dataKrsMahasiswa) return res.status(404).json({ message: "data tidak ditemukan" })
         const dataCodeMataKuliah = dataKrsMahasiswa.map(i => { return i.code_mata_kuliah })
-        await mataKuliahModel.sum('sks', {
+        await sebaranMataKuliah.sum('sks', {
+            include: [{
+                model: mataKuliahModel
+            }],
             where: {
                 code_mata_kuliah: dataCodeMataKuliah,
                 status: "aktif",
-                status_makul: "paket"
+                status_makul: "paket",
+                status_bobot_makul: "wajib"
             }
         }).then(result => {
             res.status(201).json({

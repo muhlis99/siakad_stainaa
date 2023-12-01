@@ -324,7 +324,7 @@ module.exports = {
             ],
             where: {
                 nim: nim,
-                status: "aktif"
+                // status: "aktif"
             }
         })
         if (!dataMahasiswa) return res.status(404).json({ message: "data mahasiswa tidak ditemukan" })
@@ -334,15 +334,18 @@ module.exports = {
                 status: "aktif"
             }
         })
-        const totalSks = await nilaiKuliahModel.sum('mataKuliahs.sks', {
+
+        const totalSks = await nilaiKuliahModel.sum('sebaranMataKuliahs.mataKuliahs.sks', {
             include: [
                 {
-                    attributes: ["id_mata_kuliah", "code_mata_kuliah", "nama_mata_kuliah", "sks"],
-                    model: mataKuliahModel,
+                    model: sebaranMataKuliah,
                     where: {
                         code_tahun_ajaran: tahunAjaran,
                         status: "aktif"
-                    }
+                    },
+                    include: [{
+                        model: mataKuliahModel,
+                    }]
                 }
             ],
             where: {
@@ -352,36 +355,92 @@ module.exports = {
             }
         })
         if (!totalSks) return res.status(404).json({ message: "data  tidak ditemukan" })
-        const queryTotalSksIndex = await db.query(`SELECT SUM( tb_mata_kuliah.sks*tb_kategori_nilai.interfal_skor) AS total FROM tb_nilai_kuliah
-        INNER JOIN tb_mata_kuliah ON tb_nilai_kuliah.code_mata_kuliah=tb_mata_kuliah.code_mata_kuliah INNER JOIN tb_kategori_nilai ON
-        tb_nilai_kuliah.code_kategori_nilai=tb_kategori_nilai.code_kategori_nilai WHERE tb_nilai_kuliah.code_tahun_ajaran="${tahunAjaran}" 
-        AND tb_nilai_kuliah.nim="${nim}" AND tb_mata_kuliah.code_tahun_ajaran="${tahunAjaran}"AND tb_mata_kuliah.status="aktif"`, {
-            nest: true,
-            type: QueryTypes.SELECT
+        const datasQueryTotalSksIndex = await nilaiKuliahModel.findAll({
+            include: [
+                {
+                    model: sebaranMataKuliah,
+                    where: {
+                        code_tahun_ajaran: tahunAjaran,
+                        status: "aktif"
+                    },
+                    include: [{
+                        model: mataKuliahModel,
+                    }]
+                },
+                {
+                    attributes: ["id_kategori_nilai", "nilai_huruf", "interfal_skor"],
+                    model: kategoriNilaiModel,
+                    where: { status: "aktif", code_tahun_ajaran: tahunAjaran }
+                },
+                {
+                    attributes: ['nim', 'nama'],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                },
+                {
+                    model: tahunAjaranModel,
+                    attributes: ['code_tahun_ajaran', 'tahun_ajaran'],
+                    where: { status: "aktif" }
+                }, {
+                    model: semesterModel,
+                    attributes: ['code_semester', 'semester'],
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_jenjang_pendidikan', 'nama_jenjang_pendidikan'],
+                    model: jenjangPendidikanModel,
+                    where: { status: "aktif" }
+                }, {
+                    model: fakultasModel,
+                    attributes: ['code_fakultas', 'nama_fakultas',],
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ['code_prodi', 'nama_prodi'],
+                    model: prodiModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            attributes: [
+                'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
+                [Sequelize.literal('(sks*interfal_skor)'), 'sksIndexs']
+            ],
+            where: {
+                code_tahun_ajaran: tahunAjaran,
+                nim: nim,
+                status: 'aktif'
+            },
         })
-        if (!queryTotalSksIndex) res.status(404).json({ message: "data tidak ditemukan" })
-        const totalSksIndex = queryTotalSksIndex[0].total
+
+        const datasQueryTotalSksIndexs = datasQueryTotalSksIndex.map(el => { return el.get("sksIndexs") })
+        const queryTotalSksIndex = datasQueryTotalSksIndexs.reduce((i, e) => {
+            return i + e
+        })
+        const totalSksIndex = queryTotalSksIndex
         const ipSemester = totalSksIndex / totalSks
 
         await nilaiKuliahModel.findAll({
             include: [
                 {
-                    attributes: ["id_mata_kuliah", "code_mata_kuliah", "nama_mata_kuliah", "sks"],
-                    model: mataKuliahModel,
+                    model: sebaranMataKuliah,
                     where: {
                         code_tahun_ajaran: tahunAjaran,
                         status: "aktif"
-                    }
+                    },
+                    include: [{
+                        model: mataKuliahModel,
+                    }]
                 },
                 {
                     attributes: ["id_kategori_nilai", "nilai_huruf", "interfal_skor"],
                     model: kategoriNilaiModel,
-                    where: { status: "aktif" }
+                    where: {
+                        status: "aktif",
+                        code_tahun_ajaran: tahunAjaran
+                    }
                 },
             ],
             attributes: [
                 'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
-                [Sequelize.literal('(mataKuliahs.sks*kategoriNilais.interfal_skor)'), 'sksIndexs']
+                [Sequelize.literal('(sks*interfal_skor)'), 'sksIndexs']
             ],
             where: {
                 code_tahun_ajaran: tahunAjaran,
@@ -402,7 +461,7 @@ module.exports = {
                 },
                 nilaiAkhir: {
                     jumlahSks: totalSks,
-                    jumlahSksIndex: totalSksIndex,
+                    jumlahSksIndex: totalSksIndex.toFixed(2),
                     // IPS: ipSemester,
                     IPS: ipSemester.toFixed(2)
 

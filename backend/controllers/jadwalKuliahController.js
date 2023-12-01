@@ -479,21 +479,32 @@ module.exports = {
         if (!dataJadwalKuliah) return res.status(404).json({ message: "data tidak ditemukan" })
         const dataCodeJadwalKuliah = dataJadwalKuliah.map(t => { return t.code_jadwal_kuliah })
         let dataDate = []
-        for (let index = 1; index <= 7; index++) {
-            // const timeElapsed = Date.now()
+        for (let index = 0; index <= 6; index++) {
             const date = new Date()
-            let days = 7 - date.getDate() + index;
+            // const timeElapsed = Date.now()
+            let days = date.getDate() + index;
             let nextDay = new Date(date.setDate(date.getDate() + days)).toISOString().substring(0, 10)
             dataDate.push(nextDay)
         }
+        console.log(dataDate);
         await jadwalPertemuanModel.findAll({
             include: [
                 {
+                    attributes: ['id_jadwal_kuliah',
+                        'code_jadwal_kuliah', 'code_kelas',
+                        'code_ruang', 'hari', 'jam_mulai', 'jam_selesai',
+                        'dosen_pengajar', 'dosen_pengganti'],
                     model: jadwalKuliahModel,
                     status: "aktif",
                     include: [{
-                        model: mataKuliahModel,
-                        status: "aktif"
+                        attributes: ['id_sebaran',
+                            'code_sebaran', 'status_makul',
+                            'status_bobot_makul'],
+                        model: sebaranMataKuliah,
+                        status: "aktif",
+                        include: [{
+                            model: mataKuliahModel
+                        }]
                     }, {
                         model: ruangModel,
                         status: "aktif"
@@ -501,6 +512,9 @@ module.exports = {
                 },
 
             ],
+            attributes: ['id_jadwal_pertemuan', 'code_jadwal_pertemuan',
+                'pertemuan', 'tanggal_pertemuan', 'jenis_pertemuan',
+                'metode_pembelajaran', 'url_online'],
             where: {
                 code_jadwal_kuliah: dataCodeJadwalKuliah,
                 tanggal_pertemuan: dataDate,
