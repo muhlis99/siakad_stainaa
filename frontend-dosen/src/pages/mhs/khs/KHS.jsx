@@ -190,7 +190,7 @@ const KHS = () => {
                                                                 <Card.Text className='fw-bold text-uppercase'>{biodata.mahasiswa}</Card.Text>
                                                             </Col>
                                                         </Row>
-                                                        <Row className='mb-2'>
+                                                        {/* <Row className='mb-2'>
                                                             <Col className='p-0' lg="3" md="3" sm="5" xs="5">
                                                                 <Card.Text className='fw-bold text-uppercase'>Fakultas</Card.Text>
                                                             </Col>
@@ -200,10 +200,10 @@ const KHS = () => {
                                                             <Col className='p-0'>
                                                                 <Card.Text className='fw-bold text-uppercase'>{biodata.fakultas}</Card.Text>
                                                             </Col>
-                                                        </Row>
+                                                        </Row> */}
                                                     </Col>
                                                     <Col lg="6" sm="12">
-                                                        <Row className='mb-2'>
+                                                        {/* <Row className='mb-2'>
                                                             <Col className='p-0' lg="3" md="3" sm="5" xs="5">
                                                                 <Card.Text className='fw-bold text-uppercase'>Prodi</Card.Text>
                                                             </Col>
@@ -213,7 +213,7 @@ const KHS = () => {
                                                             <Col className='p-0'>
                                                                 <Card.Text className='fw-bold text-uppercase'>{biodata.prodi}</Card.Text>
                                                             </Col>
-                                                        </Row>
+                                                        </Row> */}
                                                         <Row className='mb-2'>
                                                             <Col className='p-0' lg="3" md="3" sm="5" xs="5">
                                                                 <Card.Text className='fw-bold text-uppercase'>Periode</Card.Text>
