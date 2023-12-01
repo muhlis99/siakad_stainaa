@@ -28,9 +28,9 @@ module.exports = {
 
         await dosenModel.findAll({
             where: {
-                nip_ynaa: {
-                    [Op.notIn]: dataDosenPengajar
-                },
+                // nip_ynaa: {
+                //     [Op.notIn]: dataDosenPengajar
+                // },
                 status: "aktif"
             }
         }).then(all => {
