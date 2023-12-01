@@ -34,6 +34,10 @@ const FormMhs4 = () => {
     const location = useLocation()
 
     useEffect(() => {
+        console.log(location.state)
+    }, [location])
+
+    useEffect(() => {
         getPekerjaan()
         getPenghasilan()
         getPendidikan()
@@ -177,49 +181,48 @@ const FormMhs4 = () => {
     const simpanMhs = async (e) => {
         e.preventDefault()
         try {
-            let length = nim.length
-            if (length == 0) {
+            // let length = nim.length
+            // if (length == 0) {
+            //     setLoading(false)
+            //     Swal.fire({
+            //         title: 'Nim Kosong',
+            //         icon: "error"
+            //     })
+            // } else if (length < 10 || length > 10) {
+            //     setLoading(false)
+            //     Swal.fire({
+            //         title: 'Nim harus 10 digit',
+            //         icon: "error"
+            //     })
+            // } else {
+            setLoading(true)
+            await axios.put(`v1/mahasiswa/createForm4/${location.state.idMhs}`, {
+                nik_wali: nikWali,
+                nama_wali: namaWali,
+                tahun_w: thWali,
+                bulan_w: blWali,
+                tanggal_w: tgWali,
+                pekerjaan_wali: pkrjnWali,
+                penghasilan_wali: pndptWali,
+                pendidikan_wali: pndknWali,
+                code_jenjang_pendidikan: jenjangnya,
+                code_fakultas: fakultasnya,
+                code_prodi: prodinya,
+                code_tahun_ajaran: kodeThn,
+                code_semester: kodeSmt,
+                // nim: nim, // tambahan untuk input nim mahasiswa lama
+                idLogin: location.state.reg,
+                idHistory: location.state.history
+            }).then(function (response) {
                 setLoading(false)
                 Swal.fire({
-                    title: 'Nim Kosong',
-                    icon: "error"
-                })
-            } else if (length < 10 || length > 10) {
-                setLoading(false)
-                Swal.fire({
-                    title: 'Nim harus 10 digit',
-                    icon: "error"
-                })
-            } else {
-
-                setLoading(true)
-                await axios.put(`v1/mahasiswa/createForm4/${location.state.idMhs}`, {
-                    nik_wali: nikWali,
-                    nama_wali: namaWali,
-                    tahun_w: thWali,
-                    bulan_w: blWali,
-                    tanggal_w: tgWali,
-                    pekerjaan_wali: pkrjnWali,
-                    penghasilan_wali: pndptWali,
-                    pendidikan_wali: pndknWali,
-                    code_jenjang_pendidikan: jenjangnya,
-                    code_fakultas: fakultasnya,
-                    code_prodi: prodinya,
-                    code_tahun_ajaran: kodeThn,
-                    code_semester: kodeSmt,
-                    nim: nim, // tambahan untuk input nim mahasiswa lama
-                    idLogin: location.state.reg,
-                    idHistory: location.state.history
-                }).then(function (response) {
-                    setLoading(false)
-                    Swal.fire({
-                        title: response.data.message,
-                        icon: "success"
-                    }).then(() => {
-                        navigate("/mahasiswa", { state: { collaps: 'induk', activ: '/mahasiswa' } })
-                    });
-                })
-            }
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    navigate("/mahasiswa", { state: { collaps: 'induk', activ: '/mahasiswa' } })
+                });
+            })
+            // }
         } catch (error) {
             setLoading(false)
             if (error.response) {

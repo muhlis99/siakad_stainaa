@@ -30,6 +30,7 @@ const DosenPengajar = () => {
     const [isClearable, setIsClearable] = useState(true)
     const [nipy, setNipy] = useState("")
     const [nipyp, setNipyp] = useState("")
+    const [kodeMk, setKodeMk] = useState("")
     const location = useLocation()
     const [loading, setLoading] = useState(false)
 
@@ -67,7 +68,6 @@ const DosenPengajar = () => {
     const getJadwalByKelas = async () => {
         try {
             const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
-            console.log(response);
             setTglMulai(response.data.data.tanggal_mulai)
             setTglSelesai(response.data.data.tanggal_selesai)
             setJumPertemuan(response.data.data.jumlah_pertemuan)
@@ -77,6 +77,7 @@ const DosenPengajar = () => {
             setKodeJadwal(response.data.data.code_jadwal_kuliah)
             setPengajar(response.data.data.dosenPengajar[0].nama)
             setPengganti(response.data.data.dosenPengganti[0].nama)
+            setKodeMk(response.data.data.sebaranMataKuliahs[0].code_mata_kuliah)
         } catch (error) {
 
         }
@@ -478,6 +479,16 @@ const DosenPengajar = () => {
                                     </div>
                                     <div className='flex-initial w-80'>
                                         <a>{makul}</a>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-48'>
+                                        <label>
+                                            <span className="">Kode Mata Kuliah</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{kodeMk}</a>
                                     </div>
                                 </div>
                             </div>

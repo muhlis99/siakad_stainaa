@@ -38,6 +38,7 @@ const InputNilaiMhs = () => {
     const [absen, setAbsen] = useState([])
     const [checkedAbsen, setCheckedAbsen] = useState(false)
     const [jumlahKolom, setjumlahKolom] = useState([])
+    const [kodeMk, setKodeMk] = useState("")
     const location = useLocation()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
@@ -101,7 +102,6 @@ const InputNilaiMhs = () => {
                 let g = document.getElementsByName('presentasi')[i].value = ''
                 setPresentasi([])
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].presentasi = ""
             }
         }
@@ -117,8 +117,8 @@ const InputNilaiMhs = () => {
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'B'))
             for (var i = 0; i < document.getElementsByName('materi').length; i++) {
+                setPresentasi([])
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].materi = ""
             }
         }
@@ -239,6 +239,7 @@ const InputNilaiMhs = () => {
         setNmKls(response.data.data.nama_kelas)
         setNmMk(response.data.data.mataKuliahs[0].nama_mata_kuliah)
         setSem(response.data.data.semesters[0].semester)
+        setKodeMk(response.data.data.code_mata_kuliah)
     }
 
     const getMahasiswa = async () => {
@@ -515,6 +516,16 @@ const InputNilaiMhs = () => {
                                     </div>
                                     <div className='flex-initial w-80'>
                                         <a>{nmKls}</a>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-36'>
+                                        <label>
+                                            <span className="">Kode Matakuliah</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{kodeMk}</a>
                                     </div>
                                 </div>
                             </div>

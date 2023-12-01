@@ -126,6 +126,7 @@ const FormMhs1 = () => {
             if (location.state.stat == 'edit' && nim) {
                 const response = await axios.get(`v1/mahasiswa/getIdLoginAndHistoryMhs/${email2}/${nim}/${kodeThn}/${kodeSmt}/${jenjangnya}/${fakultasnya}/${prodinya}`)
                 setLoginHistory(response.data)
+                console.log(response.data);
             }
         } catch (error) {
 

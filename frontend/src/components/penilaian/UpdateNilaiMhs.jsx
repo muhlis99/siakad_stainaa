@@ -40,6 +40,7 @@ const UpdateNilaiMhs = () => {
     const [absen, setAbsen] = useState([])
     const [checkedAbsen, setCheckedAbsen] = useState(false)
     const [jumlahKolom, setjumlahKolom] = useState([])
+    const [kodeMk, setKodeMk] = useState("")
     const location = useLocation()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
@@ -140,6 +141,7 @@ const UpdateNilaiMhs = () => {
         setNmMk(response.data.data.mataKuliahs[0].nama_mata_kuliah)
         setSem(response.data.data.semesters[0].semester)
         setKodeTahun(response.data.data.code_tahun_ajaran)
+        setKodeMk(response.data.data.code_mata_kuliah)
     }
 
     const getMahasiswa = async () => {
@@ -552,6 +554,16 @@ const UpdateNilaiMhs = () => {
                                     </div>
                                     <div className='flex-initial w-80'>
                                         <a>{nmKls}</a>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <div className='flex-initial w-36'>
+                                        <label>
+                                            <span className="">Kode Matakuliah</span>
+                                        </label>
+                                    </div>
+                                    <div className='flex-initial w-80'>
+                                        <a>{kodeMk}</a>
                                     </div>
                                 </div>
                             </div>

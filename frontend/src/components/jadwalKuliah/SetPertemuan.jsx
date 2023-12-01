@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { FaAngleDown, FaEdit, FaInfo, FaTimes, FaTrash } from 'react-icons/fa'
+import { FaAngleDown, FaEdit, FaGlobe, FaInfo, FaPencilAlt, FaTimes, FaTrash } from 'react-icons/fa'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
@@ -32,6 +32,8 @@ const SetPertemuan = () => {
     const [waktu, setWaktu] = useState("")
     const [idPertermuan, setIdPertemuan] = useState("")
     const [statusForm, setStatusForm] = useState("")
+    const [kodeMk, setKodeMk] = useState("")
+    const [kodePertemuan, setIds] = useState("")
     const [checked, setChecked] = useState([])
     const location = useLocation()
 
@@ -70,6 +72,7 @@ const SetPertemuan = () => {
             setJumPertemuan(response.data.data.jumlah_pertemuan)
             setIdJadwal(response.data.data.id_jadwal_kuliah)
             setKodeJdl(response.data.data.code_jadwal_kuliah)
+            setKodeMk(response.data.data.sebaranMataKuliahs[0].code_mata_kuliah)
         } catch (error) {
 
         }
@@ -203,16 +206,10 @@ const SetPertemuan = () => {
         }
     }
 
-    const modalOpen = (e) => {
-        if (checked == 0) {
-            Swal.fire({
-                title: 'Tidak ada data yang dipilih',
-                icon: 'error'
-            })
-        } else {
-            document.getElementById('my-modal-2').checked = true
-            setStatusForm(e)
-        }
+    const modalOpen = (e, f) => {
+        document.getElementById('my-modal-2').checked = true
+        setStatusForm(e)
+        setIds(f)
     }
 
     const modalClose2 = (e) => {
@@ -227,7 +224,7 @@ const SetPertemuan = () => {
         e.preventDefault()
         try {
             await axios.put('v1/jadwalPertemuan/setJenisPertemuan', {
-                id: checked,
+                id: kodePertemuan,
                 jenis_pertemuan: jenisPertemuan,
             }).then(function (response) {
                 document.getElementById('my-modal-2').checked = false
@@ -249,7 +246,7 @@ const SetPertemuan = () => {
         e.preventDefault()
         try {
             await axios.put('v1/jadwalPertemuan/setMetodePembelajaran', {
-                id: checked,
+                id: kodePertemuan,
                 metode_pembelajaran: metode,
             }).then(function (response) {
                 document.getElementById('my-modal-2').checked = false
@@ -303,7 +300,7 @@ const SetPertemuan = () => {
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box w-11/12 max-w-2xl rounded-none scrollbar-thin scrollbar-thumb-emerald-800 scrollbar-track-gray-100">
-                    <button className="btn btn-xs btn-circle btn-danger absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
+                    <button className="btn btn-xs btn-circle btn-error absolute right-2 top-2" onClick={modalClose}><FaTimes /></button>
                     <div className="py-4">
                         {statusModal == 'edit' ? <form onSubmit={updatePertemuan}>
                             <div className="grid grid-cols-2 gap-2">
@@ -384,7 +381,7 @@ const SetPertemuan = () => {
                                 </div>
                                 <div className='col-span-2'>
                                     <hr className='mt-2' />
-                                    <button className="btn btn-sm btn-default float-right mt-3"><FaEdit /><span className="ml-1">Edit</span></button>
+                                    <button className="btn btn-sm btn-primary float-right mt-3"><FaEdit /><span className="ml-1">Edit</span></button>
                                 </div>
                             </div>
                         </form> :
@@ -542,8 +539,8 @@ const SetPertemuan = () => {
                                         <label tabIndex={0} className="btn btn-sm btn-primary  capitalize rounded-md"><span className='mr-1'>Aksi</span><FaAngleDown /></label>
                                         <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                             <li>{statusPerencanaan == 'tambah' ? <a onClick={simpanPerencanaan}>Buat Perencanaan</a> : ""}</li>
-                                            <li><a onClick={() => modalOpen('jenis')}>Set Jenis Pertemuan</a></li>
-                                            <li><a onClick={() => modalOpen('metode')}>Set Metode</a></li>
+                                            {/* <li><a onClick={() => modalOpen('jenis')}>Set Jenis Pertemuan</a></li> */}
+                                            {/* <li><a onClick={() => modalOpen('metode')}>Set Metode</a></li> */}
                                         </ul>
                                     </div>
                                 </div>
@@ -598,6 +595,16 @@ const SetPertemuan = () => {
                                         </div>
                                         <div className='flex-initial w-80'>
                                             <a>{makul}</a>
+                                        </div>
+                                    </div>
+                                    <div className='flex gap-2'>
+                                        <div className='flex-initial w-48'>
+                                            <label>
+                                                <span className="">Kode Mata Kuliah</span>
+                                            </label>
+                                        </div>
+                                        <div className='flex-initial w-80'>
+                                            <a>{kodeMk}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -658,7 +665,7 @@ const SetPertemuan = () => {
                                 <table className="w-full text-sm text-gray-500 dark:text-gray-400">
                                     <thead className='text-gray-700 bg-[#F2F2F2]'>
                                         <tr>
-                                            <th scope="col" className="py-1 border">#</th>
+                                            {/* <th scope="col" className="py-1 border">#</th> */}
                                             <th scope="col" className="py-1 border">Pert</th>
                                             <th scope="col" className="py-1 border">Hari</th>
                                             <th scope="col" className="py-1 border">Waktu</th>
@@ -670,7 +677,7 @@ const SetPertemuan = () => {
                                     <tbody>
                                         {Pertemuan.map((item, index) => (
                                             <tr key={index} className='bg-white border text-gray-700' >
-                                                <th scope="row" className="py-1 border">
+                                                {/* <th scope="row" className="py-1 border">
                                                     <div className="form-control">
                                                         <label className="cursor-pointer label justify-center">
                                                             <input
@@ -681,7 +688,7 @@ const SetPertemuan = () => {
                                                             />
                                                         </label>
                                                     </div>
-                                                </th>
+                                                </th> */}
                                                 <td className='py-1 border' align='center'>{item.pertemuan}</td>
                                                 <td className='py-1 border' align='center'>{item.jadwalKuliahs[0].hari + ", " + item.tanggal_pertemuan}</td>
                                                 <td className='py-1 border' align='center'>{item.jadwalKuliahs[0].jam_mulai + " s/d " + item.jadwalKuliahs[0].jam_selesai}</td>
@@ -689,6 +696,8 @@ const SetPertemuan = () => {
                                                 <td className='py-1 border' align='center'>{item.metode_pembelajaran == 'offline' ? <span>Offline</span> : item.metode_pembelajaran == 'online' ? <span>Online</span> : <span>Campur</span>}</td>
                                                 <td className='py-1 border' align='center'>
                                                     <div>
+                                                        <button className='btn btn-xs btn-circle btn-info mr-1' onClick={() => modalOpen('jenis', item.id_jadwal_pertemuan)} title='Update Jenis Pertemuan' ><FaPencilAlt /></button>
+                                                        <button className='btn btn-xs btn-circle btn-success mr-1' onClick={() => modalOpen('metode', item.id_jadwal_pertemuan)} title='Update Metode' ><FaGlobe /></button>
                                                         <button className="btn btn-xs btn-circle text-white btn-info mr-1" title='Detail' onClick={() => editPertemuan(item.id_jadwal_pertemuan, 'detail')}><FaInfo /></button>
                                                         <button className="btn btn-xs btn-circle text-white btn-warning" title='Edit' onClick={() => editPertemuan(item.id_jadwal_pertemuan, 'edit')}><FaEdit /></button>
                                                         <button className='btn btn-xs btn-circle btn-error ml-1' title='Hapus' onClick={() => nonaktifkan(item.id_jadwal_pertemuan)}><FaTrash /></button>

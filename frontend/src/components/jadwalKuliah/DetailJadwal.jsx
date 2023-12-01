@@ -23,6 +23,7 @@ const DetailJadwal = () => {
     const [status, setStatus] = useState("")
     const [kodeJadwal, setKodeJadwal] = useState("")
     const [pertemuan, setPertemuan] = useState("")
+    const [kodeMk, setKodeMk] = useState("")
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -31,7 +32,7 @@ const DetailJadwal = () => {
         const getJadwalByKelas = async () => {
             try {
                 const response = await axios.get(`v1/jadwalKuliah/getByKelas/${location.state.thn}/${location.state.sem}/${location.state.jen}/${location.state.fak}/${location.state.pro}/${location.state.mak}/${location.state.kls}`)
-                console.log(response.data.data.tahunAjarans[0].tahun_ajaran);
+                setKodeMk(response.data.data.sebaranMataKuliahs[0].code_mata_kuliah);
                 setTahun(response.data.data.tahunAjarans[0].tahun_ajaran)
                 setSemester(response.data.data.semesters[0].semester)
                 setJenjang(response.data.data.jenjangPendidikans[0].nama_jenjang_pendidikan)
@@ -158,6 +159,16 @@ const DetailJadwal = () => {
                                                 </div>
                                                 <div className='flex-initial w-80'>
                                                     <a>{makul}</a>
+                                                </div>
+                                            </div>
+                                            <div className='flex gap-2'>
+                                                <div className='flex-initial w-48'>
+                                                    <label>
+                                                        <span className="">Kode Mata Kuliah</span>
+                                                    </label>
+                                                </div>
+                                                <div className='flex-initial w-80'>
+                                                    <a>{kodeMk}</a>
                                                 </div>
                                             </div>
                                         </div>
