@@ -176,18 +176,18 @@ const KRS = () => {
                                                                 <tbody>
                                                                     {
                                                                         dataKrs.map((item, index) => (
-                                                                            <tr key={item.code_mata_kuliah} className='border'>
+                                                                            <tr key={item.id_krs} className='border'>
                                                                                 <th scope='row' className='py-2'>
                                                                                     {item.status_krs == "setuju" ? index + 1 : <div className="flex items-center">
-                                                                                        <input checked id="disabled-checked-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                                        <input checked id="disabled-checked-checkbox" type="checkbox" readOnly value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                                                                     </div>}
 
                                                                                 </th>
-                                                                                <td className='py-2'>{item.mataKuliahs[0].code_mata_kuliah}</td>
-                                                                                <td className='py-2'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                                <td className='py-2'>{item.mataKuliahs[0].sks}</td>
-                                                                                <td className='py-2'>{item.mataKuliahs[0].status_bobot_makul}</td>
-                                                                                <td className='py-2 text-capitalize'>{item.mataKuliahs[0].status_makul}</td>
+                                                                                <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].code_mata_kuliah}</td>
+                                                                                <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                                <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
+                                                                                <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].status_bobot_makul}</td>
+                                                                                <td className='py-2 text-capitalize'>{item.sebaranMataKuliahs[0].mataKuliahs[0].status_makul}</td>
                                                                                 <td className='py-2'>
                                                                                     {item.status_krs == "setuju" ?
                                                                                         <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Disetujui</span>

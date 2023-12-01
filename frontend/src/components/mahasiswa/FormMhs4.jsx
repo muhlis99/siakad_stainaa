@@ -28,7 +28,7 @@ const FormMhs4 = () => {
     const [prodinya, setProdinya] = useState("")
     const [kodeThn, setKodeThn] = useState("")
     const [kodeSmt, setKodeSmt] = useState("")
-    const [nim, setNim] = useState("")
+    // const [nim, setNim] = useState("")
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
     const location = useLocation()
@@ -55,7 +55,7 @@ const FormMhs4 = () => {
                     setNamanya(response.data.data.nama)
                     setNikWali(response.data.data.nik_wali)
                     setNamaWali(response.data.data.nama_wali)
-                    setNim(response.data.data.nim)
+                    // setNim(response.data.data.nim)
                     setTgWali(tglWali[2])
                     setBlWali(tglWali[1])
                     setThWali(tglWali[0])
@@ -74,7 +74,7 @@ const FormMhs4 = () => {
                     setNamanya(response.data.data.nama)
                     setNikWali(response.data.data.nik_wali)
                     setNamaWali(response.data.data.nama_wali)
-                    setNim(response.data.data.nim)
+                    // setNim(response.data.data.nim)
                     setTgWali(tglWali[2])
                     setBlWali(tglWali[1])
                     setThWali(tglWali[0])
@@ -306,7 +306,7 @@ const FormMhs4 = () => {
                 const tglIbu = tglLahirIbu.split("-")
                 setNikWali(response.data.data.nik_ibu)
                 setNamaWali(response.data.data.nama_ibu)
-                setNim(response.data.data.nim)
+                // setNim(response.data.data.nim)
                 setTgWali(tglIbu[2])
                 setBlWali(tglIbu[1])
                 setThWali(tglIbu[0])
@@ -319,7 +319,7 @@ const FormMhs4 = () => {
                 const tglIbu = tglLahirIbu.split("-")
                 setNikWali(response.data.data.nik_ibu)
                 setNamaWali(response.data.data.nama_ibu)
-                setNim(response.data.data.nim)
+                // setNim(response.data.data.nim)
                 setTgWali(tglIbu[2])
                 setBlWali(tglIbu[1])
                 setThWali(tglIbu[0])
@@ -483,12 +483,12 @@ const FormMhs4 = () => {
                                         </select>
                                     </div>
                                     {/* Tambahan untuk input mahasiswa lama */}
-                                    <div>
+                                    {/* <div>
                                         <label className="label">
                                             <span className="text-base label-text">NIM</span>
                                         </label>
                                         <input type="number" className="input input-sm input-bordered w-full" value={nim} onChange={(e) => setNim(e.target.value)} />
-                                    </div>
+                                    </div> */}
                                     {/* Tambahan untuk mahasiswa lama */}
                                 </div>
                                 <div className='mt-5 grid lg:grid-cols-2'>
