@@ -507,6 +507,7 @@ module.exports = {
             }
         })
 
+
         let nim
         let dataQrCode
         if (no_urut_mhs_terakhir == null) {
@@ -530,6 +531,10 @@ module.exports = {
             const dataQrCodeOld = mahasiswa.qrCode
             mainQrCode(nim, dataQrCode, dataQrCodeOld)
         }
+
+        // const dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
+        // const dataQrCodeOld = mahasiswa.qrCode
+        // mainQrCode(nim, dataQrCode, dataQrCodeOld)
         await mahasiswa.update({
             nik_wali: nik_wali,
             nama_wali: nama_wali,
