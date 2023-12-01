@@ -323,6 +323,7 @@ module.exports = {
                 }
             ],
             where: {
+                code_tahun_ajaran: tahunAjaran,
                 nim: nim,
                 // status: "aktif"
             }
