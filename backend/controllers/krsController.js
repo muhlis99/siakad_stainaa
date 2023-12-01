@@ -70,7 +70,7 @@ module.exports = {
                 code_jenjang_pendidikan: jenjangPendik,
                 code_fakultas: fakultas,
                 code_prodi: prodi,
-                status: "aktif"
+                // status: "aktif"
             },
             attributes: ['nim']
         })

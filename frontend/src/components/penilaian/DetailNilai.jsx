@@ -43,6 +43,7 @@ const DetailNilai = () => {
         setKodeProdi(response.data.data.code_prodi)
         setKodeTahun(response.data.data.code_tahun_ajaran)
         setKodeSemester(response.data.data.code_semester)
+        console.log('kode makulnya', response.data.data.code_mata_kuliah)
     }
 
     const getMahasiswa = async () => {
@@ -163,7 +164,7 @@ const DetailNilai = () => {
                                     {juml == 0 ?
                                         <tbody>
                                             <tr>
-                                                <td colSpan='11' align='center' className='px-2 py-2 border'><p>Anda belum melakukan input nilai mata kuliah {nmMk} Kelas {nmKls}</p></td>
+                                                <td colSpan='15' align='center' className='px-2 py-2 border'><p>Anda belum melakukan input nilai mata kuliah {nmMk} Kelas {nmKls}</p></td>
                                             </tr>
                                         </tbody> :
                                         <tbody>

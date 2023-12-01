@@ -324,9 +324,7 @@ module.exports = {
     post: async (req, res, next) => {
         const { code_jenjang_pendidikan, code_fakultas, code_tahun_ajaran,
             code_prodi, code_semester, nama_kelas, hurufKelas, kapasitas, jumlahPeserta, jenkel } = req.body
-        const currentPage = 1
-        const perPage = 40
-        const offset = 0
+
         const makul = await sebaranMatakuliahModel.findAll({
             include: [{
                 attributes: ['code_tahun_ajaran'],
@@ -373,13 +371,13 @@ module.exports = {
         nmKelas = nmKelas.slice(potongArr)
         nmKelas.unshift("")
         nama_kelas.splice(-1)
+
         const dataCreateKelas = makul.map(al => {
             const codeMakul = al.code_mata_kuliah
             nama_kelas.map(async el => {
-                console.log(el);
-                let randomNumber = Math.floor(10 + Math.random() * 90)
+                let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
                 let data = {
-                    code_kelas: jenkel + code_prodi + randomNumber + nmKelas[el],
+                    code_kelas: jenkel + code_prodi + randomNumber + nmKelas[el] + code_semester,
                     nama_kelas: nmKelas[el],
                     kapasitas: kapasitas,
                     code_jenjang_pendidikan: code_jenjang_pendidikan,
@@ -393,7 +391,10 @@ module.exports = {
                 await kelasModel.bulkCreate([data])
                     .then(all => {
                         all.map(async elment => {
-                            const dataKRS = await krsModel.findAll({
+                            let currentPage = parseInt(el)
+                            let perPage = parseInt(jumlahPeserta)
+                            let offset = (currentPage - 1) * perPage
+                            const al = await krsModel.findAll({
                                 include: [
                                     {
                                         model: jenjangPendidikanModel,
@@ -403,6 +404,9 @@ module.exports = {
                                         where: { status: "aktif" }
                                     }, {
                                         model: prodiModel,
+                                        where: { status: "aktif" }
+                                    }, {
+                                        model: mataKuliahModel,
                                         where: { status: "aktif" }
                                     }, {
                                         model: tahunAjaranModel,
@@ -429,31 +433,27 @@ module.exports = {
                                 offset: offset,
                                 limit: perPage,
                                 group: ['nim']
-                            }).then(async results => {
-                                await Promise.all(results.map(async p => {
-                                    let random = Math.floor(100 + Math.random() * 900)
-                                    let datas = {
-                                        code_kelas: elment.code_kelas,
-                                        code_kelas_detail: jenkel + random,
-                                        nim: p.nim,
-                                        status: "aktif"
-                                    }
-                                    console.log(p.nim);
-                                    return await kelasDetailKuliahModel.bulkCreate([datas])
-                                }))
                             })
-
+                            const dataInsert = al.map(p => {
+                                let random = Math.floor(100 + Math.random() * 900)
+                                let datas = {
+                                    code_kelas: elment.code_kelas,
+                                    code_kelas_detail: jenkel + random,
+                                    nim: p.nim,
+                                    status: "aktif"
+                                }
+                                return datas
+                            })
+                            await kelasDetailKuliahModel.bulkCreate(dataInsert)
                         })
                     })
             })
         })
 
-        // if (dataCreateKelas) {
-        // }
 
-        // res.status(201).json({
-        //     message: "data kelas kuliah succses ditambahkan"
-        // })
+        res.status(201).json({
+            message: "data kelas kuliah succses ditambahkan"
+        })
 
     },
 

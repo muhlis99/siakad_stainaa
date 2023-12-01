@@ -29,30 +29,8 @@ module.exports = {
                     attributes: ['nim', 'nama'],
                     model: mahasiswaModel,
                     where: { status: "aktif" }
-                },
-                // {
-                //     model: mataKuliahModel,
-                //     where: { status: "aktif" }
-                // },
-                {
-                    model: kelasModel,
-                    where: { status: "aktif" }
-                }, {
-                    model: tahunAjaranModel,
-                    where: { status: "aktif" }
-                }, {
-                    model: semesterModel,
-                    where: { status: "aktif" }
-                }, {
-                    model: jenjangPendidikanModel,
-                    where: { status: "aktif" }
-                }, {
-                    model: fakultasModel,
-                    where: { status: "aktif" }
-                }, {
-                    model: prodiModel,
-                    where: { status: "aktif" }
-                }],
+                }
+            ],
             where: {
                 code_mata_kuliah: codeMakul,
                 code_kelas: codeKls,
