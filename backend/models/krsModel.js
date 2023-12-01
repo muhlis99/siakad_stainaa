@@ -7,6 +7,7 @@ const prodiModel = require('./prodiModel.js')
 const semesterModel = require('./semesterModel.js')
 const tahunAjaranModel = require('./tahunAjaranModel.js')
 const mahasiswaModel = require('./mahasiswaModel.js')
+const sebaranMataKuliah = require('./sebaranMataKuliah.js')
 
 const krsModel = db.define('krs', {
     'id_krs': {
@@ -58,9 +59,9 @@ const krsModel = db.define('krs', {
     paranoid: true,
 })
 
-// mata kuliah
-mataKuliahModel.belongsTo(krsModel, { foreignKey: 'code_mata_kuliah' })
-krsModel.hasMany(mataKuliahModel, { sourceKey: 'code_mata_kuliah', foreignKey: 'code_mata_kuliah' })
+// sebaran matakuliah
+sebaranMataKuliah.belongsTo(krsModel, { foreignKey: 'code_mata_kuliah' })
+krsModel.hasMany(sebaranMataKuliah, { sourceKey: 'code_mata_kuliah', foreignKey: 'code_mata_kuliah' })
 // jenjang pendidikan
 jenjangPendidikanModel.belongsTo(krsModel, { foreignKey: 'code_jenjang_pendidikan' })
 krsModel.hasMany(jenjangPendidikanModel, { sourceKey: 'code_jenjang_pendidikan', foreignKey: 'code_jenjang_pendidikan' })
