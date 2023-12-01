@@ -14,6 +14,7 @@ const DetailNilai = () => {
     const [tahun, setTahun] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
+    const [kodeMk, setKodeMk] = useState("")
     const [nmKls, setNmKls] = useState("")
     const [nmMk, setNmMk] = useState("")
     const [sem, setSem] = useState("")
@@ -22,7 +23,6 @@ const DetailNilai = () => {
 
     useEffect(() => {
         getKelasById()
-        console.log(location.state)
     }, [location.state])
 
     useEffect(() => {
@@ -43,7 +43,7 @@ const DetailNilai = () => {
         setKodeProdi(response.data.data.code_prodi)
         setKodeTahun(response.data.data.code_tahun_ajaran)
         setKodeSemester(response.data.data.code_semester)
-        console.log('kode makulnya', response.data.data.code_mata_kuliah)
+        setKodeMk(response.data.data.code_mata_kuliah)
     }
 
     const getMahasiswa = async () => {
@@ -130,6 +130,16 @@ const DetailNilai = () => {
                                 </div>
                                 <div className='flex-initial w-80'>
                                     <a>{nmKls}</a>
+                                </div>
+                            </div>
+                            <div className='flex gap-2'>
+                                <div className='flex-initial w-36'>
+                                    <label>
+                                        <span className="">Kode Matakuliah</span>
+                                    </label>
+                                </div>
+                                <div className='flex-initial w-80'>
+                                    <a>{kodeMk}</a>
                                 </div>
                             </div>
                         </div>

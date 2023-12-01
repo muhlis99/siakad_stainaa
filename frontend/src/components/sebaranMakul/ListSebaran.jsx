@@ -23,6 +23,7 @@ const ListSebaran = () => {
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeThnNow, setKodeThnNow] = useState("")
+    const [kodeTahunAjaran, setKodeTahunAjaran] = useState("")
     const [kodeThnOld, setKodeThnOld] = useState("")
     const [kodeMakul, setKodeMakul] = useState("")
     const [kodeSmt, setKodeSmt] = useState("")
@@ -116,9 +117,9 @@ const ListSebaran = () => {
         sebaranMakul()
     }, [kodeProdi, smt, kodeTahun, kodeFakultas, kodeJenjang])
 
-    useEffect(() => {
-        getMakulById()
-    }, [])
+    // useEffect(() => {
+    //     getMakulById()
+    // }, [])
 
     const getJenjangPendidikan = async () => {
         const response = await axios.get('v1/jenjangPendidikan/all')
@@ -306,23 +307,25 @@ const ListSebaran = () => {
     }
 
     const getMakulById = async (e, f) => {
+        document.getElementById('my-modal').checked = true
         try {
             if (f != null) {
                 setJudul(e)
                 const response = await axios.get(`v1/sebaranMataKuliah/getById/${f}`)
+                console.log(response.data.data);
                 setId(response.data.data.id_mata_kuliah)
-                setNama(response.data.data.nama_mata_kuliah)
-                setJenis(response.data.data.jenis_mata_kuliah)
-                setProdi(response.data.data.prodis[0].nama_prodi)
+                setNama(response.data.data.mataKuliahs[0].nama_mata_kuliah)
+                setJenis(response.data.data.mataKuliahs[0].jenis_mata_kuliah)
                 setSmtr(response.data.data.semesters[0].semester)
+                setKodeTahunAjaran(response.data.data.code_tahun_ajaran)
                 setKodeSmt(response.data.data.code_semester)
                 setKodeNilai(response.data.data.code_kategori_nilai)
                 setNilai(response.data.data.kategoriNilais[0].nilai_huruf)
-                setSks(response.data.data.sks)
-                setSksPrak(response.data.data.sks_praktek)
-                setSksPrakLap(response.data.data.sks_prak_lapangan)
-                setSksPrakLap(response.data.data.sks_prak_lapangan)
-                setSksSim(response.data.data.sks_simulasi)
+                setSks(response.data.data.mataKuliahs[0].sks)
+                setSksPrak(response.data.data.mataKuliahs[0].sks_praktek)
+                setSksPrakLap(response.data.data.mataKuliahs[0].sks_prak_lapangan)
+                setSksPrakLap(response.data.data.mataKuliahs[0].sks_prak_lapangan)
+                setSksSim(response.data.data.mataKuliahs[0].sks_simulasi)
                 setBobot(response.data.data.status_bobot_makul)
                 setStatusMakul(response.data.data.status_makul)
                 let st = response.data.data.status_makul
@@ -337,7 +340,6 @@ const ListSebaran = () => {
                 } else {
                     setStatusMk(false)
                 }
-                document.getElementById('my-modal').checked = true
             }
         } catch (error) {
 
@@ -404,6 +406,7 @@ const ListSebaran = () => {
                 code_kategori_nilai: kodeNilai,
                 status_bobot_makul: statusBobot,
                 status_makul: status,
+                code_tahun_ajaran: kodeTahunAjaran
             }).then(function (response) {
                 setLoading(false)
                 Swal.fire({
@@ -490,7 +493,7 @@ const ListSebaran = () => {
                     <div className='py-4'>
                         {
                             judul === 'Detail' ?
-                                <div className='grid grid-cols-2 mb-4'>
+                                <div className='mb-4'>
                                     <div>
                                         <table>
                                             <tbody>
@@ -503,11 +506,6 @@ const ListSebaran = () => {
                                                     <td className='uppercase'>Jenis Mk</td>
                                                     <td>&nbsp;:&nbsp;</td>
                                                     <td className='uppercase'>{jenis}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td className='uppercase'>Prodi</td>
-                                                    <td>&nbsp;:&nbsp;</td>
-                                                    <td className='uppercase'>{prodi}</td>
                                                 </tr>
                                                 <tr>
                                                     <td className='uppercase'>Semester</td>
@@ -524,12 +522,6 @@ const ListSebaran = () => {
                                                     <td>&nbsp;:&nbsp;</td>
                                                     <td className='uppercase'>{sks}</td>
                                                 </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div>
-                                        <table className='float-right'>
-                                            <tbody>
                                                 <tr>
                                                     <td className='uppercase'>SKS Praktek</td>
                                                     <td>&nbsp;:&nbsp;</td>
@@ -598,6 +590,17 @@ const ListSebaran = () => {
                                         </div>
                                         <div className="col-span-2">
                                             <div className="grid grid-cols-2 gap-2">
+                                                <div>
+                                                    <label className="label flex-initial w-64">
+                                                        <span className="text-base label-text font-semibold">Tahun Ajaran</span>
+                                                    </label>
+                                                    <select className='my-1 select select-bordered select-sm w-full max-w-xs' value={kodeTahunAjaran} onChange={(e) => setKodeTahunAjaran(e.target.value)}>
+                                                        <option value="">Tahun Ajaran</option>
+                                                        {Tahun.map((item) => (
+                                                            <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
                                                 <div>
                                                     <label className="label">
                                                         <span className="text-base label-text font-semibold">Semester</span>
@@ -855,9 +858,9 @@ const ListSebaran = () => {
                                                             <td className='px-2 py-2 border' align='center'>{item.mataKuliahs[0].sks}</td>
                                                             <td className='px-2 py-2 border' align='center'>
                                                                 <div>
-                                                                    <button onClick={() => getMakulById('Detail', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-info mr-1" title='Detail'><FaInfo /></button>
-                                                                    <button onClick={() => getMakulById('Edit', item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
-                                                                    <button onClick={() => nonaktifkan(item.id_mata_kuliah)} className="btn btn-xs btn-circle text-white btn-error ml-1" title='Hapus'><FaTrash /></button>
+                                                                    <button onClick={() => getMakulById('Detail', item.id_sebaran)} className="btn btn-xs btn-circle text-white btn-info mr-1" title='Detail'><FaInfo /></button>
+                                                                    <button onClick={() => getMakulById('Edit', item.id_sebaran)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
+                                                                    <button onClick={() => nonaktifkan(item.id_sebaran)} className="btn btn-xs btn-circle text-white btn-error ml-1" title='Hapus'><FaTrash /></button>
                                                                 </div>
                                                             </td>
                                                         </tr>

@@ -27,10 +27,6 @@ const FormMhs3 = () => {
     const [pndptIbu, setPndptIbu] = useState("")
     const [pndknIbu, setPndknIbu] = useState("")
     const navigate = useNavigate()
-    // const { idMhs } = useParams()
-    // const { stat } = useParams()
-    // const { history } = useParams()
-    // const { reg } = useParams()
     const [loading, setLoading] = useState(false)
     const location = useLocation()
 
