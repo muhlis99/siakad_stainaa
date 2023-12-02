@@ -347,6 +347,53 @@ module.exports = {
         }
     },
 
+    delete: async (req, res, next) => {
+        const thnAjr = req.params.thnAjr
+        const smt = req.params.smt
+        const jenjPen = req.params.jenjPen
+        const fks = req.params.fks
+        const prd = req.params.prd
+
+        const makul = await sebaranMataKuliah.findAll({
+            attributes: ['code_mata_kuliah'],
+            where: {
+                code_tahun_ajaran: thnAjr,
+                code_semester: smt,
+                status_bobot_makul: "wajib",
+                status_makul: "paket",
+                status: "aktif"
+            },
+            include: [
+                {
+                    model: mataKuliahModel,
+                    where: {
+                        code_jenjang_pendidikan: jenjPen,
+                        code_fakultas: fks,
+                        code_prodi: prd,
+                    }
+                }
+            ]
+        })
+        const dataMakul = makul.map(el => { return el.code_mata_kuliah })
+        await krsModel.destroy({
+            where: {
+                code_mata_kuliah: dataMakul,
+                code_tahun_ajaran: thnAjr,
+                code_semester: smt,
+                code_jenjang_pendidikan: jenjPen,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "data mahasiswa succes dibatalkan"
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
     //  user mahasiswa
     viewKrsMahasiswaNow: async (req, res, next) => {
         const nim = req.params.nim
