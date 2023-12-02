@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { FaCheck, FaSearch, FaTimes, } from 'react-icons/fa'
+import { FaCheck, FaSearch, FaTrash, FaTimes } from 'react-icons/fa'
 import { MdDoNotDisturb } from 'react-icons/md'
 import Swal from 'sweetalert2'
 import Loading from '../Loading'
@@ -127,6 +127,37 @@ const ListKrs = () => {
                     icon: "error"
                 })
             }
+        }
+    }
+
+    const batalkanPaket = (a, b, c, d, e) => {
+        try {
+            Swal.fire({
+                title: "Batalkan paket ini?",
+                text: "Apa anda yakin?, anda tidak dapat mengembalikan ini",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, batalkan!',
+                cancelButtonText: 'Keluar'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await axios.delete(
+                        `v1/krs/create/${a}/${b}/${c}/${d}/${e}`
+                    ).then(function (response) {
+                        setLoading(false)
+                        Swal.fire({
+                            title: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            getKrsAll()
+                        })
+                    })
+                }
+            })
+        } catch (error) {
+
         }
     }
 
@@ -280,7 +311,14 @@ const ListKrs = () => {
                                             <td className='px-2 py-2 border' align='center'>
                                                 <div>
                                                     <div className="tooltip" data-tip="Lihat MK Paket"><button className="btn btn-xs btn-circle text-white btn-info mr-1" onClick={() => getViewKrs(kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi)} title='Lihat MK Paket'><FaSearch /></button></div>
-                                                    {item.keterangan == 'paket selesai' || item.jumlahTotalMahasiswa == 0 ? <div className="tooltip"><button className="btn btn-error btn-xs btn-circle text-white" tabIndex="-1" role="button" aria-disabled="true"><FaTimes /></button></div> : <div className="tooltip" data-tip="Paketkan Mahasiswa"><button className="btn btn-xs btn-circle text-white btn-success" onClick={() => paketkan(kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi)} title='Paketkan Mahasiswa'><FaCheck /></button></div>}
+                                                    {item.keterangan == 'paket selesai' || item.jumlahTotalMahasiswa == 0 ?
+                                                        <div className="tooltip" data-tip="Batalkan Paket">
+                                                            <button className="btn btn-error btn-xs btn-circle text-white" onClick={() => batalkanPaket(kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi)}><FaTrash /></button>
+                                                        </div>
+                                                        :
+                                                        <div className="tooltip" data-tip="Paketkan Mahasiswa">
+                                                            <button className="btn btn-xs btn-circle text-white btn-success" onClick={() => paketkan(kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi)}><FaCheck /></button>
+                                                        </div>}
                                                 </div>
                                             </td>
                                         </tr>
