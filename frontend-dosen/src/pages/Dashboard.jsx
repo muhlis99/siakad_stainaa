@@ -198,7 +198,7 @@ const Dashboard = () => {
                                                                         <tr key={item.id_jadwal_pertemuan} className='border'>
                                                                             <th scope='row' className='py-2'>{index + 1}</th>
                                                                             <td className='py-2'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</td>
-                                                                            <td className='py-2'>{item.jadwalKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                            <td className='py-2'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                                             <td className='py-2 text-uppercase'>{item.jenis_pertemuan}</td>
                                                                             <td className='py-2'>{item.metode_pembelajaran}</td>
                                                                         </tr>

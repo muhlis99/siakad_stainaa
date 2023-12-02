@@ -19,6 +19,8 @@ const KHS = () => {
     const [biodata, setBiodata] = useState([])
     const [dataKHS, setDataKHS] = useState([])
     const [totalKHS, setTotalKHS] = useState([])
+    const [bio, setBio] = useState([])
+    const [data, setData] = useState([])
     const [load, setLoad] = useState(false)
 
     useEffect(() => {
@@ -40,7 +42,8 @@ const KHS = () => {
         const getCurrentYear = async () => {
             if (user) {
                 const response = await axios.get(`v1/krs/viewKrsMahasiswaNow/${user.data.username}`)
-                setKodeTahun(response.data.data[0].code_tahun_ajaran)
+                setKodeTahun(response.data.data[1].code_tahun_ajaran)
+                setBio(response.data.identitas)
             }
         }
         getCurrentYear()
@@ -54,6 +57,7 @@ const KHS = () => {
                     setBiodata(response.data.identitas)
                     setDataKHS(response.data.data)
                     setTotalKHS(response.data.nilaiAkhir)
+                    setData(response.data)
                 }
             } catch (error) {
                 setDataKHS([])
@@ -161,78 +165,132 @@ const KHS = () => {
                                 <Col>
                                     <Card className='shadow mb-4'>
                                         <Card.Body className='justify'>
-                                            <Row className='mb-5 py-3 ps-3 shadow-sm rounded-end' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 2px' }}>
-                                                <Col lg="6" sm="12">
-                                                    <Row className='mb-2'>
-                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                            <Card.Text className='fw-bold text-uppercase'>nim</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
-                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0'>
-                                                            <Card.Text className='fw-bold text-uppercase'>{biodata.nim}</Card.Text>
-                                                        </Col>
-                                                    </Row>
-                                                    <Row className='mb-2'>
-                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                            <Card.Text className='fw-bold text-uppercase'>nama</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
-                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0'>
-                                                            <Card.Text className='fw-bold text-uppercase'>{biodata.mahasiswa}</Card.Text>
-                                                        </Col>
-                                                    </Row>
-                                                    <Row className='mb-2'>
-                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                            <Card.Text className='fw-bold text-uppercase'>Fakultas</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
-                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0'>
-                                                            <Card.Text className='fw-bold text-uppercase'>{biodata.fakultas}</Card.Text>
-                                                        </Col>
-                                                    </Row>
-                                                </Col>
-                                                <Col lg="6" sm="12">
-                                                    <Row className='mb-2'>
-                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                            <Card.Text className='fw-bold text-uppercase'>Prodi</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
-                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0'>
-                                                            <Card.Text className='fw-bold text-uppercase'>{biodata.prodi}</Card.Text>
-                                                        </Col>
-                                                    </Row>
-                                                    <Row className='mb-2'>
-                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                            <Card.Text className='fw-bold text-uppercase'>Periode</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
-                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0'>
-                                                            <Card.Text className='fw-bold text-uppercase'>{biodata.tahunAjaran}</Card.Text>
-                                                        </Col>
-                                                    </Row>
-                                                    <Row className='mb-2'>
-                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                            <Card.Text className='fw-bold text-uppercase'>Semester</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
-                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
-                                                        </Col>
-                                                        <Col className='p-0'>
-                                                            <Card.Text className='fw-bold text-uppercase'>{biodata.semester}</Card.Text>
-                                                        </Col>
-                                                    </Row>
-                                                </Col>
-                                            </Row>
+                                            {data.length != 0 ?
+                                                <Row className='mb-5 py-3 ps-3 shadow-sm rounded-end' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 2px' }}>
+                                                    <Col lg="6" sm="12">
+                                                        <Row className='mb-2'>
+                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>nim</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0'>
+                                                                <Card.Text className='fw-bold text-uppercase'>{biodata.nim}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row className='mb-2'>
+                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>nama</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0'>
+                                                                <Card.Text className='fw-bold text-uppercase'>{biodata.mahasiswa}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                        {/* <Row className='mb-2'>
+                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>Fakultas</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0'>
+                                                                <Card.Text className='fw-bold text-uppercase'>{biodata.fakultas}</Card.Text>
+                                                            </Col>
+                                                        </Row> */}
+                                                    </Col>
+                                                    <Col lg="6" sm="12">
+                                                        {/* <Row className='mb-2'>
+                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>Prodi</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0'>
+                                                                <Card.Text className='fw-bold text-uppercase'>{biodata.prodi}</Card.Text>
+                                                            </Col>
+                                                        </Row> */}
+                                                        <Row className='mb-2'>
+                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>Periode</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0'>
+                                                                <Card.Text className='fw-bold text-uppercase'>{biodata.tahunAjaran}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row className='mb-2'>
+                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>Semester</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0'>
+                                                                <Card.Text className='fw-bold text-uppercase'>{biodata.semester}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
+                                                :
+                                                <Row className='mb-3 py-4 ps-3 shadow-sm rounded-end' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 2px' }}>
+                                                    <Col lg="6" sm="12">
+                                                        <Row className='mb-2'>
+                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>nim</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0'>
+                                                                <Card.Text className='fw-bold text-uppercase'>{bio.nim}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row className='mb-2'>
+                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>nama</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0'>
+                                                                <Card.Text className='fw-bold text-uppercase'>{bio.nama}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col lg="6" sm="12">
+                                                        <Row className='mb-2'>
+                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>Periode</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0'>
+                                                                <Card.Text className='fw-bold text-uppercase'>{bio.tahun_ajaran}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row className='mb-2'>
+                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>Semester</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col className='p-0'>
+                                                                <Card.Text className='fw-bold text-uppercase'>Semester {bio.semester}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
+                                            }
+
                                             <Row className='mb-2'>
                                                 <Col lg="6" className='p-0'>
                                                     <Row>
@@ -278,8 +336,8 @@ const KHS = () => {
                                                                     <tr key={item.id_nilai_kuliah} className='border'>
                                                                         <th scope='row' className='py-2 text-center'>{index + 1}</th>
                                                                         <td className='py-2 border' align='center'>{item.code_mata_kuliah}</td>
-                                                                        <td className='py-2 border'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                        <td className='py-2 border' align='center'>{item.mataKuliahs[0].sks}</td>
+                                                                        <td className='py-2 border'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                        <td className='py-2 border' align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
                                                                         <td className='py-2 border' align='center'>{item.nilai_akhir}</td>
                                                                         <td className='py-2 border' align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
                                                                         <td className='py-2 border' align='center'>{item.kategoriNilais[0].interfal_skor}</td>
@@ -302,7 +360,6 @@ const KHS = () => {
                                                                     <td className='py-2 border' align='center' colSpan="7"><strong>IPS (Index Prestasi Semester)</strong></td>
                                                                     <td className='py-2 border' align='center'>{totalKHS.IPS}</td>
                                                                 </tr> : ""}
-
                                                             </tbody>
                                                         </Table>
                                                     </div>
@@ -387,8 +444,8 @@ const KHS = () => {
                                                             <tr key={item.id_nilai_kuliah}>
                                                                 <td style={tableStyle.td2} align='center'>{index + 1}</td>
                                                                 <td style={tableStyle.td2} align='center'>{item.code_mata_kuliah}</td>
-                                                                <td style={tableStyle.tdMakul} align='left'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                <td style={tableStyle.td2} align='center'>{item.mataKuliahs[0].sks}</td>
+                                                                <td style={tableStyle.tdMakul} align='left'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                <td style={tableStyle.td2} align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
                                                                 <td style={tableStyle.td2} align='center'>{item.nilai_akhir}</td>
                                                                 <td style={tableStyle.td2} align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
                                                                 <td style={tableStyle.td2} align='center'>{item.kategoriNilais[0].interfal_skor}</td>

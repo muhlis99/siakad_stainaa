@@ -144,91 +144,55 @@ const Jadwal = () => {
                                                 </Col>
                                             </Row>
                                             <Row>
-                                                <Table hover>
-                                                    <thead>
-                                                        <tr className='border-bottom-3'>
-                                                            <th colSpan={9} className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jadwal Kuliah Mingguan</th>
-                                                        </tr>
-                                                        <tr className='border-bottom-3'>
-                                                            <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>#</th>
-                                                            <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Hari</th>
-                                                            <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Tanggal</th>
-                                                            <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jam</th>
-                                                            <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
-                                                            <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jenis Pertemuan</th>
-                                                            <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Pembelajaran</th>
-                                                            <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>URL</th>
-                                                            <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Ruang</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {dataJadwal.length >= 1 ? dataJadwal.map((item, index) => (
-                                                            <tr key={item.id_jadwal_pertemuan} className='border'>
-                                                                <th scope='row' className='py-2 text-center'>{index + 1}</th>
-                                                                <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].hari}</td>
-                                                                <td className='py-2' align='center'>{item.tanggal_pertemuan}</td>
-                                                                <td className='py-2' align='center'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</td>
-                                                                <td className='py-2' align='center'>{item.jadwalKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                <td className='py-2 text-capitalize' align='center'>{item.jenis_pertemuan}</td>
-                                                                <td className='py-2 text-capitalize' align='center'>{item.metode_pembelajaran}</td>
-                                                                <td className='py-2 text-capitalize' align='center'>{item.url_online == "" ?
-                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL tidak ada</span>
-                                                                    : item.url_online}</td>
-                                                                <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
-                                                            </tr>
-                                                        )) :
-                                                            <tr className='border'>
-                                                                <td colSpan={8} align='center'>
-                                                                    <Image src={dataBlank} thumbnail width={150} />
-                                                                    <p className='fw-bold text-muted'>Tidak Ada Data</p>
-                                                                </td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </Table>
+                                                <Col>
+                                                    <div className="table-responsive">
+                                                        <Table hover>
+                                                            <thead>
+                                                                <tr className='border-bottom-3'>
+                                                                    <th colSpan={9} className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jadwal Kuliah Mingguan</th>
+                                                                </tr>
+                                                                <tr className='border-bottom-3'>
+                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>#</th>
+                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Hari</th>
+                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Tanggal</th>
+                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jam</th>
+                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
+                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jenis Pertemuan</th>
+                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Pembelajaran</th>
+                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>URL</th>
+                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Ruang</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {dataJadwal.length >= 1 ? dataJadwal.map((item, index) => (
+                                                                    <tr key={item.id_jadwal_pertemuan} className='border'>
+                                                                        <th scope='row' className='py-2 text-center'>{index + 1}</th>
+                                                                        <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].hari}</td>
+                                                                        <td className='py-2' align='center'>{item.tanggal_pertemuan}</td>
+                                                                        <td className='py-2' align='center'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</td>
+                                                                        <td className='py-2' align='center'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                        <td className='py-2 text-capitalize' align='center'>{item.jenis_pertemuan}</td>
+                                                                        <td className='py-2 text-capitalize' align='center'>{item.metode_pembelajaran}</td>
+                                                                        <td className='py-2 text-capitalize' align='center'>{item.url_online == "" ?
+                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL tidak ada</span>
+                                                                            : item.url_online}</td>
+                                                                        <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
+                                                                    </tr>
+                                                                )) :
+                                                                    <tr className='border'>
+                                                                        <td colSpan={8} align='center'>
+                                                                            <Image src={dataBlank} thumbnail width={150} />
+                                                                            <p className='fw-bold text-muted'>Tidak Ada Data</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </Table>
+                                                    </div>
+                                                </Col>
                                             </Row>
                                         </Card.Body>
                                     </Card>
-                                    {/* <Card className='shadow rounded'>
-                            <Card.Body>
-                                <div className="table-responsive">
-                                    <Table striped>
-                                        <thead>
-                                            <tr style={{ background: '#C5E1D4' }}>
-                                                <th className='fw-bold py-3'>#</th>
-                                                <th className='fw-bold py-3'>Mata Kuliah</th>
-                                                <th className='fw-bold py-3'>SKS</th>
-                                                <th className='fw-bold py-3'>Status MK</th>
-                                                <th className='fw-bold py-3'>Paket</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr className='border'>
-                                                <th scope='row' className='py-2'>1</th>
-                                                <td className='py-2'>Mark</td>
-                                                <td className='py-2'>Otto</td>
-                                                <td className='py-2'>@mdo</td>
-                                                <td className='py-2'><span className="badge rounded-pill text-bg-success">Paket</span></td>
-                                            </tr>
-                                            <tr className='border'>
-                                                <th scope='row' className='py-2'>2</th>
-                                                <td className='py-2'>Jacob</td>
-                                                <td className='py-2'>Thornton</td>
-                                                <td className='py-2'>@fat</td>
-                                                <td className='py-2'><span className="badge rounded-pill text-bg-success">Paket</span></td>
-                                            </tr>
-                                            <tr className='border'>
-                                                <th scope='row' className='py-2'>3</th>
-                                                <td className='py-2'>Larry the Bird</td>
-                                                <td className='py-2'>Larry the Bird</td>
-                                                <td className='py-2'>Larry the Bird</td>
-                                                <td className='py-2'><span className="badge rounded-pill text-bg-success">Paket</span></td>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </Card.Body>
-                        </Card> */}
                                 </Col>
                             </Row>
                         </div>
