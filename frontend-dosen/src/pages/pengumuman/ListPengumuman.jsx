@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../Layout'
 import { Row, Col, Card, Dropdown, DropdownButton, Image, Modal, Button } from 'react-bootstrap'
-import dataBlank from "../../assets/images/notify.svg"
+import dataBlank from "../../assets/images/noData.svg"
 import { useDispatch, useSelector } from 'react-redux'
 import { getMe } from '../../features/authSlice'
 import { Link, Navigate } from 'react-router-dom'
@@ -126,7 +126,6 @@ const ListPengumuman = () => {
                                     <p>{isi}</p>
                                 </Modal.Body>
                             </Modal>
-
                             <Row>
                                 <Col lg="8" sm="12">
                                     <div className="page-header">
@@ -134,7 +133,7 @@ const ListPengumuman = () => {
                                     </div>
                                 </Col>
                                 <Col lg="4" sm="12" className='mb-4'>
-                                    <DropdownButton variant='light' className='float-right border border-black rounded' autoClose="outside" align="end" title={
+                                    <DropdownButton variant='light' className='float-right border-2 border-[#5E7C60] rounded' autoClose="outside" align="end" title={
                                         <div className='inline-flex items-center'>
                                             <span>{filter}</span> <FaCalendarAlt className='ms-1 Stext-muted' />
                                         </div>
@@ -192,7 +191,7 @@ const ListPengumuman = () => {
                                                     <div className='text-center flex items-center justify-center'>
                                                         <div>
                                                             <div>
-                                                                <Image src={dataBlank} width={450} className='mx-auto' />
+                                                                <Image src={dataBlank} width={250} className='mx-auto' />
                                                             </div>
                                                             <span className='fw-bold text-muted'>Tidak ada pengumuman</span>
                                                         </div>
