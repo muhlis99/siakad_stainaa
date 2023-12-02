@@ -87,6 +87,7 @@ const MahasiswaAsuh = () => {
             if (kodeJenjang && kodeFakultas && kodeProdi && username) {
                 const response = await axios.get(`v1/pembimbingAkademik/mahasiswaByDosenPembimbing/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}`)
                 setIdentitas(response.data.identitas)
+                console.log(response.data.identitas)
                 setMahasiswa(response.data.data)
             }
         } catch (error) {
@@ -127,7 +128,7 @@ const MahasiswaAsuh = () => {
                                                 <Row>
                                                     <Col lg='4'>
                                                         <select className="form-select" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
-                                                            <option selected>Jenjang Pendidikan</option>
+                                                            <option >Jenjang Pendidikan</option>
                                                             {Jenjang.map((item) => (
                                                                 <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
                                                             ))}
