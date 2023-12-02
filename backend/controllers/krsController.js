@@ -754,19 +754,25 @@ module.exports = {
         })
         if (!mahasiswaUse) return res.status(404).json({ message: "data mahasiswa tidak ditemukan" })
 
-        const totalSKS = await krsModel.sum('mataKuliahs.sks', {
+        const totalSKS = await krsModel.sum('sebaranMataKuliahs.mataKuliahs.sks', {
             include: [
                 {
-                    model: mataKuliahModel,
+                    model: sebaranMataKuliah,
                     where: {
                         code_tahun_ajaran: tahunAjaran,
                         code_semester: mahasiswaUse.semesters[0].code_semester,
-                        code_jenjang_pendidikan: mahasiswaUse.jenjangPendidikans[0].code_jenjang_pendidikan,
-                        code_fakultas: mahasiswaUse.fakultas[0].code_fakultas,
-                        code_prodi: mahasiswaUse.prodis[0].code_prodi,
+                        status: "aktif",
                         status_makul: "paket",
-                        status: "aktif"
-                    }
+                        status_bobot_makul: "wajib"
+                    },
+                    include: [{
+                        model: mataKuliahModel,
+                        where: {
+                            code_jenjang_pendidikan: mahasiswaUse.jenjangPendidikans[0].code_jenjang_pendidikan,
+                            code_fakultas: mahasiswaUse.fakultas[0].code_fakultas,
+                            code_prodi: mahasiswaUse.prodis[0].code_prodi,
+                        }
+                    }]
                 }
             ],
             where: {
@@ -783,18 +789,22 @@ module.exports = {
         await krsModel.findAll({
             include: [
                 {
-                    model: mataKuliahModel,
-                    attributes: ["code_mata_kuliah", "nama_mata_kuliah",
-                        "status_bobot_makul", "status_makul", "sks"],
+                    model: sebaranMataKuliah,
                     where: {
                         code_tahun_ajaran: tahunAjaran,
                         code_semester: mahasiswaUse.semesters[0].code_semester,
-                        code_jenjang_pendidikan: mahasiswaUse.jenjangPendidikans[0].code_jenjang_pendidikan,
-                        code_fakultas: mahasiswaUse.fakultas[0].code_fakultas,
-                        code_prodi: mahasiswaUse.prodis[0].code_prodi,
                         status: "aktif",
-                        status_makul: "paket"
-                    }
+                        status_makul: "paket",
+                        status_bobot_makul: "wajib"
+                    },
+                    include: [{
+                        model: mataKuliahModel,
+                        where: {
+                            code_jenjang_pendidikan: mahasiswaUse.jenjangPendidikans[0].code_jenjang_pendidikan,
+                            code_fakultas: mahasiswaUse.fakultas[0].code_fakultas,
+                            code_prodi: mahasiswaUse.prodis[0].code_prodi,
+                        }
+                    }]
                 }
             ],
             where: {
@@ -880,16 +890,22 @@ module.exports = {
         const dataPengajuanKrs = await krsModel.findAll({
             include: [
                 {
-                    model: mataKuliahModel,
+                    model: sebaranMataKuliah,
                     where: {
                         code_tahun_ajaran: tahunAjaran,
                         code_semester: data.semesters[0].code_semester,
-                        code_jenjang_pendidikan: data.jenjangPendidikans[0].code_jenjang_pendidikan,
-                        code_fakultas: data.fakultas[0].code_fakultas,
-                        code_prodi: data.prodis[0].code_prodi,
                         status: "aktif",
-                        status_makul: "paket"
-                    }
+                        status_makul: "paket",
+                        status_bobot_makul: "wajib"
+                    },
+                    include: [{
+                        model: mataKuliahModel,
+                        where: {
+                            code_jenjang_pendidikan: data.jenjangPendidikans[0].code_jenjang_pendidikan,
+                            code_fakultas: data.fakultas[0].code_fakultas,
+                            code_prodi: data.prodis[0].code_prodi,
+                        }
+                    }]
                 }
             ],
             where: {
