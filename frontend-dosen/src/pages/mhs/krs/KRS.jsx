@@ -186,8 +186,8 @@ const KRS = () => {
                                                                                 <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].code_mata_kuliah}</td>
                                                                                 <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                                                 <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
-                                                                                <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].status_bobot_makul}</td>
-                                                                                <td className='py-2 text-capitalize'>{item.sebaranMataKuliahs[0].mataKuliahs[0].status_makul}</td>
+                                                                                <td className='py-2'>{item.sebaranMataKuliahs[0].status_bobot_makul}</td>
+                                                                                <td className='py-2 text-capitalize'>{item.sebaranMataKuliahs[0].status_makul}</td>
                                                                                 <td className='py-2'>
                                                                                     {item.status_krs == "setuju" ?
                                                                                         <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Disetujui</span>

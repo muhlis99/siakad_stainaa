@@ -204,8 +204,8 @@ const HistoryKrs = () => {
                                                                             <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].code_mata_kuliah}</td>
                                                                             <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                                             <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
-                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].status_bobot_makul}</td>
-                                                                            <td className='py-2 text-capitalize'>{item.sebaranMataKuliahs[0].mataKuliahs[0].status_makul}</td>
+                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].status_bobot_makul}</td>
+                                                                            <td className='py-2 text-capitalize'>{item.sebaranMataKuliahs[0].status_makul}</td>
                                                                         </tr>
                                                                     ))}
                                                                     {total &&
