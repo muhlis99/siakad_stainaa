@@ -6,7 +6,7 @@ import { getMe } from "../../../features/authSlice"
 import { Link, Navigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 import { LuFileInput } from "react-icons/lu"
-import { FaReply } from 'react-icons/fa'
+import { FaEdit, FaReply } from 'react-icons/fa'
 
 const InfoNilai = () => {
     const { isError, user } = useSelector((state) => state.auth)
@@ -17,6 +17,7 @@ const InfoNilai = () => {
 
     useEffect(() => {
         getKelasById()
+        console.log(location.state)
         // console.log(location.state)
         getNilaiMahasiswa()
     }, [location])
@@ -36,7 +37,7 @@ const InfoNilai = () => {
 
     const getNilaiMahasiswa = async () => {
         try {
-            const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.kodeMk}&codeKls=${location.state.kodeKls}`)
+            const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.kodeMk}&codeKls=${location.state.kodeKls}&codeThnAjr=${location.state.kodeThn}`)
             setNilai(response.data.data)
         } catch (error) {
 
@@ -127,38 +128,50 @@ const InfoNilai = () => {
                                                     <Table hover>
                                                         <thead>
                                                             <tr className='border'>
-                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}>#</th>
-                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}>NIM</th>
-                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}>Nama</th>
-                                                                <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>Tugas</th>
-                                                                <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>UTS</th>
-                                                                <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>UAS</th>
-                                                                <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>Absen</th>
-                                                                <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>Jumlah</th>
-                                                                <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>Nilai</th>
-                                                                <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>Grade</th>
-                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}>Status</th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>#</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>NIM</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Nama</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Presentasi</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Materi</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Power Point</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Keaktifan</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Tugas</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>UTS</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>UAS</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Absen</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Jumlah</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Nilai</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Grade</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Status</span></th>
+                                                                <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Aksi</span></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             {Nilai.map((item, index) => (
                                                                 <tr key={index} className='border'>
-                                                                    <th scope='row' className='py-2 border text-center'>{index + 1}</th>
-                                                                    <td className='py-2 border text-capitalize' align='center'>{item.mahasiswas[0].nim}</td>
-                                                                    <td className='py-2 border text-capitalize'>{item.mahasiswas[0].nama}</td>
-                                                                    <td className='py-2 border px-1 text-capitalize' align='center'>{item.nilai_tugas}</td>
-                                                                    <td className='py-2 border px-1 text-capitalize' align='center'>{item.nilai_uts}</td>
-                                                                    <td className='py-2 border px-1 text-capitalize' align='center'>{item.nilai_uas}</td>
-                                                                    <td className='py-2 border px-1 text-capitalize' align='center'>{item.nilai_hadir}</td>
-                                                                    <td className='py-2 border px-1 text-capitalize' align='center'>{item.nilai_jumlah}</td>
-                                                                    <td className='py-2 border px-1 text-capitalize' align='center'>{item.nilai_akhir}</td>
-                                                                    <td className='py-2 border px-1 text-capitalize' align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
+                                                                    <th scope='row' className='py-2 border text-center'><span className='text-[11px]'>{index + 1}</span></th>
+                                                                    <td className='py-2 border text-capitalize' align='center'><span className='text-[11px]'>{item.mahasiswas[0].nim}</span></td>
+                                                                    <td className='py-2 border text-capitalize'><span className='text-[11px]'>{item.mahasiswas[0].nama}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_presentasi}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_penguasaan_materi}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_slide_power_point}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_keaktifan}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_tugas}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_uts}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_uas}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_hadir}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_jumlah}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_akhir}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.kategoriNilais[0].nilai_huruf}</span></td>
                                                                     <td className='py-2 border text-capitalize' align='center'>
                                                                         {item.kategoriNilais[0].keterangan == 'LULUS' ?
-                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.kategoriNilais[0].keterangan}</span>
+                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline font-bold leading-none text-white text-[11px]">{item.kategoriNilais[0].keterangan}</span>
                                                                             :
-                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.kategoriNilais[0].keterangan}</span>
+                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline font-bold leading-none text-white text-[11px]">{item.kategoriNilais[0].keterangan}</span>
                                                                         }
+                                                                    </td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'>
+                                                                        <Link to={'/editnilai'} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaEdit /></Link>
                                                                     </td>
                                                                 </tr>
                                                             ))}
@@ -178,9 +191,10 @@ const InfoNilai = () => {
                                 <Card.Footer>
                                     <Row>
                                         <Col>
-                                            <Link to='/penilaian' className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center no-underline'><FaReply /> &nbsp; <span>Kembali</span></Link>
+                                            <Link to='/penilaian' state={{ kodeThn: location.state.kodeThn, kodeSmt: location.state.kodeSmt, kodeJen: location.state.kodeJen, kodeFk: location.state.kodeFk, kodeProd: location.state.kodeProd }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center no-underline'><FaReply /> &nbsp; <span>Kembali</span></Link>
                                             {Nilai.length > 0 ?
-                                                <Link to='/editnilai' state={{ kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls, kodeThn: detailKls.code_tahun_ajaran }} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center no-underline float-right'><LuFileInput /> &nbsp; <span>Edit Nilai</span></Link>
+                                                ""
+                                                // <Link to='/editnilai' state={{ kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls, kodeThn: detailKls.code_tahun_ajaran }} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center no-underline float-right'><LuFileInput /> &nbsp; <span>Edit Nilai</span></Link>
                                                 : <Link to='/inputnilai' state={{ kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls }} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center float-right no-underline'><LuFileInput /> &nbsp; <span>Input Nilai</span></Link>
                                             }
                                         </Col>

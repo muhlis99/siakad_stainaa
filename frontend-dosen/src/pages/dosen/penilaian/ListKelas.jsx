@@ -3,7 +3,7 @@ import Layout from '../../Layout'
 import { Row, Col, Card, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
-import { Link, Navigate } from "react-router-dom"
+import { Link, Navigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 import { FaSearch } from 'react-icons/fa'
 import { Circles } from "react-loader-spinner"
@@ -26,6 +26,18 @@ const ListKelas = () => {
     const [kodeMakul, setKodeMakul] = useState([])
     const [DataKelas, setDataKelas] = useState([])
     const [load, setLoad] = useState(false)
+    const location = useLocation()
+
+    useEffect(() => {
+        console.log(location.state);
+        if (location.state != null) {
+            setKodeJenjang(location.state.kodeJen)
+            setKodeTahun(location.state.kodeThn)
+            setKodeSemester(location.state.kodeSmt)
+            setKodeFakultas(location.state.kodeFk)
+            setKodeProdi(location.state.kodeProd)
+        }
+    }, [location])
 
     useEffect(() => {
         setLoad(true)
@@ -265,7 +277,7 @@ const ListKelas = () => {
                                                                                     <td className='py-2'>{item.jumlahMhs} Mahasiswa</td>
                                                                                     <td className='py-2'>{item.kapasitas} Mahasiswa</td>
                                                                                     <td className='py-2'>
-                                                                                        <Link to='/detailnilai' state={{ kodeMk: item.code_mata_kuliah, idKelas: item.id_kelas, kodeKls: item.code }} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch /></Link>
+                                                                                        <Link to='/detailnilai' state={{ kodeMk: item.code_mata_kuliah, idKelas: item.id_kelas, kodeKls: item.code, kodeThn: kodeTahun, kodeSmt: kodeSemester, kodeJen: kodeJenjang, kodeFk: kodeFakultas, kodeProd: kodeProdi }} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch /></Link>
                                                                                     </td>
                                                                                 </tr>
                                                                             ))

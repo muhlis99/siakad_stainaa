@@ -117,7 +117,7 @@ const InputNilaiMhs = () => {
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'B'))
             for (var i = 0; i < document.getElementsByName('materi').length; i++) {
-                setPresentasi([])
+                setMateri([])
                 let datas = inputFields[i]
                 inputFields[i].materi = ""
             }
@@ -134,8 +134,8 @@ const InputNilaiMhs = () => {
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'C'))
             for (var i = 0; i < document.getElementsByName('pptx').length; i++) {
+                setPptx([])
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].pptx = ""
             }
         }
@@ -151,8 +151,8 @@ const InputNilaiMhs = () => {
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'D'))
             for (var i = 0; i < document.getElementsByName('keaktifan').length; i++) {
+                setKeaktifan([])
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].keaktifan = ""
             }
         }
@@ -168,8 +168,8 @@ const InputNilaiMhs = () => {
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'E'))
             for (var i = 0; i < document.getElementsByName('tugas').length; i++) {
+                setTugas([])
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].tugas = ""
             }
         }
@@ -185,8 +185,8 @@ const InputNilaiMhs = () => {
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'F'))
             for (var i = 0; i < document.getElementsByName('uts').length; i++) {
+                setUts([])
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].uts = ""
             }
         }
@@ -203,8 +203,8 @@ const InputNilaiMhs = () => {
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'G'))
             for (var i = 0; i < document.getElementsByName('uas').length; i++) {
+                setUas([])
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].uas = ""
             }
         }
@@ -220,8 +220,8 @@ const InputNilaiMhs = () => {
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'H'))
             for (var i = 0; i < document.getElementsByName('absen').length; i++) {
+                setAbsen([])
                 let datas = inputFields[i]
-                console.log(datas);
                 inputFields[i].absen = ""
             }
         }
@@ -381,9 +381,10 @@ const InputNilaiMhs = () => {
 
     const simpanNilai = async (e) => {
         e.preventDefault()
+        setLoading(true)
         try {
-            // setLoading(true)
             if (kodeNilai.length != Mahasiswa.length) {
+                setLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Input Nilai Belum Tuntas',
