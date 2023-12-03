@@ -231,6 +231,7 @@ module.exports = {
                 status: "aktif"
             }
         })
+        if (Dtnim.length === 0) return res.status(401).json({ message: "data mahasiswa sudah tidak aktif" })
 
         const makulInKrs = makul.map(al => {
             return al.code_mata_kuliah

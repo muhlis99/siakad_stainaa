@@ -51,6 +51,39 @@ module.exports = {
             })
     },
 
+    getById: async (req, res, next) => {
+        const id = req.params.id
+        const codeThnAjr = req.params.codeThnAjr
+        await nilaiKuliahModel.findOne({
+            include: [
+                {
+                    model: kategoriNilaiModel,
+                    where: {
+                        code_tahun_ajaran: codeThnAjr,
+                        status: "aktif"
+                    }
+                },
+                {
+                    attributes: ['nim', 'nama'],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" }
+                }
+            ],
+            where: {
+                id_nilai_kuliah: id,
+            }
+        }).
+            then(result => {
+                res.status(200).json({
+                    message: "Get by id nilai kuliah Success",
+                    data: result,
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     getMhsByKelas: async (req, res, next) => {
         const { codeKls } = req.params
         await kelasDetailKuliahModel.findAll({
@@ -99,8 +132,8 @@ module.exports = {
             }
             return result
         }
-        let randomNumber = randomAngka(5) + Math.floor(100000000000 + Math.random() * 900000000000)
         const dataNilai = data.map(el => {
+            let randomNumber = randomAngka(5) + Math.floor(100000000000 + Math.random() * 900000000000)
             let element = {
                 code_nilai_kuliah: randomNumber,
                 code_kelas: el.code_kelas,
@@ -172,7 +205,5 @@ module.exports = {
                 next(err)
             })
     }
-
-    // user dosen
 
 }

@@ -89,7 +89,7 @@ module.exports = {
                 }
                 return result
             }
-            let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+            let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
             const codeJadwalPertemuan = randomAngka(5) + randomNumber
 
             let days = 7 - day.getDay() + indexHari;
