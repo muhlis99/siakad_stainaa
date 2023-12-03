@@ -99,7 +99,7 @@ module.exports = {
             }
             return result
         }
-        let randomNumber = randomAngka(2) + Math.floor(1000 + Math.random() * 9000)
+        let randomNumber = randomAngka(5) + Math.floor(100000000000 + Math.random() * 900000000000)
         const dataNilai = data.map(el => {
             let element = {
                 code_nilai_kuliah: randomNumber,

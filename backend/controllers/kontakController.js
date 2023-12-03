@@ -82,7 +82,7 @@ module.exports = {
         } else {
             newLevel = "dsn"
         }
-        let codeKontak = newLevel + Math.floor(100000000 + Math.random() * 900000000)
+        let codeKontak = newLevel + Math.floor(100000000000 + Math.random() * 900000000000)
 
         const text = username.substring(0, 2).toUpperCase()
         const nameFile = Buffer.from(text).toString('base64url') + text + newLevel + ".png"

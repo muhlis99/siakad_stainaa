@@ -159,7 +159,7 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { code_tahun_ajaran, nilai_atas, nilai_bawah, nilai_huruf, interfal_skor, kategori, keterangan } = req.body
-        let randomNumber = Math.floor(100 + Math.random() * 900)
+        let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
         const codekategoriNilai = randomNumber + nilai_huruf.replace(/[^\w\s]/g, '')
         const kategoriNilaiModelUse = await kategoriNilaiModel.findOne({
             where: {
@@ -202,9 +202,10 @@ module.exports = {
             }
         })
         const datasLawas = dataLawas.map(async el => {
+            let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
             await kategoriNilaiModel.create({
                 code_tahun_ajaran: code_tahun_ajaran_baru,
-                code_kategori_nilai: el.code_kategori_nilai,
+                code_kategori_nilai: randomNumber,
                 nilai_atas: el.nilai_atas,
                 nilai_bawah: el.nilai_bawah,
                 nilai_huruf: el.nilai_huruf,
