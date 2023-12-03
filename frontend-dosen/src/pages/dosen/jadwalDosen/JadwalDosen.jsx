@@ -273,7 +273,7 @@ const JadwalDosen = () => {
                                                         <Card.Text className='fw-bold text-uppercase'>URL Online</Card.Text>
                                                     </Col>
                                                     <Col className='p-0 flex gap-2'>
-                                                        <Card.Text className='fw-bold'>:&nbsp;{detailJadwal.url_online}</Card.Text> <Link to={detailJadwal.url_online} target='blank' title='Buka URL' className='text-black'><MdOpenInNew /></Link>
+                                                        {detailJadwal.url_online ? <Card.Text className='fw-bold'>:&nbsp;{detailJadwal.url_online}</Card.Text> : <Card.Text className='fw-bold text-uppercase'>:&nbsp;Tidak ada</Card.Text>}
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-2 px-3'>
@@ -281,7 +281,7 @@ const JadwalDosen = () => {
                                                         <Card.Text className='fw-bold text-uppercase'>Rencana Materi</Card.Text>
                                                     </Col>
                                                     <Col className='p-0'>
-                                                        <Card.Text className='fw-bold text-uppercase'>:&nbsp;{detailJadwal.rencana_materi}</Card.Text>
+                                                        <Card.Text className='fw-bold text-uppercase'>:&nbsp;{detailJadwal.rencana_materi ? detailJadwal.rencana_materi : 'Tidak ada'}</Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-2 px-3'>
@@ -289,7 +289,7 @@ const JadwalDosen = () => {
                                                         <Card.Text className='fw-bold text-uppercase'>Lampiran Materi</Card.Text>
                                                     </Col>
                                                     <Col className='p-0'>
-                                                        <Card.Text className='fw-bold text-uppercase'>:&nbsp;{detailJadwal.lampiran_materi}</Card.Text>
+                                                        <Card.Text className='fw-bold text-uppercase'>:&nbsp;{detailJadwal.lampiran_materi ? detailJadwal.lampiran_materi : 'Tidak ada'}</Card.Text>
                                                     </Col>
                                                 </Row>
                                                 <Row className='mb-2 px-3'>
@@ -460,14 +460,14 @@ const JadwalDosen = () => {
                                                                                 <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].hari}</td>
                                                                                 <td className='py-2' align='center'>{item.tanggal_pertemuan}</td>
                                                                                 <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</td>
-                                                                                <td className='py-2' align='center'>{item.jadwalKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                                <td className='py-2'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                                                 <td className='py-2 text-capitalize' align='center'>{item.jenis_pertemuan}</td>
                                                                                 <td className='py-2 text-capitalize' align='center'>{item.metode_pembelajaran}</td>
                                                                                 <td className='py-2' align='center'>{item.url_online == "" ?
                                                                                     <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL tidak ada</span>
                                                                                     :
-                                                                                    <Link to="https://www.ponpesnaa.net" target='blank'>
-                                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">buka url</span>
+                                                                                    <Link to={item.url_online} target='blank'>
+                                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL ada</span>
                                                                                     </Link>
                                                                                 }
                                                                                 </td>

@@ -80,11 +80,9 @@ const DetailKrs = () => {
                 }
 
                 if (response.data.data[0].status_pengajuan_krs == 'tidak') {
-                    console.log(response.data.data[0].status_pengajuan_krs);
                     setButton(false)
                     setTabel(true)
                 } else {
-                    console.log(response.data.data[0].status_pengajuan_krs)
                     setTabel(false)
                 }
             }
@@ -243,11 +241,13 @@ const DetailKrs = () => {
                                             <Row>
                                                 <Col>
                                                     <div className='flex justify-center'>
-                                                        <select className="form-select w-25" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
-                                                            {Tahun.map((item) => (
-                                                                <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
-                                                            ))}
-                                                        </select>
+                                                        <div>
+                                                            <select className="form-select" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                                                {Tahun.map((item) => (
+                                                                    <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </Col>
                                             </Row>
@@ -285,10 +285,10 @@ const DetailKrs = () => {
                                                                                 </div>}
                                                                             </th>
                                                                             <td className='py-2'>{item.code_mata_kuliah}</td>
-                                                                            <td className='py-2'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                            <td className='py-2'>{item.mataKuliahs[0].sks}</td>
-                                                                            <td className='py-2'>{item.mataKuliahs[0].status_bobot_makul}</td>
-                                                                            <td className='py-2 text-capitalize'>{item.mataKuliahs[0].status_makul}</td>
+                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
+                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].status_bobot_makul}</td>
+                                                                            <td className='py-2 text-capitalize'>{item.sebaranMataKuliahs[0].status_makul}</td>
                                                                             <td className='py-2'>
                                                                                 {item.status_krs == "setuju" ?
                                                                                     <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Disetujui</span>

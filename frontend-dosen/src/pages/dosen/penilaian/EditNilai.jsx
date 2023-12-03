@@ -18,10 +18,23 @@ const EditNilai = () => {
     const [Mahasiswa, setMahasiswa] = useState([])
     const [jmlMhs, setJmlMhs] = useState("")
     const [inputFields, setInputFields] = useState([])
+    const [presentasi, setPresentasi] = useState([])
+    const [checkedpres, setCheckedpres] = useState(false)
+    const [materi, setMateri] = useState([])
+    const [checkedmtr, setCheckedmtr] = useState(false)
     const [tugas, setTugas] = useState([])
+    const [checkedtgs, setCheckedtgs] = useState(false)
+    const [pptx, setPptx] = useState([])
+    const [checkedppt, setCheckedppt] = useState(false)
+    const [keaktifan, setKeaktifan] = useState([])
+    const [checkedaktif, setCheckedaktif] = useState(false)
     const [uts, setUts] = useState([])
+    const [checkedUts, setCheckedUts] = useState(false)
     const [uas, setUas] = useState([])
+    const [checkedUas, setCheckedUas] = useState(false)
     const [absen, setAbsen] = useState([])
+    const [checkedAbsen, setCheckedAbsen] = useState(false)
+    const [jumlahKolom, setjumlahKolom] = useState([])
     const [nilaiAkhir, setNIlaiAkhir] = useState([])
     const [nilaiHuruf, setNilaiHuruf] = useState([])
     const [ket, setKet] = useState([])
@@ -41,9 +54,15 @@ const EditNilai = () => {
 
     useEffect(() => {
         getKelasById()
-        // console.log(location.state)
         getMahasiswa()
+        console.log(location.state);
     }, [location])
+
+    useEffect(() => {
+        getGrade()
+        getStatus()
+        getNilaiAkhir()
+    }, [Mahasiswa])
 
     useEffect(() => {
         dispatch(getMe())
@@ -54,6 +73,10 @@ const EditNilai = () => {
     }, [jmlMhs])
 
     useEffect(() => {
+        getPresentasi()
+        getMateri()
+        getPptx()
+        getKeaktifan()
         getTugas()
         getAbsen()
         getUas()
@@ -63,7 +86,7 @@ const EditNilai = () => {
     useEffect(() => {
         getAverage()
         getSum()
-    }, [inputFields])
+    }, [inputFields, presentasi, pptx, materi, keaktifan, uts, tugas, uas, absen])
 
     useEffect(() => {
         cekNilai()
@@ -78,22 +101,246 @@ const EditNilai = () => {
         }
     }
 
-    const addFields = () => {
-        let newfield = []
-        Mahasiswa.map(item => (
-            newfield.push({ tugas: parseInt(item.nilai_tugas), uts: parseInt(item.nilai_uts), uas: parseInt(item.nilai_uas), absen: parseInt(item.nilai_hadir) })
-        ))
-        setInputFields(newfield)
-    }
-
     const getMahasiswa = async () => {
         try {
-            const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.kodeMk}&codeKls=${location.state.kodeKls}`)
+            const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.kodeMk}&codeKls=${location.state.kodeKls}&codeThnAjr=${location.state.kodeThn}`)
             setMahasiswa(response.data.data)
             setJmlMhs(response.data.data.length)
         } catch (error) {
 
         }
+    }
+
+    const addFields = () => {
+        let newfield = []
+        Mahasiswa.map(item => {
+            newfield.push({
+                presentasi: parseInt(item.nilai_presentasi),
+                materi: parseInt(item.nilai_penguasaan_materi),
+                pptx: parseInt(item.nilai_slide_power_point),
+                keaktifan: parseInt(item.nilai_keaktifan),
+                tugas: parseInt(item.nilai_tugas),
+                uts: parseInt(item.nilai_uts),
+                uas: parseInt(item.nilai_uas),
+                absen: parseInt(item.nilai_hadir)
+            })
+            if (item.nilai_presentasi) {
+                handleChangePres()
+            }
+            if (item.nilai_penguasaan_materi) {
+                handleChangeMateri()
+            }
+            if (item.nilai_slide_power_point) {
+                handleChangePptx()
+            }
+            if (item.nilai_keaktifan) {
+                handleChangeAktif()
+            }
+            if (item.nilai_tugas) {
+                handleChangeTgs()
+            }
+            if (item.nilai_uts) {
+                handleChangeUts()
+            }
+            if (item.nilai_uas) {
+                handleChangeUas()
+            }
+            if (item.nilai_hadir) {
+                handleChangeAbsen()
+            }
+        })
+        setInputFields(newfield)
+    }
+
+    const getNilaiAkhir = () => {
+        let a = Mahasiswa.map(item => (
+            item.nilai_akhir
+        ))
+        setNIlaiAkhir(a)
+    }
+
+    const getGrade = () => {
+        let a = Mahasiswa.map(item => (
+            item.kategoriNilais[0].nilai_huruf
+        ))
+        setNilaiHuruf(a)
+    }
+
+    const getStatus = () => {
+        let a = Mahasiswa.map(item => (
+            item.kategoriNilais[0].keterangan
+        ))
+        setKet(a)
+    }
+
+    const handleChangePres = () => {
+        setCheckedpres(!checkedpres)
+        if (!checkedpres) {
+            setjumlahKolom([...jumlahKolom, 'A'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'A'))
+            for (var i = 0; i < document.getElementsByName('presentasi').length; i++) {
+                let g = document.getElementsByName('presentasi')[i].value = ''
+                setPresentasi([])
+                let datas = inputFields[i]
+                inputFields[i].presentasi = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('presentasi').length; i++) {
+            document.getElementsByName('presentasi')[i].disabled = false;
+        }
+    }
+
+    const handleChangeMateri = () => {
+        setCheckedmtr(!checkedmtr)
+        if (!checkedmtr) {
+            setjumlahKolom([...jumlahKolom, 'B'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'B'))
+            for (var i = 0; i < document.getElementsByName('materi').length; i++) {
+                setMateri([])
+                let datas = inputFields[i]
+                inputFields[i].materi = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('materi').length; i++) {
+            document.getElementsByName('materi')[i].disabled = false;
+        }
+    }
+
+    const handleChangePptx = () => {
+        setCheckedppt(!checkedppt)
+        if (!checkedppt) {
+            setjumlahKolom([...jumlahKolom, 'C'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'C'))
+            for (var i = 0; i < document.getElementsByName('pptx').length; i++) {
+                setPptx([])
+                let datas = inputFields[i]
+                inputFields[i].pptx = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('pptx').length; i++) {
+            document.getElementsByName('pptx')[i].disabled = false;
+        }
+    }
+
+    const handleChangeAktif = () => {
+        setCheckedaktif(!checkedaktif)
+        if (!checkedaktif) {
+            setjumlahKolom([...jumlahKolom, 'D'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'D'))
+            for (var i = 0; i < document.getElementsByName('keaktifan').length; i++) {
+                setKeaktifan([])
+                let datas = inputFields[i]
+                inputFields[i].keaktifan = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('keaktifan').length; i++) {
+            document.getElementsByName('keaktifan')[i].disabled = false;
+        }
+    }
+
+    const handleChangeTgs = () => {
+        setCheckedtgs(!checkedtgs)
+        if (!checkedtgs) {
+            setjumlahKolom([...jumlahKolom, 'E'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'E'))
+            for (var i = 0; i < document.getElementsByName('tugas').length; i++) {
+                setTugas([])
+                let datas = inputFields[i]
+                inputFields[i].tugas = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('tugas').length; i++) {
+            document.getElementsByName('tugas')[i].disabled = false;
+        }
+    }
+
+    const handleChangeUts = () => {
+        setCheckedUts(!checkedUts)
+        if (!checkedUts) {
+            setjumlahKolom([...jumlahKolom, 'F'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'F'))
+            for (var i = 0; i < document.getElementsByName('uts').length; i++) {
+                setUts([])
+                let datas = inputFields[i]
+                inputFields[i].uts = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('uts').length; i++) {
+            document.getElementsByName('uts')[i].disabled = false;
+
+        }
+    }
+
+    const handleChangeUas = () => {
+        setCheckedUas(!checkedUas)
+        if (!checkedUas) {
+            setjumlahKolom([...jumlahKolom, 'G'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'G'))
+            for (var i = 0; i < document.getElementsByName('uas').length; i++) {
+                setUas([])
+                let datas = inputFields[i]
+                inputFields[i].uas = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('uas').length; i++) {
+            document.getElementsByName('uas')[i].disabled = false;
+        }
+    }
+
+    const handleChangeAbsen = () => {
+        setCheckedAbsen(!checkedAbsen)
+        if (!checkedAbsen) {
+            setjumlahKolom([...jumlahKolom, 'H'])
+        } else {
+            setjumlahKolom(jumlahKolom.filter((o) => o !== 'H'))
+            for (var i = 0; i < document.getElementsByName('absen').length; i++) {
+                setAbsen([])
+                let datas = inputFields[i]
+                inputFields[i].absen = ""
+            }
+        }
+        for (var i = 0; i < document.getElementsByName('absen').length; i++) {
+            document.getElementsByName('absen')[i].disabled = false;
+        }
+    }
+
+    const getPresentasi = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.presentasi))
+        ))
+        setPresentasi(newfield)
+    }
+
+    const getMateri = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.materi))
+        ))
+        setMateri(newfield)
+    }
+
+    const getPptx = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.pptx))
+        ))
+        setPptx(newfield)
+    }
+
+    const getKeaktifan = () => {
+        let newfield = []
+        inputFields.map(item => (
+            newfield.push(parseInt(item.keaktifan))
+        ))
+        setKeaktifan(newfield)
     }
 
     const getTugas = () => {
@@ -129,28 +376,39 @@ const EditNilai = () => {
     }
 
     const getAverage = () => {
-        const i = inputFields.map(el => {
-            let tugas = parseInt(el.tugas) || 0
-            let hadir = parseInt(el.absen) || 0
-            let uts = parseInt(el.uts) || 0
-            let uas = parseInt(el.uas) || 0
-            let rataRata = (tugas + hadir + uts + uas) / 4
-            return rataRata
-        })
-        // console.log(i);
-        setNIlaiAkhir(i)
+        if (jumlahKolom.length != 0) {
+            const i = inputFields.map(el => {
+                let presentasi = parseInt(el.presentasi) || 0
+                let materi = parseInt(el.materi) || 0
+                let pptx = parseInt(el.pptx) || 0
+                let keaktifan = parseInt(el.keaktifan) || 0
+                let tugas = parseInt(el.tugas) || 0
+                let hadir = parseInt(el.absen) || 0
+                let uts = parseInt(el.uts) || 0
+                let uas = parseInt(el.uas) || 0
+                let rataRata = (presentasi + materi + pptx + keaktifan + tugas + hadir + uts + uas) / jumlahKolom.length
+                return rataRata
+            })
+            setNIlaiAkhir(i)
+        }
     }
 
     const getSum = () => {
-        const i = inputFields.map(el => {
-            var tugas = parseInt(el.tugas) || 0
-            var hadir = parseInt(el.absen) || 0
-            var uts = parseInt(el.uts) || 0
-            var uas = parseInt(el.uas) || 0
-            var sum = (tugas + hadir + uts + uas)
-            return sum
-        })
-        setNilaiSum(i)
+        if (jumlahKolom.length != 0) {
+            const i = inputFields.map(el => {
+                var presentasi = parseInt(el.presentasi) || 0
+                var materi = parseInt(el.materi) || 0
+                var pptx = parseInt(el.pptx) || 0
+                var keaktifan = parseInt(el.keaktifan) || 0
+                var tugas = parseInt(el.tugas) || 0
+                var hadir = parseInt(el.absen) || 0
+                var uts = parseInt(el.uts) || 0
+                var uas = parseInt(el.uas) || 0
+                var sum = (presentasi + materi + pptx + keaktifan + tugas + hadir + uts + uas)
+                return sum
+            })
+            setNilaiSum(i)
+        }
     }
 
     const cekNilai = async () => {
@@ -158,18 +416,20 @@ const EditNilai = () => {
         let kode = []
         let status = []
         let promises = []
-        for (let i = 0; i < nilaiAkhir.length; i++) {
-            if (nilaiAkhir[i] === 0) {
-                promises.push("")
-            } else {
-                const d = await axios.get(`/v1/nilaiKuliah/deteksiIndexNilai/${nilaiAkhir[i]}/${detailKls.code_tahun_ajaran}`).then(response => {
-                    nilai.push(response.data.data[0].nilai_huruf)
-                    kode.push(response.data.data[0].code_kategori_nilai)
-                    status.push(response.data.data[0].keterangan)
-                })
-                promises.push(d)
-            }
-        }
+        console.log(nilaiAkhir);
+        // for (let i = 0; i < nilaiAkhir.length; i++) {
+        //     if (nilaiAkhir[i] === 0) {
+        //         promises.push("")
+        //     } else {
+        //         const d = await axios.get(`/v1/nilaiKuliah/deteksiIndexNilai/${nilaiAkhir[i]}/${location.state.kodeThn}`).then(response => {
+        //             console.log(response.data);
+        //             // nilai.push(response.data.data[0].nilai_huruf)
+        //             // kode.push(response.data.data[0].code_kategori_nilai)
+        //             // status.push(response.data.data[0].keterangan)
+        //         })
+        //         promises.push(d)
+        //     }
+        // }
         Promise.all(promises).then(() => setNilaiHuruf(nilai))
         Promise.all(promises).then(() => setKodeNilai(kode))
         Promise.all(promises).then(() => setKet(status))
@@ -209,7 +469,6 @@ const EditNilai = () => {
             }
         }
     }
-
     return (
         <Layout>
             <title>Penilaian</title>
@@ -308,17 +567,87 @@ const EditNilai = () => {
                                                             <Table hover>
                                                                 <thead>
                                                                     <tr className='border'>
-                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}>#</th>
-                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}>NIM</th>
-                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}>Nama</th>
-                                                                        <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>Tugas</th>
-                                                                        <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>UTS</th>
-                                                                        <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>UAS</th>
-                                                                        <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>Absen</th>
-                                                                        <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>Jumlah</th>
-                                                                        <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>Nilai</th>
-                                                                        <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>Grade</th>
-                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#D5D6C6' }}>Status</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>#</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>NIM</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Nama</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Presentasi</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Materi</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Power Point</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Keaktifan</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Tugas</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>UTS</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>UAS</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Absen</th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Jumlah</th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Nilai</th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Grade</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Status</th>
+                                                                    </tr>
+                                                                    <tr className='border'>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                            <div className="form-check">
+                                                                                <input className="form-check-input"
+                                                                                    checked={checkedpres}
+                                                                                    onChange={() => handleChangePres()}
+                                                                                    type="checkbox" />
+                                                                            </div>
+                                                                        </th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                            <div className="form-check">
+                                                                                <input className="form-check-input"
+                                                                                    checked={checkedmtr}
+                                                                                    onChange={() => handleChangeMateri()}
+                                                                                    type="checkbox" />
+                                                                            </div>
+                                                                        </th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                            <div className="form-check">
+                                                                                <input className="form-check-input"
+                                                                                    checked={checkedppt}
+                                                                                    onChange={() => handleChangePptx()}
+                                                                                    type="checkbox" />
+                                                                            </div>
+                                                                        </th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                            <div className="form-check">
+                                                                                <input className="form-check-input"
+                                                                                    checked={checkedaktif}
+                                                                                    onChange={() => handleChangeAktif()}
+                                                                                    type="checkbox" />
+                                                                            </div>
+                                                                        </th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                            <div className="form-check">
+                                                                                <input className="form-check-input"
+                                                                                    checked={checkedtgs}
+                                                                                    onChange={() => handleChangeTgs()}
+                                                                                    type="checkbox" />
+                                                                            </div>
+                                                                        </th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                            <div className="form-check">
+                                                                                <input className="form-check-input"
+                                                                                    checked={checkedUts}
+                                                                                    onChange={() => handleChangeUts()}
+                                                                                    type="checkbox" />
+                                                                            </div>
+                                                                        </th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                            <div className="form-check">
+                                                                                <input className="form-check-input"
+                                                                                    checked={checkedUas}
+                                                                                    onChange={() => handleChangeUas()}
+                                                                                    type="checkbox" />
+                                                                            </div>
+                                                                        </th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                            <div className="form-check">
+                                                                                <input className="form-check-input"
+                                                                                    checked={checkedAbsen}
+                                                                                    onChange={() => handleChangeAbsen()}
+                                                                                    type="checkbox" />
+                                                                            </div>
+                                                                        </th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -328,16 +657,28 @@ const EditNilai = () => {
                                                                             <td className='py-2 border text-capitalize' align='center'>{mhs.nim}</td>
                                                                             <td className='py-2 border text-capitalize'>{mhs.mahasiswas[0].nama}</td>
                                                                             <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='tugas' value={tugas[index] || ''} onChange={event => handleFormChange(index, event)} className='form-control' />
+                                                                                <input type="number" name='presentasi' value={presentasi[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedpres} style={{ width: '70px' }} />
                                                                             </td>
                                                                             <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='uts' value={uts[index] || ''} onChange={event => handleFormChange(index, event)} className='form-control' />
+                                                                                <input type="number" name='materi' value={materi[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedmtr} style={{ width: '70px' }} />
                                                                             </td>
                                                                             <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='uas' value={uas[index] || ''} onChange={event => handleFormChange(index, event)} className='form-control' />
+                                                                                <input type="number" name='pptx' value={pptx[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedppt} style={{ width: '70px' }} />
                                                                             </td>
                                                                             <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='absen' value={absen[index] || ''} onChange={event => handleFormChange(index, event)} className='form-control' />
+                                                                                <input type="number" name='keaktifan' value={keaktifan[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedaktif} style={{ width: '70px' }} />
+                                                                            </td>
+                                                                            <td className='py-2 border px-1 text-capitalize'>
+                                                                                <input type="number" name='tugas' value={tugas[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedtgs} style={{ width: '70px' }} />
+                                                                            </td>
+                                                                            <td className='py-2 border px-1 text-capitalize'>
+                                                                                <input type="number" name='uts' value={uts[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedUts} style={{ width: '70px' }} />
+                                                                            </td>
+                                                                            <td className='py-2 border px-1 text-capitalize'>
+                                                                                <input type="number" name='uas' value={uas[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedUas} style={{ width: '70px' }} />
+                                                                            </td>
+                                                                            <td className='py-2 border px-1 text-capitalize'>
+                                                                                <input type="number" name='absen' value={absen[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedAbsen} style={{ width: '70px' }} />
                                                                             </td>
                                                                             <td className='py-2 border px-1 text-capitalize'>{nilaiSum[index] == 0 ? "" : nilaiSum[index]}</td>
                                                                             <td className='py-2 border px-1 text-capitalize'>{nilaiAkhir[index] == "0" ? "" : nilaiAkhir[index]}</td>
