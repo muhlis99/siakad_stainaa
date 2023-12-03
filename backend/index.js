@@ -26,7 +26,7 @@ app.use(fileUpload())
 app.use(cors({
     credentials: true,
     // origin: process.env.APP_ORIGIN,
-    origin: ['https://siakad.stainaa.ac.id', 'http://localhost:5000'],
+    origin: ['http://localhost:3000', 'http://localhost:5000'],
 }))
 app.use(session({
     secret: process.env.SESS_SECRET,
