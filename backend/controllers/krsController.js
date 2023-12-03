@@ -231,6 +231,7 @@ module.exports = {
                 status: "aktif"
             }
         })
+        if (Dtnim.length === 0) return res.status(401).json({ message: "data mahasiswa sudah tidak aktif" })
 
         const makulInKrs = makul.map(al => {
             return al.code_mata_kuliah
@@ -288,9 +289,9 @@ module.exports = {
             const data_body = paketmakulNew.map(Dn => {
                 let data2 = Dn.code_mata_kuliah
                 const datas = Dtnim.map(DM => {
-                    let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+                    let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
                     return {
-                        code_krs: randomNumber,
+                        code_krs: randomNumber + smt,
                         code_mata_kuliah: data2,
                         nim: DM.nim,
                         code_tahun_ajaran: thnAjr,
@@ -318,9 +319,9 @@ module.exports = {
             const data_body = makul.map(Dn => {
                 let data2 = Dn.code_mata_kuliah
                 const datas = Dtnim.map(DM => {
-                    let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+                    let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
                     return {
-                        code_krs: randomNumber,
+                        code_krs: randomNumber + smt,
                         code_mata_kuliah: data2,
                         nim: DM.nim,
                         code_tahun_ajaran: thnAjr,

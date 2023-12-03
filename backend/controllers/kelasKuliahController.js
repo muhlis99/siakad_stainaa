@@ -375,7 +375,7 @@ module.exports = {
         const dataCreateKelas = makul.map(al => {
             const codeMakul = al.code_mata_kuliah
             nama_kelas.map(async el => {
-                let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+                let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
                 let data = {
                     code_kelas: jenkel + code_prodi + randomNumber + nmKelas[el] + code_semester,
                     nama_kelas: nmKelas[el],
@@ -435,10 +435,10 @@ module.exports = {
                                 group: ['nim']
                             })
                             const dataInsert = al.map(p => {
-                                let random = Math.floor(100 + Math.random() * 900)
+                                let random = Math.floor(100000000000 + Math.random() * 900000000000)
                                 let datas = {
                                     code_kelas: elment.code_kelas,
-                                    code_kelas_detail: jenkel + random,
+                                    code_kelas_detail: jenkel + random + code_semester,
                                     nim: p.nim,
                                     status: "aktif"
                                 }

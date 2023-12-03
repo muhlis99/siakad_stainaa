@@ -497,7 +497,7 @@ module.exports = {
         if (!dataMahasiswaUse) return res.status(404).json({ message: "Mahasiswa sudah berhenti" })
 
         if (pengajuan === "reaktif") {
-            let randomNumberHS = Math.floor(100000 + Math.random() * 900000)
+            let randomNumberHS = Math.floor(100000000000 + Math.random() * 900000000000)
             await historyMahasiswa.create({
                 nim: nim,
                 code_history: randomNumberHS,
@@ -509,7 +509,7 @@ module.exports = {
                 status: "aktif"
             })
 
-            let randomNumberDS = Math.floor(100000 + Math.random() * 900000)
+            let randomNumberDS = Math.floor(100000000000 + Math.random() * 900000000000)
             await detailStudi.create({
                 code_detail_studi: randomNumberDS,
                 code_history: randomNumberHS,
@@ -522,7 +522,7 @@ module.exports = {
                 })
             })
         } else if (pengajuan === "cuti") {
-            let randomNumber = Math.floor(100000 + Math.random() * 900000)
+            let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
             await historyMahasiswa.update({
                 status: pengajuan
             }, {
@@ -543,7 +543,7 @@ module.exports = {
                 })
             })
         } else if (pengajuan === "berhenti") {
-            let randomNumber = Math.floor(100000 + Math.random() * 900000)
+            let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
             await mahasiswaModel.update({
                 status: "tidak"
             }, {
@@ -673,7 +673,7 @@ module.exports = {
         })
 
         if (pengajuanStudiUse.pengajuan === "reaktif") {
-            let randomNumberHS = Math.floor(100000 + Math.random() * 900000)
+            let randomNumberHS = Math.floor(100000000000 + Math.random() * 900000000000)
             await historyMahasiswa.create({
                 nim: pengajuanStudiUse.nim,
                 code_history: randomNumberHS,
@@ -685,7 +685,7 @@ module.exports = {
                 status: "aktif"
             })
 
-            let randomNumberDS = Math.floor(100000 + Math.random() * 900000)
+            let randomNumberDS = Math.floor(100000000000 + Math.random() * 900000000000)
             await detailStudi.create({
                 code_detail_studi: randomNumberDS,
                 code_history: randomNumberHS,
@@ -698,7 +698,7 @@ module.exports = {
                 })
             })
         } else if (pengajuanStudiUse.pengajuan === "cuti") {
-            let randomNumber = Math.floor(100000 + Math.random() * 900000)
+            let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
             await historyMahasiswa.update({
                 status: pengajuanStudiUse.pengajuan
             }, {
@@ -719,7 +719,7 @@ module.exports = {
                 })
             })
         } else if (pengajuanStudiUse.pengajuan === "berhenti") {
-            let randomNumber = Math.floor(100000 + Math.random() * 900000)
+            let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
             await mahasiswaModel.update({
                 status: "tidak"
             }, {
@@ -1024,7 +1024,7 @@ module.exports = {
         })
         if (!dataMahasiswaUse) return res.status(404).json({ message: "Mahasiswa sudah berhenti / tidak ditemukan" })
 
-        let randomNumber = Math.floor(100000 + Math.random() * 900000)
+        let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
         await pengajuanStudi.create({
             code_pengajuan_studi: randomNumber,
             code_tahun_ajaran: code_tahun_ajaran,

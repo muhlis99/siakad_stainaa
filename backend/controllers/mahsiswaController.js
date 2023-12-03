@@ -570,9 +570,9 @@ module.exports = {
                 }
             })
 
-            let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+            let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
             await historyMahasiswa.update({
-                code_history: randomNumber,
+                code_history: randomNumber + code_semester,
                 nim: nim,
                 code_tahun_ajaran: code_tahun_ajaran,
                 code_semester: code_semester,

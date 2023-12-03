@@ -232,9 +232,9 @@ module.exports = {
     post: async (req, res, next) => {
         const { code_tahun_ajaran, code_semester, code_mata_kuliah,
             code_kategori_nilai, status_makul, status_bobot_makul } = req.body
-        let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+        let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
         await sebaranMataKuliah.create({
-            code_sebaran: randomNumber,
+            code_sebaran: randomNumber + code_semester,
             code_mata_kuliah: code_mata_kuliah,
             code_tahun_ajaran: code_tahun_ajaran,
             code_semester: code_semester,
@@ -264,9 +264,9 @@ module.exports = {
             }
         })
         const datasLawas = dataLawas.map(async el => {
-            let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+            let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
             await sebaranMataKuliah.create({
-                code_sebaran: randomNumber,
+                code_sebaran: randomNumber + code_semester_baru,
                 code_mata_kuliah: el.code_mata_kuliah,
                 code_kategori_nilai: el.code_kategori_nilai,
                 code_tahun_ajaran: code_tahun_ajaran_baru,

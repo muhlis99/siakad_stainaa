@@ -269,7 +269,7 @@ module.exports = {
 
     post: async (req, res, next) => {
         const { code_jenjang_pendidikan, code_fakultas, code_prodi, dosen, kouta_bimbingan } = req.body
-        let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+        let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
         await pembimbingAkademik.create({
             code_pembimbing_akademik: randomNumber,
             code_jenjang_pendidikan: code_jenjang_pendidikan,
@@ -389,7 +389,7 @@ module.exports = {
 
     postDetail: async (req, res, next) => {
         const { code_pembimbing_akademik, nim } = req.body
-        let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+        let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
         await detailPembimbingAkademik.create({
             code_detail_pembimbing_akademik: randomNumber,
             code_pembimbing_akademik: code_pembimbing_akademik,
