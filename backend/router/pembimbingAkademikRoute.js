@@ -3,6 +3,7 @@ const router = express.Router()
 const pembimbingAkademikController = require('../controllers/pembimbingAkademikController.js')
 
 router.get('/all', pembimbingAkademikController.get)
+router.get('/autocompleteDosen', pembimbingAkademikController.autocompleteDosen)
 router.get('/getMhsByPembimbingAkademik/:codePendik', pembimbingAkademikController.getMhsByPembimbingAkademik)
 router.get('/getMhsForInsert/:codePemdik/:jnjPen/:fks/:prd', pembimbingAkademikController.getMhsForInsert)
 router.get('/getForPindahPemdik/:dosen/:jnjPen/:fks/:prd', pembimbingAkademikController.getForPindahPemdik)

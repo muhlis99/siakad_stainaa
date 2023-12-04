@@ -119,6 +119,37 @@ module.exports = {
             })
     },
 
+    autocompleteDosen: async (req, res, next) => {
+        const dataPembimbing = await pembimbingAkademik.findAll({
+            include: [{
+                attributes: ["nidn", "nip_ynaa", "nama"],
+                model: dosenModel,
+                where: { status: "aktif" }
+            }],
+            where: {
+                status: "aktif"
+            }
+        })
+        const dataDosenInPembimbing = dataPembimbing.map(i => {
+            return i.dosen
+        })
+        await dosenModel.findAll({
+            where: {
+                nip_ynaa: {
+                    [Op.notIn]: dataDosenInPembimbing
+                },
+                status: "aktif"
+            }
+        }).then(all => {
+            res.status(201).json({
+                message: "Data Dosen  Ditemukan",
+                data: all
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
     getMhsByPembimbingAkademik: async (req, res, next) => {
         const codePendik = req.params.codePendik
         const currentPage = parseInt(req.query.page) || 1
@@ -251,6 +282,11 @@ module.exports = {
         const prd = req.params.prd
         const codedosen = req.params.dosen
         await pembimbingAkademik.findAll({
+            include: [{
+                attributes: ["nidn", "nip_ynaa", "nama"],
+                model: dosenModel,
+                where: { status: "aktif" }
+            }],
             where: {
                 code_jenjang_pendidikan: jnjPen,
                 code_fakultas: fks,
