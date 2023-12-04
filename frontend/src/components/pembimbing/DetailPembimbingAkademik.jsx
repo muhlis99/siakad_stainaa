@@ -10,6 +10,12 @@ import ReactPaginate from 'react-paginate'
 
 const DetailPembimbingAkademik = () => {
     const [MhsPembimbing, setMhsPembimbing] = useState([])
+    const [page, setPage] = useState(0)
+    const [perPage, setperPage] = useState(0)
+    const [pages, setPages] = useState(0)
+    const [rows, setrows] = useState(0)
+    const [keyword, setKeyword] = useState("")
+    const [query, setQuery] = useState("")
     const [Pembimbing, setPembimbing] = useState([])
     const [kodeBimbing, setKodeBimbing] = useState("")
     const [nama, setNama] = useState("")
@@ -24,37 +30,55 @@ const DetailPembimbingAkademik = () => {
     const location = useLocation()
 
     useEffect(() => {
-        const getDataDsn = async () => {
-            try {
-                const response = await axios.get(`v1/pembimbingAkademik/getById/${location.state.idDsn}`)
-                setKodeBimbing(response.data.data.code_pembimbing_akademik)
-                setNama(response.data.data.dosens[0].nama)
-                setNipy(response.data.data.dosens[0].nip_ynaa)
-                setJenjang(response.data.data.jenjangPendidikans[0].nama_jenjang_pendidikan)
-                setFakultas(response.data.data.fakultas[0].nama_fakultas)
-                setProdi(response.data.data.prodis[0].nama_prodi)
-                setKuota(response.data.data.kouta_bimbingan)
-            } catch (error) {
+        // const getDataDsn = async () => {
+        //     try {
+        //         const response = await axios.get(`v1/pembimbingAkademik/getById/${location.state.idDsn}`)
+        //         setKodeBimbing(response.data.data.code_pembimbing_akademik)
+        //         setNama(response.data.data.dosens[0].nama)
+        //         setNipy(response.data.data.dosens[0].nip_ynaa)
+        //         setJenjang(response.data.data.jenjangPendidikans[0].nama_jenjang_pendidikan)
+        //         setFakultas(response.data.data.fakultas[0].nama_fakultas)
+        //         setProdi(response.data.data.prodis[0].nama_prodi)
+        //         setKuota(response.data.data.kouta_bimbingan)
+        //     } catch (error) {
 
-            }
-        }
-        getDataDsn()
+        //     }
+        // }
+        // getDataDsn()
+        console.log(location.state);
     }, [location.state])
+
+
 
     useEffect(() => {
         getMhsPerPembimbing()
-    }, [kodeBimbing])
+    }, [location, page, keyword])
 
     useEffect(() => {
         getPembimbing()
     }, [])
 
     const getMhsPerPembimbing = async () => {
-        if (kodeBimbing != 0) {
-            const response = await axios.get(`v1/pembimbingAkademik/getMhsByPembimbingAkademik/${kodeBimbing}`)
-            setMhsPembimbing(response.data.data)
-            setJumlah(response.data.data.length)
+        try {
+            if (location.state.kodePembimbing != 0) {
+                const response = await axios.get(`v1/pembimbingAkademik/getMhsByPembimbingAkademik/${location.state.kodePembimbing}?page=${page}&search=${keyword}`)
+                setMhsPembimbing(response.data.data)
+                setPage(response.data.current_page)
+                setrows(response.data.total_data)
+                setPages(response.data.total_page)
+                setperPage(response.data.per_page)
+                setJumlah(response.data.data.length)
+            }
+        } catch (error) {
+
         }
+    }
+
+    const pageCount = Math.ceil(rows / perPage)
+
+    const changePage = (event) => {
+        const newOffset = (event.selected + 1);
+        setPage(newOffset);
     }
 
     const getPembimbing = async () => {
@@ -150,22 +174,11 @@ const DetailPembimbingAkademik = () => {
                 <div className="modal-box w-1/3 max-w-2xl relative">
                     <button className='btn btn-xs btn-circle btn-error absolute right-2 top-2' onClick={modalClose}><FaTimes /></button>
                     <h3 className="font-bold text-xl">judul</h3>
-                    <div className='py-4'></div>
+                    <div className='py-4'>
+                        <form>
 
-                    {/* <form onSubmit={simpanPembimbing} className='p-2'>
-                        <select className="select select-sm select-bordered w-full mb-2" value={kodePembimbing} onChange={(e) => setKodePembimbing(e.target.value)}>
-                            <option value="">Dosen</option>
-                            {Pembimbing.map((item, index) => {
-                                return item.code_pembimbing_akademik == kodeBimbing || item.code_prodi != location.state.pro ? (
-                                    ""
-                                ) : (
-                                    <option key={index} value={item.code_pembimbing_akademik}>{item.dosens[0].nama}</option>
-                                )
-                            })}
-                            <option value=""></option>
-                        </select>
-                        <button className='btn btn-sm btn-primary w-full'><FaSave /><span className="ml-1">simpan</span></button>
-                    </form> */}
+                        </form>
+                    </div>
                 </div>
             </div>
             <section className='mb-5'>
@@ -176,9 +189,9 @@ const DetailPembimbingAkademik = () => {
                     <div className="card-body p-4">
                         <div className='mb-2'>
                             <Link to='/pembimbingakademik' state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply />Kembali</Link>
-                            {kuota != jumlah ? <Link to='/setpembimbingakademik' state={{ idDsn: location.state.idDsn, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/pembimbingakademik' }} className="btn btn-primary btn-sm float-right capitalize rounded-md"><FaCog />Set Mahasiswa</Link> : ""}
+                            {kuota != jumlah ? <Link to='/setpembimbingakademik' state={{ kodePembimbing: location.state.kodePembimbing, idDsn: location.state.idDsn, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/pembimbingakademik' }} className="btn btn-primary btn-sm float-right capitalize rounded-md"><FaCog />Set Mahasiswa</Link> : ""}
                         </div>
-                        <div className="grid grid-cols-2 gap-2 text-[14px]">
+                        {/* <div className="grid grid-cols-2 gap-2 text-[14px]">
                             <div className='flex gap-2'>
                                 <div className='flex-initial w-60'>
                                     <label>
@@ -240,7 +253,7 @@ const DetailPembimbingAkademik = () => {
                                     <a>: {prodi}</a>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
@@ -265,6 +278,7 @@ const DetailPembimbingAkademik = () => {
                                 <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
                                         <th scope="col" className="px-2 py-2 text-sm">#</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">NO</th>
                                         <th scope="col" className="px-2 py-2 text-sm">NIM</th>
                                         <th scope="col" className="px-2 py-2 text-sm">Nama Mahasiswa</th>
                                         <th scope="col" className="px-2 py-2 text-sm">Jenjang Pendidikan</th>
@@ -282,12 +296,15 @@ const DetailPembimbingAkademik = () => {
                                             :
                                             MhsPembimbing.map((item, index) => (
                                                 <tr key={index} className='bg-white border-b text-gray-500 border-x'>
-                                                    <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                    <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">
+
+                                                    </th>
+                                                    <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{(page - 1) * 10 + index + 1}</th>
                                                     <td className='px-2 py-2 font-semibold'>{item.nim}</td>
                                                     <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].nama}</td>
-                                                    <td className='px-2 py-2 font-semibold'>{jenjang}</td>
-                                                    <td className='px-2 py-2 font-semibold'>{fakultas}</td>
-                                                    <td className='px-2 py-2 font-semibold'>{prodi}</td>
+                                                    <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].code_jenjang_pendidikan}</td>
+                                                    <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].code_fakultas}</td>
+                                                    <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].code_prodi}</td>
                                                     <td className='px-2 py-2' align='center'>
                                                         <button onClick={() => modalOpen(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-warning btn-circle mr-2"><FaEdit /></button>
                                                         <button onClick={() => nonaktifkan(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-error btn-circle"><FaTrash /></button>
@@ -297,13 +314,13 @@ const DetailPembimbingAkademik = () => {
                                 </tbody>
                             </table>
                         </div>
-                        <div className="mt-2 justify-center btn-group" aria-label='pagination'>
+                        <div className="mt-2 justify-center btn-group" key={rows} aria-label='pagination'>
                             <ReactPaginate
                                 className='justify-center btn-group'
                                 breakLabel={<SlOptions />}
                                 previousLabel={<FaArrowLeft />}
-                                // pageCount={Math.min(10, pageCount)}
-                                // onPageChange={changePage}
+                                pageCount={pageCount}
+                                onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
                                 previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
                                 nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
