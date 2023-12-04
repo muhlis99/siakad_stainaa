@@ -5,8 +5,6 @@ const pembimbingAkademikController = require('../controllers/pembimbingAkademikC
 router.get('/all', pembimbingAkademikController.get)
 router.get('/getMhsByPembimbingAkademik/:codePendik', pembimbingAkademikController.getMhsByPembimbingAkademik)
 router.get('/getMhsForInsert/:codePemdik/:jnjPen/:fks/:prd', pembimbingAkademikController.getMhsForInsert)
-
-
 router.post('/create', pembimbingAkademikController.post)
 router.put('/update/:id', pembimbingAkademikController.put)
 router.put('/delete/:id', pembimbingAkademikController.delete)
@@ -15,7 +13,7 @@ router.put('/updateDetail/:id', pembimbingAkademikController.putDetail)
 router.put('/deleteDetail/:id', pembimbingAkademikController.deleteDetail)
 
 // dosen
-router.get('/mahasiswaByDosenPembimbing/:codeJnjPen/:codeFks/:codePrd/:nipy', pembimbingAkademikController.mahasiswaByDosenPembimbing)
+router.get('/mahasiswaByDosenPembimbing/:codeJnjPen/:codeFks/:codePrd/:nipy/:thnAngkatan', pembimbingAkademikController.mahasiswaByDosenPembimbing)
 router.get('/verifikasiDosenPembimbing/:nipy', pembimbingAkademikController.verifikasiDosenPembimbing)
 
 module.exports = router

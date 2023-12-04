@@ -5,7 +5,7 @@ const dosenModel = require('../models/dosenModel.js')
 const pembimbingAkademik = require('../models/pembimbingAkademikModel.js')
 const detailPembimbingAkademik = require('../models/detailPembimbingAkademikModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
-const { Op } = require('sequelize')
+const { Op, Sequelize, col, fn, where } = require('sequelize')
 
 
 
@@ -459,7 +459,7 @@ module.exports = {
 
     //  user dosen
     mahasiswaByDosenPembimbing: async (req, res, next) => {
-        const { codeJnjPen, codeFks, codePrd, nipy } = req.params
+        const { codeJnjPen, codeFks, codePrd, nipy, thnAngkatan } = req.params
         const dosenUse = await dosenModel.findOne({
             where: {
                 nip_ynaa: nipy,
@@ -483,7 +483,7 @@ module.exports = {
             }, {
                 model: prodiModel,
                 where: { status: "aktif" }
-            },],
+            }],
             where: {
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
@@ -496,9 +496,10 @@ module.exports = {
         await detailPembimbingAkademik.findAll({
             include: [
                 {
-                    attributes: ["id_mahasiswa", "nim", "nama"],
+                    attributes: ["id_mahasiswa", "nim", "nama", "tanggal_masuk_kuliah"],
                     model: mahasiswaModel,
                     where: {
+                        tanggal_masuk_kuliah: Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('tanggal_masuk_kuliah')), thnAngkatan),
                         status: "aktif"
                     }
                 }
