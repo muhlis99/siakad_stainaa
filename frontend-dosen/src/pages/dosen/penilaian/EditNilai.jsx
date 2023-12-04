@@ -15,31 +15,32 @@ const EditNilai = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const [detailKls, setDetailKls] = useState([])
-    const [Mahasiswa, setMahasiswa] = useState([])
-    const [jmlMhs, setJmlMhs] = useState("")
     const [inputFields, setInputFields] = useState([])
-    const [presentasi, setPresentasi] = useState([])
+    const [jmlMhs, setJmlMhs] = useState(1)
+    const [presentasi, setPresentasi] = useState("")
     const [checkedpres, setCheckedpres] = useState(false)
-    const [materi, setMateri] = useState([])
+    const [materi, setMateri] = useState("")
     const [checkedmtr, setCheckedmtr] = useState(false)
-    const [tugas, setTugas] = useState([])
+    const [tugas, setTugas] = useState("")
     const [checkedtgs, setCheckedtgs] = useState(false)
-    const [pptx, setPptx] = useState([])
+    const [pptx, setPptx] = useState("")
     const [checkedppt, setCheckedppt] = useState(false)
-    const [keaktifan, setKeaktifan] = useState([])
+    const [keaktifan, setKeaktifan] = useState("")
     const [checkedaktif, setCheckedaktif] = useState(false)
-    const [uts, setUts] = useState([])
+    const [uts, setUts] = useState("")
     const [checkedUts, setCheckedUts] = useState(false)
-    const [uas, setUas] = useState([])
+    const [uas, setUas] = useState("")
     const [checkedUas, setCheckedUas] = useState(false)
-    const [absen, setAbsen] = useState([])
+    const [absen, setAbsen] = useState("")
     const [checkedAbsen, setCheckedAbsen] = useState(false)
     const [jumlahKolom, setjumlahKolom] = useState([])
-    const [nilaiAkhir, setNIlaiAkhir] = useState([])
+    const [nilaiAkhir, setNIlaiAkhir] = useState("")
     const [nilaiHuruf, setNilaiHuruf] = useState([])
-    const [ket, setKet] = useState([])
-    const [kodeNilai, setKodeNilai] = useState([])
-    const [nilaiSum, setNilaiSum] = useState([])
+    const [nama, setNama] = useState("")
+    const [nim, setNim] = useState("")
+    const [ket, setKet] = useState("")
+    const [kodeNilai, setKodeNilai] = useState("")
+    const [nilaiSum, setNilaiSum] = useState("")
     const [load, setLoad] = useState(false)
 
 
@@ -54,43 +55,103 @@ const EditNilai = () => {
 
     useEffect(() => {
         getKelasById()
-        getMahasiswa()
-        console.log(location.state);
+        // console.log(location.state);
     }, [location])
-
-    useEffect(() => {
-        getGrade()
-        getStatus()
-        getNilaiAkhir()
-    }, [Mahasiswa])
 
     useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
 
     useEffect(() => {
-        addFields()
-    }, [jmlMhs])
-
-    useEffect(() => {
-        getPresentasi()
-        getMateri()
-        getPptx()
-        getKeaktifan()
-        getTugas()
-        getAbsen()
-        getUas()
-        getUts()
-    }, [inputFields])
+        getMahasiswa()
+    }, [location])
 
     useEffect(() => {
         getAverage()
         getSum()
-    }, [inputFields, presentasi, pptx, materi, keaktifan, uts, tugas, uas, absen])
+    }, [presentasi, materi, pptx, keaktifan, tugas, uts, uas, absen])
 
-    useEffect(() => {
-        cekNilai()
-    }, [nilaiAkhir, detailKls])
+    // useEffect(() => { console.log('jum', jumlahKolom) }, [jumlahKolom])
+
+    const addFields = () => {
+        let newfield = []
+        newfield.push({
+            presentasi: parseInt(presentasi),
+            materi: parseInt(materi),
+            pptx: parseInt(pptx),
+            keaktifan: parseInt(keaktifan),
+            tugas: parseInt(tugas),
+            uts: parseInt(uts),
+            uas: parseInt(uas),
+            absen: parseInt(absen)
+        })
+        setInputFields(newfield)
+    }
+
+    const getMahasiswa = async () => {
+        try {
+            const response = await axios.get(`v1/nilaiKuliah/getById/${location.state.idNilai}/${location.state.kodeThn}`)
+            setNama(response.data.data.mahasiswas[0].nama)
+            setNim(response.data.data.mahasiswas[0].nim)
+            setNilaiSum(response.data.data.nilai_jumlah)
+            setNIlaiAkhir(response.data.data.nilai_akhir)
+            // setNilaiHuruf(response.data.data.kategoriNilais[0].nilai_huruf)
+            // setKet(response.data.data.kategoriNilais[0].keterangan)
+            let u = []
+            if (response.data.data.nilai_presentasi) {
+                setCheckedpres(true)
+                setPresentasi(response.data.data.nilai_presentasi)
+                handleChangePres()
+                u.push('A')
+            }
+            if (response.data.data.nilai_penguasaan_materi) {
+                setCheckedmtr(true)
+                setMateri(response.data.data.nilai_penguasaan_materi)
+                handleChangeMateri()
+                u.push('B')
+            }
+            if (response.data.data.nilai_slide_power_point) {
+                setCheckedppt(true)
+                setPptx(response.data.data.nilai_slide_power_point)
+                handleChangePptx()
+                u.push('C')
+            }
+            if (response.data.data.nilai_keaktifan) {
+                setCheckedaktif(true)
+                setKeaktifan(response.data.data.nilai_keaktifan)
+                handleChangeAktif()
+                u.push('D')
+            }
+            if (response.data.data.nilai_tugas) {
+                setCheckedtgs(true)
+                setTugas(response.data.data.nilai_tugas)
+                handleChangeTgs()
+                u.push('E')
+            }
+            if (response.data.data.nilai_uts) {
+                setCheckedUts(true)
+                setUts(response.data.data.nilai_uts)
+                handleChangeUts()
+                u.push('F')
+            }
+            if (response.data.data.nilai_uas) {
+                setCheckedUas(true)
+                setUas(response.data.data.nilai_uas)
+                handleChangeUas()
+                u.push('G')
+            }
+            if (response.data.data.nilai_hadir) {
+                setCheckedAbsen(true)
+                setAbsen(response.data.data.nilai_hadir)
+                handleChangeAbsen()
+                u.push('H')
+            }
+
+            setjumlahKolom(u);
+        } catch (error) {
+
+        }
+    }
 
     const getKelasById = async () => {
         try {
@@ -101,338 +162,129 @@ const EditNilai = () => {
         }
     }
 
-    const getMahasiswa = async () => {
-        try {
-            const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.kodeMk}&codeKls=${location.state.kodeKls}&codeThnAjr=${location.state.kodeThn}`)
-            setMahasiswa(response.data.data)
-            setJmlMhs(response.data.data.length)
-        } catch (error) {
-
-        }
-    }
-
-    const addFields = () => {
-        let newfield = []
-        Mahasiswa.map(item => {
-            newfield.push({
-                presentasi: parseInt(item.nilai_presentasi),
-                materi: parseInt(item.nilai_penguasaan_materi),
-                pptx: parseInt(item.nilai_slide_power_point),
-                keaktifan: parseInt(item.nilai_keaktifan),
-                tugas: parseInt(item.nilai_tugas),
-                uts: parseInt(item.nilai_uts),
-                uas: parseInt(item.nilai_uas),
-                absen: parseInt(item.nilai_hadir)
-            })
-            if (item.nilai_presentasi) {
-                handleChangePres()
-            }
-            if (item.nilai_penguasaan_materi) {
-                handleChangeMateri()
-            }
-            if (item.nilai_slide_power_point) {
-                handleChangePptx()
-            }
-            if (item.nilai_keaktifan) {
-                handleChangeAktif()
-            }
-            if (item.nilai_tugas) {
-                handleChangeTgs()
-            }
-            if (item.nilai_uts) {
-                handleChangeUts()
-            }
-            if (item.nilai_uas) {
-                handleChangeUas()
-            }
-            if (item.nilai_hadir) {
-                handleChangeAbsen()
-            }
-        })
-        setInputFields(newfield)
-    }
-
-    const getNilaiAkhir = () => {
-        let a = Mahasiswa.map(item => (
-            item.nilai_akhir
-        ))
-        setNIlaiAkhir(a)
-    }
-
-    const getGrade = () => {
-        let a = Mahasiswa.map(item => (
-            item.kategoriNilais[0].nilai_huruf
-        ))
-        setNilaiHuruf(a)
-    }
-
-    const getStatus = () => {
-        let a = Mahasiswa.map(item => (
-            item.kategoriNilais[0].keterangan
-        ))
-        setKet(a)
-    }
-
     const handleChangePres = () => {
         setCheckedpres(!checkedpres)
+        document.getElementById('presentasi').disabled = true;
         if (!checkedpres) {
             setjumlahKolom([...jumlahKolom, 'A'])
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'A'))
-            for (var i = 0; i < document.getElementsByName('presentasi').length; i++) {
-                let g = document.getElementsByName('presentasi')[i].value = ''
-                setPresentasi([])
-                let datas = inputFields[i]
-                inputFields[i].presentasi = ""
-            }
-        }
-        for (var i = 0; i < document.getElementsByName('presentasi').length; i++) {
-            document.getElementsByName('presentasi')[i].disabled = false;
         }
     }
 
     const handleChangeMateri = () => {
         setCheckedmtr(!checkedmtr)
+        document.getElementById('materi').disabled = true;
         if (!checkedmtr) {
             setjumlahKolom([...jumlahKolom, 'B'])
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'B'))
-            for (var i = 0; i < document.getElementsByName('materi').length; i++) {
-                setMateri([])
-                let datas = inputFields[i]
-                inputFields[i].materi = ""
-            }
-        }
-        for (var i = 0; i < document.getElementsByName('materi').length; i++) {
-            document.getElementsByName('materi')[i].disabled = false;
         }
     }
 
     const handleChangePptx = () => {
         setCheckedppt(!checkedppt)
+        document.getElementById('pptx').disabled = true;
         if (!checkedppt) {
             setjumlahKolom([...jumlahKolom, 'C'])
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'C'))
-            for (var i = 0; i < document.getElementsByName('pptx').length; i++) {
-                setPptx([])
-                let datas = inputFields[i]
-                inputFields[i].pptx = ""
-            }
-        }
-        for (var i = 0; i < document.getElementsByName('pptx').length; i++) {
-            document.getElementsByName('pptx')[i].disabled = false;
         }
     }
 
     const handleChangeAktif = () => {
         setCheckedaktif(!checkedaktif)
+        document.getElementById('keaktifan').disabled = true;
         if (!checkedaktif) {
             setjumlahKolom([...jumlahKolom, 'D'])
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'D'))
-            for (var i = 0; i < document.getElementsByName('keaktifan').length; i++) {
-                setKeaktifan([])
-                let datas = inputFields[i]
-                inputFields[i].keaktifan = ""
-            }
-        }
-        for (var i = 0; i < document.getElementsByName('keaktifan').length; i++) {
-            document.getElementsByName('keaktifan')[i].disabled = false;
         }
     }
 
     const handleChangeTgs = () => {
         setCheckedtgs(!checkedtgs)
+        document.getElementById('tugas').disabled = true;
         if (!checkedtgs) {
             setjumlahKolom([...jumlahKolom, 'E'])
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'E'))
-            for (var i = 0; i < document.getElementsByName('tugas').length; i++) {
-                setTugas([])
-                let datas = inputFields[i]
-                inputFields[i].tugas = ""
-            }
-        }
-        for (var i = 0; i < document.getElementsByName('tugas').length; i++) {
-            document.getElementsByName('tugas')[i].disabled = false;
         }
     }
 
     const handleChangeUts = () => {
         setCheckedUts(!checkedUts)
+        document.getElementById('uts').disabled = true;
         if (!checkedUts) {
             setjumlahKolom([...jumlahKolom, 'F'])
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'F'))
-            for (var i = 0; i < document.getElementsByName('uts').length; i++) {
-                setUts([])
-                let datas = inputFields[i]
-                inputFields[i].uts = ""
-            }
-        }
-        for (var i = 0; i < document.getElementsByName('uts').length; i++) {
-            document.getElementsByName('uts')[i].disabled = false;
-
         }
     }
 
     const handleChangeUas = () => {
         setCheckedUas(!checkedUas)
+        document.getElementById('uas').disabled = true;
         if (!checkedUas) {
             setjumlahKolom([...jumlahKolom, 'G'])
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'G'))
-            for (var i = 0; i < document.getElementsByName('uas').length; i++) {
-                setUas([])
-                let datas = inputFields[i]
-                inputFields[i].uas = ""
-            }
-        }
-        for (var i = 0; i < document.getElementsByName('uas').length; i++) {
-            document.getElementsByName('uas')[i].disabled = false;
         }
     }
 
     const handleChangeAbsen = () => {
         setCheckedAbsen(!checkedAbsen)
+        document.getElementById('absen').disabled = true;
         if (!checkedAbsen) {
             setjumlahKolom([...jumlahKolom, 'H'])
         } else {
             setjumlahKolom(jumlahKolom.filter((o) => o !== 'H'))
-            for (var i = 0; i < document.getElementsByName('absen').length; i++) {
-                setAbsen([])
-                let datas = inputFields[i]
-                inputFields[i].absen = ""
-            }
         }
-        for (var i = 0; i < document.getElementsByName('absen').length; i++) {
-            document.getElementsByName('absen')[i].disabled = false;
-        }
-    }
-
-    const getPresentasi = () => {
-        let newfield = []
-        inputFields.map(item => (
-            newfield.push(parseInt(item.presentasi))
-        ))
-        setPresentasi(newfield)
-    }
-
-    const getMateri = () => {
-        let newfield = []
-        inputFields.map(item => (
-            newfield.push(parseInt(item.materi))
-        ))
-        setMateri(newfield)
-    }
-
-    const getPptx = () => {
-        let newfield = []
-        inputFields.map(item => (
-            newfield.push(parseInt(item.pptx))
-        ))
-        setPptx(newfield)
-    }
-
-    const getKeaktifan = () => {
-        let newfield = []
-        inputFields.map(item => (
-            newfield.push(parseInt(item.keaktifan))
-        ))
-        setKeaktifan(newfield)
-    }
-
-    const getTugas = () => {
-        let newfield = []
-        inputFields.map(item => (
-            newfield.push(parseInt(item.tugas))
-        ))
-        setTugas(newfield)
-    }
-
-    const getUts = () => {
-        let newfield = []
-        inputFields.map(item => (
-            newfield.push(parseInt(item.uts))
-        ))
-        setUts(newfield)
-    }
-
-    const getUas = () => {
-        let newfield = []
-        inputFields.map(item => (
-            newfield.push(parseInt(item.uas))
-        ))
-        setUas(newfield)
-    }
-
-    const getAbsen = () => {
-        let newfield = []
-        inputFields.map(item => (
-            newfield.push(parseInt(item.absen))
-        ))
-        setAbsen(newfield)
     }
 
     const getAverage = () => {
         if (jumlahKolom.length != 0) {
-            const i = inputFields.map(el => {
-                let presentasi = parseInt(el.presentasi) || 0
-                let materi = parseInt(el.materi) || 0
-                let pptx = parseInt(el.pptx) || 0
-                let keaktifan = parseInt(el.keaktifan) || 0
-                let tugas = parseInt(el.tugas) || 0
-                let hadir = parseInt(el.absen) || 0
-                let uts = parseInt(el.uts) || 0
-                let uas = parseInt(el.uas) || 0
-                let rataRata = (presentasi + materi + pptx + keaktifan + tugas + hadir + uts + uas) / jumlahKolom.length
-                return rataRata
-            })
-            setNIlaiAkhir(i)
+            var a = parseInt(presentasi) || 0
+            var b = parseInt(materi) || 0
+            var c = parseInt(pptx) || 0
+            var d = parseInt(keaktifan) || 0
+            var e = parseInt(tugas) || 0
+            var f = parseInt(absen) || 0
+            var g = parseInt(uts) || 0
+            var h = parseInt(uas) || 0
+            var rataRata = (a + b + c + d + e + f + g + h) / jumlahKolom.length
+            setNIlaiAkhir(rataRata)
         }
     }
 
     const getSum = () => {
         if (jumlahKolom.length != 0) {
-            const i = inputFields.map(el => {
-                var presentasi = parseInt(el.presentasi) || 0
-                var materi = parseInt(el.materi) || 0
-                var pptx = parseInt(el.pptx) || 0
-                var keaktifan = parseInt(el.keaktifan) || 0
-                var tugas = parseInt(el.tugas) || 0
-                var hadir = parseInt(el.absen) || 0
-                var uts = parseInt(el.uts) || 0
-                var uas = parseInt(el.uas) || 0
-                var sum = (presentasi + materi + pptx + keaktifan + tugas + hadir + uts + uas)
-                return sum
-            })
-            setNilaiSum(i)
+            var a = parseInt(presentasi) || 0
+            var b = parseInt(materi) || 0
+            var c = parseInt(pptx) || 0
+            var d = parseInt(keaktifan) || 0
+            var e = parseInt(tugas) || 0
+            var f = parseInt(absen) || 0
+            var g = parseInt(uts) || 0
+            var h = parseInt(uas) || 0
+            var sum = (a + b + c + d + e + f + g + h)
+            setNilaiSum(sum);
         }
     }
 
+    useEffect(() => {
+        cekNilai()
+    }, [nilaiAkhir, location])
+
     const cekNilai = async () => {
-        let nilai = []
-        let kode = []
-        let status = []
-        let promises = []
-        console.log(nilaiAkhir);
-        // for (let i = 0; i < nilaiAkhir.length; i++) {
-        //     if (nilaiAkhir[i] === 0) {
-        //         promises.push("")
-        //     } else {
-        //         const d = await axios.get(`/v1/nilaiKuliah/deteksiIndexNilai/${nilaiAkhir[i]}/${location.state.kodeThn}`).then(response => {
-        //             console.log(response.data);
-        //             // nilai.push(response.data.data[0].nilai_huruf)
-        //             // kode.push(response.data.data[0].code_kategori_nilai)
-        //             // status.push(response.data.data[0].keterangan)
-        //         })
-        //         promises.push(d)
-        //     }
-        // }
-        Promise.all(promises).then(() => setNilaiHuruf(nilai))
-        Promise.all(promises).then(() => setKodeNilai(kode))
-        Promise.all(promises).then(() => setKet(status))
+        try {
+            if (nilaiAkhir) {
+                const response = await axios.get(`/v1/nilaiKuliah/deteksiIndexNilai/${nilaiAkhir}/${location.state.kodeThn}`)
+                setNilaiHuruf(response.data.data);
+            }
+        } catch (error) {
+
+        }
     }
 
     const simpanNilai = async (e) => {
@@ -440,25 +292,28 @@ const EditNilai = () => {
         setLoad(true)
         try {
             await axios.put('v1/nilaiKuliah/update',
-                Mahasiswa.map((item, index) => ({
-                    id_nilai_kuliah: item.id_nilai_kuliah,
-                    code_kategori_nilai: kodeNilai[index],
-                    nilai_hadir: inputFields[index].absen,
-                    nilai_tugas: inputFields[index].tugas,
-                    nilai_uts: inputFields[index].uts,
-                    nilai_uas: inputFields[index].uas,
-                    nilai_jumlah: nilaiSum[index],
-                    nilai_akhir: nilaiAkhir[index]
-                }))
-            ).then(function (response) {
-                setLoad(false)
-                Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    navigate(`/detailnilai`, { state: { kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls } })
-                });
-            })
+                {
+                    id_nilai_kuliah: location.state.idNilai,
+                    code_kategori_nilai: nilaiHuruf[0].code_kategori_nilai,
+                    nilai_presentasi: presentasi,
+                    nilai_penguasaan_materi: materi,
+                    nilai_slide_power_point: pptx,
+                    nilai_keaktifan: keaktifan,
+                    nilai_hadir: absen,
+                    nilai_tugas: tugas,
+                    nilai_uts: uts,
+                    nilai_uas: uas,
+                    nilai_jumlah: nilaiSum,
+                    nilai_akhir: nilaiAkhir
+                }).then(function (response) {
+                    setLoad(false)
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        // navigate(`/detailnilai`, { state: { kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls } })
+                    });
+                })
         } catch (error) {
             setLoad(false)
             if (error.response) {
@@ -469,6 +324,7 @@ const EditNilai = () => {
             }
         }
     }
+
     return (
         <Layout>
             <title>Penilaian</title>
@@ -567,21 +423,20 @@ const EditNilai = () => {
                                                             <Table hover>
                                                                 <thead>
                                                                     <tr className='border'>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>#</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>NIM</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Nama</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Presentasi</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Materi</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Power Point</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Keaktifan</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Tugas</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>UTS</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>UAS</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Absen</th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Jumlah</th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Nilai</th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Grade</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Status</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}><span className='text-[11px]'>NIM</span></th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}><span className='text-[11px]'>Nama</span></th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Presentasi</span></th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Materi</span></th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Power Point</span></th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Keaktifan</span></th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Tugas</span></th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>UTS</span></th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>UAS</span></th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}><span className='text-[11px]'>Absen</span></th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}><span className='text-[11px]'>Jumlah</span></th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}><span className='text-[11px]'>Nilai</span></th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}><span className='text-[11px]'>Grade</span></th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}><span className='text-[11px]'>Status</span></th>
                                                                     </tr>
                                                                     <tr className='border'>
                                                                         <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
@@ -651,45 +506,47 @@ const EditNilai = () => {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    {Mahasiswa.map((mhs, index) => (
-                                                                        <tr key={index} className='border'>
-                                                                            <th scope='row' className='py-2 border text-center'>{index + 1}</th>
-                                                                            <td className='py-2 border text-capitalize' align='center'>{mhs.nim}</td>
-                                                                            <td className='py-2 border text-capitalize'>{mhs.mahasiswas[0].nama}</td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='presentasi' value={presentasi[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedpres} style={{ width: '70px' }} />
-                                                                            </td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='materi' value={materi[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedmtr} style={{ width: '70px' }} />
-                                                                            </td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='pptx' value={pptx[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedppt} style={{ width: '70px' }} />
-                                                                            </td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='keaktifan' value={keaktifan[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedaktif} style={{ width: '70px' }} />
-                                                                            </td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='tugas' value={tugas[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedtgs} style={{ width: '70px' }} />
-                                                                            </td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='uts' value={uts[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedUts} style={{ width: '70px' }} />
-                                                                            </td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='uas' value={uas[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedUas} style={{ width: '70px' }} />
-                                                                            </td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>
-                                                                                <input type="number" name='absen' value={absen[index]} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedAbsen} style={{ width: '70px' }} />
-                                                                            </td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>{nilaiSum[index] == 0 ? "" : nilaiSum[index]}</td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>{nilaiAkhir[index] == "0" ? "" : nilaiAkhir[index]}</td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>{nilaiHuruf[index]}</td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>{ket[index] == 'LULUS' ?
-                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{ket[index]}</span>
-                                                                                :
-                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{ket[index]}</span>
-                                                                            }</td>
-                                                                        </tr>
-                                                                    ))}
+                                                                    <tr className='border'>
+                                                                        <td className='py-2 border text-capitalize' align='center'>{nim}</td>
+                                                                        <td className='py-2 border text-capitalize'>{nama}</td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>
+                                                                            <input type="number" min={0} max={100} name='presentasi' id='presentasi' value={presentasi} onChange={(e) => setPresentasi(e.target.value)} className='form-control' disabled={!checkedpres} style={{ width: '70px' }} />
+                                                                        </td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>
+                                                                            <input type="number" name='materi' id='materi' value={materi} onChange={(e) => setMateri(e.target.value)} className='form-control' disabled={!checkedmtr} style={{ width: '70px' }} />
+                                                                        </td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>
+                                                                            <input type="number" name='pptx' id='pptx' value={pptx} onChange={(e) => setPptx(e.target.value)} className='form-control' disabled={!checkedppt} style={{ width: '70px' }} />
+                                                                        </td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>
+                                                                            <input type="number" name='keaktifan' id='keaktifan' value={keaktifan} onChange={(e) => setKeaktifan(e.target.value)} className='form-control' disabled={!checkedaktif} style={{ width: '70px' }} />
+                                                                        </td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>
+                                                                            <input type="number" name='tugas' id='tugas' value={tugas} onChange={(e) => setTugas(e.target.value)} className='form-control' disabled={!checkedtgs} style={{ width: '70px' }} />
+                                                                        </td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>
+                                                                            <input type="number" name='uts' id='uts' value={uts} onChange={(e) => setUts(e.target.value)} className='form-control' disabled={!checkedUts} style={{ width: '70px' }} />
+                                                                        </td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>
+                                                                            <input type="number" name='uas' id='uas' value={uas} onChange={(e) => setUas(e.target.value)} className='form-control' disabled={!checkedUas} style={{ width: '70px' }} />
+                                                                        </td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>
+                                                                            <input type="number" name='absen' id='absen' value={absen} onChange={(e) => setAbsen(e.target.value)} className='form-control' disabled={!checkedAbsen} style={{ width: '70px' }} />
+                                                                        </td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>{nilaiSum}</td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>{nilaiAkhir}</td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>{nilaiHuruf.length != 0 ? nilaiHuruf[0].nilai_huruf : ""}</td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>
+                                                                            {nilaiHuruf.length != 0 ?
+                                                                                <>{nilaiHuruf[0].keterangan == 'LULUS' ?
+                                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">LULUS</span>
+                                                                                    :
+                                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">TIDAK LULUS</span>
+                                                                                }
+                                                                                </>
+                                                                                : ""}
+                                                                        </td>
+                                                                    </tr>
                                                                 </tbody>
                                                             </Table>
                                                         </div>
