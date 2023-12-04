@@ -34,12 +34,12 @@ const DetailPembimbingAkademik = () => {
 
     useEffect(() => {
         getMhsPerPembimbing()
-        console.log(location.state);
+        // console.log(location.state);
     }, [location, page, keyword])
 
     useEffect(() => {
         getPembimbing()
-    }, [])
+    }, [nipy, location])
 
     const getMhsPerPembimbing = async () => {
         try {
@@ -51,6 +51,8 @@ const DetailPembimbingAkademik = () => {
                 setPages(response.data.total_page)
                 setperPage(response.data.per_page)
                 setJumlah(response.data.data.length)
+                setNipy(response.data.data[0].pembimbingAkademiks[0].dosen)
+                console.log(response.data.data[0].pembimbingAkademiks[0].dosen)
             }
         } catch (error) {
 
@@ -73,8 +75,14 @@ const DetailPembimbingAkademik = () => {
     }
 
     const getPembimbing = async () => {
-        const response = await axios.get(`v1/pembimbingAkademik/all`)
-        setPembimbing(response.data.data)
+        try {
+            if (nipy != 0) {
+                const response = await axios.get(`v1/pembimbingAkademik/getForPindahPemdik/${nipy}/${location.state.jen}/${location.state.fak}/${location.state.pro}`)
+                setPembimbing(response.data.data)
+            }
+        } catch (error) {
+
+        }
     }
 
     const modalOpen = () => {
@@ -201,7 +209,7 @@ const DetailPembimbingAkademik = () => {
                                 <select className='select select-bordered select-sm w-full' value={kodePembimbing} onChange={(e) => setKodePembimbing(e.target.value)}>
                                     <option value="">Dosen Pembimbing</option>
                                     {Pembimbing.map((item, index) => (
-                                        <option key={index} value={item.code_pembimbing_akademik}>{item.dosens[0].nama}</option>
+                                        <option key={index} value={item.code_pembimbing_akademik}>{item.dosen}</option>
                                     ))}
                                 </select>
                             </div>
