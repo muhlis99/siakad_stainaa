@@ -119,6 +119,45 @@ module.exports = {
             })
     },
 
+    getById: async (req, res, next) => {
+        const id = req.params.id
+        await pembimbingAkademik.findOne({
+            include: [{
+                model: jenjangPendidikanModel,
+                where: { status: "aktif" }
+            }, {
+                model: fakultasModel,
+                where: { status: "aktif" }
+            }, {
+                model: prodiModel,
+                where: { status: "aktif" }
+            }, {
+                attributes: ["nidn", "nip_ynaa", "nama"],
+                model: dosenModel,
+                where: { status: "aktif" }
+            }],
+            where: {
+                id_pembimbing_akademik: id,
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                if (!result) {
+                    return res.status(404).json({
+                        message: "Data akademik Pembimbing Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data akademik Pembimbing Ditemukan",
+                    data: result
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     autocompleteDosen: async (req, res, next) => {
         const dataPembimbing = await pembimbingAkademik.findAll({
             include: [{

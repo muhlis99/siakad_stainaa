@@ -4,6 +4,7 @@ const pembimbingAkademikController = require('../controllers/pembimbingAkademikC
 
 router.get('/all', pembimbingAkademikController.get)
 router.get('/autocompleteDosen', pembimbingAkademikController.autocompleteDosen)
+router.get('/getById/:id', pembimbingAkademikController.getById)
 router.get('/getMhsByPembimbingAkademik/:codePendik', pembimbingAkademikController.getMhsByPembimbingAkademik)
 router.get('/getMhsForInsert/:codePemdik/:jnjPen/:fks/:prd', pembimbingAkademikController.getMhsForInsert)
 router.get('/getForPindahPemdik/:dosen/:jnjPen/:fks/:prd', pembimbingAkademikController.getForPindahPemdik)
