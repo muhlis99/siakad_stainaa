@@ -291,7 +291,7 @@ const EditNilai = () => {
         e.preventDefault()
         setLoad(true)
         try {
-            await axios.put('v1/nilaiKuliah/update',
+            await axios.put(`v1/nilaiKuliah/update/${location.state.idNilai}`,
                 {
                     id_nilai_kuliah: location.state.idNilai,
                     code_kategori_nilai: nilaiHuruf[0].code_kategori_nilai,
@@ -311,7 +311,20 @@ const EditNilai = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        // navigate(`/detailnilai`, { state: { kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls } })
+                        navigate(`/detailnilai`, {
+                            state:
+                            {
+                                idNilai: location.state.idNilai,
+                                kodeMk: location.state.kodeMk,
+                                idKelas: location.state.idKelas,
+                                kodeKls: location.state.kodeKls,
+                                kodeThn: location.state.kodeThn,
+                                kodeSmt: location.state.kodeSmt,
+                                kodeJen: location.state.kodeJen,
+                                kodeFk: location.state.kodeFk,
+                                kodeProd: location.state.kodeProd
+                            }
+                        })
                     });
                 })
         } catch (error) {
@@ -510,7 +523,7 @@ const EditNilai = () => {
                                                                         <td className='py-2 border text-capitalize' align='center'>{nim}</td>
                                                                         <td className='py-2 border text-capitalize'>{nama}</td>
                                                                         <td className='py-2 border px-1 text-capitalize'>
-                                                                            <input type="number" min={0} max={100} name='presentasi' id='presentasi' value={presentasi} onChange={(e) => setPresentasi(e.target.value)} className='form-control' disabled={!checkedpres} style={{ width: '70px' }} />
+                                                                            <input type="number" name='presentasi' id='presentasi' value={presentasi} onChange={(e) => setPresentasi(e.target.value)} className='form-control' disabled={!checkedpres} style={{ width: '70px' }} />
                                                                         </td>
                                                                         <td className='py-2 border px-1 text-capitalize'>
                                                                             <input type="number" name='materi' id='materi' value={materi} onChange={(e) => setMateri(e.target.value)} className='form-control' disabled={!checkedmtr} style={{ width: '70px' }} />
@@ -555,7 +568,17 @@ const EditNilai = () => {
                                                 <hr />
                                                 <Row>
                                                     <Col>
-                                                        <Link to='/detailnilai' state={{ kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center no-underline'><FaReply /> &nbsp; <span>Kembali</span></Link>
+                                                        <Link to='/detailnilai' state={{
+                                                            idNilai: location.state.idNilai,
+                                                            kodeMk: location.state.kodeMk,
+                                                            idKelas: location.state.idKelas,
+                                                            kodeKls: location.state.kodeKls,
+                                                            kodeThn: location.state.kodeThn,
+                                                            kodeSmt: location.state.kodeSmt,
+                                                            kodeJen: location.state.kodeJen,
+                                                            kodeFk: location.state.kodeFk,
+                                                            kodeProd: location.state.kodeProd
+                                                        }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center no-underline'><FaReply /> &nbsp; <span>Kembali</span></Link>
                                                         <button className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center float-right'><FaEdit /> &nbsp; <span>Edit</span></button>
                                                     </Col>
                                                 </Row>

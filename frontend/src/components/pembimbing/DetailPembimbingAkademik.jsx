@@ -3,8 +3,10 @@ import { useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import Select from 'react-select'
 import axios from 'axios'
-import { FaCog, FaEdit, FaPlus, FaReply, FaSave, FaTimes, FaTrash } from 'react-icons/fa'
+import { FaCog, FaEdit, FaPlus, FaReply, FaSearch, FaSave, FaTimes, FaTrash, FaArrowLeft, FaArrowRight } from 'react-icons/fa'
+import { SlOptions } from "react-icons/sl"
 import { Link } from "react-router-dom"
+import ReactPaginate from 'react-paginate'
 
 const DetailPembimbingAkademik = () => {
     const [MhsPembimbing, setMhsPembimbing] = useState([])
@@ -60,8 +62,7 @@ const DetailPembimbingAkademik = () => {
         setPembimbing(response.data.data)
     }
 
-    const modalOpen = (e) => {
-        setIdDetail(e)
+    const modalOpen = () => {
         document.getElementById('my-modal').checked = true
     }
 
@@ -146,9 +147,12 @@ const DetailPembimbingAkademik = () => {
         <div className='mt-2 container'>
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
-                <div className="modal-box relative p-0 rounded-md w-72">
-                    <button className='btn btn-sm btn-square mb-2 btn-error rounded-none float-right' onClick={modalClose}><FaTimes /></button>
-                    <form onSubmit={simpanPembimbing} className='p-2 mt-8'>
+                <div className="modal-box w-1/3 max-w-2xl relative">
+                    <button className='btn btn-xs btn-circle btn-error absolute right-2 top-2' onClick={modalClose}><FaTimes /></button>
+                    <h3 className="font-bold text-xl">judul</h3>
+                    <div className='py-4'></div>
+
+                    {/* <form onSubmit={simpanPembimbing} className='p-2'>
                         <select className="select select-sm select-bordered w-full mb-2" value={kodePembimbing} onChange={(e) => setKodePembimbing(e.target.value)}>
                             <option value="">Dosen</option>
                             {Pembimbing.map((item, index) => {
@@ -161,7 +165,7 @@ const DetailPembimbingAkademik = () => {
                             <option value=""></option>
                         </select>
                         <button className='btn btn-sm btn-primary w-full'><FaSave /><span className="ml-1">simpan</span></button>
-                    </form>
+                    </form> */}
                 </div>
             </div>
             <section className='mb-5'>
@@ -174,7 +178,7 @@ const DetailPembimbingAkademik = () => {
                             <Link to='/pembimbingakademik' state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply />Kembali</Link>
                             {kuota != jumlah ? <Link to='/setpembimbingakademik' state={{ idDsn: location.state.idDsn, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/pembimbingakademik' }} className="btn btn-primary btn-sm float-right capitalize rounded-md"><FaCog />Set Mahasiswa</Link> : ""}
                         </div>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-2 gap-2 text-[14px]">
                             <div className='flex gap-2'>
                                 <div className='flex-initial w-60'>
                                     <label>
@@ -221,8 +225,9 @@ const DetailPembimbingAkademik = () => {
                                         <span className="">KUOTA BIMBINGAN</span>
                                     </label>
                                 </div>
-                                <div className='w-full'>
+                                <div className='w-full flex gap-3'>
                                     <a>: {kuota} MAHASISWA</a>
+                                    <button className='btn btn-circle btn-primary btn-xs' onClick={modalOpen}><FaSave /></button>
                                 </div>
                             </div>
                             <div className='flex gap-2'>
@@ -240,12 +245,27 @@ const DetailPembimbingAkademik = () => {
                 </div>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
+                        <div>
+                            <div className="form-control">
+                                <div className="input-group justify-end">
+                                    <input
+                                        type="text"
+                                        // onChange={cariData}
+                                        className="input input-sm input-bordered input-success"
+                                        placeholder='Cari'
+                                    />
+                                    <button className="btn btn-sm btn-square btn-success">
+                                        <FaSearch />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <div className="overflow-x-auto mb-2">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
                                         <th scope="col" className="px-2 py-2 text-sm">#</th>
-                                        <th scope="col" className="px-2 py-2 text-sm">NIPY</th>
+                                        <th scope="col" className="px-2 py-2 text-sm">NIM</th>
                                         <th scope="col" className="px-2 py-2 text-sm">Nama Mahasiswa</th>
                                         <th scope="col" className="px-2 py-2 text-sm">Jenjang Pendidikan</th>
                                         <th scope="col" className="px-2 py-2 text-sm">Fakultas</th>
@@ -254,22 +274,44 @@ const DetailPembimbingAkademik = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {MhsPembimbing.map((item, index) => (
-                                        <tr key={index} className='bg-white border-b text-gray-500 border-x'>
-                                            <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
-                                            <td className='px-2 py-2 font-semibold'>{item.nim}</td>
-                                            <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].nama}</td>
-                                            <td className='px-2 py-2 font-semibold'>{jenjang}</td>
-                                            <td className='px-2 py-2 font-semibold'>{fakultas}</td>
-                                            <td className='px-2 py-2 font-semibold'>{prodi}</td>
-                                            <td className='px-2 py-2' align='center'>
-                                                <button onClick={() => modalOpen(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-warning btn-circle mr-2"><FaEdit /></button>
-                                                <button onClick={() => nonaktifkan(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-error btn-circle"><FaTrash /></button>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {
+                                        MhsPembimbing.length == 0 ?
+                                            <tr className='bg-white border-b text-gray-500 border-x'>
+                                                <td className='px-2 py-2 font-semibold text-[12px]' colSpan={7} align='center'>Data Mahasiswa Asuh Kosong</td>
+                                            </tr>
+                                            :
+                                            MhsPembimbing.map((item, index) => (
+                                                <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                                    <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{index + 1}</th>
+                                                    <td className='px-2 py-2 font-semibold'>{item.nim}</td>
+                                                    <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].nama}</td>
+                                                    <td className='px-2 py-2 font-semibold'>{jenjang}</td>
+                                                    <td className='px-2 py-2 font-semibold'>{fakultas}</td>
+                                                    <td className='px-2 py-2 font-semibold'>{prodi}</td>
+                                                    <td className='px-2 py-2' align='center'>
+                                                        <button onClick={() => modalOpen(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-warning btn-circle mr-2"><FaEdit /></button>
+                                                        <button onClick={() => nonaktifkan(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-error btn-circle"><FaTrash /></button>
+                                                    </td>
+                                                </tr>
+                                            ))}
                                 </tbody>
                             </table>
+                        </div>
+                        <div className="mt-2 justify-center btn-group" aria-label='pagination'>
+                            <ReactPaginate
+                                className='justify-center btn-group'
+                                breakLabel={<SlOptions />}
+                                previousLabel={<FaArrowLeft />}
+                                // pageCount={Math.min(10, pageCount)}
+                                // onPageChange={changePage}
+                                nextLabel={<FaArrowRight />}
+                                previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                activeLinkClassName={"btn btn-xs btn-success btn-circle"}
+                                pageLinkClassName={"btn btn-xs btn-success btn-circle ml-1"}
+                                disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
+                            />
                         </div>
                     </div>
                 </div>
