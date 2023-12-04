@@ -121,7 +121,10 @@ module.exports = {
 
     getMhsByPembimbingAkademik: async (req, res, next) => {
         const codePendik = req.params.codePendik
-        await detailPembimbingAkademik.findAll({
+        const currentPage = parseInt(req.query.page) || 1
+        const perPage = req.query.perPage || 10
+        const search = req.query.search || ""
+        await detailPembimbingAkademik.findAndCountAll({
             include: [
                 {
                     model: pembimbingAkademik,
@@ -133,137 +136,112 @@ module.exports = {
                 }
             ],
             where: {
+                [Op.or]: [
+                    {
+                        id_detail_pembimbing_akademik: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        nim: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ],
                 code_pembimbing_akademik: codePendik,
                 status: "aktif"
             }
-        }).then(all => {
-            if (!all) {
-                return res.status(404).json({
-                    message: "Data akademik  Tidak Ditemukan",
-                    data: null
-                })
-            }
-            res.status(201).json({
-                message: "Data akademik  Ditemukan",
-                data: all
-            })
-        })
-
-    },
-
-    getById: async (req, res, next) => {
-        const id = req.params.id
-        await pembimbingAkademik.findOne({
-            include: [{
-                model: jenjangPendidikanModel,
-                where: { status: "aktif" }
-            }, {
-                model: fakultasModel,
-                where: { status: "aktif" }
-            }, {
-                model: prodiModel,
-                where: { status: "aktif" }
-            }, {
-                attributes: ["nidn", "nip_ynaa", "nama"],
-                model: dosenModel,
-                where: { status: "aktif" }
-            }],
-            where: {
-                id_pembimbing_akademik: id,
-                status: "aktif"
-            }
         }).
+            then(all => {
+                totalItems = all.count
+                return detailPembimbingAkademik.findAll({
+                    include: [
+                        {
+                            model: pembimbingAkademik,
+                            status: "aktif"
+                        },
+                        {
+                            model: mahasiswaModel,
+                            status: "aktif"
+                        }
+                    ],
+                    where: {
+                        [Op.or]: [
+                            {
+                                id_detail_pembimbing_akademik: {
+                                    [Op.like]: `%${search}%`
+                                }
+                            },
+                            {
+                                nim: {
+                                    [Op.like]: `%${search}%`
+                                }
+                            },
+                        ],
+                        code_pembimbing_akademik: codePendik,
+                        status: "aktif"
+                    },
+                    offset: (currentPage - 1) * parseInt(perPage),
+                    limit: parseInt(perPage),
+                    order: [
+                        ["id_detail_pembimbing_akademik", "DESC"]
+                    ]
+                })
+            }).
             then(result => {
-                if (!result) {
-                    return res.status(404).json({
-                        message: "Data akademik Pembimbing Tidak Ditemukan",
-                        data: null
-                    })
-                }
-                res.status(201).json({
-                    message: "Data akademik Pembimbing Ditemukan",
-                    data: result
+                const totalPage = Math.ceil(totalItems / perPage)
+                res.status(200).json({
+                    message: "Get All Pembimbing Akademik Success",
+                    data: result,
+                    total_data: totalItems,
+                    per_page: perPage,
+                    current_page: currentPage,
+                    total_page: totalPage
                 })
             }).
             catch(err => {
-                next(err)
+                console.log(err)
             })
     },
 
-    autocompleteDosen: async (req, res, next) => {
-        const dataPembimbing = await pembimbingAkademik.findAll({
-            include: [{
-                attributes: ["nidn", "nip_ynaa", "nama"],
-                model: dosenModel,
-                where: { status: "aktif" }
-            }],
+    getMhsForInsert: async (req, res, next) => {
+        const jnjPen = req.params.jnjPen
+        const fks = req.params.fks
+        const prd = req.params.prd
+        const codePemdik = req.params.codePemdik
+        const dataDetail = await detailPembimbingAkademik.findAll({
             where: {
+                code_pembimbing_akademik: codePemdik,
                 status: "aktif"
             }
         })
-        const dataDosenInPembimbing = dataPembimbing.map(i => {
-            return i.dosen
-        })
-        await dosenModel.findAll({
-            where: {
-                nip_ynaa: {
-                    [Op.notIn]: dataDosenInPembimbing
-                },
-                status: "aktif"
-            }
-        }).then(all => {
-            res.status(201).json({
-                message: "Data Dosen  Ditemukan",
-                data: all
-            })
-        }).catch(err => {
-            next(err)
-        })
-    },
-
-    autocompleteMahasiswa: async (req, res, next) => {
-        const { codeJnjPen, codeFks, codePrd } = req.params
-
-        const dataDetailPembimbing = await detailPembimbingAkademik.findAll({
-            include: [{
-                model: mahasiswaModel,
-                where: {
-                    code_jenjang_pendidikan: codeJnjPen,
-                    code_fakultas: codeFks,
-                    code_prodi: codePrd,
-                    status: "aktif"
-                }
-            }],
-            where: {
-                status: "aktif"
-            }
-        })
-        const dataMahsiswaInDetailPembimbing = dataDetailPembimbing.map(i => {
-            return i.nim
+        const dataValidasiDetail = dataDetail.map(el => {
+            return el.nim
         })
         await mahasiswaModel.findAll({
+            attributes: ['nim', 'nama', 'code_jenjang_pendidikan', 'code_fakultas', 'code_prodi'],
             where: {
+                code_jenjang_pendidikan: jnjPen,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif",
                 nim: {
-                    [Op.notIn]: dataMahsiswaInDetailPembimbing,
+                    [Op.notIn]: dataValidasiDetail
                 },
-                code_jenjang_pendidikan: codeJnjPen,
-                code_fakultas: codeFks,
-                code_prodi: codePrd,
-                status: "aktif"
             }
-        }).then(all => {
-            if (!all) {
-                res.status(201).json({
-                    message: "Data mahsiswa  Ditemukan",
+        }).then(result => {
+            if (!result) {
+                return res.status(404).json({
+                    message: "Data mahasiswa Tidak Ditemukan",
                     data: []
                 })
             }
             res.status(201).json({
-                message: "Data mahsiswa  Ditemukan",
-                data: all
+                message: "Data mahasiswa Ditemukan",
+                data: result
             })
         }).catch(err => {
-            next(err)
+            console.log(err)
         })
     },
 
@@ -388,14 +366,17 @@ module.exports = {
     },
 
     postDetail: async (req, res, next) => {
-        const { code_pembimbing_akademik, nim } = req.body
-        let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
-        await detailPembimbingAkademik.create({
-            code_detail_pembimbing_akademik: randomNumber,
-            code_pembimbing_akademik: code_pembimbing_akademik,
-            nim: nim,
-            status: "aktif"
-        }).
+        const data = req.body
+        const dataPostDetail = data.map(el => {
+            let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
+            return {
+                code_detail_pembimbing_akademik: randomNumber,
+                code_pembimbing_akademik: el.code_pembimbing_akademik,
+                nim: el.nim,
+                status: "aktif"
+            }
+        })
+        await detailPembimbingAkademik.bulkCreate(dataPostDetail).
             then(result => {
                 res.status(201).json({
                     message: "Data Detail pembimbing akademik success Ditambahkan",
