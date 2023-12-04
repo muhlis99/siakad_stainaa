@@ -5,6 +5,7 @@ const pembimbingAkademikController = require('../controllers/pembimbingAkademikC
 router.get('/all', pembimbingAkademikController.get)
 router.get('/getMhsByPembimbingAkademik/:codePendik', pembimbingAkademikController.getMhsByPembimbingAkademik)
 router.get('/getMhsForInsert/:codePemdik/:jnjPen/:fks/:prd', pembimbingAkademikController.getMhsForInsert)
+router.get('/getForPindahPemdik/:dosen/:jnjPen/:fks/:prd', pembimbingAkademikController.getForPindahPemdik)
 router.post('/create', pembimbingAkademikController.post)
 router.put('/update/:id', pembimbingAkademikController.put)
 router.put('/delete/:id', pembimbingAkademikController.delete)

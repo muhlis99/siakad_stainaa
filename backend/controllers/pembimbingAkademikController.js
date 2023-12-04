@@ -245,6 +245,37 @@ module.exports = {
         })
     },
 
+    getForPindahPemdik: async (req, res, next) => {
+        const jnjPen = req.params.jnjPen
+        const fks = req.params.fks
+        const prd = req.params.prd
+        const codedosen = req.params.dosen
+        await pembimbingAkademik.findAll({
+            where: {
+                code_jenjang_pendidikan: jnjPen,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif",
+                dosen: {
+                    [Op.not]: codedosen
+                },
+            }
+        }).then(result => {
+            if (!result) {
+                return res.status(404).json({
+                    message: "Data dosen pemdik Tidak Ditemukan",
+                    data: []
+                })
+            }
+            res.status(201).json({
+                message: "Data dosen pemdik Ditemukan",
+                data: result
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+
     post: async (req, res, next) => {
         const { code_jenjang_pendidikan, code_fakultas, code_prodi, dosen, kouta_bimbingan } = req.body
         let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
