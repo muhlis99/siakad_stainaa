@@ -181,11 +181,11 @@ const DetailPembimbingAkademik = () => {
                 id: checked,
                 code_pembimbing_akademik: kodePembimbing
             }).then(function (response) {
-                // setLoading(false)
                 Swal.fire({
                     title: response.data.message,
                     icon: "success"
                 }).then(() => {
+                    modalClose()
                     getMhsPerPembimbing()
                 });
             })
@@ -209,7 +209,7 @@ const DetailPembimbingAkademik = () => {
                                 <select className='select select-bordered select-sm w-full' value={kodePembimbing} onChange={(e) => setKodePembimbing(e.target.value)}>
                                     <option value="">Dosen Pembimbing</option>
                                     {Pembimbing.map((item, index) => (
-                                        <option key={index} value={item.code_pembimbing_akademik}>{item.dosen}</option>
+                                        <option key={index} value={item.code_pembimbing_akademik}>{item.dosens[0].nama}</option>
                                     ))}
                                 </select>
                             </div>
