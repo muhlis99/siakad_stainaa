@@ -95,8 +95,6 @@ function App() {
           <Route path="/tahun" element={<Tahun />} />
           <Route path="/semester" element={<Semester />} />
           <Route path="/kategorinilai" element={<KategoriNilai />} />
-          {/* <Route path="/ploting" element={<PlotingKelas />} />
-          <Route path="/ploting/add" element={<AddPloting />} /> */}
           <Route path="/matakuliah" element={<MataKuliah />} />
           <Route path="/matakuliah/add" element={<AddMataKuliah />} />
           <Route path="/matakuliah/edit/:idMakul" element={<EditMataKuliah />} />
