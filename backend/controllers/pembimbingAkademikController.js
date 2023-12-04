@@ -5,7 +5,7 @@ const dosenModel = require('../models/dosenModel.js')
 const pembimbingAkademik = require('../models/pembimbingAkademikModel.js')
 const detailPembimbingAkademik = require('../models/detailPembimbingAkademikModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
-const { Op } = require('sequelize')
+const { Op, Sequelize, col, fn, where } = require('sequelize')
 
 
 
@@ -269,7 +269,7 @@ module.exports = {
 
     put: async (req, res, next) => {
         const id = req.params.id
-        const { code_jenjang_pendidikan, code_fakultas, code_prodi, dosen, kouta_bimbingan } = req.body
+        const { kouta_bimbingan } = req.body
         const pembimbingAkademikUse = await pembimbingAkademik.findOne({
             include: [{
                 model: jenjangPendidikanModel,
@@ -293,12 +293,7 @@ module.exports = {
         if (!pembimbingAkademikUse) return res.status(404).json({ message: "Data  Pembimbing akademik Tidak Ditemukan" })
 
         await pembimbingAkademik.update({
-            code_jenjang_pendidikan: code_jenjang_pendidikan,
-            code_fakultas: code_fakultas,
-            code_prodi: code_prodi,
-            dosen: dosen,
-            kouta_bimbingan: kouta_bimbingan,
-            status: "aktif"
+            kouta_bimbingan: kouta_bimbingan
         }, {
             where: {
                 id_pembimbing_akademik: id,
@@ -388,29 +383,14 @@ module.exports = {
     },
 
     putDetail: async (req, res, next) => {
-        const id = req.params.id
-        const { code_pembimbing_akademik } = req.body
-        const detailpembimbingAkademikUse = await detailPembimbingAkademik.findOne({
-            include: [{
-                model: pembimbingAkademik,
-                where: { status: "aktif" }
-            }, {
-                model: mahasiswaModel,
-                where: { status: "aktif" }
-            },],
-            where: {
-                id_detail_pembimbing_akademik: id,
-                status: "aktif"
-            }
-        })
-        if (!detailpembimbingAkademikUse) return res.status(404).json({ message: "Data detail Pembimbing akademik Tidak Ditemukan" })
-
-        await detailpembimbingAkademikUse.update({
+        const { code_pembimbing_akademik, id } = req.body
+        const dataIdMhs = id.map(el => { return el })
+        await detailPembimbingAkademik.update({
             code_pembimbing_akademik: code_pembimbing_akademik,
             status: "aktif"
         }, {
             where: {
-                id_detail_pembimbing_akademik: id,
+                id_detail_pembimbing_akademik: dataIdMhs,
                 status: "aktif"
             }
         }).
@@ -459,7 +439,7 @@ module.exports = {
 
     //  user dosen
     mahasiswaByDosenPembimbing: async (req, res, next) => {
-        const { codeJnjPen, codeFks, codePrd, nipy } = req.params
+        const { codeJnjPen, codeFks, codePrd, nipy, thnAngkatan } = req.params
         const dosenUse = await dosenModel.findOne({
             where: {
                 nip_ynaa: nipy,
@@ -483,7 +463,7 @@ module.exports = {
             }, {
                 model: prodiModel,
                 where: { status: "aktif" }
-            },],
+            }],
             where: {
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
@@ -496,9 +476,10 @@ module.exports = {
         await detailPembimbingAkademik.findAll({
             include: [
                 {
-                    attributes: ["id_mahasiswa", "nim", "nama"],
+                    attributes: ["id_mahasiswa", "nim", "nama", "tanggal_masuk_kuliah"],
                     model: mahasiswaModel,
                     where: {
+                        tanggal_masuk_kuliah: Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('tanggal_masuk_kuliah')), thnAngkatan),
                         status: "aktif"
                     }
                 }
