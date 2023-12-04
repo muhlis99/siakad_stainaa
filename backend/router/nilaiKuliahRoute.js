@@ -7,7 +7,7 @@ router.get('/getById/:id/:codeThnAjr', nilaiKuliahController.getById)
 router.get('/getMhsByKelas/:codeKls', nilaiKuliahController.getMhsByKelas)
 router.get('/deteksiIndexNilai/:nilaiAkhir/:codeThnAjr', nilaiKuliahController.deteksiIndexNilai)
 router.post('/create', nilaiKuliahController.post)
-router.put('/update', nilaiKuliahController.put)
+router.put('/update/:id', nilaiKuliahController.put)
 
 
 
