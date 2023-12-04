@@ -172,35 +172,40 @@ module.exports = {
     },
 
     put: async (req, res, next) => {
-        const data = req.body
+        const id = req.params.id
+        const { code_kategori_nilai, nilai_presentasi, nilai_penguasaan_materi,
+            nilai_slide_power_point, nilai_keaktifan, nilai_hadir, nilai_tugas,
+            nilai_uts, nilai_uas, nilai_jumlah, nilai_akhir } = req.body
 
-        const dataNilai = data.map(el => {
-            let element = {
-                id_nilai_kuliah: el.id_nilai_kuliah,
-                code_kategori_nilai: el.code_kategori_nilai,
-                nilai_presentasi: el.nilai_presentasi,
-                nilai_penguasaan_materi: el.nilai_penguasaan_materi,
-                nilai_slide_power_point: el.nilai_slide_power_point,
-                nilai_keaktifan: el.nilai_keaktifan,
-                nilai_hadir: el.nilai_hadir,
-                nilai_tugas: el.nilai_tugas,
-                nilai_uts: el.nilai_uts,
-                nilai_uas: el.nilai_uas,
-                nilai_jumlah: el.nilai_jumlah,
-                nilai_akhir: el.nilai_akhir,
+        const nilaiUse = await nilaiKuliahModel.findOne({
+            where: {
+                id_nilai_kuliah: id,
                 status: "aktif"
             }
-            return element
         })
-        await nilaiKuliahModel.bulkCreate(dataNilai, {
-            updateOnDuplicate: ["code_kategori_nilai", "nilai_hadir", "nilai_tugas", "nilai_uts", "nilai_uas", "nilai_jumlah", "nilai_akhir"
-                , "nilai_presentasi", "nilai_penguasaan_materi", "nilai_slide_power_point", "nilai_keaktifan"],
+        if (!nilaiUse) return res.status(404).json({ message: "Data nilai Tidak Ditemukan" })
+
+        await nilaiKuliahModel.update({
+            code_kategori_nilai: code_kategori_nilai,
+            nilai_presentasi: nilai_presentasi,
+            nilai_penguasaan_materi: nilai_penguasaan_materi,
+            nilai_slide_power_point: nilai_slide_power_point,
+            nilai_keaktifan: nilai_keaktifan,
+            nilai_hadir: nilai_hadir,
+            nilai_tugas: nilai_tugas,
+            nilai_uts: nilai_uts,
+            nilai_uas: nilai_uas,
+            nilai_jumlah: nilai_jumlah,
+            nilai_akhir: nilai_akhir
+        }, {
+            where: {
+                id_nilai_kuliah: id
+            }
+        }).then(result => {
+            res.status(200).json({
+                message: "Data nilai kuliah success diupdate",
+            })
         }).
-            then(result => {
-                res.status(200).json({
-                    message: "Data nilai kuliah success diupdate",
-                })
-            }).
             catch(err => {
                 next(err)
             })
