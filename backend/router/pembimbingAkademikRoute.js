@@ -9,7 +9,7 @@ router.post('/create', pembimbingAkademikController.post)
 router.put('/update/:id', pembimbingAkademikController.put)
 router.put('/delete/:id', pembimbingAkademikController.delete)
 router.post('/createDetail', pembimbingAkademikController.postDetail)
-router.put('/updateDetail/:id', pembimbingAkademikController.putDetail)
+router.put('/updateDetail', pembimbingAkademikController.putDetail)
 router.put('/deleteDetail/:id', pembimbingAkademikController.deleteDetail)
 
 // dosen
