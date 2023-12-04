@@ -33,6 +33,7 @@ const FormEditPembimbing = () => {
                 setKodeFakultas(response.data.data.code_fakultas)
                 setKodeProdi(response.data.data.code_prodi)
                 setKuota(response.data.data.kouta_bimbingan)
+                console.log(response.data.data);
             } catch (error) {
 
             }

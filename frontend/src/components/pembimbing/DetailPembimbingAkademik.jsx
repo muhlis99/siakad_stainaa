@@ -34,12 +34,23 @@ const DetailPembimbingAkademik = () => {
 
     useEffect(() => {
         getMhsPerPembimbing()
-        // console.log(location.state);
     }, [location, page, keyword])
 
     useEffect(() => {
         getPembimbing()
     }, [nipy, location])
+
+    useEffect(() => {
+        const getDataDsn = async () => {
+            try {
+                const response = await axios.get(`v1/pembimbingAkademik/getById/${location.state.idDsn}`)
+                setNama(response.data.data.dosens[0].nama)
+            } catch (error) {
+
+            }
+        }
+        getDataDsn()
+    }, [location])
 
     const getMhsPerPembimbing = async () => {
         try {
@@ -52,7 +63,6 @@ const DetailPembimbingAkademik = () => {
                 setperPage(response.data.per_page)
                 setJumlah(response.data.data.length)
                 setNipy(response.data.data[0].pembimbingAkademiks[0].dosen)
-                console.log(response.data.data[0].pembimbingAkademiks[0].dosen)
             }
         } catch (error) {
 
@@ -221,16 +231,9 @@ const DetailPembimbingAkademik = () => {
                 </div>
             </div>
             <section className='mb-5'>
-                <h1 className='text-2xl font-bold'>Pembimbing Akademik</h1>
+                <h1 className='text-2xl font-bold'>Pembimbing Akademik <span className='text-red-600'>{nama}</span></h1>
             </section>
             <section>
-                <div className="card bg-base-100 card-bordered shadow-md mb-2">
-                    <div className="card-body p-4">
-                        <div className='mb-2'>
-
-                        </div>
-                    </div>
-                </div>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className='flex justify-between'>
