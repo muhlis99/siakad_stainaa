@@ -18,7 +18,6 @@ const InfoNilai = () => {
     useEffect(() => {
         getKelasById()
         console.log(location.state)
-        // console.log(location.state)
         getNilaiMahasiswa()
     }, [location])
 
@@ -171,7 +170,17 @@ const InfoNilai = () => {
                                                                         }
                                                                     </td>
                                                                     <td className='py-2 border px-1 text-capitalize' align='center'>
-                                                                        <Link to={'/editnilai'} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaEdit /></Link>
+                                                                        <Link to={'/editnilai'} state={{
+                                                                            idNilai: item.id_nilai_kuliah,
+                                                                            kodeMk: location.state.kodeMk,
+                                                                            idKelas: location.state.idKelas,
+                                                                            kodeKls: location.state.kodeKls,
+                                                                            kodeThn: location.state.kodeThn,
+                                                                            kodeSmt: location.state.kodeSmt,
+                                                                            kodeJen: location.state.kodeJen,
+                                                                            kodeFk: location.state.kodeFk,
+                                                                            kodeProd: location.state.kodeProd
+                                                                        }} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaEdit /></Link>
                                                                     </td>
                                                                 </tr>
                                                             ))}
