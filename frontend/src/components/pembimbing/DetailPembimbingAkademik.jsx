@@ -27,31 +27,14 @@ const DetailPembimbingAkademik = () => {
     const [jumlah, setJumlah] = useState("")
     const [kodePembimbing, setKodePembimbing] = useState("")
     const [idDetail, setIdDetail] = useState("")
+    const [checked, setChecked] = useState([])
+    const [select2, setSelect2] = useState([])
+    const [isClearable, setIsClearable] = useState(true)
     const location = useLocation()
 
     useEffect(() => {
-        // const getDataDsn = async () => {
-        //     try {
-        //         const response = await axios.get(`v1/pembimbingAkademik/getById/${location.state.idDsn}`)
-        //         setKodeBimbing(response.data.data.code_pembimbing_akademik)
-        //         setNama(response.data.data.dosens[0].nama)
-        //         setNipy(response.data.data.dosens[0].nip_ynaa)
-        //         setJenjang(response.data.data.jenjangPendidikans[0].nama_jenjang_pendidikan)
-        //         setFakultas(response.data.data.fakultas[0].nama_fakultas)
-        //         setProdi(response.data.data.prodis[0].nama_prodi)
-        //         setKuota(response.data.data.kouta_bimbingan)
-        //     } catch (error) {
-
-        //     }
-        // }
-        // getDataDsn()
-        console.log(location.state);
-    }, [location.state])
-
-
-
-    useEffect(() => {
         getMhsPerPembimbing()
+        console.log(location.state);
     }, [location, page, keyword])
 
     useEffect(() => {
@@ -74,6 +57,14 @@ const DetailPembimbingAkademik = () => {
         }
     }
 
+    const handleCheck = (e, item) => {
+        if (e.target.checked) {
+            setChecked([...checked, item.id_detail_pembimbing_akademik])
+        } else {
+            setChecked(checked.filter((o) => o !== item.id_detail_pembimbing_akademik))
+        }
+    }
+
     const pageCount = Math.ceil(rows / perPage)
 
     const changePage = (event) => {
@@ -87,7 +78,14 @@ const DetailPembimbingAkademik = () => {
     }
 
     const modalOpen = () => {
-        document.getElementById('my-modal').checked = true
+        if (checked.length == 0) {
+            Swal.fire({
+                title: 'Tidak ada data yang dipilih',
+                icon: 'error'
+            })
+        } else {
+            document.getElementById('my-modal').checked = true
+        }
     }
 
     const modalClose = () => {
@@ -167,16 +165,49 @@ const DetailPembimbingAkademik = () => {
         })
     }
 
+    const updateDetail = async (e) => {
+        e.preventDefault()
+        // setLoading(true)
+        try {
+            await axios.put(`v1/pembimbingAkademik/updateDetail`, {
+                id: checked,
+                code_pembimbing_akademik: kodePembimbing
+            }).then(function (response) {
+                // setLoading(false)
+                Swal.fire({
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getMhsPerPembimbing()
+                });
+            })
+        } catch (error) {
+
+        }
+    }
+
     return (
         <div className='mt-2 container'>
             <input type="checkbox" id="my-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box w-1/3 max-w-2xl relative">
                     <button className='btn btn-xs btn-circle btn-error absolute right-2 top-2' onClick={modalClose}><FaTimes /></button>
-                    <h3 className="font-bold text-xl">judul</h3>
                     <div className='py-4'>
-                        <form>
-
+                        <form onSubmit={updateDetail}>
+                            <div>
+                                <label className="label">
+                                    <span className="text-base label-text font-semibold">Dosen Pembimbing</span>
+                                </label>
+                                <select className='select select-bordered select-sm w-full' value={kodePembimbing} onChange={(e) => setKodePembimbing(e.target.value)}>
+                                    <option value="">Dosen Pembimbing</option>
+                                    {Pembimbing.map((item, index) => (
+                                        <option key={index} value={item.code_pembimbing_akademik}>{item.dosens[0].nama}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className='mt-5 flex justify-center'>
+                                <button className='btn btn-sm btn-primary'>Update</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -188,77 +219,18 @@ const DetailPembimbingAkademik = () => {
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
                         <div className='mb-2'>
-                            <Link to='/pembimbingakademik' state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply />Kembali</Link>
-                            {kuota != jumlah ? <Link to='/setpembimbingakademik' state={{ kodePembimbing: location.state.kodePembimbing, idDsn: location.state.idDsn, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/pembimbingakademik' }} className="btn btn-primary btn-sm float-right capitalize rounded-md"><FaCog />Set Mahasiswa</Link> : ""}
+
                         </div>
-                        {/* <div className="grid grid-cols-2 gap-2 text-[14px]">
-                            <div className='flex gap-2'>
-                                <div className='flex-initial w-60'>
-                                    <label>
-                                        <span className="">NIPY</span>
-                                    </label>
-                                </div>
-                                <div className='w-full'>
-                                    <a>: {nipy}</a>
-                                </div>
-                            </div>
-                            <div className='flex gap-2'>
-                                <div className='flex-initial w-60'>
-                                    <label>
-                                        <span className="">JENJANG PENDIDIKAN</span>
-                                    </label>
-                                </div>
-                                <div className='w-full'>
-                                    <a>: {jenjang}</a>
-                                </div>
-                            </div>
-                            <div className='flex gap-2'>
-                                <div className='flex-initial w-60'>
-                                    <label>
-                                        <span className="">NAMA DOSEN</span>
-                                    </label>
-                                </div>
-                                <div className='w-full'>
-                                    <a>: {nama}</a>
-                                </div>
-                            </div>
-                            <div className='flex gap-2'>
-                                <div className='flex-initial w-60'>
-                                    <label>
-                                        <span className="">FAKULTAS</span>
-                                    </label>
-                                </div>
-                                <div className='w-full'>
-                                    <a>: {fakultas}</a>
-                                </div>
-                            </div>
-                            <div className='flex gap-2'>
-                                <div className='flex-initial w-60'>
-                                    <label>
-                                        <span className="">KUOTA BIMBINGAN</span>
-                                    </label>
-                                </div>
-                                <div className='w-full flex gap-3'>
-                                    <a>: {kuota} MAHASISWA</a>
-                                    <button className='btn btn-circle btn-primary btn-xs' onClick={modalOpen}><FaSave /></button>
-                                </div>
-                            </div>
-                            <div className='flex gap-2'>
-                                <div className='flex-initial w-60'>
-                                    <label>
-                                        <span className="">PRODI</span>
-                                    </label>
-                                </div>
-                                <div className='w-full'>
-                                    <a>: {prodi}</a>
-                                </div>
-                            </div>
-                        </div> */}
                     </div>
                 </div>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <div>
+                        <div className='flex justify-between'>
+                            <div className='flex gap-2'>
+                                <Link to='/pembimbingakademik' state={{ collaps: 'kuliah', activ: '/pembimbingakademik' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply />Kembali</Link>
+                                <Link to='/setpembimbingakademik' state={{ kodePembimbing: location.state.kodePembimbing, kuota: location.state.kuota, idDsn: location.state.idDsn, jen: location.state.jen, fak: location.state.fak, pro: location.state.pro, collaps: 'kuliah', activ: '/pembimbingakademik' }} className="btn btn-primary btn-sm capitalize rounded-md"><FaCog />Set Mahasiswa</Link>
+                                <button onClick={modalOpen} className='btn btn-info btn-sm capitalize rounded-md'><FaEdit />Edit Mahasiswa</button>
+                            </div>
                             <div className="form-control">
                                 <div className="input-group justify-end">
                                     <input
@@ -297,7 +269,16 @@ const DetailPembimbingAkademik = () => {
                                             MhsPembimbing.map((item, index) => (
                                                 <tr key={index} className='bg-white border-b text-gray-500 border-x'>
                                                     <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">
-
+                                                        <div className="form-control">
+                                                            <label className="cursor-pointer label justify-center">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={checked.includes(item.id_detail_pembimbing_akademik)}
+                                                                    onChange={(e) => handleCheck(e, item)}
+                                                                    className="checkbox checkbox-success checkbox-sm"
+                                                                />
+                                                            </label>
+                                                        </div>
                                                     </th>
                                                     <th scope="row" className="px-2 py-2 font-semibold whitespace-nowrap">{(page - 1) * 10 + index + 1}</th>
                                                     <td className='px-2 py-2 font-semibold'>{item.nim}</td>
@@ -306,7 +287,7 @@ const DetailPembimbingAkademik = () => {
                                                     <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].code_fakultas}</td>
                                                     <td className='px-2 py-2 font-semibold'>{item.mahasiswas[0].code_prodi}</td>
                                                     <td className='px-2 py-2' align='center'>
-                                                        <button onClick={() => modalOpen(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-warning btn-circle mr-2"><FaEdit /></button>
+                                                        {/* <button onClick={() => modalOpen(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-warning btn-circle mr-2"><FaEdit /></button> */}
                                                         <button onClick={() => nonaktifkan(item.id_detail_pembimbing_akademik)} className="btn btn-xs btn-error btn-circle"><FaTrash /></button>
                                                     </td>
                                                 </tr>

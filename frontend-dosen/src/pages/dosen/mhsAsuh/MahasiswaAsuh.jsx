@@ -15,6 +15,7 @@ const MahasiswaAsuh = () => {
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
+    const [tahunAngkatan, setTahunAngkatan] = useState("")
     const [username, setUsername] = useState("")
     const [identitas, setIdentitas] = useState([])
     const [Mahasiswa, setMahasiswa] = useState([])
@@ -47,7 +48,11 @@ const MahasiswaAsuh = () => {
 
     useEffect(() => {
         getMhsAsuh()
-    }, [kodeJenjang, kodeFakultas, kodeProdi, username])
+    }, [kodeJenjang, kodeFakultas, kodeProdi, username, tahunAngkatan])
+
+    useEffect(() => {
+        getYearNow()
+    }, [])
 
     const getJenjangPendidikan = async () => {
         try {
@@ -85,7 +90,7 @@ const MahasiswaAsuh = () => {
     const getMhsAsuh = async () => {
         try {
             if (kodeJenjang && kodeFakultas && kodeProdi && username) {
-                const response = await axios.get(`v1/pembimbingAkademik/mahasiswaByDosenPembimbing/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}`)
+                const response = await axios.get(`v1/pembimbingAkademik/mahasiswaByDosenPembimbing/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}/${tahunAngkatan}`)
                 setIdentitas(response.data.identitas)
                 console.log(response.data.identitas)
                 setMahasiswa(response.data.data)
@@ -93,6 +98,24 @@ const MahasiswaAsuh = () => {
         } catch (error) {
 
         }
+    }
+
+    const getYearNow = () => {
+        const d = new Date()
+        let year = d.getFullYear()
+        console.log(year)
+    }
+
+    const d = new Date()
+    let year = d.getFullYear()
+    const th = []
+    for (let tahun = 2021; tahun <= year; tahun++) {
+        th.push(
+            // <option key={tahun} value={tahun}>{tahun}</option>
+            <li className="nav-item" key={tahun}>
+                <a className={`nav-link ${tahun == tahunAngkatan ? 'active' : ''}`} aria-current="page" href="#">{tahun}</a>
+            </li>
+        )
     }
 
     return (
@@ -155,7 +178,12 @@ const MahasiswaAsuh = () => {
                                         </Card>
                                         {kodeJenjang && kodeFakultas && kodeProdi ?
                                             <Card className='shadow-md mt-3'>
-                                                <Card.Body>
+                                                <Card.Body className='pt-0'>
+                                                    <Row className='mb-3'>
+                                                        <ul className="nav nav-pills">
+                                                            {th}
+                                                        </ul>
+                                                    </Row>
                                                     <Row>
                                                         <Col className='px-3'>
                                                             <>
