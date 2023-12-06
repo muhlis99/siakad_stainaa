@@ -487,33 +487,37 @@ module.exports = {
         await jadwalPertemuanModel.findAll({
             include: [
                 {
-                    attributes: ['id_jadwal_kuliah',
-                        'code_jadwal_kuliah', 'code_kelas',
-                        'code_ruang', 'hari', 'jam_mulai', 'jam_selesai',
-                        'dosen_pengajar', 'dosen_pengganti'],
+                    attributes: ['hari', 'jam_mulai', 'jam_selesai', 'dosen_pengajar'],
                     model: jadwalKuliahModel,
                     status: "aktif",
                     order: [
                         ['hari', 'ASC']
                     ],
-                    include: [{
-                        attributes: ['id_sebaran',
-                            'code_sebaran', 'status_makul',
-                            'status_bobot_makul'],
-                        model: sebaranMataKuliah,
-                        status: "aktif",
-                        include: [{
-                            model: mataKuliahModel
-                        }]
-                    }, {
-                        model: ruangModel,
-                        status: "aktif"
-                    }, {
-                        attributes: ['nama'],
-                        model: dosenModel
-                    }]
-                },
-
+                    include: [
+                        {
+                            attributes: ['status_makul', 'status_bobot_makul'],
+                            model: sebaranMataKuliah,
+                            status: "aktif",
+                            include: [
+                                {
+                                    attributes: ['nama_mata_kuliah'],
+                                    model: mataKuliahModel
+                                }
+                            ]
+                        }, {
+                            attributes: ['nama_ruang', 'lokasi'],
+                            model: ruangModel,
+                            status: "aktif"
+                        }, {
+                            attributes: ['nama'],
+                            model: dosenModel,
+                            as: "dosenPengajar"
+                        }, {
+                            attributes: ['nama_kelas'],
+                            model: kelasModel
+                        }
+                    ]
+                }
             ],
             attributes: ['id_jadwal_pertemuan', 'code_jadwal_pertemuan',
                 'pertemuan', 'tanggal_pertemuan', 'jenis_pertemuan',
