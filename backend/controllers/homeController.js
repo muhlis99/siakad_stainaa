@@ -173,6 +173,10 @@ module.exports = {
                     }, {
                         model: ruangModel,
                         status: "aktif"
+                    }, {
+                        attributes: ['nama'],
+                        model: dosenModel,
+                        as: "dosenPengajar"
                     }]
                 },
 
