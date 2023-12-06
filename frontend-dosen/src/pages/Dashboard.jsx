@@ -137,7 +137,7 @@ const Dashboard = () => {
                         :
                         <div className="content-wrapper">
                             <div className="page-header">
-                                <h2 className='fs-4 fw-semibold' >Dashboard</h2>
+                                <h2 className='fs-4 font-bold' >Dashboard</h2>
                             </div>
                             {level == 'mahasiswa' ?
                                 <>

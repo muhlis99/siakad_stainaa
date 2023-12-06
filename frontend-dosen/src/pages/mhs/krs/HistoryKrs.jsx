@@ -108,13 +108,13 @@ const HistoryKrs = () => {
                         :
                         <div className="content-wrapper">
                             <div className="page-header">
-                                <h3 className="page-title">Riwayat Kartu Rencana Studi</h3>
+                                <h2 className='fs-4 font-bold' >Riwayat Kartu Rencana Studi</h2>
                             </div>
                             <Row>
                                 <Col>
-                                    <Card className='shadow mb-3'>
-                                        <Card.Body className='justify'>
-                                            <Row className='mb-2 py-4 ps-3 shadow-sm rounded-end' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 2px' }}>
+                                    <Card className='shadow mb-4'>
+                                        <Card.Body className='justify py-3'>
+                                            <Row className='py-4 ps-3 shadow-sm rounded' style={{ background: '#E9EAE1' }}>
                                                 <Col lg="6" sm="12">
                                                     <Row className='mb-2'>
                                                         <Col className='p-0' lg="3" md="3" sm="5" xs="5">
@@ -164,56 +164,61 @@ const HistoryKrs = () => {
                                                     </Row>
                                                 </Col>
                                             </Row>
-                                            <Row className='mt-4 mb-1'>
-                                                <Col lg="2" className='p-1'>
-                                                    <select className="form-select form-select-sm mt-2" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
-                                                        <option value="">Tahun</option>
-                                                        {Tahun.map((item) => (
-                                                            <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
-                                                        ))}
-                                                    </select>
-                                                </Col>
-                                                <Col lg="2" className='p-1'>
-                                                    <select className="form-select form-select-sm mt-2" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
-                                                        <option value="">Semester</option>
-                                                        {Semester.map((item) => (
-                                                            <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
-                                                        ))}
-                                                    </select>
+
+                                        </Card.Body>
+                                    </Card>
+                                    <Card className='shadow'>
+                                        <Card.Body className='py-3'>
+                                            <Row className='mb-1'>
+                                                <Col lg="12" className='p-1 flex justify-center'>
+                                                    <div className='flex gap-2'>
+                                                        <select className="form-select w-full max-w-xs" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                                            <option value="">Tahun</option>
+                                                            {Tahun.map((item) => (
+                                                                <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                                            ))}
+                                                        </select>
+                                                        <select className="form-select w-full max-w-xs" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
+                                                            <option value="">Semester</option>
+                                                            {Semester.map((item) => (
+                                                                <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
                                                 </Col>
                                             </Row>
-                                            <Row className='mt-1'>
+                                            <Row className='mt-2'>
                                                 <Col className='p-1'>
                                                     <div className="table-responsive">
                                                         <Table hover>
                                                             <thead>
-                                                                <tr className='border-bottom-3'>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>#</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kode MK</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>SKS</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Bobot MK</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status MK</th>
+                                                                <tr className='border'>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>#</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Kode MK</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Mata Kuliah</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>SKS</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Bobot MK</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Status MK</th>
                                                                 </tr>
                                                             </thead>
                                                             {riwayat.length >= 1 ?
                                                                 <tbody>
                                                                     {riwayat.map((item, index) => (
                                                                         <tr key={item.id_krs} className='border'>
-                                                                            <th scope='row' className='py-2'>{index + 1}</th>
-                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].code_mata_kuliah}</td>
-                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
-                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].status_bobot_makul}</td>
-                                                                            <td className='py-2 text-capitalize'>{item.sebaranMataKuliahs[0].status_makul}</td>
+                                                                            <th scope='row' className='py-3'>{index + 1}</th>
+                                                                            <td className='py-3'>{item.sebaranMataKuliahs[0].mataKuliahs[0].code_mata_kuliah}</td>
+                                                                            <td className='py-3'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                            <td className='py-3'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
+                                                                            <td className='py-3'>{item.sebaranMataKuliahs[0].status_bobot_makul}</td>
+                                                                            <td className='py-3 text-capitalize'>{item.sebaranMataKuliahs[0].status_makul}</td>
                                                                         </tr>
                                                                     ))}
                                                                     {total &&
                                                                         <tr className='border'>
-                                                                            <td colSpan={3} align='center' className='font-bold'>
+                                                                            <td colSpan={3} align='center' className='py-3'>
                                                                                 Total SKS
                                                                             </td>
-                                                                            <td colSpan={3} className='font-bold'>
+                                                                            <td colSpan={3} className='py-3'>
                                                                                 {biodata.total_sks}
                                                                             </td>
                                                                         </tr>
