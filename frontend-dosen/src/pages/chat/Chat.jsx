@@ -289,22 +289,29 @@ const Chat = () => {
     const simpanReg = async (e) => {
         e.preventDefault()
         try {
-            await axios.post('/v1/kontak/registrasiKontak', {
-                username: username,
-                email: email,
-                level: level
-            }).then(function (response) {
+            if (username == '') {
                 Swal.fire({
-                    title: "Berhasil",
-                    text: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    setUsername("")
-                    setLevel("")
-                    cekmessageIdKontak()
-                    setStatus("")
+                    title: 'Username tidak boleh kosong',
+                    icon: 'error'
                 })
-            })
+            } else {
+                await axios.post('/v1/kontak/registrasiKontak', {
+                    username: username,
+                    email: email,
+                    level: level
+                }).then(function (response) {
+                    Swal.fire({
+                        title: "Berhasil",
+                        text: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        setUsername("")
+                        setLevel("")
+                        cekmessageIdKontak()
+                        setStatus("")
+                    })
+                })
+            }
         } catch (error) {
         }
     }
@@ -317,7 +324,7 @@ const Chat = () => {
                 setlistImage(response.data.data)
             }
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
     }
 
@@ -329,7 +336,7 @@ const Chat = () => {
                 setlistKontakImage(response.data.data)
             }
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
     }
 
@@ -377,9 +384,10 @@ const Chat = () => {
         }
     }
 
-    console.log(listPesan);
+    // console.log(listPesan);
     return (
         <Layout>
+            <title>Konsultasi</title>
             {isError ? <Navigate to="/login" /> :
                 <>
                     {load ?

@@ -137,13 +137,13 @@ const UpdatePengajuan = () => {
                             :
                             <div className="content-wrapper">
                                 <div className="page-header d-flex gap-2">
-                                    <h3 className="page-title">Riwayat Studi Mahasiswa</h3>
+                                    <h2 className='fs-4 font-bold'>Riwayat Studi Mahasiswa</h2>
                                 </div>
                                 <Form noValidate validated={validated} onSubmit={simpanPengajuan}>
                                     <Row>
                                         <Col>
-                                            <Card className='shadow-sm'>
-                                                <Card.Body>
+                                            <Card className='shadow'>
+                                                <Card.Body className='p-3'>
                                                     <Row className='mb-5'>
                                                         <Col lg="6" className="mb-2">
                                                             <Row>

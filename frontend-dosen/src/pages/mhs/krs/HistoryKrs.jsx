@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card, Table, Image } from 'react-bootstrap'
+import { Row, Col, Card, Table, Image, Dropdown } from 'react-bootstrap'
 import dataBlank from "../../../assets/images/noData.svg"
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
 import { Navigate } from "react-router-dom"
 import axios from 'axios'
 import { Circles } from "react-loader-spinner"
+import { GoSingleSelect } from "react-icons/go"
 
 const HistoryKrs = () => {
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
     const [Tahun, setTahun] = useState([])
     const [Semester, setSemester] = useState([])
+    const [SemesterMhs, setSemesterMhs] = useState([])
+    const [parameters, setParameters] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
     const [nim, setNim] = useState("")
@@ -34,12 +37,22 @@ const HistoryKrs = () => {
     }, [dispatch])
 
     useEffect(() => {
-        getDataTahun()
-    }, [])
+        console.log(parameters);
+    }, [parameters])
 
     useEffect(() => {
-        getDataSemester()
-    }, [kodeTahun])
+        const getSemesterMhs = async () => {
+            try {
+                if (user) {
+                    const response = await axios.get(`v1/krs/getSemesterMhs/${user.data.username}`)
+                    setSemesterMhs(response.data.data)
+                }
+            } catch (error) {
+
+            }
+        }
+        getSemesterMhs()
+    }, [user])
 
     useEffect(() => {
         const getBiodata = async () => {
@@ -56,8 +69,8 @@ const HistoryKrs = () => {
 
     useEffect(() => {
         const getHistoryKrs = async () => {
-            if (user && kodeTahun && kodeSemester) {
-                const response = await axios.get(`v1/krs/viewKrsMahasiswaHistory/${user.data.username}/${kodeTahun}/${kodeSemester}`)
+            if (user && parameters) {
+                const response = await axios.get(`v1/krs/viewKrsMahasiswaHistory/${user.data.username}/${parameters}`)
                 setBiodata(response.data.identitas)
                 setRiwayat(response.data.data)
                 if (response.data.data[0].status_krs == "") {
@@ -68,23 +81,7 @@ const HistoryKrs = () => {
             }
         }
         getHistoryKrs()
-    }, [user, kodeTahun, kodeSemester])
-
-    const getDataTahun = async () => {
-        const response = await axios.get('v1/tahunAjaran/all')
-        setTahun(response.data.data)
-    }
-
-    const getDataSemester = async () => {
-        if (kodeTahun) {
-            setKodeSemester("")
-            const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahun}`)
-            setSemester(response.data.data)
-        } else {
-            setSemester([])
-            setKodeSemester('')
-        }
-    }
+    }, [user, parameters])
 
     return (
         <Layout>
@@ -158,8 +155,20 @@ const HistoryKrs = () => {
                                                         <Col className='p-0' lg="1" md="1" sm="1" xs="1">
                                                             <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
                                                         </Col>
-                                                        <Col className='p-0'>
+                                                        <Col className='p-0 d-flex gap-2'>
                                                             <Card.Text className='fw-bold text-uppercase'>Semester {biodata.semester}</Card.Text>
+                                                            <Dropdown>
+                                                                <Dropdown.Toggle className='p-0 btn btn-light' id="dropdown-basic">
+                                                                    <GoSingleSelect className='text-[20px]' />
+                                                                </Dropdown.Toggle>
+                                                                <Dropdown.Menu>
+                                                                    {SemesterMhs.map((item) => (
+                                                                        <Dropdown.Item key={item.id_history} onClick={() => setParameters(item.code_tahun_ajaran + '/' + item.code_semester + '/' + item.status)}>
+                                                                            Semester {item.semesters[0].semester}
+                                                                        </Dropdown.Item>
+                                                                    ))}
+                                                                </Dropdown.Menu>
+                                                            </Dropdown>
                                                         </Col>
                                                     </Row>
                                                 </Col>
@@ -169,24 +178,6 @@ const HistoryKrs = () => {
                                     </Card>
                                     <Card className='shadow'>
                                         <Card.Body className='py-3'>
-                                            <Row className='mb-1'>
-                                                <Col lg="12" className='p-1 flex justify-center'>
-                                                    <div className='flex gap-2'>
-                                                        <select className="form-select w-full max-w-xs" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
-                                                            <option value="">Tahun</option>
-                                                            {Tahun.map((item) => (
-                                                                <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
-                                                            ))}
-                                                        </select>
-                                                        <select className="form-select w-full max-w-xs" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
-                                                            <option value="">Semester</option>
-                                                            {Semester.map((item) => (
-                                                                <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                </Col>
-                                            </Row>
                                             <Row className='mt-2'>
                                                 <Col className='p-1'>
                                                     <div className="table-responsive">
