@@ -400,8 +400,10 @@ module.exports = {
         const nim = req.params.nim
         await historyMahasiswa.findAll({
             include: [{
+                attributes: ['id_tahun_ajaran', 'code_tahun_ajaran', 'tahun_ajaran'],
                 model: tahunAjaranModel
             }, {
+                attributes: ['id_semester', 'code_semester', 'semester'],
                 model: semesterModel
             }],
             where: {
