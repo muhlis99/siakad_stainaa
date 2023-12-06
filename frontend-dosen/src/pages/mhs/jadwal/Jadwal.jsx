@@ -7,6 +7,7 @@ import { getMe } from "../../../features/authSlice"
 import { Navigate } from "react-router-dom"
 import axios from 'axios'
 import { Circles } from "react-loader-spinner"
+import moment from "moment"
 
 const Jadwal = () => {
     const dispatch = useDispatch()
@@ -70,8 +71,8 @@ const Jadwal = () => {
                             <Row>
                                 <Col>
                                     <Card className='shadow mb-4 rounded-3'>
-                                        <Card.Body className='justify'>
-                                            <Row className='mb-5 py-4 ps-3 shadow-sm rounded-end-3' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 2px' }}>
+                                        <Card.Body className='justify py-3'>
+                                            <Row className='py-4 ps-3 shadow-sm rounded' style={{ background: '#E9EAE1' }}>
                                                 <Col lg="6" sm="12">
                                                     <Row className='mb-2'>
                                                         <Col className='p-0' lg="3" md="3" sm="5" xs="5">
@@ -143,53 +144,58 @@ const Jadwal = () => {
                                                     </Row>
                                                 </Col>
                                             </Row>
+                                        </Card.Body>
+                                    </Card>
+                                    <Card>
+                                        <Card.Body>
                                             <Row>
-                                                <Col>
-                                                    <div className="table-responsive">
-                                                        <Table hover>
-                                                            <thead>
-                                                                <tr className='border-bottom-3'>
-                                                                    <th colSpan={9} className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jadwal Kuliah Mingguan</th>
-                                                                </tr>
-                                                                <tr className='border-bottom-3'>
-                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>#</th>
-                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Hari</th>
-                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Tanggal</th>
-                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jam</th>
-                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
-                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Jenis Pertemuan</th>
-                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Pembelajaran</th>
-                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>URL</th>
-                                                                    <th className='fw-bold py-3 text-center' style={{ background: '#D5D6C6' }}>Ruang</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                {dataJadwal.length >= 1 ? dataJadwal.map((item, index) => (
-                                                                    <tr key={item.id_jadwal_pertemuan} className='border'>
-                                                                        <th scope='row' className='py-2 text-center'>{index + 1}</th>
-                                                                        <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].hari}</td>
-                                                                        <td className='py-2' align='center'>{item.tanggal_pertemuan}</td>
-                                                                        <td className='py-2' align='center'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</td>
-                                                                        <td className='py-2' align='center'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                        <td className='py-2 text-capitalize' align='center'>{item.jenis_pertemuan}</td>
-                                                                        <td className='py-2 text-capitalize' align='center'>{item.metode_pembelajaran}</td>
-                                                                        <td className='py-2 text-capitalize' align='center'>{item.url_online == "" ?
-                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL tidak ada</span>
-                                                                            : item.url_online}</td>
-                                                                        <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
-                                                                    </tr>
-                                                                )) :
-                                                                    <tr className='border'>
-                                                                        <td colSpan={8} align='center'>
-                                                                            <Image src={dataBlank} thumbnail width={150} />
-                                                                            <p className='fw-bold text-muted'>Tidak Ada Data</p>
-                                                                        </td>
-                                                                    </tr>
-                                                                }
-                                                            </tbody>
-                                                        </Table>
-                                                    </div>
-                                                </Col>
+                                                {dataJadwal.length >= 1 ? dataJadwal.map((item, index) => (
+                                                    <Col key={item.id_jadwal_pertemuan} lg="4" className='mb-3'>
+                                                        <Card className='shadow h-100'>
+                                                            <Card.Body className='p-3'>
+                                                                <span className='text-capitalize fs-5 fw-semibold'>{item.jadwalKuliahs[0].hari},&nbsp;{moment(item.tanggal_pertemuan).format('DD MMMM YYYY')}</span>
+                                                                <div className='text-muted'>
+                                                                    <span className='fw-semibold'>
+                                                                        {item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}
+                                                                    </span>
+                                                                </div>
+                                                                <Row className='mt-3'>
+                                                                    <Col>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #E9EAE1' }}>
+                                                                            <span className='fw-bold fs-6 text-capitalize text-dark'>Jam</span>
+                                                                            <div className='fw-semibold text-[13px] text-secondary'>
+                                                                                {item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}
+                                                                            </div>
+                                                                        </div>
+                                                                    </Col>
+                                                                    <Col>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #E9EAE1' }}>
+                                                                            <span className='fw-bold fs-6 text-capitalize text-dark'>{item.jenis_pertemuan}</span>
+                                                                            {item.metode_pembelajaran == 'offline' ?
+                                                                                <div className='fw-semibold text-[13px] text-secondary text-capitalize'>{item.metode_pembelajaran}</div>
+                                                                                : item.metode_pembelajaran == 'online' ?
+                                                                                    <div className='fw-semibold text-[13px] text-info text-capitalize'>{item.metode_pembelajaran}</div>
+                                                                                    :
+                                                                                    <div className='fw-semibold text-[13px] text-info text-capitalize'>{item.metode_pembelajaran}</div>
+                                                                            }
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
+                                                                <hr />
+                                                                <Row className='mt-3'>
+                                                                    <Col>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #E9EAE1' }}>
+                                                                            <span className='fw-bold fs-6 text-capitalize text-dark'>Pengampu</span>
+                                                                            <div className='fw-semibold text-[13px] text-secondary'>
+                                                                                {/* {item.} */}
+                                                                            </div>
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
+                                                            </Card.Body>
+                                                        </Card>
+                                                    </Col>
+                                                )) : ""}
                                             </Row>
                                         </Card.Body>
                                     </Card>
