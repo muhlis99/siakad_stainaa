@@ -493,6 +493,9 @@ module.exports = {
                         'dosen_pengajar', 'dosen_pengganti'],
                     model: jadwalKuliahModel,
                     status: "aktif",
+                    order: [
+                        ['hari', 'ASC']
+                    ],
                     include: [{
                         attributes: ['id_sebaran',
                             'code_sebaran', 'status_makul',
@@ -516,7 +519,10 @@ module.exports = {
                 code_jadwal_kuliah: dataCodeJadwalKuliah,
                 tanggal_pertemuan: dataDate,
                 status: "aktif"
-            }
+            },
+            order: [
+                ['tanggal_pertemuan', 'ASC']
+            ]
         }).then(result => {
             res.status(201).json({
                 message: "Data jadwal kuliah mahasiswa successfuly",
