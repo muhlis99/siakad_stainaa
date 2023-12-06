@@ -562,7 +562,12 @@ module.exports = {
                 status: status
             }
         })
-        if (!data) return res.status(404).json({ message: "data mahasiswa tidak ditemukan" })
+        if (data.status == "cuti") return res.status(404).json({
+            message: "data mahasiswa",
+            data: [{
+                krs: "mahasiswa dalam masa cuti"
+            }]
+        })
         const totalSKS = await krsModel.sum('sebaranMataKuliahs.mataKuliahs.sks', {
             include: [
                 {
