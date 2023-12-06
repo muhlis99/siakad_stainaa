@@ -7,6 +7,7 @@ import { getMe } from "../../../features/authSlice"
 import { Navigate } from "react-router-dom"
 import axios from 'axios'
 import { Circles } from "react-loader-spinner"
+import Swal from 'sweetalert2'
 
 const MahasiswaAsuh = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -103,7 +104,11 @@ const MahasiswaAsuh = () => {
     const getYearNow = () => {
         const d = new Date()
         let year = d.getFullYear()
-        console.log(year)
+        setTahunAngkatan(year)
+    }
+
+    const getYearSelected = (e) => {
+        setTahunAngkatan(e)
     }
 
     const d = new Date()
@@ -111,9 +116,8 @@ const MahasiswaAsuh = () => {
     const th = []
     for (let tahun = 2021; tahun <= year; tahun++) {
         th.push(
-            // <option key={tahun} value={tahun}>{tahun}</option>
             <li className="nav-item" key={tahun}>
-                <a className={`nav-link ${tahun == tahunAngkatan ? 'active' : ''}`} aria-current="page" href="#">{tahun}</a>
+                <a className={`nav-link ${tahun == tahunAngkatan ? 'active' : ''}`} onClick={() => getYearSelected(tahun)} aria-current="page" href="#">{tahun}</a>
             </li>
         )
     }
@@ -180,7 +184,7 @@ const MahasiswaAsuh = () => {
                                             <Card className='shadow-md mt-3'>
                                                 <Card.Body className='pt-0'>
                                                     <Row className='mb-3'>
-                                                        <ul className="nav nav-pills">
+                                                        <ul className="nav nav-tabs">
                                                             {th}
                                                         </ul>
                                                     </Row>

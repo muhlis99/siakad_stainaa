@@ -1,0 +1,11 @@
+.drop1 #drop-item-1 {
+    width: 300px;
+}
+
+.drop1:hover #drop-item-1 {
+    display: block;
+}
+
+.nav-profile:hover .dropdown-menu {
+    display: block;
+}

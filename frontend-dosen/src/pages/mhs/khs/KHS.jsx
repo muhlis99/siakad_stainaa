@@ -159,14 +159,14 @@ const KHS = () => {
                         :
                         <div className="content-wrapper">
                             <div className="page-header">
-                                <h3 className="page-title">Kartu Hasil Studi</h3>
+                                <h2 className='fs-4 font-bold' >Kartu Hasil Studi</h2>
                             </div>
                             <Row>
                                 <Col>
                                     <Card className='shadow mb-4'>
-                                        <Card.Body className='justify'>
+                                        <Card.Body className='justify py-3'>
                                             {data.length != 0 ?
-                                                <Row className='mb-5 py-3 ps-3 shadow-sm rounded-end' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 2px' }}>
+                                                <Row className='py-3 ps-3 shadow-sm rounded' style={{ background: '#E9EAE1' }}>
                                                     <Col lg="6" sm="12">
                                                         <Row className='mb-2'>
                                                             <Col className='p-0' lg="3" md="3" sm="5" xs="5">
@@ -239,7 +239,7 @@ const KHS = () => {
                                                     </Col>
                                                 </Row>
                                                 :
-                                                <Row className='mb-3 py-4 ps-3 shadow-sm rounded-end' style={{ background: '#E9EAE1', borderLeft: 'solid #5E7C60 2px' }}>
+                                                <Row className='py-3 ps-3 shadow-sm rounded' style={{ background: '#E9EAE1' }}>
                                                     <Col lg="6" sm="12">
                                                         <Row className='mb-2'>
                                                             <Col className='p-0' lg="3" md="3" sm="5" xs="5">
@@ -291,6 +291,10 @@ const KHS = () => {
                                                 </Row>
                                             }
 
+                                        </Card.Body>
+                                    </Card>
+                                    <Card>
+                                        <Card.Body className='py-3'>
                                             <Row className='mb-2'>
                                                 <Col lg="6" className='p-0'>
                                                     <Row>
@@ -317,48 +321,48 @@ const KHS = () => {
                                                         <Table hover>
                                                             <thead>
                                                                 <tr>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }} rowSpan={2}>#</th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }} rowSpan={2}>Kode MK</th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }} rowSpan={2}>Mata Kuliah</th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }}>Bobot MK</th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }} colSpan={3}>Nilai</th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }} rowSpan={2}>SKS*Indeks</th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}>#</th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}>Kode MK</th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}>Mata Kuliah</th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}>Bobot MK</th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} colSpan={3}>Nilai</th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}>SKS*Indeks</th>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }}>(SKS)</th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }}>Angka</th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }}>Huruf</th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#D5D6C6' }}>Indeks</th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}>(SKS)</th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}>Angka</th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}>Huruf</th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}>Indeks</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 {dataKHS.length != 0 && totalKHS.length != 0 ? dataKHS.map((item, index) => (
                                                                     <tr key={item.id_nilai_kuliah} className='border'>
-                                                                        <th scope='row' className='py-2 text-center'>{index + 1}</th>
-                                                                        <td className='py-2 border' align='center'>{item.code_mata_kuliah}</td>
-                                                                        <td className='py-2 border'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                        <td className='py-2 border' align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
-                                                                        <td className='py-2 border' align='center'>{item.nilai_akhir}</td>
-                                                                        <td className='py-2 border' align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
-                                                                        <td className='py-2 border' align='center'>{item.kategoriNilais[0].interfal_skor}</td>
-                                                                        <td className='py-2 border' align='center'>{item.sksIndexs}</td>
+                                                                        <th scope='row' className='py-3 text-center'>{index + 1}</th>
+                                                                        <td className='py-3 border' align='center'>{item.code_mata_kuliah}</td>
+                                                                        <td className='py-3 border'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                        <td className='py-3 border' align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
+                                                                        <td className='py-3 border' align='center'>{item.nilai_akhir}</td>
+                                                                        <td className='py-3 border' align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
+                                                                        <td className='py-3 border' align='center'>{item.kategoriNilais[0].interfal_skor}</td>
+                                                                        <td className='py-3 border' align='center'>{item.sksIndexs}</td>
                                                                     </tr>
                                                                 )) :
                                                                     <tr className='border'>
-                                                                        <td className='py-2 border' align='center' colSpan={8}>KHS Tidak Ada</td>
+                                                                        <td className='py-3 border' align='center' colSpan={8}>KHS Tidak Ada</td>
                                                                     </tr>
                                                                 }
                                                                 {dataKHS.length != 0 && totalKHS.length != 0 ?
                                                                     <tr className='border'>
-                                                                        <td className='py-2 border' align='center' colSpan="3"><strong>Jumlah SKS</strong></td>
-                                                                        <td className='py-2 border' align='center'>{totalKHS.jumlahSks}</td>
-                                                                        <td className='py-2 border' align='center' colSpan="3"></td>
-                                                                        <td className='py-2 border' align='center'>{totalKHS.jumlahSksIndex}</td>
+                                                                        <td className='py-3 border' align='center' colSpan="3"><strong>Jumlah SKS</strong></td>
+                                                                        <td className='py-3 border' align='center'>{totalKHS.jumlahSks}</td>
+                                                                        <td className='py-3 border' align='center' colSpan="3"></td>
+                                                                        <td className='py-3 border' align='center'>{totalKHS.jumlahSksIndex}</td>
                                                                     </tr>
                                                                     : ""}
                                                                 {dataKHS.length != 0 && totalKHS.length != 0 ? <tr className='border'>
-                                                                    <td className='py-2 border' align='center' colSpan="7"><strong>IPS (Index Prestasi Semester)</strong></td>
-                                                                    <td className='py-2 border' align='center'>{totalKHS.IPS}</td>
+                                                                    <td className='py-3 border' align='center' colSpan="7"><strong>IPS (Index Prestasi Semester)</strong></td>
+                                                                    <td className='py-3 border' align='center'>{totalKHS.IPS}</td>
                                                                 </tr> : ""}
                                                             </tbody>
                                                         </Table>

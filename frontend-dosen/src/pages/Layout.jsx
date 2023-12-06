@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
                         </div>
                     </Container>
                 </div>
-                {/* <Footer /> */}
+                <Footer />
             </div>
         </React.Fragment>
     )
