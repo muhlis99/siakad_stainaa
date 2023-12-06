@@ -396,6 +396,31 @@ module.exports = {
     },
 
     //  user mahasiswa
+    getSemesterMhs: async (req, res, next) => {
+        const nim = req.params.nim
+        await historyMahasiswa.findAll({
+            include: [{
+                model: tahunAjaranModel
+            }, {
+                model: semesterModel
+            }],
+            where: {
+                nim: nim,
+                status: {
+                    [Op.not]: "berhenti"
+                }
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "data semester mahasiswa succes ",
+                data: result
+            })
+        }).catch(err => {
+            next(err)
+        })
+
+    },
+
     viewKrsMahasiswaNow: async (req, res, next) => {
         const nim = req.params.nim
         const data = await historyMahasiswa.findOne({
@@ -512,6 +537,7 @@ module.exports = {
         const nim = req.params.nim
         const tahunAjaran = req.params.tahunAjaran
         const semester = req.params.semester
+        const status = req.params.status
         const data = await historyMahasiswa.findOne({
             include: [
                 {
@@ -531,7 +557,7 @@ module.exports = {
                 code_tahun_ajaran: tahunAjaran,
                 code_semester: semester,
                 nim: nim,
-                // status: "aktif"
+                status: status
             }
         })
         if (!data) return res.status(404).json({ message: "data mahasiswa tidak ditemukan" })
@@ -567,7 +593,7 @@ module.exports = {
                 status: "aktif"
             }
         })
-        if (totalSKS == null) return res.status(404).json({ message: "data jumlah krs tidak ditemukan" })
+        // if (totalSKS == null) return res.status(404).json({ message: "data jumlah krs tidak ditemukan" })
         await krsModel.findAll({
             include: [
                 {

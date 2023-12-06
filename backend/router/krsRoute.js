@@ -8,9 +8,10 @@ router.post('/create/:thnAjr/:smt/:jenjPen/:fks/:prd', krsController.post)
 router.delete('/create/:thnAjr/:smt/:jenjPen/:fks/:prd', krsController.delete)
 
 // user mahasiswa
+router.get('/getSemesterMhs/:nim', krsController.getSemesterMhs)
 router.get('/viewKrsMahasiswaNow/:nim', krsController.viewKrsMahasiswaNow)
 router.put('/pengajuanKrsMahasiswa/:nim', krsController.pengajuanKrsMahasiswa)
-router.get('/viewKrsMahasiswaHistory/:nim/:tahunAjaran/:semester', krsController.viewKrsMahasiswaHistory)
+router.get('/viewKrsMahasiswaHistory/:nim/:tahunAjaran/:semester/:status', krsController.viewKrsMahasiswaHistory)
 
 // user dosen
 router.get('/viewKrsMahasiswaByPemdik/:nim/:tahunAjaran', krsController.viewKrsMahasiswaByPemdik)
