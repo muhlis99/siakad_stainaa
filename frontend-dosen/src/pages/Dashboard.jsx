@@ -10,6 +10,7 @@ import axios from 'axios'
 import { FaFileContract } from 'react-icons/fa'
 import { FaGraduationCap } from "react-icons/fa6"
 import { Circles } from "react-loader-spinner"
+import moment from "moment"
 
 const Dashboard = () => {
     const [Prodi, SetProdi] = useState([])
@@ -177,34 +178,48 @@ const Dashboard = () => {
                                     </Row>
 
                                     <Row className='mt-3'>
-                                        <Col lg="12" className='p-1'>
+                                        <Col lg="12">
                                             <Card className='shadow-sm'>
-                                                <Card.Header className='fw-bold' style={{ color: '#5E7C60' }}>Jadwal Kuliah Hari ini</Card.Header>
+                                                <Card.Header className='fw-bold'>
+                                                    <Card.Title className='mt-2' style={{ color: '#5E7C60' }}>
+                                                        Jadwal Kuliah Hari ini
+                                                    </Card.Title>
+                                                </Card.Header>
                                                 <Card.Body className='p-3'>
-                                                    <div className="table-responsive mt-1">
-                                                        <Table striped>
+                                                    <div className="table-responsive">
+                                                        <Table>
                                                             <thead>
-                                                                <tr style={{ background: '#E9EAE1' }}>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>#</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Jam</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Jenis Pertemuan</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Pembelejaran</th>
+                                                                <tr className='border' style={{ background: '#E9EAE1' }}>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>No</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Hari</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Tanggal</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Jam</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Mata Kuliah</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Jenis Pertemuan</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Pembelejaran</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Ruang</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Lokasi</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Dosen</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 {Jadwal.length != 0 ?
                                                                     Jadwal.map((item, index) => (
                                                                         <tr key={item.id_jadwal_pertemuan} className='border'>
-                                                                            <th scope='row' className='py-2'>{index + 1}</th>
-                                                                            <td className='py-2'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</td>
-                                                                            <td className='py-2'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                            <td className='py-2 text-uppercase'>{item.jenis_pertemuan}</td>
-                                                                            <td className='py-2'>{item.metode_pembelajaran}</td>
+                                                                            <th scope='row' className='py-3'>{index + 1}</th>
+                                                                            <td className='py-3'>{item.jadwalKuliahs[0].hari}</td>
+                                                                            <td className='py-3'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</td>
+                                                                            <td className='py-3'>{moment(item.tanggal_pertemuan).format('DD MMMM YYYY')}</td>
+                                                                            <td className='py-3'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                            <td className='py-3 text-capitalize'>{item.jenis_pertemuan}</td>
+                                                                            <td className='py-3 text-capitalize'>{item.metode_pembelajaran}</td>
+                                                                            <td className='py-3'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
+                                                                            <td className='py-3'>{item.jadwalKuliahs[0].ruangs[0].lokasi}</td>
+                                                                            <td className='py-3'></td>
                                                                         </tr>
                                                                     )) :
                                                                     <tr className='border'>
-                                                                        <td colSpan={5} align='center'>
+                                                                        <td colSpan={10} align='center'>
                                                                             <Image src={dataBlank} thumbnail width={150} />
                                                                             <p className='fw-bold text-muted'>Tidak Ada Jadwal Hari Ini</p>
                                                                         </td>
