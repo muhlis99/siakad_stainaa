@@ -487,7 +487,7 @@ module.exports = {
         await jadwalPertemuanModel.findAll({
             include: [
                 {
-                    attributes: ['code_kelas', 'hari', 'jam_mulai', 'jam_selesai', 'dosen_pengajar'],
+                    attributes: ['hari', 'jam_mulai', 'jam_selesai', 'dosen_pengajar'],
                     model: jadwalKuliahModel,
                     status: "aktif",
                     order: [
@@ -512,6 +512,9 @@ module.exports = {
                             attributes: ['nama'],
                             model: dosenModel,
                             as: "dosenPengajar"
+                        }, {
+                            attributes: ['nama_kelas'],
+                            model: kelasModel
                         }
                     ]
                 }
