@@ -390,7 +390,7 @@ const Profile = () => {
                                                         <form onSubmit={updateDataUser}>
                                                             <Card className='mt-3'>
                                                                 <Card.Header>
-                                                                    <Card.Title className='mt-2 mb-0'>Autentifikasi</Card.Title>
+                                                                    <Card.Title className='mt-2 mb-0 text-muted'>Autentifikasi</Card.Title>
                                                                 </Card.Header>
                                                                 <Card.Body>
                                                                     <Row className='mt-3'>
