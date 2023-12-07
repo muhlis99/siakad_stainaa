@@ -139,8 +139,8 @@ const ListPengumuman = () => {
                                     </Col>
                                     <Col lg="5" sm="12" className=''>
                                         <DropdownButton variant='light' className='float-right border-2 w-[350px] border-[#5E7C60] rounded' autoClose="outside" align="end" title={
-                                            <div className='inline-flex justify-center gap-3 items-center w-80'>
-                                                <span>{SelectDate}</span> <FaCalendarAlt className='ms-1 text-[#5E7C60]' />
+                                            <div className='inline-flex justify-center gap-2 items-center w-80'>
+                                                <span>{SelectDate}</span> <FaCalendarAlt className='text-[#5E7C60]' />
                                             </div>
                                         }>
                                             <Dropdown.Item className='p-0'>

@@ -185,12 +185,11 @@ const KRS = () => {
                                                                     {
                                                                         dataKrs.map((item, index) => (
                                                                             <tr key={item.id_krs} className='border'>
-                                                                                <th className='py-3 text-[#3b3a3a]'>
+                                                                                <td className='py-3 text-[#3b3a3a]'>
                                                                                     {item.status_krs == "setuju" ? index + 1 : <div className="flex items-center">
                                                                                         <input checked id="disabled-checked-checkbox" type="checkbox" readOnly value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                                                                     </div>}
-
-                                                                                </th>
+                                                                                </td>
                                                                                 <td className='py-3 text-[#3b3a3a]'>{item.sebaranMataKuliahs[0].mataKuliahs[0].code_mata_kuliah}</td>
                                                                                 <td className='py-3 text-[#3b3a3a]'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                                                 <td className='py-3 text-[#3b3a3a]'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
