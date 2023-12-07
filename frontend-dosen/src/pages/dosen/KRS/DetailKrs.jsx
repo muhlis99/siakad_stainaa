@@ -145,7 +145,7 @@ const DetailKrs = () => {
                         :
                         <div className="content-wrapper">
                             <div className="page-header">
-                                <h3 className="page-title">Detail KRS Mahasiswa</h3>
+                                <h2 className='fs-4 font-bold' >Detail KRS Mahasiswa</h2>
                             </div>
                             <Row>
                                 <Col>
@@ -218,7 +218,15 @@ const DetailKrs = () => {
                                                             <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
                                                         </Col>
                                                         <Col className='p-0'>
-                                                            <Card.Text className='fw-bold text-uppercase'>{identitas.tahun_ajaran}</Card.Text>
+                                                            <div className='flex justify-start'>
+                                                                <div>
+                                                                    <select className="form-select form-select-sm" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                                                        {Tahun.map((item) => (
+                                                                            <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                                                        ))}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </Col>
                                                     </Row>
                                                     <Row className='mb-2'>
@@ -238,26 +246,13 @@ const DetailKrs = () => {
                                     </Card>
                                     <Card className="shadow mt-3">
                                         <Card.Body className='py-3'>
-                                            <Row>
-                                                <Col>
-                                                    <div className='flex justify-center'>
-                                                        <div>
-                                                            <select className="form-select" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
-                                                                {Tahun.map((item) => (
-                                                                    <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
-                                                                ))}
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </Col>
-                                            </Row>
                                             <Row className='mt-2'>
                                                 <Col className='p-0'>
                                                     <div className="table-responsive">
                                                         <Table hover>
                                                             <thead>
                                                                 <tr className='border'>
-                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>#</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>No</th>
                                                                     <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Kode MK</th>
                                                                     <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Mata Kuliah</th>
                                                                     <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>SKS</th>
@@ -279,11 +274,11 @@ const DetailKrs = () => {
                                                                 <tbody>
                                                                     {RencanaStudi.map((item, index) => (
                                                                         <tr key={item.id_krs} className='border'>
-                                                                            <th scope='row' className='py-3'>
+                                                                            <td className='py-3'>
                                                                                 {item.status_krs == "setuju" ? index + 1 : <div className="flex items-center">
                                                                                     <input checked readOnly id="disabled-checked-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                                                                 </div>}
-                                                                            </th>
+                                                                            </td>
                                                                             <td className='py-3'>{item.code_mata_kuliah}</td>
                                                                             <td className='py-3'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                                             <td className='py-3'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
