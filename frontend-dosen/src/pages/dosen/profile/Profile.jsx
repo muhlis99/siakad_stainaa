@@ -168,29 +168,17 @@ const Profile = () => {
                                                                 <div className='flex-grow-1'>
                                                                     <div className='d-flex justify-content-between align-items-start flex-wrap'>
                                                                         <div className='d-flex align-items-center'>
-                                                                            <span className='text-[#071437] font-semibold fs-5 text-capitalize'>MASKUR, M. PD</span>
+                                                                            <span className='text-[#071437] font-semibold fs-5 text-capitalize'>{detail.nama}</span>
                                                                         </div>
                                                                     </div>
                                                                     <div className='d-flex align-items-center mb-3'>
-                                                                        <span className='text-muted text-[13px] text-capitalize'>1237890</span>
+                                                                        <span className='text-muted text-[13px] text-capitalize'>{detail.nip_ynaa}</span>
                                                                     </div>
                                                                     <div className='d-flex align-items-center mb-2 gap-3'>
                                                                         <div className='rounded px-2' style={{ border: '1px solid #aaa', borderStyle: 'dashed' }}>
                                                                             <div className='mt-2'>
-                                                                                <span className='fs-6 font-semibold'>Jenjang</span>
-                                                                                <p className='text-muted font-bold text-capitalize text-[11px]'></p>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className='rounded px-2' style={{ border: '1px solid #aaa', borderStyle: 'dashed' }}>
-                                                                            <div className='mt-2'>
-                                                                                <span className='fs-6 font-semibold'>Fakultas</span>
-                                                                                <p className='text-muted font-bold text-capitalize text-[11px]'></p>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className='rounded px-2' style={{ border: '1px solid #aaa', borderStyle: 'dashed' }}>
-                                                                            <div className='mt-2'>
-                                                                                <span className='fs-6 font-semibold'>Prodi</span>
-                                                                                <p className='text-muted font-bold text-capitalize text-[11px]'></p>
+                                                                                <span className='fs-6 font-semibold'>Pendidikan Terakhir</span>
+                                                                                <p className='text-muted font-bold text-capitalize text-[11px]'>{detail.pendidikans[0].nama_pendidikan}</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
