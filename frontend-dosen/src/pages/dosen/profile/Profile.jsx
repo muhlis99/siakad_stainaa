@@ -14,6 +14,7 @@ const Profile = () => {
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
     const [detail, setDetail] = useState([])
+    const [pendidikan, setPendidikan] = useState("")
     const [prevFoto, setPrevFoto] = useState("")
     const [show, setShow] = useState(true)
     const [tampilkan, setTampilkan] = useState(false)
@@ -52,6 +53,7 @@ const Profile = () => {
         try {
             const response = await axios.get(`v1/dosen/getByNipy/${user.data.username}`)
             setDetail(response.data.data)
+            setPendidikan(response.data.data.pendidikans[0].nama_pendidikan)
         } catch (error) {
 
         }
@@ -178,7 +180,7 @@ const Profile = () => {
                                                                         <div className='rounded px-2' style={{ border: '1px solid #aaa', borderStyle: 'dashed' }}>
                                                                             <div className='mt-2'>
                                                                                 <span className='fs-6 font-semibold'>Pendidikan Terakhir</span>
-                                                                                <p className='text-muted font-bold text-capitalize text-[11px]'>{detail.pendidikans[0].nama_pendidikan}</p>
+                                                                                <p className='text-muted font-bold text-capitalize text-[11px]'>{pendidikan}</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
