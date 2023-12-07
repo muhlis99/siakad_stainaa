@@ -596,7 +596,7 @@ module.exports = {
                 code_jenjang_pendidikan: jenjPen,
                 code_fakultas: fks,
                 code_prodi: prd,
-                dose_pengajar: nipy,
+                dosen_pengajar: nipy,
                 status: "aktif"
             }
         })
