@@ -10,13 +10,11 @@ import { FaSearch } from 'react-icons/fa'
 import { Circles } from "react-loader-spinner"
 
 const ListMahasiswa = () => {
-    const [Jenjang, setJenjang] = useState([])
-    const [Fakultas, setFakultas] = useState([])
-    const [Prodi, setProdi] = useState([])
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [username, setUsername] = useState("")
+    const [tahunAngkatan, setTahunAngkatan] = useState("")
     const [identitas, setIdentitas] = useState([])
     const [Mahasiswa, setMahasiswa] = useState([])
     const { isError, user } = useSelector((state) => state.auth)
@@ -41,56 +39,55 @@ const ListMahasiswa = () => {
     }, [dispatch])
 
     useEffect(() => {
-        getJenjangPendidikan()
-        getFakultas()
-        getProdi()
-    }, [kodeJenjang, kodeFakultas])
+        getUserDosen()
+    }, [user])
 
     useEffect(() => {
-        getProdi()
-    }, [kodeFakultas])
+        getYearNow()
+    }, [])
 
     useEffect(() => {
         getMhsAsuh()
-    }, [kodeJenjang, kodeFakultas, kodeProdi, username])
+    }, [kodeJenjang, kodeFakultas, kodeProdi, username, tahunAngkatan])
 
-    const getJenjangPendidikan = async () => {
+    const getUserDosen = async () => {
         try {
-            const response = await axios.get('v1/jenjangPendidikan/all')
-            setJenjang(response.data.data)
-        } catch (error) {
-
-        }
-    }
-
-    const getFakultas = async () => {
-        try {
-            if (kodeJenjang != 0) {
-                const response = await axios.get(`v1/fakultas/getFakulatsByJenjang/${kodeJenjang}`)
-                setFakultas(response.data.data)
-            } else {
-                setKodeFakultas()
+            if (user) {
+                const response = await axios.get(`v1/pembimbingAkademik/verifikasiDosenPembimbing/${user.data.username}`)
+                setKodeJenjang(response.data.data.code_jenjang_pendidikan)
+                setKodeFakultas(response.data.data.code_fakultas)
+                setKodeProdi(response.data.data.code_prodi)
             }
         } catch (error) {
 
         }
     }
 
-    const getProdi = async () => {
-        try {
-            if (kodeFakultas != 0) {
-                const response = await axios.get(`v1/prodi/getProdiByFakultas/${kodeFakultas}`)
-                setProdi(response.data.data)
-            }
-        } catch (error) {
+    const getYearSelected = (e) => {
+        setTahunAngkatan(e)
+    }
 
-        }
+    const getYearNow = () => {
+        const d = new Date()
+        let year = d.getFullYear()
+        setTahunAngkatan(year)
+    }
+
+    const d = new Date()
+    let year = d.getFullYear()
+    const th = []
+    for (let tahun = 2021; tahun <= year; tahun++) {
+        th.push(
+            <li className="nav-item" key={tahun}>
+                <span className={`border cursor-pointer ${tahun == tahunAngkatan ? '' : 'text-dark'} nav-link ${tahun == tahunAngkatan ? 'active' : ''}`} onClick={() => getYearSelected(tahun)} aria-current="page">{tahun}</span>
+            </li>
+        )
     }
 
     const getMhsAsuh = async () => {
         try {
             if (kodeJenjang && kodeFakultas && kodeProdi && username) {
-                const response = await axios.get(`v1/pembimbingAkademik/mahasiswaByDosenPembimbing/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}`)
+                const response = await axios.get(`v1/pembimbingAkademik/mahasiswaByDosenPembimbing/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}/${tahunAngkatan}`)
                 setIdentitas(response.data.identitas)
                 setMahasiswa(response.data.data)
             }
@@ -122,96 +119,71 @@ const ListMahasiswa = () => {
                         :
                         <div className="content-wrapper">
                             <div className="page-header">
-                                <h3 className="page-title">KRS Mahasiswa</h3>
+                                <h2 className='fs-4 font-bold'>KRS Mahasiswa</h2>
                             </div>
                             <div>
                                 <Row>
                                     <Col>
-                                        <Card className='shadow'>
-                                            <Card.Body className='p-4'>
-                                                <Row>
-                                                    <Col lg='4'>
-                                                        <select className="form-select" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
-                                                            <option>Jenjang Pendidikan</option>
-                                                            {Jenjang.map((item) => (
-                                                                <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
-                                                            ))}
-                                                        </select>
+                                        <Card className="mt-3 shadow">
+                                            <Card.Body className='p-3'>
+                                                <Row className='mb-2'>
+                                                    <Col>
+                                                        <ul className="nav nav-pills nav-fill">
+                                                            {th}
+                                                        </ul>
                                                     </Col>
-                                                    <Col lg='4'>
-                                                        <select className="form-select" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
-                                                            <option>Fakultas</option>
-                                                            {Fakultas.map((item) => (
-                                                                <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
-                                                            ))}
-                                                        </select>
-                                                    </Col>
-                                                    <Col lg='4'>
-                                                        <select className="form-select" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
-                                                            <option>Prodi</option>
-                                                            {Prodi.map((item) => (
-                                                                <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
-                                                            ))}
-                                                        </select>
+                                                </Row>
+                                                <Row >
+                                                    <Col>
+                                                        <div className='table-responsive' >
+                                                            <Table hover>
+                                                                <thead>
+                                                                    <tr className='border'>
+                                                                        <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>No</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>NIM</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Nama</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Jenjang</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Fakultas</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Prodi</th>
+                                                                        <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Aksi</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {Mahasiswa.length > 0 ? Mahasiswa.map((item, index) => (
+                                                                        <tr className='border' key={item.id_detail_pembimbing_akademik}>
+                                                                            <td className='py-3'>{index + 1}</td>
+                                                                            <td className='py-3 text-capitalize'>{item.nim}</td>
+                                                                            <td className='py-3 text-capitalize'>{item.mahasiswas[0].nama}</td>
+                                                                            <td className='py-3 text-capitalize'>{identitas.jenjang_pendidikan}</td>
+                                                                            <td className='py-3 text-capitalize'>{identitas.fakultas}</td>
+                                                                            <td className='py-3 text-capitalize'>{identitas.prodi}</td>
+                                                                            <td className='py-3 text-capitalize'>
+                                                                                <Link to="/viewkrs" state={item.nim} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch className='text-[15px]' /></Link>
+                                                                            </td>
+                                                                        </tr>
+                                                                    )) :
+                                                                        <tr className='border'>
+                                                                            <td className='py-3' colSpan={5} align='center'>
+                                                                                <Image src={dataBlank} thumbnail width={150} />
+                                                                                <p className='fw-bold text-muted'>Tidak Ada Data</p>
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </Table>
+                                                        </div>
                                                     </Col>
                                                 </Row>
                                             </Card.Body>
                                         </Card>
-                                        {kodeJenjang && kodeFakultas && kodeProdi ?
-                                            <Card className="mt-3 shadow">
-                                                <Card.Body>
-                                                    <Row className=''>
-                                                        <Col>
-                                                            <Row >
-                                                                <Col className='p-0'>
-                                                                    <div className='table-responsive' >
-                                                                        <Table hover>
-                                                                            <thead>
-                                                                                <tr className='border'>
-                                                                                    <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>#</th>
-                                                                                    <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}><span>NIM</span></th>
-                                                                                    <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>Nama</th>
-                                                                                    <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>Prodi</th>
-                                                                                    <th className='fw-bold py-2' style={{ background: '#D5D6C6' }}>Aksi</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                {Mahasiswa.length > 0 ? Mahasiswa.map((item, index) => (
-                                                                                    <tr className='border' key={item.id_detail_pembimbing_akademik}>
-                                                                                        <th scope='row' className='py-2'>{index + 1}</th>
-                                                                                        <td className='py-2 text-capitalize'>{item.nim}</td>
-                                                                                        <td className='py-2 text-capitalize'>{item.mahasiswas[0].nama}</td>
-                                                                                        <td className='py-2 text-capitalize'>{identitas.prodi}</td>
-                                                                                        <td className='py-2 text-capitalize'>
-                                                                                            <Link to="/viewkrs" state={item.nim} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch className='text-[15px]' /></Link>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                )) :
-                                                                                    <tr className='border'>
-                                                                                        <td className='py-2' colSpan={5} align='center'>
-                                                                                            <Image src={dataBlank} thumbnail width={150} />
-                                                                                            <p className='fw-bold text-muted'>Tidak Ada Data</p>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                }
-                                                                            </tbody>
-                                                                        </Table>
-                                                                    </div>
-                                                                </Col>
-                                                            </Row>
-                                                        </Col>
-                                                    </Row>
-                                                </Card.Body>
-                                            </Card>
-                                            : ""}
                                     </Col>
-                                </Row>
-                            </div>
-                        </div>
+                                </Row >
+                            </div >
+                        </div >
                     }
                 </>
             }
-        </Layout>
+        </Layout >
     )
 }
 
