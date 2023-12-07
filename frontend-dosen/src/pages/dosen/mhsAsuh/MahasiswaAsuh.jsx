@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card, Table, Image } from 'react-bootstrap'
+import { Row, Col, Card, Table, Image, Pagination } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import dataBlank from "../../../assets/images/noData.svg"
 import { getMe } from "../../../features/authSlice"
@@ -8,6 +8,8 @@ import { Navigate } from "react-router-dom"
 import axios from 'axios'
 import { Circles } from "react-loader-spinner"
 import Swal from 'sweetalert2'
+import ReactPaginate from 'react-paginate'
+
 
 const MahasiswaAsuh = () => {
     const [kodeJenjang, setKodeJenjang] = useState("")
@@ -85,6 +87,13 @@ const MahasiswaAsuh = () => {
         } catch (error) {
 
         }
+    }
+
+    const pageCount = Math.ceil(rows / perPage)
+
+    const changePage = (event) => {
+        const newOffset = (event.selected + 1);
+        setPage(newOffset)
     }
 
     const getMhsAsuh = async () => {
@@ -245,7 +254,10 @@ const MahasiswaAsuh = () => {
                                                                                         {item.historyMahasiswas[0].status == 'aktif' ?
                                                                                             <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.historyMahasiswas[0].status}</span>
                                                                                             :
-                                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.historyMahasiswas[0].status}</span>
+                                                                                            item.historyMahasiswas[0].status == 'cuti' ?
+                                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#FFC107] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.historyMahasiswas[0].status}</span>
+                                                                                                :
+                                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.historyMahasiswas[0].status}</span>
                                                                                         }
                                                                                     </td>
                                                                                 </tr>
@@ -274,20 +286,17 @@ const MahasiswaAsuh = () => {
                                                     </Col>
                                                 </Row>
                                                 <Row>
-                                                    <Col>
-                                                        <nav aria-label="Page navigation example">
-                                                            <ul class="pagination pagination-sm justify-content-center">
-                                                                <li class="page-item disabled">
-                                                                    <a class="page-link">Previous</a>
-                                                                </li>
-                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                                <li class="page-item">
-                                                                    <a class="page-link" href="#">Next</a>
-                                                                </li>
-                                                            </ul>
-                                                        </nav>
+                                                    <Col className='flex justify-center'>
+                                                        <ReactPaginate className='d-flex'
+                                                            pageCount={Math.min(10, pageCount)}
+                                                            onPageChange={changePage}
+                                                            previousLinkClassName={"btn btn-sm btn-outline-primary"}
+                                                            nextLinkClassName={"btn btn-sm btn-outline-primary ms-1"}
+                                                            breakLinkClassName={"btn btn-sm btn-outline-primary ms-1"}
+                                                            activeLinkClassName={"btn btn-sm btn-outline-primary"}
+                                                            pageLinkClassName={"btn btn-sm btn-primary ms-1"}
+                                                            disabledLinkClassName={"btn btn-sm btn-disabled"}
+                                                        />
                                                     </Col>
                                                 </Row>
                                             </Card.Body>

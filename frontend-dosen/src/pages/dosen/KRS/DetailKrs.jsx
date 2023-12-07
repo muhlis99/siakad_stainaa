@@ -150,8 +150,8 @@ const DetailKrs = () => {
                             <Row>
                                 <Col>
                                     <Card className="shadow">
-                                        <Card.Body>
-                                            <Row className='bg-[#E9EAE1] border-l-2 border-[#5E7C60] py-3 px-3 shadow-sm rounded-r-lg'>
+                                        <Card.Body className='py-3'>
+                                            <Row className='bg-[#E9EAE1] py-3 px-3 shadow-sm rounded'>
                                                 <Col lg="6" sm="12">
                                                     <Row className='mb-2'>
                                                         <Col className='p-0' lg="3" md="3" sm="5" xs="5">
@@ -237,7 +237,7 @@ const DetailKrs = () => {
                                         </Card.Body>
                                     </Card>
                                     <Card className="shadow mt-3">
-                                        <Card.Body>
+                                        <Card.Body className='py-3'>
                                             <Row>
                                                 <Col>
                                                     <div className='flex justify-center'>
@@ -257,13 +257,13 @@ const DetailKrs = () => {
                                                         <Table hover>
                                                             <thead>
                                                                 <tr className='border'>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>#</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kode MK</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>SKS</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Bobot MK</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status MK</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status KRS</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>#</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Kode MK</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Mata Kuliah</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>SKS</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Bobot MK</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Status MK</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Status KRS</th>
                                                                 </tr>
                                                             </thead>
                                                             {RencanaStudi.length == 0 || tabel ?
@@ -279,22 +279,22 @@ const DetailKrs = () => {
                                                                 <tbody>
                                                                     {RencanaStudi.map((item, index) => (
                                                                         <tr key={item.id_krs} className='border'>
-                                                                            <th scope='row' className='py-2'>
+                                                                            <th scope='row' className='py-3'>
                                                                                 {item.status_krs == "setuju" ? index + 1 : <div className="flex items-center">
                                                                                     <input checked readOnly id="disabled-checked-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                                                                 </div>}
                                                                             </th>
-                                                                            <td className='py-2'>{item.code_mata_kuliah}</td>
-                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
-                                                                            <td className='py-2'>{item.sebaranMataKuliahs[0].status_bobot_makul}</td>
-                                                                            <td className='py-2 text-capitalize'>{item.sebaranMataKuliahs[0].status_makul}</td>
-                                                                            <td className='py-2'>
+                                                                            <td className='py-3'>{item.code_mata_kuliah}</td>
+                                                                            <td className='py-3'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                            <td className='py-3'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
+                                                                            <td className='py-3'>{item.sebaranMataKuliahs[0].status_bobot_makul}</td>
+                                                                            <td className='py-3 text-capitalize'>{item.sebaranMataKuliahs[0].status_makul}</td>
+                                                                            <td className='py-3'>
                                                                                 {item.status_krs == "setuju" ?
                                                                                     <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Disetujui</span>
                                                                                     :
                                                                                     <>
-                                                                                        {item.status_pengajuan_krs == "tidak" ?
+                                                                                        {item.status_pengajuan_krs == "tidak" || item.status_pengajuan_krs == "" ?
                                                                                             <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Belum Diajukan</span>
                                                                                             :
                                                                                             <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Diajukan</span>
@@ -305,10 +305,10 @@ const DetailKrs = () => {
                                                                         </tr>
                                                                     ))}
                                                                     <tr className='border'>
-                                                                        <td colSpan={3} align='center' className='font-bold'>
+                                                                        <td colSpan={3} align='center' className='py-3'>
                                                                             Total SKS
                                                                         </td>
-                                                                        <td colSpan={4} className='font-bold'>
+                                                                        <td colSpan={4} className='py-3'>
                                                                             {identitas.total_sks}
                                                                         </td>
                                                                     </tr>
@@ -332,10 +332,10 @@ const DetailKrs = () => {
                                             <Row>
                                                 <Col>
                                                     <div>
-                                                        <span className='font-bold'>Informasi :</span>
-                                                        {button && <><br /><span className='font-bold text-[14px]'>- KRS ini adalah KRS paket yang telah dicentang otomatis oleh sistem.</span></>}
-                                                        {button && <><br /><span className='font-bold text-[14px]'>- KRS telah diajukan oleh mahasiswa, silakan lakukan persetujuan dengan melakukan klik tombol di atas.</span></>}
-                                                        {pesan && <><br /><span className='font-bold text-[14px]'>- KRS telah disetujui.</span></>}
+                                                        <span className='font-bold text-muted'>Informasi :</span>
+                                                        {button && <><br /><span className='font-bold text-muted text-[14px]'>- KRS ini adalah KRS paket yang telah dicentang otomatis oleh sistem.</span></>}
+                                                        {button && <><br /><span className='font-bold text-muted text-[14px]'>- KRS telah diajukan oleh mahasiswa, silakan lakukan persetujuan dengan melakukan klik tombol di atas.</span></>}
+                                                        {pesan && <><br /><span className='font-bold text-muted text-[14px]'>- KRS telah disetujui.</span></>}
                                                     </div>
                                                 </Col>
                                             </Row>
