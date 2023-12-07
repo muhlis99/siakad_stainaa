@@ -823,6 +823,7 @@ module.exports = {
         await krsModel.findAll({
             include: [
                 {
+                    attributes: ['status_makul', 'status_bobot_makul'],
                     model: sebaranMataKuliah,
                     where: {
                         code_tahun_ajaran: tahunAjaran,
@@ -832,6 +833,7 @@ module.exports = {
                         status_bobot_makul: "wajib"
                     },
                     include: [{
+                        attributes: ['code_mata_kuliah', 'nama_mata_kuliah', 'sks'],
                         model: mataKuliahModel,
                         where: {
                             code_jenjang_pendidikan: mahasiswaUse.jenjangPendidikans[0].code_jenjang_pendidikan,
@@ -839,6 +841,10 @@ module.exports = {
                             code_prodi: mahasiswaUse.prodis[0].code_prodi,
                         }
                     }]
+                },
+                {
+                    attributes: ['code_tahun_ajaran', 'tahun_ajaran'],
+                    model: tahunAjaranModel
                 }
             ],
             where: {
