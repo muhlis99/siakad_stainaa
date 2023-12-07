@@ -106,7 +106,7 @@ const Berhenti = () => {
                                                 <Table>
                                                     <thead>
                                                         <tr className='border'>
-                                                            <th className='fw-bold py-3 text-center' style={{ background: '#E9EAE1' }}>#</th>
+                                                            <th className='fw-bold py-3 text-center' style={{ background: '#E9EAE1' }}>No</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Periode</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Status yang diajukan</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Tgl Pengajuan</th>
@@ -124,7 +124,7 @@ const Berhenti = () => {
                                                             </tr> :
                                                             Pengajuan.map((item, index) => (
                                                                 <tr key={item.id_pengajuan_studi} className='border'>
-                                                                    <th scope='row' className='py-3 text-center'>{index + 1}</th>
+                                                                    <td className='py-3 text-center'>{index + 1}</td>
                                                                     <td className='py-3'>{item.tahunAjarans[0].tahun_ajaran}</td>
                                                                     <td className='py-3 text-capitalize'>{item.pengajuan}</td>
                                                                     <td className='py-3'>{moment(item.tanggal_pengajuan).format('DD MMMM YYYY')}</td>

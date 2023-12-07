@@ -184,7 +184,7 @@ const HistoryKrs = () => {
                                                         <Table hover>
                                                             <thead>
                                                                 <tr className='border'>
-                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>#</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>No</th>
                                                                     <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Kode MK</th>
                                                                     <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Mata Kuliah</th>
                                                                     <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>SKS</th>
@@ -196,7 +196,7 @@ const HistoryKrs = () => {
                                                                 <tbody>
                                                                     {riwayat.map((item, index) => (
                                                                         <tr key={item.id_krs} className='border'>
-                                                                            <th scope='row' className='py-3'>{index + 1}</th>
+                                                                            <td className='py-3'>{index + 1}</td>
                                                                             <td className='py-3'>{item.sebaranMataKuliahs[0].mataKuliahs[0].code_mata_kuliah}</td>
                                                                             <td className='py-3'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                                             <td className='py-3'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>

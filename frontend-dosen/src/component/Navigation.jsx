@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { LogOut, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
 import axios from "axios"
-import { FaBullhorn, FaClock, FaFilePdf, FaListUl, FaTh, FaUpload } from "react-icons/fa"
+import { FaBullhorn, FaClock, FaFilePdf, FaListUl, FaTh, FaArchive } from "react-icons/fa"
 import "../assets/css/navigasi.css"
 
 const Navigation = () => {
@@ -116,7 +116,7 @@ const Navigation = () => {
                                     </li>
                                     <li>
                                         <Link to="/pengajuanstudi" className={`dropdown-item ${location.pathname == '/pengajuanstudi' || location.pathname == '/tambahpengajuan' || location.pathname == '/updatepengajuan' ? 'active' : ''}`}>
-                                            <div className="inline-flex gap-2"><FaUpload className="mt-1 text-[14px]" />  Pengajuan Studi</div>
+                                            <div className="inline-flex gap-2"><FaArchive className="mt-1 text-[14px]" />  Pengajuan Studi</div>
                                         </Link>
                                     </li>
                                 </ul>

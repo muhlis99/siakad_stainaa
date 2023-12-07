@@ -261,7 +261,7 @@ const KHS = () => {
                                                         <Table hover>
                                                             <thead>
                                                                 <tr>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}>#</th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}>No</th>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}>Kode MK</th>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}>Mata Kuliah</th>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}>Bobot MK</th>
@@ -278,7 +278,7 @@ const KHS = () => {
                                                             <tbody>
                                                                 {dataKHS.length != 0 && totalKHS.length != 0 ? dataKHS.map((item, index) => (
                                                                     <tr key={item.id_nilai_kuliah} className='border'>
-                                                                        <th scope='row' className='py-3 text-center'>{index + 1}</th>
+                                                                        <td className='py-3 text-center'>{index + 1}</td>
                                                                         <td className='py-3 border' align='center'>{item.code_mata_kuliah}</td>
                                                                         <td className='py-3 border'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                                         <td className='py-3 border' align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>

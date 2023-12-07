@@ -10,6 +10,7 @@ import axios from 'axios'
 import { FaFileContract } from 'react-icons/fa'
 import { FaGraduationCap } from "react-icons/fa6"
 import { Circles } from "react-loader-spinner"
+import moment from "moment"
 
 const Dashboard = () => {
     const [Prodi, SetProdi] = useState([])
@@ -20,6 +21,7 @@ const Dashboard = () => {
     const [perPage, setperPage] = useState(0)
     const [pages, setPages] = useState(0)
     const [rows, setrows] = useState(0)
+    const [nama, setNama] = useState("")
     const [keyword, setKeyword] = useState("")
     const [level, setLevel] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
@@ -34,6 +36,22 @@ const Dashboard = () => {
             setLoad(false)
         }, 500);
     }, [])
+
+    useEffect(() => {
+        const getDataSession = async () => {
+            try {
+                if (user) {
+                    if (user.data.role == 'mahasiswa') {
+                        const response = await axios.get(`v1/mahasiswa/getByNim/${user.data.username}`)
+                        setNama(response.data.data.nama)
+                    }
+                }
+            } catch (error) {
+
+            }
+        }
+        getDataSession()
+    }, [user])
 
     useEffect(() => {
         const logOut = () => {
@@ -145,7 +163,7 @@ const Dashboard = () => {
                                         <Col>
                                             <div className="lg:flex flex-row gap-3">
                                                 <div className="basis-1/2 bg-white mb-2 rounded-lg shadow-md p-3">
-                                                    <h3 className='text-[#5E7C60]'>Hai, Selamat Datang</h3>
+                                                    <h3 className='text-[#5E7C60] text-[20px]'>Hai {nama}, Selamat Datang</h3>
                                                     <p className='text-base'>
                                                         Selamat bergabung menjadi mahasiswa, aplikasi ini membantu anda dalam proses perkuliahan anda meliputi Rencana Studi, Jadwal Kuliah, Hasil Studi dan lain-lain.
                                                     </p>
@@ -177,34 +195,44 @@ const Dashboard = () => {
                                     </Row>
 
                                     <Row className='mt-3'>
-                                        <Col lg="12" className='p-1'>
+                                        <Col lg="12">
                                             <Card className='shadow-sm'>
-                                                <Card.Header className='fw-bold' style={{ color: '#5E7C60' }}>Jadwal Kuliah Hari ini</Card.Header>
+                                                <Card.Header className='fw-bold'>
+                                                    <Card.Title className='mt-2' style={{ color: '#5E7C60' }}>
+                                                        Jadwal Kuliah Hari ini
+                                                    </Card.Title>
+                                                </Card.Header>
                                                 <Card.Body className='p-3'>
-                                                    <div className="table-responsive mt-1">
-                                                        <Table striped>
+                                                    <div className="table-responsive">
+                                                        <Table>
                                                             <thead>
-                                                                <tr style={{ background: '#E9EAE1' }}>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>#</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Jam</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Jenis Pertemuan</th>
-                                                                    <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Pembelejaran</th>
+                                                                <tr className='border' style={{ background: '#E9EAE1' }}>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>No</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Hari</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Tanggal</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Jam</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Mata Kuliah</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Pembelejaran</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Ruang</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Dosen</span></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 {Jadwal.length != 0 ?
                                                                     Jadwal.map((item, index) => (
                                                                         <tr key={item.id_jadwal_pertemuan} className='border'>
-                                                                            <th scope='row' className='py-2'>{index + 1}</th>
-                                                                            <td className='py-2'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</td>
-                                                                            <td className='py-2'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                            <td className='py-2 text-uppercase'>{item.jenis_pertemuan}</td>
-                                                                            <td className='py-2'>{item.metode_pembelajaran}</td>
+                                                                            <th scope='row' className='py-3'><span className='text-[#5E7C60]'>{index + 1}</span></th>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.jadwalKuliahs[0].hari}</span></td>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{moment(item.tanggal_pertemuan).format('DD MMMM YYYY')}</span></td>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</span></td>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</span></td>
+                                                                            <td className='py-3 text-capitalize'><span className='text-[#5E7C60]'>{item.metode_pembelajaran}</span></td>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</span></td>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.jadwalKuliahs[0].dosenPengajar[0].nama == '' ? '-' : item.jadwalKuliahs[0].dosenPengajar[0].nama}</span></td>
                                                                         </tr>
                                                                     )) :
                                                                     <tr className='border'>
-                                                                        <td colSpan={5} align='center'>
+                                                                        <td colSpan={8} align='center'>
                                                                             <Image src={dataBlank} thumbnail width={150} />
                                                                             <p className='fw-bold text-muted'>Tidak Ada Jadwal Hari Ini</p>
                                                                         </td>

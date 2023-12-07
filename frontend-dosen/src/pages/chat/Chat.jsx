@@ -3,6 +3,7 @@ import Layout from '../Layout'
 import { Row, Col, Card, Button, Form, Image } from 'react-bootstrap'
 import face from "../../assets/images/male.svg"
 import chatBlank from "../../assets/images/noChat.svg"
+import datano from "../../assets/images/watch.svg"
 import dataBlank from "../../assets/images/noData.svg"
 import "../../assets/css/demo_2/chat.css"
 import "../../assets/css/Chat.css"
@@ -435,18 +436,18 @@ const Chat = () => {
                                 </Card>
                                 :
                                 <Row>
-                                    <Col className='d-flex'>
+                                    <Col lg="3" className='px-0'>
                                         {show ?
-                                            <Card className='w-30' id="chat3">
+                                            <Card className='h-100' id="chat3">
                                                 <Card.Header>
                                                     <Row>
                                                         <Col>
                                                             <Row>
                                                                 <Col lg={10}>
                                                                     <div className="d-flex">
-                                                                        {prevKontakImage ? <Image src={`data:;base64,${prevKontakImage}`} thumbnail width={40} roundedCircle alt='image' /> : <Image src={face} width={40} roundedCircle alt='image' thumbnail />}
+                                                                        {prevKontakImage ? <Image src={`data:;base64,${prevKontakImage}`} className='shadow' thumbnail width={40} roundedCircle alt='image' /> : <Image src={face} className='shadow' width={40} roundedCircle alt='image' thumbnail />}
                                                                         <div>
-                                                                            <p className="mt-2 ms-1 mb-0 fw-bold fs-sm text-secondary">{namaChat}</p>
+                                                                            <p className="mt-2 ms-3 mb-0 fw-bold fs-sm text-secondary text-[17px]">{namaChat}</p>
                                                                         </div>
                                                                     </div>
                                                                 </Col>
@@ -461,8 +462,8 @@ const Chat = () => {
                                                 </Card.Header>
                                                 <Card.Body style={{ background: '#e6e6e6' }}>
                                                     <div className="">
-                                                        <div className="overflow-auto position-relative faq-body" style={{ height: '365px' }}>
-                                                            <div className='text-center'>
+                                                        <div className="overflow-auto position-relative faq-body" >
+                                                            <div className='text-center mt-5'>
                                                                 <p className='fw-bold text-secondary'>Tambah Daftar Kontak Anda</p>
                                                             </div>
                                                             <ul className="list-unstyled mb-0">
@@ -495,16 +496,16 @@ const Chat = () => {
                                                 </Card.Body>
                                             </Card>
                                             :
-                                            <Card className='w-30' id="chat3">
+                                            <Card className='h-100' id="chat3">
                                                 <Card.Header>
                                                     <Row>
                                                         <Col>
                                                             <Row>
                                                                 <Col lg={10}>
                                                                     <div className="d-flex">
-                                                                        {prevKontakImage ? <Image src={`data:;base64,${prevKontakImage}`} thumbnail width={40} roundedCircle alt='image' /> : <Image src={face} width={40} roundedCircle alt='image' thumbnail />}
+                                                                        {prevKontakImage ? <Image src={`data:;base64,${prevKontakImage}`} className='shadow' thumbnail width={40} roundedCircle alt='image' /> : <Image src={face} className='shadow' width={40} roundedCircle alt='image' thumbnail />}
                                                                         <div>
-                                                                            <p className="mt-2 ms-3 mb-0 fw-bold fs-sm text-secondary">{namaChat}</p>
+                                                                            <p className="mt-2 ms-3 mb-0 fw-bold fs-sm text-secondary text-[17px]">{namaChat}</p>
                                                                         </div>
                                                                     </div>
 
@@ -525,8 +526,8 @@ const Chat = () => {
                                                                 <ul className="list-unstyled mb-0">
                                                                     {listDaftarKontak.length == 0
                                                                         ?
-                                                                        <li className='d-flex justify-content-center'>
-                                                                            <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                                        <li className='d-flex justify-content-center pt-5'>
+                                                                            <Image src={datano} className='mt-4 ' width={150} />
                                                                         </li>
                                                                         :
                                                                         listDaftarKontak.map((list, index) => (
@@ -557,10 +558,12 @@ const Chat = () => {
                                                 </Card.Body>
                                             </Card>}
 
-                                        <Card className='w-75 '>
+                                    </Col>
+                                    <Col lg="9" className='px-0'>
+                                        <Card className=''>
                                             <Card.Header>
                                                 <div className='p-1'>
-                                                    <div className="d-flex flex-row">
+                                                    <div className="d-flex flex-row mt-1">
                                                         <div>
                                                             {prevImagesReciptenes ? <img src={`data:;base64,${prevImagesReciptenes}`} alt='kontak' className="d-flex align-self-center me-3 rounded-circle border border-secondary"
                                                                 width="40" /> : ""}

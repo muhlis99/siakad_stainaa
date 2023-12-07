@@ -147,62 +147,69 @@ const Jadwal = () => {
                                         </Card.Body>
                                     </Card>
                                     <Card>
-                                        <Card.Body>
+                                        <Card.Body className='p-3'>
+                                            <Row className='mb-3'>
+                                                <Col>
+                                                    <div>
+                                                        <Card.Title className='fs-6 text-primary'>Jadwal Kuliah Minggu Ini</Card.Title>
+                                                    </div>
+                                                </Col>
+                                            </Row>
                                             <Row>
-                                                {dataJadwal.length >= 1 ? dataJadwal.map((item, index) => (
+                                                {dataJadwal.length != 0 ? dataJadwal.map((item, index) => (
                                                     <Col key={item.id_jadwal_pertemuan} lg="4" className='mb-3'>
                                                         <Card className='shadow h-100'>
                                                             <Card.Body className='p-3'>
                                                                 <span className='text-capitalize fs-6 fw-semibold'>{item.jadwalKuliahs[0].hari},&nbsp;{moment(item.tanggal_pertemuan).format('DD MMMM YYYY')}</span>
                                                                 <div className='text-muted'>
-                                                                    <span className='fw-semibold text-[14px]'>
+                                                                    <span className='fw-semibold text-[13px]'>
                                                                         {item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}
                                                                     </span>
                                                                 </div>
                                                                 <Row className='mt-3'>
-                                                                    <Col lg="6" sm="6" md="6" className='mb-2'>
-                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #E9EAE1' }}>
-                                                                            <span className='fw-bold text-[14px] text-capitalize text-dark'>Jam</span>
-                                                                            <div className='fw-semibold text-[13px] text-secondary'>
+                                                                    <Col lg="6" sm="6" md="6" className='mb-2 p-1'>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                                            <span className=' text-[14px] text-capitalize text-dark'>Jam</span>
+                                                                            <div className=' text-[13px] text-secondary'>
                                                                                 {item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}
                                                                             </div>
                                                                         </div>
                                                                     </Col>
-                                                                    <Col lg="6" sm="6" md="6" className='mb-2'>
-                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #E9EAE1' }}>
-                                                                            <span className='fw-bold text-[14px] text-capitalize text-dark'>{item.jenis_pertemuan}</span>
+                                                                    <Col lg="6" sm="6" md="6" className='mb-2 p-1'>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                                            <span className=' text-[14px] text-capitalize text-dark'>{item.jenis_pertemuan}</span>
                                                                             {item.metode_pembelajaran == 'offline' ?
-                                                                                <div className='fw-semibold text-[13px] text-secondary text-capitalize'>{item.metode_pembelajaran}</div>
+                                                                                <div className=' text-[13px] text-secondary text-capitalize'>{item.metode_pembelajaran}</div>
                                                                                 : item.metode_pembelajaran == 'online' ?
-                                                                                    <div className='fw-semibold text-[13px] text-info text-capitalize'>{item.metode_pembelajaran}</div>
+                                                                                    <div className=' text-[13px] text-info text-capitalize'>{item.metode_pembelajaran}</div>
                                                                                     :
-                                                                                    <div className='fw-semibold text-[13px] text-info text-capitalize'>{item.metode_pembelajaran}</div>
+                                                                                    <div className=' text-[13px] text-info text-capitalize'>{item.metode_pembelajaran}</div>
                                                                             }
                                                                         </div>
                                                                     </Col>
-                                                                    <Col lg="6" sm="6" md="6" className='mb-2'>
-                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #E9EAE1' }}>
-                                                                            <span className='fw-bold text-[14px] text-capitalize text-dark'>Kelas</span>
-                                                                            <div className='fw-semibold text-[13px] text-secondary'>
-                                                                                {/* {item.} */}
+                                                                    <Col lg="6" sm="6" md="6" className='mb-2 p-1'>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                                            <span className=' text-[14px] text-capitalize text-dark'>Ruang</span>
+                                                                            <div className=' text-[13px] text-secondary'>
+                                                                                {item.jadwalKuliahs[0].ruangs[0].nama_ruang}
                                                                             </div>
                                                                         </div>
                                                                     </Col>
-                                                                    <Col lg="6" sm="6" md="6" className='mb-2'>
-                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #E9EAE1' }}>
-                                                                            <span className='fw-bold text-[14px] text-capitalize text-dark'>Ruang</span>
-                                                                            <div className='fw-semibold text-[13px] text-secondary'>
-                                                                                {/* {item.} */}
+                                                                    <Col lg="6" sm="6" md="6" className='mb-2 p-1'>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                                            <span className=' text-[14px] text-capitalize text-dark'>Lokasi</span>
+                                                                            <div className=' text-[13px] text-secondary'>
+                                                                                {item.jadwalKuliahs[0].ruangs[0].lokasi}
                                                                             </div>
                                                                         </div>
                                                                     </Col>
                                                                 </Row>
                                                                 <Row className='mt-2'>
                                                                     <Col>
-                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #E9EAE1' }}>
-                                                                            <span className='fw-bold text[14px] text-capitalize text-dark'>Dosen</span>
-                                                                            <div className='fw-semibold text-[13px] text-secondary'>
-                                                                                {/* {item.} */}
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                                            <span className='text[12px] text-capitalize text-dark'>Dosen</span>
+                                                                            <div className=' text-[13px] text-secondary'>
+                                                                                {item.jadwalKuliahs[0].dosenPengajar[0].nama == '' ? '-' : item.jadwalKuliahs[0].dosenPengajar[0].nama}
                                                                             </div>
                                                                         </div>
                                                                     </Col>
@@ -210,7 +217,9 @@ const Jadwal = () => {
                                                             </Card.Body>
                                                         </Card>
                                                     </Col>
-                                                )) : ""}
+                                                )) : <>
+
+                                                </>}
                                             </Row>
                                         </Card.Body>
                                     </Card>
