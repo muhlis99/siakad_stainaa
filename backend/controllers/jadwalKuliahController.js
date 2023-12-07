@@ -593,10 +593,10 @@ module.exports = {
             where: {
                 code_tahun_ajaran: thnAjr,
                 code_semester: smt,
-                code_jenjang_pendidikan: jenjPen,
-                code_fakultas: fks,
-                code_prodi: prd,
-                dosen_pengajar: nipy,
+                // code_jenjang_pendidikan: jenjPen,
+                // code_fakultas: fks,
+                // code_prodi: prd,
+                // dosen_pengajar: nipy,
                 status: "aktif"
             }
         })
