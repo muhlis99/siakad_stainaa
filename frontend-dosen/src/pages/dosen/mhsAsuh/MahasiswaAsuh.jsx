@@ -239,7 +239,10 @@ const MahasiswaAsuh = () => {
                                                                                     <td className='py-3 text-capitalize'>{identitas.jenjang_pendidikan}</td>
                                                                                     <td className='py-3 text-capitalize'>{identitas.fakultas}</td>
                                                                                     <td className='py-3 text-capitalize'>{identitas.prodi}</td>
-                                                                                    <td className='py-3 text-capitalize'>{item.status == 'aktif' ? <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Aktif</span> : <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Tidak Aktif</span>}</td>
+                                                                                    <td className='py-3 text-capitalize'>{item.historyMahasiswas[0].status == 'aktif' ?
+                                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.historyMahasiswas[0].status}</span>
+                                                                                        : <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.historyMahasiswas[0].status}</span>
+                                                                                    }</td>
                                                                                 </tr>
                                                                             )) :
                                                                                 <tr className='border'>
@@ -254,6 +257,23 @@ const MahasiswaAsuh = () => {
                                                                 </div>
                                                             </Col>
                                                         </Row>
+                                                    </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col>
+                                                        <nav aria-label="Page navigation example">
+                                                            <ul class="pagination pagination-sm justify-content-center">
+                                                                <li class="page-item disabled">
+                                                                    <a class="page-link">Previous</a>
+                                                                </li>
+                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#">Next</a>
+                                                                </li>
+                                                            </ul>
+                                                        </nav>
                                                     </Col>
                                                 </Row>
                                             </Card.Body>
