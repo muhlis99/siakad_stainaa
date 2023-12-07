@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
 import { Navigate } from "react-router-dom"
 import axios from 'axios'
-import { FaUpload } from 'react-icons/fa'
+import { FaCheck } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 import { Circles } from "react-loader-spinner"
 
@@ -238,7 +238,7 @@ const KRS = () => {
                                                     {dataKrs.length > 0 ?
                                                         <div className='flex justify-center'>
                                                             {button &&
-                                                                <button type='button' onClick={simpanPengajuan} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2 float-right' ><FaUpload /> &nbsp; <span>Ajukan</span></button>
+                                                                <button type='button' onClick={simpanPengajuan} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2 float-right' ><FaCheck /> &nbsp; <span>Ajukan</span></button>
                                                             }
                                                         </div> : ""
                                                     }

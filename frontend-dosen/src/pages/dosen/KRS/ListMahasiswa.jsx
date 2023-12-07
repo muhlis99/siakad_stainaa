@@ -6,8 +6,9 @@ import { getMe } from "../../../features/authSlice"
 import dataBlank from "../../../assets/images/noData.svg"
 import { Link, Navigate } from "react-router-dom"
 import axios from 'axios'
-import { FaSearch } from 'react-icons/fa'
+import { FaCog } from 'react-icons/fa'
 import { Circles } from "react-loader-spinner"
+import ReactPaginate from 'react-paginate'
 
 const ListMahasiswa = () => {
     const [kodeJenjang, setKodeJenjang] = useState("")
@@ -17,6 +18,9 @@ const ListMahasiswa = () => {
     const [tahunAngkatan, setTahunAngkatan] = useState("")
     const [identitas, setIdentitas] = useState([])
     const [Mahasiswa, setMahasiswa] = useState([])
+    const [page, setPage] = useState(0)
+    const [perPage, setperPage] = useState(0)
+    const [rows, setrows] = useState(0)
     const { isError, user } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const [load, setLoad] = useState(false)
@@ -48,7 +52,7 @@ const ListMahasiswa = () => {
 
     useEffect(() => {
         getMhsAsuh()
-    }, [kodeJenjang, kodeFakultas, kodeProdi, username, tahunAngkatan])
+    }, [page, kodeJenjang, kodeFakultas, kodeProdi, username, tahunAngkatan])
 
     const getUserDosen = async () => {
         try {
@@ -84,11 +88,22 @@ const ListMahasiswa = () => {
         )
     }
 
+    const pageCount = Math.ceil(rows / perPage)
+
+    const changePage = (event) => {
+        const newOffset = (event.selected + 1);
+        setPage(newOffset)
+    }
+
     const getMhsAsuh = async () => {
         try {
             if (kodeJenjang && kodeFakultas && kodeProdi && username) {
-                const response = await axios.get(`v1/pembimbingAkademik/mahasiswaByDosenPembimbing/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}/${tahunAngkatan}`)
+                const response = await axios.get(`v1/pembimbingAkademik/mahasiswaByDosenPembimbing/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}/${tahunAngkatan}?page=${page}`)
                 setIdentitas(response.data.identitas)
+                setMahasiswa(response.data.data)
+                setPage(response.data.current_page)
+                setrows(response.data.total_data)
+                setperPage(response.data.per_page)
                 setMahasiswa(response.data.data)
             }
         } catch (error) {
@@ -124,6 +139,82 @@ const ListMahasiswa = () => {
                             <div>
                                 <Row>
                                     <Col>
+                                        <Card className='shadow'>
+                                            <Card.Body className='py-3'>
+                                                <Row className='bg-[#E9EAE1] p-3 shadow-sm rounded'>
+                                                    <Col lg="6" sm="12">
+                                                        <Row className='mb-2'>
+                                                            <Col lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>nipy</Card.Text>
+                                                            </Col>
+                                                            <Col lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col lg="8">
+                                                                <Card.Text className='fw-bold text-uppercase'>{identitas.nip_ynaa}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row className='mb-2'>
+                                                            <Col lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>pembimbing</Card.Text>
+                                                            </Col>
+                                                            <Col lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col lg="8">
+                                                                <Card.Text className='fw-bold text-uppercase'>{identitas.nama}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row className=''>
+                                                            <Col lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>kuota</Card.Text>
+                                                            </Col>
+                                                            <Col lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col lg="8">
+                                                                <Card.Text className='fw-bold text-uppercase'>{identitas.kouta_bimbingan} orang</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col lg="6" sm="12">
+                                                        <Row className='mb-2'>
+                                                            <Col lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>jenjang</Card.Text>
+                                                            </Col>
+                                                            <Col lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col lg="8">
+                                                                <Card.Text className='fw-bold text-uppercase'>{identitas.jenjang_pendidikan}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row className='mb-2'>
+                                                            <Col lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>fakultas</Card.Text>
+                                                            </Col>
+                                                            <Col lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col lg="8">
+                                                                <Card.Text className='fw-bold text-uppercase'>{identitas.fakultas}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row className='mb-2'>
+                                                            <Col lg="3" md="3" sm="5" xs="5">
+                                                                <Card.Text className='fw-bold text-uppercase'>prodi</Card.Text>
+                                                            </Col>
+                                                            <Col lg="1" md="1" sm="1" xs="1">
+                                                                <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                            </Col>
+                                                            <Col lg="8">
+                                                                <Card.Text className='fw-bold text-uppercase'>{identitas.prodi}</Card.Text>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
+                                            </Card.Body>
+                                        </Card>
                                         <Card className="mt-3 shadow">
                                             <Card.Body className='p-3'>
                                                 <Row className='mb-2'>
@@ -151,14 +242,14 @@ const ListMahasiswa = () => {
                                                                 <tbody>
                                                                     {Mahasiswa.length > 0 ? Mahasiswa.map((item, index) => (
                                                                         <tr className='border' key={item.id_detail_pembimbing_akademik}>
-                                                                            <td className='py-3'>{index + 1}</td>
+                                                                            <td className='py-3'>{(page - 1) * 10 + index + 1}</td>
                                                                             <td className='py-3 text-capitalize'>{item.nim}</td>
                                                                             <td className='py-3 text-capitalize'>{item.mahasiswas[0].nama}</td>
                                                                             <td className='py-3 text-capitalize'>{identitas.jenjang_pendidikan}</td>
                                                                             <td className='py-3 text-capitalize'>{identitas.fakultas}</td>
                                                                             <td className='py-3 text-capitalize'>{identitas.prodi}</td>
                                                                             <td className='py-3 text-capitalize'>
-                                                                                <Link to="/viewkrs" state={item.nim} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch className='text-[15px]' /></Link>
+                                                                                <Link to="/viewkrs" state={item.nim} className='bg-[#28A745] py-2 px-2 rounded-full text-white inline-flex items-center'><FaCog className='text-[15px]' /></Link>
                                                                             </td>
                                                                         </tr>
                                                                     )) :
@@ -169,9 +260,32 @@ const ListMahasiswa = () => {
                                                                             </td>
                                                                         </tr>
                                                                     }
+                                                                    {Mahasiswa.length > 0 ?
+                                                                        <tr className='border'>
+                                                                            <td className='py-3' colSpan={7} align='center'>
+                                                                                Total Mahasiswa {rows}
+                                                                            </td>
+                                                                        </tr>
+                                                                        :
+                                                                        ""
+                                                                    }
                                                                 </tbody>
                                                             </Table>
                                                         </div>
+                                                    </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col className='flex justify-center'>
+                                                        <ReactPaginate className='d-flex'
+                                                            pageCount={Math.min(10, pageCount)}
+                                                            onPageChange={changePage}
+                                                            previousLinkClassName={"btn btn-sm btn-outline-primary"}
+                                                            nextLinkClassName={"btn btn-sm btn-outline-primary ms-1"}
+                                                            breakLinkClassName={"btn btn-sm btn-outline-primary ms-1"}
+                                                            activeLinkClassName={"btn btn-sm btn-outline-primary"}
+                                                            pageLinkClassName={"btn btn-sm btn-primary ms-1"}
+                                                            disabledLinkClassName={"btn btn-sm btn-disabled"}
+                                                        />
                                                     </Col>
                                                 </Row>
                                             </Card.Body>
