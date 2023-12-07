@@ -611,19 +611,15 @@ module.exports = {
         await jadwalPertemuanModel.findAll({
             include: [
                 {
-                    attributes: ['id_jadwal_kuliah',
-                        'code_jadwal_kuliah', 'code_kelas',
-                        'code_ruang', 'hari', 'jam_mulai', 'jam_selesai',
-                        'dosen_pengajar', 'dosen_pengganti'],
+                    attributes: ['hari', 'jam_mulai', 'jam_selesai', 'dosen_pengajar', 'dosen_pengganti'],
                     model: jadwalKuliahModel,
                     status: "aktif",
                     include: [{
-                        attributes: ['id_sebaran',
-                            'code_sebaran', 'status_makul',
-                            'status_bobot_makul'],
+                        attributes: ['status_makul', 'status_bobot_makul'],
                         model: sebaranMataKuliah,
                         status: "aktif",
                         include: [{
+                            attributes: ['code_mata_kuliah', 'nama_mata_kuliah', 'jenis_mata_kuliah', 'sks'],
                             model: mataKuliahModel
                         }]
                     }, {
