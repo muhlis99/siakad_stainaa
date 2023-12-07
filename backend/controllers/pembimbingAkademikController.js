@@ -546,6 +546,8 @@ module.exports = {
 
     //  user dosen
     mahasiswaByDosenPembimbing: async (req, res, next) => {
+        const currentPage = parseInt(req.query.page) || 1
+        const perPage = req.query.perPage || 10
         const { codeJnjPen, codeFks, codePrd, nipy, thnAngkatan } = req.params
         const dosenUse = await dosenModel.findOne({
             where: {
@@ -590,15 +592,19 @@ module.exports = {
                         status: "aktif"
                     }
                 }, {
+                    attributes: ['code_tahun_ajaran', 'code_semester', 'status'],
                     model: historyMahasiswa,
                     order: [['id_history', 'DESC']],
                     limit: 1
                 }
             ],
+            offset: (currentPage - 1) * parseInt(perPage),
+            limit: parseInt(perPage),
             where: {
                 code_pembimbing_akademik: dataPembimbing.code_pembimbing_akademik,
                 status: "aktif"
-            }
+            },
+            order: [['nim', 'ASC']]
         }).then(result => {
             res.status(201).json({
                 message: "Data ditemukan",
