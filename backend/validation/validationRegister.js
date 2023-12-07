@@ -8,22 +8,7 @@ exports.validationRegistrasi = [
         .withMessage('username tidak boleh kosong'),
     check('email')
         .notEmpty()
-        .withMessage('email tidak boleh kosong')
-        .isEmail()
-        .normalizeEmail()
-        .withMessage('email tidak valid')
-        .custom(value => {
-            return registrasi.findOne({
-                where: {
-                    email: value
-                }
-            })
-                .then(user => {
-                    if (user) {
-                        return Promise.reject('email yang anda masukkan sudah ada')
-                    }
-                })
-        }),
+        .withMessage('email tidak boleh kosong'),
     check('password')
         .notEmpty()
         .withMessage('password tidak boleh kosong')
