@@ -591,7 +591,8 @@ module.exports = {
                         tanggal_masuk_kuliah: Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('tanggal_masuk_kuliah')), thnAngkatan),
                         status: "aktif"
                     }
-                }, {
+                },
+                {
                     attributes: ['code_tahun_ajaran', 'code_semester', 'status'],
                     model: historyMahasiswa,
                     order: [['id_history', 'DESC']],
@@ -616,7 +617,10 @@ module.exports = {
                     fakultas: dataPembimbing.fakultas[0].nama_fakultas,
                     prodi: dataPembimbing.prodis[0].nama_prodi
                 },
-                data: result
+                data: result,
+                total_data: result.length,
+                per_page: perPage,
+                current_page: currentPage,
             })
         }).catch(err => {
             next(err)
