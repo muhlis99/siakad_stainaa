@@ -75,18 +75,6 @@ const Profil = () => {
     const [didikW, setDidikW] = useState("")
     const [foto, setFoto] = useState("")
     const [prevFoto, setPrevFoto] = useState("")
-    const [qrCode, setQrCode] = useState("")
-    const [prevQrCode, setPrevQrCode] = useState("")
-    const [scanKtp, setScanKtp] = useState("")
-    const [prevScanKtp, setPrevScanKtp] = useState("")
-    const [scanKk, setScanKk] = useState("")
-    const [prevScanKk, setPrevScanKk] = useState("")
-    const [scanIjazah, setScanIjazah] = useState("")
-    const [prevScanIjazah, setPrevScanIjazah] = useState("")
-    const [scanKtm, setScanKtm] = useState("")
-    const [prevScanKtm, setPrevScanKtm] = useState("")
-    const [scanKip, setScanKip] = useState("")
-    const [prevScanKip, setPrevScanKip] = useState("")
     const [show, setShow] = useState(true)
     const [tampilkan, setTampilkan] = useState(false)
     const [username, setUsername] = useState("")
@@ -163,12 +151,6 @@ const Profil = () => {
                     setKodeHasilW(response.data.data.penghasilan_wali)
                     setKodeDidikW(response.data.data.pendidikan_wali)
                     setFoto(response.data.data.foto_diri)
-                    setQrCode(response.data.data.qrcode)
-                    setScanKtp(response.data.data.foto_ktp)
-                    setScanKk(response.data.data.foto_kk)
-                    setScanIjazah(response.data.data.foto_ijazah)
-                    scanKtm(response.data.data.foto_ktm)
-                    scanKip(response.data.data.foto_kip)
                 }
             } catch (error) {
 
@@ -179,119 +161,12 @@ const Profil = () => {
     }, [user])
 
     useEffect(() => {
-        getJalur()
-        getJenis()
-        getJenisTinggal()
-        getAlatTransportasi()
-        getPekerjaanAyah()
-        getPenghasilanAyah()
-        getPendidikanAyah()
-        getPekerjaanIbu()
-        getPenghasilanIbu()
-        getPendidikanIbu()
-        getPekerjaanWali()
-        getPenghasilanWali()
-        getPendidikanWali()
-    }, [kodeJalurPen, kodeJenisPen, kodeJenTin, kodeAlat, kodeKerjaA, kodeHasilA, kodeDidikA, kodeKerjaI, kodeHasilI, kodeDidikI, kodeKerjaW, kodeHasilW, kodeDidikW,])
-
-    useEffect(() => {
         prevFotoDiri()
     }, [foto])
 
     useEffect(() => {
         getDataUser()
     }, [user])
-
-    const getJalur = async () => {
-        if (kodeJalurPen) {
-            const response = await axios.get(`v1/equipmentDsnMhs/jalurPendaftaran/getByCode/${kodeJalurPen}`)
-            setJalurPen(response.data.data.nama_jalur_pendaftaran)
-        }
-    }
-
-    const getJenis = async () => {
-        if (kodeJenisPen) {
-            const response = await axios.get(`v1/equipmentDsnMhs/jenisPendaftaran/getByCode/${kodeJenisPen}`)
-            setJenisPen(response.data.data.nama_jenis_pendaftaran)
-        }
-    }
-
-    const getJenisTinggal = async () => {
-        if (kodeJenTin) {
-            const response = await axios.get(`v1/equipmentDsnMhs/jenisTinggal/getByCode/${kodeJenTin}`)
-            setJenTin(response.data.data.nama_jenis_tinggal)
-        }
-    }
-
-    const getAlatTransportasi = async () => {
-        if (kodeAlat) {
-            const response = await axios.get(`v1/equipmentDsnMhs/alatTransportasi/getByCode/${kodeAlat}`)
-            setAlat(response.data.data.nama_alat_transportasi)
-        }
-    }
-
-    const getPekerjaanAyah = async () => {
-        if (kodeKerjaA) {
-            const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${kodeKerjaA}`)
-            setPekerjaanA(response.data.data.nama_pekerjaan)
-        }
-    }
-
-    const getPenghasilanAyah = async () => {
-        if (kodeHasilA) {
-            const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${kodeHasilA}`)
-            setHasilA(response.data.data.nama_penghasilan)
-        }
-    }
-
-    const getPendidikanAyah = async () => {
-        if (kodeDidikA) {
-            const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${kodeDidikA}`)
-            setDidikA(response.data.data.nama_pendidikan)
-        }
-    }
-
-    const getPekerjaanIbu = async () => {
-        if (kodeKerjaI) {
-            const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${kodeKerjaI}`)
-            setPekerjaanI(response.data.data.nama_pekerjaan)
-        }
-    }
-
-    const getPenghasilanIbu = async () => {
-        if (kodeHasilI) {
-            const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${kodeHasilI}`)
-            setHasilI(response.data.data.nama_penghasilan)
-        }
-    }
-
-    const getPendidikanIbu = async () => {
-        if (kodeDidikI) {
-            const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${kodeDidikI}`)
-            setDidikI(response.data.data.nama_pendidikan)
-        }
-    }
-
-    const getPekerjaanWali = async () => {
-        if (kodeKerjaW) {
-            const response = await axios.get(`v1/equipmentDsnMhs/pekerjaan/getByCode/${kodeKerjaW}`)
-            setPekerjaanW(response.data.data.nama_pekerjaan)
-        }
-    }
-
-    const getPenghasilanWali = async () => {
-        if (kodeHasilW) {
-            const response = await axios.get(`v1/equipmentDsnMhs/penghasilan/getByCode/${kodeHasilW}`)
-            setHasilW(response.data.data.nama_penghasilan)
-        }
-    }
-
-    const getPendidikanWali = async () => {
-        if (kodeDidikW) {
-            const response = await axios.get(`v1/equipmentDsnMhs/pendidikan/getByCode/${kodeDidikW}`)
-            setDidikW(response.data.data.nama_pendidikan)
-        }
-    }
 
     const prevFotoDiri = async () => {
         try {
@@ -351,7 +226,15 @@ const Profil = () => {
                 })
             })
         } catch (error) {
+            setLoad(false)
+            if (error.response) {
+                Swal.fire({
+                    title: error.response.data.errors[0].msg,
+                    icon: "error"
+                }).then(() => {
 
+                })
+            }
         }
     }
 

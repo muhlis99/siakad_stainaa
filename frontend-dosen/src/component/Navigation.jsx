@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { LogOut, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
 import axios from "axios"
-import { FaBullhorn, FaClock, FaFilePdf, FaListUl, FaTh, FaArchive } from "react-icons/fa"
+import { FaBullhorn, FaClock, FaFilePdf, FaListUl, FaTh, FaArchive, FaGraduationCap } from "react-icons/fa"
+import { FaRegBookmark } from "react-icons/fa6"
 import "../assets/css/navigasi.css"
 
 const Navigation = () => {
@@ -125,25 +126,47 @@ const Navigation = () => {
                         </Nav>
                         : level == 'dosen' ?
                             <Nav className="me-auto">
-                                <Link to="/dashboard" className={`nav-link ${location.pathname == '/dashboard' ? 'active fw-bold' : ''} `}>Dashboard</Link>
-                                <Link to="/profile" className={`nav-link ${location.pathname == '/profile' ? 'active fw-bold' : ''} `}>Profil</Link>
-                                <NavDropdown align="end" title={
-                                    <span style={{ color: '#000' }}>Perkuliahan</span>
-                                } id="basic-nav-dropdown">
-                                    <Link to="/pengumuman" className={`dropdown-item ${location.pathname == '/pengumuman' ? 'active' : ''}`}>Pengumuman</Link>
-                                    {dosen &&
-                                        <>
-                                            <Link to="/mhsasuh" className={`dropdown-item ${location.pathname == '/mhsasuh' ? 'active' : ''}`}>Mahasiswa Asuh</Link>
-                                            <Link to="/krsmhs" className={`dropdown-item ${location.pathname == '/krsmhs' || location.pathname == '/viewkrs' ? 'active' : ''}`}>Kartu Rencana Studi</Link>
-                                        </>
-                                    }
-                                    <Link to="/jadwal" className={`dropdown-item ${location.pathname == '/jadwal' ? 'active' : ''}`}>Jadwal Kuliah</Link>
-                                    <Link to="/penilaian" className={`dropdown-item ${location.pathname == '/penilaian' || location.pathname == '/detailnilai' ? 'active' : ''}`}>Penilaian</Link>
-                                    {dosen &&
-                                        <Link to="/studimhs" className={`dropdown-item ${location.pathname == '/studimhs' ? 'active' : ''}`}>Studi Mahasiswa</Link>
-                                    }
-                                </NavDropdown>
-                                <Link to="/chat" className={`nav-link ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link>
+                                <Link to="/dashboard" className={`text-light nav-link my-3 ${location.pathname == '/dashboard' ? 'active fw-bold' : ''} `}>Dashboard</Link>
+                                <li className="nav-item dropdown drop1  absolute">
+                                    <a className="nav-link dropdown-toggle text-light my-3" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Perkuliahan</a>
+                                    <ul className="dropdown-menu top-14" id="drop-item-1">
+                                        <li>
+                                            <Link to="/pengumuman" className={`dropdown-item ${location.pathname == '/pengumuman' ? 'active' : ''}`}><div className="inline-flex gap-2"><FaBullhorn className="mt-1 text-[14px]" />  Pengumuman</div></Link>
+                                        </li>
+                                        {dosen &&
+                                            <>
+                                                <li>
+                                                    <Link to="/mhsasuh" className={`dropdown-item ${location.pathname == '/mhsasuh' ? 'active' : ''}`}>
+                                                        <div className="inline-flex gap-2"><FaGraduationCap className="mt-1 text-[14px]" /> Mahasiswa Asuh</div>
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="/krsmhs" className={`dropdown-item ${location.pathname == '/krsmhs' || location.pathname == '/viewkrs' ? 'active' : ''}`}>
+                                                        <div className="inline-flex gap-2"><FaListUl className="mt-1 text-[14px]" /> Kartu Rencana Studi</div>
+                                                    </Link>
+                                                </li>
+                                            </>
+                                        }
+                                        <li>
+                                            <Link to="/jadwal" className={`dropdown-item ${location.pathname == '/jadwal' ? 'active' : ''}`}>
+                                                <div className="inline-flex gap-2"><FaClock className="mt-1 text-[14px]" />  Jadwal Kuliah</div>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/penilaian" className={`dropdown-item ${location.pathname == '/penilaian' || location.pathname == '/detailnilai' ? 'active' : ''}`}>
+                                                <div className="inline-flex gap-2"><FaRegBookmark className="mt-1 text-[14px]" /> Penilaian</div>
+                                            </Link>
+                                        </li>
+                                        {dosen &&
+                                            <li>
+                                                <Link to="/studimhs" className={`dropdown-item ${location.pathname == '/studimhs' ? 'active' : ''}`}>
+                                                    <div className="inline-flex gap-2"><FaArchive className="mt-1 text-[14px]" />  Studi Mahasiswa</div>
+                                                </Link>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                                <Link to="/chat" className={`nav-link my-3 text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link>
                             </Nav>
                             : <Nav className="me-auto h-8">
 
@@ -162,7 +185,13 @@ const Navigation = () => {
                                     </div>
                                 </>
                             }>
-                                <li><Link to="/profil" className={`dropdown-item`}>Profil</Link></li>
+                                <li>
+                                    {level == 'mahasiswa' ?
+                                        <Link to="/profil" className={`dropdown-item`}>Profil</Link>
+                                        :
+                                        <Link to="/profile" className={`dropdown-item`}>Profil</Link>
+                                    }
+                                </li>
                                 <NavDropdown.Item onClick={logOut}>Logout</NavDropdown.Item>
                             </NavDropdown>
                         </nav>
