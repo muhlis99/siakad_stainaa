@@ -2,6 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize')
 const db = require('../config/database.js')
 const pembimbingAkademik = require('./pembimbingAkademikModel.js')
 const mahasiswaModel = require('./mahasiswaModel.js')
+const historyMahasiswa = require('./historyMahasiswaModel.js')
 
 const detailPembimbingAkademik = db.define('detailPembimbingAkademik', {
     'id_detail_pembimbing_akademik': {
@@ -33,6 +34,8 @@ const detailPembimbingAkademik = db.define('detailPembimbingAkademik', {
 pembimbingAkademik.belongsTo(detailPembimbingAkademik, { foreignKey: 'code_pembimbing_akademik' })
 detailPembimbingAkademik.hasMany(pembimbingAkademik, { sourceKey: 'code_pembimbing_akademik', foreignKey: 'code_pembimbing_akademik' })
 
+historyMahasiswa.belongsTo(detailPembimbingAkademik, { foreignKey: 'nim' })
+detailPembimbingAkademik.hasMany(historyMahasiswa, { sourceKey: 'nim', foreignKey: 'nim' })
 
 mahasiswaModel.belongsTo(detailPembimbingAkademik, { foreignKey: 'nim' })
 detailPembimbingAkademik.hasMany(mahasiswaModel, { sourceKey: 'nim', foreignKey: 'nim' })

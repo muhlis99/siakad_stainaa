@@ -6,6 +6,7 @@ const pembimbingAkademik = require('../models/pembimbingAkademikModel.js')
 const detailPembimbingAkademik = require('../models/detailPembimbingAkademikModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
 const { Op, Sequelize, col, fn, where } = require('sequelize')
+const historyMahasiswa = require('../models/historyMahasiswaModel.js')
 
 
 
@@ -588,6 +589,10 @@ module.exports = {
                         tanggal_masuk_kuliah: Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('tanggal_masuk_kuliah')), thnAngkatan),
                         status: "aktif"
                     }
+                }, {
+                    model: historyMahasiswa,
+                    order: [['id_history', 'DESC']],
+                    limit: 1
                 }
             ],
             where: {
