@@ -582,7 +582,7 @@ module.exports = {
             }
         })
         if (!dataPembimbing) return res.status(404).json({ message: "Data Tidak Ditemukan" })
-        await detailPembimbingAkademik.findAll({
+        await detailPembimbingAkademik.findAndCountAll({
             include: [
                 {
                     attributes: ["id_mahasiswa", "nim", "nama", "tanggal_masuk_kuliah"],
@@ -591,8 +591,7 @@ module.exports = {
                         tanggal_masuk_kuliah: Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('tanggal_masuk_kuliah')), thnAngkatan),
                         status: "aktif"
                     }
-                },
-                {
+                }, {
                     attributes: ['code_tahun_ajaran', 'code_semester', 'status'],
                     model: historyMahasiswa,
                     order: [['id_history', 'DESC']],
@@ -617,8 +616,8 @@ module.exports = {
                     fakultas: dataPembimbing.fakultas[0].nama_fakultas,
                     prodi: dataPembimbing.prodis[0].nama_prodi
                 },
-                data: result,
-                total_data: result.length,
+                data: result.rows,
+                total_data: result.count,
                 per_page: perPage,
                 current_page: currentPage,
             })
