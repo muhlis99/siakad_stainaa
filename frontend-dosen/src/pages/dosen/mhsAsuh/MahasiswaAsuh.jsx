@@ -10,9 +10,6 @@ import { Circles } from "react-loader-spinner"
 import Swal from 'sweetalert2'
 
 const MahasiswaAsuh = () => {
-    const [Jenjang, setJenjang] = useState([])
-    const [Fakultas, setFakultas] = useState([])
-    const [Prodi, setProdi] = useState([])
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
@@ -20,6 +17,9 @@ const MahasiswaAsuh = () => {
     const [username, setUsername] = useState("")
     const [identitas, setIdentitas] = useState([])
     const [Mahasiswa, setMahasiswa] = useState([])
+    const [page, setPage] = useState(0)
+    const [perPage, setperPage] = useState(0)
+    const [rows, setrows] = useState(0)
     const { isError, user } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const [load, setLoad] = useState(false)
@@ -51,7 +51,7 @@ const MahasiswaAsuh = () => {
 
     useEffect(() => {
         getMhsAsuh()
-    }, [kodeJenjang, kodeFakultas, kodeProdi, username, tahunAngkatan])
+    }, [page, kodeJenjang, kodeFakultas, kodeProdi, username, tahunAngkatan])
 
     const getYearSelected = (e) => {
         setTahunAngkatan(e)
@@ -90,9 +90,11 @@ const MahasiswaAsuh = () => {
     const getMhsAsuh = async () => {
         try {
             if (kodeJenjang && kodeFakultas && kodeProdi && username) {
-                const response = await axios.get(`v1/pembimbingAkademik/mahasiswaByDosenPembimbing/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}/${tahunAngkatan}`)
+                const response = await axios.get(`v1/pembimbingAkademik/mahasiswaByDosenPembimbing/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}/${tahunAngkatan}?page=${page}`)
                 setIdentitas(response.data.identitas)
-                console.log(response.data.identitas)
+                setPage(response.data.current_page)
+                setrows(response.data.total_data)
+                setperPage(response.data.per_page)
                 setMahasiswa(response.data.data)
             }
         } catch (error) {
@@ -233,16 +235,19 @@ const MahasiswaAsuh = () => {
                                                                         <tbody>
                                                                             {Mahasiswa.length > 0 ? Mahasiswa.map((item, index) => (
                                                                                 <tr className='border' key={item.id_detail_pembimbing_akademik}>
-                                                                                    <td className='py-3'>{index + 1}</td>
+                                                                                    <td className='py-3'>{(page - 1) * 10 + index + 1}</td>
                                                                                     <td className='py-3 text-capitalize'>{item.nim}</td>
                                                                                     <td className='py-3 text-capitalize'>{item.mahasiswas[0].nama}</td>
                                                                                     <td className='py-3 text-capitalize'>{identitas.jenjang_pendidikan}</td>
                                                                                     <td className='py-3 text-capitalize'>{identitas.fakultas}</td>
                                                                                     <td className='py-3 text-capitalize'>{identitas.prodi}</td>
-                                                                                    <td className='py-3 text-capitalize'>{item.historyMahasiswas[0].status == 'aktif' ?
-                                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.historyMahasiswas[0].status}</span>
-                                                                                        : <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.historyMahasiswas[0].status}</span>
-                                                                                    }</td>
+                                                                                    <td className='py-3 text-capitalize'>
+                                                                                        {item.historyMahasiswas[0].status == 'aktif' ?
+                                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.historyMahasiswas[0].status}</span>
+                                                                                            :
+                                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.historyMahasiswas[0].status}</span>
+                                                                                        }
+                                                                                    </td>
                                                                                 </tr>
                                                                             )) :
                                                                                 <tr className='border'>
@@ -251,6 +256,15 @@ const MahasiswaAsuh = () => {
                                                                                         <p className='fw-bold text-muted'>Tidak Ada Data</p>
                                                                                     </td>
                                                                                 </tr>
+                                                                            }
+                                                                            {Mahasiswa.length > 0 ?
+                                                                                <tr className='border'>
+                                                                                    <td className='py-3' colSpan={7} align='center'>
+                                                                                        Total Mahasiswa {rows}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                :
+                                                                                ""
                                                                             }
                                                                         </tbody>
                                                                     </Table>
