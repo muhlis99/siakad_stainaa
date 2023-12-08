@@ -44,6 +44,9 @@ const Dashboard = () => {
                     if (user.data.role == 'mahasiswa') {
                         const response = await axios.get(`v1/mahasiswa/getByNim/${user.data.username}`)
                         setNama(response.data.data.nama)
+                    } else {
+                        const response = await axios.get(`v1/dosen/getByNipy/${user.data.username}`)
+                        setNama(response.data.data.nama)
                     }
                 }
             } catch (error) {
@@ -113,7 +116,7 @@ const Dashboard = () => {
 
     const getTahunAjaran = async () => {
         const response = await axios.get('v1/tahunAjaran/all')
-        setKodeTahun(response.data.data[0].code_tahun_ajaran)
+        setTahun(response.data.data)
     }
 
     const getKategoriNilai = async () => {
@@ -193,7 +196,6 @@ const Dashboard = () => {
                                             </div>
                                         </Col>
                                     </Row>
-
                                     <Row className='mt-3'>
                                         <Col lg="12">
                                             <Card className='shadow-sm'>
@@ -247,64 +249,80 @@ const Dashboard = () => {
                                     </Row>
                                 </>
                                 :
-                                <Row>
-                                    <Col lg="6">
-                                        <div className="bg-white mb-2 rounded-lg shadow-md p-3">
-                                            <h3 className='text-[#5E7C60]'>Hai, Selamat Datang</h3>
-                                            <p className='text-base'>
-                                                Aplikasi ini membantu anda dalam mengelola Perkuliahan meliputi Pengumuman kampus, Rencana Studi Mahasiswa, Jadwal Kuliah, Pengajuan Studi dan lain-lain.
-                                            </p>
-                                        </div>
-                                    </Col>
-                                    <Col lg="6">
-                                        <Card className='shadow-md'>
-                                            <Card.Body className="px-2">
-                                                <div className='table-responsive'>
-                                                    <Table hover>
-                                                        <thead>
-                                                            <tr className='border'>
-                                                                <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>No</span></th>
-                                                                <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Periode</span></th>
-                                                                <th className='py-2 fw-bold text-center border' colSpan={2} style={{ background: '#D5D6C6' }}><span>Nilai</span></th>
-                                                                <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Kategori</span></th>
-                                                                <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Ket</span></th>
-                                                            </tr>
-                                                            <tr className='border'>
-                                                                <th className='py-2 fw-bold text-center border' style={{ background: '#D5D6C6' }}><span>Huruf</span></th>
-                                                                <th className='py-2 fw-bold text-center border' style={{ background: '#D5D6C6' }}><span>Angka</span></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {ListNilai.length > 0 ? ListNilai.map((item, index) => (
-                                                                <tr key={item.id_kategori_nilai} className='border'>
-                                                                    <th scope='row' className='py-2 border text-center'><span>{index + 1}</span></th>
-                                                                    <td className='py-2 border text-center' ><span>{item.tahunAjarans[0].tahun_ajaran}</span></td>
-                                                                    <td className='py-2 border text-center'><span>{item.nilai_huruf}</span></td>
-                                                                    <td className='py-2 border text-center'><span>{item.nilai_bawah + ' - ' + item.nilai_atas}</span></td>
-                                                                    <td className='py-2 border'><span>{item.kategori}</span></td>
-                                                                    <td className='py-2 border text-center'>
-                                                                        {item.keterangan == 'LULUS' ?
-                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.keterangan}</span>
-                                                                            :
-                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.keterangan}</span>
-                                                                        }
-                                                                    </td>
-                                                                </tr>
-                                                            )) :
+                                <>
+                                    <Row className='justify-content-center'>
+                                        <Col lg="8">
+                                            <div className="bg-white mb-2 rounded-lg shadow-md p-3">
+                                                <h3 className='text-[#5E7C60]'>Hai {nama}, Selamat Datang</h3>
+                                                <p className='text-base'>
+                                                    Aplikasi ini membantu anda dalam mengelola Perkuliahan meliputi Pengumuman kampus, Rencana Studi Mahasiswa, Jadwal Kuliah, Pengajuan Studi dan lain-lain.
+                                                </p>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row className='justify-content-center'>
+                                        <Col lg="8">
+                                            <Card className='shadow-md'>
+                                                <Card.Body className="px-2">
+                                                    <Row className='mb-2'>
+                                                        <Col className='flex justify-center'>
+                                                            <div>
+                                                                <select className='form-select form-select-sm' value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                                                    {Tahun.map((item) => (
+                                                                        <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                                                    ))}
+                                                                </select>
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                    <div className='table-responsive'>
+                                                        <Table hover>
+                                                            <thead>
                                                                 <tr className='border'>
-                                                                    <td className='py-2' colSpan={6} align='center'>
-                                                                        <Image src={dataBlank} thumbnail width={150} />
-                                                                        <p className='fw-bold text-muted'>Tidak Ada Data</p>
-                                                                    </td>
+                                                                    <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>No</span></th>
+                                                                    <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Periode</span></th>
+                                                                    <th className='py-2 fw-bold text-center border' colSpan={2} style={{ background: '#D5D6C6' }}><span>Nilai</span></th>
+                                                                    <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Kategori</span></th>
+                                                                    <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Ket</span></th>
                                                                 </tr>
-                                                            }
-                                                        </tbody>
-                                                    </Table>
-                                                </div>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                </Row>
+                                                                <tr className='border'>
+                                                                    <th className='py-2 fw-bold text-center border' style={{ background: '#D5D6C6' }}><span>Huruf</span></th>
+                                                                    <th className='py-2 fw-bold text-center border' style={{ background: '#D5D6C6' }}><span>Angka</span></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {ListNilai.length > 0 ? ListNilai.map((item, index) => (
+                                                                    <tr key={item.id_kategori_nilai} className='border'>
+                                                                        <th scope='row' className='py-2 border text-center'><span>{index + 1}</span></th>
+                                                                        <td className='py-2 border text-center' ><span>{item.tahunAjarans[0].tahun_ajaran}</span></td>
+                                                                        <td className='py-2 border text-center'><span>{item.nilai_huruf}</span></td>
+                                                                        <td className='py-2 border text-center'><span>{item.nilai_bawah + ' - ' + item.nilai_atas}</span></td>
+                                                                        <td className='py-2 border'><span>{item.kategori}</span></td>
+                                                                        <td className='py-2 border text-center'>
+                                                                            {item.keterangan == 'LULUS' ?
+                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.keterangan}</span>
+                                                                                :
+                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.keterangan}</span>
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                )) :
+                                                                    <tr className='border'>
+                                                                        <td className='py-2' colSpan={6} align='center'>
+                                                                            <Image src={dataBlank} thumbnail width={150} />
+                                                                            <p className='fw-bold text-muted'>Tidak Ada Data</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </Table>
+                                                    </div>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    </Row>
+
+                                </>
                             }
                         </div>
                     }
