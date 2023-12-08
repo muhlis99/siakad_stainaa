@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card, Table } from 'react-bootstrap'
+import { Row, Col, Card, Table, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
+import dataBlank from "../../../assets/images/noData.svg"
 import { getMe } from "../../../features/authSlice"
 import { Link, Navigate, useLocation } from "react-router-dom"
 import axios from 'axios'
@@ -11,17 +12,18 @@ import { Circles } from "react-loader-spinner"
 const ListKelas = () => {
     const { isError, user } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
-    const [Jenjang, setJenjang] = useState([])
-    const [Fakultas, setFakultas] = useState([])
     const [Prodi, setProdi] = useState([])
     const [Tahun, setTahun] = useState([])
     const [Semester, setSemester] = useState([])
+    const [idProdi, setIdProdi] = useState("")
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
     const [username, setUsername] = useState("")
+    const [detailDosen, setDetailDosen] = useState([])
+    const [pendidikan, setPendidikan] = useState("")
     const [MataKuliah, setMataKuliah] = useState([])
     const [kodeMakul, setKodeMakul] = useState([])
     const [DataKelas, setDataKelas] = useState([])
@@ -29,7 +31,6 @@ const ListKelas = () => {
     const location = useLocation()
 
     useEffect(() => {
-        console.log(location.state);
         if (location.state != null) {
             setKodeJenjang(location.state.kodeJen)
             setKodeTahun(location.state.kodeThn)
@@ -53,20 +54,31 @@ const ListKelas = () => {
     }, [user])
 
     useEffect(() => {
+        const getDosenByNip = async () => {
+            try {
+                if (username) {
+                    const response = await axios.get(`v1/dosen/getByNipy/${username}`)
+                    setDetailDosen(response.data.data)
+                    setPendidikan(response.data.data.pendidikans[0].nama_pendidikan)
+                }
+            } catch (error) {
+
+            }
+        }
+        getDosenByNip()
+    }, [username])
+
+    useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
 
     useEffect(() => {
-        getJenjangPendidikan()
+        getProdi()
     }, [])
 
     useEffect(() => {
-        getFakultas()
-    }, [kodeJenjang])
-
-    useEffect(() => {
-        getProdi()
-    }, [kodeFakultas])
+        getProdiById()
+    }, [idProdi])
 
     useEffect(() => {
         getTahunAjaran()
@@ -85,33 +97,22 @@ const ListKelas = () => {
         getDataKelas()
     }, [kodeMakul, kodeJenjang, kodeFakultas, kodeProdi, kodeTahun, kodeSemester])
 
-    const getJenjangPendidikan = async () => {
-        try {
-            const response = await axios.get('v1/jenjangPendidikan/all')
-            setJenjang(response.data.data)
-        } catch (error) {
-
-        }
-    }
-
-    const getFakultas = async () => {
-        try {
-            if (kodeJenjang != 0) {
-                const response = await axios.get(`v1/fakultas/getFakulatsByJenjang/${kodeJenjang}`)
-                setFakultas(response.data.data)
-            } else {
-                setKodeFakultas()
-            }
-        } catch (error) {
-
-        }
-    }
-
     const getProdi = async () => {
         try {
-            if (kodeFakultas != 0) {
-                const response = await axios.get(`v1/prodi/getProdiByFakultas/${kodeFakultas}`)
-                setProdi(response.data.data)
+            const response = await axios.get(`v1/prodi/all`)
+            setProdi(response.data.data)
+        } catch (error) {
+
+        }
+    }
+
+    const getProdiById = async () => {
+        try {
+            if (idProdi) {
+                const response = await axios.get(`v1/prodi/getById/${idProdi}`)
+                setKodeProdi(response.data.data.code_prodi)
+                setKodeFakultas(response.data.data.code_fakultas)
+                setKodeJenjang(response.data.data.code_jenjang_pendidikan)
             }
         } catch (error) {
 
@@ -192,107 +193,149 @@ const ListKelas = () => {
                         :
                         <div className="content-wrapper">
                             <div className="page-header">
-                                <h3 className="page-title">Penilaian</h3>
+                                <h2 className='fs-4 font-bold'>Penilaian</h2>
                             </div>
                             <Row>
                                 <Col>
-                                    <Card className="shadow">
-                                        <Card.Body className='p-3'>
-                                            <Row>
-                                                <Col>
-                                                    <div className="grid lg:grid-cols-5 gap-2">
-                                                        <div>
-                                                            <select className="form-select" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
-                                                                <option value="">Jenjang Pendidikan</option>
-                                                                {Jenjang.map((item) => (
-                                                                    <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
-                                                                ))}
-                                                            </select>
-                                                        </div>
-                                                        <div>
-                                                            <select className="form-select" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
-                                                                <option value="">Fakultas</option>
-                                                                {Fakultas.map((item) => (
-                                                                    <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
-                                                                ))}
-                                                            </select>
-                                                        </div>
-                                                        <div>
-                                                            <select className="form-select" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
-                                                                <option value="">Prodi</option>
+                                    <Card className='shadow'>
+                                        <Card.Body className='py-3'>
+                                            <Row className='bg-[#E9EAE1] py-3 px-3 shadow-sm rounded'>
+                                                <Col lg="6" className='border'>
+                                                    <Row className='mb-3'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>NIP</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <Card.Text className='fw-bold text-uppercase'>{detailDosen.nip_ynaa}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-3'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Nama</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <Card.Text className='fw-bold text-uppercase'>{detailDosen.nama}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Pendidikan</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <Card.Text className='fw-bold text-uppercase'>{pendidikan}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col lg="6">
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>prodi</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <select className="form-select form-select-sm" value={idProdi} onChange={(e) => setIdProdi(e.target.value)}>
+                                                                <option>Prodi</option>
                                                                 {Prodi.map((item) => (
-                                                                    <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
+                                                                    <option key={item.id_prodi} value={item.id_prodi}>{item.nama_prodi}</option>
                                                                 ))}
                                                             </select>
-                                                        </div>
-                                                        <div>
-                                                            <select className="form-select" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
-                                                                <option value="">Periode</option>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Periode</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <select className="form-select form-select-sm" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                                                <option>Periode</option>
                                                                 {Tahun.map((item) => (
                                                                     <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
                                                                 ))}
                                                             </select>
-                                                        </div>
-                                                        <div>
-                                                            <select className="form-select" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
-                                                                <option value="">Semester</option>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Semester</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0' lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <select className="form-select form-select-sm" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
+                                                                <option>Semester</option>
                                                                 {Semester.map((item) => (
                                                                     <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
                                                                 ))}
                                                             </select>
-                                                        </div>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                            </Row>
+                                        </Card.Body>
+                                    </Card>
+                                    <Card className="shadow mt-3">
+                                        <Card.Body className="px-3">
+                                            <Row>
+                                                <Col>
+                                                    <div className="table-responsive">
+                                                        <Table hover>
+                                                            <thead>
+                                                                <tr className='border'>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>#</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Kode Mata Kuliah</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Mata Kuliah</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Kelas</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Jumlah Mahasiswa</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Kapasitas</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Aksi</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {MataKuliah.length > 0 ? MataKuliah.map((mkl, index) => (
+                                                                    DataKelas.length != 0 ? DataKelas[index].map((item) => (
+                                                                        <tr key={item.id_kelas} className='border'>
+                                                                            <td className='py-2'>{index + 1}</td>
+                                                                            <td className='py-2'>{item.code_mata_kuliah}</td>
+                                                                            <td className='py-2'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                            <td className='py-2'>{item.nama_kelas}</td>
+                                                                            <td className='py-2'>{item.jumlahMhs} Mahasiswa</td>
+                                                                            <td className='py-2'>{item.kapasitas} Mahasiswa</td>
+                                                                            <td className='py-2'>
+                                                                                <Link to='/detailnilai' state={{ kodeMk: item.code_mata_kuliah, idKelas: item.id_kelas, kodeKls: item.code, kodeThn: kodeTahun, kodeSmt: kodeSemester, kodeJen: kodeJenjang, kodeFk: kodeFakultas, kodeProd: kodeProdi }} className='bg-[#17A2B8] py-2 px-2 rounded text-decoration-none text-white inline-flex items-center'>Setting</Link>
+                                                                            </td>
+                                                                        </tr>
+                                                                    ))
+                                                                        : ""
+                                                                )) :
+                                                                    <tr className='border'>
+                                                                        <td colSpan={7} align='center'>
+                                                                            <Image src={dataBlank} thumbnail width={150} />
+                                                                            <p className='fw-bold text-muted'>Tidak Ada Data</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </Table>
                                                     </div>
                                                 </Col>
                                             </Row>
-
                                         </Card.Body>
                                     </Card>
-                                    {kodeJenjang && kodeFakultas && kodeProdi && kodeTahun && kodeSemester ?
-                                        <Card className="shadow mt-3">
-                                            <Card.Body className="px-3">
-                                                <Row>
-                                                    <Col>
-                                                        <div className="table-responsive">
-                                                            <Table hover>
-                                                                <thead>
-                                                                    <tr className='border'>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>#</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kode Mata Kuliah</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Mata Kuliah</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kelas</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Jumlah Mahasiswa</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Kapasitas</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Aksi</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    {
-                                                                        MataKuliah.map((mkl, index) => (
-                                                                            DataKelas.length != 0 ? DataKelas[index].map((item) => (
-                                                                                <tr key={item.id_kelas} className='border'>
-                                                                                    <th scope='row' className='py-2'>{index + 1}</th>
-                                                                                    <td className='py-2'>{item.code_mata_kuliah}</td>
-                                                                                    <td className='py-2'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                                    <td className='py-2'>{item.nama_kelas}</td>
-                                                                                    <td className='py-2'>{item.jumlahMhs} Mahasiswa</td>
-                                                                                    <td className='py-2'>{item.kapasitas} Mahasiswa</td>
-                                                                                    <td className='py-2'>
-                                                                                        <Link to='/detailnilai' state={{ kodeMk: item.code_mata_kuliah, idKelas: item.id_kelas, kodeKls: item.code, kodeThn: kodeTahun, kodeSmt: kodeSemester, kodeJen: kodeJenjang, kodeFk: kodeFakultas, kodeProd: kodeProdi }} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch /></Link>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            ))
-                                                                                : ""
-                                                                        ))
-
-                                                                    }
-                                                                </tbody>
-                                                            </Table>
-                                                        </div>
-                                                    </Col>
-                                                </Row>
-                                            </Card.Body>
-                                        </Card>
-                                        : ""}
                                 </Col>
                             </Row>
                         </div>

@@ -451,99 +451,111 @@ const InputNilai = () => {
                         :
                         <div className="content-wrapper">
                             <div className="page-header">
-                                <h3 className="page-title">Penilaian</h3>
+                                <h2 className='fs-4 font-bold'>Penilaian</h2>
                             </div>
                             <Row>
                                 <Col>
                                     <Card>
-                                        <Card.Body>
-                                            <form onSubmit={simpanNilai}>
-                                                <Row className='bg-[#E9EAE1] border-l-2 border-[#5E7C60] py-3 px-3 shadow-sm rounded-r-lg'>
-                                                    <Col lg="6" sm="12">
-                                                        <Row className='mb-2'>
-                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                                <Card.Text className='fw-bold text-uppercase'>Jenjang</Card.Text>
-                                                            </Col>
-                                                            <Col className='p-0'>
-                                                                <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.jenjangPendidikans[0].nama_jenjang_pendidikan : ""}</Card.Text>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row className='mb-2'>
-                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                                <Card.Text className='fw-bold text-uppercase'>Fakultas</Card.Text>
-                                                            </Col>
-                                                            <Col className='p-0'>
-                                                                <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.fakultas[0].nama_fakultas : ""}</Card.Text>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row className='mb-2'>
-                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                                <Card.Text className='fw-bold text-uppercase'>Prodi</Card.Text>
-                                                            </Col>
-                                                            <Col className='p-0'>
-                                                                <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.prodis[0].nama_prodi : ""}</Card.Text>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row className='mb-2'>
-                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                                <Card.Text className='fw-bold text-uppercase'>Kelas</Card.Text>
-                                                            </Col>
-                                                            <Col className='p-0'>
-                                                                <Card.Text className='fw-bold text-uppercase'>: {detailKls.nama_kelas}</Card.Text>
-                                                            </Col>
-                                                        </Row>
-                                                    </Col>
-                                                    <Col lg="6" sm="12">
-                                                        <Row className='mb-2'>
-                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                                <Card.Text className='fw-bold text-uppercase'>Periode</Card.Text>
-                                                            </Col>
-                                                            <Col className='p-0'>
-                                                                <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.tahunAjarans[0].tahun_ajaran : ""}</Card.Text>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row className='mb-2'>
-                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                                <Card.Text className='fw-bold text-uppercase'>Semester</Card.Text>
-                                                            </Col>
-                                                            <Col className='p-0'>
-                                                                <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.semesters[0].semester : ""}</Card.Text>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row className='mb-2'>
-                                                            <Col className='p-0' lg="3" md="3" sm="5" xs="5">
-                                                                <Card.Text className='fw-bold text-uppercase'>Mata kuliah</Card.Text>
-                                                            </Col>
-                                                            <Col className='p-0'>
-                                                                <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.mataKuliahs[0].nama_mata_kuliah : ""}</Card.Text>
-                                                            </Col>
-                                                        </Row>
-                                                    </Col>
-                                                </Row>
-                                                <Row className='mt-5'>
+                                        <Card.Body className='py-3'>
+                                            <Row className='bg-[#E9EAE1] py-3 px-3 shadow-sm rounded'>
+                                                <Col lg="6" sm="12">
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Jenjang</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.jenjangPendidikans[0].nama_jenjang_pendidikan : ""}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Fakultas</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.fakultas[0].nama_fakultas : ""}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Prodi</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.prodis[0].nama_prodi : ""}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Kelas</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <Card.Text className='fw-bold text-uppercase'>: {detailKls.nama_kelas}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col lg="6" sm="12">
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Periode</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.tahunAjarans[0].tahun_ajaran : ""}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Semester</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.semesters[0].semester : ""}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Mata kuliah</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.mataKuliahs[0].nama_mata_kuliah : ""}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>Kode MK</Card.Text>
+                                                        </Col>
+                                                        <Col className='p-0'>
+                                                            <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.mataKuliahs[0].code_mata_kuliah : ""}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                            </Row>
+                                        </Card.Body>
+                                    </Card>
+                                    <form onSubmit={simpanNilai}>
+                                        <Card className='mt-3'>
+                                            <Card.Body>
+                                                <Row>
                                                     <Col className='p-0'>
                                                         <div className="table-responsive">
                                                             <Table hover>
                                                                 <thead>
                                                                     <tr className='border'>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>#</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>NIM</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Nama</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Presentasi</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Materi</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Power Point</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Keaktifan</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Tugas</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>UTS</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>UAS</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }}>Absen</th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Jumlah</th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Nilai</th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Grade</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#D5D6C6' }} rowSpan={2}>Status</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>#</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>NIM</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>Nama</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Presentasi</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Materi</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Power Point</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Keaktifan</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Tugas</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>UTS</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>UAS</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Absen</th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>Jumlah</th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>Nilai</th>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>Grade</th>
+                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>Status</th>
                                                                     </tr>
                                                                     <tr className='border'>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>
                                                                             <div className="form-check">
                                                                                 <input className="form-check-input"
                                                                                     checked={checkedpres}
@@ -551,7 +563,7 @@ const InputNilai = () => {
                                                                                     type="checkbox" />
                                                                             </div>
                                                                         </th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>
                                                                             <div className="form-check">
                                                                                 <input className="form-check-input"
                                                                                     checked={checkedmtr}
@@ -559,7 +571,7 @@ const InputNilai = () => {
                                                                                     type="checkbox" />
                                                                             </div>
                                                                         </th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>
                                                                             <div className="form-check">
                                                                                 <input className="form-check-input"
                                                                                     checked={checkedppt}
@@ -567,7 +579,7 @@ const InputNilai = () => {
                                                                                     type="checkbox" />
                                                                             </div>
                                                                         </th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>
                                                                             <div className="form-check">
                                                                                 <input className="form-check-input"
                                                                                     checked={checkedaktif}
@@ -575,7 +587,7 @@ const InputNilai = () => {
                                                                                     type="checkbox" />
                                                                             </div>
                                                                         </th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>
                                                                             <div className="form-check">
                                                                                 <input className="form-check-input"
                                                                                     checked={checkedtgs}
@@ -583,7 +595,7 @@ const InputNilai = () => {
                                                                                     type="checkbox" />
                                                                             </div>
                                                                         </th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>
                                                                             <div className="form-check">
                                                                                 <input className="form-check-input"
                                                                                     checked={checkedUts}
@@ -591,7 +603,7 @@ const InputNilai = () => {
                                                                                     type="checkbox" />
                                                                             </div>
                                                                         </th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>
                                                                             <div className="form-check">
                                                                                 <input className="form-check-input"
                                                                                     checked={checkedUas}
@@ -599,7 +611,7 @@ const InputNilai = () => {
                                                                                     type="checkbox" />
                                                                             </div>
                                                                         </th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#D5D6C6' }}>
+                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>
                                                                             <div className="form-check">
                                                                                 <input className="form-check-input"
                                                                                     checked={checkedAbsen}
@@ -612,7 +624,7 @@ const InputNilai = () => {
                                                                 <tbody>
                                                                     {Mahasiswa.map((mhs, index) => (
                                                                         <tr key={index} className='border'>
-                                                                            <th scope='row' className='py-2 border text-center'>{index + 1}</th>
+                                                                            <td className='py-2 border text-center'>{index + 1}</td>
                                                                             <td className='py-2 border text-capitalize' align='center'>{mhs.nim}</td>
                                                                             <td className='py-2 border text-capitalize'>{mhs.mahasiswas[0].nama}</td>
                                                                             <td className='py-2 border px-1 text-capitalize'>
@@ -657,16 +669,17 @@ const InputNilai = () => {
                                                         </div>
                                                     </Col>
                                                 </Row>
-                                                <hr />
+                                            </Card.Body>
+                                            <Card.Footer>
                                                 <Row>
                                                     <Col>
                                                         <Link to='/detailnilai' state={{ kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center no-underline'><FaReply /> &nbsp; <span>Kembali</span></Link>
                                                         <button className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center float-right'><FaSave /> &nbsp; <span>Simpan</span></button>
                                                     </Col>
                                                 </Row>
-                                            </form>
-                                        </Card.Body>
-                                    </Card>
+                                            </Card.Footer>
+                                        </Card>
+                                    </form>
                                 </Col>
                             </Row>
                         </div>

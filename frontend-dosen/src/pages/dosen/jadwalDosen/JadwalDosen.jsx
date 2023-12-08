@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card, Table, Modal, Button, Image } from 'react-bootstrap'
-import dataBlank from "../../../assets/images/noData.svg"
+import { Row, Col, Card, Table, Modal, Accordion, Image } from 'react-bootstrap'
+import dataBlank from "../../../assets/images/watch.svg"
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
 import { Link, Navigate } from "react-router-dom"
@@ -38,17 +38,6 @@ const JadwalDosen = () => {
     const [statusPertemuan, setStatusPertemuan] = useState("")
     const [load, setLoad] = useState(false)
 
-    // let date = new Date()
-    // let year = date.getFullYear()
-    // let newyear = (year + 1)
-
-    // let a = year.toString().substring(2, 4)
-    // let b = newyear.toString().substring(2, 4)
-    // const gnj = a + b + "gnj"
-    // const gnp = a + b + "gnp"
-    // console.log(gnj)
-    // console.log(gnp)
-
 
     useEffect(() => {
         setLoad(true)
@@ -82,14 +71,6 @@ const JadwalDosen = () => {
         getDosenByNip()
     }, [username])
 
-    // useEffect(() => {
-    //     getJenjangPendidikan()
-    // }, [])
-
-    // useEffect(() => {
-    //     getFakultas()
-    // }, [kodeJenjang])
-
     useEffect(() => {
         getProdi()
     }, [])
@@ -106,28 +87,6 @@ const JadwalDosen = () => {
     useEffect(() => {
         getJadwal()
     }, [kodeJenjang, kodeFakultas, kodeProdi, kodeTahun, kodeSemester])
-
-    // const getJenjangPendidikan = async () => {
-    //     try {
-    //         const response = await axios.get('v1/jenjangPendidikan/all')
-    //         setJenjang(response.data.data)
-    //     } catch (error) {
-
-    //     }
-    // }
-
-    // const getFakultas = async () => {
-    //     try {
-    //         if (kodeJenjang != 0) {
-    //             const response = await axios.get(`v1/fakultas/getFakulatsByJenjang/${kodeJenjang}`)
-    //             setFakultas(response.data.data)
-    //         } else {
-    //             setKodeFakultas()
-    //         }
-    //     } catch (error) {
-
-    //     }
-    // }
 
     const getProdi = async () => {
         try {
@@ -508,92 +467,68 @@ const JadwalDosen = () => {
                                         <Card.Body className='py-3 px-3'>
                                             <Row>
                                                 <Col lg="12">
-                                                    {Jadwal.map((item, index) => (
-                                                        <Card className='shadow'>
+                                                    {Jadwal.length > 0 ? Jadwal.map((item, index) => (
+                                                        <Card key={item.id_jadwal_pertemuan} className='shadow'>
+                                                            <Card.Header>
+                                                                <Card.Title className='mt-2 mb-0 text-muted'>
+                                                                    jadwal kuliah minggu ini
+                                                                </Card.Title>
+                                                            </Card.Header>
                                                             <Card.Body className='p-2'>
                                                                 <Row>
                                                                     <Col>
                                                                         <Table>
                                                                             <tbody>
-                                                                                {
-                                                                                    Jadwal.map((item, index) => (
-                                                                                        <tr key={item.id_jadwal_pertemuan}>
-                                                                                            <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].hari}</td>
-                                                                                            <td className='py-2' align='center'>{item.tanggal_pertemuan}</td>
-                                                                                            <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</td>
-                                                                                            <td className='py-2'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                                            <td className='py-2 text-capitalize' align='center'>{item.jenis_pertemuan}</td>
-                                                                                            <td className='py-2 text-capitalize' align='center'>{item.metode_pembelajaran}</td>
-                                                                                            <td className='py-2' align='center'>{item.url_online == "" ?
-                                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL tidak ada</span>
-                                                                                                :
-                                                                                                <Link to={item.url_online} target='blank'>
-                                                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL ada</span>
-                                                                                                </Link>
-                                                                                            }
-                                                                                            </td>
-                                                                                            <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
-                                                                                            <td className='py-2 text-capitalize' align='center'>
-                                                                                                <button className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}><FaSearch /></button>
-                                                                                                <button className='bg-[#FFC107] py-2 px-2 rounded-full text-white inline-flex items-center ml-1' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}><FaEdit /></button>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    ))}
+                                                                                <tr>
+                                                                                    <td className='py-3 text-capitalize' width={20}>Mata Kuliah :</td>
+                                                                                    <td className='py-3 text-capitalize' colSpan={2}>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                                    <td className='py-3'></td>
+                                                                                    <td className='py-3 text-capitalize' width={20}>Pertemuan :</td>
+                                                                                    <td className='py-3 text-capitalize' colSpan={2}>{item.jenis_pertemuan}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td className='py-3 text-capitalize' colSpan={7}></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td className='py-3 border text-capitalize'>Hari</td>
+                                                                                    <td className='py-3 border text-capitalize'>Tanggal</td>
+                                                                                    <td className='py-3 border text-capitalize'>{item.tanggal_pertemuan}</td>
+                                                                                    <td className='py-3 border text-capitalize' align='center'>Metode</td>
+                                                                                    <td className='py-3 border text-capitalize' align='center' rowSpan={2}>{item.url_online == "" ?
+                                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL tidak ada</span>
+                                                                                        :
+                                                                                        <Link to={item.url_online} target='blank'>
+                                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL ada</span>
+                                                                                        </Link>
+                                                                                    }</td>
+                                                                                    <td className='py-3 border text-capitalize' align='center'>Ruang</td>
+                                                                                    <td className='py-2 border text-capitalize' rowSpan={2} align='center'>
+                                                                                        <button className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}><FaSearch /></button>
+                                                                                        <button className='bg-[#FFC107] py-2 px-2 rounded-full text-white inline-flex items-center ml-1' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}><FaEdit /></button>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td className='py-3 border text-capitalize'>{item.jadwalKuliahs[0].hari}</td>
+                                                                                    <td className='py-3 border'>Jam</td>
+                                                                                    <td className='py-3 border text-capitalize'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai} WIB</td>
+                                                                                    <td className='py-3 border text-capitalize' align='center'>{item.metode_pembelajaran}</td>
+                                                                                    <td className='py-3 border text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
+                                                                                </tr>
+
                                                                             </tbody>
                                                                         </Table>
                                                                     </Col>
-                                                                    {/* <Col><span className='text-[14px]'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</span></Col>
-                                                                    <Col><span className='text-[14px]'>{item.jadwalKuliahs[0].hari}, {moment(item.tanggal_pertemuan).format('DD MMMM YYYY')}</span></Col>
-                                                                    <Col><span className='text-[14px]'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</span></Col>
-                                                                    <Col><span className='text-[14px]'>{item.metode_pembelajaran}</span></Col>
-                                                                    <Col><span className='text-[14px]'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</span></Col> */}
                                                                 </Row>
                                                             </Card.Body>
                                                         </Card>
-                                                    ))}
+                                                    )) :
+                                                        <div className='flex justify-center'>
+                                                            <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                        </div>}
                                                 </Col>
                                             </Row>
                                         </Card.Body>
                                     </Card>
-                                    {/* <Card className="mt-3 shadow">
-                                        <Card.Body className="px-3">
-                                            <Row>
-                                                <Col>
-                                                    <div className="table-responsive">
-                                                        <Table>
-                                                            <tbody>
-                                                                
-                                                                    Jadwal.map((item, index) => (
-                                                                        <tr key={item.id_jadwal_pertemuan} className='border'>
-                                                                            <th scope='row' className='py-2'>{index + 1}</th>
-                                                                            <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].hari}</td>
-                                                                            <td className='py-2' align='center'>{item.tanggal_pertemuan}</td>
-                                                                            <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</td>
-                                                                            <td className='py-2'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                            <td className='py-2 text-capitalize' align='center'>{item.jenis_pertemuan}</td>
-                                                                            <td className='py-2 text-capitalize' align='center'>{item.metode_pembelajaran}</td>
-                                                                            <td className='py-2' align='center'>{item.url_online == "" ?
-                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL tidak ada</span>
-                                                                                :
-                                                                                <Link to={item.url_online} target='blank'>
-                                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL ada</span>
-                                                                                </Link>
-                                                                            }
-                                                                            </td>
-                                                                            <td className='py-2 text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
-                                                                            <td className='py-2 text-capitalize' align='center'>
-                                                                                <button className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}><FaSearch /></button>
-                                                                                <button className='bg-[#FFC107] py-2 px-2 rounded-full text-white inline-flex items-center ml-1' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}><FaEdit /></button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    ))}
-                                                            </tbody>
-                                                        </Table>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </Card.Body>
-                                    </Card> */}
                                 </Col>
                             </Row>
                         </div>
