@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card, Table } from 'react-bootstrap'
+import { Row, Col, Card, Table, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
+import dataBlank from "../../../assets/images/watch.svg"
 import { getMe } from "../../../features/authSlice"
 import { Link, Navigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 import { LuFileInput } from "react-icons/lu"
-import { FaEdit, FaReply } from 'react-icons/fa'
+import { FaEdit, FaPencilAlt, FaReply } from 'react-icons/fa'
 
 const InfoNilai = () => {
     const { isError, user } = useSelector((state) => state.auth)
@@ -52,13 +53,13 @@ const InfoNilai = () => {
                 :
                 <div className="content-wrapper">
                     <div className="page-header">
-                        <h3 className="page-title">Penilaian</h3>
+                        <h2 className='fs-4 font-bold'>Penilaian</h2>
                     </div>
                     <Row>
                         <Col>
                             <Card>
-                                <Card.Body>
-                                    <Row className='bg-[#E9EAE1] border-l-2 border-[#5E7C60] py-3 px-3 shadow-sm rounded-r-lg'>
+                                <Card.Body className='py-3'>
+                                    <Row className='bg-[#E9EAE1] py-3 px-3 shadow-sm rounded'>
                                         <Col lg="6" sm="12">
                                             <Row className='mb-2'>
                                                 <Col className='p-0' lg="3" md="3" sm="5" xs="5">
@@ -118,10 +119,22 @@ const InfoNilai = () => {
                                                     <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.mataKuliahs[0].nama_mata_kuliah : ""}</Card.Text>
                                                 </Col>
                                             </Row>
+                                            <Row className='mb-2'>
+                                                <Col className='p-0' lg="3" md="3" sm="5" xs="5">
+                                                    <Card.Text className='fw-bold text-uppercase'>Kode MK</Card.Text>
+                                                </Col>
+                                                <Col className='p-0'>
+                                                    <Card.Text className='fw-bold text-uppercase'>: {detailKls != 0 ? detailKls.mataKuliahs[0].code_mata_kuliah : ""}</Card.Text>
+                                                </Col>
+                                            </Row>
                                         </Col>
                                     </Row>
+                                </Card.Body>
+                            </Card>
+                            <Card className='mt-3'>
+                                <Card.Body className='py-3'>
                                     {Nilai.length > 0 ?
-                                        <Row className='mt-5'>
+                                        <Row>
                                             <Col className='p-0'>
                                                 <div className="table-responsive">
                                                     <Table hover>
@@ -180,7 +193,7 @@ const InfoNilai = () => {
                                                                             kodeJen: location.state.kodeJen,
                                                                             kodeFk: location.state.kodeFk,
                                                                             kodeProd: location.state.kodeProd
-                                                                        }} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaEdit /></Link>
+                                                                        }} className='bg-[#28A745] py-2 px-2 rounded-full text-white inline-flex items-center'><FaPencilAlt /></Link>
                                                                     </td>
                                                                 </tr>
                                                             ))}
@@ -191,8 +204,13 @@ const InfoNilai = () => {
                                         </Row>
                                         :
                                         <Row className='mt-5'>
-                                            <Col className='text-center'>
-                                                <p className='text-[#DC3545]'>Anda belum melakukan input nilai</p>
+                                            <Col className='flex justify-center'>
+                                                <div>
+                                                    <div className='flex justify-center'>
+                                                        <Image src={dataBlank} width={150} />
+                                                    </div>
+                                                    <p className='text-muted font-bold'>Anda belum melakukan input nilai</p>
+                                                </div>
                                             </Col>
                                         </Row>
                                     }
