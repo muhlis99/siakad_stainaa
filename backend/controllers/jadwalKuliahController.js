@@ -225,7 +225,7 @@ module.exports = {
             }
             return result
         }
-        let randomNumber = Math.floor(10000000 + Math.random() * 90000000)
+        let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
         const codeJadwalKuliah = randomAngka(5) + randomNumber
         await jadwalKuliahModel.create({
             code_jadwal_kuliah: codeJadwalKuliah,
@@ -559,8 +559,6 @@ module.exports = {
         })
         if (!dataDosenUse) return res.status(404).json({ message: "data tidak ditemukan" })
         await jadwalKuliahModel.findAll({
-            attributes: ["id_jadwal_kuliah", "code_jadwal_kuliah", "code_mata_kuliah", "code_jenjang_pendidikan",
-                "code_fakultas", "code_prodi", "code_semester", "code_tahun_ajaran", "code_kelas", "code_ruang", "status"],
             where: {
                 dosen_pengajar: nipy,
                 code_tahun_ajaran: thnAjr,
