@@ -559,6 +559,8 @@ module.exports = {
         })
         if (!dataDosenUse) return res.status(404).json({ message: "data tidak ditemukan" })
         await jadwalKuliahModel.findAll({
+            attributes: ["id_jadwal_kuliah", "code_jadwal_kuliah", "code_mata_kuliah", "code_jenjang_pendidikan",
+                "code_fakultas", "code_prodi", "code_semester", "code_tahun_ajaran", "code_kelas", "code_ruang", "status"],
             where: {
                 dosen_pengajar: nipy,
                 code_tahun_ajaran: thnAjr,
