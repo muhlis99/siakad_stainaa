@@ -1224,6 +1224,20 @@ module.exports = {
         const dataCodePemdik = dataPemdik.map(el => { return el.nim })
         if (dataCodePemdik.length == 0 || dataCodePemdik == null) return res.status(401).json({ message: "data tidak ditemukan" })
         await pengajuanStudi.findAll({
+            include: [
+                {
+                    model: mahasiswaModel,
+                    where: {
+                        status: "aktif"
+                    }
+                },
+                {
+                    model: semesterModel,
+                    where: {
+                        status: "aktif"
+                    }
+                }
+            ],
             where: {
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
