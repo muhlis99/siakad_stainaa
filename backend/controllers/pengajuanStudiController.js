@@ -1226,12 +1226,14 @@ module.exports = {
         await pengajuanStudi.findAll({
             include: [
                 {
+                    attributes: ['nim', 'nama'],
                     model: mahasiswaModel,
                     where: {
                         status: "aktif"
                     }
                 },
                 {
+                    attributes: ['semester'],
                     model: semesterModel,
                     where: {
                         status: "aktif"
