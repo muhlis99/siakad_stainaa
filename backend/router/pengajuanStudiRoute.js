@@ -22,7 +22,7 @@ router.put('/updateMahasiswa/:id', validationPengajuanStudi, validationRequest, 
 router.put('/deleteMahasiswa/:id', pengajuanStudiController.deleteMahasiswa)
 
 //  dosen
-router.get('/pengajuanStudiByPemdik/:codeThnAjr/:codeSmt/:codeJnjPen/:codeFks/:codePrd/:nipy', pengajuanStudiController.pengajuanStudiByPemdik)
+router.get('/pengajuanStudiByPemdik/:codeJnjPen/:codeFks/:codePrd/:nipy', pengajuanStudiController.pengajuanStudiByPemdik)
 
 
 

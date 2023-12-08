@@ -1182,7 +1182,7 @@ module.exports = {
 
     // user dosen
     pengajuanStudiByPemdik: async (req, res, next) => {
-        const { codeThnAjr, codeSmt, codeJnjPen, codeFks, codePrd, nipy } = req.params
+        const { codeJnjPen, codeFks, codePrd, nipy } = req.params
         const dosenUse = await dosenModel.findOne({
             where: {
                 nip_ynaa: nipy,
@@ -1228,8 +1228,6 @@ module.exports = {
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
                 code_prodi: codePrd,
-                code_tahun_ajaran: codeThnAjr,
-                code_semester: codeSmt,
                 nim: dataCodePemdik,
                 status: {
                     [Op.ne]: 'disetujui2'
