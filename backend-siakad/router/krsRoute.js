@@ -5,7 +5,7 @@ const krsController = require('../controllers/krsController.js')
 router.get('/all', krsController.getAll)
 router.get('/viewAll/:thnAjr/:smt/:jenjPen/:fks/:prd', krsController.viewAll)
 router.post('/create/:thnAjr/:smt/:jenjPen/:fks/:prd', krsController.post)
-router.delete('/create/:thnAjr/:smt/:jenjPen/:fks/:prd', krsController.delete)
+router.delete('/delete/:thnAjr/:smt/:jenjPen/:fks/:prd', krsController.delete)
 
 // user mahasiswa
 router.get('/getSemesterMhs/:nim', krsController.getSemesterMhs)

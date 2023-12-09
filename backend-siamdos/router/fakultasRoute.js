@@ -8,8 +8,5 @@ const { validationRequest } = require('../validation/validationRequest.js')
 route.get('/all', fakultasController.get)
 route.get('/getById/:id', fakultasController.getById)
 route.get('/getFakulatsByJenjang/:code', fakultasController.getFakulatsByJenjang)
-route.post('/create', validationFakultas, validationRequest, fakultasController.post)
-route.put('/update/:id', validationFakultas, validationRequest, fakultasController.put)
-route.put('/deleteStatus/:id', fakultasController.deleteStatus)
 
 module.exports = route

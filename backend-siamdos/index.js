@@ -15,7 +15,7 @@ const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server, {
     cors: {
-        origin: "*",
+        origin: "http://localhost:5000",
     }
 })
 const sessionStore = sequelizeStore(session.Store)
@@ -26,7 +26,7 @@ app.use(fileUpload())
 app.use(cors({
     credentials: true,
     // origin: process.env.APP_ORIGIN,
-    origin: ['http://localhost:3000', 'http://localhost:5000'],
+    origin: 'http://localhost:5000',
 }))
 app.use(session({
     secret: process.env.SESS_SECRET,
