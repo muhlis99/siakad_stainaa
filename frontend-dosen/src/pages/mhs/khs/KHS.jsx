@@ -3,6 +3,8 @@ import Layout from '../../Layout'
 import jsPDF from 'jspdf'
 import { Row, Col, Card, Table, Dropdown, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
+import ttdKetua from "../../../assets/images/ttdKetua.png"
+import stempelKetua from "../../../assets/images/stempelKetua.png"
 import { getMe } from "../../../features/authSlice"
 import { Navigate } from "react-router-dom"
 import { FaPrint } from "react-icons/fa";
@@ -76,7 +78,9 @@ const KHS = () => {
         },
         wrap: {
             width: '600px',
-            fontFamily: "Arial, Helvetica, sans-serif"
+            fontFamily: "Arial, Helvetica, sans-serif",
+            background: '#ffffff',
+            color: '#000000'
         },
         title: {
             fontSize: '12px',
@@ -116,7 +120,7 @@ const KHS = () => {
             border: '1px solid black',
             borderCollapse: 'collapse',
             wordSpacing: '2px'
-        }
+        },
     }
 
     const handleGeneratePdf = () => {
@@ -130,7 +134,7 @@ const KHS = () => {
 
         doc.html(templateRef.current, {
             async callback(doc) {
-                await doc.save('Document')
+                await doc.save('KHS ' + biodata.mahasiswa + ' SEMESTER ' + biodata.semester)
             }
         })
     }
@@ -318,7 +322,9 @@ const KHS = () => {
                             </Row>
                             <Row>
                                 <Col>
-                                    <div className='d-none'>
+                                    <div
+                                        className='d-none'
+                                    >
                                         <div ref={templateRef}>
                                             <div style={tableStyle.wrap}>
                                                 <img src={kop} alt="kop" style={tableStyle.image} />
@@ -472,12 +478,16 @@ const KHS = () => {
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                    <div style={tableStyle.gridItem} className='ps-5'>
-                                                        <div className='mb-5 ms-5'>
-                                                            <a>Ketua,</a>
-                                                        </div>
-                                                        <div className='ms-5'>
-                                                            <a><strong>K. Indi Aunullah, SS. S. Fil</strong></a>
+                                                    <div style={tableStyle.gridItem} className='ps-5 position-relative'>
+                                                        <Image src={stempelKetua} className='position-absolute z-20 top-0' width={80} />
+                                                        <Image src={ttdKetua} className='position-absolute z-10 right-5 top-2' width={105} />
+                                                        <div className='position absolute right-0'>
+                                                            <div className='mb-5 ms-5'>
+                                                                <a>Ketua,</a>
+                                                            </div>
+                                                            <div className='ms-5'>
+                                                                <a><strong>K. Indi Aunullah, SS. S. Fil</strong></a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
