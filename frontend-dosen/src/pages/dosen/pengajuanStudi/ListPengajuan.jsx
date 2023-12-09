@@ -15,17 +15,14 @@ import { Circles } from "react-loader-spinner"
 const ListPengajuan = () => {
     const { isError, user } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
-    const [Jenjang, setJenjang] = useState([])
-    const [Fakultas, setFakultas] = useState([])
-    const [Prodi, setProdi] = useState([])
-    const [Tahun, setTahun] = useState([])
-    const [Semester, setSemester] = useState([])
     const [Pengajuan, setPengajuan] = useState([])
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
+    const [tahunAngkatan, setTahunAngkatan] = useState("")
+    const [identitas, setIdentitas] = useState([])
     const [username, setUsername] = useState("")
     const [show, setShow] = useState(false)
     const [detail, setDetail] = useState([])
@@ -45,88 +42,48 @@ const ListPengajuan = () => {
     }, [user])
 
     useEffect(() => {
+        getUserDosen()
+    }, [user])
+
+    useEffect(() => {
+        getYearNow()
+    }, [])
+
+    useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
 
     useEffect(() => {
-        getJenjangPendidikan()
-    }, [])
-
-    useEffect(() => {
-        getFakultas()
-    }, [kodeJenjang])
-
-    useEffect(() => {
-        getProdi()
-    }, [kodeFakultas])
-
-    useEffect(() => {
-        getTahunAjaran()
-        getSemester()
-    }, [kodeTahun])
+        getMhsAsuh()
+    }, [kodeJenjang, kodeFakultas, kodeProdi, username, tahunAngkatan])
 
     useEffect(() => {
         getDataPengajuan()
-    }, [kodeJenjang, kodeFakultas, kodeProdi, kodeTahun, kodeSemester, username])
+    }, [kodeJenjang, kodeFakultas, kodeProdi, username])
 
-    const getJenjangPendidikan = async () => {
+    const getUserDosen = async () => {
         try {
-            const response = await axios.get('v1/jenjangPendidikan/all')
-            setJenjang(response.data.data)
-        } catch (error) {
-
-        }
-    }
-
-    const getFakultas = async () => {
-        try {
-            if (kodeJenjang != 0) {
-                const response = await axios.get(`v1/fakultas/getFakulatsByJenjang/${kodeJenjang}`)
-                setFakultas(response.data.data)
-            } else {
-                setKodeFakultas()
+            if (user) {
+                const response = await axios.get(`v1/pembimbingAkademik/verifikasiDosenPembimbing/${user.data.username}`)
+                setKodeJenjang(response.data.data.code_jenjang_pendidikan)
+                setKodeFakultas(response.data.data.code_fakultas)
+                setKodeProdi(response.data.data.code_prodi)
             }
         } catch (error) {
 
         }
     }
 
-    const getProdi = async () => {
-        try {
-            if (kodeFakultas != 0) {
-                const response = await axios.get(`v1/prodi/getProdiByFakultas/${kodeFakultas}`)
-                setProdi(response.data.data)
-            }
-        } catch (error) {
-
-        }
-    }
-
-    const getTahunAjaran = async () => {
-        try {
-            const response = await axios.get(`v1/tahunAjaran/all`)
-            setTahun(response.data.data)
-        } catch (error) {
-
-        }
-
-    }
-
-    const getSemester = async () => {
-        try {
-            if (kodeTahun) {
-                const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahun}`)
-                setSemester(response.data.data)
-            }
-        } catch (error) {
-
-        }
+    const getYearNow = () => {
+        const d = new Date()
+        let year = d.getFullYear()
+        setTahunAngkatan(year)
     }
 
     const getDataPengajuan = async () => {
         try {
-            if (kodeJenjang && kodeFakultas && kodeProdi && kodeTahun && kodeSemester) {
-                const response = await axios.get(`v1/pengajuanStudi/pengajuanStudiByPemdik/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}`)
+            if (kodeJenjang && kodeFakultas && kodeProdi) {
+                const response = await axios.get(`v1/pengajuanStudi/pengajuanStudiByPemdik/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}`)
                 setPengajuan(response.data.data)
             }
 
@@ -145,6 +102,17 @@ const ListPengajuan = () => {
         setShow(true)
     }
 
+    const getMhsAsuh = async () => {
+        try {
+            if (kodeJenjang && kodeFakultas && kodeProdi && username) {
+                const response = await axios.get(`v1/pembimbingAkademik/mahasiswaByDosenPembimbing/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}/${tahunAngkatan}`)
+                setIdentitas(response.data.identitas)
+            }
+        } catch (error) {
+
+        }
+    }
+
     const simpanPersetujuan = (e) => {
         Swal.fire({
             title: "Anda Yakin Untuk Menyetujui?",
@@ -161,6 +129,7 @@ const ListPengajuan = () => {
                     axios.put(
                         `v1/pengajuanStudi/approveDosen/${e}`
                     ).then(function (response) {
+                        setShow(false)
                         setLoad(false)
                         Swal.fire({
                             title: "Pengajuan Studi Berhasil Disetujui",
@@ -309,119 +278,139 @@ const ListPengajuan = () => {
                             </Modal>
 
                             <div className="page-header">
-                                <h3 className="page-title">Pengajuan Studi</h3>
+                                <h2 className='fs-4 font-bold'>Pengajuan Studi</h2>
                             </div>
-
                             <Row>
                                 <Col>
-                                    <Card>
-                                        <Card.Body className='p-3'>
+                                    <Card className='shadow'>
+                                        <Card.Body className='py-3'>
+                                            <Row className='bg-[#E9EAE1] p-3 shadow-sm rounded'>
+                                                <Col lg="6" sm="12">
+                                                    <Row className='mb-2'>
+                                                        <Col lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>nipy</Card.Text>
+                                                        </Col>
+                                                        <Col lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col lg="8">
+                                                            <Card.Text className='fw-bold text-uppercase'>{identitas.nip_ynaa}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>pembimbing</Card.Text>
+                                                        </Col>
+                                                        <Col lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col lg="8">
+                                                            <Card.Text className='fw-bold text-uppercase'>{identitas.nama}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className=''>
+                                                        <Col lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>kuota</Card.Text>
+                                                        </Col>
+                                                        <Col lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col lg="8">
+                                                            <Card.Text className='fw-bold text-uppercase'>{identitas.kouta_bimbingan} orang</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col lg="6" sm="12">
+                                                    <Row className='mb-2'>
+                                                        <Col lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>jenjang</Card.Text>
+                                                        </Col>
+                                                        <Col lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col lg="8">
+                                                            <Card.Text className='fw-bold text-uppercase'>{identitas.jenjang_pendidikan}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>fakultas</Card.Text>
+                                                        </Col>
+                                                        <Col lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col lg="8">
+                                                            <Card.Text className='fw-bold text-uppercase'>{identitas.fakultas}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col lg="3" md="3" sm="5" xs="5">
+                                                            <Card.Text className='fw-bold text-uppercase'>prodi</Card.Text>
+                                                        </Col>
+                                                        <Col lg="1" md="1" sm="1" xs="1">
+                                                            <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
+                                                        </Col>
+                                                        <Col lg="8">
+                                                            <Card.Text className='fw-bold text-uppercase'>{identitas.prodi}</Card.Text>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                            </Row>
+                                        </Card.Body>
+                                    </Card>
+                                    <Card className="mt-3 shadow">
+                                        <Card.Body className="p-3">
                                             <Row>
                                                 <Col>
-                                                    <div className="grid lg:grid-cols-5 gap-2">
-                                                        <div>
-                                                            <select className="form-select" value={kodeJenjang} onChange={(e) => setKodeJenjang(e.target.value)}>
-                                                                <option value="">Jenjang Pendidikan</option>
-                                                                {Jenjang.map((item) => (
-                                                                    <option key={item.id_jenjang_pendidikan} value={item.code_jenjang_pendidikan}>{item.nama_jenjang_pendidikan}</option>
-                                                                ))}
-                                                            </select>
-                                                        </div>
-                                                        <div>
-                                                            <select className="form-select" value={kodeFakultas} onChange={(e) => setKodeFakultas(e.target.value)}>
-                                                                <option value="">Fakultas</option>
-                                                                {Fakultas.map((item) => (
-                                                                    <option key={item.id_fakultas} value={item.code_fakultas}>{item.nama_fakultas}</option>
-                                                                ))}
-                                                            </select>
-                                                        </div>
-                                                        <div>
-                                                            <select className="form-select" value={kodeProdi} onChange={(e) => setKodeProdi(e.target.value)}>
-                                                                <option value="">Prodi</option>
-                                                                {Prodi.map((item) => (
-                                                                    <option key={item.id_prodi} value={item.code_prodi}>{item.nama_prodi}</option>
-                                                                ))}
-                                                            </select>
-                                                        </div>
-                                                        <div>
-                                                            <select className="form-select" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
-                                                                <option value="">Periode</option>
-                                                                {Tahun.map((item) => (
-                                                                    <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
-                                                                ))}
-                                                            </select>
-                                                        </div>
-                                                        <div>
-                                                            <select className="form-select" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
-                                                                <option value="">Semester</option>
-                                                                {Semester.map((item) => (
-                                                                    <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
-                                                                ))}
-                                                            </select>
-                                                        </div>
+                                                    <div className="table-responsive">
+                                                        <Table hover>
+                                                            <thead>
+                                                                <tr className='border'>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>No</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Nama</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Semester</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Pengajuan</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Tanggal Pengajuan</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Status</th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Aksi</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {Pengajuan.length > 0 ? Pengajuan.map((item, index) => (
+                                                                    <tr key={item.id_pengajuan_studi} className='border'>
+                                                                        <td className='py-2'>{index + 1}</td>
+                                                                        <td className='py-2'>{item.mahasiswas[0].nama}</td>
+                                                                        <td className='py-2'>Semester {item.semesters[0].semester}</td>
+                                                                        <td className='py-2 text-capitalize'>{item.pengajuan}</td>
+                                                                        <td className='py-2'>{moment(item.tanggal_pengajuan).format('DD MMMM YYYY')}</td>
+                                                                        <td className='py-2'>
+                                                                            {item.status == 'proses' ?
+                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Belum Disetujui</span>
+                                                                                : item.status == 'disetujui1' ?
+                                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Disetujui Dosen Wali</span>
+                                                                                    : ""
+                                                                            }
+                                                                        </td>
+                                                                        <td className='py-2'>
+                                                                            <button onClick={() => handleShow(item.id_pengajuan_studi)} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch /></button>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))
+                                                                    :
+                                                                    <tr className="border">
+                                                                        <td className='py-2' colSpan={8} align='center'>
+                                                                            <Image src={dataBlank} thumbnail width={150} />
+                                                                            <p className='fw-bold text-muted'>Data Pengajuan Kosong</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </Table>
                                                     </div>
                                                 </Col>
                                             </Row>
-
                                         </Card.Body>
                                     </Card>
-                                    {kodeJenjang && kodeFakultas && kodeProdi && kodeTahun && kodeSemester &&
-                                        <Card className="mt-3">
-                                            <Card.Body className="px-3">
-                                                <Row>
-                                                    <Col>
-                                                        <div className="table-responsive">
-                                                            <Table hover>
-                                                                <thead>
-                                                                    <tr className='border'>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>#</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>NIM</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Nama</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Pengajuan</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Alasan</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Tanggal Pengajuan</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Status</th>
-                                                                        <th className='fw-bold py-3' style={{ background: '#D5D6C6' }}>Aksi</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    {Pengajuan.length > 0 ? Pengajuan.map((item, index) => (
-                                                                        <tr key={item.id_pengajuan_studi} className='border'>
-                                                                            <th scope='row' className='py-2'>{index + 1}</th>
-                                                                            <td className='py-2'>{item.nim}</td>
-                                                                            <td className='py-2'>{item.nim}</td>
-                                                                            <td className='py-2 text-capitalize'>{item.pengajuan}</td>
-                                                                            <td className='py-2 text-capitalize'>{item.alasan}</td>
-                                                                            <td className='py-2'>{moment(item.tanggal_pengajuan).format('DD MMMM YYYY')}</td>
-                                                                            <td className='py-2'>
-                                                                                {item.status == 'proses' ?
-                                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Belum Disetujui</span>
-                                                                                    : item.status == 'disetujui1' ?
-                                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Disetujui Dosen Wali</span>
-                                                                                        : ""
-                                                                                }
-                                                                            </td>
-                                                                            <td className='py-2'>
-                                                                                <button onClick={() => handleShow(item.id_pengajuan_studi)} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center'><FaSearch /></button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    ))
-                                                                        :
-                                                                        <tr className="border">
-                                                                            <td className='py-2' colSpan={8} align='center'>
-                                                                                <Image src={dataBlank} thumbnail width={150} />
-                                                                                <p className='fw-bold text-muted'>Data Pengajuan Kosong</p>
-                                                                            </td>
-                                                                        </tr>
-                                                                    }
-                                                                </tbody>
-                                                            </Table>
-                                                        </div>
-                                                    </Col>
-                                                </Row>
-                                            </Card.Body>
-                                        </Card>
-                                    }
                                 </Col>
                             </Row>
                         </div>
