@@ -144,7 +144,7 @@ const ListKrs = () => {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     await axios.delete(
-                        `v1/krs/create/${a}/${b}/${c}/${d}/${e}`
+                        `v1/krs/delete/${a}/${b}/${c}/${d}/${e}`
                     ).then(function (response) {
                         setLoading(false)
                         Swal.fire({
