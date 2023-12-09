@@ -10,14 +10,14 @@ const db = require('./config/database.js')
 
 dotenv.config()
 const app = express()
-const http = require('http')
-const server = http.createServer(app)
-const { Server } = require('socket.io')
-const io = new Server(server, {
-    cors: {
-        origin: "*",
-    }
-})
+// const http = require('http')
+// const server = http.createServer(app)
+// const { Server } = require('socket.io')
+// const io = new Server(server, {
+//     cors: {
+//         origin: "*",
+//     }
+// })
 const sessionStore = sequelizeStore(session.Store)
 const store = new sessionStore({
     db: db
@@ -26,7 +26,7 @@ app.use(fileUpload())
 app.use(cors({
     credentials: true,
     // origin: process.env.APP_ORIGIN,
-    origin: ['http://localhost:3000', 'http://localhost:5000'],
+    origin: 'http://localhost:3000',
 }))
 app.use(session({
     secret: process.env.SESS_SECRET,
@@ -71,7 +71,7 @@ const pembimbingAkademik = require('./router/pembimbingAkademikRoute.js')
 const herRegistrasi = require('./router/herRegistrasiRoute.js')
 const pengumuman = require('./router/pengumumanRoute.js')
 const kontak = require('./router/kontakRoute.js')
-const message = require('./router/messageRoute.js')(io)
+const message = require('./router/messageRoute.js')
 
 app.use('/v1/login', login)
 app.use('/v1/home', home)
@@ -111,36 +111,36 @@ app.get('/', (req, res) => {
 
 
 //  socket connection
-let onlineUser = []
-io.on("connection", (socket) => {
-    console.log('a user connected')
-    socket.on("addNewUser", (userId) => {
-        !onlineUser.some(user => user.userId === userId) &&
-            onlineUser.push({
-                userId,
-                socketId: socket.id
-            })
-        console.log("onlineUser", onlineUser);
-        io.emit("getOnlineUser", onlineUser)
-    })
+// let onlineUser = []
+// io.on("connection", (socket) => {
+//     console.log('a user connected')
+//     socket.on("addNewUser", (userId) => {
+//         !onlineUser.some(user => user.userId === userId) &&
+//             onlineUser.push({
+//                 userId,
+//                 socketId: socket.id
+//             })
+//         console.log("onlineUser", onlineUser);
+//         io.emit("getOnlineUser", onlineUser)
+//     })
 
-    socket.on("sendMessage", (message) => {
-        const user = onlineUser.find((user => user.userId === message.reciptenId))
-        if (user) {
-            io.to(user.socketId).emit("getMessage", message)
-        }
-    })
+//     socket.on("sendMessage", (message) => {
+//         const user = onlineUser.find((user => user.userId === message.reciptenId))
+//         if (user) {
+//             io.to(user.socketId).emit("getMessage", message)
+//         }
+//     })
 
-    socket.on("disconnet", () => {
-        onlineUser = onlineUser.filter(user => user.socketId !== socket.id)
-        io.emit("getOnlineUser", onlineUser)
-        console.log("disconnect", onlineUser);
-    })
+//     socket.on("disconnet", () => {
+//         onlineUser = onlineUser.filter(user => user.socketId !== socket.id)
+//         io.emit("getOnlineUser", onlineUser)
+//         console.log("disconnect", onlineUser);
+//     })
 
-})
+// })
 
 
 // store.sync()
-server.listen(process.env.APP_PORT, (req, res) => {
+app.listen(process.env.APP_PORT, (req, res) => {
     console.log(`APP IS RUNNING`)
 })
