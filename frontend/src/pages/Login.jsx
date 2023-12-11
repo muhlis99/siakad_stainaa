@@ -69,7 +69,7 @@ const Login = () => {
                 </div>
                 <div className="flex flex-col lg:flex-row w-3/5 mx-auto overflow-hidden">
                     <div className="w-full lg:w-1/2 flex flex-col bg-no-repeat bg-50% bg-center" style={{ backgroundImage: `url(${stainaa})` }}></div>
-                    <div className="w-full lg:w-1/2 py-16 px-12">
+                    <div className="w-full lg:w-1/2 py-16 px-9">
                         <h2 className='text-3xl mb-3 text-[#2D7F5F] font-bold'>SELAMAT DATANG</h2>
                         <p className='text-gray-500'>Sistem Informasi Akademik Sekolah Tinggi <br />Agama Islam Nurul Abror Al-Robbaniyin</p>
                         <form onSubmit={Auth}>
