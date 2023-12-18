@@ -3,7 +3,7 @@ import stainaa from "../assets/img/stainaacover.png"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { LoginUser, reset } from "../features/authSlice"
+import { LoginUser, LogOut, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
 import { FaEyeSlash, FaEye, FaUserCircle } from "react-icons/fa"
 import Loading from '../components/Loading'
@@ -27,7 +27,16 @@ const Login = () => {
     useEffect(() => {
         setLoading(false)
         if (user || isSuccess) {
-            if (user.message == "selamat datang") {
+            console.log();
+            if (user.role == 'mahasiswa' || user.role == 'dosen') {
+                Swal.fire({
+                    title: 'Mohon login dengan akun anda',
+                    icon: 'error'
+                }).then(() => {
+                    dispatch(LogOut())
+                    dispatch(reset())
+                })
+            } else if (user.message == "selamat datang") {
                 navigate("/dashboard")
             } else {
                 Swal.fire({
