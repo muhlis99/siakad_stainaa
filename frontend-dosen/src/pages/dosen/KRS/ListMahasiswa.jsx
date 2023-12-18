@@ -254,8 +254,8 @@ const ListMahasiswa = () => {
                                                                         </tr>
                                                                     )) :
                                                                         <tr className='border'>
-                                                                            <td className='py-3' colSpan={5} align='center'>
-                                                                                <Image src={dataBlank} thumbnail width={150} />
+                                                                            <td className='py-3' colSpan={7} align='center'>
+                                                                                <Image src={dataBlank} width={150} />
                                                                                 <p className='fw-bold text-muted'>Tidak Ada Data</p>
                                                                             </td>
                                                                         </tr>

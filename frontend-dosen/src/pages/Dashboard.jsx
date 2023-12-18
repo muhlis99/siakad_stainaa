@@ -253,7 +253,7 @@ const Dashboard = () => {
                                     <Row className='justify-content-center'>
                                         <Col lg="8">
                                             <div className="bg-white mb-2 rounded-lg shadow-md p-3">
-                                                <h3 className='text-[#5E7C60]'>Hai {nama}, Selamat Datang</h3>
+                                                <h3 className='text-[#5E7C60] text-[20px]'>Hai {nama}, Selamat Datang</h3>
                                                 <p className='text-base'>
                                                     Aplikasi ini membantu anda dalam mengelola Perkuliahan meliputi Pengumuman kampus, Rencana Studi Mahasiswa, Jadwal Kuliah, Pengajuan Studi dan lain-lain.
                                                 </p>

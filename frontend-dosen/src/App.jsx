@@ -30,6 +30,8 @@ import ListPengajuan from "./pages/dosen/pengajuanStudi/ListPengajuan"
 import InfoNilai from "./pages/dosen/penilaian/InfoNilai"
 import InputNilai from "./pages/dosen/penilaian/InputNilai"
 import EditNilai from "./pages/dosen/penilaian/EditNilai"
+import ListTugas from "./pages/dosen/tugas/ListTugas"
+import Deskripsi from "./pages/dosen/tugas/Deskripsi"
 
 function App() {
   return (
@@ -69,6 +71,8 @@ function App() {
           <Route path="/detailnilai" element={<InfoNilai />} />
           <Route path="/inputNilai" element={<InputNilai />} />
           <Route path="/editNilai" element={<EditNilai />} />
+          <Route path="/tugas" element={<ListTugas />} />
+          <Route path="/deskripsi" element={<Deskripsi />} />
         </Routes>
 
       </BrowserRouter>
