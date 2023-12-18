@@ -178,7 +178,7 @@ const ListDosen = () => {
                                     <tr>
                                         <th scope="col" className="px-6 py-2 text-sm">#</th>
                                         {/* <th scope="col" className="px-6 py-2 text-sm">NIDN</th> */}
-                                        <th scope="col" className="px-6 py-2 text-sm">Nama</th>
+                                        <th scope="col" className="px-6 py-2 text-sm text-center"><span>Nama</span></th>
                                         {/* <th scope="col" className="px-6 py-2 text-sm">QR Code</th> */}
                                         <th scope="col" className="px-6 py-2 text-sm">Jenis Kelamin</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Pendidikan</th>
@@ -205,7 +205,7 @@ const ListDosen = () => {
                                                         </div>
                                                         <div>
                                                             <h6 className='font-semibold'>{dsn.nama}</h6>
-                                                            <h6 className='font-semibold'>{dsn.nidn}</h6>
+                                                            <h6 className='font-semibold'>{dsn.nip_ynaa}</h6>
                                                         </div>
                                                     </div>
                                                 </td>
