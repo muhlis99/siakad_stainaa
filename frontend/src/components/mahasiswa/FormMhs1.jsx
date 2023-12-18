@@ -39,6 +39,10 @@ const FormMhs1 = () => {
     const location = useLocation()
 
     useEffect(() => {
+        console.log(location.state);
+    }, [location])
+
+    useEffect(() => {
         getJalur()
     }, [])
 

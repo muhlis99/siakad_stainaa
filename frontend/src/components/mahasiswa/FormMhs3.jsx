@@ -31,6 +31,10 @@ const FormMhs3 = () => {
     const location = useLocation()
 
     useEffect(() => {
+        console.log(location.state);
+    }, [location])
+
+    useEffect(() => {
         getPekerjaan()
         getPenghasilan()
         getPendidikan()

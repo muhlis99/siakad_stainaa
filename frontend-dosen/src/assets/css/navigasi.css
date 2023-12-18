@@ -6,6 +6,15 @@
     display: block;
 }
 
+.drop2:hover #drop-item-2 {
+    display: block !important;
+}
+
+#drop-item-2 {
+    top: -10px;
+    right: -160px;
+}
+
 .nav-profile:hover .dropdown-menu {
     display: block;
 }

@@ -476,7 +476,7 @@ module.exports = {
 
         const { nik_wali, nama_wali, pekerjaan_wali, penghasilan_wali, pendidikan_wali, tanggal_w, bulan_w, tahun_w,
             code_jenjang_pendidikan, code_fakultas, code_prodi, code_semester, code_tahun_ajaran,
-            idLogin, idHistory } = req.body
+            idLogin, idHistory, nim } = req.body
         const id = req.params.id
         const tanggal_lahir_wali = tahun_w + "-" + bulan_w + "-" + tanggal_w
         const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
@@ -486,55 +486,55 @@ module.exports = {
             }
         })
         if (!mahasiswaUse) return res.status(401).json({ message: "Data Mahasiswa tidak ditemukan" })
-        const date_nim = new Date()
-        const t_nim = date_nim.getFullYear().toString().substr(-2)
-        const b_nim = ("0" + (date_nim.getMonth() + 1)).slice(-2)
-        var kode_prodi_nim
-        if (code_prodi == "S1AIPAI") {
-            kode_prodi_nim = "01"
-        }
-        else if (code_prodi == "S1AIHES") {
-            kode_prodi_nim = "02"
-        }
-        else {
-            kode_prodi_nim = "00"
-        }
-        const no_urut_mhs_terakhir = await mahasiswa.count({
-            where: {
-                tanggal_masuk_kuliah: {
-                    [Op.substring]: date_nim.getFullYear()
-                }
-            }
-        })
+        // const date_nim = new Date()
+        // const t_nim = date_nim.getFullYear().toString().substr(-2)
+        // const b_nim = ("0" + (date_nim.getMonth() + 1)).slice(-2)
+        // var kode_prodi_nim
+        // if (code_prodi == "S1AIPAI") {
+        //     kode_prodi_nim = "01"
+        // }
+        // else if (code_prodi == "S1AIHES") {
+        //     kode_prodi_nim = "02"
+        // }
+        // else {
+        //     kode_prodi_nim = "00"
+        // }
+        // const no_urut_mhs_terakhir = await mahasiswa.count({
+        //     where: {
+        //         tanggal_masuk_kuliah: {
+        //             [Op.substring]: date_nim.getFullYear()
+        //         }
+        //     }
+        // })
 
 
-        let nim
-        let dataQrCode
-        if (no_urut_mhs_terakhir == null) {
-            no_urut_mhs = "0001"
-            nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
-            dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
-            mainQrCode(nim, dataQrCode)
-        } else if (mahasiswaUse.nim == "") {
-            const code = "0000"
-            const a = no_urut_mhs_terakhir.toString()
-            const panjang = a.length
-            const nomor = code.slice(panjang)
-            const b = (no_urut_mhs_terakhir + 1)
-            no_urut_mhs = nomor + b
-            nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
-            dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
-            mainQrCode(nim, dataQrCode)
-        } else {
-            nim = mahasiswaUse.nim
-            dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
-            const dataQrCodeOld = mahasiswa.qrCode
-            mainQrCode(nim, dataQrCode, dataQrCodeOld)
-        }
+        // let nim
+        // let dataQrCode
+        // if (no_urut_mhs_terakhir == null) {
+        //     no_urut_mhs = "0001"
+        //     nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
+        //     dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
+        //     mainQrCode(nim, dataQrCode)
+        // } else if (mahasiswaUse.nim == "") {
+        //     const code = "0000"
+        //     const a = no_urut_mhs_terakhir.toString()
+        //     const panjang = a.length
+        //     const nomor = code.slice(panjang)
+        //     const b = (no_urut_mhs_terakhir + 1)
+        //     no_urut_mhs = nomor + b
+        //     nim = t_nim + b_nim + kode_prodi_nim + no_urut_mhs
+        //     dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
+        //     mainQrCode(nim, dataQrCode)
+        // } else {
+        //     nim = mahasiswaUse.nim
+        //     dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
+        //     const dataQrCodeOld = mahasiswa.qrCode
+        //     mainQrCode(nim, dataQrCode, dataQrCodeOld)
+        // }
 
-        // const dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
-        // const dataQrCodeOld = mahasiswa.qrCode
-        // mainQrCode(nim, dataQrCode, dataQrCodeOld)
+        const dataQrCode = "mahasiswaQrcode" + Buffer.from(nim).toString('base64url')
+        const dataQrCodeOld = mahasiswa.qrCode
+        mainQrCode(nim, dataQrCode, dataQrCodeOld)
         await mahasiswa.update({
             nik_wali: nik_wali,
             nama_wali: nama_wali,

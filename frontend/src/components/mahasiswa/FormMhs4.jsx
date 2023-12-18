@@ -34,6 +34,10 @@ const FormMhs4 = () => {
     const location = useLocation()
 
     useEffect(() => {
+        console.log(location.state);
+    }, [location])
+
+    useEffect(() => {
         console.log(location.state)
     }, [location])
 

@@ -94,11 +94,11 @@ const Navigation = () => {
 
                                     </li>
                                     <li>
-                                        <div className="dropdown dropend">
+                                        <div className="dropdown drop2 dropend position-relative">
                                             <button className="w-full text-[16px] dropdown-toggle text-left px-6 hover:bg-[#D5D6C6] hover:text-white py-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <div className="inline-flex gap-2"><FaListUl className="mt-1 text-[14px]" />  Kartu Rencana Studi</div>
                                             </button>
-                                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <ul className="dropdown-menu position-absolute" aria-labelledby="dropdownMenuButton1" id="drop-item-2">
                                                 <li><Link to="/karturencanastudi" className={`dropdown-item ${location.pathname == '/karturencanastudi' ? 'active' : ''}`}>Paket</Link></li>
                                                 <li><Link to="/nonpaket" className={`dropdown-item ${location.pathname == '/nonpaket' ? 'active' : ''}`} >Non Paket</Link></li>
                                                 <li><Link to="/historykrs" className={`dropdown-item ${location.pathname == '/historykrs' ? 'active' : ''}`}>History</Link></li>
