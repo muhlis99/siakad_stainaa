@@ -477,46 +477,47 @@ const JadwalDosen = () => {
                                                             <Card.Body className='p-2'>
                                                                 <Row>
                                                                     <Col>
-                                                                        <Table>
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td className='py-3 text-capitalize' width={20}>Mata Kuliah :</td>
-                                                                                    <td className='py-3 text-capitalize' colSpan={2}>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
-                                                                                    <td className='py-3'></td>
-                                                                                    <td className='py-3 text-capitalize' width={20}>Pertemuan :</td>
-                                                                                    <td className='py-3 text-capitalize' colSpan={2}>{item.jenis_pertemuan}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td className='py-3 text-capitalize' colSpan={7}></td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td className='py-3 border text-capitalize'>Hari</td>
-                                                                                    <td className='py-3 border text-capitalize'>Tanggal</td>
-                                                                                    <td className='py-3 border text-capitalize'>{item.tanggal_pertemuan}</td>
-                                                                                    <td className='py-3 border text-capitalize' align='center'>Metode</td>
-                                                                                    <td className='py-3 border text-capitalize' align='center' rowSpan={2}>{item.url_online == "" ?
-                                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL tidak ada</span>
-                                                                                        :
-                                                                                        <Link to={item.url_online} target='blank'>
-                                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL ada</span>
-                                                                                        </Link>
-                                                                                    }</td>
-                                                                                    <td className='py-3 border text-capitalize' align='center'>Ruang</td>
-                                                                                    <td className='py-2 border text-capitalize' rowSpan={2} align='center'>
-                                                                                        <button className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}><FaSearch /></button>
-                                                                                        <button className='bg-[#FFC107] py-2 px-2 rounded-full text-white inline-flex items-center ml-1' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}><FaEdit /></button>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td className='py-3 border text-capitalize'>{item.jadwalKuliahs[0].hari}</td>
-                                                                                    <td className='py-3 border'>Jam</td>
-                                                                                    <td className='py-3 border text-capitalize'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai} WIB</td>
-                                                                                    <td className='py-3 border text-capitalize' align='center'>{item.metode_pembelajaran}</td>
-                                                                                    <td className='py-3 border text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
-                                                                                </tr>
-
-                                                                            </tbody>
-                                                                        </Table>
+                                                                        <div className='table-responsive'>
+                                                                            <Table>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td className='py-3 text-capitalize' width={20}>Mata Kuliah :</td>
+                                                                                        <td className='py-3 text-capitalize' colSpan={2}>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
+                                                                                        <td className='py-3'></td>
+                                                                                        <td className='py-3 text-capitalize' width={20}>Pertemuan :</td>
+                                                                                        <td className='py-3 text-capitalize' colSpan={2}>{item.jenis_pertemuan}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td className='py-3 text-capitalize' colSpan={7}></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td className='py-3 border text-capitalize'>Hari</td>
+                                                                                        <td className='py-3 border text-capitalize'>Tanggal</td>
+                                                                                        <td className='py-3 border text-capitalize'>{item.tanggal_pertemuan}</td>
+                                                                                        <td className='py-3 border text-capitalize' align='center'>Metode</td>
+                                                                                        <td className='py-3 border text-capitalize' align='center' rowSpan={2}>{item.url_online == "" ?
+                                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL tidak ada</span>
+                                                                                            :
+                                                                                            <Link to={item.url_online} target='blank'>
+                                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">URL ada</span>
+                                                                                            </Link>
+                                                                                        }</td>
+                                                                                        <td className='py-3 border text-capitalize' align='center'>Ruang</td>
+                                                                                        <td className='py-2 border text-capitalize' rowSpan={2} align='center'>
+                                                                                            <button className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}><FaSearch /></button>
+                                                                                            <button className='bg-[#FFC107] py-2 px-2 rounded-full text-white inline-flex items-center ml-1' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}><FaEdit /></button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td className='py-3 border text-capitalize'>{item.jadwalKuliahs[0].hari}</td>
+                                                                                        <td className='py-3 border'>Jam</td>
+                                                                                        <td className='py-3 border text-capitalize'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai} WIB</td>
+                                                                                        <td className='py-3 border text-capitalize' align='center'>{item.metode_pembelajaran}</td>
+                                                                                        <td className='py-3 border text-capitalize' align='center'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </Table>
+                                                                        </div>
                                                                     </Col>
                                                                 </Row>
                                                             </Card.Body>
