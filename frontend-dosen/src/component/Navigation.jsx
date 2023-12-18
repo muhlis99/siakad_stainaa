@@ -111,6 +111,11 @@ const Navigation = () => {
                                         </Link>
                                     </li>
                                     <li>
+                                        <Link to="/listtugas" className={`dropdown-item ${location.pathname == '/listtugas' ? 'active' : ''}`}>
+                                            <div className="inline-flex gap-2"><FaTasks className="mt-1 text-[14px]" />  Tugas Kuliah</div>
+                                        </Link>
+                                    </li>
+                                    <li>
                                         <Link to="/kartuhasilstudi" className={`dropdown-item ${location.pathname == '/kartuhasilstudi' ? 'active' : ''}`}>
                                             <div className="inline-flex gap-2"><FaFilePdf className="mt-1 text-[14px]" />  Kartu Hasil Studi</div>
                                         </Link>

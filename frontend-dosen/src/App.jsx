@@ -18,6 +18,7 @@ import KHS from "./pages/mhs/khs/KHS"
 import Berhenti from "./pages/mhs/berhentiStudi/Berhenti"
 import TambahPengajuan from "./pages/mhs/berhentiStudi/TambahPengajuan"
 import UpdatePengajuan from "./pages/mhs/berhentiStudi/UpdatePengajuan"
+import TugasList from "./pages/mhs/tugas/TugasList"
 
 // Dosen
 import Profile from "./pages/dosen/profile/Profile"
@@ -32,6 +33,7 @@ import InputNilai from "./pages/dosen/penilaian/InputNilai"
 import EditNilai from "./pages/dosen/penilaian/EditNilai"
 import ListTugas from "./pages/dosen/tugas/ListTugas"
 import Deskripsi from "./pages/dosen/tugas/Deskripsi"
+import DetailTugas from "./pages/dosen/tugas/DetailTugas"
 
 function App() {
   return (
@@ -58,6 +60,7 @@ function App() {
           <Route path="/pengajuanstudi" element={<Berhenti />} />
           <Route path="/tambahpengajuan" element={<TambahPengajuan />} />
           <Route path="/updatepengajuan" element={<UpdatePengajuan />} />
+          <Route path="/listtugas" element={<TugasList />} />
 
 
           {/* Route Dosen */}
@@ -73,6 +76,7 @@ function App() {
           <Route path="/editNilai" element={<EditNilai />} />
           <Route path="/tugas" element={<ListTugas />} />
           <Route path="/deskripsi" element={<Deskripsi />} />
+          <Route path="/detailTugas" element={<DetailTugas />} />
         </Routes>
 
       </BrowserRouter>

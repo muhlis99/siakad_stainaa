@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
 import { Link, Navigate } from "react-router-dom"
 import { Circles } from "react-loader-spinner"
+import { FileIcon, defaultStyles } from "react-file-icon"
 
-const Deskripsi = () => {
+const DetailTugas = () => {
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
     const [load, setLoad] = useState(false)
@@ -22,9 +23,13 @@ const Deskripsi = () => {
         dispatch(getMe())
     }, [dispatch])
 
+    // var g = '/contoh.pdf'
+
+    // console.log(g.split('.')[1]);
+
     return (
         <Layout>
-            <title>Deskripsi Tugas Kuliah</title>
+            <title>Detail Tugas Kuliah</title>
             {isError ? <Navigate to="/login" /> :
                 <>
                     {load ?
@@ -44,30 +49,18 @@ const Deskripsi = () => {
                         :
                         <div className="content-wrapper">
                             <div className="page-header">
-                                <h2 className='fs-4 font-bold'>Deskripsi Tugas Kuliah</h2>
+                                <h2 className='fs-4 font-bold'>Detail Tugas Kuliah</h2>
                             </div>
                             <Row>
                                 <Col>
-                                    <Card className='shadow'>
-                                        <Card.Body>
-                                            <Row>
-                                                <Col>
-                                                    <Card>
-                                                        <Card.Body></Card.Body>
-                                                    </Card>
-                                                </Col>
-                                            </Row>
-                                        </Card.Body>
+                                    <Card>
+                                        <Card.Body></Card.Body>
                                     </Card>
-                                    <Card className='shadow'>
+                                    <Card>
                                         <Card.Body>
                                             <Row>
-                                                <Col>
-                                                    <Card>
-                                                        <Card.Body>
-                                                            <Link to="/detailTugas" className='btn btn-sm btn-info'>Detail</Link>
-                                                        </Card.Body>
-                                                    </Card>
+                                                <Col lg='2' className="icon mb-2">
+                                                    <FileIcon extension="docx" {...defaultStyles.docx} />
                                                 </Col>
                                             </Row>
                                         </Card.Body>
@@ -76,10 +69,9 @@ const Deskripsi = () => {
                             </Row>
                         </div>
                     }
-                </>
-            }
+                </>}
         </Layout>
     )
 }
 
-export default Deskripsi
+export default DetailTugas

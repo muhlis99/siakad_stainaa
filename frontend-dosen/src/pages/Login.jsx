@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import stainaa from "../assets/images/stainaacover.png"
 import { useDispatch, useSelector } from "react-redux"
-import { LoginUser, reset } from "../features/authSlice"
+import { LoginUser, LogOut, reset } from "../features/authSlice"
 import { useNavigate, Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { FaUserCircle, FaEyeSlash, FaEye } from "react-icons/fa"
@@ -31,6 +31,9 @@ const Login = () => {
                 Swal.fire({
                     title: 'Mohon Login dengan akun anda',
                     icon: 'error'
+                }).then(() => {
+                    dispatch(LogOut())
+                    dispatch(reset())
                 })
             } else if (user.role == 'dosen' || user.role == 'mahasiswa') {
                 Swal.fire({

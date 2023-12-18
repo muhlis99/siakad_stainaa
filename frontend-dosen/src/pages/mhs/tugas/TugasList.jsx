@@ -6,7 +6,7 @@ import { getMe } from "../../../features/authSlice"
 import { Link, Navigate } from "react-router-dom"
 import { Circles } from "react-loader-spinner"
 
-const Deskripsi = () => {
+const TugasList = () => {
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
     const [load, setLoad] = useState(false)
@@ -24,7 +24,8 @@ const Deskripsi = () => {
 
     return (
         <Layout>
-            <title>Deskripsi Tugas Kuliah</title>
+            <title>Tugas Kuliah</title>
+
             {isError ? <Navigate to="/login" /> :
                 <>
                     {load ?
@@ -44,28 +45,16 @@ const Deskripsi = () => {
                         :
                         <div className="content-wrapper">
                             <div className="page-header">
-                                <h2 className='fs-4 font-bold'>Deskripsi Tugas Kuliah</h2>
+                                <h2 className='fs-4 font-bold'>Tugas Kuliah</h2>
                             </div>
                             <Row>
                                 <Col>
                                     <Card className='shadow'>
-                                        <Card.Body>
+                                        <Card.Body className='p-3'>
                                             <Row>
                                                 <Col>
-                                                    <Card>
-                                                        <Card.Body></Card.Body>
-                                                    </Card>
-                                                </Col>
-                                            </Row>
-                                        </Card.Body>
-                                    </Card>
-                                    <Card className='shadow'>
-                                        <Card.Body>
-                                            <Row>
-                                                <Col>
-                                                    <Card>
+                                                    <Card className='shadow'>
                                                         <Card.Body>
-                                                            <Link to="/detailTugas" className='btn btn-sm btn-info'>Detail</Link>
                                                         </Card.Body>
                                                     </Card>
                                                 </Col>
@@ -82,4 +71,4 @@ const Deskripsi = () => {
     )
 }
 
-export default Deskripsi
+export default TugasList
