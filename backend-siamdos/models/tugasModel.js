@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const db = require('../config/database.js')
 const jadwalPertemuanModel = require('./jadwalPertemuanModel.js')
-////////////////////////////////////
+
 
 const tugasModel = db.define('tugas', {
     'id_tugas': {
@@ -15,7 +15,7 @@ const tugasModel = db.define('tugas', {
     'code_jadwal_pertemuan': {
         type: DataTypes.TEXT
     },
-    'diskripsi_tugas': {
+    'deskripsi_tugas': {
         type: DataTypes.TEXT
     },
     'tugas': {
