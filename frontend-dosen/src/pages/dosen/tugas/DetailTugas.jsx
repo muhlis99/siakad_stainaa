@@ -23,9 +23,9 @@ const DetailTugas = () => {
         dispatch(getMe())
     }, [dispatch])
 
-    var g = '/contoh.pdf'
+    // var g = '/contoh.pdf'
 
-    console.log(g.split('.')[1]);
+    // console.log(g.split('.')[1]);
 
     return (
         <Layout>
