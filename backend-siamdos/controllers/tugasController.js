@@ -188,7 +188,7 @@ module.exports = {
         const fileSize = file.data.length
         const ext = path.extname(file.name)
         file_tugas = "lampiran_tugas" + randomNumber + file.md5 + ext
-        const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls', '.pdf']
+        const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls', '.pdf', '.pptx']
         if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
         if (fileSize > 500000000) return res.status(422).json({ msg: "lampiran tugas  yang anda upload tidak boleh lebih dari 500 mb" })
         file.mv(`../tmp_siakad/lampiranTugas/${file_tugas}`, (err) => {
@@ -230,7 +230,7 @@ module.exports = {
                 const fileSize = file.data.length
                 const ext = path.extname(file.name)
                 file_tugas = "lampiran_tugas" + randomNumber + file.md5 + ext
-                const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls', '.pdf']
+                const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls', '.pdf', '.pptx']
                 if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
                 if (fileSize > 500000000) return res.status(422).json({ msg: "lampiran tugas  yang anda upload tidak boleh lebih dari 500 mb" })
                 file.mv(`../tmp_siakad/lampiranTugas/${file_tugas}`, (err) => {
@@ -241,7 +241,7 @@ module.exports = {
                 const fileSize = file.data.length
                 const ext = path.extname(file.name)
                 file_tugas = "lampiran_tugas" + randomNumber + file.md5 + ext
-                const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls', '.pdf']
+                const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls', '.pdf', '.pptx']
                 if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
                 if (fileSize > 500000000) return res.status(422).json({ msg: "lampiran tugas  yang anda upload tidak boleh lebih dari 500 mb" })
                 const filepath = `../tmp_siakad/lampiranTugas/${tugasUse.file_tugas}`
