@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { LogOut, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
 import axios from "axios"
-import { FaBullhorn, FaClock, FaFilePdf, FaListUl, FaTh, FaArchive, FaGraduationCap } from "react-icons/fa"
+import { FaBullhorn, FaClock, FaFilePdf, FaListUl, FaTh, FaArchive, FaGraduationCap, FaTasks } from "react-icons/fa"
 import { FaRegBookmark } from "react-icons/fa6"
 import "../assets/css/navigasi.css"
 
@@ -150,6 +150,11 @@ const Navigation = () => {
                                         <li>
                                             <Link to="/jadwal" className={`dropdown-item ${location.pathname == '/jadwal' ? 'active' : ''}`}>
                                                 <div className="inline-flex gap-2"><FaClock className="mt-1 text-[14px]" />  Jadwal Kuliah</div>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/tugas" className={`dropdown-item ${location.pathname == '/tugas' ? 'active' : ''}`}>
+                                                <div className="inline-flex gap-2"><FaTasks className="mt-1 text-[14px]" />  Tugas Kuliah</div>
                                             </Link>
                                         </li>
                                         <li>
