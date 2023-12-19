@@ -282,7 +282,15 @@ const ListTugas = () => {
                                                                                                 <td className='py-2 border'>Status Tugas</td>
                                                                                                 <td className='py-2 px-1 border' rowSpan={2} align='center'>
                                                                                                     <div>
-                                                                                                        <Link to='/deskripsi' className='btn btn-sm btn-info'>Detail</Link>
+                                                                                                        <Link to='/deskripsi' state={{
+                                                                                                            idTugas: item.id_tugas,
+                                                                                                            kodeThn: kodeTahun,
+                                                                                                            kodeSmt: kodeSemester,
+                                                                                                            kodeJen: kodeJenjang,
+                                                                                                            kodeFkl: kodeFakultas,
+                                                                                                            kodePro: kodeProdi,
+                                                                                                            kodeprt: item.code_jadwal_pertemuan
+                                                                                                        }} className='btn btn-sm btn-info'>Detail</Link>
                                                                                                         {item.status == 'belum' ?
                                                                                                             <Link className='btn btn-sm btn-warning ml-1'>Edit</Link>
                                                                                                             :
