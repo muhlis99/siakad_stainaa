@@ -156,7 +156,7 @@ module.exports = {
 
     // dosen
     getAlldosen: async (req, res, next) => {
-        const { nipy, thnAjr, smt, jnjPen, fks, prd } = req.params
+        const { nipy, thnAjr, smt, jnjPen, fks, prd, codejadper } = req.params
         const dataDosen = await dosenModel.findOne({
             where: {
                 nip_ynaa: nipy,
@@ -164,25 +164,31 @@ module.exports = {
             }
         })
         if (!dataDosen) return res.status(404).json({ message: "dosen tidak ditemukan" })
-        const jadwalKuliahUse = await jadwalKuliahModel.findAll({
+        const jadwalPertemuan = await jadwalPertemuanModel.findOne({
             where: {
-                dosen_pengajar: nipy,
-                code_tahun_ajaran: thnAjr,
-                code_semester: smt,
-                code_jenjang_pendidikan: jnjPen,
-                code_fakultas: fks,
-                code_prodi: prd,
+                code_jadwal_pertemuan: codejadper,
                 status: "aktif"
             }
         })
-        const datacodemataKuliah = jadwalKuliahUse.map(el => { return el.code_mata_kuliah })
+        const jadwalKuliah = await jadwalKuliahModel.findOne({
+            dosen_pengajar: nipy,
+            code_tahun_ajaran: thnAjr,
+            code_semester: smt,
+            code_jenjang_pendidikan: jnjPen,
+            code_fakultas: fks,
+            code_prodi: prd,
+            code_jadwal_kuliah: jadwalPertemuan.code_jadwal_kuliah,
+            status: "aktif"
+        })
+        console.log(jadwalKuliah.code_mata_kuliah);
+
         await krsModel.findAndCountAll({
             include: [{
                 attributes: ["nama"],
                 model: mahasiswaModel
             }],
             where: {
-                code_mata_kuliah: datacodemataKuliah,
+                code_mata_kuliah: jadwalKuliah.code_mata_kuliah,
                 code_tahun_ajaran: thnAjr,
                 code_semester: smt,
                 code_jenjang_pendidikan: jnjPen,
@@ -191,9 +197,9 @@ module.exports = {
                 status: "aktif"
             }
         }).then(async result => {
-            await detailTugasModel.findAll({
+            // await detailTugasModel.findAll({
 
-            })
+            // })
             res.status(201).json({
                 message: "Data Tugas Dihapus",
                 data: result
