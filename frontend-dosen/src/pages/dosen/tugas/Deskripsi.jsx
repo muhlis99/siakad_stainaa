@@ -44,7 +44,7 @@ const Deskripsi = () => {
                         :
                         <div className="content-wrapper">
                             <div className="page-header">
-                                <h2 className='fs-4 font-bold'>Deskripsi Tugas Kuliah</h2>
+                                <h2 className='fs-4 font-bold'>Tugas Kuliah</h2>
                             </div>
                             <Row>
                                 <Col>

@@ -7,10 +7,11 @@ import { getMe } from "../../../features/authSlice"
 import { Link, Navigate } from "react-router-dom"
 import axios from 'axios'
 import moment from 'moment'
-import { FaEdit, FaSearch } from 'react-icons/fa'
+import { FaCog, FaEdit, FaSearch } from 'react-icons/fa'
 import { MdOpenInNew } from 'react-icons/md'
 import Swal from 'sweetalert2'
 import { Circles } from "react-loader-spinner"
+import { FileIcon, defaultStyles } from "react-file-icon"
 
 const JadwalDosen = () => {
     const { isError, user } = useSelector((state) => state.auth)
@@ -31,12 +32,19 @@ const JadwalDosen = () => {
     const [pendidikan, setPendidikan] = useState("")
     const [status, setStatus] = useState("")
     const [show, setShow] = useState(false)
+    const [kodePertemuan, setKodePertemuan] = useState("")
+    const [deskripsi, setDeskripsi] = useState("")
+    const [namaTugas, setNamaTugas] = useState("")
+    const [fileTugas, setFileTugas] = useState("")
+    const [ekstensi, setEkstensi] = useState("")
+    const [tglAkhir, setTglAkhir] = useState("")
     const [pembelajaran, setPembelajaran] = useState("")
     const [url, setUrl] = useState("")
     const [rencana, setRencana] = useState("")
     const [lampiran, setLampiran] = useState("")
     const [statusPertemuan, setStatusPertemuan] = useState("")
     const [load, setLoad] = useState(false)
+
 
 
     useEffect(() => {
@@ -143,11 +151,21 @@ const JadwalDosen = () => {
     }
 
     const handleClose = () => {
+        setPembelajaran("")
+        setUrl("")
+        setLampiran("")
+        setStatusPertemuan("")
+        setDeskripsi("")
+        setTglAkhir("")
+        setNamaTugas("")
+        setFileTugas("")
+        setLampiran("")
         setShow(false)
     }
 
     const handleShow = async (e, f) => {
         const response = await axios.get(`v1/jadwalPertemuan/getById/${e}`)
+        console.log(response.data.data);
         setDetailJadwal(response.data.data)
         setPembelajaran(response.data.data.metode_pembelajaran)
         setUrl(response.data.data.url_online)
@@ -188,6 +206,47 @@ const JadwalDosen = () => {
                         getJadwal()
                     });
                 })
+        } catch (error) {
+
+        }
+    }
+
+    const handleTugas = async (e, f) => {
+        const response = await axios.get(`v1/jadwalPertemuan/getById/${e}`)
+        setKodePertemuan(response.data.data.code_jadwal_pertemuan)
+        setStatus(f)
+        setShow(true)
+    }
+
+    const loadTugas = (e) => {
+        const file = e.target.files[0]
+        setFileTugas(file)
+    }
+
+    const simpanTugas = async (e) => {
+        e.preventDefault()
+        setLoad(true)
+        const formData = new FormData()
+        formData.append('code_jadwal_pertemuan', kodePertemuan)
+        formData.append('deskripsi_tugas', deskripsi)
+        formData.append('tugas', namaTugas)
+        formData.append('file_tugas', fileTugas)
+        formData.append('tanggal_akhir', tglAkhir)
+        try {
+            await axios.post(`v1/tugas/create`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            }).then(function (response) {
+                setLoad(false)
+                Swal.fire({
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    handleClose()
+                    getJadwal()
+                });
+            })
         } catch (error) {
 
         }
@@ -305,65 +364,103 @@ const JadwalDosen = () => {
                                             </Col>
                                         </Row>
                                     </Modal.Body>
-                                    :
-                                    <Modal.Body>
-                                        <form onSubmit={simpanPertemuan}>
-                                            <Row>
-                                                <div className="mb-3 col-lg-6">
-                                                    <label htmlFor="form1" className="form-label">Pertemuan ke</label>
-                                                    <input type="text" className="form-control" id="form1" disabled readOnly value={detailJadwal.pertemuan} />
+                                    : status == 'edit' ?
+                                        <Modal.Body>
+                                            <form onSubmit={simpanPertemuan}>
+                                                <Row>
+                                                    <div className="mb-3 col-lg-6">
+                                                        <label htmlFor="form1" className="form-label">Pertemuan ke</label>
+                                                        <input type="text" className="form-control" id="form1" disabled readOnly value={detailJadwal.pertemuan} />
+                                                    </div>
+                                                    <div className="mb-3 col-lg-6">
+                                                        <label htmlFor="form2" className="form-label">Hari, Tanggal</label>
+                                                        <input type="text" className="form-control" id="form2" disabled readOnly value={detailJadwal != 0 ? detailJadwal.jadwalKuliahs[0].hari + ', ' + moment(detailJadwal.tanggal_pertemuan).format('DD MMMM YYYY') : ""} />
+                                                    </div>
+                                                    <div className="mb-3 col-lg-6">
+                                                        <label htmlFor="form3" className="form-label">Jenis Pertemuan</label>
+                                                        <input type="text" className="form-control" id="form3" disabled readOnly value={detailJadwal.jenis_pertemuan} />
+                                                    </div>
+                                                    <div className="mb-3 col-lg-6">
+                                                        <label htmlFor="form4" className="form-label">Jam</label>
+                                                        <input type="text" className="form-control" id="form4" disabled readOnly value={detailJadwal != 0 ? detailJadwal.jadwalKuliahs[0].jam_mulai + ' - ' + detailJadwal.jadwalKuliahs[0].jam_selesai : ""} />
+                                                    </div>
+                                                    <div className="mb-3 col-lg-6">
+                                                        <label htmlFor="form5" className="form-label">Pembelajaran</label>
+                                                        <select id="form5" className='form-select' value={pembelajaran} onChange={(e) => setPembelajaran(e.target.value)}>
+                                                            <option value="">Pembelajaran</option>
+                                                            <option value="offline">Offline</option>
+                                                            <option value="online">Online</option>
+                                                            <option value="campur">Campur</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className="mb-3 col-lg-6">
+                                                        <label htmlFor="form6" className="form-label">URL Online</label>
+                                                        <input type="text" className="form-control" id="form6" value={url} onChange={(e) => setUrl(e.target.value)} placeholder='https://www.example.com' />
+                                                    </div>
+                                                    <div className="mb-3 col-lg-6">
+                                                        <label htmlFor="form7" className="form-label">Rencana Materi</label>
+                                                        <input type="text" className="form-control" id="form7" value={rencana} onChange={(e) => setRencana(e.target.value)} placeholder='Rencana Materi' />
+                                                    </div>
+                                                    <div className="mb-3 col-lg-6">
+                                                        <label htmlFor="formFile" className="form-label">Lampiran Materi</label>
+                                                        <input className="form-control" type="file" onChange={loadFile} id="formFile" />
+                                                    </div>
+                                                    <div className="mb-3 col-lg-6">
+                                                        <label htmlFor="form9" className="form-label">Status Pertemuan</label>
+                                                        <select id="form9" className='form-select' value={statusPertemuan} onChange={(e) => setStatusPertemuan(e.target.value)}>
+                                                            <option value="">Status Pertemuan</option>
+                                                            <option value="terjadwal">Terjadwal</option>
+                                                            <option value="selesai">Selesai</option>
+                                                            <option value="diganti">Diganti</option>
+                                                        </select>
+                                                    </div>
+                                                </Row>
+                                                <hr />
+                                                <Row>
+                                                    <Col>
+                                                        <button className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2 float-right'><FaEdit /> &nbsp; <span>Edit</span></button>
+                                                    </Col>
+                                                </Row>
+                                            </form>
+                                        </Modal.Body>
+                                        :
+                                        <Modal.Body>
+                                            <form onSubmit={simpanTugas}>
+                                                <div className='form-group'>
+                                                    <label htmlFor="judul" className='h6'>Judul Tugas</label>
+                                                    <input id='judul' placeholder='Judul Tugas' value={namaTugas} onChange={(e) => setNamaTugas(e.target.value)} type="text" className='form-control form-control-sm' />
                                                 </div>
-                                                <div className="mb-3 col-lg-6">
-                                                    <label htmlFor="form2" className="form-label">Hari, Tanggal</label>
-                                                    <input type="text" className="form-control" id="form2" disabled readOnly value={detailJadwal != 0 ? detailJadwal.jadwalKuliahs[0].hari + ', ' + moment(detailJadwal.tanggal_pertemuan).format('DD MMMM YYYY') : ""} />
+                                                <div className='form-group'>
+                                                    <label htmlFor="deskripsi" className='h6'>Deskripsi Tugas</label>
+                                                    <textarea
+                                                        id="deskripsi"
+                                                        cols="30"
+                                                        rows="3"
+                                                        placeholder='Deskripsi Tugas' value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} className='form-control form-control-sm'
+                                                    ></textarea>
                                                 </div>
-                                                <div className="mb-3 col-lg-6">
-                                                    <label htmlFor="form3" className="form-label">Jenis Pertemuan</label>
-                                                    <input type="text" className="form-control" id="form3" disabled readOnly value={detailJadwal.jenis_pertemuan} />
+                                                <Link ></Link>
+                                                <div className='form-group'>
+                                                    <Row>
+                                                        <Col>
+                                                            <label htmlFor="lampiran" className='h6'>Lampiran Tugas</label>
+                                                            <input id='lampiran' type="file" onChange={loadTugas} className='form-control form-control-sm' />
+                                                        </Col>
+                                                        <Col>
+                                                            <label htmlFor="tanggal" className='h6'>Tanggal Akhir Pengumpulan</label>
+                                                            <input id='tanggal' value={tglAkhir} onChange={(e) => setTglAkhir(e.target.value)} type="date" className='form-control form-control-sm' />
+                                                        </Col>
+                                                    </Row>
                                                 </div>
-                                                <div className="mb-3 col-lg-6">
-                                                    <label htmlFor="form4" className="form-label">Jam</label>
-                                                    <input type="text" className="form-control" id="form4" disabled readOnly value={detailJadwal != 0 ? detailJadwal.jadwalKuliahs[0].jam_mulai + ' - ' + detailJadwal.jadwalKuliahs[0].jam_selesai : ""} />
-                                                </div>
-                                                <div className="mb-3 col-lg-6">
-                                                    <label htmlFor="form5" className="form-label">Pembelajaran</label>
-                                                    <select id="form5" className='form-select' value={pembelajaran} onChange={(e) => setPembelajaran(e.target.value)}>
-                                                        <option value="">Pembelajaran</option>
-                                                        <option value="offline">Offline</option>
-                                                        <option value="online">Online</option>
-                                                        <option value="campur">Campur</option>
-                                                    </select>
-                                                </div>
-                                                <div className="mb-3 col-lg-6">
-                                                    <label htmlFor="form6" className="form-label">URL Online</label>
-                                                    <input type="text" className="form-control" id="form6" value={url} onChange={(e) => setUrl(e.target.value)} placeholder='https://www.example.com' />
-                                                </div>
-                                                <div className="mb-3 col-lg-6">
-                                                    <label htmlFor="form7" className="form-label">Rencana Materi</label>
-                                                    <input type="text" className="form-control" id="form7" value={rencana} onChange={(e) => setRencana(e.target.value)} placeholder='Rencana Materi' />
-                                                </div>
-                                                <div className="mb-3 col-lg-6">
-                                                    <label htmlFor="formFile" className="form-label">Lampiran Materi</label>
-                                                    <input className="form-control" type="file" onChange={loadFile} id="formFile" />
-                                                </div>
-                                                <div className="mb-3 col-lg-6">
-                                                    <label htmlFor="form9" className="form-label">Status Pertemuan</label>
-                                                    <select id="form9" className='form-select' value={statusPertemuan} onChange={(e) => setStatusPertemuan(e.target.value)}>
-                                                        <option value="">Status Pertemuan</option>
-                                                        <option value="terjadwal">Terjadwal</option>
-                                                        <option value="selesai">Selesai</option>
-                                                        <option value="diganti">Diganti</option>
-                                                    </select>
-                                                </div>
-                                            </Row>
-                                            <hr />
-                                            <Row>
-                                                <Col>
-                                                    <button className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center mt-2 float-right'><FaEdit /> &nbsp; <span>Edit</span></button>
-                                                </Col>
-                                            </Row>
-                                        </form>
-                                    </Modal.Body>}
+                                                <hr />
+                                                <Row>
+                                                    <Col>
+                                                        <button className='float-end btn btn-info btn-sm'>Simpan</button>
+                                                    </Col>
+                                                </Row>
+                                            </form>
+                                        </Modal.Body>
+                                }
 
                             </Modal>
 
@@ -504,8 +601,9 @@ const JadwalDosen = () => {
                                                                                         }</td>
                                                                                         <td className='py-3 border text-capitalize' align='center'>Ruang</td>
                                                                                         <td className='py-2 border text-capitalize' rowSpan={2} align='center'>
-                                                                                            <button className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}><FaSearch /></button>
-                                                                                            <button className='bg-[#FFC107] py-2 px-2 rounded-full text-white inline-flex items-center ml-1' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}><FaEdit /></button>
+                                                                                            <button className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center mr-1' title='Detail' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}><FaSearch /></button>
+                                                                                            <button className='bg-[#FFC107] py-2 px-2 rounded-full text-white inline-flex items-center mr-1' title='Edit' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}><FaEdit /></button>
+                                                                                            <button className='bg-[#28A745] py-2 px-2 rounded-full text-white inline-flex items-center' title='Tugas' onClick={() => handleTugas(item.id_jadwal_pertemuan, 'tugas')}><FaCog /></button>
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>
