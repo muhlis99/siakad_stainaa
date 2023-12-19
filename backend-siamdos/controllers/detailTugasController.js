@@ -3,7 +3,7 @@ const dosenModel = require('../models/dosenModel.js')
 const jadwalKuliahModel = require('../models/jadwalKuliahModel.js')
 const jadwalPertemuanModel = require('../models/jadwalPertemuanModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
-const { Op } = require('sequelize')
+const { Sequelize, Op, literal, QueryTypes } = require('sequelize')
 const path = require('path')
 const fs = require('fs')
 const sebaranMataKuliah = require('../models/sebaranMataKuliah.js')
@@ -11,6 +11,7 @@ const historyMahasiswa = require('../models/historyMahasiswaModel.js')
 const krsModel = require('../models/krsModel.js')
 const detailTugasModel = require('../models/detailTugasModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
+const db = require('../config/database.js')
 
 
 module.exports = {
@@ -180,32 +181,23 @@ module.exports = {
             code_jadwal_kuliah: jadwalPertemuan.code_jadwal_kuliah,
             status: "aktif"
         })
-        console.log(jadwalKuliah.code_mata_kuliah);
 
-        await krsModel.findAndCountAll({
-            include: [{
-                attributes: ["nama"],
-                model: mahasiswaModel
-            }],
-            where: {
-                code_mata_kuliah: jadwalKuliah.code_mata_kuliah,
-                code_tahun_ajaran: thnAjr,
-                code_semester: smt,
-                code_jenjang_pendidikan: jnjPen,
-                code_fakultas: fks,
-                code_prodi: prd,
-                status: "aktif"
-            }
-        }).then(async result => {
-            // await detailTugasModel.findAll({
 
-            // })
-            res.status(201).json({
-                message: "Data Tugas Dihapus",
-                data: result
-            })
-        }).catch(err => {
-            console.log(err)
+        await db.query(`SELECT tb_mahasiswa.nama,tb_krs.code_mata_kuliah,case when (tb_krs.nim = tb_detail_tugas.nim) then "ya" else "tidak" END as checkdatatugas FROM tb_detail_tugas, tb_krs 
+            INNER JOIN tb_mahasiswa ON tb_mahasiswa.nim = tb_krs.nim 
+            WHERE tb_krs.code_mata_kuliah="${jadwalKuliah.code_mata_kuliah}" AND tb_krs.code_jenjang_pendidikan="${jnjPen}"
+            AND tb_krs.code_fakultas="${fks}" AND tb_krs.code_prodi="${prd}" AND tb_krs.code_tahun_ajaran="${thnAjr}"
+            AND tb_krs.code_semester="${smt}"`, {
+            nest: true,
+            type: QueryTypes.SELECT
         })
+            .then(async result => {
+                res.status(201).json({
+                    message: "Data mahasiswa tugas ",
+                    data: result
+                })
+            }).catch(err => {
+                console.log(err)
+            })
     }
 }
