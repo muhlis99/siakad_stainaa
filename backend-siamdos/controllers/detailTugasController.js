@@ -18,9 +18,11 @@ module.exports = {
     // mahasiswa
     getByCodeTugas: async (req, res, next) => {
         const code = req.params.code
+        const nim = req.params.nim
         await detailTugasModel.findAll({
             where: {
-                code_tugas: code
+                code_tugas: code,
+                nim : nim
             }
         }).
             then(getById => {
