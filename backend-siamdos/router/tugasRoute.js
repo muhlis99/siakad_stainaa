@@ -13,6 +13,7 @@ router.delete('/delete/:id', tugasController.delete)
 
 // mahasiswa
 router.get('/allmhs/:nim', tugasController.getAllmhs)
+router.get('/tugasmhsbycode/:code', tugasController.tugasmhsbycode)
 
 
 module.exports = router
