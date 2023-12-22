@@ -6,7 +6,7 @@ const path = require('path')
 router.use('/public/seeLampiranJawaban/lampiranJawaban', express.static(path.join('../tmp_siakad/lampiranJawaban')))
 
 // mahasiswa
-router.get('/getByCodeTugas/:code', detailTugasController.getByCodeTugas)
+router.get('/getByCodeTugas/:code/:nim', detailTugasController.getByCodeTugas)
 router.get('/getById/:id', detailTugasController.getById)
 router.post('/create', detailTugasController.post)
 router.put('/update/:id', detailTugasController.put)
