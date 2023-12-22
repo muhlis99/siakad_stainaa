@@ -368,5 +368,21 @@ module.exports = {
         }).catch(err => {
             console.log(err)
         })
+    },
+
+    tugasmhsbycode: async (req, res, next) => {
+        const code = req.params.code
+        await tugasModel.findOne({
+            where: {
+                code_tugas: code,
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "Data Tugas success",
+                data: result
+            })
+        }).catch(err => {
+            console.log(err)
+        })
     }
 }
