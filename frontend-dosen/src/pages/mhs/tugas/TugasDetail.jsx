@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../Layout'
+import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer"
 import { Row, Col, Card, Image, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
@@ -132,6 +133,10 @@ const TugasDetail = () => {
         }
     }
 
+    const docs = [
+        { uri: "/contoh.pdf" }
+    ]
+
     return (
         <Layout>
             <title>Tugas Kuliah</title>
@@ -258,7 +263,7 @@ const TugasDetail = () => {
                                                 <Row>
                                                     <Col>
                                                         <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
-                                                            <span className='text[14px] text-capitalize text-dark'>Deskripsi Jawaban</span>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>Deskripsi Jawaban</span>
                                                             <div className=' text-[13px] text-secondary'>
                                                                 {detail.jawaban}
                                                             </div>
@@ -266,9 +271,29 @@ const TugasDetail = () => {
                                                     </Col>
                                                     <Col>
                                                         <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
-                                                            <span className='text[14px] text-capitalize text-dark'>Tanggal Pengumpulan</span>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>Tanggal Pengumpulan</span>
                                                             <div className=' text-[13px] text-secondary'>
                                                                 {moment(detail.tanggal_pengumpulan).format('DD MMMM YYYY')}
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                                <Row className='mt-2'>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban</span>
+                                                            <div className=' text-[13px] text-secondary'>
+                                                                <DocViewer
+                                                                    documents={docs}
+                                                                    config={{
+                                                                        header: {
+                                                                            disableHeader: true,
+                                                                            disableFileName: true,
+                                                                            retainURLParams: true,
+                                                                        }
+                                                                    }}
+                                                                    pluginRenderers={DocViewerRenderers}
+                                                                />
                                                             </div>
                                                         </div>
                                                     </Col>
