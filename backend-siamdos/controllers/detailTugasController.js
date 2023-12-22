@@ -16,6 +16,30 @@ const db = require('../config/database.js')
 
 module.exports = {
     // mahasiswa
+    getByCodeTugas: async (req, res, next) => {
+        const code = req.params.code
+        await detailTugasModel.findAll({
+            where: {
+                code_tugas: code
+            }
+        }).
+            then(getById => {
+                if (!getById) {
+                    return res.status(404).json({
+                        message: "Data Tugas Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(201).json({
+                    message: "Data Tugas Ditemukan",
+                    data: getById
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     getById: async (req, res, next) => {
         const id = req.params.id
         await detailTugasModel.findOne({
