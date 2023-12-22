@@ -68,6 +68,7 @@ const message = require('./router/messageRoute.js')(io)
 const dosen = require('./router/dosenRoute.js')
 const tugas = require('./router/tugasRoute.js')
 const detailTugas = require('./router/detailTugasRoute.js')
+const pedoman = require('./router/pedomanRoute.js')
 const jadwalPertemuan = require('./router/jadwalPertemuanRoute.js')
 
 
@@ -96,6 +97,7 @@ app.use('/v1/message', message)
 app.use('/v1/dosen', dosen)
 app.use('/v1/tugas', tugas)
 app.use('/v1/detailTugas', detailTugas)
+app.use('/v1/pedoman', pedoman)
 app.use('/v1/jadwalPertemuan', jadwalPertemuan)
 
 

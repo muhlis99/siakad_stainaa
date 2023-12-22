@@ -3,6 +3,7 @@ const router = express.Router()
 const detailTugasController = require('../controllers/detailTugasController.js')
 
 // mahasiswa
+router.get('/getByCodeTugas/:code', detailTugasController.getByCodeTugas)
 router.get('/getById/:id', detailTugasController.getById)
 router.post('/create', detailTugasController.post)
 router.put('/update/:id', detailTugasController.put)
