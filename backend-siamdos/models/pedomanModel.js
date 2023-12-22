@@ -20,12 +20,12 @@ const pedomanModel = db.define('pedoman', {
     'file_pedoman': {
         type: DataTypes.TEXT
     },
-    'tanggal_penetapan': {
+    'tanggal_terbit': {
         type: DataTypes.TEXT
     },
-    'role': {
+    'level': {
         type: DataTypes.ENUM,
-        values: ['all', 'dosen', 'mahasiswa']
+        values: ['dosen', 'mahasiswa']
     },
     'status': {
         type: DataTypes.ENUM,
