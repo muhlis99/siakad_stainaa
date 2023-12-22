@@ -1,6 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const detailTugasController = require('../controllers/detailTugasController.js')
+const path = require('path')
+
+router.use('/public/seeLampiranJawaban/lampiranJawaban', express.static(path.join('../tmp_siakad/lampiranJawaban')))
 
 // mahasiswa
 router.get('/getByCodeTugas/:code', detailTugasController.getByCodeTugas)
