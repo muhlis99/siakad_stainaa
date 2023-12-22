@@ -25,8 +25,8 @@ const store = new sessionStore({
 app.use(fileUpload())
 app.use(cors({
     credentials: true,
-    // origin: process.env.APP_ORIGIN,
-    origin: 'https://siamdos.stainaa.ac.id'
+    origin: process.env.APP_ORIGIN,
+    // origin: 'https://siamdos.stainaa.ac.id'
 }))
 app.use(session({
     secret: process.env.SESS_SECRET,
