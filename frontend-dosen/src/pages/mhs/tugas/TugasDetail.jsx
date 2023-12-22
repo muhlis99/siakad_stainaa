@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../Layout'
-import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer"
 import { Row, Col, Card, Image, Modal } from 'react-bootstrap'
+import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer"
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
 import { Link, Navigate, useLocation } from "react-router-dom"
@@ -62,9 +62,8 @@ const TugasDetail = () => {
 
     const getDetail = async () => {
         try {
-            const response = await axios.get(`v1/detailTugas/getById/3`)
-            console.log(response.data.data);
-            setDetail(response.data.data)
+            const response = await axios.get(`v1/detailTugas/getByCodeTugas/${location.state.kodeTgs}`)
+            setDetail(response.data.data[0])
         } catch (error) {
 
         }
@@ -282,19 +281,26 @@ const TugasDetail = () => {
                                                     <Col>
                                                         <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
                                                             <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban</span>
-                                                            <div className=' text-[13px] text-secondary'>
-                                                                <DocViewer
-                                                                    documents={docs}
-                                                                    config={{
-                                                                        header: {
-                                                                            disableHeader: true,
-                                                                            disableFileName: true,
-                                                                            retainURLParams: true,
-                                                                        }
-                                                                    }}
-                                                                    pluginRenderers={DocViewerRenderers}
-                                                                />
-                                                            </div>
+                                                            <DocViewer
+                                                                documents={docs}
+                                                                config={{
+                                                                    header: {
+                                                                        disableHeader: false,
+                                                                        disableFileName: true,
+                                                                        retainURLParams: false,
+                                                                    }
+                                                                }}
+                                                                theme={{
+                                                                    primary: "#5296d8",
+                                                                    secondary: "#ffffff",
+                                                                    tertiary: "#5296d899",
+                                                                    textPrimary: "#ffffff",
+                                                                    textSecondary: "#5296d8",
+                                                                    textTertiary: "#00000099",
+                                                                    disableThemeScrollbar: false,
+                                                                }}
+                                                                pluginRenderers={DocViewerRenderers}
+                                                            />
                                                         </div>
                                                     </Col>
                                                 </Row>
