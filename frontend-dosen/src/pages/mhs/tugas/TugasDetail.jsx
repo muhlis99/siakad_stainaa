@@ -23,7 +23,7 @@ const TugasDetail = () => {
     const [show, setShow] = useState(false)
 
     useEffect(() => {
-        console.log(location.state);
+        // console.log(location.state);
     }, [location])
 
     useEffect(() => {
@@ -46,7 +46,7 @@ const TugasDetail = () => {
     useEffect(() => {
         const getDetailTugas = async () => {
             try {
-                const response = await axios.get(`v1/tugas/getById/${location.state.idTugas}`)
+                const response = await axios.get(`v1/tugas/tugasmhsbycode/${location.state.kodeTgs}`)
                 setTugas(response.data.data)
             } catch (error) {
 
@@ -61,7 +61,8 @@ const TugasDetail = () => {
 
     const getDetail = async () => {
         try {
-            const response = await axios.get(`v1/detailTugas/getById/2`)
+            const response = await axios.get(`v1/detailTugas/getById/3`)
+            console.log(response.data.data);
             setDetail(response.data.data)
         } catch (error) {
 
@@ -254,7 +255,24 @@ const TugasDetail = () => {
                                                     <button onClick={openModal} className='btn btn-sm btn-success my-2'>Kumpulkan tugas</button>
                                                 </div>
                                             </> : <>
-
+                                                <Row>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark'>Deskripsi Jawaban</span>
+                                                            <div className=' text-[13px] text-secondary'>
+                                                                {detail.jawaban}
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark'>Tanggal Pengumpulan</span>
+                                                            <div className=' text-[13px] text-secondary'>
+                                                                {moment(detail.tanggal_pengumpulan).format('DD MMMM YYYY')}
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
                                             </>}
                                         </Card.Body>
                                     </Card>
