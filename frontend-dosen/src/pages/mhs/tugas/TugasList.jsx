@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card } from 'react-bootstrap'
+import { Row, Col, Card, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
 import { Link, Navigate } from "react-router-dom"
 import { Circles } from "react-loader-spinner"
+import dataBlank from "../../../assets/images/watch.svg"
+import axios from 'axios'
+import moment from 'moment'
 
 const TugasList = () => {
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
     const [load, setLoad] = useState(false)
+    const [Tugas, setTugas] = useState([])
 
     useEffect(() => {
         setLoad(true)
@@ -22,10 +26,23 @@ const TugasList = () => {
         dispatch(getMe())
     }, [dispatch])
 
+    useEffect(() => {
+        const getTugas = async () => {
+            try {
+                if (user) {
+                    const response = await axios.get(`v1/tugas/allmhs/${user.data.username}`)
+                    setTugas(response.data.data)
+                }
+            } catch (error) {
+
+            }
+        }
+        getTugas()
+    }, [user])
+
     return (
         <Layout>
             <title>Tugas Kuliah</title>
-
             {isError ? <Navigate to="/login" /> :
                 <>
                     {load ?
@@ -52,12 +69,49 @@ const TugasList = () => {
                                     <Card className='shadow'>
                                         <Card.Body className='p-3'>
                                             <Row>
-                                                <Col>
-                                                    <Card className='shadow'>
-                                                        <Card.Body>
-                                                        </Card.Body>
-                                                    </Card>
-                                                </Col>
+                                                {Tugas.length > 0 ? Tugas.map((item, index) => (
+                                                    <Col key={index} lg="4">
+                                                        <Card className='shadow'>
+                                                            <Card.Body className='p-3'>
+                                                                <span className='text-capitalize fs-6 fw-semibold'>{item.tugas}</span>
+                                                                <Row className='mt-2'>
+                                                                    <Col>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                                            <span className='text[12px] text-capitalize text-dark'>Deskripsi Tugas</span>
+                                                                            <div className=' text-[13px] text-secondary'>
+                                                                                {item.deskripsi_tugas}
+                                                                            </div>
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
+                                                                <Row className='mt-2'>
+                                                                    <Col>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                                            <span className='text[12px] text-capitalize text-dark'>Terakhir Pengumpulan</span>
+                                                                            <div className=' text-[13px] text-secondary'>
+                                                                                Pengumpulan tugas berakhir pada tanggal {moment(item.tanggal_akhir).format('DD MMMM YYYY')}
+                                                                            </div>
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
+                                                                <Row className='mt-2'>
+                                                                    <Col>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                                            <span className='text[12px] text-capitalize text-dark'>Aksi</span>
+                                                                            <div className=' text-[13px] text-secondary'>
+                                                                                <Link to="/tugasdetail" state={{ idTugas: item.id_tugas, kodeTgs: item.code_tugas }} className='btn btn-sm btn-info'>Selengkapnya</Link>
+                                                                            </div>
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
+                                                            </Card.Body>
+                                                        </Card>
+                                                    </Col>
+                                                )) :
+                                                    <div className='flex justify-center'>
+                                                        <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                    </div>
+                                                }
                                             </Row>
                                         </Card.Body>
                                     </Card>

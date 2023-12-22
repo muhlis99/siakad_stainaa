@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card, Table } from 'react-bootstrap'
+import { Row, Col, Card, Table, Image, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
+import dataBlank from "../../../assets/images/watch.svg"
 import { getMe } from "../../../features/authSlice"
 import { Link, Navigate } from "react-router-dom"
 import { Circles } from "react-loader-spinner"
 import axios from 'axios'
 import moment from "moment"
+import Swal from 'sweetalert2'
 
 const ListTugas = () => {
     const dispatch = useDispatch()
@@ -24,6 +26,13 @@ const ListTugas = () => {
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
+    const [idTugas, setIdTugas] = useState("")
+    const [deskripsi, setDeskripsi] = useState("")
+    const [namaTugas, setNamaTugas] = useState("")
+    const [detailTugas, setDetailTugas] = useState([])
+    const [fileTugas, setFileTugas] = useState("")
+    const [tglAkhir, setTglAkhir] = useState("")
+    const [show, setShow] = useState(false)
 
     useEffect(() => {
         setLoad(true)
@@ -122,6 +131,140 @@ const ListTugas = () => {
         }
     }
 
+    const handleShow = async (e) => {
+        try {
+            const response = await axios.get(`v1/tugas/getById/${e}`)
+            setIdTugas(response.data.data.id_tugas)
+            setDeskripsi(response.data.data.deskripsi_tugas)
+            setNamaTugas(response.data.data.tugas)
+            setTglAkhir(response.data.data.tanggal_akhir)
+            // setFileTugas(response.data.data.file_tugas)
+            setShow(true)
+        } catch (error) {
+
+        }
+    }
+
+    const loadTugas = (e) => {
+        const file = e.target.files[0]
+        setFileTugas(file)
+    }
+
+    const handleClose = () => {
+        setDeskripsi("")
+        setTglAkhir("")
+        setNamaTugas("")
+        setFileTugas("")
+        setShow(false)
+    }
+
+    const simpanTugas = async (e) => {
+        e.preventDefault()
+        if (deskripsi == "") {
+            Swal.fire({
+                title: 'Deskripsi tidak boleh kosong',
+                icon: 'error'
+            })
+        } else if (namaTugas == "") {
+            Swal.fire({
+                title: 'Judul tugas tidak boleh kosong',
+                icon: 'error'
+            })
+        } else if (tglAkhir == "") {
+            Swal.fire({
+                title: 'Tanggal pengumpulan tidak boleh kosong',
+                icon: 'error'
+            })
+        } else {
+            setLoad(true)
+            const formData = new FormData()
+            formData.append('deskripsi_tugas', deskripsi)
+            formData.append('tugas', namaTugas)
+            formData.append('file_tugas', fileTugas)
+            formData.append('tanggal_akhir', tglAkhir)
+            try {
+                await axios.put(`v1/tugas/update/${idTugas}`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }).then(function (response) {
+                    setLoad(false)
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        handleClose()
+                        getTugas()
+                    });
+                })
+            } catch (error) {
+
+            }
+        }
+    }
+
+    const selesaikan = (tugasId) => {
+        Swal.fire({
+            title: "Apakah anda yakin?",
+            text: "Apakah tugas ini sudah selesai?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.put(
+                        `v1/tugas/updateStatus/${tugasId}`
+                    ).then((response) => {
+                        Swal.fire({
+                            title: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            getTugas()
+                        });
+                    })
+
+                } catch (error) {
+
+                }
+            }
+        })
+    }
+
+    const hapus = (tugasId) => {
+        Swal.fire({
+            title: "Apakah anda yakin untuk menghapus?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.delete(
+                        `v1/tugas/delete/${tugasId}`
+                    ).then((response) => {
+                        Swal.fire({
+                            title: 'Terhapus',
+                            icon: "success"
+                        }).then(() => {
+                            getTugas()
+                        });
+                    })
+
+                } catch (error) {
+
+                }
+            }
+        })
+    }
+
     return (
         <Layout>
             <title>Tugas Kuliah</title>
@@ -143,6 +286,56 @@ const ListTugas = () => {
                         </div>
                         :
                         <div className="content-wrapper">
+                            <Modal
+                                show={show}
+                                onHide={handleClose}
+                                backdrop="static"
+                                keyboard={false}
+                                size='lg'
+                                centered
+                            >
+                                <Modal.Header closeButton>
+                                    <Modal.Title></Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <form
+                                        onSubmit={simpanTugas}
+                                    >
+                                        <div className='form-group'>
+                                            <label htmlFor="judul" className='h6'>Judul Tugas</label>
+                                            <input id='judul' placeholder='Judul Tugas' value={namaTugas} onChange={(e) => setNamaTugas(e.target.value)} type="text" className='form-control form-control-sm' />
+                                        </div>
+                                        <div className='form-group'>
+                                            <label htmlFor="deskripsi" className='h6'>Deskripsi Tugas</label>
+                                            <textarea
+                                                id="deskripsi"
+                                                cols="30"
+                                                rows="3"
+                                                placeholder='Deskripsi Tugas' value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} className='form-control form-control-sm'
+                                            ></textarea>
+                                        </div>
+                                        <Link ></Link>
+                                        <div className='form-group'>
+                                            <Row>
+                                                <Col>
+                                                    <label htmlFor="lampiran" className='h6'>Lampiran Tugas</label>
+                                                    <input id='lampiran' type="file" onChange={loadTugas} className='form-control form-control-sm' />
+                                                </Col>
+                                                <Col>
+                                                    <label htmlFor="tanggal" className='h6'>Tanggal Akhir Pengumpulan</label>
+                                                    <input id='tanggal' value={tglAkhir} onChange={(e) => setTglAkhir(e.target.value)} type="date" className='form-control form-control-sm' />
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                        <hr />
+                                        <Row>
+                                            <Col>
+                                                <button className='float-end btn btn-info btn-sm'>Simpan</button>
+                                            </Col>
+                                        </Row>
+                                    </form>
+                                </Modal.Body>
+                            </Modal>
                             <div className="page-header">
                                 <h2 className='fs-4 font-bold'>Tugas Kuliah</h2>
                             </div>
@@ -245,7 +438,7 @@ const ListTugas = () => {
                                                 <Card.Body className='p-3'>
                                                     <Row>
                                                         <Col lg='12'>
-                                                            {AllTugas.map((item) => (
+                                                            {AllTugas.length > 0 ? AllTugas.map((item) => (
                                                                 <Card className='shadow' key={item.id_tugas}>
                                                                     <Card.Body className='py-3'>
                                                                         <Row className='border'>
@@ -292,12 +485,16 @@ const ListTugas = () => {
                                                                                                             kodeprt: item.code_jadwal_pertemuan
                                                                                                         }} className='btn btn-sm btn-info'>Detail</Link>
                                                                                                         {item.status == 'belum' ?
-                                                                                                            <Link className='btn btn-sm btn-warning ml-1'>Edit</Link>
+                                                                                                            <button onClick={() => handleShow(item.id_tugas)} className='btn btn-sm btn-warning ml-1'>Edit</button>
                                                                                                             :
                                                                                                             ""
                                                                                                         }
                                                                                                         {item.status == 'belum' ?
-                                                                                                            <button className='btn btn-sm btn-success ml-1'>Selesaikan</button>
+                                                                                                            <button onClick={() => selesaikan(item.id_tugas)} className='btn btn-sm btn-success ml-1'>Selesaikan</button>
+                                                                                                            : ""
+                                                                                                        }
+                                                                                                        {item.status == 'belum' ?
+                                                                                                            <button onClick={() => hapus(item.id_tugas)} className='btn btn-sm btn-danger ml-1'>Hapus</button>
                                                                                                             : ""
                                                                                                         }
                                                                                                     </div>
@@ -324,7 +521,11 @@ const ListTugas = () => {
                                                                         </Row>
                                                                     </Card.Body>
                                                                 </Card>
-                                                            ))}
+                                                            )) :
+                                                                <div className='flex justify-center'>
+                                                                    <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                                </div>
+                                                            }
                                                         </Col>
                                                     </Row>
                                                 </Card.Body>
