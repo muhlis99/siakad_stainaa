@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card } from 'react-bootstrap'
+import { Row, Col, Card, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
 import { Link, Navigate, useLocation } from "react-router-dom"
@@ -13,6 +13,7 @@ const Deskripsi = () => {
     const { isError, user } = useSelector((state) => state.auth)
     const [load, setLoad] = useState(false)
     const [Tugas, setTugas] = useState([])
+    const [Mahasiswa, setMahasiswa] = useState([])
     const location = useLocation()
 
     // useEffect(() => {
@@ -50,7 +51,7 @@ const Deskripsi = () => {
         try {
             if (user) {
                 const response = await axios.get(`v1/detailTugas/alldosen/${user.data.username}/${location.state.kodeThn}/${location.state.kodeSmt}/${location.state.kodeJen}/${location.state.kodeFkl}/${location.state.kodePro}/${location.state.kodeprt}`)
-                console.log(response.data.data);
+                setMahasiswa(response.data.data);
             }
         } catch (error) {
 
@@ -59,7 +60,7 @@ const Deskripsi = () => {
 
     return (
         <Layout>
-            <title>Deskripsi Tugas Kuliah</title>
+            <title>Tugas Kuliah</title>
             {isError ? <Navigate to="/login" /> :
                 <>
                     {load ?
@@ -126,9 +127,30 @@ const Deskripsi = () => {
                                         </Card.Body>
                                     </Card>
                                     <Card className='shadow mt-3'>
-                                        <Card.Body>
+                                        <Card.Body className='p-3'>
                                             <div className='table-responsive'>
-
+                                                <Table>
+                                                    <thead>
+                                                        <tr className='border'>
+                                                            <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>NO</th>
+                                                            <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Nama</th>
+                                                            <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Kode Matakuliah</th>
+                                                            <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Status</th>
+                                                            <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Aksi</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {Mahasiswa.map((item, index) => (
+                                                            <tr key={index}>
+                                                                <td>{index + 1}</td>
+                                                                <td>{item.nama}</td>
+                                                                <td>{item.codecode_mata_kuliah}</td>
+                                                                <td>{item.checkdatatugas}</td>
+                                                                <td></td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </Table>
                                             </div>
 
                                             {/* <Link to="/detailTugas" className='btn btn-sm btn-info'>Detail</Link> */}
