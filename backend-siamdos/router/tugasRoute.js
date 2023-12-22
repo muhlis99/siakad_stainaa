@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const tugasController = require('../controllers/tugasController.js')
+const path = require('path')
 
+router.use('/public/seeLampiranTugas/lampiranTugas', express.static(path.join('../tmp_siakad/lampiranTugas')))
 
 // dosen
 router.get('/all/:nipy/:thnAjr/:smt/:jnjPen/:fks/:prd', tugasController.getAll)
