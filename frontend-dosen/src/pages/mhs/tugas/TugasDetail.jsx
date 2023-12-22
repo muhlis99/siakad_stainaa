@@ -21,6 +21,7 @@ const TugasDetail = () => {
     const [detail, setDetail] = useState([])
     const [jawaban, setJawaban] = useState("")
     const [fileJawaban, setFileJawaban] = useState("")
+    const [modal, setModal] = useState("")
     const [show, setShow] = useState(false)
 
     useEffect(() => {
@@ -69,8 +70,9 @@ const TugasDetail = () => {
         }
     }
 
-    const openModal = async () => {
+    const openModal = async (e) => {
         setShow(true)
+        setModal(e)
     }
 
     const handleClose = () => {
@@ -133,7 +135,11 @@ const TugasDetail = () => {
     }
 
     const docs = [
-        { uri: "/contoh.pdf" }
+        { uri: "http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/" + detail.file_jawaban }
+    ]
+
+    const lampiran = [
+        { uri: "http://localhost:4002/v1/tugas/public/seeLampiranTugas/lampiranTugas/" + Tugas.file_tugas }
     ]
 
     return (
@@ -169,35 +175,64 @@ const TugasDetail = () => {
                                 <Modal.Header closeButton>
                                     <Modal.Title></Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body>
-                                    <form
-                                        onSubmit={kumpulkan}
-                                    >
-                                        <div className='form-group'>
-                                            <label htmlFor="deskripsi" className='h6'>Deskripsi Jawaban</label>
-                                            <textarea
-                                                id="deskripsi"
-                                                cols="30"
-                                                rows="3"
-                                                placeholder='Deskripsi Jawaban'
-                                                value={jawaban} onChange={(e) => setJawaban(e.target.value)}
-                                                className='form-control form-control-sm'
-                                            ></textarea>
-                                        </div>
-                                        <div className='form-group'>
-                                            <label htmlFor="judul" className='h6'>File Jawaban</label>
-                                            <input id='judul' placeholder='Judul Tugas'
-                                                onChange={loadFile}
-                                                type="file" className='form-control form-control-sm' />
-                                        </div>
-                                        <hr />
+                                {modal == 'upload' ?
+                                    <Modal.Body>
+                                        <form
+                                            onSubmit={kumpulkan}
+                                        >
+                                            <div className='form-group'>
+                                                <label htmlFor="deskripsi" className='h6'>Deskripsi Jawaban</label>
+                                                <textarea
+                                                    id="deskripsi"
+                                                    cols="30"
+                                                    rows="3"
+                                                    placeholder='Deskripsi Jawaban'
+                                                    value={jawaban} onChange={(e) => setJawaban(e.target.value)}
+                                                    className='form-control form-control-sm'
+                                                ></textarea>
+                                            </div>
+                                            <div className='form-group'>
+                                                <label htmlFor="judul" className='h6'>File Jawaban</label>
+                                                <input id='judul' placeholder='Judul Tugas'
+                                                    onChange={loadFile}
+                                                    type="file" className='form-control form-control-sm' />
+                                            </div>
+                                            <hr />
+                                            <Row>
+                                                <Col>
+                                                    <button className='float-end btn btn-info btn-sm'>Simpan</button>
+                                                </Col>
+                                            </Row>
+                                        </form>
+                                    </Modal.Body>
+                                    :
+                                    <Modal.Body>
                                         <Row>
                                             <Col>
-                                                <button className='float-end btn btn-info btn-sm'>Simpan</button>
+                                                <DocViewer
+                                                    documents={lampiran}
+                                                    config={{
+                                                        header: {
+                                                            disableHeader: true,
+                                                            disableFileName: true,
+                                                            retainURLParams: false,
+                                                        }
+                                                    }}
+                                                    theme={{
+                                                        primary: "#5296d8",
+                                                        secondary: "#ffffff",
+                                                        tertiary: "#5296d899",
+                                                        textPrimary: "#ffffff",
+                                                        textSecondary: "#5296d8",
+                                                        textTertiary: "#00000099",
+                                                        disableThemeScrollbar: false,
+                                                    }}
+                                                    pluginRenderers={DocViewerRenderers}
+                                                />
                                             </Col>
                                         </Row>
-                                    </form>
-                                </Modal.Body>
+                                    </Modal.Body>
+                                }
                             </Modal>
 
                             <div className="page-header">
@@ -240,14 +275,13 @@ const TugasDetail = () => {
                                                             <a>Lampiran Tugas</a>
                                                         </Col>
                                                         <Col className='flex gap-2'>
-                                                            <span className='hidden lg:block'>: </span>{Tugas.file_tugas ? <a>Lampiran ada</a> : <a>Lampiran tidak ada</a>}
+                                                            <span className='hidden lg:block'>: </span>{Tugas.file_tugas ? <button className='btn btn-sm btn-primary' onClick={() => openModal('lampiran')}>Lihat Lampiran</button> : <a>Lampiran tidak ada</a>}
                                                         </Col>
                                                     </Row>
                                                 </Col>
                                             </Row>
                                         </Card.Body>
                                     </Card>
-
                                     <Card className='mt-3'>
                                         <Card.Body className='p-3'>
                                             {detail.length == 0 ? <>
@@ -256,7 +290,7 @@ const TugasDetail = () => {
                                                         <Image src={dataBlank} className='mt-4 ' width={150} />
                                                     </div>
                                                     <p className='text-muted font-bold'>Anda belum mengumpulkan tugas!</p>
-                                                    <button onClick={openModal} className='btn btn-sm btn-success my-2'>Kumpulkan tugas</button>
+                                                    <button onClick={() => openModal('upload')} className='btn btn-sm btn-success my-2'>Kumpulkan tugas</button>
                                                 </div>
                                             </> : <>
                                                 <Row>
@@ -285,7 +319,7 @@ const TugasDetail = () => {
                                                                 documents={docs}
                                                                 config={{
                                                                     header: {
-                                                                        disableHeader: false,
+                                                                        disableHeader: true,
                                                                         disableFileName: true,
                                                                         retainURLParams: false,
                                                                     }
