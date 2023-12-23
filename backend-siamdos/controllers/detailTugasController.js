@@ -22,7 +22,7 @@ module.exports = {
         await detailTugasModel.findAll({
             where: {
                 code_tugas: code,
-                nim : nim
+                nim: nim
             }
         }).
             then(getById => {
@@ -198,14 +198,16 @@ module.exports = {
             }
         })
         const jadwalKuliah = await jadwalKuliahModel.findOne({
-            dosen_pengajar: nipy,
-            code_tahun_ajaran: thnAjr,
-            code_semester: smt,
-            code_jenjang_pendidikan: jnjPen,
-            code_fakultas: fks,
-            code_prodi: prd,
-            code_jadwal_kuliah: jadwalPertemuan.code_jadwal_kuliah,
-            status: "aktif"
+            where: {
+                dosen_pengajar: nipy,
+                code_tahun_ajaran: thnAjr,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnjPen,
+                code_fakultas: fks,
+                code_prodi: prd,
+                code_jadwal_kuliah: jadwalPertemuan.code_jadwal_kuliah,
+                status: "aktif"
+            }
         })
 
 

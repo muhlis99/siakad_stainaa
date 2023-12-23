@@ -19,9 +19,12 @@ const TugasDetail = () => {
     const [nim, setNim] = useState("")
     const [Tugas, setTugas] = useState([])
     const [detail, setDetail] = useState([])
+    const [idDetailTugas, setIdDetailTugas] = useState("")
     const [jawaban, setJawaban] = useState("")
     const [fileJawaban, setFileJawaban] = useState("")
+    const [lampiranJawaban, setLampiranJawaban] = useState("")
     const [modal, setModal] = useState("")
+    const [urlDoc, setUrlDoc] = useState("")
     const [show, setShow] = useState(false)
 
     useEffect(() => {
@@ -51,7 +54,6 @@ const TugasDetail = () => {
                 const response = await axios.get(`v1/tugas/tugasmhsbycode/${location.state.kodeTgs}`)
                 setTugas(response.data.data)
             } catch (error) {
-
             }
         }
         getDetailTugas()
@@ -59,20 +61,47 @@ const TugasDetail = () => {
 
     useEffect(() => {
         getDetail()
-    }, [location])
+    }, [location, user])
+
+    useEffect(() => {
+        if (lampiranJawaban == null) {
+            setUrlDoc('')
+        } else {
+            setUrlDoc('http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/' + lampiranJawaban)
+        }
+    }, [lampiranJawaban])
+
+    useEffect(() => {
+        const getDetailTugasById = async () => {
+            try {
+                if (idDetailTugas != 0) {
+                    const response = await axios.get(`v1/detailTugas/getById/${idDetailTugas}`)
+                    setJawaban(response.data.data.jawaban)
+                    setFileJawaban(response.data.data.file_jawaban)
+                }
+            } catch (error) {
+
+            }
+        }
+        getDetailTugasById()
+    }, [idDetailTugas])
 
     const getDetail = async () => {
         try {
-            const response = await axios.get(`v1/detailTugas/getByCodeTugas/${location.state.kodeTgs}`)
-            setDetail(response.data.data[0])
+            if (user) {
+                const response = await axios.get(`v1/detailTugas/getByCodeTugas/${location.state.kodeTgs}/${user.data.username}`)
+                setDetail(response.data.data[0])
+                setLampiranJawaban(response.data.data[0].file_jawaban)
+            }
         } catch (error) {
 
         }
     }
 
-    const openModal = async (e) => {
+    const openModal = async (e, f) => {
         setShow(true)
         setModal(e)
+        setIdDetailTugas(f)
     }
 
     const handleClose = () => {
@@ -134,8 +163,51 @@ const TugasDetail = () => {
         }
     }
 
+    const editTugas = async (e) => {
+        e.preventDefault()
+        var date1 = moment()
+        var date2 = Tugas.tanggal_akhir
+        var time1 = moment(date1).format('YYYY-MM-DD');
+        var time2 = moment(date2).format('YYYY-MM-DD');
+        if (time2 < time1) {
+            Swal.fire({
+                title: 'Waktu telah kedaluarsa',
+                text: 'Anda mengedit tugas melebihi batas terakhir pengumpulan',
+                icon: 'error'
+            })
+        } else if (jawaban == '') {
+            Swal.fire({
+                title: 'Deskripsi jawaban kosong',
+                icon: 'error'
+            })
+        } else {
+            setLoad(true)
+            const formData = new FormData()
+            formData.append('jawaban', jawaban)
+            formData.append('file_jawaban', fileJawaban)
+            try {
+                await axios.put(`v1/detailTugas/update/${idDetailTugas}`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }).then(function (response) {
+                    handleClose()
+                    setLoad(false)
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        getDetail()
+                    });
+                })
+            } catch (error) {
+
+            }
+        }
+    }
+
     const docs = [
-        { uri: "http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/" + detail.file_jawaban }
+        { uri: urlDoc }
     ]
 
     const lampiran = [
@@ -205,33 +277,63 @@ const TugasDetail = () => {
                                             </Row>
                                         </form>
                                     </Modal.Body>
-                                    :
-                                    <Modal.Body>
-                                        <Row>
-                                            <Col>
-                                                <DocViewer
-                                                    documents={lampiran}
-                                                    config={{
-                                                        header: {
-                                                            disableHeader: true,
-                                                            disableFileName: true,
-                                                            retainURLParams: false,
-                                                        }
-                                                    }}
-                                                    theme={{
-                                                        primary: "#5296d8",
-                                                        secondary: "#ffffff",
-                                                        tertiary: "#5296d899",
-                                                        textPrimary: "#ffffff",
-                                                        textSecondary: "#5296d8",
-                                                        textTertiary: "#00000099",
-                                                        disableThemeScrollbar: false,
-                                                    }}
-                                                    pluginRenderers={DocViewerRenderers}
-                                                />
-                                            </Col>
-                                        </Row>
-                                    </Modal.Body>
+                                    : modal == 'lampiran' ?
+                                        <Modal.Body>
+                                            <Row>
+                                                <Col>
+                                                    <DocViewer
+                                                        documents={lampiran}
+                                                        config={{
+                                                            header: {
+                                                                disableHeader: true,
+                                                                disableFileName: true,
+                                                                retainURLParams: false,
+                                                            }
+                                                        }}
+                                                        theme={{
+                                                            primary: "#5296d8",
+                                                            secondary: "#ffffff",
+                                                            tertiary: "#5296d899",
+                                                            textPrimary: "#ffffff",
+                                                            textSecondary: "#5296d8",
+                                                            textTertiary: "#00000099",
+                                                            disableThemeScrollbar: false,
+                                                        }}
+                                                        pluginRenderers={DocViewerRenderers}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </Modal.Body>
+                                        :
+                                        <Modal.Body>
+                                            <form
+                                                onSubmit={editTugas}
+                                            >
+                                                <div className='form-group'>
+                                                    <label htmlFor="deskripsi" className='h6'>Deskripsi Jawaban</label>
+                                                    <textarea
+                                                        id="deskripsi"
+                                                        cols="30"
+                                                        rows="3"
+                                                        placeholder='Deskripsi Jawaban'
+                                                        value={jawaban} onChange={(e) => setJawaban(e.target.value)}
+                                                        className='form-control form-control-sm'
+                                                    ></textarea>
+                                                </div>
+                                                <div className='form-group'>
+                                                    <label htmlFor="judul" className='h6'>File Jawaban</label>
+                                                    <input id='judul' placeholder='Judul Tugas'
+                                                        onChange={loadFile}
+                                                        type="file" className='form-control form-control-sm' />
+                                                </div>
+                                                <hr />
+                                                <Row>
+                                                    <Col>
+                                                        <button className='float-end btn btn-info btn-sm'>Edit</button>
+                                                    </Col>
+                                                </Row>
+                                            </form>
+                                        </Modal.Body>
                                 }
                             </Modal>
 
@@ -284,18 +386,18 @@ const TugasDetail = () => {
                                     </Card>
                                     <Card className='mt-3'>
                                         <Card.Body className='p-3'>
-                                            {detail.length == 0 ? <>
+                                            {detail == null ? <>
                                                 <div className='text-center'>
                                                     <div className='flex justify-center'>
                                                         <Image src={dataBlank} className='mt-4 ' width={150} />
                                                     </div>
                                                     <p className='text-muted font-bold'>Anda belum mengumpulkan tugas!</p>
-                                                    <button onClick={() => openModal('upload')} className='btn btn-sm btn-success my-2'>Kumpulkan tugas</button>
+                                                    <button onClick={() => openModal('upload', '')} className='btn btn-sm btn-success my-2'>Kumpulkan tugas</button>
                                                 </div>
                                             </> : <>
                                                 <Row>
                                                     <Col>
-                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                        <div className='px-3 py-2 rounded-3 h-100' style={{ border: '1px dashed #919669' }}>
                                                             <span className='text[14px] text-capitalize text-dark font-bold'>Deskripsi Jawaban</span>
                                                             <div className=' text-[13px] text-secondary'>
                                                                 {detail.jawaban}
@@ -303,10 +405,25 @@ const TugasDetail = () => {
                                                         </div>
                                                     </Col>
                                                     <Col>
-                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                        <div className='px-3 py-2 rounded-3  h-100' style={{ border: '1px dashed #919669' }}>
                                                             <span className='text[14px] text-capitalize text-dark font-bold'>Tanggal Pengumpulan</span>
                                                             <div className=' text-[13px] text-secondary'>
                                                                 {moment(detail.tanggal_pengumpulan).format('DD MMMM YYYY')}
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3  h-100' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>Status Tugas</span>
+                                                            <div className=' text-[13px] text-secondary text-capitalize'>
+                                                                {detail.status}
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3  h-100' style={{ border: '1px dashed #919669' }}>
+                                                            <div className=' text-[13px] text-secondary mt-2'>
+                                                                <button className='btn btn-warning btn-sm' onClick={() => openModal('edit', detail.id_detail_tugas)}>Edit Tugas</button>
                                                             </div>
                                                         </div>
                                                     </Col>
