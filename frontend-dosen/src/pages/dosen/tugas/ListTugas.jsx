@@ -441,7 +441,7 @@ const ListTugas = () => {
                                                             {AllTugas.length > 0 ? AllTugas.map((item) => (
                                                                 <Card className='shadow' key={item.id_tugas}>
                                                                     <Card.Body className='py-3'>
-                                                                        <Row className='border'>
+                                                                        <Row className='border pt-2'>
                                                                             <Col lg="6">
                                                                                 <Row className='mb-2'>
                                                                                     <Col lg="3" md="3" sm="5" xs="5">
@@ -469,7 +469,7 @@ const ListTugas = () => {
                                                                                     <Table>
                                                                                         <tbody>
                                                                                             <tr>
-                                                                                                <td className='py-2 border'>Judul</td>
+                                                                                                <td className='py-2 border'>Judul Tugas</td>
                                                                                                 <td className='py-2 border'>Terakhir Pengumpulan</td>
                                                                                                 <td className='py-2 border'>Tanggal Pertemuan</td>
                                                                                                 <td className='py-2 border'>Status Tugas</td>
@@ -530,11 +530,6 @@ const ListTugas = () => {
                                                     </Row>
                                                 </Card.Body>
                                             </Card>
-                                            {/* <Card className='shadow'>
-                                                <Card.Body>
-                                                    <Link to='/deskripsi' className='btn btn-sm btn-primary'>Deskripsi</Link>
-                                                </Card.Body>
-                                            </Card> */}
                                         </Col>
                                     </Row>
                                 </Col>

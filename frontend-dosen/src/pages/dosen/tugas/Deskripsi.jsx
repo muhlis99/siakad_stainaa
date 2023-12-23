@@ -141,12 +141,19 @@ const Deskripsi = () => {
                                                     </thead>
                                                     <tbody>
                                                         {Mahasiswa.map((item, index) => (
-                                                            <tr key={index}>
-                                                                <td>{index + 1}</td>
-                                                                <td>{item.nama}</td>
-                                                                <td>{item.codecode_mata_kuliah}</td>
-                                                                <td>{item.checkdatatugas}</td>
-                                                                <td></td>
+                                                            <tr key={index} className='border'>
+                                                                <td className='py-2 px-2 text-capitalize'>{index + 1}</td>
+                                                                <td className='py-2 px-2 text-capitalize'>{item.nama}</td>
+                                                                <td className='py-2 px-2 text-capitalize'>{item.code_mata_kuliah}</td>
+                                                                <td className='py-2 px-2 text-capitalize'>
+                                                                    {
+                                                                        item.checkdatatugas == 'ya' ?
+                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Selesai</span>
+                                                                            :
+                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Belum</span>
+                                                                    }
+                                                                </td>
+                                                                <td className='py-2 px-2 text-capitalize'></td>
                                                             </tr>
                                                         ))}
                                                     </tbody>
