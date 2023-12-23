@@ -211,11 +211,11 @@ module.exports = {
         })
 
 
-        await db.query(`SELECT tb_mahasiswa.nama,tb_krs.code_mata_kuliah,case when (tb_krs.nim = tb_detail_tugas.nim) then "ya" else "tidak" END as checkdatatugas FROM tb_detail_tugas, tb_krs 
+        await db.query(`SELECT tb_mahasiswa.nama,tb_mahasiswa.nim,tb_krs.code_mata_kuliah,case when (tb_krs.nim = tb_detail_tugas.nim) then "ya" else "tidak" END as checkdatatugas,tb_detail_tugas.tanggal_pengumpulan FROM tb_detail_tugas, tb_krs 
             INNER JOIN tb_mahasiswa ON tb_mahasiswa.nim = tb_krs.nim 
             WHERE tb_krs.code_mata_kuliah="${jadwalKuliah.code_mata_kuliah}" AND tb_krs.code_jenjang_pendidikan="${jnjPen}"
             AND tb_krs.code_fakultas="${fks}" AND tb_krs.code_prodi="${prd}" AND tb_krs.code_tahun_ajaran="${thnAjr}"
-            AND tb_krs.code_semester="${smt}"`, {
+            AND tb_krs.code_semester="${smt}" ORDER BY nim ASC`, {
             nest: true,
             type: QueryTypes.SELECT
         })
