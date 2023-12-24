@@ -110,7 +110,7 @@ module.exports = {
             offset: offset,
             limit: perPage,
             order: [
-                ["id_kategori_nilai", "DESC"]
+                ["nilai_bawah", "DESC"]
             ]
         }).
             then(result => {
