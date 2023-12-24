@@ -18,6 +18,7 @@ const ListJadwal = () => {
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
+    const [jumlahKls, setJumlahKls] = useState("")
     const location = useLocation()
     const [loading, setLoading] = useState(false)
 
@@ -70,6 +71,10 @@ const ListJadwal = () => {
         getDataKelas()
     }, [KodeMakul])
 
+    useEffect(() => {
+        setJumlahKls(DataKelas[0])
+    }, [DataKelas])
+
     const getJenjangPendidikan = async () => {
         const response = await axios.get('v1/jenjangPendidikan/all')
         setJenjang(response.data.data)
@@ -104,9 +109,11 @@ const ListJadwal = () => {
     const getMataKuliah = async () => {
         if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0) {
             const response = await axios.get(`v1/jadwalKuliah/all/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
-            // setDataKelas([])
+            setDataKelas([])
             setMakul(response.data.data)
             // console.log(response.data.data);
+        } else {
+            setMakul([])
         }
     }
 
@@ -115,7 +122,7 @@ const ListJadwal = () => {
             item.mataKuliahs[0].code_mata_kuliah
         ))
         setKodeMakul(i)
-        console.log(i);
+        // console.log(i);
     }
 
     const getDataKelas = async () => {
@@ -219,7 +226,7 @@ const ListJadwal = () => {
                                         <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
-                                {Makul.length == 0 ?
+                                {Makul.length == 0 || jumlahKls == 0 ?
                                     <tbody>
                                         <tr className='bg-white border-b border-x text-gray-500'>
                                             <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Jadwal Kuliah Kosong</td>
@@ -242,7 +249,7 @@ const ListJadwal = () => {
                                                 ))
                                                 :
                                                 <tr className='bg-white border-b text-gray-500 border-x'>
-                                                    <td colSpan='6' align='center' className='px-auto py-2 font-semibold'>Data Kelas Kosong. Silakan lakukan input kelas</td>
+                                                    <td colSpan='6' align='center' className='px-auto py-2 font-semibold'>Data Jadwal Kuliah Kosong</td>
                                                 </tr>
                                             }
                                         </tbody>

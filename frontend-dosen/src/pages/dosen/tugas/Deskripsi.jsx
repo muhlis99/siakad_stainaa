@@ -24,6 +24,7 @@ const Deskripsi = () => {
         const getDetailTugas = async () => {
             try {
                 const response = await axios.get(`v1/tugas/getById/${location.state.idTugas}`)
+                // console.log(response.data.data)
                 setTugas(response.data.data)
             } catch (error) {
 
@@ -133,7 +134,9 @@ const Deskripsi = () => {
                                                     <thead>
                                                         <tr className='border'>
                                                             <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>NO</th>
+                                                            <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>NIM</th>
                                                             <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Nama</th>
+                                                            <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Tanggal Pengumpulan</th>
                                                             <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Kode Matakuliah</th>
                                                             <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Status</th>
                                                             <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Aksi</th>
@@ -141,12 +144,26 @@ const Deskripsi = () => {
                                                     </thead>
                                                     <tbody>
                                                         {Mahasiswa.map((item, index) => (
-                                                            <tr key={index}>
-                                                                <td>{index + 1}</td>
-                                                                <td>{item.nama}</td>
-                                                                <td>{item.codecode_mata_kuliah}</td>
-                                                                <td>{item.checkdatatugas}</td>
-                                                                <td></td>
+                                                            <tr key={index} className='border'>
+                                                                <td className='py-2 px-2 text-capitalize'>{index + 1}</td>
+                                                                <td className='py-2 px-2 text-capitalize'>{item.nim}</td>
+                                                                <td className='py-2 px-2 text-capitalize'>{item.nama}</td>
+                                                                <td className='py-2 px-2 text-capitalize'>{moment(item.tanggal_pengumpulan).format('DD MMMM YYYY')}</td>
+                                                                <td className='py-2 px-2 text-capitalize'>{item.code_mata_kuliah}</td>
+                                                                <td className='py-2 px-2 text-capitalize'>
+                                                                    {
+                                                                        item.checkdatatugas == 'ya' ?
+                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Selesai</span>
+                                                                            :
+                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Belum</span>
+                                                                    }
+                                                                </td>
+                                                                <td className='py-2 px-2 text-capitalize'>
+                                                                    <Link to="/detailTugas" state={{
+                                                                        kodeTgs: Tugas.code_tugas,
+                                                                        nim: item.nim
+                                                                    }} className='btn btn-sm btn-info'>Detail</Link>
+                                                                </td>
                                                             </tr>
                                                         ))}
                                                     </tbody>

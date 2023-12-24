@@ -31,6 +31,7 @@ const ListKelas = () => {
     const [statusKell, setStatusKell] = useState("")
     const [statusKelp, setStatusKelp] = useState("")
     const [klsSelanjutnya, setKlsSelanjutnya] = useState("")
+    const [jumlahKls, setJumlahKls] = useState("")
     const location = useLocation()
     const [loading, setLoading] = useState(false)
 
@@ -92,7 +93,6 @@ const ListKelas = () => {
         getJumlahMhs()
     }, [kodeFakultas, kodeJenjang, kodeProdi, kodeSemester, kodeTahun, jenisKelamin, statusKell, statusKelp])
 
-
     useEffect(() => {
         if (sampai == '1') {
             setSampe('2')
@@ -108,6 +108,10 @@ const ListKelas = () => {
     useEffect(() => {
         getNamaKlsSelanjutnya()
     }, [kodeFakultas, kodeJenjang, kodeProdi, kodeSemester, kodeTahun])
+
+    useEffect(() => {
+        setJumlahKls(DataKelas[0])
+    }, [DataKelas])
 
     const getJenjang = async () => {
         const response = await axios.get('v1/jenjangPendidikan/all')
@@ -145,7 +149,6 @@ const ListKelas = () => {
             const response = await axios.get(`v1/kelasKuliah/allMatakuliah/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
             setDataKelas([])
             setMakul(response.data.data)
-            console.log(response.data.data)
             setTitle("")
         } else {
             setMakul([])
@@ -479,10 +482,12 @@ const ListKelas = () => {
                                         <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
                                     </tr>
                                 </thead>
-                                {Makul.length == 0 ?
-                                    <tr className='bg-white border-b border-x text-gray-500'>
-                                        <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Kelas Kuliah Kosong</td>
-                                    </tr>
+                                {Makul.length == 0 || jumlahKls == 0 ?
+                                    <tbody>
+                                        <tr className='bg-white border-b border-x text-gray-500'>
+                                            <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Kelas Kuliah Kosong</td>
+                                        </tr>
+                                    </tbody>
                                     :
                                     Makul.map((kls, index) => (
                                         <tbody key={index}>
