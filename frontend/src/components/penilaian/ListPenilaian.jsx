@@ -20,6 +20,7 @@ const ListPenilaian = () => {
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
+    const [jumlahKls, setJumlahKls] = useState("")
     const location = useLocation()
     const [loading, setLoading] = useState(false)
 
@@ -76,6 +77,10 @@ const ListPenilaian = () => {
         getDataKelas()
     }, [KodeMakul])
 
+    useEffect(() => {
+        setJumlahKls(DataKelas[0])
+    }, [DataKelas])
+
     const getJenjang = async () => {
         const response = await axios.get('v1/jenjangPendidikan/all')
         setJenjang(response.data.data)
@@ -109,8 +114,11 @@ const ListPenilaian = () => {
 
     const getMakul = async () => {
         if (kodeJenjang != 0 & kodeFakultas != 0 & kodeProdi != 0 & kodeSemester != 0 & kodeTahun != 0) {
-            const response = await axios.get(`v1/jadwalKuliah/all/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+            const response = await axios.get(`v1/kelasKuliah/allMatakuliah/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+            setDataKelas([])
             setMakul(response.data.data)
+        } else {
+            setMakul([])
         }
     }
 
@@ -257,7 +265,7 @@ const ListPenilaian = () => {
                                     <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
                                 </tr>
                             </thead>
-                            {Makul.length == 0 ?
+                            {Makul.length == 0 || jumlahKls == 0 ?
                                 <tbody>
                                     <tr className='bg-white border-b border-x text-gray-500'>
                                         <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Kelas Kosong</td>
