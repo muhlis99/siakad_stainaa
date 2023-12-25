@@ -3,6 +3,8 @@ import Login from "./pages/Login"
 import Chat from "./pages/chat/Chat"
 import Dashboard from "./pages/Dashboard"
 import Home from "./pages/Home"
+import PedomanList from "./pages/pedoman/PedomanList"
+import DetailPedoman from "./pages/pedoman/DetailPedoman"
 
 // Mahasiswa
 import Forgot from "./pages/Forgot"
@@ -50,6 +52,8 @@ function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/pengumuman" element={<ListPengumuman />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/listPedoman" element={<PedomanList />} />
+          <Route path="/detailpedoman" element={<DetailPedoman />} />
 
           {/* Route Mahasiswa */}
           <Route path="/profil" element={<Profil />} />

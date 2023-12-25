@@ -60,6 +60,8 @@ import Perpembimbing from "./pages/pembimbing/Perpembimbing"
 import EditPembimbing from "./pages/pembimbing/EditPembimbing"
 import DetailPembimbing from "./pages/pembimbing/DetailPembimbing"
 import Pengumuman from "./pages/pengumuman/Pengumuman"
+import Pedoman from "./pages/pedoman/Pedoman"
+import TambahPedoman from "./pages/pedoman/TambahPedoman"
 
 
 function App() {
@@ -125,6 +127,8 @@ function App() {
           <Route path="/editpembimbingakademik" element={<EditPembimbing />} />
           <Route path="/detailpembimbingakademik" element={<DetailPembimbing />} />
           <Route path="/pengumuman" element={<Pengumuman />} />
+          <Route path="/pedoman" element={<Pedoman />} />
+          <Route path="/addpedoman" element={<TambahPedoman />} />
         </Routes>
       </BrowserRouter>
     </div>

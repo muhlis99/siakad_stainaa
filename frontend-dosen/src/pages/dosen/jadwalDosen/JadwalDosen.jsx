@@ -225,30 +225,52 @@ const JadwalDosen = () => {
 
     const simpanTugas = async (e) => {
         e.preventDefault()
-        setLoad(true)
-        const formData = new FormData()
-        formData.append('code_jadwal_pertemuan', kodePertemuan)
-        formData.append('deskripsi_tugas', deskripsi)
-        formData.append('tugas', namaTugas)
-        formData.append('file_tugas', fileTugas)
-        formData.append('tanggal_akhir', tglAkhir)
-        try {
-            await axios.post(`v1/tugas/create`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            }).then(function (response) {
-                setLoad(false)
-                Swal.fire({
-                    title: response.data.message,
-                    icon: "success"
-                }).then(() => {
-                    handleClose()
-                    getJadwal()
-                });
+        if (namaTugas == "") {
+            Swal.fire({
+                title: 'Judul tugas tidak boleh kosong',
+                icon: 'error'
             })
-        } catch (error) {
+        } else if (deskripsi == "") {
+            Swal.fire({
+                title: 'Deskripsi tidak boleh kosong',
+                icon: 'error'
+            })
+        } else if (fileTugas == '') {
+            Swal.fire({
+                title: 'Lampiran Tugas tidak boleh kosong',
+                icon: 'error'
+            })
+        } else if (tglAkhir == "") {
+            Swal.fire({
+                title: 'Tanggal pengumpulan tidak boleh kosong',
+                icon: 'error'
+            })
+        } else {
+            setLoad(true)
+            const formData = new FormData()
+            formData.append('code_jadwal_pertemuan', kodePertemuan)
+            formData.append('deskripsi_tugas', deskripsi)
+            formData.append('tugas', namaTugas)
+            formData.append('file_tugas', fileTugas)
+            formData.append('tanggal_akhir', tglAkhir)
+            try {
+                await axios.post(`v1/tugas/create`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }).then(function (response) {
+                    setLoad(false)
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    }).then(() => {
+                        handleClose()
+                        getJadwal()
+                    });
+                })
+            } catch (error) {
 
+            }
         }
     }
 
