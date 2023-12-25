@@ -122,14 +122,8 @@ const Dashboard = () => {
     const getKategoriNilai = async () => {
         try {
             if (kodeTahun) {
-                await axios.get(
-                    `v1/kategoriNilai/all?page=${page}&search=${keyword}&codeThnAjr=${kodeTahun}`
-                ).then((response) => {
-                    response.data.data.sort((a, b) =>
-                        a.id_kategori_nilai > b.id_kategori_nilai ? 1 : -1
-                    )
-                    setListNilai(response.data.data)
-                })
+                const response = await axios.get(`v1/kategoriNilai/all?page=${page}&search=${keyword}&codeThnAjr=${kodeTahun}`)
+                setListNilai(response.data.data)
             }
         } catch (error) {
 
