@@ -6,11 +6,9 @@ const pedomanModel = require('../models/pedomanModel.js')
 
 
 module.exports = {
-    getByLevel: async (req, res, next) => {
-        const level = req.params.level
+    getAll: async (req, res, next) => {
         await pedomanModel.findAll({
             where: {
-                level: level,
                 status: "aktif"
             }
         }).

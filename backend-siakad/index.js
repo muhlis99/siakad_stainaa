@@ -72,6 +72,8 @@ const herRegistrasi = require('./router/herRegistrasiRoute.js')
 const pengumuman = require('./router/pengumumanRoute.js')
 const kontak = require('./router/kontakRoute.js')
 const message = require('./router/messageRoute.js')
+const pedoman = require('./router/pedomanRoute.js')
+
 
 app.use('/v1/login', login)
 app.use('/v1/home', home)
@@ -102,7 +104,7 @@ app.use('/v1/herRegistrasi', herRegistrasi)
 app.use('/v1/pengumuman', pengumuman)
 app.use('/v1/kontak', kontak)
 app.use('/v1/message', message)
-
+app.use('/v1/pedoman', pedoman)
 
 // default index
 app.get('/', (req, res) => {
