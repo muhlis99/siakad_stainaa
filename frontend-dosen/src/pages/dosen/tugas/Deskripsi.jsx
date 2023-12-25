@@ -162,7 +162,7 @@ const Deskripsi = () => {
                                                                     <Link to="/detailTugas" state={{
                                                                         kodeTgs: Tugas.code_tugas,
                                                                         nim: item.nim
-                                                                    }} className='btn btn-sm btn-info'>Detail</Link>
+                                                                    }} className={`btn btn-sm btn-info ${item.checkdatatugas == 'ya' ? '' : 'disabled'}`}>Detail</Link>
                                                                 </td>
                                                             </tr>
                                                         ))}

@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../../Layout'
 import { Row, Col, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
+import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer"
 import { getMe } from "../../../features/authSlice"
 import { Link, Navigate, useLocation } from "react-router-dom"
 import { Circles } from "react-loader-spinner"
 import axios from 'axios'
+import moment from 'moment'
 
 const DetailTugas = () => {
     const dispatch = useDispatch()
@@ -19,6 +21,15 @@ const DetailTugas = () => {
     const [prodi, setProdi] = useState("")
     const [semester, setSemester] = useState("")
     const [fileName, setFileName] = useState("")
+    const [urlDoc, setUrlDoc] = useState("")
+    const [lampiranJawaban, setLampiranJawaban] = useState("")
+
+    useEffect(() => {
+        setLoad(true)
+        setTimeout(() => {
+            setLoad(false)
+        }, 500);
+    }, [])
 
     useEffect(() => {
         // console.log(location.state)
@@ -43,7 +54,8 @@ const DetailTugas = () => {
         const getDetailTugas = async () => {
             try {
                 const response = await axios.get(`v1/detailTugas/getByCodeTugas/${location.state.kodeTgs}/${location.state.nim}`)
-                setDetailTugas(response.data.data[0]);
+                setDetailTugas(response.data.data[0])
+                setLampiranJawaban(response.data.data[0].file_jawaban)
             } catch (error) {
 
             }
@@ -52,15 +64,20 @@ const DetailTugas = () => {
     }, [location])
 
     useEffect(() => {
-        setLoad(true)
-        setTimeout(() => {
-            setLoad(false)
-        }, 500);
-    }, [])
+        if (lampiranJawaban == null) {
+            setUrlDoc('')
+        } else {
+            setUrlDoc('http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/' + lampiranJawaban)
+        }
+    }, [lampiranJawaban])
 
     useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
+
+    const docs = [
+        { uri: urlDoc }
+    ]
 
     return (
         <Layout>
@@ -133,12 +150,70 @@ const DetailTugas = () => {
                                         </Card.Body>
                                     </Card>
                                     <Card className='mt-3'>
-                                        <Card.Body>
-                                            <Row>
-                                                <Col lg='2' className="icon mb-2">
-
-                                                </Col>
-                                            </Row>
+                                        <Card.Body className='p-3'>
+                                            {detailTugas == null ? <>
+                                                <div className='text-center'>
+                                                    <div className='flex justify-center'>
+                                                        <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                    </div>
+                                                    <p className='text-muted font-bold'>Anda belum mengumpulkan tugas!</p>
+                                                    <button onClick={() => openModal('upload', '')} className='btn btn-sm btn-success my-2'>Kumpulkan tugas</button>
+                                                </div>
+                                            </> : <>
+                                                <Row>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3 h-100' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>Deskripsi Jawaban</span>
+                                                            <div className=' text-[13px] text-secondary'>
+                                                                {detailTugas.jawaban}
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3  h-100' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>Tanggal Pengumpulan</span>
+                                                            <div className=' text-[13px] text-secondary'>
+                                                                {moment(detailTugas.tanggal_pengumpulan).format('DD MMMM YYYY')}
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3  h-100' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>Status Tugas</span>
+                                                            <div className=' text-[13px] text-secondary text-capitalize'>
+                                                                {detailTugas.status}
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                                <Row className='mt-2'>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban</span>
+                                                            <DocViewer
+                                                                documents={docs}
+                                                                config={{
+                                                                    header: {
+                                                                        disableHeader: true,
+                                                                        disableFileName: true,
+                                                                        retainURLParams: false,
+                                                                    }
+                                                                }}
+                                                                theme={{
+                                                                    primary: "#5296d8",
+                                                                    secondary: "#ffffff",
+                                                                    tertiary: "#5296d899",
+                                                                    textPrimary: "#ffffff",
+                                                                    textSecondary: "#5296d8",
+                                                                    textTertiary: "#00000099",
+                                                                    disableThemeScrollbar: false,
+                                                                }}
+                                                                pluginRenderers={DocViewerRenderers}
+                                                            />
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </>}
                                         </Card.Body>
                                     </Card>
                                 </Col>
