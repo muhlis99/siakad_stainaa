@@ -111,7 +111,6 @@ app.get('/', (req, res) => {
     res.send('Hello Word')
 })
 
-
 //  socket connection
 // let onlineUser = []
 // io.on("connection", (socket) => {
