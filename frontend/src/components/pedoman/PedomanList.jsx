@@ -62,6 +62,9 @@ const PedomanList = () => {
                                             </div>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td className='px-3 py-2 font-semibold' colSpan={6} align='center'>Data Kosong</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
