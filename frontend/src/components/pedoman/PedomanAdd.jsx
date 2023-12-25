@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
+import { FaReply, FaSave } from 'react-icons/fa'
 
 const PedomanAdd = () => {
     return (
@@ -45,9 +47,20 @@ const PedomanAdd = () => {
                                 </div>
                                 <div>
                                     <label className="label flex-initial w-64">
-                                        <span className="text-base label-text font-semibold">Deskripsi</span>
+                                        <span className="text-base label-text font-semibold">File Pedoman</span>
                                     </label>
                                     <input type="file" className="file-input file-input-bordered file-input-sm file-input-success w-full" />
+                                </div>
+                            </div>
+                            <div className='mt-5 grid lg:grid-cols-2'>
+                                <div className='col-span-2 mb-3'>
+                                    <hr />
+                                </div>
+                                <div>
+                                    <Link className='btn btn-sm btn-error rounded-md capitalize'><FaReply /><span>Kembali</span></Link>
+                                </div>
+                                <div>
+                                    <button className='btn btn-sm btn-primary rounded-md capitalize float-right'><FaSave /> <span>Simpan</span></button>
                                 </div>
                             </div>
                         </form>
