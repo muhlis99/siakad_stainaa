@@ -1,16 +1,32 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FaReply, FaSave } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 
-const PedomanAdd = () => {
+const PedomanEdit = () => {
     const [judul, setJudul] = useState("")
     const [deskripsi, setDeskripsi] = useState("")
     const [tanggal, setTanggal] = useState("")
     const [level, setLevel] = useState("")
     const [filePedoman, setFilePedoman] = useState("")
     const navigate = useNavigate()
+    const location = useLocation()
+
+    useEffect(() => {
+        const getPedomanById = async () => {
+            try {
+                const response = await axios.get(`v1/pedoman/getById/${location.state.idPedoman}`)
+                setJudul(response.data.data.judul_pedoman)
+                setDeskripsi(response.data.data.deskripsi)
+                setTanggal(response.data.data.tanggal_terbit)
+                setLevel(response.data.data.level)
+            } catch (error) {
+
+            }
+        }
+        getPedomanById()
+    }, [location])
 
     const loadFile = (e) => {
         const file = e.target.files[0]
@@ -39,11 +55,6 @@ const PedomanAdd = () => {
                 title: 'Level kosong',
                 icon: 'error'
             })
-        } else if (filePedoman == '') {
-            Swal.fire({
-                title: 'File Pedoman kosong',
-                icon: 'error'
-            })
         } else {
             const formData = new FormData()
             formData.append('judul_pedoman', judul)
@@ -52,7 +63,7 @@ const PedomanAdd = () => {
             formData.append('level', level)
             formData.append('file_pedoman', filePedoman)
             try {
-                await axios.post(`v1/pedoman/create`, formData, {
+                await axios.put(`v1/pedoman/update/${location.state.idPedoman}`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data"
                     }
@@ -136,4 +147,4 @@ const PedomanAdd = () => {
     )
 }
 
-export default PedomanAdd
+export default PedomanEdit
