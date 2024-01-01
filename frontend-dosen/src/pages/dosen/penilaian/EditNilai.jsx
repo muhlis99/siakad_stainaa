@@ -253,7 +253,8 @@ const EditNilai = () => {
             var g = parseInt(uts) || 0
             var h = parseInt(uas) || 0
             var rataRata = (a + b + c + d + e + f + g + h) / jumlahKolom.length
-            setNIlaiAkhir(rataRata)
+            var n = rataRata.toFixed(2)
+            setNIlaiAkhir(n)
         }
     }
 

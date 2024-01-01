@@ -222,7 +222,17 @@ const InfoNilai = () => {
                                             {Nilai.length > 0 ?
                                                 ""
                                                 // <Link to='/editnilai' state={{ kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls, kodeThn: detailKls.code_tahun_ajaran }} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center no-underline float-right'><LuFileInput /> &nbsp; <span>Edit Nilai</span></Link>
-                                                : <Link to='/inputnilai' state={{ kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls }} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center float-right no-underline'><LuFileInput /> &nbsp; <span>Input Nilai</span></Link>
+                                                : <Link to='/inputnilai' state={{
+                                                    idKelas: location.state.idKelas,
+                                                    kodeMk: location.state.kodeMk,
+                                                    idKelas: location.state.idKelas,
+                                                    kodeKls: location.state.kodeKls,
+                                                    kodeThn: location.state.kodeThn,
+                                                    kodeSmt: location.state.kodeSmt,
+                                                    kodeJen: location.state.kodeJen,
+                                                    kodeFk: location.state.kodeFk,
+                                                    kodeProd: location.state.kodeProd
+                                                }} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center float-right no-underline'><LuFileInput /> &nbsp; <span>Input Nilai</span></Link>
                                             }
                                         </Col>
                                     </Row>

@@ -36,6 +36,7 @@ const InputNilai = () => {
     const [checkedAbsen, setCheckedAbsen] = useState(false)
     const [jumlahKolom, setjumlahKolom] = useState([])
     const [nilaiAkhir, setNIlaiAkhir] = useState([])
+    const [nilaiFix, setNilaiFix] = useState([])
     const [nilaiHuruf, setNilaiHuruf] = useState([])
     const [ket, setKet] = useState([])
     const [kodeNilai, setKodeNilai] = useState([])
@@ -53,7 +54,7 @@ const InputNilai = () => {
 
     useEffect(() => {
         getKelasById()
-        // console.log(location.state)
+        console.log(location.state)
         getMahasiswa()
     }, [location])
 
@@ -79,6 +80,7 @@ const InputNilai = () => {
     useEffect(() => {
         getAverage()
         getSum()
+        getNilaiFixed()
     }, [inputFields, presentasi, pptx, materi, keaktifan, uts, tugas, uas, absen])
 
     useEffect(() => {
@@ -328,9 +330,28 @@ const InputNilai = () => {
                 let uts = parseInt(el.uts) || 0
                 let uas = parseInt(el.uas) || 0
                 let rataRata = (presentasi + materi + pptx + keaktifan + tugas + hadir + uts + uas) / jumlahKolom.length
+                let fix = (presentasi + materi + pptx + keaktifan + tugas + hadir + uts + uas) / jumlahKolom.length
                 return rataRata
             })
             setNIlaiAkhir(i)
+        }
+    }
+
+    const getNilaiFixed = () => {
+        if (jumlahKolom.length != 0) {
+            const i = inputFields.map(el => {
+                let presentasi = parseInt(el.presentasi) || 0
+                let materi = parseInt(el.materi) || 0
+                let pptx = parseInt(el.pptx) || 0
+                let keaktifan = parseInt(el.keaktifan) || 0
+                let tugas = parseInt(el.tugas) || 0
+                let hadir = parseInt(el.absen) || 0
+                let uts = parseInt(el.uts) || 0
+                let uas = parseInt(el.uas) || 0
+                let rataRata = (presentasi + materi + pptx + keaktifan + tugas + hadir + uts + uas) / jumlahKolom.length
+                return rataRata.toFixed(2)
+            })
+            setNilaiFix(i)
         }
     }
 
@@ -405,7 +426,7 @@ const InputNilai = () => {
                         nilai_uts: inputFields[index].uts,
                         nilai_uas: inputFields[index].uas,
                         nilai_jumlah: nilaiSum[index],
-                        nilai_akhir: nilaiAkhir[index]
+                        nilai_akhir: nilaiFix[index]
                     }))
                 ).then(function (response) {
                     setLoad(false)
@@ -413,7 +434,19 @@ const InputNilai = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        navigate(`/detailnilai`, { state: { kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls } })
+                        navigate(`/detailnilai`, {
+                            state: {
+                                idKelas: location.state.idKelas,
+                                kodeMk: location.state.kodeMk,
+                                idKelas: location.state.idKelas,
+                                kodeKls: location.state.kodeKls,
+                                kodeThn: location.state.kodeThn,
+                                kodeSmt: location.state.kodeSmt,
+                                kodeJen: location.state.kodeJen,
+                                kodeFk: location.state.kodeFk,
+                                kodeProd: location.state.kodeProd
+                            }
+                        })
                     });
                 })
             }
@@ -652,7 +685,7 @@ const InputNilai = () => {
                                                                                 <input type="number" name='absen' value={absen[index] || ''} onChange={event => handleFormChange(index, event)} className='form-control' disabled={!checkedAbsen} style={{ width: '70px' }} />
                                                                             </td>
                                                                             <td className='py-2 border px-1 text-capitalize'>{nilaiSum[index] == 0 ? "" : nilaiSum[index]}</td>
-                                                                            <td className='py-2 border px-1 text-capitalize'>{nilaiAkhir[index] == "0" ? "" : nilaiAkhir[index]}</td>
+                                                                            <td className='py-2 border px-1 text-capitalize'>{nilaiFix[index] == 0 ? "" : nilaiFix[index]}</td>
                                                                             <td className='py-2 border px-1 text-capitalize'>{nilaiHuruf[index]}</td>
                                                                             <td className='py-2 border px-1 text-capitalize'>{ket[index] == 'LULUS' ?
                                                                                 <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{ket[index]}</span>
