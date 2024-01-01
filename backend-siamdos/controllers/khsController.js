@@ -9,7 +9,7 @@ const prodiModel = require('../models/prodiModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const sebaranMataKuliah = require('../models/sebaranMataKuliah.js')
-const { Sequelize, Op, literal, QueryTypes } = require('sequelize')
+const { Sequelize, Op, literal, QueryTypes, fn } = require('sequelize')
 const db = require('../config/database.js')
 
 module.exports = {
@@ -124,7 +124,7 @@ module.exports = {
             ],
             attributes: [
                 'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
-                [Sequelize.literal('(sks*interfal_skor)'), 'sksIndexs']
+                [Sequelize.fn('ROUND', Sequelize.literal('(sks*interfal_skor)'), 2), 'sksIndexs']
             ],
             where: {
                 code_tahun_ajaran: tahunAjaran,
@@ -163,7 +163,7 @@ module.exports = {
             ],
             attributes: [
                 'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
-                [Sequelize.literal('(sks*interfal_skor)'), 'sksIndexs']
+                [Sequelize.fn('ROUND', Sequelize.literal('(sks*interfal_skor)'), 2), 'sksIndexs']
             ],
             where: {
                 code_tahun_ajaran: tahunAjaran,
