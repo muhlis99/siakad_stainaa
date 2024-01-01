@@ -1,3 +1,7 @@
 #pdf-controls #pdf-download {
     display: none;
 }
+
+#react-doc-viewer #header-bar {
+    display: none !important;
+}

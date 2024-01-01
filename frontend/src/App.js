@@ -62,6 +62,8 @@ import DetailPembimbing from "./pages/pembimbing/DetailPembimbing"
 import Pengumuman from "./pages/pengumuman/Pengumuman"
 import Pedoman from "./pages/pedoman/Pedoman"
 import TambahPedoman from "./pages/pedoman/TambahPedoman"
+import EditPedoman from "./pages/pedoman/EditPedoman"
+import DetailPedoman from "./pages/pedoman/DetailPedoman"
 
 
 function App() {
@@ -129,6 +131,8 @@ function App() {
           <Route path="/pengumuman" element={<Pengumuman />} />
           <Route path="/pedoman" element={<Pedoman />} />
           <Route path="/addpedoman" element={<TambahPedoman />} />
+          <Route path="/editpedoman" element={<EditPedoman />} />
+          <Route path="/detailpedoman" element={<DetailPedoman />} />
         </Routes>
       </BrowserRouter>
     </div>
