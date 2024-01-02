@@ -23,6 +23,8 @@ const KHS = () => {
     const [biodata, setBiodata] = useState([])
     const [dataKHS, setDataKHS] = useState([])
     const [totalKHS, setTotalKHS] = useState([])
+    const [nilaiFixed, setNilaiFixed] = useState([])
+    const [sksIndeks, setSksIndeks] = useState([])
     const [SemesterMhs, setSemesterMhs] = useState([])
     const [parameters, setParameters] = useState("")
     const [data, setData] = useState([])
@@ -71,6 +73,31 @@ const KHS = () => {
         }
         getDataKHS()
     }, [user, parameters])
+
+    useEffect(() => {
+        getNilaiFixed()
+        getSksIndex()
+    }, [dataKHS])
+
+    const getNilaiFixed = () => {
+        if (dataKHS.length != 0) {
+            const i = dataKHS.map(el => {
+                let fix = parseFloat(el.nilai_akhir)
+                return fix.toFixed(2)
+            })
+            setNilaiFixed(i)
+        }
+    }
+
+    const getSksIndex = () => {
+        if (dataKHS.length != 0) {
+            const i = dataKHS.map(el => {
+                let fix = parseFloat(el.sksIndexs)
+                return fix.toFixed(2)
+            })
+            setSksIndeks(i)
+        }
+    }
 
     const tableStyle = {
         image: {
@@ -286,10 +313,10 @@ const KHS = () => {
                                                                         <td className='py-3 border' align='center'>{item.code_mata_kuliah}</td>
                                                                         <td className='py-3 border'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                                         <td className='py-3 border' align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
-                                                                        <td className='py-3 border' align='center'>{item.nilai_akhir}</td>
+                                                                        <td className='py-3 border' align='center'>{nilaiFixed[index]}</td>
                                                                         <td className='py-3 border' align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
                                                                         <td className='py-3 border' align='center'>{item.kategoriNilais[0].interfal_skor}</td>
-                                                                        <td className='py-3 border' align='center'>{item.sksIndexs}</td>
+                                                                        <td className='py-3 border' align='center'>{sksIndeks[index]}</td>
                                                                     </tr>
                                                                 )) :
                                                                     <tr className='border'>
@@ -399,10 +426,10 @@ const KHS = () => {
                                                                 <td style={tableStyle.td2} align='center'>{item.code_mata_kuliah}</td>
                                                                 <td style={tableStyle.tdMakul} align='left'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                                 <td style={tableStyle.td2} align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
-                                                                <td style={tableStyle.td2} align='center'>{item.nilai_akhir}</td>
+                                                                <td style={tableStyle.td2} align='center'>{nilaiFixed[index]}</td>
                                                                 <td style={tableStyle.td2} align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
                                                                 <td style={tableStyle.td2} align='center'>{item.kategoriNilais[0].interfal_skor}</td>
-                                                                <td style={tableStyle.td2} align='center'>{item.sksIndexs}</td>
+                                                                <td style={tableStyle.td2} align='center'>{sksIndeks[index]}</td>
                                                             </tr>
                                                         )) :
                                                             <tr>

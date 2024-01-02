@@ -438,7 +438,6 @@ const InputNilai = () => {
                             state: {
                                 idKelas: location.state.idKelas,
                                 kodeMk: location.state.kodeMk,
-                                idKelas: location.state.idKelas,
                                 kodeKls: location.state.kodeKls,
                                 kodeThn: location.state.kodeThn,
                                 kodeSmt: location.state.kodeSmt,
