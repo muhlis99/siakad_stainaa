@@ -111,11 +111,11 @@ const Navigation = () => {
                                             <div className="inline-flex gap-2"><FaClock className="mt-1 text-[14px]" />  Jadwal Kuliah</div>
                                         </Link>
                                     </li>
-                                    {/* <li>
+                                    <li>
                                         <Link to="/listtugas" className={`dropdown-item ${location.pathname == '/listtugas' ? 'active' : ''}`}>
                                             <div className="inline-flex gap-2"><FaTasks className="mt-1 text-[14px]" />  Tugas Kuliah</div>
                                         </Link>
-                                    </li> */}
+                                    </li>
                                     <li>
                                         <Link to="/kartuhasilstudi" className={`dropdown-item ${location.pathname == '/kartuhasilstudi' ? 'active' : ''}`}>
                                             <div className="inline-flex gap-2"><FaFilePdf className="mt-1 text-[14px]" />  Kartu Hasil Studi</div>
@@ -126,11 +126,11 @@ const Navigation = () => {
                                             <div className="inline-flex gap-2"><FaArchive className="mt-1 text-[14px]" />  Pengajuan Studi</div>
                                         </Link>
                                     </li>
-                                    {/* <li>
+                                    <li>
                                         <Link to="/listPedoman" className={`dropdown-item ${location.pathname == '/listPedoman' || location.pathname == '/listPedoman' ? 'active' : ''}`}>
                                             <div className="inline-flex gap-2"><SiFoursquarecityguide className="mt-1 text-[14px]" />  Pedoman</div>
                                         </Link>
-                                    </li> */}
+                                    </li>
                                 </ul>
                             </li>
                             <Link to="/chat" className={`text-light nav-link my-3 ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link>
@@ -163,11 +163,11 @@ const Navigation = () => {
                                                 <div className="inline-flex gap-2"><FaClock className="mt-1 text-[14px]" />  Jadwal Kuliah</div>
                                             </Link>
                                         </li>
-                                        {/* <li>
+                                        <li>
                                             <Link to="/tugas" className={`dropdown-item ${location.pathname == '/tugas' ? 'active' : ''}`}>
                                                 <div className="inline-flex gap-2"><FaTasks className="mt-1 text-[14px]" />  Tugas Kuliah</div>
                                             </Link>
-                                        </li> */}
+                                        </li>
                                         <li>
                                             <Link to="/penilaian" className={`dropdown-item ${location.pathname == '/penilaian' || location.pathname == '/detailnilai' ? 'active' : ''}`}>
                                                 <div className="inline-flex gap-2"><FaRegBookmark className="mt-1 text-[14px]" /> Penilaian</div>
@@ -180,11 +180,11 @@ const Navigation = () => {
                                                 </Link>
                                             </li>
                                         }
-                                        {/* <li>
+                                        <li>
                                             <Link to="/listPedoman" className={`dropdown-item ${location.pathname == '/listPedoman' || location.pathname == '/listPedoman' ? 'active' : ''}`}>
                                                 <div className="inline-flex gap-2"><SiFoursquarecityguide className="mt-1 text-[14px]" />  Pedoman</div>
                                             </Link>
-                                        </li> */}
+                                        </li>
                                     </ul>
                                 </li>
                                 <Link to="/chat" className={`nav-link my-3 text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link>

@@ -126,7 +126,7 @@ const DetailPedoman = () => {
                                             <Row className='mt-3'>
                                                 <Col>
                                                     <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
-                                                        <span className='text[14px] text-capitalize text-dark font-bold'>File Pedoman</span>
+                                                        <p className='text[20px] text-capitalize text-dark font-bold'>File Pedoman</p>
                                                         <button className='btn btn-sm btn-primary ms-2 mb-2' onClick={download}>Download</button>
                                                         <DocViewer
                                                             documents={docs}

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card, Table } from 'react-bootstrap'
+import { Row, Col, Card, Table, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
+import dataBlank from "../../../assets/images/watch.svg"
 import { Link, Navigate, useLocation } from "react-router-dom"
 import { Circles } from "react-loader-spinner"
 import axios from 'axios'
@@ -143,34 +144,41 @@ const Deskripsi = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {Mahasiswa.map((item, index) => (
-                                                            <tr key={index} className='border'>
-                                                                <td className='py-2 px-2 text-capitalize'>{index + 1}</td>
-                                                                <td className='py-2 px-2 text-capitalize'>{item.nim}</td>
-                                                                <td className='py-2 px-2 text-capitalize'>{item.nama}</td>
-                                                                <td className='py-2 px-2 text-capitalize'>{moment(item.tanggal_pengumpulan).format('DD MMMM YYYY')}</td>
-                                                                <td className='py-2 px-2 text-capitalize'>{item.code_mata_kuliah}</td>
-                                                                <td className='py-2 px-2 text-capitalize'>
-                                                                    {
-                                                                        item.checkdatatugas == 'ya' ?
-                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Selesai</span>
-                                                                            :
-                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Belum</span>
-                                                                    }
-                                                                </td>
-                                                                <td className='py-2 px-2 text-capitalize'>
-                                                                    <Link to="/detailTugas" state={{
-                                                                        kodeTgs: Tugas.code_tugas,
-                                                                        nim: item.nim
-                                                                    }} className={`btn btn-sm btn-info ${item.checkdatatugas == 'ya' ? '' : 'disabled'}`}>Detail</Link>
+                                                        {Mahasiswa.length == '0' ?
+                                                            <tr className='border'>
+                                                                <td className='py-2 px-2 text-capitalize' align='center' colSpan={7}>
+                                                                    <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                                    <p>Mahasiswa belum mengumpulkan tugas</p>
                                                                 </td>
                                                             </tr>
-                                                        ))}
+                                                            :
+
+                                                            Mahasiswa.map((item, index) => (
+                                                                <tr key={index} className='border'>
+                                                                    <td className='py-2 px-2 text-capitalize'>{index + 1}</td>
+                                                                    <td className='py-2 px-2 text-capitalize'>{item.nim}</td>
+                                                                    <td className='py-2 px-2 text-capitalize'>{item.nama}</td>
+                                                                    <td className='py-2 px-2 text-capitalize'>{moment(item.tanggal_pengumpulan).format('DD MMMM YYYY')}</td>
+                                                                    <td className='py-2 px-2 text-capitalize'>{item.code_mata_kuliah}</td>
+                                                                    <td className='py-2 px-2 text-capitalize'>
+                                                                        {
+                                                                            item.checkdatatugas == 'ya' ?
+                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Selesai</span>
+                                                                                :
+                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Belum</span>
+                                                                        }
+                                                                    </td>
+                                                                    <td className='py-2 px-2 text-capitalize'>
+                                                                        <Link to="/detailTugas" state={{
+                                                                            kodeTgs: Tugas.code_tugas,
+                                                                            nim: item.nim
+                                                                        }} className={`btn btn-sm btn-info ${item.checkdatatugas == 'ya' ? '' : 'disabled'}`}>Detail</Link>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
                                                     </tbody>
                                                 </Table>
                                             </div>
-
-                                            {/* <Link to="/detailTugas" className='btn btn-sm btn-info'>Detail</Link> */}
                                         </Card.Body>
                                     </Card>
                                 </Col>
