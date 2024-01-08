@@ -38,6 +38,7 @@ const InputNilaiMhs = () => {
     const [absen, setAbsen] = useState([])
     const [checkedAbsen, setCheckedAbsen] = useState(false)
     const [jumlahKolom, setjumlahKolom] = useState([])
+    const [nilaiFix, setNilaiFix] = useState([])
     const [kodeMk, setKodeMk] = useState("")
     const location = useLocation()
     const navigate = useNavigate()
@@ -54,6 +55,7 @@ const InputNilaiMhs = () => {
 
     useEffect(() => {
         getKelasById()
+        console.log(location.state);
     }, [location.state])
 
     useEffect(() => {
@@ -78,6 +80,7 @@ const InputNilaiMhs = () => {
     useEffect(() => {
         getAverage()
         getSum()
+        getNilaiFixed()
     }, [inputFields, jumlahKolom, presentasi, materi, pptx, keaktifan, tugas, uts, uas, absen])
 
     useEffect(() => {
@@ -335,6 +338,24 @@ const InputNilaiMhs = () => {
         }
     }
 
+    const getNilaiFixed = () => {
+        if (jumlahKolom.length != 0) {
+            const i = inputFields.map(el => {
+                let presentasi = parseInt(el.presentasi) || 0
+                let materi = parseInt(el.materi) || 0
+                let pptx = parseInt(el.pptx) || 0
+                let keaktifan = parseInt(el.keaktifan) || 0
+                let tugas = parseInt(el.tugas) || 0
+                let hadir = parseInt(el.absen) || 0
+                let uts = parseInt(el.uts) || 0
+                let uas = parseInt(el.uas) || 0
+                let rataRata = (presentasi + materi + pptx + keaktifan + tugas + hadir + uts + uas) / jumlahKolom.length
+                return rataRata.toFixed(2)
+            })
+            setNilaiFix(i)
+        }
+    }
+
     const getSum = () => {
         if (jumlahKolom.length != 0) {
             const i = inputFields.map(el => {
@@ -411,7 +432,7 @@ const InputNilaiMhs = () => {
                         nilai_uts: inputFields[index].uts,
                         nilai_uas: inputFields[index].uas,
                         nilai_jumlah: nilaiSum[index],
-                        nilai_akhir: nilaiAkhir[index]
+                        nilai_akhir: nilaiFix[index]
                     }))
                 ).then(function (response) {
                     setLoading(false)
@@ -419,7 +440,7 @@ const InputNilaiMhs = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        navigate(`/detailnilai`, { state: { mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, kodeThn: location.state.thn, collaps: 'kuliah', activ: '/penilaian' } })
+                        navigate(`/detailnilai`, { state: { mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, thn: location.state.thn, collaps: 'kuliah', activ: '/penilaian' } })
                     });
                 })
             }
@@ -533,7 +554,7 @@ const InputNilaiMhs = () => {
                             <div className="grid">
                                 <div className='mb-2'>
                                     <div className='float-right flex gap-2'>
-                                        <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, kodeThn: location.state.thn, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> Kembali</Link>
+                                        <Link to={`/detailnilai`} state={{ mk: location.state.mk, idn: location.state.idn, kod: location.state.kod, thn: location.state.thn, smt: location.state.smt, collaps: 'kuliah', activ: '/penilaian' }} className='btn btn-sm btn-error capitalize rounded-md'><FaReply /> Kembali</Link>
                                         {jmlMhs == null ? "" : <button className='btn btn-sm btn-primary capitalize rounded-md'><FaSave /> simpan</button>}
                                     </div>
                                 </div>
@@ -701,7 +722,7 @@ const InputNilaiMhs = () => {
                                                         <input type="number" name='absen' value={absen[index] || ''} onChange={event => handleFormChange(index, event)} className='input input-sm input-bordered w-[70px]' disabled={!checkedAbsen} />
                                                     </td>
                                                     <td className='px-2 py-2 border'>{nilaiSum[index] == 0 ? "" : nilaiSum[index]}</td>
-                                                    <td className='px-2 py-2 border'>{nilaiAkhir[index] == "0" ? "" : nilaiAkhir[index]}</td>
+                                                    <td className='px-2 py-2 border'>{nilaiFix[index] == 0 ? "" : nilaiFix[index]}</td>
                                                     <td className='px-2 py-2 border'>{nilaiHuruf[index]}</td>
                                                     <td className='px-2 py-2 border'>{ket[index]}</td>
                                                 </tr>

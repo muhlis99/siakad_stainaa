@@ -15,6 +15,8 @@ const ViewKhs = () => {
     const [semt, setSemt] = useState("")
     const [nama, setNama] = useState("")
     const [nimnya, setNim] = useState("")
+    const [nilaiFixed, setNilaiFixed] = useState([])
+    const [sksIndeks, setSksIndeks] = useState([])
     const [ips, setIps] = useState("")
     const { nim } = useParams()
     const { kodeFk } = useParams()
@@ -27,6 +29,11 @@ const ViewKhs = () => {
     useEffect(() => {
         getViewKhs()
     }, [nim, kodeFk, kodeJnjg, kodeProdi, kodeSmt, kodeThn])
+
+    useEffect(() => {
+        getNilaiFixed()
+        getSksIndex()
+    }, [ViewKhs])
 
 
     const getViewKhs = async () => {
@@ -45,6 +52,26 @@ const ViewKhs = () => {
             setSemt(response.data.semester)
         } catch (error) {
 
+        }
+    }
+
+    const getNilaiFixed = () => {
+        if (ViewKhs.length != 0) {
+            const i = ViewKhs.map(el => {
+                let fix = parseFloat(el.nilai_akhir)
+                return fix.toFixed(2)
+            })
+            setNilaiFixed(i)
+        }
+    }
+
+    const getSksIndex = () => {
+        if (ViewKhs.length != 0) {
+            const i = ViewKhs.map(el => {
+                let fix = parseFloat(el.sksIndexs)
+                return fix.toFixed(2)
+            })
+            setSksIndeks(i)
         }
     }
 
@@ -168,10 +195,10 @@ const ViewKhs = () => {
                                                 <td className='px-1 py-2 border' align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].code_mata_kuliah}</td>
                                                 <td className='px-1 py-2 border'>{item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</td>
                                                 <td className='px-1 py-2 border' align='center'>{item.sebaranMataKuliahs[0].mataKuliahs[0].sks}</td>
-                                                <td className='px-1 py-2 border' align='center'>{item.nilai_akhir}</td>
+                                                <td className='px-1 py-2 border' align='center'>{nilaiFixed[index]}</td>
                                                 <td className='px-1 py-2 border' align='center'>{item.kategoriNilais[0].nilai_huruf}</td>
                                                 <td className='px-1 py-2 border' align='center'>{item.kategoriNilais[0].interfal_skor}</td>
-                                                <td className='px-1 py-2 border' align='center'>{item.sksIndexs}</td>
+                                                <td className='px-1 py-2 border' align='center'>{sksIndeks[index]}</td>
                                             </tr>
                                         ))}
                                         <tr className='bg-white text-gray-900'>

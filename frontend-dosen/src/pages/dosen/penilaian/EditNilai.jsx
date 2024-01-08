@@ -56,7 +56,6 @@ const EditNilai = () => {
 
     useEffect(() => {
         getKelasById()
-        // console.log(location.state);
     }, [location])
 
     useEffect(() => {
@@ -73,8 +72,6 @@ const EditNilai = () => {
         getNilaiFixed()
     }, [presentasi, materi, pptx, keaktifan, tugas, uts, uas, absen])
 
-    // useEffect(() => { console.log('jum', jumlahKolom) }, [jumlahKolom])
-
     const addFields = () => {
         let newfield = []
         newfield.push({
@@ -88,6 +85,15 @@ const EditNilai = () => {
             absen: parseInt(absen)
         })
         setInputFields(newfield)
+    }
+
+    const getKelasById = async () => {
+        try {
+            const response = await axios.get(`v1/kelasKuliah/getKelasById/${location.state.idKelas}`)
+            setDetailKls(response.data.data)
+        } catch (error) {
+
+        }
     }
 
     const getMahasiswa = async () => {
@@ -150,15 +156,6 @@ const EditNilai = () => {
             }
 
             setjumlahKolom(u);
-        } catch (error) {
-
-        }
-    }
-
-    const getKelasById = async () => {
-        try {
-            const response = await axios.get(`v1/kelasKuliah/getKelasById/${location.state.idKelas}`)
-            setDetailKls(response.data.data)
         } catch (error) {
 
         }
