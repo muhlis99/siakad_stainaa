@@ -20,7 +20,13 @@ const detailTugasModel = db.define('tugas', {
     'jawaban': {
         type: DataTypes.TEXT
     },
-    'file_jawaban': {
+    'file_jawaban_word_pdf': {
+        type: DataTypes.TEXT
+    },
+    'file_jawaban_ppt': {
+        type: DataTypes.TEXT
+    },
+    'file_jawaban_video': {
         type: DataTypes.TEXT
     },
     'tanggal_pengumpulan': {
