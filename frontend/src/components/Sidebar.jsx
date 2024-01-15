@@ -174,7 +174,7 @@ const Sidebar = () => {
                   <Link to="/pengumuman" state={{ collaps: 'kuliah', activ: '/pengumuman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pengumuman' || active == '/pengumuman' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-sm'>Pengumuman</span></Link>
                 </li>
                 <li>
-                  <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman</span></Link>
+                  <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
                 </li>
               </ul>
             </details> :
@@ -221,7 +221,7 @@ const Sidebar = () => {
                   <Link to="/pengumuman" state={{ collaps: 'kuliah', activ: '/pengumuman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pengumuman' || active == '/pengumuman' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-sm'>Pengumuman</span></Link>
                 </li>
                 <li>
-                  <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman</span></Link>
+                  <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
                 </li>
               </ul>
             </details>

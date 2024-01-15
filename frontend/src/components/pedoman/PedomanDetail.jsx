@@ -59,7 +59,7 @@ const PedomanDetail = () => {
     return (
         <div className='mt-2 container'>
             <section className='mb-5'>
-                <h1 className='text-2xl font-bold'>Pedoman</h1>
+                <h1 className='text-2xl font-bold'>Pedoman Akademik</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
