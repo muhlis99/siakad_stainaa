@@ -20,7 +20,7 @@ const DetailPedoman = () => {
 
     return (
         <Layout>
-            <title>Pedoman</title>
+            <title>Pedoman Akademik</title>
             <PedomanDetail />
         </Layout>
     )

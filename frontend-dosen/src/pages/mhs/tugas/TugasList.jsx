@@ -15,6 +15,28 @@ const TugasList = () => {
     const [load, setLoad] = useState(false)
     const [Tugas, setTugas] = useState([])
 
+    const kalkulasiWaktu = () => {
+        const difference = +new Date('2024-01-16T01:30:00+05:30') - +new Date()
+        let timeLeft = {}
+
+        if (difference > 0) {
+            timeLeft = {
+                hours: Math.floor((difference / 1000 / 60 / 60) % 24),
+                minutes: Math.floor((difference / 1000 / 60) % 60),
+                seconds: Math.floor((difference / 1000) % 60),
+            }
+        }
+        return timeLeft
+    }
+
+    const [timeLeft, setTimeLeft] = useState(kalkulasiWaktu());
+
+    useEffect(() => {
+        setTimeout(() => {
+            setTimeLeft(kalkulasiWaktu());
+        }, 1000);
+    })
+
     useEffect(() => {
         setLoad(true)
         setTimeout(() => {
@@ -63,6 +85,15 @@ const TugasList = () => {
                         <div className="content-wrapper">
                             <div className="page-header">
                                 <h2 className='fs-4 font-bold'>Tugas Kuliah</h2>
+                            </div>
+                            <div>
+                                <p>
+                                    <span>{timeLeft.hours}</span>
+                                    <span>:</span>
+                                    <span>{timeLeft.minutes}</span>
+                                    <span>:</span>
+                                    <span>{timeLeft.seconds}</span>
+                                </p>
                             </div>
                             <Row>
                                 <Col>

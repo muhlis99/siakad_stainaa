@@ -20,7 +20,7 @@ const EditPedoman = () => {
 
     return (
         <Layout>
-            <title>Pedoman</title>
+            <title>Pedoman Akademik</title>
             <PedomanEdit />
         </Layout>
     )
