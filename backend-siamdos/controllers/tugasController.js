@@ -317,17 +317,36 @@ module.exports = {
         const id = req.params.id
         const tugasUse = await tugasModel.findOne({
             where: {
-                id_tugas: id
+                id_tugas: id,
+                status: "belum"
             }
         })
         if (!tugasUse) return res.status(500).json({ message: "data tidak ditemukan" })
-        const filepath = `../tmp_siakad/lampiranTugas/${tugasUse.file_tugas}`
-        fs.unlinkSync(filepath)
+        if (tugasUse.file_tugas) {
+            const filepath = `../tmp_siakad/lampiranTugas/${tugasUse.file_tugas}`
+            fs.unlinkSync(filepath)
+        }
+        const dataDetailTugas = await detailTugasModel.findAll({
+            where: {
+                code_tugas: tugasUse.code_tugas,
+                status: "tidak"
+            }
+        })
+
         await tugasModel.destroy({
             where: {
                 id_tugas: id
             }
         }).then(result => {
+            const useDataDetailTugas = dataDetailTugas.map(async el => {
+                await detailTugasModel.destroy({
+                    where: {
+                        code_detail_tugas: el.code_detail_tugas,
+                        nim: el.nim,
+                        code_tugas: el.code_tugas
+                    }
+                })
+            })
             res.status(201).json({
                 message: "Data Tugas Dihapus",
             })
