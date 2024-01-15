@@ -207,6 +207,7 @@ module.exports = {
         }).then(result => {
             res.status(201).json({
                 message: "Data Tugas Ditambahkan",
+                data: result
             })
         }).catch(err => {
             console.log(err)
