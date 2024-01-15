@@ -35,7 +35,7 @@ const PedomanDetail = () => {
         if (filePedoman == null) {
             setUrlDoc('')
         } else {
-            setUrlDoc('http://localhost:4001/v1/pedoman/public/seeLampiranPedoman/lampiranPedoman/' + filePedoman)
+            setUrlDoc('https://api-siakad.stainaa.ac.id/v1/pedoman/public/seeLampiranPedoman/lampiranPedoman/' + filePedoman)
         }
     }, [filePedoman])
 
@@ -44,7 +44,7 @@ const PedomanDetail = () => {
     ]
 
     const download = () => {
-        fetch(`http://localhost:4001/v1/pedoman/public/seeLampiranPedoman/lampiranPedoman/${filePedoman}`).then((response) => {
+        fetch(`https://api-siakad.stainaa.ac.id/v1/pedoman/public/seeLampiranPedoman/lampiranPedoman/${filePedoman}`).then((response) => {
             response.blob().then((blob) => {
                 const fileURL = window.URL.createObjectURL(blob)
 
@@ -64,24 +64,46 @@ const PedomanDetail = () => {
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
-                        <h1 className='font-bold text-[23px] uppercase'>{judul}</h1>
-                        <span className='flex gap-1 text-[#666666]'><FaCalendarAlt />{moment(tanggal).format('DD MMMM YYYY')}</span>
-                        <p className='mt-3 mb-3'>{deskripsi}</p>
-                        <div className='flex justify-center'>
-                            <button className='btn btn-sm btn-primary' onClick={download}>Download</button>
+                        <div className='grid grid-cols-2 gap-3'>
+                            <div className='border border-black border-dashed p-2 rounded-md'>
+                                <span className='font-bold'>Judul Pedoman</span>
+                                <div className='text-[14px] text-secondary  mt-1'>
+                                    {judul}
+                                </div>
+                            </div>
+                            <div className='border border-black border-dashed p-2 rounded-md'>
+                                <span className='font-bold'>Tanggal Penerbitan</span>
+                                <div className='text-[14px] text-secondary  mt-1'>
+                                    {moment(tanggal).format('DD MMMM YYYY')}
+                                </div>
+                            </div>
+                            <div className='border border-black border-dashed p-2 rounded-md'>
+                                <span className='font-bold'>Deskripsi</span>
+                                <div className='text-[14px] text-secondary  mt-1'>
+                                    {deskripsi}
+                                </div>
+                            </div>
+                            <div className='border border-black border-dashed p-2 rounded-md'>
+                                <span className='font-bold'>Download</span>
+                                <div className='text-[14px] text-secondary  mt-1'>
+                                    <button className='btn btn-sm btn-primary' onClick={download}>Download</button>
+                                </div>
+                            </div>
                         </div>
                         <div>
-                            <DocViewer
-                                documents={docs}
-                                config={{
-                                    header: {
-                                        disableHeader: false,
-                                        disableFileName: true,
-                                        retainURLParams: false,
-                                    }
-                                }}
-                                pluginRenderers={DocViewerRenderers}
-                            />
+                            <div className='border border-black border-dashed p-2 rounded-md'>
+                                <DocViewer
+                                    documents={docs}
+                                    config={{
+                                        header: {
+                                            disableHeader: false,
+                                            disableFileName: true,
+                                            retainURLParams: false,
+                                        }
+                                    }}
+                                    pluginRenderers={DocViewerRenderers}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

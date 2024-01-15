@@ -214,6 +214,19 @@ const TugasDetail = () => {
         { uri: "http://localhost:4002/v1/tugas/public/seeLampiranTugas/lampiranTugas/" + Tugas.file_tugas }
     ]
 
+    const download = () => {
+        fetch(`http://localhost:4002/v1/tugas/public/seeLampiranTugas/lampiranTugas/${Tugas.file_tugas}`).then((response) => {
+            response.blob().then((blob) => {
+                const fileURL = window.URL.createObjectURL(blob)
+
+                let alink = document.createElement("a")
+                alink.href = fileURL
+                alink.download = 'Lampiran Tugas Kuliah ' + Tugas.tugas
+                alink.click()
+            })
+        })
+    }
+
     return (
         <Layout>
             <title>Tugas Kuliah</title>
@@ -278,32 +291,43 @@ const TugasDetail = () => {
                                         </form>
                                     </Modal.Body>
                                     : modal == 'lampiran' ?
-                                        <Modal.Body>
-                                            <Row>
-                                                <Col>
-                                                    <DocViewer
-                                                        documents={lampiran}
-                                                        config={{
-                                                            header: {
-                                                                disableHeader: true,
-                                                                disableFileName: true,
-                                                                retainURLParams: false,
-                                                            }
-                                                        }}
-                                                        theme={{
-                                                            primary: "#5296d8",
-                                                            secondary: "#ffffff",
-                                                            tertiary: "#5296d899",
-                                                            textPrimary: "#ffffff",
-                                                            textSecondary: "#5296d8",
-                                                            textTertiary: "#00000099",
-                                                            disableThemeScrollbar: false,
-                                                        }}
-                                                        pluginRenderers={DocViewerRenderers}
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        </Modal.Body>
+                                        <>
+                                            <Modal.Body>
+                                                <Row>
+                                                    <Col>
+                                                        <DocViewer
+                                                            documents={lampiran}
+                                                            config={{
+                                                                header: {
+                                                                    disableHeader: true,
+                                                                    disableFileName: true,
+                                                                    retainURLParams: false,
+                                                                }
+                                                            }}
+                                                            theme={{
+                                                                primary: "#5296d8",
+                                                                secondary: "#ffffff",
+                                                                tertiary: "#5296d899",
+                                                                textPrimary: "#ffffff",
+                                                                textSecondary: "#5296d8",
+                                                                textTertiary: "#00000099",
+                                                                disableThemeScrollbar: false,
+                                                            }}
+                                                            pluginRenderers={DocViewerRenderers}
+                                                        />
+                                                    </Col>
+                                                </Row>
+                                            </Modal.Body>
+                                            <Modal.Footer>
+                                                <Row className='m-2'>
+                                                    <Col className=''>
+                                                        <div>
+                                                            <button className='btn btn-sm btn-success' onClick={download}>Download</button>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </Modal.Footer>
+                                        </>
                                         :
                                         <Modal.Body>
                                             <form

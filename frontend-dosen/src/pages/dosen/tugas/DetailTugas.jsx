@@ -79,6 +79,19 @@ const DetailTugas = () => {
         { uri: urlDoc }
     ]
 
+    const download = () => {
+        fetch(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/${lampiranJawaban}`).then((response) => {
+            response.blob().then((blob) => {
+                const fileURL = window.URL.createObjectURL(blob)
+
+                let alink = document.createElement("a")
+                alink.href = fileURL
+                alink.download = 'Tugas Kuliah ' + nama
+                alink.click()
+            })
+        })
+    }
+
     return (
         <Layout>
             <title>Detail Tugas Kuliah</title>
@@ -156,15 +169,15 @@ const DetailTugas = () => {
                                                     <div className='flex justify-center'>
                                                         <Image src={dataBlank} className='mt-4 ' width={150} />
                                                     </div>
-                                                    <p className='text-muted font-bold'>Anda belum mengumpulkan tugas!</p>
-                                                    <button onClick={() => openModal('upload', '')} className='btn btn-sm btn-success my-2'>Kumpulkan tugas</button>
+                                                    {/* <p className='text-muted font-bold'>Anda belum mengumpulkan tugas!</p> */}
+                                                    {/* <button onClick={() => openModal('upload', '')} className='btn btn-sm btn-success my-2'>Kumpulkan tugas</button> */}
                                                 </div>
                                             </> : <>
                                                 <Row>
                                                     <Col>
                                                         <div className='px-3 py-2 rounded-3 h-100' style={{ border: '1px dashed #919669' }}>
                                                             <span className='text[14px] text-capitalize text-dark font-bold'>Deskripsi Jawaban</span>
-                                                            <div className=' text-[13px] text-secondary'>
+                                                            <div className=' text-[13px] text-secondary  mt-1'>
                                                                 {detailTugas.jawaban}
                                                             </div>
                                                         </div>
@@ -172,16 +185,16 @@ const DetailTugas = () => {
                                                     <Col>
                                                         <div className='px-3 py-2 rounded-3  h-100' style={{ border: '1px dashed #919669' }}>
                                                             <span className='text[14px] text-capitalize text-dark font-bold'>Tanggal Pengumpulan</span>
-                                                            <div className=' text-[13px] text-secondary'>
+                                                            <div className=' text-[13px] text-secondary  mt-1'>
                                                                 {moment(detailTugas.tanggal_pengumpulan).format('DD MMMM YYYY')}
                                                             </div>
                                                         </div>
                                                     </Col>
                                                     <Col>
                                                         <div className='px-3 py-2 rounded-3  h-100' style={{ border: '1px dashed #919669' }}>
-                                                            <span className='text[14px] text-capitalize text-dark font-bold'>Status Tugas</span>
-                                                            <div className=' text-[13px] text-secondary text-capitalize'>
-                                                                {detailTugas.status}
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>Download Tugas</span>
+                                                            <div className=' text-[13px] text-secondary'>
+                                                                <button className='btn btn-sm btn-success' onClick={download}>Download</button>
                                                             </div>
                                                         </div>
                                                     </Col>

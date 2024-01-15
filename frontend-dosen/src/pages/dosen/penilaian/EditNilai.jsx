@@ -35,6 +35,7 @@ const EditNilai = () => {
     const [checkedAbsen, setCheckedAbsen] = useState(false)
     const [jumlahKolom, setjumlahKolom] = useState([])
     const [nilaiAkhir, setNIlaiAkhir] = useState("")
+    const [nilaiFixed, setNilaiFixed] = useState("")
     const [nilaiHuruf, setNilaiHuruf] = useState([])
     const [nama, setNama] = useState("")
     const [nim, setNim] = useState("")
@@ -55,7 +56,6 @@ const EditNilai = () => {
 
     useEffect(() => {
         getKelasById()
-        // console.log(location.state);
     }, [location])
 
     useEffect(() => {
@@ -69,9 +69,8 @@ const EditNilai = () => {
     useEffect(() => {
         getAverage()
         getSum()
+        getNilaiFixed()
     }, [presentasi, materi, pptx, keaktifan, tugas, uts, uas, absen])
-
-    // useEffect(() => { console.log('jum', jumlahKolom) }, [jumlahKolom])
 
     const addFields = () => {
         let newfield = []
@@ -86,6 +85,15 @@ const EditNilai = () => {
             absen: parseInt(absen)
         })
         setInputFields(newfield)
+    }
+
+    const getKelasById = async () => {
+        try {
+            const response = await axios.get(`v1/kelasKuliah/getKelasById/${location.state.idKelas}`)
+            setDetailKls(response.data.data)
+        } catch (error) {
+
+        }
     }
 
     const getMahasiswa = async () => {
@@ -148,15 +156,6 @@ const EditNilai = () => {
             }
 
             setjumlahKolom(u);
-        } catch (error) {
-
-        }
-    }
-
-    const getKelasById = async () => {
-        try {
-            const response = await axios.get(`v1/kelasKuliah/getKelasById/${location.state.idKelas}`)
-            setDetailKls(response.data.data)
         } catch (error) {
 
         }
@@ -257,6 +256,22 @@ const EditNilai = () => {
         }
     }
 
+    const getNilaiFixed = () => {
+        if (jumlahKolom.length != 0) {
+            var a = parseInt(presentasi) || 0
+            var b = parseInt(materi) || 0
+            var c = parseInt(pptx) || 0
+            var d = parseInt(keaktifan) || 0
+            var e = parseInt(tugas) || 0
+            var f = parseInt(absen) || 0
+            var g = parseInt(uts) || 0
+            var h = parseInt(uas) || 0
+            var rataRata = (a + b + c + d + e + f + g + h) / jumlahKolom.length
+            var n = rataRata.toFixed(2)
+            setNilaiFixed(n)
+        }
+    }
+
     const getSum = () => {
         if (jumlahKolom.length != 0) {
             var a = parseInt(presentasi) || 0
@@ -304,7 +319,7 @@ const EditNilai = () => {
                     nilai_uts: uts,
                     nilai_uas: uas,
                     nilai_jumlah: nilaiSum,
-                    nilai_akhir: nilaiAkhir
+                    nilai_akhir: nilaiFixed
                 }).then(function (response) {
                     setLoad(false)
                     Swal.fire({
@@ -559,7 +574,7 @@ const EditNilai = () => {
                                                                             <input type="number" name='absen' id='absen' value={absen} onChange={(e) => setAbsen(e.target.value)} className='form-control' disabled={!checkedAbsen} style={{ width: '70px' }} />
                                                                         </td>
                                                                         <td className='py-2 border px-1 text-capitalize'>{nilaiSum}</td>
-                                                                        <td className='py-2 border px-1 text-capitalize'>{nilaiAkhir}</td>
+                                                                        <td className='py-2 border px-1 text-capitalize'>{nilaiFixed}</td>
                                                                         <td className='py-2 border px-1 text-capitalize'>{nilaiHuruf.length != 0 ? nilaiHuruf[0].nilai_huruf : ""}</td>
                                                                         <td className='py-2 border px-1 text-capitalize'>
                                                                             {nilaiHuruf.length != 0 ?

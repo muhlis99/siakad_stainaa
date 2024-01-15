@@ -15,6 +15,7 @@ const InfoNilai = () => {
     const location = useLocation()
     const [detailKls, setDetailKls] = useState([])
     const [Nilai, setNilai] = useState([])
+    const [nilaiFixed, setNilaiFixed] = useState([])
 
     useEffect(() => {
         getKelasById()
@@ -25,6 +26,10 @@ const InfoNilai = () => {
     useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
+
+    useEffect(() => {
+        getNilaiFixed()
+    }, [Nilai])
 
     const getKelasById = async () => {
         try {
@@ -40,11 +45,18 @@ const InfoNilai = () => {
             const response = await axios.get(`v1/nilaiKuliah/all?codeMakul=${location.state.kodeMk}&codeKls=${location.state.kodeKls}&codeThnAjr=${location.state.kodeThn}`)
             setNilai(response.data.data)
         } catch (error) {
-
         }
-
     }
 
+    const getNilaiFixed = () => {
+        if (Nilai.length != 0) {
+            const i = Nilai.map(el => {
+                let fix = parseFloat(el.nilai_akhir)
+                return fix.toFixed(2)
+            })
+            setNilaiFixed(i)
+        }
+    }
 
     return (
         <Layout>
@@ -173,7 +185,7 @@ const InfoNilai = () => {
                                                                     <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_uas}</span></td>
                                                                     <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_hadir}</span></td>
                                                                     <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_jumlah}</span></td>
-                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.nilai_akhir}</span></td>
+                                                                    <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{nilaiFixed[index]}</span></td>
                                                                     <td className='py-2 border px-1 text-capitalize' align='center'><span className='text-[11px]'>{item.kategoriNilais[0].nilai_huruf}</span></td>
                                                                     <td className='py-2 border text-capitalize' align='center'>
                                                                         {item.kategoriNilais[0].keterangan == 'LULUS' ?
@@ -222,7 +234,16 @@ const InfoNilai = () => {
                                             {Nilai.length > 0 ?
                                                 ""
                                                 // <Link to='/editnilai' state={{ kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls, kodeThn: detailKls.code_tahun_ajaran }} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center no-underline float-right'><LuFileInput /> &nbsp; <span>Edit Nilai</span></Link>
-                                                : <Link to='/inputnilai' state={{ kodeMk: location.state.kodeMk, idKelas: location.state.idKelas, kodeKls: location.state.kodeKls }} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center float-right no-underline'><LuFileInput /> &nbsp; <span>Input Nilai</span></Link>
+                                                : <Link to='/inputnilai' state={{
+                                                    idKelas: location.state.idKelas,
+                                                    kodeMk: location.state.kodeMk,
+                                                    kodeKls: location.state.kodeKls,
+                                                    kodeThn: location.state.kodeThn,
+                                                    kodeSmt: location.state.kodeSmt,
+                                                    kodeJen: location.state.kodeJen,
+                                                    kodeFk: location.state.kodeFk,
+                                                    kodeProd: location.state.kodeProd
+                                                }} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center float-right no-underline'><LuFileInput /> &nbsp; <span>Input Nilai</span></Link>
                                             }
                                         </Col>
                                     </Row>

@@ -623,9 +623,9 @@ const JadwalDosen = () => {
                                                                                         }</td>
                                                                                         <td className='py-3 border text-capitalize' align='center'>Ruang</td>
                                                                                         <td className='py-2 border text-capitalize' rowSpan={2} align='center'>
-                                                                                            <button className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex items-center mr-1' title='Detail' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}><FaSearch /></button>
-                                                                                            <button className='bg-[#FFC107] py-2 px-2 rounded-full text-white inline-flex items-center mr-1' title='Edit' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}><FaEdit /></button>
-                                                                                            <button className='bg-[#28A745] py-2 px-2 rounded-full text-white inline-flex items-center' title='Tugas' onClick={() => handleTugas(item.id_jadwal_pertemuan, 'tugas')}><FaCog /></button>
+                                                                                            <button className='btn btn-sm btn-info mr-1' title='Detail' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}>Detail</button>
+                                                                                            <button className='btn btn-sm btn-warning mr-1' title='Edit' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}>Edit</button>
+                                                                                            <button className='btn btn-sm btn-success' title='Tugas' onClick={() => handleTugas(item.id_jadwal_pertemuan, 'tugas')}>Tugas</button>
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>
