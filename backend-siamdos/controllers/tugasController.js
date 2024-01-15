@@ -9,6 +9,7 @@ const fs = require('fs')
 const sebaranMataKuliah = require('../models/sebaranMataKuliah.js')
 const historyMahasiswa = require('../models/historyMahasiswaModel.js')
 const krsModel = require('../models/krsModel.js')
+const detailTugasModel = require('../models/detailTugasModel.js')
 
 module.exports = {
     // dosen
@@ -210,6 +211,30 @@ module.exports = {
         }).catch(err => {
             console.log(err)
         })
+    },
+
+    postMhsTugas: async (req, res, next) => {
+        const { code_tugas, nim } = req.body
+        const datamhs = nim.map(i => {
+            let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
+            let data = {
+                nim: i,
+                code_tugas: code_tugas,
+                code_detail_tugas: randomNumber,
+                jawaban: "",
+                file_jawaban_word_pdf: "",
+                file_jawaban_ppt: "",
+                file_jawaban_video: "",
+                status: "tidak"
+            }
+            return data
+        })
+        const insert = await detailTugasModel.bulkCreate(datamhs)
+        if (insert) {
+            return res.status(201).json({ message: "data berhasil ditambahkan" })
+        } else {
+            return res.status(403).json({ message: "data tidak berhasil ditambahkan" })
+        }
     },
 
     put: async (req, res, next) => {
