@@ -86,7 +86,7 @@ const TugasList = () => {
                             <div className="page-header">
                                 <h2 className='fs-4 font-bold'>Tugas Kuliah</h2>
                             </div>
-                            <div>
+                            {/* <div>
                                 <p>
                                     <span>{timeLeft.hours}</span>
                                     <span>:</span>
@@ -94,7 +94,7 @@ const TugasList = () => {
                                     <span>:</span>
                                     <span>{timeLeft.seconds}</span>
                                 </p>
-                            </div>
+                            </div> */}
                             <Row>
                                 <Col>
                                     <Card className='shadow'>
