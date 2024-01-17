@@ -138,7 +138,7 @@ const Deskripsi = () => {
                                                             <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>NIM</th>
                                                             <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Nama</th>
                                                             <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Tanggal Pengumpulan</th>
-                                                            <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Kode Matakuliah</th>
+                                                            <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Prodi</th>
                                                             <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Status</th>
                                                             <th className='fw-bold py-3' style={{ backgroundColor: '#E9EAE1' }}>Aksi</th>
                                                         </tr>
@@ -157,12 +157,12 @@ const Deskripsi = () => {
                                                                 <tr key={index} className='border'>
                                                                     <td className='py-2 px-2 text-capitalize'>{index + 1}</td>
                                                                     <td className='py-2 px-2 text-capitalize'>{item.nim}</td>
-                                                                    <td className='py-2 px-2 text-capitalize'>{item.nama}</td>
-                                                                    <td className='py-2 px-2 text-capitalize'>{moment(item.tanggal_pengumpulan).format('DD MMMM YYYY')}</td>
-                                                                    <td className='py-2 px-2 text-capitalize'>{item.code_mata_kuliah}</td>
+                                                                    <td className='py-2 px-2 text-capitalize'>{item.mahasiswas[0].nama}</td>
+                                                                    <td className='py-2 px-2 text-capitalize'>{item.tanggal_pengumpulan == '' ? '-' : moment(item.tanggal_pengumpulan).format('DD MMMM YYYY')}</td>
+                                                                    <td className='py-2 px-2 text-capitalize'>{item.mahasiswas[0].prodis[0].nama_prodi}</td>
                                                                     <td className='py-2 px-2 text-capitalize'>
                                                                         {
-                                                                            item.checkdatatugas == 'ya' ?
+                                                                            item.status == 'terkumpul' ?
                                                                                 <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Selesai</span>
                                                                                 :
                                                                                 <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Belum</span>
@@ -172,7 +172,7 @@ const Deskripsi = () => {
                                                                         <Link to="/detailTugas" state={{
                                                                             kodeTgs: Tugas.code_tugas,
                                                                             nim: item.nim
-                                                                        }} className={`btn btn-sm btn-info ${item.checkdatatugas == 'ya' ? '' : 'disabled'}`}>Detail</Link>
+                                                                        }} className={`btn btn-sm btn-info ${item.status == 'terkumpul' ? '' : 'disabled'}`}>Detail</Link>
                                                                     </td>
                                                                 </tr>
                                                             ))}
