@@ -15,7 +15,7 @@ router.post('/create', detailTugasController.post)
 router.delete('/delete/:id', detailTugasController.delete)
 
 // dosen
-router.get('/alldosen/:nipy/:thnAjr/:smt/:jnjPen/:fks/:prd/:codejadper', detailTugasController.getAlldosen)
+router.get('/alldosen/:nipy/:codejadper', detailTugasController.getAlldosen)
 
 
 module.exports = router
