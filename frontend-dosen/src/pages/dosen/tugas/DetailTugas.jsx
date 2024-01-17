@@ -22,7 +22,11 @@ const DetailTugas = () => {
     const [semester, setSemester] = useState("")
     const [fileName, setFileName] = useState("")
     const [urlDoc, setUrlDoc] = useState("")
+    const [urlPpt, setUrlPpt] = useState("")
+    const [urlVideo, setUrlVideo] = useState("")
     const [lampiranJawaban, setLampiranJawaban] = useState("")
+    const [jawabanPpt, setJawabanPpt] = useState("")
+    const [jawabanVideo, setJawabanVideo] = useState("")
 
     useEffect(() => {
         setLoad(true)
@@ -55,7 +59,9 @@ const DetailTugas = () => {
             try {
                 const response = await axios.get(`v1/detailTugas/getByCodeTugas/${location.state.kodeTgs}/${location.state.nim}`)
                 setDetailTugas(response.data.data[0])
-                setLampiranJawaban(response.data.data[0].file_jawaban)
+                setLampiranJawaban(response.data.data[0].file_jawaban_word_pdf)
+                setJawabanPpt(response.data.data[0].file_jawaban_ppt)
+                setJawabanVideo(response.data.data[0].file_jawaban_video)
             } catch (error) {
 
             }
@@ -67,9 +73,21 @@ const DetailTugas = () => {
         if (lampiranJawaban == null) {
             setUrlDoc('')
         } else {
-            setUrlDoc('http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/' + lampiranJawaban)
+            setUrlDoc('http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/wordpdf/' + lampiranJawaban)
         }
-    }, [lampiranJawaban])
+
+        if (jawabanPpt == null) {
+            setUrlPpt('')
+        } else {
+            setUrlPpt(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/ppt/${jawabanPpt}`)
+        }
+
+        if (jawabanVideo == null) {
+            setUrlVideo('')
+        } else {
+            setUrlVideo(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/video/${jawabanVideo}`)
+        }
+    }, [lampiranJawaban, jawabanPpt, jawabanVideo])
 
 
 
@@ -81,14 +99,51 @@ const DetailTugas = () => {
         { uri: urlDoc }
     ]
 
-    const download = () => {
-        fetch(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/${lampiranJawaban}`).then((response) => {
+    const ppt = [
+        {
+            uri: urlPpt,
+            fileName: 'Future.ppt'
+        }
+    ]
+
+    const video = [
+        { uri: urlVideo }
+    ]
+
+    const downloadDoc = () => {
+        fetch(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/wordpdf/${lampiranJawaban}`).then((response) => {
             response.blob().then((blob) => {
                 const fileURL = window.URL.createObjectURL(blob)
 
                 let alink = document.createElement("a")
                 alink.href = fileURL
                 alink.download = 'Tugas Kuliah ' + nama
+                alink.click()
+            })
+        })
+    }
+
+    const downloadppt = () => {
+        fetch(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/ppt/${jawabanPpt}`).then((response) => {
+            response.blob().then((blob) => {
+                const fileURL = window.URL.createObjectURL(blob)
+
+                let alink = document.createElement("a")
+                alink.href = fileURL
+                alink.download = 'Tugas Kuliah Power Point ' + nama
+                alink.click()
+            })
+        })
+    }
+
+    const downloadVideo = () => {
+        fetch(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/video/${jawabanVideo}`).then((response) => {
+            response.blob().then((blob) => {
+                const fileURL = window.URL.createObjectURL(blob)
+
+                let alink = document.createElement("a")
+                alink.href = fileURL
+                alink.download = 'Tugas Kuliah Video ' + nama
                 alink.click()
             })
         })
@@ -195,9 +250,6 @@ const DetailTugas = () => {
                                                     <Col>
                                                         <div className='px-3 py-2 rounded-3  h-100' style={{ border: '1px dashed #919669' }}>
                                                             <span className='text[14px] text-capitalize text-dark font-bold'>Download Tugas</span>
-                                                            <div className=' text-[13px] text-secondary'>
-                                                                <button className='btn btn-sm btn-success' onClick={download}>Download</button>
-                                                            </div>
                                                         </div>
                                                     </Col>
                                                 </Row>
@@ -205,8 +257,68 @@ const DetailTugas = () => {
                                                     <Col>
                                                         <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
                                                             <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban</span>
+                                                            <div className=' text-[13px] my-2 text-secondary'>
+                                                                <button className='btn btn-sm btn-success' onClick={downloadDoc}>Download</button>
+                                                            </div>
                                                             <DocViewer
                                                                 documents={docs}
+                                                                config={{
+                                                                    header: {
+                                                                        disableHeader: true,
+                                                                        disableFileName: true,
+                                                                        retainURLParams: false,
+                                                                    }
+                                                                }}
+                                                                theme={{
+                                                                    primary: "#5296d8",
+                                                                    secondary: "#ffffff",
+                                                                    tertiary: "#5296d899",
+                                                                    textPrimary: "#ffffff",
+                                                                    textSecondary: "#5296d8",
+                                                                    textTertiary: "#00000099",
+                                                                    disableThemeScrollbar: false,
+                                                                }}
+                                                                pluginRenderers={DocViewerRenderers}
+                                                            />
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban Power Point</span>
+                                                            <div className=' text-[13px] my-2 text-secondary'>
+                                                                <button className='btn btn-sm btn-success' onClick={downloadppt}>Download</button>
+                                                            </div>
+
+                                                            {/* <DocViewer
+                                                                documents={ppt}
+                                                                config={{
+                                                                    header: {
+                                                                        disableHeader: true,
+                                                                        disableFileName: true,
+                                                                        retainURLParams: false,
+                                                                    }
+                                                                }}
+                                                                theme={{
+                                                                    primary: "#5296d8",
+                                                                    secondary: "#ffffff",
+                                                                    tertiary: "#5296d899",
+                                                                    textPrimary: "#ffffff",
+                                                                    textSecondary: "#5296d8",
+                                                                    textTertiary: "#00000099",
+                                                                    disableThemeScrollbar: false,
+                                                                }}
+                                                                pluginRenderers={DocViewerRenderers}
+                                                            /> */}
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban Video</span>
+                                                            <div className=' text-[13px] my-2 text-secondary'>
+                                                                <button className='btn btn-sm btn-success' onClick={downloadVideo}>Download</button>
+                                                            </div>
+                                                            <DocViewer
+                                                                documents={video}
                                                                 config={{
                                                                     header: {
                                                                         disableHeader: true,

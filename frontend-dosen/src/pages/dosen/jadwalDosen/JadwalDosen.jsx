@@ -44,8 +44,11 @@ const JadwalDosen = () => {
     const [lampiran, setLampiran] = useState("")
     const [statusPertemuan, setStatusPertemuan] = useState("")
     const [load, setLoad] = useState(false)
-
-
+    const [kodeKelas, setKodeKelas] = useState("")
+    const [Mahasiswa, setMahasiswa] = useState([])
+    const [modal, setModal] = useState(false)
+    const [hasil, setHasil] = useState("")
+    const [checked, setChecked] = useState([])
 
     useEffect(() => {
         setLoad(true)
@@ -95,6 +98,14 @@ const JadwalDosen = () => {
     useEffect(() => {
         getJadwal()
     }, [kodeJenjang, kodeFakultas, kodeProdi, kodeTahun, kodeSemester])
+
+    useEffect(() => {
+        getKodeKelas()
+    }, [kodeJenjang, kodeFakultas, kodeProdi, kodeTahun, kodeSemester, username])
+
+    useEffect(() => {
+        getMahasiswaPerkelas()
+    }, [kodeKelas])
 
     const getProdi = async () => {
         try {
@@ -165,7 +176,7 @@ const JadwalDosen = () => {
 
     const handleShow = async (e, f) => {
         const response = await axios.get(`v1/jadwalPertemuan/getById/${e}`)
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setDetailJadwal(response.data.data)
         setPembelajaran(response.data.data.metode_pembelajaran)
         setUrl(response.data.data.url_online)
@@ -175,6 +186,10 @@ const JadwalDosen = () => {
         setStatus(f)
         setShow(true)
     }
+
+    const handleModal = () => setModal(true)
+
+    const handleCloseModal = () => setModal(false)
 
     const loadFile = (e) => {
         const file = e.target.files[0]
@@ -266,11 +281,73 @@ const JadwalDosen = () => {
                     }).then(() => {
                         handleClose()
                         getJadwal()
+                        setHasil(response.data.data.code_tugas)
+                        handleModal()
                     });
                 })
             } catch (error) {
 
             }
+        }
+    }
+
+    const getKodeKelas = async () => {
+        try {
+            if (kodeJenjang && kodeFakultas && kodeProdi && kodeTahun && kodeSemester) {
+                const response = await axios.get(`v1/jadwalKuliah/jadwalKuliahDosen/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}`)
+                setKodeKelas(response.data.data[0].code_kelas)
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const getMahasiswaPerkelas = async () => {
+        try {
+            if (kodeKelas) {
+                const response = await axios.get(`v1/kelasKuliah/getMhsByKelas/${kodeKelas}`)
+                setMahasiswa(response.data.data)
+                // console.log(response.data.data)
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const handleCheck = (e, item) => {
+        if (e.target.checked) {
+            setChecked([...checked, item.nim])
+        } else {
+            setChecked(checked.filter((o) => o !== item.nim))
+        }
+    }
+
+    const simpanMahasiswa = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.post('v1/tugas/createMhsTugas', {
+                code_tugas: hasil,
+                nim: checked
+            }).then(function (response) {
+                setModal(false)
+                Swal.fire({
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    setChecked([])
+                })
+            })
+
+            // then(function (response) {
+            //     Swal.fire({
+            //         title: response.data.message,
+            //         icon: "success"
+            //     })).then(() => {
+            //         setModal(false)
+            //     })
+            // }
+        } catch (error) {
+
         }
     }
 
@@ -484,6 +561,61 @@ const JadwalDosen = () => {
                                         </Modal.Body>
                                 }
 
+                            </Modal>
+
+                            <Modal
+                                show={modal}
+                                onHide={handleCloseModal}
+                                backdrop="static"
+                                keyboard={false}
+                                size='lg'
+                                centered
+                            >
+                                <Modal.Header >
+                                    <Modal.Title>Pemilihan Mahasiswa</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <Row>
+                                        <Col>
+                                            <Table>
+                                                <thead>
+                                                    <tr className='border'>
+                                                        <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>#</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>NIM</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Nama</th>
+                                                        <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Jenis Kelamin</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {Mahasiswa.map((item, index) => (
+                                                        <tr key={index} className='border'>
+                                                            <th scope="row" className="py-3">
+                                                                <label className="cursor-pointer label justify-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={checked.includes(item.nim)}
+                                                                        onChange={(e) => handleCheck(e, item)}
+                                                                        className="form-check-input"
+                                                                        value=""
+                                                                        id="flexCheckDefault"
+                                                                    />
+                                                                </label>
+                                                            </th>
+                                                            <td className='py-3'>{item.nim}</td>
+                                                            <td className='py-3'>{item.mahasiswas[0].nama}</td>
+                                                            <td className='py-3'>{item.mahasiswas[0].jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan'}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </Table>
+                                        </Col>
+                                    </Row>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <form onSubmit={simpanMahasiswa}>
+                                        <button className='btn btn-sm btn-primary'>Simpan</button>
+                                    </form>
+                                </Modal.Footer>
                             </Modal>
 
                             <div className="page-header">

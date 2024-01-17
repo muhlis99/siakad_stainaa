@@ -33,6 +33,7 @@ const ListTugas = () => {
     const [fileTugas, setFileTugas] = useState("")
     const [tglAkhir, setTglAkhir] = useState("")
     const [show, setShow] = useState(false)
+    const [tgl, setTgl] = useState("")
 
     useEffect(() => {
         setLoad(true)
@@ -58,6 +59,7 @@ const ListTugas = () => {
             }
         }
         getDosenByNip()
+        getDateNow()
     }, [user])
 
     useEffect(() => {
@@ -76,6 +78,11 @@ const ListTugas = () => {
     useEffect(() => {
         getTugas()
     }, [user, kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi])
+
+    const getDateNow = () => {
+        const d = new Date()
+        setTgl(moment(d).format('YYYY-MM-D'))
+    }
 
     const getProdi = async () => {
         try {
@@ -204,34 +211,13 @@ const ListTugas = () => {
     }
 
     const selesaikan = (tugasId) => {
-        Swal.fire({
-            title: "Apakah anda yakin?",
-            text: "Apakah tugas ini sudah selesai?",
-            icon: "question",
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                try {
-                    axios.put(
-                        `v1/tugas/updateStatus/${tugasId}`
-                    ).then((response) => {
-                        Swal.fire({
-                            title: response.data.message,
-                            icon: "success"
-                        }).then(() => {
-                            getTugas()
-                        });
-                    })
+        try {
+            axios.put(
+                `v1/tugas/updateStatus/${tugasId}`
+            )
+        } catch (error) {
 
-                } catch (error) {
-
-                }
-            }
-        })
+        }
     }
 
     const hapus = (tugasId) => {
@@ -490,9 +476,8 @@ const ListTugas = () => {
                                                                                                             :
                                                                                                             ""
                                                                                                         }
-                                                                                                        {item.status == 'belum' ?
-                                                                                                            <button onClick={() => selesaikan(item.id_tugas)} className='btn btn-sm btn-success ml-1'>Selesaikan</button>
-                                                                                                            : ""
+                                                                                                        {item.jadwalPertemuans[0].tanggal_pertemuan == tgl ?
+                                                                                                            selesaikan(item.id_tugas) : ""
                                                                                                         }
                                                                                                         {item.status == 'belum' ?
                                                                                                             <button onClick={() => hapus(item.id_tugas)} className='btn btn-sm btn-danger ml-1'>Hapus</button>

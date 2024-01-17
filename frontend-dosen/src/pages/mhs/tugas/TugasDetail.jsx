@@ -22,9 +22,16 @@ const TugasDetail = () => {
     const [idDetailTugas, setIdDetailTugas] = useState("")
     const [jawaban, setJawaban] = useState("")
     const [fileJawaban, setFileJawaban] = useState("")
+    const [filePpt, setFilePpt] = useState("")
+    const [fileVideo, setFileVideo] = useState("")
     const [lampiranJawaban, setLampiranJawaban] = useState("")
+    const [jawabanPpt, setJawabanPpt] = useState("")
+    const [jawabanVideo, setJawabanVideo] = useState("")
     const [modal, setModal] = useState("")
     const [urlDoc, setUrlDoc] = useState("")
+    const [urlPpt, setUrlPpt] = useState("")
+    const [urlVideo, setUrlVideo] = useState("")
+
     const [show, setShow] = useState(false)
 
     useEffect(() => {
@@ -53,6 +60,7 @@ const TugasDetail = () => {
             try {
                 const response = await axios.get(`v1/tugas/tugasmhsbycode/${location.state.kodeTgs}`)
                 setTugas(response.data.data)
+                console.log(response.data.data);
             } catch (error) {
             }
         }
@@ -67,9 +75,21 @@ const TugasDetail = () => {
         if (lampiranJawaban == null) {
             setUrlDoc('')
         } else {
-            setUrlDoc('http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/' + lampiranJawaban)
+            setUrlDoc('http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/wordpdf/' + lampiranJawaban)
         }
-    }, [lampiranJawaban])
+
+        if (jawabanPpt == null) {
+            setUrlPpt('')
+        } else {
+            setUrlPpt(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/ppt/${jawabanPpt}`)
+        }
+
+        if (jawabanVideo == null) {
+            setUrlVideo('')
+        } else {
+            setUrlVideo(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/video/${jawabanVideo}`)
+        }
+    }, [lampiranJawaban, jawabanPpt, jawabanVideo])
 
     useEffect(() => {
         const getDetailTugasById = async () => {
@@ -91,7 +111,11 @@ const TugasDetail = () => {
             if (user) {
                 const response = await axios.get(`v1/detailTugas/getByCodeTugas/${location.state.kodeTgs}/${user.data.username}`)
                 setDetail(response.data.data[0])
-                setLampiranJawaban(response.data.data[0].file_jawaban)
+                setLampiranJawaban(response.data.data[0].file_jawaban_word_pdf)
+                setJawabanPpt(response.data.data[0].file_jawaban_ppt)
+                setJawabanVideo(response.data.data[0].file_jawaban_video)
+                // console.log(response.data.data[0])
+
             }
         } catch (error) {
 
@@ -113,6 +137,16 @@ const TugasDetail = () => {
         setFileJawaban(file)
     }
 
+    const loadPpt = (e) => {
+        const file = e.target.files[0]
+        setFilePpt(file)
+    }
+
+    const loadVideo = (e) => {
+        const file = e.target.files[0]
+        setFileVideo(file)
+    }
+
     const kumpulkan = async (e) => {
         e.preventDefault()
         var date1 = moment()
@@ -132,16 +166,25 @@ const TugasDetail = () => {
             })
         } else if (fileJawaban == '') {
             Swal.fire({
-                title: 'Tidak ada file yang diupload',
+                title: 'Tidak ada file Word/PDF yang diupload',
+                icon: 'error'
+            })
+        } else if (Tugas.status == 'selesai') {
+            Swal.fire({
+                title: 'Waktu telah kedaluarsa',
+                text: 'Anda mengumpulkan tugas melebihi batas terakhir pengumpulan',
                 icon: 'error'
             })
         } else {
             setLoad(true)
             const formData = new FormData()
+            formData.append('code_detail_tugas', detail.code_detail_tugas)
             formData.append('code_tugas', location.state.kodeTgs)
             formData.append('nim', nim)
             formData.append('jawaban', jawaban)
-            formData.append('file_jawaban', fileJawaban)
+            formData.append('file_jawaban_word_pdf', fileJawaban)
+            formData.append('file_jawaban_ppt', filePpt)
+            formData.append('file_jawaban_video', fileVideo)
             try {
                 await axios.post(`v1/detailTugas/create`, formData, {
                     headers: {
@@ -163,51 +206,59 @@ const TugasDetail = () => {
         }
     }
 
-    const editTugas = async (e) => {
-        e.preventDefault()
-        var date1 = moment()
-        var date2 = Tugas.tanggal_akhir
-        var time1 = moment(date1).format('YYYY-MM-DD');
-        var time2 = moment(date2).format('YYYY-MM-DD');
-        if (time2 < time1) {
-            Swal.fire({
-                title: 'Waktu telah kedaluarsa',
-                text: 'Anda mengedit tugas melebihi batas terakhir pengumpulan',
-                icon: 'error'
-            })
-        } else if (jawaban == '') {
-            Swal.fire({
-                title: 'Deskripsi jawaban kosong',
-                icon: 'error'
-            })
-        } else {
-            setLoad(true)
-            const formData = new FormData()
-            formData.append('jawaban', jawaban)
-            formData.append('file_jawaban', fileJawaban)
-            try {
-                await axios.put(`v1/detailTugas/update/${idDetailTugas}`, formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
-                }).then(function (response) {
-                    handleClose()
-                    setLoad(false)
-                    Swal.fire({
-                        title: response.data.message,
-                        icon: "success"
-                    }).then(() => {
-                        getDetail()
-                    });
-                })
-            } catch (error) {
+    // const editTugas = async (e) => {
+    //     e.preventDefault()
+    //     var date1 = moment()
+    //     var date2 = Tugas.tanggal_akhir
+    //     var time1 = moment(date1).format('YYYY-MM-DD');
+    //     var time2 = moment(date2).format('YYYY-MM-DD');
+    //     if (time2 < time1) {
+    //         Swal.fire({
+    //             title: 'Waktu telah kedaluarsa',
+    //             text: 'Anda mengedit tugas melebihi batas terakhir pengumpulan',
+    //             icon: 'error'
+    //         })
+    //     } else if (jawaban == '') {
+    //         Swal.fire({
+    //             title: 'Deskripsi jawaban kosong',
+    //             icon: 'error'
+    //         })
+    //     } else {
+    //         setLoad(true)
+    //         const formData = new FormData()
+    //         formData.append('jawaban', jawaban)
+    //         formData.append('file_jawaban', fileJawaban)
+    //         try {
+    //             await axios.put(`v1/detailTugas/update/${idDetailTugas}`, formData, {
+    //                 headers: {
+    //                     "Content-Type": "multipart/form-data"
+    //                 }
+    //             }).then(function (response) {
+    //                 handleClose()
+    //                 setLoad(false)
+    //                 Swal.fire({
+    //                     title: response.data.message,
+    //                     icon: "success"
+    //                 }).then(() => {
+    //                     getDetail()
+    //                 });
+    //             })
+    //         } catch (error) {
 
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
 
     const docs = [
         { uri: urlDoc }
+    ]
+
+    const ppt = [
+        { uri: urlPpt }
+    ]
+
+    const video = [
+        { uri: urlVideo }
     ]
 
     const lampiran = [
@@ -276,12 +327,32 @@ const TugasDetail = () => {
                                                     className='form-control form-control-sm'
                                                 ></textarea>
                                             </div>
-                                            <div className='form-group'>
-                                                <label htmlFor="judul" className='h6'>File Jawaban</label>
-                                                <input id='judul' placeholder='Judul Tugas'
-                                                    onChange={loadFile}
-                                                    type="file" className='form-control form-control-sm' />
-                                            </div>
+                                            <Row>
+                                                <Col>
+                                                    <div className='form-group'>
+                                                        <label htmlFor="judul" className='h6'>File Jawaban Word/PDF</label>
+                                                        <input id='judul' placeholder='Judul Tugas'
+                                                            onChange={loadFile}
+                                                            type="file" className='form-control form-control-sm' />
+                                                    </div>
+                                                </Col>
+                                                <Col>
+                                                    <div className='form-group'>
+                                                        <label htmlFor="judul" className='h6'>File Jawaban Power Point</label>
+                                                        <input id='judul' placeholder='Judul Tugas'
+                                                            onChange={loadPpt}
+                                                            type="file" className='form-control form-control-sm' />
+                                                    </div>
+                                                </Col>
+                                                <Col>
+                                                    <div className='form-group'>
+                                                        <label htmlFor="judul" className='h6'>File Jawaban Video</label>
+                                                        <input id='judul' placeholder='Judul Tugas'
+                                                            onChange={loadVideo}
+                                                            type="file" className='form-control form-control-sm' />
+                                                    </div>
+                                                </Col>
+                                            </Row>
                                             <hr />
                                             <Row>
                                                 <Col>
@@ -331,7 +402,7 @@ const TugasDetail = () => {
                                         :
                                         <Modal.Body>
                                             <form
-                                                onSubmit={editTugas}
+                                            // onSubmit={editTugas}
                                             >
                                                 <div className='form-group'>
                                                     <label htmlFor="deskripsi" className='h6'>Deskripsi Jawaban</label>
@@ -344,12 +415,32 @@ const TugasDetail = () => {
                                                         className='form-control form-control-sm'
                                                     ></textarea>
                                                 </div>
-                                                <div className='form-group'>
-                                                    <label htmlFor="judul" className='h6'>File Jawaban</label>
-                                                    <input id='judul' placeholder='Judul Tugas'
-                                                        onChange={loadFile}
-                                                        type="file" className='form-control form-control-sm' />
-                                                </div>
+                                                <Row>
+                                                    <Col>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="judul" className='h6'>File Jawaban Word/PDF</label>
+                                                            <input id='judul' placeholder='Judul Tugas'
+                                                                onChange={loadFile}
+                                                                type="file" className='form-control form-control-sm' />
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="judul" className='h6'>File Jawaban Power Point</label>
+                                                            <input id='judul' placeholder='Judul Tugas'
+                                                                onChange={loadPpt}
+                                                                type="file" className='form-control form-control-sm' />
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="judul" className='h6'>File Jawaban Video</label>
+                                                            <input id='judul' placeholder='Judul Tugas'
+                                                                onChange={loadVideo}
+                                                                type="file" className='form-control form-control-sm' />
+                                                        </div>
+                                                    </Col>
+                                                </Row>
                                                 <hr />
                                                 <Row>
                                                     <Col>
@@ -410,7 +501,7 @@ const TugasDetail = () => {
                                     </Card>
                                     <Card className='mt-3'>
                                         <Card.Body className='p-3'>
-                                            {detail == null ? <>
+                                            {detail == null || detail.status == 'tidak' ? <>
                                                 <div className='text-center'>
                                                     <div className='flex justify-center'>
                                                         <Image src={dataBlank} className='mt-4 ' width={150} />
@@ -444,20 +535,70 @@ const TugasDetail = () => {
                                                             </div>
                                                         </div>
                                                     </Col>
-                                                    <Col>
+                                                    {/* <Col>
                                                         <div className='px-3 py-2 rounded-3  h-100' style={{ border: '1px dashed #919669' }}>
                                                             <div className=' text-[13px] text-secondary mt-2'>
                                                                 <button className='btn btn-warning btn-sm' onClick={() => openModal('edit', detail.id_detail_tugas)}>Edit Tugas</button>
                                                             </div>
                                                         </div>
-                                                    </Col>
+                                                    </Col> */}
                                                 </Row>
                                                 <Row className='mt-2'>
                                                     <Col>
                                                         <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
-                                                            <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban</span>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban Word/PDF</span>
                                                             <DocViewer
                                                                 documents={docs}
+                                                                config={{
+                                                                    header: {
+                                                                        disableHeader: true,
+                                                                        disableFileName: true,
+                                                                        retainURLParams: false,
+                                                                    }
+                                                                }}
+                                                                theme={{
+                                                                    primary: "#5296d8",
+                                                                    secondary: "#ffffff",
+                                                                    tertiary: "#5296d899",
+                                                                    textPrimary: "#ffffff",
+                                                                    textSecondary: "#5296d8",
+                                                                    textTertiary: "#00000099",
+                                                                    disableThemeScrollbar: false,
+                                                                }}
+                                                                pluginRenderers={DocViewerRenderers}
+                                                            />
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban Power Point</span>
+                                                            <DocViewer
+                                                                documents={ppt}
+                                                                config={{
+                                                                    header: {
+                                                                        disableHeader: true,
+                                                                        disableFileName: true,
+                                                                        retainURLParams: false,
+                                                                    }
+                                                                }}
+                                                                theme={{
+                                                                    primary: "#5296d8",
+                                                                    secondary: "#ffffff",
+                                                                    tertiary: "#5296d899",
+                                                                    textPrimary: "#ffffff",
+                                                                    textSecondary: "#5296d8",
+                                                                    textTertiary: "#00000099",
+                                                                    disableThemeScrollbar: false,
+                                                                }}
+                                                                pluginRenderers={DocViewerRenderers}
+                                                            />
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                            <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban Video</span>
+                                                            <DocViewer
+                                                                documents={video}
                                                                 config={{
                                                                     header: {
                                                                         disableHeader: true,
