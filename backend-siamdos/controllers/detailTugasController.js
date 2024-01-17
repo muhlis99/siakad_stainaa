@@ -238,7 +238,7 @@ module.exports = {
 
     // dosen
     getAlldosen: async (req, res, next) => {
-        const { nipy, thnAjr, smt, jnjPen, fks, prd, codejadper } = req.params
+        const { nipy, codejadper } = req.params
         const dataDosen = await dosenModel.findOne({
             where: {
                 nip_ynaa: nipy,
@@ -252,35 +252,28 @@ module.exports = {
                 status: "aktif"
             }
         })
-        const jadwalKuliah = await jadwalKuliahModel.findOne({
+        if (!jadwalPertemuan) return res.status(404).json({ message: "jadwal pertemuan tidak ditemukan" })
+        const dataTugas = await tugasModel.findOne({
             where: {
-                dosen_pengajar: nipy,
-                code_tahun_ajaran: thnAjr,
-                code_semester: smt,
-                code_jenjang_pendidikan: jnjPen,
-                code_fakultas: fks,
-                code_prodi: prd,
-                code_jadwal_kuliah: jadwalPertemuan.code_jadwal_kuliah,
-                status: "aktif"
+                code_jadwal_pertemuan: codejadper,
             }
         })
-
-
-        await db.query(`SELECT tb_mahasiswa.nama,tb_mahasiswa.nim,tb_krs.code_mata_kuliah,case when (tb_krs.nim = tb_detail_tugas.nim) then "ya" else "tidak" END as checkdatatugas,tb_detail_tugas.tanggal_pengumpulan FROM tb_detail_tugas, tb_krs 
-            INNER JOIN tb_mahasiswa ON tb_mahasiswa.nim = tb_krs.nim 
-            WHERE tb_krs.code_mata_kuliah="${jadwalKuliah.code_mata_kuliah}" AND tb_krs.code_jenjang_pendidikan="${jnjPen}"
-            AND tb_krs.code_fakultas="${fks}" AND tb_krs.code_prodi="${prd}" AND tb_krs.code_tahun_ajaran="${thnAjr}"
-            AND tb_krs.code_semester="${smt}" GROUP BY tb_krs.nim ORDER BY tb_krs.nim ASC `, {
-            nest: true,
-            type: QueryTypes.SELECT
-        })
-            .then(result => {
-                res.status(201).json({
-                    message: "Data mahasiswa tugas ",
-                    data: result
-                })
-            }).catch(err => {
-                console.log(err)
+        if (!dataTugas) return res.status(404).json({ message: "tugas tidak ditemukan" })
+        await detailTugasModel.findAll({
+            where: {
+                code_tugas: dataTugas.code_tugas
+            },
+            include: [{
+                model: mahasiswaModel,
+                attributes: ["nama"]
+            }]
+        }).then(result => {
+            res.status(201).json({
+                message: "Data Tugas Dihapus",
+                data: result
             })
+        }).catch(err => {
+            console.log(err)
+        })
     }
 }
