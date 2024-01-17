@@ -270,11 +270,11 @@ module.exports = {
             INNER JOIN tb_mahasiswa ON tb_mahasiswa.nim = tb_krs.nim 
             WHERE tb_krs.code_mata_kuliah="${jadwalKuliah.code_mata_kuliah}" AND tb_krs.code_jenjang_pendidikan="${jnjPen}"
             AND tb_krs.code_fakultas="${fks}" AND tb_krs.code_prodi="${prd}" AND tb_krs.code_tahun_ajaran="${thnAjr}"
-            AND tb_krs.code_semester="${smt}" ORDER BY nim ASC`, {
+            AND tb_krs.code_semester="${smt}" GROUP BY tb_krs.nim ORDER BY tb_krs.nim ASC `, {
             nest: true,
             type: QueryTypes.SELECT
         })
-            .then(async result => {
+            .then(result => {
                 res.status(201).json({
                     message: "Data mahasiswa tugas ",
                     data: result
