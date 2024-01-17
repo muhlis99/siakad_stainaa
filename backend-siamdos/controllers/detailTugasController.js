@@ -12,6 +12,7 @@ const krsModel = require('../models/krsModel.js')
 const detailTugasModel = require('../models/detailTugasModel.js')
 const mahasiswaModel = require('../models/mahasiswaModel.js')
 const db = require('../config/database.js')
+const prodiModel = require('../models/prodiModel.js')
 
 
 module.exports = {
@@ -260,12 +261,17 @@ module.exports = {
         })
         if (!dataTugas) return res.status(404).json({ message: "tugas tidak ditemukan" })
         await detailTugasModel.findAll({
+            attributes: ["nim", "tanggal_pengumpulan", "status"],
             where: {
                 code_tugas: dataTugas.code_tugas
             },
             include: [{
                 model: mahasiswaModel,
-                attributes: ["nama"]
+                attributes: ["nama"],
+                include: [{
+                    model: prodiModel,
+                    attributes: ["nama_prodi"]
+                }]
             }]
         }).then(result => {
             res.status(201).json({
