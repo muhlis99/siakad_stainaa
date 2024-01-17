@@ -475,6 +475,7 @@ const ListTugas = () => {
                                                                                                 <td className='py-2 border'>Status Tugas</td>
                                                                                                 <td className='py-2 px-1 border' rowSpan={2} align='center'>
                                                                                                     <div>
+                                                                                                        {/* <button className='btn btn-sm btn-primary mr-1'></button> */}
                                                                                                         <Link to='/deskripsi' state={{
                                                                                                             idTugas: item.id_tugas,
                                                                                                             kodeThn: kodeTahun,
