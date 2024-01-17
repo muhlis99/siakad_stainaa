@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const db = require('../config/database.js')
 const tugasModel = require('./tugasModel.js')
+const mahasiswaModel = require('./mahasiswaModel.js')
 
 const detailTugasModel = db.define('tugas', {
     'id_detail_tugas': {
@@ -48,5 +49,7 @@ const detailTugasModel = db.define('tugas', {
 tugasModel.belongsTo(detailTugasModel, { foreignKey: 'code_tugas' })
 detailTugasModel.hasMany(tugasModel, { sourceKey: 'code_tugas', foreignKey: 'code_tugas' })
 
+mahasiswaModel.belongsTo(detailTugasModel, { foreignKey: 'nim' })
+detailTugasModel.hasMany(mahasiswaModel, { sourceKey: 'nim', foreignKey: 'nim' })
 
 module.exports = detailTugasModel
