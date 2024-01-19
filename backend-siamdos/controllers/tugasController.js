@@ -409,6 +409,10 @@ module.exports = {
         const dataTugasUse = dataTugas.map(all => { return all.code_tugas })
         if (!dataTugas) return res.status(404).json({ message: "data tidak ditemukan" })
         await detailTugasModel.findAll({
+            include: [{
+                model: tugasModel,
+                attributes: ["deskripsi"]
+            }],
             where: {
                 code_tugas: dataTugasUse,
                 nim: nim
