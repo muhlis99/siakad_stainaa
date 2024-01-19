@@ -10,6 +10,7 @@ import { Circles } from "react-loader-spinner"
 import axios from 'axios'
 import moment from 'moment'
 import Swal from 'sweetalert2'
+import { FaReply } from 'react-icons/fa'
 
 const TugasDetail = () => {
     const dispatch = useDispatch()
@@ -500,6 +501,11 @@ const TugasDetail = () => {
                                     </Card>
                                     <Card className='mt-3'>
                                         <Card.Body className='p-3'>
+                                            <Row className='mb-3'>
+                                                <Col>
+                                                    <Link to='/listtugas' className='bg-[#DC3545] py-1 px-2 rounded no-underline text-white inline-flex items-center gap-1'><FaReply /> Kembali</Link>
+                                                </Col>
+                                            </Row>
                                             {detail == null || detail.status == 'tidak' ? <>
                                                 <div className='text-center'>
                                                     <div className='flex justify-center'>
