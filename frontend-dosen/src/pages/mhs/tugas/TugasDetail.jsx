@@ -545,26 +545,36 @@ const TugasDetail = () => {
                                                     <Col>
                                                         <div className='px-3 py-2 rounded-3 h-100' style={{ border: '1px dashed #919669' }}>
                                                             <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban Word/PDF</span>
-                                                            <DocViewer
-                                                                documents={docs}
-                                                                config={{
-                                                                    header: {
-                                                                        disableHeader: true,
-                                                                        disableFileName: true,
-                                                                        retainURLParams: false,
-                                                                    }
-                                                                }}
-                                                                theme={{
-                                                                    primary: "#5296d8",
-                                                                    secondary: "#ffffff",
-                                                                    tertiary: "#5296d899",
-                                                                    textPrimary: "#ffffff",
-                                                                    textSecondary: "#5296d8",
-                                                                    textTertiary: "#00000099",
-                                                                    disableThemeScrollbar: false,
-                                                                }}
-                                                                pluginRenderers={DocViewerRenderers}
-                                                            />
+                                                            {lampiranJawaban == '' ?
+                                                                <div className='flex justify-center'>
+                                                                    <div className='text-center'>
+                                                                        <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                                        <p className='text-muted font-bold'>Tidak ada File</p>
+                                                                    </div>
+                                                                </div>
+                                                                :
+                                                                <DocViewer
+                                                                    style={{ height: 370 }}
+                                                                    documents={docs}
+                                                                    config={{
+                                                                        header: {
+                                                                            disableHeader: true,
+                                                                            disableFileName: true,
+                                                                            retainURLParams: false,
+                                                                        }
+                                                                    }}
+                                                                    theme={{
+                                                                        primary: "#5296d8",
+                                                                        secondary: "#ffffff",
+                                                                        tertiary: "#5296d899",
+                                                                        textPrimary: "#ffffff",
+                                                                        textSecondary: "#5296d8",
+                                                                        textTertiary: "#00000099",
+                                                                        disableThemeScrollbar: false,
+                                                                    }}
+                                                                    pluginRenderers={DocViewerRenderers}
+                                                                />
+                                                            }
                                                         </div>
                                                     </Col>
                                                     <Col>
@@ -579,6 +589,7 @@ const TugasDetail = () => {
                                                                 </div>
                                                                 :
                                                                 <DocViewer
+                                                                    style={{ height: 370 }}
                                                                     documents={ppt}
                                                                     config={{
                                                                         header: {
