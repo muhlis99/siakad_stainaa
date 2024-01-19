@@ -52,7 +52,7 @@ const Deskripsi = () => {
     const getDataMahasiswa = async () => {
         try {
             if (user) {
-                const response = await axios.get(`v1/detailTugas/alldosen/${user.data.username}/${location.state.kodeThn}/${location.state.kodeSmt}/${location.state.kodeJen}/${location.state.kodeFkl}/${location.state.kodePro}/${location.state.kodeprt}`)
+                const response = await axios.get(`v1/detailTugas/alldosen/${user.data.username}/${location.state.kodeprt}`)
                 setMahasiswa(response.data.data);
             }
         } catch (error) {

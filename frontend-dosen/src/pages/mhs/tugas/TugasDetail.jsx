@@ -60,7 +60,7 @@ const TugasDetail = () => {
             try {
                 const response = await axios.get(`v1/tugas/tugasmhsbycode/${location.state.kodeTgs}`)
                 setTugas(response.data.data)
-                console.log(response.data.data);
+                // console.log(response.data.data);
             } catch (error) {
             }
         }
@@ -114,7 +114,6 @@ const TugasDetail = () => {
                 setLampiranJawaban(response.data.data[0].file_jawaban_word_pdf)
                 setJawabanPpt(response.data.data[0].file_jawaban_ppt)
                 setJawabanVideo(response.data.data[0].file_jawaban_video)
-                // console.log(response.data.data[0])
 
             }
         } catch (error) {
