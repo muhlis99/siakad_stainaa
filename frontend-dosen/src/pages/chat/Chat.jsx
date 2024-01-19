@@ -137,7 +137,7 @@ const Chat = () => {
 
 
     useEffect(() => {
-        const newSocket = io("http://localhost:4001")
+        const newSocket = io("https://api-siamdos.stainaa.ac.id")
         setSocket(newSocket)
         return () => {
             newSocket.disconnect()
