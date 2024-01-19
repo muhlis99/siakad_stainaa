@@ -411,7 +411,7 @@ module.exports = {
         await detailTugasModel.findAll({
             include: [{
                 model: tugasModel,
-                attributes: ["deskripsi"]
+                attributes: ["code_tugas", "deskripsi_tugas"]
             }],
             where: {
                 code_tugas: dataTugasUse,
