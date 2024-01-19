@@ -406,10 +406,11 @@ module.exports = {
                 code_jadwal_pertemuan: datacodePertemuanUse,
             }
         })
+        const dataTugasUse = dataTugas.map(all => { return all.code_tugas })
         if (!dataTugas) return res.status(404).json({ message: "data tidak ditemukan" })
         await detailTugasModel.findAll({
             where: {
-                code_tugas: dataTugas.code_tugas,
+                code_tugas: dataTugasUse,
                 nim: nim
             }
         }).then(result => {
