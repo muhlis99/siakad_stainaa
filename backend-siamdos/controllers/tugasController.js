@@ -356,6 +356,35 @@ module.exports = {
         })
     },
 
+    checkTugasByCodePertemuan: async (req, res, next) => {
+        const { code_pertemuan } = req.params
+        const codePertemuan = await jadwalPertemuanModel.findOne({
+            where: {
+                code_jadwal_pertemuan: code_pertemuan,
+                status: "aktif"
+            }
+        })
+        if (!codePertemuan) return res.status(404).json({ message: "data tidak ditemukan" })
+        await tugasModel.findOne({
+            where: {
+                code_jadwal_pertemuan: code_pertemuan,
+            }
+        }).then(result => {
+            if (!result) {
+                return res.status(404).json({
+                    message: "Data tidak ada",
+                    data: "0"
+                })
+            }
+            res.status(201).json({
+                message: "Data sudah ada",
+                data: "1"
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+
     // mahasiswa
     getAllmhs: async (req, res, next) => {
         const nim = req.params.nim
