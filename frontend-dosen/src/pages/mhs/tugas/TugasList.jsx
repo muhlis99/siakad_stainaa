@@ -16,12 +16,6 @@ const TugasList = () => {
     const [Tugas, setTugas] = useState([])
 
     useEffect(() => {
-        setTimeout(() => {
-            setTimeLeft(kalkulasiWaktu());
-        }, 1000);
-    })
-
-    useEffect(() => {
         setLoad(true)
         setTimeout(() => {
             setLoad(false)
