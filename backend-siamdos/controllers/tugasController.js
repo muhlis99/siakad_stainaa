@@ -401,18 +401,26 @@ module.exports = {
         })
         const datacodePertemuanUse = dataPertemuanUse.map(o => { return o.code_jadwal_pertemuan })
 
-        await tugasModel.findAll({
+        const dataTugas = await tugasModel.findAll({
             where: {
                 code_jadwal_pertemuan: datacodePertemuanUse,
             }
+        })
+        if (!dataTugas) return res.status(404).json({ message: "data tidak ditemukan" })
+        await detailTugasModel.findAll({
+            where: {
+                code_tugas: dataTugas.code_tugas,
+                nim: nim
+            }
         }).then(result => {
             res.status(201).json({
-                message: "Data Tugas success",
+                message: "Data get all success",
                 data: result
             })
         }).catch(err => {
             console.log(err)
         })
+
     },
 
     tugasmhsbycode: async (req, res, next) => {
