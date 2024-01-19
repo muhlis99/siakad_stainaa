@@ -3,7 +3,7 @@ const db = require('../config/database.js')
 const jadwalPertemuanModel = require('./jadwalPertemuanModel.js')
 
 
-const tugasModel = db.define('tugas', {
+const tugasModel = db.define('Mtugas', {
     'id_tugas': {
         type: DataTypes.INTEGER,
         autoIncrement: true,
