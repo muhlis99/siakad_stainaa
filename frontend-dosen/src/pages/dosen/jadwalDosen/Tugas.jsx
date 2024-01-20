@@ -20,7 +20,6 @@ const Tugas = () => {
     const [fileTugas, setFileTugas] = useState("")
     const [tglAkhir, setTglAkhir] = useState("")
     const [kodeKelas, setKodeKelas] = useState("")
-    const [checked, setChecked] = useState([])
 
     useEffect(() => {
         dispatch(getMe())
