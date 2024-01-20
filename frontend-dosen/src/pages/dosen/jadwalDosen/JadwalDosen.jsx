@@ -599,7 +599,7 @@ const JadwalDosen = () => {
                                                 </thead>
                                                 <tbody>
                                                     {Mahasiswa.map((item, index) => (
-                                                        <tr key={index} className='border'>
+                                                        <tr key={index} className={`border ${item.nim == checked[index] ? 'hidden' : ''}`}>
                                                             <th scope="row" className="py-3">
                                                                 <label className="cursor-pointer label justify-center">
                                                                     <input
@@ -768,7 +768,8 @@ const JadwalDosen = () => {
                                                                                         <td className='py-2 border text-capitalize' rowSpan={2} align='center'>
                                                                                             <button className='btn btn-sm btn-info mr-1' title='Detail' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}>Detail</button>
                                                                                             <button className='btn btn-sm btn-warning mr-1' title='Edit' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}>Edit</button>
-                                                                                            <button className='btn btn-sm btn-success' title='Tugas' onClick={() => handleTugas(item.id_jadwal_pertemuan, 'tugas', item.code_jadwal_pertemuan)}>Tugas</button>
+                                                                                            {/* <button className='btn btn-sm btn-success' title='Tugas' onClick={() => handleTugas(item.id_jadwal_pertemuan, 'tugas', item.code_jadwal_pertemuan)}>Tugas</button> */}
+                                                                                            <Link to="/settugas" state={{ idPertemuan: item.id_jadwal_pertemuan }} className='btn btn-sm btn-success'>Tugas</Link>
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>
