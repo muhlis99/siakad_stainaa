@@ -10,6 +10,13 @@ const sebaranMataKuliah = require('../models/sebaranMataKuliah.js')
 const historyMahasiswa = require('../models/historyMahasiswaModel.js')
 const krsModel = require('../models/krsModel.js')
 const detailTugasModel = require('../models/detailTugasModel.js')
+const kelasDetailKuliahModel = require('../models/kelasDetailKuliahModel.js')
+const kelasKuliahModel = require('../models/kelasKuliahModel.js')
+const mahasiswaModel = require('../models/mahasiswaModel.js')
+const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
+const prodiModel = require('../models/prodiModel.js')
+const fakultasModel = require('../models/fakultasModel.js')
+
 
 module.exports = {
     // dosen
@@ -176,6 +183,76 @@ module.exports = {
             }).
             catch(err => {
                 next(err)
+            })
+    },
+
+    getMhsByKelas: async (req, res, next) => {
+        const { codeKls } = req.params
+        const search = req.query.search || ""
+        await kelasDetailKuliahModel.findAll({
+            include: [
+                {
+                    attributes: ["nama_kelas", "kapasitas"],
+                    model: kelasKuliahModel,
+                    include: [
+                        {
+                            attributes: ["nama_jenjang_pendidikan"],
+                            model: jenjangPendidikanModel,
+                            where: { status: "aktif" }
+                        }, {
+                            attributes: ["nama_fakultas"],
+                            model: fakultasModel,
+                            where: { status: "aktif" }
+                        }, {
+                            attributes: ["nama_prodi"],
+                            model: prodiModel,
+                            where: { status: "aktif" }
+                        }],
+                    where: { status: "aktif" }
+                }, {
+                    attributes: ["nim", "nama", "jenis_kelamin"],
+                    model: mahasiswaModel,
+                    where: { status: "aktif" },
+                }
+            ],
+            where: {
+                [Op.or]: [
+                    {
+                        id_kelas_detail: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_kelas_detail: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        code_kelas: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        nim: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ],
+                code_kelas: codeKls,
+                status: "aktif",
+            },
+            order: [
+                ["nim", "ASC"]
+            ]
+        }).
+            then(result => {
+                res.status(200).json({
+                    message: "Get All mahasiswa by kelas Success",
+                    data: result,
+                })
+            }).
+            catch(err => {
+                console.log(err)
             })
     },
 
@@ -350,6 +427,39 @@ module.exports = {
             })
             res.status(201).json({
                 message: "Data Tugas Dihapus",
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+
+    deleteMhsTugas: async (req, res, next) => {
+        const id = req.params.id
+        const dataUse = await detailTugasModel.findOne({
+            where: {
+                id_detail_tugas: id
+            }
+        })
+        if (!dataUse) return res.status(500).json({ message: "data tidak ditemukan" })
+        const validasiData = await detailTugasModel.findOne({
+            where: {
+                id_detail_tugas: id,
+                status: "terkumpul"
+            }
+        })
+        if (validasiData) return res.status(500).json({
+            message: "mahasiswa sudah mengumpulkan tugas dan tidak boleh dihapus",
+            data: "0"
+        })
+        await detailTugasModel.destroy({
+            where: {
+                id_detail_tugas: id,
+                status: "tidak"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: " Data berhasil dihapus",
+                data: "1"
             })
         }).catch(err => {
             console.log(err)
