@@ -30,7 +30,7 @@ const PilihMahasiswa = () => {
     useEffect(() => {
         const getMahasiswaPerkelas = async () => {
             try {
-                const response = await axios.get(`v1/kelasKuliah/getMhsByKelas/${location.state.kodeKls}`)
+                const response = await axios.get(`v1/tugas/getMhsByKelas/${location.state.kodeKls}`)
                 setMahasiswa(response.data.data)
                 // console.log(response.data.data)
             } catch (error) {
@@ -92,10 +92,9 @@ const PilihMahasiswa = () => {
                                                     <tbody>
                                                         {Mahasiswa.map((item, index) => (
                                                             <tr key={index}
-                                                                className='border'
-                                                            // className={`border 
-                                                            // ${item.nim == checked[index] ? 'hidden' : ''}
-                                                            // `}
+                                                                className={`border 
+                                                            ${item.nim == checked[index] ? 'hidden' : ''}
+                                                            `}
                                                             >
                                                                 <th scope="row" className="py-3">
                                                                     <label className="cursor-pointer label justify-center">
