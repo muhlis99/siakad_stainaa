@@ -133,7 +133,15 @@ const Deskripsi = () => {
                                         <Card.Body className='p-3'>
                                             <Row className='mb-3'>
                                                 <Col>
-                                                    <Link to='/tugas' className='bg-[#DC3545] py-1 px-2 rounded no-underline text-white inline-flex items-center gap-1'><FaReply /> Kembali</Link>
+                                                    <Link to='/tugas' state={{
+                                                        kodeJen: location.state.kodeJen,
+                                                        kodeFkl: location.state.kodeFkl,
+                                                        kodePro: location.state.kodePro,
+                                                        kodeThn: location.state.kodeThn,
+                                                        kodeSmt: location.state.kodeSmt,
+                                                        idProdi: location.state.idProdi,
+                                                        kodeprt: location.state.kodeprt
+                                                    }} className='bg-[#DC3545] py-1 px-2 rounded no-underline text-white inline-flex items-center gap-1'><FaReply /> Kembali</Link>
                                                 </Col>
                                             </Row>
                                             <Row>
@@ -179,7 +187,15 @@ const Deskripsi = () => {
                                                                             <td className='py-2 px-2 text-capitalize'>
                                                                                 <Link to="/detailTugas" state={{
                                                                                     kodeTgs: Tugas.code_tugas,
-                                                                                    nim: item.nim
+                                                                                    nim: item.nim,
+                                                                                    idTugas: location.state.idTugas,
+                                                                                    kodeJen: location.state.kodeJen,
+                                                                                    kodeFkl: location.state.kodeFkl,
+                                                                                    kodePro: location.state.kodePro,
+                                                                                    kodeThn: location.state.kodeThn,
+                                                                                    kodeSmt: location.state.kodeSmt,
+                                                                                    idProdi: location.state.idProdi,
+                                                                                    kodeprt: location.state.kodeprt
                                                                                 }} className={`btn btn-sm btn-info ${item.status == 'terkumpul' ? '' : 'disabled'}`}>Detail</Link>
                                                                             </td>
                                                                         </tr>

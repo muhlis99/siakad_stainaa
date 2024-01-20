@@ -49,6 +49,8 @@ const JadwalDosen = () => {
     const [modal, setModal] = useState(false)
     const [hasil, setHasil] = useState("")
     const [checked, setChecked] = useState([])
+    const [kodePert, setKodePert] = useState("")
+    const [dataTugas, setDataTugas] = useState("")
 
     useEffect(() => {
         setLoad(true)
@@ -106,6 +108,10 @@ const JadwalDosen = () => {
     useEffect(() => {
         getMahasiswaPerkelas()
     }, [kodeKelas])
+
+    useEffect(() => {
+        cekTugasByPertemuan()
+    }, [kodePert])
 
     const getProdi = async () => {
         try {
@@ -226,11 +232,23 @@ const JadwalDosen = () => {
         }
     }
 
-    const handleTugas = async (e, f) => {
+    const handleTugas = async (e, f, g) => {
         const response = await axios.get(`v1/jadwalPertemuan/getById/${e}`)
         setKodePertemuan(response.data.data.code_jadwal_pertemuan)
         setStatus(f)
+        setKodePert(g)
         setShow(true)
+    }
+
+    const cekTugasByPertemuan = async () => {
+        try {
+            if (kodePert) {
+                const response = await axios.get(`v1/tugas/checkTugasByCodePertemuan/${kodePert}`)
+                setDataTugas(response.data.data)
+            }
+        } catch (error) {
+            setDataTugas(error.response.data.data)
+        }
     }
 
     const loadTugas = (e) => {
@@ -250,14 +268,15 @@ const JadwalDosen = () => {
                 title: 'Deskripsi tidak boleh kosong',
                 icon: 'error'
             })
-        } else if (fileTugas == '') {
-            Swal.fire({
-                title: 'Lampiran Tugas tidak boleh kosong',
-                icon: 'error'
-            })
         } else if (tglAkhir == "") {
             Swal.fire({
                 title: 'Tanggal pengumpulan tidak boleh kosong',
+                icon: 'error'
+            })
+        } else if (dataTugas == '1') {
+            Swal.fire({
+                title: 'Tugas Sudah ada',
+                text: 'Silakan cek di menu tugas',
                 icon: 'error'
             })
         } else {
@@ -283,6 +302,7 @@ const JadwalDosen = () => {
                         getJadwal()
                         setHasil(response.data.data.code_tugas)
                         handleModal()
+                        setKodePert("")
                     });
                 })
             } catch (error) {
@@ -337,15 +357,6 @@ const JadwalDosen = () => {
                     setChecked([])
                 })
             })
-
-            // then(function (response) {
-            //     Swal.fire({
-            //         title: response.data.message,
-            //         icon: "success"
-            //     })).then(() => {
-            //         setModal(false)
-            //     })
-            // }
         } catch (error) {
 
         }
@@ -757,7 +768,7 @@ const JadwalDosen = () => {
                                                                                         <td className='py-2 border text-capitalize' rowSpan={2} align='center'>
                                                                                             <button className='btn btn-sm btn-info mr-1' title='Detail' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}>Detail</button>
                                                                                             <button className='btn btn-sm btn-warning mr-1' title='Edit' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}>Edit</button>
-                                                                                            <button className='btn btn-sm btn-success' title='Tugas' onClick={() => handleTugas(item.id_jadwal_pertemuan, 'tugas')}>Tugas</button>
+                                                                                            <button className='btn btn-sm btn-success' title='Tugas' onClick={() => handleTugas(item.id_jadwal_pertemuan, 'tugas', item.code_jadwal_pertemuan)}>Tugas</button>
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>

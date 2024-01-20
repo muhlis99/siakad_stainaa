@@ -4,7 +4,7 @@ import { Row, Col, Card, Table, Image, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import dataBlank from "../../../assets/images/watch.svg"
 import { getMe } from "../../../features/authSlice"
-import { Link, Navigate } from "react-router-dom"
+import { Link, Navigate, useLocation } from "react-router-dom"
 import { Circles } from "react-loader-spinner"
 import axios from 'axios'
 import moment from "moment"
@@ -34,6 +34,18 @@ const ListTugas = () => {
     const [tglAkhir, setTglAkhir] = useState("")
     const [show, setShow] = useState(false)
     const [tgl, setTgl] = useState("")
+    const location = useLocation()
+
+    useEffect(() => {
+        if (location.state != null) {
+            setKodeJenjang(location.state.kodeJen)
+            setKodeFakultas(location.state.kodeFkl)
+            setKodeProdi(location.state.kodePro)
+            setKodeTahun(location.state.kodeThn)
+            setKodeSemester(location.state.kodeSmt)
+            setIdProdi(location.state.idProdi)
+        }
+    }, [location])
 
     useEffect(() => {
         setLoad(true)
@@ -425,7 +437,7 @@ const ListTugas = () => {
                                                     <Row>
                                                         <Col lg='12'>
                                                             {AllTugas.length > 0 ? AllTugas.map((item) => (
-                                                                <Card className='shadow' key={item.id_tugas}>
+                                                                <Card className='shadow mb-2' key={item.id_tugas}>
                                                                     <Card.Body className='py-3'>
                                                                         <Row className='border pt-2'>
                                                                             <Col lg="6">
@@ -469,6 +481,7 @@ const ListTugas = () => {
                                                                                                             kodeJen: kodeJenjang,
                                                                                                             kodeFkl: kodeFakultas,
                                                                                                             kodePro: kodeProdi,
+                                                                                                            idProdi: idProdi,
                                                                                                             kodeprt: item.code_jadwal_pertemuan
                                                                                                         }} className='btn btn-sm btn-info'>Detail</Link>
                                                                                                         {item.status == 'belum' ?

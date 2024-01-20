@@ -13,7 +13,10 @@ const TugasList = () => {
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
     const [load, setLoad] = useState(false)
+    const [username, setUsername] = useState("")
     const [Tugas, setTugas] = useState([])
+    const [kodeTugas, setKodeTugas] = useState([])
+    const [dataTanggal, setDataTanggal] = useState([])
 
     useEffect(() => {
         setLoad(true)
@@ -23,22 +26,61 @@ const TugasList = () => {
     }, [])
 
     useEffect(() => {
+        if (user) {
+            setUsername(user.data.username)
+        }
+    }, [user])
+
+    useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
 
     useEffect(() => {
-        const getTugas = async () => {
-            try {
-                if (user) {
-                    const response = await axios.get(`v1/tugas/allmhs/${user.data.username}`)
-                    setTugas(response.data.data)
-                }
-            } catch (error) {
-
-            }
-        }
         getTugas()
     }, [user])
+
+    useEffect(() => {
+        getKodeTugas()
+    }, [Tugas])
+
+    useEffect(() => {
+        getTanggal()
+    }, [username, kodeTugas])
+
+    const getTugas = async () => {
+        try {
+            if (user) {
+                const response = await axios.get(`v1/tugas/allmhs/${user.data.username}`)
+                setTugas(response.data.data)
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const getKodeTugas = () => {
+        var i = Tugas.map(item => (
+            item.Mtugas[0].code_tugas
+        ))
+        setKodeTugas(i)
+    }
+
+    const getTanggal = async () => {
+        if (kodeTugas.length > 0) {
+            let Tugass = []
+            let promises = []
+            for (let i = 0; i < kodeTugas.length; i++) {
+                const t = await axios.get('v1/tugas/tugasmhsbycode/' + kodeTugas[i]).then(response => {
+                    Tugass.push(response.data.data)
+                })
+                promises.push(t)
+
+            }
+            if (kodeTugas.length != 0) {
+                Promise.all(promises).then(() => setDataTanggal(Tugass))
+            }
+        }
+    }
 
     return (
         <Layout>
@@ -79,7 +121,7 @@ const TugasList = () => {
                                                                         <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
                                                                             <span className='text[12px] text-capitalize text-dark'>Deskripsi Tugas</span>
                                                                             <div className=' text-[13px] text-secondary'>
-                                                                                {item.deskripsi_tugas}
+                                                                                {item.Mtugas[0].deskripsi_tugas}
                                                                             </div>
                                                                         </div>
                                                                     </Col>
@@ -87,9 +129,13 @@ const TugasList = () => {
                                                                 <Row className='mt-2'>
                                                                     <Col>
                                                                         <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
-                                                                            <span className='text[12px] text-capitalize text-dark'>Terakhir Pengumpulan</span>
+                                                                            <span className='text[12px] text-capitalize text-dark'>Batas Pengumpulan</span>
                                                                             <div className=' text-[13px] text-secondary'>
-                                                                                Pengumpulan tugas berakhir pada tanggal {moment(item.tanggal_akhir).format('DD MMMM YYYY')}
+                                                                                {
+                                                                                    dataTanggal != 0 ?
+                                                                                        moment(dataTanggal[index].tanggal_akhir).format('DD MMMM YYYY')
+                                                                                        : ""
+                                                                                }
                                                                             </div>
                                                                         </div>
                                                                     </Col>
@@ -109,7 +155,10 @@ const TugasList = () => {
                                                     </Col>
                                                 )) :
                                                     <div className='flex justify-center'>
-                                                        <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                        <div>
+                                                            <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                            <p className='text-muted font-bold'>Tidak ada data</p>
+                                                        </div>
                                                     </div>
                                                 }
                                             </Row>

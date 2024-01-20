@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card } from 'react-bootstrap'
+import { Row, Col, Card, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer"
 import { getMe } from "../../../features/authSlice"
+import dataBlank from "../../../assets/images/watch.svg"
 import { Link, Navigate, useLocation } from "react-router-dom"
 import { Circles } from "react-loader-spinner"
 import axios from 'axios'
 import moment from 'moment'
+import { FaReply } from 'react-icons/fa'
 
 const DetailTugas = () => {
     const dispatch = useDispatch()
@@ -36,7 +38,7 @@ const DetailTugas = () => {
     }, [])
 
     useEffect(() => {
-        // console.log(location.state)
+        console.log(location.state)
     }, [location])
 
     useEffect(() => {
@@ -221,6 +223,20 @@ const DetailTugas = () => {
                                     </Card>
                                     <Card className='mt-3'>
                                         <Card.Body className='p-3'>
+                                            <Row className='mb-3'>
+                                                <Col>
+                                                    <Link to='/deskripsi' state={{
+                                                        kodeJen: location.state.kodeJen,
+                                                        kodeFkl: location.state.kodeFkl,
+                                                        kodePro: location.state.kodePro,
+                                                        kodeThn: location.state.kodeThn,
+                                                        kodeSmt: location.state.kodeSmt,
+                                                        idProdi: location.state.idProdi,
+                                                        kodeprt: location.state.kodeprt,
+                                                        idTugas: location.state.idTugas,
+                                                    }} className='bg-[#DC3545] py-1 px-2 rounded no-underline text-white inline-flex items-center gap-1'><FaReply /> Kembali</Link>
+                                                </Col>
+                                            </Row>
                                             {detailTugas == null ? <>
                                                 <div className='text-center'>
                                                     <div className='flex justify-center'>
@@ -255,88 +271,123 @@ const DetailTugas = () => {
                                                 </Row>
                                                 <Row className='mt-2'>
                                                     <Col>
-                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                        <div className='px-3 py-2 rounded-3 h-100' style={{ border: '1px dashed #919669' }}>
                                                             <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban</span>
-                                                            <div className=' text-[13px] my-2 text-secondary'>
-                                                                <button className='btn btn-sm btn-success' onClick={downloadDoc}>Download</button>
-                                                            </div>
-                                                            <DocViewer
-                                                                documents={docs}
-                                                                config={{
-                                                                    header: {
-                                                                        disableHeader: true,
-                                                                        disableFileName: true,
-                                                                        retainURLParams: false,
-                                                                    }
-                                                                }}
-                                                                theme={{
-                                                                    primary: "#5296d8",
-                                                                    secondary: "#ffffff",
-                                                                    tertiary: "#5296d899",
-                                                                    textPrimary: "#ffffff",
-                                                                    textSecondary: "#5296d8",
-                                                                    textTertiary: "#00000099",
-                                                                    disableThemeScrollbar: false,
-                                                                }}
-                                                                pluginRenderers={DocViewerRenderers}
-                                                            />
+                                                            {
+                                                                lampiranJawaban == '' ?
+                                                                    <div className='flex justify-center'>
+                                                                        <div className='text-center'>
+                                                                            <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                                            <p className='text-muted font-bold'>Tidak ada File</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    :
+                                                                    <>
+                                                                        <div className=' text-[13px] my-2 text-secondary'>
+                                                                            <button className='btn btn-sm btn-success' onClick={downloadDoc}>Download</button>
+                                                                        </div>
+                                                                        <DocViewer
+                                                                            style={{ height: 370 }}
+                                                                            documents={docs}
+                                                                            config={{
+                                                                                header: {
+                                                                                    disableHeader: true,
+                                                                                    disableFileName: true,
+                                                                                    retainURLParams: false,
+                                                                                }
+                                                                            }}
+                                                                            theme={{
+                                                                                primary: "#5296d8",
+                                                                                secondary: "#ffffff",
+                                                                                tertiary: "#5296d899",
+                                                                                textPrimary: "#ffffff",
+                                                                                textSecondary: "#5296d8",
+                                                                                textTertiary: "#00000099",
+                                                                                disableThemeScrollbar: false,
+                                                                            }}
+                                                                            pluginRenderers={DocViewerRenderers}
+                                                                        />
+                                                                    </>
+                                                            }
                                                         </div>
                                                     </Col>
                                                     <Col>
-                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                        <div className='px-3 py-2 rounded-3 h-100' style={{ border: '1px dashed #919669' }}>
                                                             <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban Power Point</span>
-                                                            <div className=' text-[13px] my-2 text-secondary'>
-                                                                <button className='btn btn-sm btn-success' onClick={downloadppt}>Download</button>
-                                                            </div>
-
-                                                            {/* <DocViewer
-                                                                documents={ppt}
-                                                                config={{
-                                                                    header: {
-                                                                        disableHeader: true,
-                                                                        disableFileName: true,
-                                                                        retainURLParams: false,
-                                                                    }
-                                                                }}
-                                                                theme={{
-                                                                    primary: "#5296d8",
-                                                                    secondary: "#ffffff",
-                                                                    tertiary: "#5296d899",
-                                                                    textPrimary: "#ffffff",
-                                                                    textSecondary: "#5296d8",
-                                                                    textTertiary: "#00000099",
-                                                                    disableThemeScrollbar: false,
-                                                                }}
-                                                                pluginRenderers={DocViewerRenderers}
-                                                            /> */}
+                                                            {jawabanPpt == '' ?
+                                                                <div className='flex justify-center'>
+                                                                    <div className='text-center'>
+                                                                        <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                                        <p className='text-muted font-bold'>Tidak ada File</p>
+                                                                    </div>
+                                                                </div> :
+                                                                <>
+                                                                    <div className=' text-[13px] my-2 text-secondary'>
+                                                                        <button className='btn btn-sm btn-success' onClick={downloadppt}>Download</button>
+                                                                    </div>
+                                                                    <DocViewer
+                                                                        style={{ height: 370 }}
+                                                                        documents={ppt}
+                                                                        config={{
+                                                                            header: {
+                                                                                disableHeader: true,
+                                                                                disableFileName: true,
+                                                                                retainURLParams: false,
+                                                                            }
+                                                                        }}
+                                                                        theme={{
+                                                                            primary: "#5296d8",
+                                                                            secondary: "#ffffff",
+                                                                            tertiary: "#5296d899",
+                                                                            textPrimary: "#ffffff",
+                                                                            textSecondary: "#5296d8",
+                                                                            textTertiary: "#00000099",
+                                                                            disableThemeScrollbar: false,
+                                                                        }}
+                                                                        pluginRenderers={DocViewerRenderers}
+                                                                    />
+                                                                </>
+                                                            }
                                                         </div>
                                                     </Col>
                                                     <Col>
-                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                        <div className='px-3 py-2 rounded-3 h-100' style={{ border: '1px dashed #919669' }}>
                                                             <span className='text[14px] text-capitalize text-dark font-bold'>File Jawaban Video</span>
-                                                            <div className=' text-[13px] my-2 text-secondary'>
-                                                                <button className='btn btn-sm btn-success' onClick={downloadVideo}>Download</button>
-                                                            </div>
-                                                            <DocViewer
-                                                                documents={video}
-                                                                config={{
-                                                                    header: {
-                                                                        disableHeader: true,
-                                                                        disableFileName: true,
-                                                                        retainURLParams: false,
-                                                                    }
-                                                                }}
-                                                                theme={{
-                                                                    primary: "#5296d8",
-                                                                    secondary: "#ffffff",
-                                                                    tertiary: "#5296d899",
-                                                                    textPrimary: "#ffffff",
-                                                                    textSecondary: "#5296d8",
-                                                                    textTertiary: "#00000099",
-                                                                    disableThemeScrollbar: false,
-                                                                }}
-                                                                pluginRenderers={DocViewerRenderers}
-                                                            />
+                                                            {jawabanVideo == '' ?
+                                                                <div className='flex justify-center'>
+                                                                    <div className='text-center'>
+                                                                        <Image src={dataBlank} className='mt-4 ' width={150} />
+                                                                        <p className='text-muted font-bold'>Tidak ada File</p>
+                                                                    </div>
+                                                                </div> :
+                                                                <>
+                                                                    <div className=' text-[13px] my-2 text-secondary'>
+                                                                        <button className='btn btn-sm btn-success' onClick={downloadVideo}>Download</button>
+                                                                    </div>
+                                                                    <div className='mt-5'>
+                                                                        <DocViewer
+                                                                            documents={video}
+                                                                            config={{
+                                                                                header: {
+                                                                                    disableHeader: true,
+                                                                                    disableFileName: true,
+                                                                                    retainURLParams: false,
+                                                                                }
+                                                                            }}
+                                                                            theme={{
+                                                                                primary: "#5296d8",
+                                                                                secondary: "#ffffff",
+                                                                                tertiary: "#5296d899",
+                                                                                textPrimary: "#ffffff",
+                                                                                textSecondary: "#5296d8",
+                                                                                textTertiary: "#00000099",
+                                                                                disableThemeScrollbar: false,
+                                                                            }}
+                                                                            pluginRenderers={DocViewerRenderers}
+                                                                        />
+                                                                    </div>
+                                                                </>
+                                                            }
                                                         </div>
                                                     </Col>
                                                 </Row>
