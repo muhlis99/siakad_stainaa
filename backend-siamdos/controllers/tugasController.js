@@ -237,6 +237,11 @@ module.exports = {
                             [Op.like]: `%${search}%`
                         }
                     },
+                    {
+                        '$mahasiswas.nama$': {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
                 ],
                 code_kelas: codeKls,
                 status: "aktif",
