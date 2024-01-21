@@ -238,10 +238,10 @@ module.exports = {
                         }
                     },
                     {
-                        '$mahasiswas.nama$': {
+                        '$mahasiswa.nama$': {
                             [Op.like]: `%${search}%`
                         }
-                    },
+                    }
                 ],
                 code_kelas: codeKls,
                 status: "aktif",
