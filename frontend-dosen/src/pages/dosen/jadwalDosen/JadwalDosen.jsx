@@ -51,6 +51,7 @@ const JadwalDosen = () => {
     const [checked, setChecked] = useState([])
     const [kodePert, setKodePert] = useState("")
     const [dataTugas, setDataTugas] = useState("")
+    const [keyword, setKeyword] = useState("")
 
     useEffect(() => {
         setLoad(true)
@@ -102,16 +103,8 @@ const JadwalDosen = () => {
     }, [kodeJenjang, kodeFakultas, kodeProdi, kodeTahun, kodeSemester])
 
     useEffect(() => {
-        getKodeKelas()
-    }, [kodeJenjang, kodeFakultas, kodeProdi, kodeTahun, kodeSemester, username])
-
-    useEffect(() => {
         getMahasiswaPerkelas()
-    }, [kodeKelas])
-
-    useEffect(() => {
-        cekTugasByPertemuan()
-    }, [kodePert])
+    }, [kodeKelas, keyword])
 
     const getProdi = async () => {
         try {
@@ -240,14 +233,24 @@ const JadwalDosen = () => {
         setShow(true)
     }
 
-    const cekTugasByPertemuan = async () => {
+    const cekTugasByPertemuan = async (e, f, g) => {
+        setStatus(f)
+        setKodePertemuan(g)
+        const u = await axios.get(`v1/jadwalPertemuan/getById/${e}`)
+        setKodeKelas(u.data.data.jadwalKuliahs[0].code_kelas);
         try {
-            if (kodePert) {
-                const response = await axios.get(`v1/tugas/checkTugasByCodePertemuan/${kodePert}`)
-                setDataTugas(response.data.data)
+            if (g) {
+                const response = axios.get(`v1/tugas/checkTugasByCodePertemuan/${g}`)
+                Swal.fire({
+                    title: "Tugas sudah ada",
+                    text: "Silahkan cek di menu tugas",
+                    icon: 'error'
+
+                })
             }
         } catch (error) {
             setDataTugas(error.response.data.data)
+            setShow(true)
         }
     }
 
@@ -311,27 +314,21 @@ const JadwalDosen = () => {
         }
     }
 
-    const getKodeKelas = async () => {
+    const getMahasiswaPerkelas = async () => {
         try {
-            if (kodeJenjang && kodeFakultas && kodeProdi && kodeTahun && kodeSemester) {
-                const response = await axios.get(`v1/jadwalKuliah/jadwalKuliahDosen/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${username}`)
-                setKodeKelas(response.data.data[0].code_kelas)
+            if (kodeKelas) {
+                const response = await axios.get(`v1/tugas/getMhsByKelas/${kodeKelas}?search=${keyword}`)
+                setMahasiswa(response.data.data)
+                console.log(response.data.data)
             }
         } catch (error) {
 
         }
     }
 
-    const getMahasiswaPerkelas = async () => {
-        try {
-            if (kodeKelas) {
-                const response = await axios.get(`v1/kelasKuliah/getMhsByKelas/${kodeKelas}`)
-                setMahasiswa(response.data.data)
-                // console.log(response.data.data)
-            }
-        } catch (error) {
-
-        }
+    const cariData = (e) => {
+        e.preventDefault()
+        setKeyword(e ? e.target.value : "")
     }
 
     const handleCheck = (e, item) => {
@@ -549,7 +546,6 @@ const JadwalDosen = () => {
                                                         placeholder='Deskripsi Tugas' value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} className='form-control form-control-sm'
                                                     ></textarea>
                                                 </div>
-                                                <Link ></Link>
                                                 <div className='form-group'>
                                                     <Row>
                                                         <Col>
@@ -582,10 +578,26 @@ const JadwalDosen = () => {
                                 size='lg'
                                 centered
                             >
-                                <Modal.Header >
-                                    <Modal.Title>Pemilihan Mahasiswa</Modal.Title>
-                                </Modal.Header>
                                 <Modal.Body>
+                                    <Row className='mb-2'>
+                                        <Col>
+                                            <h4>Pilih Mahasiswa</h4>
+                                        </Col>
+                                        <Col lg="5" className='flex gap-3'>
+                                            <div className=''>
+                                                <input type="text"
+                                                    onChange={cariData}
+                                                    className='form-control form-control-sm float-end'
+                                                    placeholder='Cari Mahasiswa'
+                                                />
+                                            </div>
+                                            <div>
+                                                <form onSubmit={simpanMahasiswa}>
+                                                    <button className='btn btn-sm btn-primary'>Simpan</button>
+                                                </form>
+                                            </div>
+                                        </Col>
+                                    </Row>
                                     <Row>
                                         <Col>
                                             <Table>
@@ -599,7 +611,7 @@ const JadwalDosen = () => {
                                                 </thead>
                                                 <tbody>
                                                     {Mahasiswa.map((item, index) => (
-                                                        <tr key={index} className={`border ${item.nim == checked[index] ? 'hidden' : ''}`}>
+                                                        <tr key={index} className={`border`}>
                                                             <th scope="row" className="py-3">
                                                                 <label className="cursor-pointer label justify-center">
                                                                     <input
@@ -622,11 +634,6 @@ const JadwalDosen = () => {
                                         </Col>
                                     </Row>
                                 </Modal.Body>
-                                <Modal.Footer>
-                                    <form onSubmit={simpanMahasiswa}>
-                                        <button className='btn btn-sm btn-primary'>Simpan</button>
-                                    </form>
-                                </Modal.Footer>
                             </Modal>
 
                             <div className="page-header">
@@ -768,8 +775,8 @@ const JadwalDosen = () => {
                                                                                         <td className='py-2 border text-capitalize' rowSpan={2} align='center'>
                                                                                             <button className='btn btn-sm btn-info mr-1' title='Detail' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}>Detail</button>
                                                                                             <button className='btn btn-sm btn-warning mr-1' title='Edit' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}>Edit</button>
-                                                                                            {/* <button className='btn btn-sm btn-success' title='Tugas' onClick={() => handleTugas(item.id_jadwal_pertemuan, 'tugas', item.code_jadwal_pertemuan)}>Tugas</button> */}
-                                                                                            <Link to="/settugas" state={{ idPertemuan: item.id_jadwal_pertemuan }} className='btn btn-sm btn-success'>Tugas</Link>
+                                                                                            <button className='btn btn-sm btn-success' title='Tugas' onClick={() => cekTugasByPertemuan(item.id_jadwal_pertemuan, 'tugas', item.code_jadwal_pertemuan)}>Tugas</button>
+                                                                                            {/* <Link to="/settugas" state={{ idPertemuan: item.id_jadwal_pertemuan }} className='btn btn-sm btn-success'>Tugas</Link>*/}
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>
