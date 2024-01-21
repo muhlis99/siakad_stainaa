@@ -35,6 +35,7 @@ const ListTugas = () => {
     const [show, setShow] = useState(false)
     const [tgl, setTgl] = useState("")
     const location = useLocation()
+    const [status, setStatus] = useState("")
 
     useEffect(() => {
         if (location.state != null) {
@@ -150,14 +151,16 @@ const ListTugas = () => {
         }
     }
 
-    const handleShow = async (e) => {
+    const handleShow = async (e, f) => {
         try {
             const response = await axios.get(`v1/tugas/getById/${e}`)
+            console.log(response.data.data);
             setIdTugas(response.data.data.id_tugas)
             setDeskripsi(response.data.data.deskripsi_tugas)
             setNamaTugas(response.data.data.tugas)
             setTglAkhir(response.data.data.tanggal_akhir)
             // setFileTugas(response.data.data.file_tugas)
+            setStatus(f)
             setShow(true)
         } catch (error) {
 
@@ -287,51 +290,63 @@ const ListTugas = () => {
                             <Modal
                                 show={show}
                                 onHide={handleClose}
-                                backdrop="static"
+                                // backdrop="static"
                                 keyboard={false}
                                 size='lg'
                                 centered
                             >
-                                <Modal.Header closeButton>
-                                    <Modal.Title></Modal.Title>
+                                <Modal.Header>
+                                    {/* <Modal.Title></Modal.Title> */}
+                                    <div className='flex gap-2 mx-auto'>
+                                        <button className={`btn btn-sm ${status == 'tugas' ? 'btn-primary' : 'btn-outline-primary'}`} onClick={() => setStatus('tugas')}>Edit Tugas</button>
+                                        <button className={`btn btn-sm ${status == 'mhs' ? 'btn-primary' : 'btn-outline-primary'}`} onClick={() => setStatus('mhs')}>Edit Mahasiswa</button>
+                                    </div>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <form
-                                        onSubmit={simpanTugas}
-                                    >
-                                        <div className='form-group'>
-                                            <label htmlFor="judul" className='h6'>Judul Tugas</label>
-                                            <input id='judul' placeholder='Judul Tugas' value={namaTugas} onChange={(e) => setNamaTugas(e.target.value)} type="text" className='form-control form-control-sm' />
-                                        </div>
-                                        <div className='form-group'>
-                                            <label htmlFor="deskripsi" className='h6'>Deskripsi Tugas</label>
-                                            <textarea
-                                                id="deskripsi"
-                                                cols="30"
-                                                rows="3"
-                                                placeholder='Deskripsi Tugas' value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} className='form-control form-control-sm'
-                                            ></textarea>
-                                        </div>
-                                        <Link ></Link>
-                                        <div className='form-group'>
+                                    {status == 'tugas' ?
+                                        <form onSubmit={simpanTugas}>
+                                            <div className='form-group'>
+                                                <label htmlFor="judul" className='h6'>Judul Tugas</label>
+                                                <input id='judul' placeholder='Judul Tugas' value={namaTugas} onChange={(e) => setNamaTugas(e.target.value)} type="text" className='form-control form-control-sm' />
+                                            </div>
+                                            <div className='form-group'>
+                                                <label htmlFor="deskripsi" className='h6'>Deskripsi Tugas</label>
+                                                <textarea
+                                                    id="deskripsi"
+                                                    cols="30"
+                                                    rows="3"
+                                                    placeholder='Deskripsi Tugas' value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} className='form-control form-control-sm'
+                                                ></textarea>
+                                            </div>
+                                            <div className='form-group'>
+                                                <Row>
+                                                    <Col>
+                                                        <label htmlFor="lampiran" className='h6'>Lampiran Tugas</label>
+                                                        <input id='lampiran' type="file" onChange={loadTugas} className='form-control form-control-sm' />
+                                                    </Col>
+                                                    <Col>
+                                                        <label htmlFor="tanggal" className='h6'>Tanggal Akhir Pengumpulan</label>
+                                                        <input id='tanggal' value={tglAkhir} onChange={(e) => setTglAkhir(e.target.value)} type="date" className='form-control form-control-sm' />
+                                                    </Col>
+                                                </Row>
+                                            </div>
+                                            <hr />
                                             <Row>
                                                 <Col>
-                                                    <label htmlFor="lampiran" className='h6'>Lampiran Tugas</label>
-                                                    <input id='lampiran' type="file" onChange={loadTugas} className='form-control form-control-sm' />
-                                                </Col>
-                                                <Col>
-                                                    <label htmlFor="tanggal" className='h6'>Tanggal Akhir Pengumpulan</label>
-                                                    <input id='tanggal' value={tglAkhir} onChange={(e) => setTglAkhir(e.target.value)} type="date" className='form-control form-control-sm' />
+                                                    <button className='float-end btn btn-info btn-sm'>Simpan</button>
                                                 </Col>
                                             </Row>
-                                        </div>
-                                        <hr />
+                                        </form> :
                                         <Row>
                                             <Col>
-                                                <button className='float-end btn btn-info btn-sm'>Simpan</button>
+                                                <div className='table-responsive'>
+                                                    <Table>
+
+                                                    </Table>
+                                                </div>
                                             </Col>
                                         </Row>
-                                    </form>
+                                    }
                                 </Modal.Body>
                             </Modal>
                             <div className="page-header">
@@ -485,7 +500,7 @@ const ListTugas = () => {
                                                                                                             kodeprt: item.code_jadwal_pertemuan
                                                                                                         }} className='btn btn-sm btn-info'>Detail</Link>
                                                                                                         {item.status == 'belum' ?
-                                                                                                            <button onClick={() => handleShow(item.id_tugas)} className='btn btn-sm btn-warning ml-1'>Edit</button>
+                                                                                                            <button onClick={() => handleShow(item.id_tugas, 'tugas')} className='btn btn-sm btn-warning ml-1'>Edit</button>
                                                                                                             :
                                                                                                             ""
                                                                                                         }

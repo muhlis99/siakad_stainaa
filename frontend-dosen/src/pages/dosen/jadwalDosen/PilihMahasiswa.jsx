@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../Layout'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Navigate } from 'react-router-dom'
 import { Row, Col, Card, Table, Modal, Accordion, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
@@ -15,6 +15,7 @@ const PilihMahasiswa = () => {
     const [load, setLoad] = useState(false)
     const [Mahasiswa, setMahasiswa] = useState([])
     const [checked, setChecked] = useState([])
+    const [keyword, setKeyword] = useState("")
 
     useEffect(() => {
         setLoad(true)
@@ -28,18 +29,19 @@ const PilihMahasiswa = () => {
     }, [dispatch])
 
     useEffect(() => {
-        const getMahasiswaPerkelas = async () => {
-            try {
-                const response = await axios.get(`v1/tugas/getMhsByKelas/${location.state.kodeKls}`)
-                setMahasiswa(response.data.data)
-                // console.log(response.data.data)
-            } catch (error) {
-
-            }
-        }
         getMahasiswaPerkelas()
         console.log(location.state.kodeKls)
-    }, [location])
+    }, [location, keyword])
+
+    const getMahasiswaPerkelas = async () => {
+        try {
+            const response = await axios.get(`v1/tugas/getMhsByKelas/${location.state.kodeKls}?search=${keyword}`)
+            setMahasiswa(response.data.data)
+            // console.log(response.data.data)
+        } catch (error) {
+
+        }
+    }
 
     const handleCheck = (e, item) => {
         if (e.target.checked) {
@@ -47,6 +49,19 @@ const PilihMahasiswa = () => {
         } else {
             setChecked(checked.filter((o) => o !== item.nim))
         }
+
+        const m = Mahasiswa.map((mhs, index) => {
+            if (mhs.nim !== item.nim) {
+                return mhs
+            }
+        })
+
+        console.log(m);
+    }
+
+    const cariData = (e) => {
+        e.preventDefault()
+        setKeyword(e ? e.target.value : "")
     }
 
 
@@ -79,6 +94,12 @@ const PilihMahasiswa = () => {
                                 <Col>
                                     <Card>
                                         <Card.Body>
+                                            <Row className='mb-3'>
+                                                <Col></Col>
+                                                <Col lg="3" className='small float-end'>
+                                                    <input type="text" onChange={cariData} className='form-control form-control-sm' />
+                                                </Col>
+                                            </Row>
                                             <div className='table-responsive'>
                                                 <Table>
                                                     <thead>
@@ -92,9 +113,7 @@ const PilihMahasiswa = () => {
                                                     <tbody>
                                                         {Mahasiswa.map((item, index) => (
                                                             <tr key={index}
-                                                                className={`border 
-                                                            ${item.nim == checked[index] ? 'hidden' : ''}
-                                                            `}
+                                                                className="border"
                                                             >
                                                                 <th scope="row" className="py-3">
                                                                     <label className="cursor-pointer label justify-center">
