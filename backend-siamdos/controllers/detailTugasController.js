@@ -261,7 +261,7 @@ module.exports = {
         })
         if (!dataTugas) return res.status(404).json({ message: "tugas tidak ditemukan" })
         await detailTugasModel.findAll({
-            attributes: ["id_detail_tugas", "nim", "tanggal_pengumpulan", "status"],
+            attributes: ["id_detail_tugas", "code_detail_tugas", "nim", "tanggal_pengumpulan", "status"],
             where: {
                 code_tugas: dataTugas.code_tugas
             },
