@@ -106,6 +106,10 @@ const JadwalDosen = () => {
         getMahasiswaPerkelas()
     }, [kodeKelas, keyword])
 
+    useEffect(() => {
+        cekTugasByPertemuan()
+    }, [kodePert])
+
     const getProdi = async () => {
         try {
             const response = await axios.get(`v1/prodi/all`)
@@ -171,6 +175,7 @@ const JadwalDosen = () => {
         setFileTugas("")
         setLampiran("")
         setShow(false)
+        setKodePert("")
     }
 
     const handleShow = async (e, f) => {
@@ -227,25 +232,26 @@ const JadwalDosen = () => {
 
     const handleTugas = async (e, f, g) => {
         const response = await axios.get(`v1/jadwalPertemuan/getById/${e}`)
-        setKodePertemuan(response.data.data.code_jadwal_pertemuan)
-        setStatus(f)
-        setKodePert(g)
-        setShow(true)
-    }
-
-    const cekTugasByPertemuan = async (e, f, g) => {
+        // setKodePertemuan(response.data.data.code_jadwal_pertemuan)
+        setKodeKelas(response.data.data.jadwalKuliahs[0].code_kelas)
         setStatus(f)
         setKodePertemuan(g)
-        const u = await axios.get(`v1/jadwalPertemuan/getById/${e}`)
-        setKodeKelas(u.data.data.jadwalKuliahs[0].code_kelas);
+        setKodePert(g)
+        // setShow(true)
+
+    }
+
+    const cekTugasByPertemuan = async () => {
         try {
-            if (g) {
-                const response = axios.get(`v1/tugas/checkTugasByCodePertemuan/${g}`)
+            if (kodePert) {
+                const response = await axios.get(`v1/tugas/checkTugasByCodePertemuan/${kodePert}`)
+                setDataTugas(response.data.data)
                 Swal.fire({
                     title: "Tugas sudah ada",
                     text: "Silahkan cek di menu tugas",
                     icon: 'error'
-
+                }).then(() => {
+                    setKodePert("")
                 })
             }
         } catch (error) {
@@ -775,7 +781,7 @@ const JadwalDosen = () => {
                                                                                         <td className='py-2 border text-capitalize' rowSpan={2} align='center'>
                                                                                             <button className='btn btn-sm btn-info mr-1' title='Detail' onClick={() => handleShow(item.id_jadwal_pertemuan, 'detail')}>Detail</button>
                                                                                             <button className='btn btn-sm btn-warning mr-1' title='Edit' onClick={() => handleShow(item.id_jadwal_pertemuan, 'edit')}>Edit</button>
-                                                                                            <button className='btn btn-sm btn-success' title='Tugas' onClick={() => cekTugasByPertemuan(item.id_jadwal_pertemuan, 'tugas', item.code_jadwal_pertemuan)}>Tugas</button>
+                                                                                            <button className='btn btn-sm btn-success' title='Tugas' onClick={() => handleTugas(item.id_jadwal_pertemuan, 'tugas', item.code_jadwal_pertemuan)}>Tugas</button>
                                                                                             {/* <Link to="/settugas" state={{ idPertemuan: item.id_jadwal_pertemuan }} className='btn btn-sm btn-success'>Tugas</Link>*/}
                                                                                         </td>
                                                                                     </tr>
