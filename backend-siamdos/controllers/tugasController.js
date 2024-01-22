@@ -267,16 +267,21 @@ module.exports = {
 
         let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
         let file_tugas = ""
-        const file = req.files.file_tugas
-        const fileSize = file.data.length
-        const ext = path.extname(file.name)
-        file_tugas = "lampiran_tugas" + randomNumber + file.md5 + ext
-        const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls', '.pdf', '.pptx']
-        if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
-        if (fileSize > 500000000) return res.status(422).json({ msg: "lampiran tugas  yang anda upload tidak boleh lebih dari 500 mb" })
-        file.mv(`../tmp_siakad/lampiranTugas/${file_tugas}`, (err) => {
-            if (err) return res.status(500).json({ message: err.message })
-        })
+        const files = req.files
+        if (files == null) {
+            file_tugas = ""
+        } else {
+            const file = files.file_tugas
+            const fileSize = file.data.length
+            const ext = path.extname(file.name)
+            file_tugas = "lampiran_tugas" + randomNumber + file.md5 + ext
+            const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls', '.pdf', '.pptx']
+            if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
+            if (fileSize > 500000000) return res.status(422).json({ msg: "lampiran tugas  yang anda upload tidak boleh lebih dari 500 mb" })
+            file.mv(`../tmp_siakad/lampiranTugas/${file_tugas}`, (err) => {
+                if (err) return res.status(500).json({ message: err.message })
+            })
+        }
 
         await tugasModel.create({
             code_tugas: randomNumber,
