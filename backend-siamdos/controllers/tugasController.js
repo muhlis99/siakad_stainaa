@@ -92,7 +92,7 @@ module.exports = {
                             attributes: ['pertemuan', 'tanggal_pertemuan'],
                             model: jadwalPertemuanModel,
                             include: [{
-                                attributes: ['code_kelas','hari', 'jam_mulai', 'jam_selesai', 'dosen_pengajar'],
+                                attributes: ['code_kelas', 'hari', 'jam_mulai', 'jam_selesai', 'dosen_pengajar'],
                                 model: jadwalKuliahModel,
                                 include: [{
                                     attributes: ['status_makul', 'status_bobot_makul'],
@@ -238,7 +238,7 @@ module.exports = {
                         }
                     },
                     {
-                        '$mahasiswa.nama$': {
+                        '$mahasiswas.nama$': {
                             [Op.like]: `%${search}%`
                         }
                     }
