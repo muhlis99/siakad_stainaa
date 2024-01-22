@@ -195,7 +195,8 @@ const Deskripsi = () => {
                                                                                     kodeThn: location.state.kodeThn,
                                                                                     kodeSmt: location.state.kodeSmt,
                                                                                     idProdi: location.state.idProdi,
-                                                                                    kodeprt: location.state.kodeprt
+                                                                                    kodeprt: location.state.kodeprt,
+                                                                                    halaman: '2'
                                                                                 }} className={`btn btn-sm btn-info ${item.status == 'terkumpul' ? '' : 'disabled'}`}>Detail</Link>
                                                                             </td>
                                                                         </tr>

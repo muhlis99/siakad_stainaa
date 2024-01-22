@@ -4,7 +4,7 @@ import { Row, Col, Card, Table, Modal, Accordion, Image } from 'react-bootstrap'
 import dataBlank from "../../../assets/images/watch.svg"
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
-import { Link, Navigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import moment from 'moment'
 import { FaCog, FaEdit, FaSearch } from 'react-icons/fa'
@@ -52,6 +52,8 @@ const JadwalDosen = () => {
     const [kodePert, setKodePert] = useState("")
     const [dataTugas, setDataTugas] = useState("")
     const [keyword, setKeyword] = useState("")
+    const [mhsTerpilih, setMhsTerpilih] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
         setLoad(true)
@@ -104,7 +106,7 @@ const JadwalDosen = () => {
 
     useEffect(() => {
         getMahasiswaPerkelas()
-    }, [kodeKelas, keyword])
+    }, [checked, kodeKelas, keyword])
 
     useEffect(() => {
         cekTugasByPertemuan()
@@ -249,9 +251,29 @@ const JadwalDosen = () => {
                 Swal.fire({
                     title: "Tugas sudah ada",
                     text: "Silahkan cek di menu tugas",
-                    icon: 'error'
-                }).then(() => {
-                    setKodePert("")
+                    icon: 'error',
+                    confirmButtonText: 'Lihat tugas',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate(
+                            '/tugas',
+                            {
+                                state: {
+                                    kodeJen: kodeJenjang,
+                                    kodeFkl: kodeFakultas,
+                                    kodePro: kodeProdi,
+                                    kodeThn: kodeTahun,
+                                    kodeSmt: kodeSemester,
+                                    idProdi: idProdi,
+                                }
+                            }
+                        )
+                        setKodePert("")
+                    }
                 })
             }
         } catch (error) {
@@ -282,7 +304,15 @@ const JadwalDosen = () => {
                 title: 'Tanggal pengumpulan tidak boleh kosong',
                 icon: 'error'
             })
-        } else if (dataTugas == '1') {
+        }
+        // else if (fileTugas == '') {
+        //     Swal.fire({
+        //         title: 'File Lampiran tidak boleh kosong',
+        //         text: 'Silakan cek di menu tugas',
+        //         icon: 'error'
+        //     })
+        // } 
+        else if (dataTugas == '1') {
             Swal.fire({
                 title: 'Tugas Sudah ada',
                 text: 'Silakan cek di menu tugas',
@@ -324,8 +354,15 @@ const JadwalDosen = () => {
         try {
             if (kodeKelas) {
                 const response = await axios.get(`v1/tugas/getMhsByKelas/${kodeKelas}?search=${keyword}`)
-                setMahasiswa(response.data.data)
-                console.log(response.data.data)
+                const filter = response.data.data.filter((item) =>
+                    checked.includes(item.nim)
+                )
+                setMhsTerpilih(filter);
+                const dataMhs = response.data.data.filter((item) =>
+                    !checked.includes(item.nim)
+                )
+                setMahasiswa(dataMhs)
+                // (response.data.data)
             }
         } catch (error) {
 
@@ -616,6 +653,25 @@ const JadwalDosen = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {mhsTerpilih.map((item, index) => (
+                                                        <tr key={index} className={`border`}>
+                                                            <th scope="row" className="py-3">
+                                                                <label className="cursor-pointer label justify-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={checked.includes(item.nim)}
+                                                                        onChange={(e) => handleCheck(e, item)}
+                                                                        className="form-check-input"
+                                                                        value=""
+                                                                        id="flexCheckDefault"
+                                                                    />
+                                                                </label>
+                                                            </th>
+                                                            <td className='py-3'>{item.nim}</td>
+                                                            <td className='py-3'>{item.mahasiswas[0].nama}</td>
+                                                            <td className='py-3'>{item.mahasiswas[0].jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan'}</td>
+                                                        </tr>
+                                                    ))}
                                                     {Mahasiswa.map((item, index) => (
                                                         <tr key={index} className={`border`}>
                                                             <th scope="row" className="py-3">
