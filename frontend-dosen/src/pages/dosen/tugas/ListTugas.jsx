@@ -34,8 +34,13 @@ const ListTugas = () => {
     const [tglAkhir, setTglAkhir] = useState("")
     const [show, setShow] = useState(false)
     const [tgl, setTgl] = useState("")
+    const [kodeKelas, setKodeKelas] = useState("")
+    const [Mahasiswa, setMahasiswa] = useState([])
     const location = useLocation()
     const [status, setStatus] = useState("")
+    const [keyword, setKeyword] = useState("")
+    const [kodePertemuan, setKodePertemuan] = useState("")
+    const [detailNim, setDetailNim] = useState([])
 
     useEffect(() => {
         if (location.state != null) {
@@ -91,6 +96,22 @@ const ListTugas = () => {
     useEffect(() => {
         getTugas()
     }, [user, kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi])
+
+    useEffect(() => {
+        getMahasiswaPerkelas()
+    }, [kodeKelas, keyword])
+
+    useEffect(() => {
+        getDetailTugas()
+    }, [user, kodePertemuan])
+
+    useEffect(() => {
+        getDetailNim()
+    }, [detailTugas])
+
+    useEffect(() => {
+        filterMahasiswa()
+    }, [detailNim, Mahasiswa])
 
     const getDateNow = () => {
         const d = new Date()
@@ -151,20 +172,63 @@ const ListTugas = () => {
         }
     }
 
-    const handleShow = async (e, f) => {
+    const handleShow = async (e, f, g) => {
         try {
             const response = await axios.get(`v1/tugas/getById/${e}`)
-            console.log(response.data.data);
+            // console.log(response.data.data)
             setIdTugas(response.data.data.id_tugas)
             setDeskripsi(response.data.data.deskripsi_tugas)
+            setKodePertemuan(response.data.data.code_jadwal_pertemuan)
             setNamaTugas(response.data.data.tugas)
             setTglAkhir(response.data.data.tanggal_akhir)
             // setFileTugas(response.data.data.file_tugas)
             setStatus(f)
+            setKodeKelas(g)
             setShow(true)
+
         } catch (error) {
 
         }
+    }
+
+    const getMahasiswaPerkelas = async () => {
+        try {
+            if (kodeKelas) {
+                const response = await axios.get(`v1/tugas/getMhsByKelas/${kodeKelas}?search=${keyword}`)
+                setMahasiswa(response.data.data)
+                console.log(response.data.data)
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const getDetailTugas = async () => {
+        try {
+            if (user && kodePertemuan) {
+                const response = await axios.get(`v1/detailTugas/alldosen/${user.data.username}/${kodePertemuan}`)
+                setDetailTugas(response.data.data)
+                console.log(response.data.data);
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const getDetailNim = () => {
+        var i = detailTugas.map(item => (
+            item.nim
+        ))
+        setDetailNim(i)
+        // console.log(i);
+    }
+
+    const filterMahasiswa = () => {
+        var b = Mahasiswa.filter((item) =>
+            detailNim.includes(item.nim)
+        )
+
+        // console.log(b);
     }
 
     const loadTugas = (e) => {
@@ -500,7 +564,7 @@ const ListTugas = () => {
                                                                                                             kodeprt: item.code_jadwal_pertemuan
                                                                                                         }} className='btn btn-sm btn-info'>Detail</Link>
                                                                                                         {item.status == 'belum' ?
-                                                                                                            <button onClick={() => handleShow(item.id_tugas, 'tugas')} className='btn btn-sm btn-warning ml-1'>Edit</button>
+                                                                                                            <button onClick={() => handleShow(item.id_tugas, 'tugas', item.jadwalPertemuans[0].jadwalKuliahs[0].code_kelas)} className='btn btn-sm btn-warning ml-1'>Edit</button>
                                                                                                             :
                                                                                                             ""
                                                                                                         }
