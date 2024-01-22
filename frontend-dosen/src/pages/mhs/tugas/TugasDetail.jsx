@@ -512,7 +512,10 @@ const TugasDetail = () => {
                                                         <Image src={dataBlank} className='mt-4 ' width={150} />
                                                     </div>
                                                     <p className='text-muted font-bold'>Anda belum mengumpulkan tugas!</p>
-                                                    <button onClick={() => openModal('upload', '')} className='btn btn-sm btn-success my-2'>Kumpulkan tugas</button>
+                                                    {
+                                                        Tugas.tanggal_akhir == 'tgl' || Tugas.status == 'selesai' ? "" :
+                                                            <button onClick={() => openModal('upload', '')} className='btn btn-sm btn-success my-2'>Kumpulkan tugas</button>
+                                                    }
                                                 </div>
                                             </> : <>
                                                 <Row>

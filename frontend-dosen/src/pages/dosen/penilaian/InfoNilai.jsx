@@ -19,7 +19,7 @@ const InfoNilai = () => {
 
     useEffect(() => {
         getKelasById()
-        console.log(location.state)
+        // console.log(location.state)
         getNilaiMahasiswa()
     }, [location])
 

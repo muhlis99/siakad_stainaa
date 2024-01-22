@@ -73,7 +73,12 @@ const MahasiswaAsuh = () => {
     const getYearNow = () => {
         const d = new Date()
         let year = d.getFullYear()
-        setTahunAngkatan(year)
+        let month = d.getMonth()
+        if (month >= '6') {
+            setTahunAngkatan(year)
+        } else {
+            setTahunAngkatan(year - 1)
+        }
     }
 
     const getUserDosen = async () => {

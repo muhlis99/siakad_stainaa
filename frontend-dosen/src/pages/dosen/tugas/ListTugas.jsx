@@ -9,7 +9,7 @@ import { Circles } from "react-loader-spinner"
 import axios from 'axios'
 import moment from "moment"
 import Swal from 'sweetalert2'
-import { FaTrash } from 'react-icons/fa'
+import { FaTimes } from 'react-icons/fa'
 
 const ListTugas = () => {
     const dispatch = useDispatch()
@@ -107,7 +107,8 @@ const ListTugas = () => {
 
     useEffect(() => {
         getMahasiswaPerkelas()
-    }, [kodeKelas, keyword])
+        getMahasiswaterpilih()
+    }, [checked, kodeKelas, keyword])
 
     useEffect(() => {
         getDetailTugas()
@@ -174,6 +175,7 @@ const ListTugas = () => {
             if (user && kodeJenjang && kodeFakultas && kodeProdi && kodeTahun && kodeSemester) {
                 const response = await axios.get(`v1/tugas/all/${user.data.username}/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
                 setAllTugas(response.data.data)
+                // console.log(response.data.data);
             }
         } catch (error) {
 
@@ -246,13 +248,28 @@ const ListTugas = () => {
             !checked.includes(item.nim)
         )
         setPilihMahasiswa(f)
-        var n = b.filter((item) =>
-            checked.includes(item.nim)
-        )
-        setMhsTerpilih(n);
+        // var n = b.filter((item) =>
+        //     checked.includes(item.nim)
+        // )
+        // setMhsTerpilih(n);
 
         if (b.length != 0) {
             setJenkel(b[0].mahasiswas[0].jenis_kelamin)
+        }
+    }
+
+    const getMahasiswaterpilih = async () => {
+        try {
+            if (kodeKelas) {
+                const response = await axios.get(`v1/tugas/getMhsByKelas/${kodeKelas}`)
+                const filter = response.data.data.filter((item) =>
+                    checked.includes(item.nim)
+                )
+                setMhsTerpilih(filter)
+                // (response.data.data)
+            }
+        } catch (error) {
+
         }
     }
 
@@ -556,41 +573,40 @@ const ListTugas = () => {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {keyword ? "" :
-                                                                detailTugas.map((item, index) => (
-                                                                    <tr key={index} className={`border`}>
-                                                                        <th scope="row" className="py-3">
-                                                                            <label className="cursor-pointer label justify-center">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    checked
-                                                                                    readOnly
-                                                                                    // onChange={(e) => handleCheck(e, item)}
-                                                                                    className="form-check-input"
-                                                                                />
-                                                                            </label>
-                                                                        </th>
-                                                                        <td className='py-3'>
-                                                                            {item.nim}
-                                                                        </td>
-                                                                        <td className='py-3'>
-                                                                            {item.mahasiswas[0].nama}
-                                                                        </td>
-                                                                        <td className='py-3'>
-                                                                            {jenkel == 'l' ? 'Laki-Laki' : 'Perempuan'}
-                                                                        </td>
-                                                                        <td className='py-3'>
-                                                                            {item.status == 'tidak' ?
-                                                                                <button className='bg-[#DC3545] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => hapusMhs(item.id_detail_tugas)}><FaTrash /></button>
-                                                                                :
-                                                                                <button className='bg-[#DC3545] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => peringatan(item.nim)}><FaTrash /></button>
-                                                                            }
-                                                                        </td>
-                                                                    </tr>
-                                                                ))}
+                                                            {detailTugas.map((item, index) => (
+                                                                <tr key={index} className={`border`}>
+                                                                    <th scope="row" className="py-2">
+                                                                        <label className="cursor-pointer label justify-center">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked
+                                                                                readOnly
+                                                                                // onChange={(e) => handleCheck(e, item)}
+                                                                                className="form-check-input"
+                                                                            />
+                                                                        </label>
+                                                                    </th>
+                                                                    <td className='py-2'>
+                                                                        {item.nim}
+                                                                    </td>
+                                                                    <td className='py-2'>
+                                                                        {item.mahasiswas[0].nama}
+                                                                    </td>
+                                                                    <td className='py-2'>
+                                                                        {jenkel == 'l' ? 'Laki-Laki' : 'Perempuan'}
+                                                                    </td>
+                                                                    <td className='py-2'>
+                                                                        {item.status == 'tidak' ?
+                                                                            <button className='bg-[#DC3545] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => hapusMhs(item.id_detail_tugas)}><FaTimes /></button>
+                                                                            :
+                                                                            <button className='bg-[#DC3545] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => peringatan(item.nim)}><FaTimes /></button>
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
                                                             {mhsTerpilih.map((item, index) => (
                                                                 <tr key={index} className={`border`}>
-                                                                    <th scope="row" className="py-3">
+                                                                    <th scope="row" className="py-2">
                                                                         <label className="cursor-pointer label justify-center">
                                                                             <input
                                                                                 type="checkbox"
@@ -602,15 +618,17 @@ const ListTugas = () => {
                                                                             />
                                                                         </label>
                                                                     </th>
-                                                                    <td className='py-3'>{item.nim}</td>
-                                                                    <td className='py-3'>{item.mahasiswas[0].nama}</td>
-                                                                    <td className='py-3'>{item.mahasiswas[0].jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan'}</td>
-                                                                    <td className='py-3'></td>
+                                                                    <td className='py-2'>{item.nim}</td>
+                                                                    <td className='py-2'>{item.mahasiswas[0].nama}</td>
+                                                                    <td className='py-2'>{item.mahasiswas[0].jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan'}</td>
+                                                                    <td className='py-2'>
+                                                                        <div className='my-2 px-2 rounded-full text-white inline-flex items-center'>..</div>
+                                                                    </td>
                                                                 </tr>
                                                             ))}
                                                             {pilihMahasiswa.map((item, index) => (
                                                                 <tr key={index} className={`border`}>
-                                                                    <th scope="row" className="py-3">
+                                                                    <th scope="row" className="py-2">
                                                                         <label className="cursor-pointer label justify-center">
                                                                             <input
                                                                                 type="checkbox"
@@ -622,10 +640,12 @@ const ListTugas = () => {
                                                                             />
                                                                         </label>
                                                                     </th>
-                                                                    <td className='py-3'>{item.nim}</td>
-                                                                    <td className='py-3'>{item.mahasiswas[0].nama}</td>
-                                                                    <td className='py-3'>{item.mahasiswas[0].jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan'}</td>
-                                                                    <td className='py-3'></td>
+                                                                    <td className='py-2'>{item.nim}</td>
+                                                                    <td className='py-2'>{item.mahasiswas[0].nama}</td>
+                                                                    <td className='py-2'>{item.mahasiswas[0].jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan'}</td>
+                                                                    <td className='py-2'>
+                                                                        <div className='my-2 px-2 rounded-full text-white inline-flex items-center'>..</div>
+                                                                    </td>
                                                                 </tr>
                                                             ))}
                                                         </tbody>
@@ -791,7 +811,7 @@ const ListTugas = () => {
                                                                                                             :
                                                                                                             ""
                                                                                                         }
-                                                                                                        {item.jadwalPertemuans[0].tanggal_pertemuan == tgl ?
+                                                                                                        {item.tanggal_akhir == tgl ?
                                                                                                             selesaikan(item.id_tugas) : ""
                                                                                                         }
                                                                                                         {item.status == 'belum' ?

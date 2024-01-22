@@ -106,6 +106,7 @@ const JadwalDosen = () => {
 
     useEffect(() => {
         getMahasiswaPerkelas()
+        getMahasiswaterpilih()
     }, [checked, kodeKelas, keyword])
 
     useEffect(() => {
@@ -354,14 +355,29 @@ const JadwalDosen = () => {
         try {
             if (kodeKelas) {
                 const response = await axios.get(`v1/tugas/getMhsByKelas/${kodeKelas}?search=${keyword}`)
-                const filter = response.data.data.filter((item) =>
-                    checked.includes(item.nim)
-                )
-                setMhsTerpilih(filter);
+                // const filter = response.data.data.filter((item) =>
+                //     checked.includes(item.nim)
+                // )
+                // setMhsTerpilih(filter)
                 const dataMhs = response.data.data.filter((item) =>
                     !checked.includes(item.nim)
                 )
                 setMahasiswa(dataMhs)
+                // (response.data.data)
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const getMahasiswaterpilih = async () => {
+        try {
+            if (kodeKelas) {
+                const response = await axios.get(`v1/tugas/getMhsByKelas/${kodeKelas}`)
+                const filter = response.data.data.filter((item) =>
+                    checked.includes(item.nim)
+                )
+                setMhsTerpilih(filter)
                 // (response.data.data)
             }
         } catch (error) {

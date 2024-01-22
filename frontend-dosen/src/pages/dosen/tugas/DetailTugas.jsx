@@ -38,7 +38,7 @@ const DetailTugas = () => {
     }, [])
 
     useEffect(() => {
-        console.log(location.state)
+        // console.log(location.state)
     }, [location])
 
     useEffect(() => {

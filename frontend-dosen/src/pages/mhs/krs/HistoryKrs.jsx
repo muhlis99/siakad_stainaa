@@ -37,7 +37,7 @@ const HistoryKrs = () => {
     }, [dispatch])
 
     useEffect(() => {
-        console.log(parameters);
+        // console.log(parameters);
     }, [parameters])
 
     useEffect(() => {
