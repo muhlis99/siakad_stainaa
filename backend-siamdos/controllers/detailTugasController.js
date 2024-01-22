@@ -82,52 +82,88 @@ module.exports = {
         let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
 
         let file_jawaban_word_pdf = ""
-        const file1 = req.files.file_jawaban_word_pdf
-        const fileSize1 = file1.data.length
-        const ext1 = path.extname(file1.name)
-        file_jawaban_word_pdf = "lampiran_jawaban_word_pdf" + randomNumber + file1.md5 + ext1
-        const allowedType1 = ['.rtf', '.doc', '.docx', '.pdf']
-        if (!allowedType1.includes(ext1.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
-        if (fileSize1 > 500000000) return res.status(422).json({ msg: "lampiran jawaban word atau pdf  yang anda upload tidak boleh lebih dari 500 mb" })
-        if (useData.file_jawaban_word_pdf) {
-            const filepath1 = `../tmp_siakad/lampiranJawaban/wordpdf/${useData.file_jawaban_word_pdf}`
-            fs.unlinkSync(filepath1)
+        if (req.files == null) {
+            file_jawaban_word_pdf = ""
+        } else {
+            const file1 = req.files.file_jawaban_word_pdf
+            if (file1 == null) {
+                if (useData.file_jawaban_word_pdf == "") {
+                    file_jawaban_word_pdf = ""
+                } else {
+                    file_jawaban_word_pdf = useData.file_jawaban_word_pdf
+                }
+            } else {
+                const fileSize1 = file1.data.length
+                const ext1 = path.extname(file1.name)
+                file_jawaban_word_pdf = "lampiran_jawaban_word_pdf" + randomNumber + file1.md5 + ext1
+                const allowedType1 = ['.rtf', '.doc', '.docx', '.pdf']
+                if (!allowedType1.includes(ext1.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
+                if (fileSize1 > 500000000) return res.status(422).json({ msg: "lampiran jawaban word atau pdf  yang anda upload tidak boleh lebih dari 500 mb" })
+                if (useData.file_jawaban_word_pdf) {
+                    const filepath1 = `../tmp_siakad/lampiranJawaban/wordpdf/${useData.file_jawaban_word_pdf}`
+                    fs.unlinkSync(filepath1)
+                }
+                file1.mv(`../tmp_siakad/lampiranJawaban/wordpdf/${file_jawaban_word_pdf}`, (err) => {
+                    if (err) return res.status(500).json({ message: err.message })
+                })
+            }
         }
-        file1.mv(`../tmp_siakad/lampiranJawaban/wordpdf/${file_jawaban_word_pdf}`, (err) => {
-            if (err) return res.status(500).json({ message: err.message })
-        })
 
         let file_jawaban_ppt = ""
-        const file2 = req.files.file_jawaban_ppt
-        const fileSize2 = file2.data.length
-        const ext2 = path.extname(file2.name)
-        file_jawaban_ppt = "lampiran_jawaban_ppt" + randomNumber + file2.md5 + ext2
-        const allowedType2 = ['.pptx']
-        if (!allowedType2.includes(ext2.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
-        if (fileSize2 > 500000000) return res.status(422).json({ msg: "lampiran jawaban ppt  yang anda upload tidak boleh lebih dari 500 mb" })
-        if (useData.file_jawaban_ppt) {
-            const filepath2 = `../tmp_siakad/lampiranJawaban/ppt/${useData.file_jawaban_ppt}`
-            fs.unlinkSync(filepath2)
+        if (req.files == null) {
+            file_jawaban_ppt = ""
+        } else {
+            const file2 = req.files.file_jawaban_ppt
+            if (file2 == null) {
+                if (useData.file_jawaban_ppt == "") {
+                    file_jawaban_ppt = ""
+                } else {
+                    file_jawaban_ppt = useData.file_jawaban_ppt
+                }
+            } else {
+                const fileSize2 = file2.data.length
+                const ext2 = path.extname(file2.name)
+                file_jawaban_ppt = "lampiran_jawaban_ppt" + randomNumber + file2.md5 + ext2
+                const allowedType2 = ['.pptx']
+                if (!allowedType2.includes(ext2.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
+                if (fileSize2 > 500000000) return res.status(422).json({ msg: "lampiran jawaban ppt  yang anda upload tidak boleh lebih dari 500 mb" })
+                if (useData.file_jawaban_ppt) {
+                    const filepath2 = `../tmp_siakad/lampiranJawaban/ppt/${useData.file_jawaban_ppt}`
+                    fs.unlinkSync(filepath2)
+                }
+                file2.mv(`../tmp_siakad/lampiranJawaban/ppt/${file_jawaban_ppt}`, (err) => {
+                    if (err) return res.status(500).json({ message: err.message })
+                })
+            }
         }
-        file2.mv(`../tmp_siakad/lampiranJawaban/ppt/${file_jawaban_ppt}`, (err) => {
-            if (err) return res.status(500).json({ message: err.message })
-        })
 
         let file_jawaban_video = ""
-        const file3 = req.files.file_jawaban_video
-        const fileSize3 = file3.data.length
-        const ext3 = path.extname(file3.name)
-        file_jawaban_video = "lampiran_jawaban_video" + randomNumber + file3.md5 + ext3
-        const allowedType3 = ['.mp4', '.mkv']
-        if (!allowedType3.includes(ext3.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
-        if (fileSize3 > 500000000) return res.status(422).json({ msg: "lampiran jawaban video  yang anda upload tidak boleh lebih dari 500 mb" })
-        if (useData.file_jawaban_video) {
-            const filepath3 = `../tmp_siakad/lampiranJawaban/video/${useData.file_jawaban_video}`
-            fs.unlinkSync(filepath3)
+        if (req.files == null) {
+            file_jawaban_video = ""
+        } else {
+            const file3 = req.files.file_jawaban_video
+            if (file3 == null) {
+                if (useData.file_jawaban_video == "") {
+                    file_jawaban_video = ""
+                } else {
+                    file_jawaban_video = useData.file_jawaban_video
+                }
+            } else {
+                const fileSize3 = file3.data.length
+                const ext3 = path.extname(file3.name)
+                file_jawaban_video = "lampiran_jawaban_video" + randomNumber + file3.md5 + ext3
+                const allowedType3 = ['.mp4', '.mkv']
+                if (!allowedType3.includes(ext3.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
+                if (fileSize3 > 500000000) return res.status(422).json({ msg: "lampiran jawaban video  yang anda upload tidak boleh lebih dari 500 mb" })
+                if (useData.file_jawaban_video) {
+                    const filepath3 = `../tmp_siakad/lampiranJawaban/video/${useData.file_jawaban_video}`
+                    fs.unlinkSync(filepath3)
+                }
+                file3.mv(`../tmp_siakad/lampiranJawaban/video/${file_jawaban_video}`, (err) => {
+                    if (err) return res.status(500).json({ message: err.message })
+                })
+            }
         }
-        file3.mv(`../tmp_siakad/lampiranJawaban/video/${file_jawaban_video}`, (err) => {
-            if (err) return res.status(500).json({ message: err.message })
-        })
 
         await detailTugasModel.update({
             jawaban: jawaban,
