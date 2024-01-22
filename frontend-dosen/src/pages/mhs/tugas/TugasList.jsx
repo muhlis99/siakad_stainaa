@@ -17,6 +17,7 @@ const TugasList = () => {
     const [Tugas, setTugas] = useState([])
     const [kodeTugas, setKodeTugas] = useState([])
     const [dataTanggal, setDataTanggal] = useState([])
+    const [statusPengumpulan, setStatusPengumpulan] = useState([])
 
     useEffect(() => {
         setLoad(true)
@@ -45,6 +46,7 @@ const TugasList = () => {
 
     useEffect(() => {
         getTanggal()
+        getStatusPengumpulan()
     }, [username, kodeTugas])
 
     const getTugas = async () => {
@@ -52,6 +54,7 @@ const TugasList = () => {
             if (user) {
                 const response = await axios.get(`v1/tugas/allmhs/${user.data.username}`)
                 setTugas(response.data.data)
+                console.log(response.data.data);
             }
         } catch (error) {
 
@@ -78,6 +81,25 @@ const TugasList = () => {
             }
             if (kodeTugas.length != 0) {
                 Promise.all(promises).then(() => setDataTanggal(Tugass))
+                Promise.all(promises).then(() => console.log(Tugass))
+            }
+        }
+    }
+
+    const getStatusPengumpulan = async () => {
+        if (kodeTugas.length > 0) {
+            let statuss = []
+            let prom = []
+            for (let i = 0; i < kodeTugas.length; i++) {
+                const t = await axios.get(`v1/detailTugas/getByCodeTugas/${kodeTugas[i]}/${username}`).then(response => {
+                    statuss.push(response.data.data[0].status)
+                })
+                prom.push(t)
+
+            }
+            if (kodeTugas.length != 0) {
+                Promise.all(prom).then(() => setStatusPengumpulan(statuss))
+                // Promise.all(prom).then(() => console.log(statuss))
             }
         }
     }
@@ -135,6 +157,42 @@ const TugasList = () => {
                                                                                     dataTanggal != 0 ?
                                                                                         moment(dataTanggal[index].tanggal_akhir).format('DD MMMM YYYY')
                                                                                         : ""
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
+                                                                <Row className='mt-2'>
+                                                                    <Col>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                                            <span className='text[12px] text-capitalize text-dark'>Status Tugas</span>
+                                                                            <div className=' text-[13px] text-secondary'>
+                                                                                {dataTanggal != 0 ?
+                                                                                    <div>
+                                                                                        {
+                                                                                            dataTanggal[index].status == 'belum' ?
+                                                                                                <span className="inline-block whitespace-nowrap rounded-pill bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Belum Berakhir</span>
+                                                                                                :
+                                                                                                <span className="inline-block whitespace-nowrap rounded-pill bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Sudah Berakhir</span>
+                                                                                        }
+                                                                                    </div>
+                                                                                    : ""
+                                                                                }
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
+                                                                <Row className='mt-2'>
+                                                                    <Col>
+                                                                        <div className='px-3 py-2 rounded-3' style={{ border: '1px dashed #919669' }}>
+                                                                            <span className='text[12px] text-capitalize text-dark'>Status Pengumpulan</span>
+                                                                            <div className=' text-[13px] text-secondary'>
+                                                                                {
+                                                                                    statusPengumpulan[index] == 'tidak' ?
+                                                                                        <span className="inline-block whitespace-nowrap rounded-pill bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Belum Mengumpulkan</span>
+                                                                                        :
+                                                                                        <span className="inline-block whitespace-nowrap rounded-pill bg-success px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">Sudah Mengumpulkan</span>
                                                                                 }
                                                                             </div>
                                                                         </div>
