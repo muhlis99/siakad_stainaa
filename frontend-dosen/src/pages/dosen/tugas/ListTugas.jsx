@@ -4,11 +4,12 @@ import { Row, Col, Card, Table, Image, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import dataBlank from "../../../assets/images/watch.svg"
 import { getMe } from "../../../features/authSlice"
-import { Link, Navigate, useLocation } from "react-router-dom"
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
 import { Circles } from "react-loader-spinner"
 import axios from 'axios'
 import moment from "moment"
 import Swal from 'sweetalert2'
+import { FaTimes } from 'react-icons/fa'
 
 const ListTugas = () => {
     const dispatch = useDispatch()
@@ -41,16 +42,23 @@ const ListTugas = () => {
     const [keyword, setKeyword] = useState("")
     const [kodePertemuan, setKodePertemuan] = useState("")
     const [detailNim, setDetailNim] = useState([])
+    const [pilihMahasiswa, setPilihMahasiswa] = useState([])
+    const [mhsTerpilih, setMhsTerpilih] = useState([])
+    const [checked, setChecked] = useState([])
+    const [jenkel, setJenkel] = useState("")
+    const [kodeTugas, setKodeTugas] = useState("")
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (location.state != null) {
             setKodeJenjang(location.state.kodeJen)
+            setIdProdi(location.state.idProdi)
             setKodeFakultas(location.state.kodeFkl)
             setKodeProdi(location.state.kodePro)
             setKodeTahun(location.state.kodeThn)
             setKodeSemester(location.state.kodeSmt)
-            setIdProdi(location.state.idProdi)
         }
+        // console.log(location.state);
     }, [location])
 
     useEffect(() => {
@@ -99,7 +107,8 @@ const ListTugas = () => {
 
     useEffect(() => {
         getMahasiswaPerkelas()
-    }, [kodeKelas, keyword])
+        getMahasiswaterpilih()
+    }, [checked, kodeKelas, keyword])
 
     useEffect(() => {
         getDetailTugas()
@@ -111,7 +120,7 @@ const ListTugas = () => {
 
     useEffect(() => {
         filterMahasiswa()
-    }, [detailNim, Mahasiswa])
+    }, [detailNim, Mahasiswa, checked])
 
     const getDateNow = () => {
         const d = new Date()
@@ -166,6 +175,7 @@ const ListTugas = () => {
             if (user && kodeJenjang && kodeFakultas && kodeProdi && kodeTahun && kodeSemester) {
                 const response = await axios.get(`v1/tugas/all/${user.data.username}/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
                 setAllTugas(response.data.data)
+                // console.log(response.data.data);
             }
         } catch (error) {
 
@@ -177,6 +187,7 @@ const ListTugas = () => {
             const response = await axios.get(`v1/tugas/getById/${e}`)
             // console.log(response.data.data)
             setIdTugas(response.data.data.id_tugas)
+            setKodeTugas(response.data.data.code_tugas)
             setDeskripsi(response.data.data.deskripsi_tugas)
             setKodePertemuan(response.data.data.code_jadwal_pertemuan)
             setNamaTugas(response.data.data.tugas)
@@ -196,7 +207,7 @@ const ListTugas = () => {
             if (kodeKelas) {
                 const response = await axios.get(`v1/tugas/getMhsByKelas/${kodeKelas}?search=${keyword}`)
                 setMahasiswa(response.data.data)
-                console.log(response.data.data)
+                // console.log(response.data.data)
             }
         } catch (error) {
 
@@ -208,7 +219,6 @@ const ListTugas = () => {
             if (user && kodePertemuan) {
                 const response = await axios.get(`v1/detailTugas/alldosen/${user.data.username}/${kodePertemuan}`)
                 setDetailTugas(response.data.data)
-                console.log(response.data.data);
             }
         } catch (error) {
 
@@ -220,15 +230,52 @@ const ListTugas = () => {
             item.nim
         ))
         setDetailNim(i)
-        // console.log(i);
+    }
+
+    const handleCheck = (e, item) => {
+        if (e.target.checked) {
+            setChecked([...checked, item.nim])
+        } else {
+            setChecked(checked.filter((o) => o !== item.nim))
+        }
     }
 
     const filterMahasiswa = () => {
         var b = Mahasiswa.filter((item) =>
-            detailNim.includes(item.nim)
+            !detailNim.includes(item.nim)
         )
+        var f = b.filter((item) =>
+            !checked.includes(item.nim)
+        )
+        setPilihMahasiswa(f)
+        // var n = b.filter((item) =>
+        //     checked.includes(item.nim)
+        // )
+        // setMhsTerpilih(n);
 
-        // console.log(b);
+        if (b.length != 0) {
+            setJenkel(b[0].mahasiswas[0].jenis_kelamin)
+        }
+    }
+
+    const getMahasiswaterpilih = async () => {
+        try {
+            if (kodeKelas) {
+                const response = await axios.get(`v1/tugas/getMhsByKelas/${kodeKelas}`)
+                const filter = response.data.data.filter((item) =>
+                    checked.includes(item.nim)
+                )
+                setMhsTerpilih(filter)
+                // (response.data.data)
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const cariData = (e) => {
+        e.preventDefault()
+        setKeyword(e ? e.target.value : "")
     }
 
     const loadTugas = (e) => {
@@ -242,6 +289,8 @@ const ListTugas = () => {
         setNamaTugas("")
         setFileTugas("")
         setShow(false)
+        setStatus("")
+        setChecked([])
     }
 
     const simpanTugas = async (e) => {
@@ -330,6 +379,95 @@ const ListTugas = () => {
         })
     }
 
+    const hapusMhs = (detailId) => {
+        Swal.fire({
+            title: "Hapus Mahasiswa ini?",
+            text: "Anda tidak dapat mengembalikan ini",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    axios.delete(
+                        `v1/tugas/deleteMhsTugas/${detailId}`
+                    ).then((response) => {
+                        Swal.fire({
+                            title: "Terhapus",
+                            text: response.data.message,
+                            icon: "success"
+                        }).then(() => {
+                            getDetailTugas()
+                            filterMahasiswa()
+                        });
+                    })
+
+                } catch (error) {
+
+                }
+            }
+        })
+    }
+
+    const peringatan = (e) => {
+        Swal.fire({
+            title: 'Tidak Berhasil',
+            icon: 'error',
+            text: 'Mahasiswa ini telah mengumpulkan tugas',
+            confirmButtonText: 'Lihat tugas',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                navigate(
+                    '/detailTugas',
+                    {
+                        state: {
+                            kodeTgs: kodeTugas,
+                            nim: e,
+                            idTugas: idTugas,
+                            kodeJen: kodeJenjang,
+                            kodeFkl: kodeFakultas,
+                            kodePro: kodeProdi,
+                            kodeThn: kodeTahun,
+                            kodeSmt: kodeSemester,
+                            idProdi: idProdi,
+                            kodeprt: kodePertemuan,
+                            halaman: '1'
+                        }
+                    }
+                )
+            }
+        })
+    }
+
+    const simpanMahasiswa = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.post('v1/tugas/createMhsTugas', {
+                code_tugas: kodeTugas,
+                nim: checked
+            }).then(function (response) {
+                Swal.fire({
+                    title: response.data.message,
+                    icon: "success"
+                }).then(() => {
+                    getMahasiswaPerkelas()
+                    getDetailTugas()
+                    setChecked([])
+                    handleClose()
+                })
+            })
+        } catch (error) {
+
+        }
+    }
+
     return (
         <Layout>
             <title>Tugas Kuliah</title>
@@ -354,19 +492,39 @@ const ListTugas = () => {
                             <Modal
                                 show={show}
                                 onHide={handleClose}
-                                // backdrop="static"
+                                backdrop="static"
                                 keyboard={false}
                                 size='lg'
                                 centered
                             >
-                                <Modal.Header>
+                                <Modal.Header closeButton>
                                     {/* <Modal.Title></Modal.Title> */}
-                                    <div className='flex gap-2 mx-auto'>
-                                        <button className={`btn btn-sm ${status == 'tugas' ? 'btn-primary' : 'btn-outline-primary'}`} onClick={() => setStatus('tugas')}>Edit Tugas</button>
-                                        <button className={`btn btn-sm ${status == 'mhs' ? 'btn-primary' : 'btn-outline-primary'}`} onClick={() => setStatus('mhs')}>Edit Mahasiswa</button>
-                                    </div>
                                 </Modal.Header>
                                 <Modal.Body>
+                                    <Row>
+                                        <Col className=''>
+                                            <div className='flex gap-2 mx-auto mb-3'>
+                                                <button className={`btn btn-sm ${status == 'tugas' ? 'btn-primary' : 'btn-outline-primary'}`} onClick={() => setStatus('tugas')}>Edit Tugas</button>
+                                                <button className={`btn btn-sm ${status == 'mhs' ? 'btn-primary' : 'btn-outline-primary'}`} onClick={() => setStatus('mhs')}>Edit Mahasiswa</button>
+                                            </div>
+                                        </Col>
+                                        {status == 'mhs' ?
+                                            <Col lg="5" className='flex gap-3'>
+                                                <div className=''>
+                                                    <input type="text"
+                                                        onChange={cariData}
+                                                        className='form-control form-control-sm float-end'
+                                                        placeholder='Cari Mahasiswa'
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <form onSubmit={simpanMahasiswa}>
+                                                        <button className='btn btn-sm btn-primary'>Simpan</button>
+                                                    </form>
+                                                </div>
+                                            </Col>
+                                            : ""}
+                                    </Row>
                                     {status == 'tugas' ?
                                         <form onSubmit={simpanTugas}>
                                             <div className='form-group'>
@@ -405,7 +563,92 @@ const ListTugas = () => {
                                             <Col>
                                                 <div className='table-responsive'>
                                                     <Table>
-
+                                                        <thead>
+                                                            <tr className='border'>
+                                                                <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>#</th>
+                                                                <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>NIM</th>
+                                                                <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Nama</th>
+                                                                <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Jenis Kelamin</th>
+                                                                <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Aksi</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {detailTugas.map((item, index) => (
+                                                                <tr key={index} className={`border`}>
+                                                                    <th scope="row" className="py-2">
+                                                                        <label className="cursor-pointer label justify-center">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked
+                                                                                readOnly
+                                                                                // onChange={(e) => handleCheck(e, item)}
+                                                                                className="form-check-input"
+                                                                            />
+                                                                        </label>
+                                                                    </th>
+                                                                    <td className='py-2'>
+                                                                        {item.nim}
+                                                                    </td>
+                                                                    <td className='py-2'>
+                                                                        {item.mahasiswas[0].nama}
+                                                                    </td>
+                                                                    <td className='py-2'>
+                                                                        {jenkel == 'l' ? 'Laki-Laki' : 'Perempuan'}
+                                                                    </td>
+                                                                    <td className='py-2'>
+                                                                        {item.status == 'tidak' ?
+                                                                            <button className='bg-[#DC3545] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => hapusMhs(item.id_detail_tugas)}><FaTimes /></button>
+                                                                            :
+                                                                            <button className='bg-[#DC3545] py-2 px-2 rounded-full text-white inline-flex items-center' onClick={() => peringatan(item.nim)}><FaTimes /></button>
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                            {mhsTerpilih.map((item, index) => (
+                                                                <tr key={index} className={`border`}>
+                                                                    <th scope="row" className="py-2">
+                                                                        <label className="cursor-pointer label justify-center">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked={checked.includes(item.nim)}
+                                                                                onChange={(e) => handleCheck(e, item)}
+                                                                                className="form-check-input"
+                                                                                value=""
+                                                                                id="flexCheckDefault"
+                                                                            />
+                                                                        </label>
+                                                                    </th>
+                                                                    <td className='py-2'>{item.nim}</td>
+                                                                    <td className='py-2'>{item.mahasiswas[0].nama}</td>
+                                                                    <td className='py-2'>{item.mahasiswas[0].jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan'}</td>
+                                                                    <td className='py-2'>
+                                                                        <div className='my-2 px-2 rounded-full text-white inline-flex items-center'>..</div>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                            {pilihMahasiswa.map((item, index) => (
+                                                                <tr key={index} className={`border`}>
+                                                                    <th scope="row" className="py-2">
+                                                                        <label className="cursor-pointer label justify-center">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked={checked.includes(item.nim)}
+                                                                                onChange={(e) => handleCheck(e, item)}
+                                                                                className="form-check-input"
+                                                                                value=""
+                                                                                id="flexCheckDefault"
+                                                                            />
+                                                                        </label>
+                                                                    </th>
+                                                                    <td className='py-2'>{item.nim}</td>
+                                                                    <td className='py-2'>{item.mahasiswas[0].nama}</td>
+                                                                    <td className='py-2'>{item.mahasiswas[0].jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan'}</td>
+                                                                    <td className='py-2'>
+                                                                        <div className='my-2 px-2 rounded-full text-white inline-flex items-center'>..</div>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
                                                     </Table>
                                                 </div>
                                             </Col>
@@ -568,7 +811,7 @@ const ListTugas = () => {
                                                                                                             :
                                                                                                             ""
                                                                                                         }
-                                                                                                        {item.jadwalPertemuans[0].tanggal_pertemuan == tgl ?
+                                                                                                        {item.tanggal_akhir == tgl ?
                                                                                                             selesaikan(item.id_tugas) : ""
                                                                                                         }
                                                                                                         {item.status == 'belum' ?

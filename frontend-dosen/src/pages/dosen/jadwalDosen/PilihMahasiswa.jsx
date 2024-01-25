@@ -30,7 +30,7 @@ const PilihMahasiswa = () => {
 
     useEffect(() => {
         getMahasiswaPerkelas()
-        console.log(location.state.kodeKls)
+        // console.log(location.state.kodeKls)
     }, [location, keyword])
 
     const getMahasiswaPerkelas = async () => {
@@ -56,7 +56,7 @@ const PilihMahasiswa = () => {
             }
         })
 
-        console.log(m);
+        // console.log(m);
     }
 
     const cariData = (e) => {
