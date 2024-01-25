@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Loading from '../Loading'
-import { FaSave, FaSearch } from 'react-icons/fa'
+import { FaEdit, FaSave, FaSearch } from 'react-icons/fa'
 
 const FormSettingRfid = () => {
     const [loading, setLoading] = useState(false)
+    const [Mahasiswa, setMahasiswa] = useState([])
 
     useEffect(() => {
         setLoading(true)
@@ -13,6 +14,19 @@ const FormSettingRfid = () => {
         }, 500)
         document.getElementById('rfid').focus()
     }, [])
+
+    useEffect(() => {
+        getRfidAll()
+    }, [])
+
+    const getRfidAll = async () => {
+        try {
+            const response = await axios.get(`v1/rfid/all`)
+            setMahasiswa(response.data.data)
+        } catch (error) {
+
+        }
+    }
 
     return (
         <div className='mt-2 container'>
@@ -99,17 +113,27 @@ const FormSettingRfid = () => {
                                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                     <thead className='text-gray-700 bg-[#d4cece]'>
                                         <tr>
-                                            <th scope="col" className="px-6 py-2 text-sm">NO</th>
-                                            <th scope="col" className="px-6 py-2 text-sm">NIM</th>
-                                            <th scope="col" className="px-6 py-2 text-sm">Nama</th>
-                                            {/* <th scope="col" className="px-6 py-2 text-sm">Jenjang</th>
-                                            <th scope="col" className="px-6 py-2 text-sm">Fakultas</th> */}
-                                            <th scope="col" className='px-6 py-2 text-sm'>Prodi</th>
-                                            <th scope="col" className="px-6 py-2 text-sm" align='center'>Aksi</th>
+                                            <th scope="col" className="px-2 py-2 text-sm">NO</th>
+                                            <th scope="col" className="px-2 py-2 text-sm">RFID</th>
+                                            <th scope="col" className="px-2 py-2 text-sm">NIM</th>
+                                            <th scope="col" className="px-2 py-2 text-sm">Nama</th>
+                                            <th scope="col" className='px-2 py-2 text-sm'>Prodi</th>
+                                            <th scope="col" className="px-2 py-2 text-sm" align='center'>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        {Mahasiswa.map((item, index) => (
+                                            <tr key={item.id_rfid} className='bg-white border-b text-gray-500 border-x'>
+                                                <td className='px-2 py-2 text-[12px]'>{index + 1}</td>
+                                                <td className='px-2 py-2 text-[12px]'>{item.code_rfid}</td>
+                                                <td className='px-2 py-2 text-[12px]'>{item.nim}</td>
+                                                <td className='px-2 py-2 text-[12px]'>{item.mahasiswas[0].nama}</td>
+                                                <td className='px-2 py-2 text-[12px]'>{item.mahasiswas[0].prodis[0].nama_prodi}</td>
+                                                <td className='px-2 py-2 text-[12px]'>
+                                                    <button className="btn btn-xs btn-circle text-white btn-warning mr-1" title='Edit'><FaEdit /></button>
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             </div>
