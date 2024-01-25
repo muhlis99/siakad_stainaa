@@ -32,6 +32,7 @@ import {
   SiHomeassistantcommunitystore,
   SiFoursquarecityguide
 } from "react-icons/si"
+import { RiRfidFill } from "react-icons/ri"
 
 const Sidebar = () => {
   const location = useLocation()
@@ -176,6 +177,9 @@ const Sidebar = () => {
                 <li>
                   <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
                 </li>
+                <li>
+                  <Link to="/settingrfid" state={{ collaps: 'kuliah', activ: '/settingrfid' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/settingrfid' || active == '/settingrfid' ? 'active' : ''} even:bg-[#287155]`}><RiRfidFill /> <span className='text-sm'>Setting RFID</span></Link>
+                </li>
               </ul>
             </details> :
             <details>
@@ -222,6 +226,9 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
+                </li>
+                <li>
+                  <Link to="/settingrfid" state={{ collaps: 'kuliah', activ: '/settingrfid' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/settingrfid' || active == '/settingrfid' ? 'active' : ''} even:bg-[#287155]`}><RiRfidFill /> <span className='text-sm'>Setting RFID</span></Link>
                 </li>
               </ul>
             </details>
