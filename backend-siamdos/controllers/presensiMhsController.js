@@ -12,7 +12,7 @@ const sebaranMataKuliah = require('../models/sebaranMataKuliah.js')
 const dosenModel = require('../models/dosenModel.js')
 const rfidModel = require('../models/rfidModel.js')
 const historyMahasiswa = require('../models/historyMahasiswaModel.js')
-const { Op } = require('sequelize')
+const { Op, Sequelize, fn, col } = require('sequelize')
 
 module.exports = {
     getMakulByDosen: async (req, res, next) => {
@@ -287,25 +287,98 @@ module.exports = {
     },
 
     rekapPresensi: async (req, res, next) => {
-        const { code, thn, smt, jnj, fks, prd } = req.params
+        const { codeJadkul, thn, smt, jnj, fks, prd } = req.params
+        const dataJadPer = await jadwalPertemuanModel.findAll({
+            where: {
+                code_jadwal_kuliah: codeJadkul,
+                status: "aktif"
+            }
+        })
+        const dataJadperUse = dataJadPer.map(el => { return el.code_jadwal_pertemuan })
         await presensiMhsModel.findAll({
+            include: [
+                {
+                    attributes: ["pertemuan"],
+                    model: jadwalPertemuanModel
+                }, {
+                    attributes: ["nama"],
+                    model: mahasiswaModel
+                }
+            ],
+            attributes: ["masuk", "izin", "sakit", "alpha", "nim",
+                [Sequelize.fn('sum', Sequelize.col('masuk')), 'total_masuk'],
+                [Sequelize.fn('sum', Sequelize.col('izin')), 'total_izin'],
+                [Sequelize.fn('sum', Sequelize.col('sakit')), 'total_sakit'],
+                [Sequelize.fn('sum', Sequelize.col('alpha')), 'total_alpha'],
+            ],
             where: {
                 code_tahun_ajaran: thn,
                 code_semester: smt,
                 code_jenjang_pendidikan: jnj,
                 code_fakultas: fks,
                 code_prodi: prd,
+                code_jadwal_pertemuan: dataJadperUse,
                 status: "aktif"
             },
             group: ["nim"]
+        }).then(all => {
+            res.status(201).json({
+                message: "Data presensi berhasil diupdate",
+                data: all
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
+    detailRekapPresensi: async (req, res, next) => {
+        const { nim, thn, smt, jnj, fks, prd } = req.params
+        await presensiMhsModel.findAll({
+            attributes: ["masuk", "izin", "sakit", "alpha",
+                [Sequelize.fn('sum', Sequelize.col('masuk')), 'total_masuk'],
+                [Sequelize.fn('sum', Sequelize.col('izin')), 'total_izin'],
+                [Sequelize.fn('sum', Sequelize.col('sakit')), 'total_sakit'],
+                [Sequelize.fn('sum', Sequelize.col('alpha')), 'total_alpha'],
+            ],
+            where: {
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnj,
+                code_fakultas: fks,
+                code_prodi: prd,
+                nim: nim,
+                status: "aktif"
+            }
         }).
             then(result => {
-                res.status(201).json({
-                    message: "Data rekap presensi success",
-                    data: result
+                totalItem = result
+                return presensiMhsModel.findAll({
+                    include: [
+                        {
+                            attributes: ["pertemuan"],
+                            model: jadwalPertemuanModel
+                        }, {
+                            attributes: ["nama"],
+                            model: mahasiswaModel
+                        }
+                    ],
+                    where: {
+                        code_tahun_ajaran: thn,
+                        code_semester: smt,
+                        code_jenjang_pendidikan: jnj,
+                        code_fakultas: fks,
+                        code_prodi: prd,
+                        nim: nim,
+                        status: "aktif"
+                    }
                 })
-            }).
-            catch(err => {
+            }).then(all => {
+                res.status(201).json({
+                    message: "Data presensi berhasil diupdate",
+                    data: all,
+                    datas: totalItem
+                })
+            }).catch(err => {
                 next(err)
             })
     }
