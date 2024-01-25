@@ -64,6 +64,7 @@ import Pedoman from "./pages/pedoman/Pedoman"
 import TambahPedoman from "./pages/pedoman/TambahPedoman"
 import EditPedoman from "./pages/pedoman/EditPedoman"
 import DetailPedoman from "./pages/pedoman/DetailPedoman"
+import SettingRfid from "./pages/rfid/SettingRfid"
 
 
 function App() {
@@ -133,6 +134,7 @@ function App() {
           <Route path="/addpedoman" element={<TambahPedoman />} />
           <Route path="/editpedoman" element={<EditPedoman />} />
           <Route path="/detailpedoman" element={<DetailPedoman />} />
+          <Route path="/settingrfid" element={<SettingRfid />} />
         </Routes>
       </BrowserRouter>
     </div>
