@@ -8,6 +8,7 @@ router.get('/getMhsValidasi/:code/:thn/:smt/:jnj/:fks/:prd', presensiMhsControll
 router.get('/progresPresensi/:code/:thn/:smt/:jnj/:fks/:prd', presensiMhsController.progresPresensi)
 router.post('/presensiByRfid', presensiMhsController.presensiByRfid)
 router.put('/validasiPresensi/:id', presensiMhsController.validasiPresensi)
+router.get('/rekapPresensi/:code/:thn/:smt/:jnj/:fks/:prd', presensiMhsController.rekapPresensi)
 
 
 module.exports = router

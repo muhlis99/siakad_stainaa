@@ -133,14 +133,33 @@ module.exports = {
     progresPresensi: async (req, res, next) => {
         const { code, thn, smt, jnj, fks, prd } = req.params
         const jmlMhs = await historyMahasiswa.count({
-            code_tahun_ajaran: thn,
-            code_semester: smt,
-            code_jenjang_pendidikan: jnj,
-            code_fakultas: fks,
-            code_prodi: prd,
-            status: "aktif"
+            where: {
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnj,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            }
         })
-        console.log(jmlMhs);
+        const jmlMhsAbsen = await presensiMhsModel.count({
+            where: {
+                code_jadwal_pertemuan: code,
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnj,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            }
+        })
+        res.status(201).json({
+            message: "Data progres presensi",
+            data: {
+                jumlah_mahasiswa: jmlMhs,
+                jumlah_mahasiswa_presensi: jmlMhsAbsen
+            }
+        })
     },
 
     presensiByRfid: async (req, res, next) => {
@@ -266,4 +285,28 @@ module.exports = {
                 next(err)
             })
     },
+
+    rekapPresensi: async (req, res, next) => {
+        const { code, thn, smt, jnj, fks, prd } = req.params
+        await presensiMhsModel.findAll({
+            where: {
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnj,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            },
+            group: ["nim"]
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "Data rekap presensi success",
+                    data: result
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    }
 }
