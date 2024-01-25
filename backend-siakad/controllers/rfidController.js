@@ -257,5 +257,40 @@ module.exports = {
             catch(err => {
                 next(err)
             })
+    },
+
+    autocompleteRfid: async (req, res, next) => {
+        const { nim } = req.params
+        const rfidMhs = await rfidModel.findAll({
+            where: {
+                nim: nim,
+                status: "aktif"
+            }
+        })
+        const datas = rfidMhs.map(el => { return el.nim })
+        await mahasiswaModel.findAll({
+            attributes: ["id_mahasiswa", "nim", "nama"],
+            where: {
+                nim: {
+                    [Op.notIn]: datas
+                },
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                if (!result) {
+                    return res.status(404).json({
+                        message: "Get mahasiswa  Tidak Ditemukan",
+                        data: null
+                    })
+                }
+                res.status(200).json({
+                    message: "Get mahasiswa Success",
+                    data: result,
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
     }
 }

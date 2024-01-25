@@ -9,5 +9,6 @@ route.get('/getById/:id', rfidController.getById)
 route.post('/create', rfidController.post)
 route.put('/update/:id', rfidController.put)
 route.put('/delete/:id', rfidController.delete)
+route.get('/autocompleteRfid/:nim', rfidController.autocompleteRfid)
 
 module.exports = route
