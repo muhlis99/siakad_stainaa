@@ -234,6 +234,7 @@ module.exports = {
     },
 
     delete: async (req, res, next) => {
+        const date = new Date().toLocaleDateString('en-CA')
         const id = req.params.id
         const rfidModelUse = await rfidModel.findOne({
             where: {
@@ -244,6 +245,7 @@ module.exports = {
         if (!rfidModelUse) return res.status(401).json({ message: "Data rfid tidak ditemukan" })
         await rfidModel.update({
             status: "tidak",
+            tanggal_non_aktif: date
         }, {
             where: {
                 id_rfid: id
