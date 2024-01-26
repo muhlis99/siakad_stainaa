@@ -9,7 +9,7 @@ import { LogOut, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
 import axios from "axios"
 import { FaBullhorn, FaClock, FaFilePdf, FaListUl, FaTh, FaArchive, FaGraduationCap, FaTasks } from "react-icons/fa"
-import { FaRegBookmark } from "react-icons/fa6"
+import { FaRegBookmark, FaChalkboardUser } from "react-icons/fa6"
 import "../assets/css/navigasi.css"
 
 const Navigation = () => {
@@ -166,6 +166,11 @@ const Navigation = () => {
                                         <li>
                                             <Link to="/tugas" className={`dropdown-item ${location.pathname == '/tugas' ? 'active' : ''}`}>
                                                 <div className="inline-flex gap-2"><FaTasks className="mt-1 text-[14px]" />  Tugas Kuliah</div>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/presensi" className={`dropdown-item ${location.pathname == '/presensi' ? 'active' : ''}`}>
+                                                <div className="inline-flex gap-2"><FaChalkboardUser className="mt-1 text-[14px]" />  Presensi</div>
                                             </Link>
                                         </li>
                                         <li>
