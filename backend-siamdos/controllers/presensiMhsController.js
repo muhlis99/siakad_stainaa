@@ -10,7 +10,7 @@ const presensiMhsModel = require('../models/presensiMhsModel.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
 const sebaranMataKuliah = require('../models/sebaranMataKuliah.js')
 const dosenModel = require('../models/dosenModel.js')
-const rfidModel = require('../models/rfidModel.js')
+const rfidMahasiswaModel = require('../models/rfidMahasiswaModel.js')
 const historyMahasiswa = require('../models/historyMahasiswaModel.js')
 const krsModel = require('../models/krsModel.js')
 const { Op, Sequelize, fn, col } = require('sequelize')
@@ -222,7 +222,7 @@ module.exports = {
         const { codeRfid, codeThn, codeSmt, codeJnj, codeFks, codePrd, codeJadper } = req.body
         let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
         const date = new Date().toLocaleDateString('en-CA')
-        const dataRfid = await rfidModel.findOne({
+        const dataRfid = await rfidMahasiswaModel.findOne({
             where: {
                 code_rfid: codeRfid,
                 status: "aktif"

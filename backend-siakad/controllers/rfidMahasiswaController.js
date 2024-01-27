@@ -1,5 +1,5 @@
 const mahasiswaModel = require('../models/mahasiswaModel.js')
-const rfidModel = require('../models/rfidModel.js')
+const rfidMahasiswaModel = require('../models/rfidMahasiswaModel.js')
 const { Op } = require('sequelize')
 const tahunAjaranModel = require('../models/tahunAjaranModel.js')
 const semesterModel = require('../models/semesterModel.js')
@@ -14,7 +14,7 @@ module.exports = {
         const perPage = parseInt(req.query.perPage) || 10
         const search = req.query.search || ""
         const offset = (currentPage - 1) * perPage
-        const totalPage = await rfidModel.count({
+        const totalPage = await rfidMahasiswaModel.count({
             include: [{
                 attributes: ["nama"],
                 model: mahasiswaModel,
@@ -65,7 +65,7 @@ module.exports = {
             }
         })
         const totalItems = Math.ceil(totalPage / perPage)
-        await rfidModel.findAll({
+        await rfidMahasiswaModel.findAll({
             include: [{
                 attributes: ["nama"],
                 model: mahasiswaModel,
@@ -137,7 +137,7 @@ module.exports = {
 
     getById: async (req, res, next) => {
         const id = req.params.id
-        await rfidModel.findOne({
+        await rfidMahasiswaModel.findOne({
             include: [{
                 attributes: ["nama"],
                 model: mahasiswaModel,
@@ -181,14 +181,14 @@ module.exports = {
     post: async (req, res, next) => {
         const date = new Date().toLocaleDateString('en-CA')
         const { code_rfid, nim, } = req.body
-        const rfidUse = await rfidModel.findOne({
+        const rfidUse = await rfidMahasiswaModel.findOne({
             where: {
                 nim: nim,
                 status: "aktif"
             }
         })
         if (rfidUse) return res.status(401).json({ message: "mahasiswa sudah terdaftar" })
-        await rfidModel.create({
+        await rfidMahasiswaModel.create({
             code_rfid: code_rfid,
             nim: nim,
             tanggal_aktif: date,
@@ -207,7 +207,7 @@ module.exports = {
 
     put: async (req, res, next) => {
         const id = req.params.id
-        const rfidUseOne = await rfidModel.findOne({
+        const rfidUseOne = await rfidMahasiswaModel.findOne({
             where: {
                 id_rfid: id,
                 status: "aktif"
@@ -215,7 +215,7 @@ module.exports = {
         })
         if (!rfidUseOne) return res.status(401).json({ message: "data rfid tidak ditemukan" })
         const { code_rfid, nim, } = req.body
-        await rfidModel.update({
+        await rfidMahasiswaModel.update({
             code_rfid: code_rfid,
             nim: nim,
         }, {
@@ -236,14 +236,14 @@ module.exports = {
     delete: async (req, res, next) => {
         const date = new Date().toLocaleDateString('en-CA')
         const id = req.params.id
-        const rfidModelUse = await rfidModel.findOne({
+        const rfidMahasiswaModelUse = await rfidMahasiswaModel.findOne({
             where: {
                 id_rfid: id,
                 status: "aktif"
             }
         })
-        if (!rfidModelUse) return res.status(401).json({ message: "Data rfid tidak ditemukan" })
-        await rfidModel.update({
+        if (!rfidMahasiswaModelUse) return res.status(401).json({ message: "Data rfid tidak ditemukan" })
+        await rfidMahasiswaModel.update({
             status: "tidak",
             tanggal_non_aktif: date
         }, {
@@ -263,7 +263,7 @@ module.exports = {
 
     autocompleteRfid: async (req, res, next) => {
         const { nim } = req.params
-        const rfidMhs = await rfidModel.findAll({
+        const rfidMhs = await rfidMahasiswaModel.findAll({
             where: {
                 nim: nim,
                 status: "aktif"

@@ -73,7 +73,7 @@ const pengumuman = require('./router/pengumumanRoute.js')
 const kontak = require('./router/kontakRoute.js')
 const message = require('./router/messageRoute.js')
 const pedoman = require('./router/pedomanRoute.js')
-const rfid = require('./router/rfidRoute.js')
+const rfidMahasiswa = require('./router/rfidMahasiswaRoute.js')
 
 
 app.use('/v1/login', login)
@@ -106,7 +106,7 @@ app.use('/v1/pengumuman', pengumuman)
 app.use('/v1/kontak', kontak)
 app.use('/v1/message', message)
 app.use('/v1/pedoman', pedoman)
-app.use('/v1/rfid', rfid)
+app.use('/v1/rfidMahasiswa', rfidMahasiswa)
 
 // default index
 app.get('/', (req, res) => {
