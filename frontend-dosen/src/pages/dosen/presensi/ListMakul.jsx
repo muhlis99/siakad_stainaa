@@ -4,7 +4,7 @@ import { Row, Col, Card, Table, Image } from 'react-bootstrap'
 import dataBlank from "../../../assets/images/watch.svg"
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
-import { Link, Navigate, useNavigate } from "react-router-dom"
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
 import axios from 'axios'
 import moment from 'moment'
 import { Circles } from 'react-loader-spinner'
@@ -27,6 +27,7 @@ const ListMakul = () => {
     const [kodeSemester, setKodeSemester] = useState("")
     const [idProdi, setIdProdi] = useState("")
     const [pendidikan, setPendidikan] = useState("")
+    const location = useLocation()
 
     useEffect(() => {
         setLoad(true)
@@ -40,10 +41,23 @@ const ListMakul = () => {
     }, [dispatch])
 
     useEffect(() => {
+        if (location.state != null) {
+            setKodeJenjang(location.state.kodeJen)
+            setIdProdi(location.state.idProdi)
+            setKodeFakultas(location.state.kodeFkl)
+            setKodeProdi(location.state.kodePro)
+            setKodeTahun(location.state.kodeThn)
+            setKodeSemester(location.state.kodeSmt)
+        }
+    }, [location])
+
+    useEffect(() => {
         if (user) {
             setUsername(user.data.username)
         }
     }, [user])
+
+    useEffect(() => { console.log(location.state) }, [location])
 
     useEffect(() => {
         const getDosenByNip = async () => {

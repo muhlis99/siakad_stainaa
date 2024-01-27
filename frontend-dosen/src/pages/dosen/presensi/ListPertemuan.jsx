@@ -24,9 +24,9 @@ const ListPertemuan = () => {
         }, 500);
     }, [])
 
-    // useEffect(() => {
-    //     console.log(location.state);
-    // }, [location])
+    useEffect(() => {
+        console.log(location.state);
+    }, [location])
 
     useEffect(() => {
         dispatch(getMe())
@@ -79,6 +79,18 @@ const ListPertemuan = () => {
                                 <Col>
                                     <Card>
                                         <Card.Body className='py-3 px-3'>
+                                            <Row className='mb-2'>
+                                                <Col>
+                                                    <Link to="/presensi" state={{
+                                                        kodeThn: location.state.kodeThn,
+                                                        kodeSmt: location.state.kodeSmt,
+                                                        kodeJen: location.state.kodeJen,
+                                                        kodeFkl: location.state.kodeFkl,
+                                                        kodePro: location.state.kodePro,
+                                                        idProdi: location.state.idProdi,
+                                                    }} className='btn btn-sm btn-danger'>Kembali</Link>
+                                                </Col>
+                                            </Row>
                                             <div className='table-responsive'>
                                                 <Table>
                                                     <thead>
