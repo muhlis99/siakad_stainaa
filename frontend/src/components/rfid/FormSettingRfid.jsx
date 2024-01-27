@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import Loading from '../Loading'
-import { FaEdit, FaSave, FaSearch, FaTimes } from 'react-icons/fa'
+import { FaEdit, FaSave, FaSearch, FaTimes, FaArrowLeft, FaArrowRight } from 'react-icons/fa'
+import { SlOptions } from "react-icons/sl"
 import Swal from 'sweetalert2'
 import Select from "react-select"
-import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+import ReactPaginate from "react-paginate"
 
 const FormSettingRfid = () => {
     const [loading, setLoading] = useState(false)
@@ -19,6 +20,12 @@ const FormSettingRfid = () => {
     const [isClearable, setIsClearable] = useState(true)
     const selectInputRef = useRef()
     const [idRfid, setIdRfid] = useState("")
+    const [page, setPage] = useState(0)
+    const [perPage, setperPage] = useState(0)
+    const [pages, setPages] = useState(0)
+    const [rows, setrows] = useState(0)
+    const [keyword, setKeyword] = useState("")
+    const [msg, setMsg] = useState("")
 
     useEffect(() => {
         setLoading(true)
@@ -32,7 +39,7 @@ const FormSettingRfid = () => {
 
     useEffect(() => {
         getRfidAll()
-    }, [])
+    }, [page, keyword])
 
     useEffect(() => {
         getAutoCompleteMahasiswa()
@@ -48,11 +55,33 @@ const FormSettingRfid = () => {
 
     const getRfidAll = async () => {
         try {
-            const response = await axios.get(`v1/rfid/all`)
+            const response = await axios.get(`v1/rfid/all?page=${page}&search=${keyword}`)
             setMahasiswa(response.data.data)
+            setPage(response.data.current_page)
+            setrows(response.data.total_data)
+            setPages(response.data.total_page)
+            setperPage(response.data.per_page)
         } catch (error) {
 
         }
+    }
+
+    const pageCount = Math.ceil(rows / perPage)
+
+    const changePage = (event) => {
+        const newOffset = (event.selected + 1);
+        setPage(newOffset);
+        if (event.selected === 9) {
+            setMsg("Jika tidak menemukan data yang dicari, maka lakukan pencarian data secara spesifik!")
+        } else {
+            setMsg("")
+        }
+    }
+
+    const cariData = (e) => {
+        e.preventDefault()
+        setKeyword(e ? e.target.value : "")
+        setPage(0)
     }
 
     const dataRfid = () => {
@@ -122,6 +151,7 @@ const FormSettingRfid = () => {
                         setKodeRfid("")
                         setFormEdit(false)
                         onClear()
+                        document.getElementById('rfid').focus()
                     })
                 })
             }
@@ -138,6 +168,7 @@ const FormSettingRfid = () => {
             setKodeRfid(response.data.data.code_rfid)
             setNim(response.data.data.nim)
             setNama(response.data.data.mahasiswas[0].nama)
+            document.getElementById('rfid').focus()
         } catch (error) {
 
         }
@@ -176,6 +207,7 @@ const FormSettingRfid = () => {
                         setNama("")
                         setFormEdit(false)
                         onClear()
+                        document.getElementById('rfid').focus()
                     })
                 })
             }
@@ -206,6 +238,7 @@ const FormSettingRfid = () => {
                             icon: "success"
                         }).then(() => {
                             getRfidAll()
+                            document.getElementById('rfid').focus()
                         })
                     })
 
@@ -214,6 +247,14 @@ const FormSettingRfid = () => {
                 }
             }
         })
+    }
+
+    const batalEdit = () => {
+        setFormEdit(false)
+        setKodeRfid("")
+        setNim("")
+        setNama("")
+        document.getElementById('rfid').focus()
     }
 
     return (
@@ -232,91 +273,92 @@ const FormSettingRfid = () => {
                         <div className='card bg-base-100 card-bordered shadow-md mb-2'>
                             {formEdit ?
                                 <div className="card-body p-4 edit">
-                                    <form onSubmit={updateRfid}>
-                                        <div className='grid gap-3'>
-                                            <div>
-                                                <label className="label">
-                                                    <span className="text-base label-text">RFID</span>
-                                                </label>
-                                                <input type="number" id='rfid' placeholder="RFID" className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                                    value={kodeRfid} onChange={(e) => setKodeRfid(e.target.value)}
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="label">
-                                                    <span className="text-base label-text">Nama</span>
-                                                </label>
-                                                <Select
-                                                    className="basic-single"
-                                                    ref={selectInputRef}
-                                                    classNamePrefix="select"
-                                                    options={select2}
-                                                    onChange={onchange}
-                                                    isClearable={isClearable}
-                                                    id='input-select'
-                                                    placeholder={nama}
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="label">
-                                                    <span className="text-base label-text">NIM</span>
-                                                </label>
-                                                <input type="number" placeholder="NIM" className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                                    value={nim} onChange={(e) => setNim(e.target.value)} disabled
-                                                />
-                                            </div>
+                                    <div className='grid gap-3'>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">RFID</span>
+                                            </label>
+                                            <input type="number" id='rfid' placeholder="RFID" className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                value={kodeRfid} onChange={(e) => setKodeRfid(e.target.value)}
+                                            />
                                         </div>
-                                        <div className='mt-5'>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">Nama</span>
+                                            </label>
+                                            <Select
+                                                className="basic-single"
+                                                ref={selectInputRef}
+                                                classNamePrefix="select"
+                                                options={select2}
+                                                onChange={onchange}
+                                                isClearable={isClearable}
+                                                id='input-select'
+                                                placeholder={nama}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">NIM</span>
+                                            </label>
+                                            <input type="number" placeholder="NIM" className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                value={nim} onChange={(e) => setNim(e.target.value)} disabled
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className='mt-5'>
+                                        <form onSubmit={updateRfid}>
                                             <div className='col-span-2 mb-3'>
                                                 <hr />
                                             </div>
                                             <div>
+                                                <button type='button' className='btn btn-sm btn-error capitalize rounded-md' onClick={batalEdit}><FaTimes /><span className="">batal</span></button>
                                                 <div className='float-right'>
                                                     <div className='lg:pl-1'>
                                                         <button className='btn btn-sm btn-warning capitalize rounded-md text-white'><FaEdit /><span className="">edit</span></button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                                 :
                                 <div className="card-body p-4 tambah">
-                                    <form onSubmit={simpanRfid}>
-                                        <div className='grid gap-3'>
-                                            <div>
-                                                <label className="label">
-                                                    <span className="text-base label-text">RFID</span>
-                                                </label>
-                                                <input type="number" id='rfid' placeholder="RFID" className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                                    value={kodeRfid} onChange={(e) => setKodeRfid(e.target.value)}
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="label">
-                                                    <span className="text-base label-text">Nama</span>
-                                                </label>
-                                                <Select
-                                                    className="basic-single"
-                                                    ref={selectInputRef}
-                                                    classNamePrefix="select"
-                                                    options={select2}
-                                                    onChange={onchange}
-                                                    isClearable={isClearable}
-                                                    id='input-select'
-                                                    placeholder={nama}
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="label">
-                                                    <span className="text-base label-text">NIM</span>
-                                                </label>
-                                                <input type="number" placeholder="NIM" className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                                    value={nim} onChange={(e) => setNim(e.target.value)} disabled
-                                                />
-                                            </div>
+                                    <div className='grid gap-3'>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">RFID</span>
+                                            </label>
+                                            <input type="number" id='rfid' placeholder="RFID" className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                value={kodeRfid} onChange={(e) => setKodeRfid(e.target.value)}
+                                            />
                                         </div>
-                                        <div className='mt-5'>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">Nama</span>
+                                            </label>
+                                            <Select
+                                                className="basic-single"
+                                                ref={selectInputRef}
+                                                classNamePrefix="select"
+                                                options={select2}
+                                                onChange={onchange}
+                                                isClearable={isClearable}
+                                                id='input-select'
+                                                placeholder={nama}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="text-base label-text">NIM</span>
+                                            </label>
+                                            <input type="number" placeholder="NIM" className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                value={nim} onChange={(e) => setNim(e.target.value)} disabled
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className='mt-5'>
+                                        <form onSubmit={simpanRfid}>
                                             <div className='col-span-2 mb-3'>
                                                 <hr />
                                             </div>
@@ -327,59 +369,81 @@ const FormSettingRfid = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             }
                         </div>
                     </div>
-                    <div className='col-span-2 card bg-base-100 card-bordered shadow-md mb-2'>
-                        <div className="card-body p-4">
-                            <div>
-                                <div className="form-control">
-                                    <div className="input-group justify-end">
-                                        <input
-                                            type="text"
-                                            // onChange={cariData}
-                                            className="input input-sm input-bordered input-success"
-                                            placeholder='Cari'
-                                        />
-                                        <button className="btn btn-sm btn-square btn-success">
-                                            <FaSearch />
-                                        </button>
+                    <div className='col-span-2'>
+                        <div className='card bg-base-100 card-bordered shadow-md mb-2'>
+                            <div className="card-body p-4">
+                                <div>
+                                    <div className="form-control">
+                                        <div className="input-group justify-end">
+                                            <input
+                                                type="text"
+                                                onChange={cariData}
+                                                className="input input-sm input-bordered input-success"
+                                                placeholder='Cari'
+                                            />
+                                            <button className="btn btn-sm btn-square btn-success">
+                                                <FaSearch />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="overflow-x-auto mb-2">
-                                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                    <thead className='text-gray-700 bg-[#d4cece]'>
-                                        <tr>
-                                            <th scope="col" className="px-2 py-2 text-sm">NO</th>
-                                            <th scope="col" className="px-2 py-2 text-sm">RFID</th>
-                                            <th scope="col" className="px-2 py-2 text-sm">NIM</th>
-                                            <th scope="col" className="px-2 py-2 text-sm">Nama</th>
-                                            <th scope="col" className='px-2 py-2 text-sm'>Prodi</th>
-                                            <th scope="col" className="px-2 py-2 text-sm" align='center'>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {Mahasiswa.map((item, index) => (
-                                            <tr key={item.id_rfid} className='bg-white border-b text-gray-500 border-x'>
-                                                <td className='px-2 py-2 text-[12px]'>{index + 1}</td>
-                                                <td className='px-2 py-2 text-[12px]'>{item.code_rfid}</td>
-                                                <td className='px-2 py-2 text-[12px]'>{item.nim}</td>
-                                                <td className='px-2 py-2 text-[12px]'>{item.mahasiswas[0].nama}</td>
-                                                <td className='px-2 py-2 text-[12px]'>{item.mahasiswas[0].prodis[0].nama_prodi}</td>
-                                                <td className='px-2 py-2 text-[12px]'>
-                                                    <div className='flex gap-1'>
-                                                        <button onClick={() => getDataById(item.id_rfid)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
-                                                        <button onClick={() => hapusRfid(item.id_rfid)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTimes /></button>
-                                                    </div>
-                                                </td>
+                                <div className="overflow-x-auto mb-2">
+                                    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                        <thead className='text-gray-700 bg-[#d4cece]'>
+                                            <tr>
+                                                <th scope="col" className="px-2 py-2 text-sm">NO</th>
+                                                <th scope="col" className="px-2 py-2 text-sm">RFID</th>
+                                                <th scope="col" className="px-2 py-2 text-sm">NIM</th>
+                                                <th scope="col" className="px-2 py-2 text-sm">Nama</th>
+                                                <th scope="col" className='px-2 py-2 text-sm'>Prodi</th>
+                                                <th scope="col" className="px-2 py-2 text-sm" align='center'>Aksi</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            {Mahasiswa.map((item, index) => (
+                                                <tr key={item.id_rfid} className='bg-white border-b text-gray-500 border-x'>
+                                                    <td className='px-2 py-2 text-[12px]'>{index + 1}</td>
+                                                    <td className='px-2 py-2 text-[12px]'>{item.code_rfid}</td>
+                                                    <td className='px-2 py-2 text-[12px]'>{item.nim}</td>
+                                                    <td className='px-2 py-2 text-[12px]'>{item.mahasiswas[0].nama}</td>
+                                                    <td className='px-2 py-2 text-[12px]'>{item.mahasiswas[0].prodis[0].nama_prodi}</td>
+                                                    <td className='px-2 py-2 text-[12px]'>
+                                                        <div className='flex gap-1'>
+                                                            <button onClick={() => getDataById(item.id_rfid)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
+                                                            <button onClick={() => hapusRfid(item.id_rfid)} className="btn btn-xs btn-circle text-white btn-error" title='Hapus'><FaTimes /></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div>
+                                    <span className='text-sm font-semibold'>Total Data : {rows} page: {page} of {pages}</span>
+                                    <p className='text-sm text-red-700'>{msg}</p>
+                                </div>
+                                <div className="mt-2 justify-center btn-group" key={rows} aria-label='pagination'>
+                                    <ReactPaginate
+                                        className='justify-center btn-group'
+                                        breakLabel={<SlOptions />}
+                                        previousLabel={<FaArrowLeft />}
+                                        pageCount={Math.min(10, pageCount)}
+                                        onPageChange={changePage}
+                                        nextLabel={<FaArrowRight />}
+                                        previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
+                                        nextLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                        breakLinkClassName={"btn btn-xs btn-success btn-circle btn-outline ml-1"}
+                                        activeLinkClassName={"btn btn-xs btn-success btn-circle"}
+                                        pageLinkClassName={"btn btn-xs btn-success btn-circle ml-1"}
+                                        disabledLinkClassName={"btn btn-xs btn-circle btn-outline btn-disabled"}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>

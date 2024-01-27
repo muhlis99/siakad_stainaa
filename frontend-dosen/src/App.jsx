@@ -39,6 +39,10 @@ import Deskripsi from "./pages/dosen/tugas/Deskripsi"
 import DetailTugas from "./pages/dosen/tugas/DetailTugas"
 import Tugas from "./pages/dosen/jadwalDosen/Tugas"
 import PilihMahasiswa from "./pages/dosen/jadwalDosen/PilihMahasiswa"
+import ListMakul from "./pages/dosen/presensi/ListMakul"
+import ListPertemuan from "./pages/dosen/presensi/ListPertemuan"
+import PresensiMhs from "./pages/dosen/presensi/PresensiMhs"
+
 
 function App() {
   return (
@@ -87,6 +91,9 @@ function App() {
           <Route path="/detailTugas" element={<DetailTugas />} />
           <Route path="/settugas" element={<Tugas />} />
           <Route path="/pilihmhs" element={<PilihMahasiswa />} />
+          <Route path="/presensi" element={<ListMakul />} />
+          <Route path="/presensi/pertemuan" element={<ListPertemuan />} />
+          <Route path="/presensi/mahasiswa" element={<PresensiMhs />} />
         </Routes>
 
       </BrowserRouter>
