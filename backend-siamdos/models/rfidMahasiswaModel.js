@@ -3,7 +3,7 @@ const db = require('../config/database.js')
 const mahasiswaModel = require('./mahasiswaModel.js')
 
 
-const rfidModel = db.define('rfid', {
+const rfidMahasiswaModel = db.define('rfidMahasiswa', {
     'id_rfid': {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -26,15 +26,15 @@ const rfidModel = db.define('rfid', {
         values: ['aktif', 'tidak']
     }
 }, {
-    tableName: 'tb_rfid',
+    tableName: 'tb_rfid_mahasiswa',
     freezeTableName: true,
     timestamps: false,
     underscored: true,
     paranoid: true,
 })
 
-mahasiswaModel.belongsTo(rfidModel, { foreignKey: 'nim' })
-rfidModel.hasMany(mahasiswaModel, { sourceKey: 'nim', foreignKey: 'nim' })
+mahasiswaModel.belongsTo(rfidMahasiswaModel, { foreignKey: 'nim' })
+rfidMahasiswaModel.hasMany(mahasiswaModel, { sourceKey: 'nim', foreignKey: 'nim' })
 
 
-module.exports = rfidModel
+module.exports = rfidMahasiswaModel
