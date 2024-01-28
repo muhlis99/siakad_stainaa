@@ -42,7 +42,9 @@ import PilihMahasiswa from "./pages/dosen/jadwalDosen/PilihMahasiswa"
 import ListMakul from "./pages/dosen/presensi/ListMakul"
 import ListPertemuan from "./pages/dosen/presensi/ListPertemuan"
 import PresensiMhs from "./pages/dosen/presensi/PresensiMhs"
-
+import ValidasiMhs from "./pages/dosen/presensi/ValidasiMhs"
+import RekapAbsen from "./pages/dosen/presensi/RekapAbsen"
+import DetailRekap from "./pages/dosen/presensi/DetailRekap"
 
 function App() {
   return (
@@ -60,6 +62,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/listPedoman" element={<PedomanList />} />
           <Route path="/detailpedoman" element={<DetailPedoman />} />
+
 
           {/* Route Mahasiswa */}
           <Route path="/profil" element={<Profil />} />
@@ -94,6 +97,9 @@ function App() {
           <Route path="/presensi" element={<ListMakul />} />
           <Route path="/presensi/pertemuan" element={<ListPertemuan />} />
           <Route path="/presensi/mahasiswa" element={<PresensiMhs />} />
+          <Route path="/presensi/validasi" element={<ValidasiMhs />} />
+          <Route path="/presensi/rekap" element={<RekapAbsen />} />
+          <Route path="/presensi/detailrekap" element={<DetailRekap />} />
         </Routes>
 
       </BrowserRouter>

@@ -4,11 +4,9 @@ import { Row, Col, Card, Table, Image } from 'react-bootstrap'
 import dataBlank from "../../../assets/images/watch.svg"
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
+import { Link, Navigate, useLocation } from "react-router-dom"
 import axios from 'axios'
-import moment from 'moment'
 import { Circles } from 'react-loader-spinner'
-import { FaCog } from 'react-icons/fa'
 
 const ListMakul = () => {
     const { isError, user } = useSelector((state) => state.auth)
@@ -312,10 +310,32 @@ const ListMakul = () => {
                                                                                 kodePro: kodeProdi,
                                                                                 idProdi: idProdi,
                                                                                 kodeJadwal: item.code_jadwal_kuliah,
-                                                                                mataKuliah: item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah
+                                                                                mataKuliah: item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah,
+                                                                                jenisMk: item.sebaranMataKuliahs[0].mataKuliahs[0].jenis_mata_kuliah,
+                                                                                bobot: item.sebaranMataKuliahs[0].status_bobot_makul,
+                                                                                sks: item.sebaranMataKuliahs[0].mataKuliahs[0].sks,
+                                                                                kodeMk: item.code_mata_kuliah
                                                                             }
-                                                                        } className='bg-[#28A745] py-2 px-2 rounded-full text-white inline-flex items-center'>
-                                                                            <FaCog />
+                                                                        } className='bg-[#28A745] py-2 px-2 rounded text-white inline-flex items-center no-underline'>
+                                                                            Absen
+                                                                        </Link>
+                                                                        <Link to="/presensi/rekap"
+                                                                            state={{
+                                                                                kodeThn: kodeTahun,
+                                                                                kodeSmt: kodeSemester,
+                                                                                kodeJen: kodeJenjang,
+                                                                                kodeFkl: kodeFakultas,
+                                                                                kodePro: kodeProdi,
+                                                                                idProdi: idProdi,
+                                                                                kodeJadwal: item.code_jadwal_kuliah,
+                                                                                mataKuliah: item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah,
+                                                                                jenisMk: item.sebaranMataKuliahs[0].mataKuliahs[0].jenis_mata_kuliah,
+                                                                                bobot: item.sebaranMataKuliahs[0].status_bobot_makul,
+                                                                                sks: item.sebaranMataKuliahs[0].mataKuliahs[0].sks,
+                                                                                kodeMk: item.code_mata_kuliah
+                                                                            }}
+                                                                            className='bg-[#17A2B8] ml-1 py-2 px-2 rounded text-white inline-flex items-center no-underline'>
+                                                                            Rekap
                                                                         </Link>
                                                                     </td>
                                                                 </tr>

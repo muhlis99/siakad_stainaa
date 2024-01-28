@@ -8,6 +8,7 @@ import dataBlank from "../../../assets/images/watch.svg"
 import axios from 'axios'
 import moment from 'moment'
 import { Circles } from 'react-loader-spinner'
+import { FaReply } from 'react-icons/fa'
 
 const ListPertemuan = () => {
     const { isError, user } = useSelector((state) => state.auth)
@@ -16,6 +17,7 @@ const ListPertemuan = () => {
     const [username, setUsername] = useState("")
     const location = useLocation()
     const [Pertemuan, setPertemuan] = useState([])
+    const [dosen, setDosen] = useState([])
 
     useEffect(() => {
         setLoad(true)
@@ -37,6 +39,20 @@ const ListPertemuan = () => {
             setUsername(user.data.username)
         }
     }, [user])
+
+    useEffect(() => {
+        const getDosenByNipy = async () => {
+            try {
+                if (username) {
+                    const response = await axios.get(`v1/dosen/getByNipy/${username}`)
+                    setDosen(response.data.data.nama)
+                }
+            } catch (error) {
+
+            }
+        }
+        getDosenByNipy()
+    }, [username])
 
     useEffect(() => {
         getJadwalPertemuan()
@@ -77,18 +93,76 @@ const ListPertemuan = () => {
                             </div>
                             <Row>
                                 <Col>
+                                    <Card className='mb-3 shadow'>
+                                        <Card.Body className='py-3'>
+                                            <Row className='shadow-sm py-3 rounded' style={{ background: '#E9EAE1' }}>
+                                                <Col lg="7">
+                                                    <Row className='mb-2'>
+                                                        <Col lg="3">
+                                                            <a>Matakuliah</a>
+                                                        </Col>
+                                                        <Col className='flex gap-2'>
+                                                            <span className='hidden lg:block'>: </span><a> {location.state.mataKuliah}</a>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col lg="3">
+                                                            <a>Kode MK</a>
+                                                        </Col>
+                                                        <Col className='flex gap-2'>
+                                                            <span className='hidden lg:block'>: </span><a>{location.state.kodeMk}</a>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col lg="3">
+                                                            <a>Jenis MK</a>
+                                                        </Col>
+                                                        <Col className='flex gap-2'>
+                                                            <span className='hidden lg:block'>: </span><a>{location.state.jenisMk}</a>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col lg="5">
+                                                    <Row className='mb-2'>
+                                                        <Col lg="3">
+                                                            <a>Bobot MK</a>
+                                                        </Col>
+                                                        <Col className='flex gap-2 capitalize'>
+                                                            <span className='hidden lg:block'>: </span><a>{location.state.bobot}</a>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col lg="3">
+                                                            <a>SKS</a>
+                                                        </Col>
+                                                        <Col className='flex gap-2'>
+                                                            <span className='hidden lg:block'>: </span><a>{location.state.sks}</a>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='mb-2'>
+                                                        <Col lg="3">
+                                                            <a>Dosen</a>
+                                                        </Col>
+                                                        <Col className='flex gap-2'>
+                                                            <span className='hidden lg:block'>: </span><a>{dosen}</a>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                            </Row>
+                                        </Card.Body>
+                                    </Card>
                                     <Card>
-                                        <Card.Body className='py-3 px-3'>
+                                        <Card.Body className='py-3 px-3 shadow'>
                                             <Row className='mb-2'>
                                                 <Col>
-                                                    <Link to="/presensi" state={{
+                                                    <Link to='/presensi' state={{
                                                         kodeThn: location.state.kodeThn,
                                                         kodeSmt: location.state.kodeSmt,
                                                         kodeJen: location.state.kodeJen,
                                                         kodeFkl: location.state.kodeFkl,
                                                         kodePro: location.state.kodePro,
                                                         idProdi: location.state.idProdi,
-                                                    }} className='btn btn-sm btn-danger'>Kembali</Link>
+                                                    }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaReply /> Kembali</Link>
                                                 </Col>
                                             </Row>
                                             <div className='table-responsive'>
@@ -114,7 +188,8 @@ const ListPertemuan = () => {
                                                                 <td className='py-2'><span className='capitalize'>{item.jenis_pertemuan}</span></td>
                                                                 <td className='py-2'><span className='capitalize'>{item.metode_pembelajaran}</span></td>
                                                                 <td className='py-2'>
-                                                                    <Link to='/presensi/mahasiswa'
+                                                                    <Link
+                                                                        to='/presensi/mahasiswa'
                                                                         state={{
                                                                             kodeThn: location.state.kodeThn,
                                                                             kodeSmt: location.state.kodeSmt,
@@ -123,12 +198,41 @@ const ListPertemuan = () => {
                                                                             kodePro: location.state.kodePro,
                                                                             idProdi: location.state.idProdi,
                                                                             kodeJadwal: location.state.kodeJadwal,
-                                                                            kodePert: item.code_jadwal_pertemuan,
-                                                                            tanggal: moment(item.tanggal_pertemuan).format('DD MMMM YYYY'),
                                                                             mataKuliah: location.state.mataKuliah,
-                                                                            pertemuan: item.pertemuan
+                                                                            jenisMk: location.state.jenisMk,
+                                                                            kodeMk: location.state.kodeMk,
+                                                                            bobot: location.state.bobot,
+                                                                            sks: location.state.sks,
+                                                                            kodePert: item.code_jadwal_pertemuan,
+                                                                            kodeMk: location.state.kodeMk,
+                                                                            tanggal: moment(item.tanggal_pertemuan).format('DD MMMM YYYY'),
+                                                                            pertemuan: item.pertemuan,
                                                                         }}
-                                                                        className='btn btn-sm btn-primary capitalize'>absen</Link>
+                                                                        className='btn btn-sm btn-primary capitalize'>
+                                                                        absen
+                                                                    </Link>
+                                                                    <Link to='/presensi/validasi'
+                                                                        state={{
+                                                                            kodeThn: location.state.kodeThn,
+                                                                            kodeSmt: location.state.kodeSmt,
+                                                                            kodeJen: location.state.kodeJen,
+                                                                            kodeFkl: location.state.kodeFkl,
+                                                                            kodePro: location.state.kodePro,
+                                                                            idProdi: location.state.idProdi,
+                                                                            kodeJadwal: location.state.kodeJadwal,
+                                                                            mataKuliah: location.state.mataKuliah,
+                                                                            jenisMk: location.state.jenisMk,
+                                                                            kodeMk: location.state.kodeMk,
+                                                                            bobot: location.state.bobot,
+                                                                            sks: location.state.sks,
+                                                                            kodePert: item.code_jadwal_pertemuan,
+                                                                            kodeMk: location.state.kodeMk,
+                                                                            tanggal: moment(item.tanggal_pertemuan).format('DD MMMM YYYY'),
+                                                                            pertemuan: item.pertemuan,
+                                                                        }}
+                                                                        className='btn btn-sm btn-success ml-1 capitalize'>
+                                                                        validasi
+                                                                    </Link>
                                                                 </td>
                                                             </tr>
                                                         ))}

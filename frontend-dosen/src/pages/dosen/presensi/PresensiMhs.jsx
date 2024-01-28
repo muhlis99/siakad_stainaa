@@ -175,7 +175,11 @@ const PresensiMhs = () => {
                                         kodePro: location.state.kodePro,
                                         idProdi: location.state.idProdi,
                                         kodeJadwal: location.state.kodeJadwal,
-                                        mataKuliah: location.state.mataKuliah
+                                        mataKuliah: location.state.mataKuliah,
+                                        jenisMk: location.state.jenisMk,
+                                        bobot: location.state.bobot,
+                                        sks: location.state.sks,
+                                        kodeMk: location.state.kodeMk
                                     }}>Kembali ke List Pertemuan</Link>
                                     <form onSubmit={simpanPresensi}>
                                         <input
