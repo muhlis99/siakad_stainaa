@@ -55,7 +55,7 @@ const FormSettingRfid = () => {
 
     const getRfidAll = async () => {
         try {
-            const response = await axios.get(`v1/rfid/all?page=${page}&search=${keyword}`)
+            const response = await axios.get(`v1/rfidMahasiswa/all?page=${page}&search=${keyword}`)
             setMahasiswa(response.data.data)
             setPage(response.data.current_page)
             setrows(response.data.total_data)
@@ -93,7 +93,7 @@ const FormSettingRfid = () => {
 
     const getAutoCompleteMahasiswa = async () => {
         try {
-            const response = await axios.get(`v1/rfid/autocompleteRfid/2109010003`)
+            const response = await axios.get(`v1/rfidMahasiswa/autocompleteRfid/2109010003`)
             var b = response.data.data.filter((item) =>
                 !nimTerdaftar.includes(item.nim)
             )
@@ -119,6 +119,10 @@ const FormSettingRfid = () => {
         selectInputRef.current.clearValue();
     }
 
+    const onFocus = () => {
+        document.getElementById('rfid').focus()
+    }
+
     const simpanRfid = async (e) => {
         e.preventDefault()
         try {
@@ -128,15 +132,19 @@ const FormSettingRfid = () => {
                 Swal.fire({
                     title: 'RFID Kosong',
                     icon: 'error'
+                }).then(() => {
+                    onFocus()
                 })
             } else if (nim == '') {
                 setLoading(false)
                 Swal.fire({
                     title: 'Nama Mahasiswa Kosong',
                     icon: 'error'
+                }).then(() => {
+                    onFocus()
                 })
             } else {
-                await axios.post('v1/rfid/create', {
+                await axios.post('v1/rfidMahasiswa/create', {
                     code_rfid: kodeRfid,
                     nim: nim,
                 }).then(function (response) {
@@ -150,8 +158,8 @@ const FormSettingRfid = () => {
                         setNama("")
                         setKodeRfid("")
                         setFormEdit(false)
+                        onFocus()
                         onClear()
-                        document.getElementById('rfid').focus()
                     })
                 })
             }
@@ -163,12 +171,12 @@ const FormSettingRfid = () => {
     const getDataById = async (e) => {
         setFormEdit(true)
         try {
-            const response = await axios.get(`v1/rfid/getById/${e}`)
+            const response = await axios.get(`v1/rfidMahasiswa/getById/${e}`)
             setIdRfid(response.data.data.id_rfid)
             setKodeRfid(response.data.data.code_rfid)
             setNim(response.data.data.nim)
             setNama(response.data.data.mahasiswas[0].nama)
-            document.getElementById('rfid').focus()
+            onFocus()
         } catch (error) {
 
         }
@@ -191,7 +199,7 @@ const FormSettingRfid = () => {
                     icon: 'error'
                 })
             } else {
-                await axios.put(`v1/rfid/update/${idRfid}`, {
+                await axios.put(`v1/rfidMahasiswa/update/${idRfid}`, {
                     code_rfid: kodeRfid,
                     nim: nim,
                 }).then(function (response) {
@@ -207,7 +215,7 @@ const FormSettingRfid = () => {
                         setNama("")
                         setFormEdit(false)
                         onClear()
-                        document.getElementById('rfid').focus()
+                        onFocus()
                     })
                 })
             }
@@ -230,7 +238,7 @@ const FormSettingRfid = () => {
             if (result.isConfirmed) {
                 try {
                     axios.put(
-                        `v1/rfid/delete/${id}`
+                        `v1/rfidMahasiswa/delete/${id}`
                     ).then((response) => {
                         Swal.fire({
                             title: "Terhapus",
@@ -278,7 +286,7 @@ const FormSettingRfid = () => {
                                             <label className="label">
                                                 <span className="text-base label-text">RFID</span>
                                             </label>
-                                            <input type="number" id='rfid' placeholder="RFID" className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                            <input type="number" id='rfid' placeholder="RFID" autoFocus autoComplete='off' className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                                 value={kodeRfid} onChange={(e) => setKodeRfid(e.target.value)}
                                             />
                                         </div>
@@ -329,7 +337,7 @@ const FormSettingRfid = () => {
                                             <label className="label">
                                                 <span className="text-base label-text">RFID</span>
                                             </label>
-                                            <input type="number" id='rfid' placeholder="RFID" className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                            <input type="number" id='rfid' placeholder="RFID" autoFocus autoComplete='off' className="input input-sm input-bordered w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                                 value={kodeRfid} onChange={(e) => setKodeRfid(e.target.value)}
                                             />
                                         </div>
@@ -357,20 +365,22 @@ const FormSettingRfid = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className='mt-5'>
-                                        <form onSubmit={simpanRfid}>
-                                            <div className='col-span-2 mb-3'>
-                                                <hr />
-                                            </div>
-                                            <div>
-                                                <div className='float-right'>
-                                                    <div className='lg:pl-1'>
-                                                        <button className='btn btn-sm btn-primary capitalize rounded-md'><FaSave /><span className="">Simpan</span></button>
+                                    {nim &&
+                                        <div className='mt-5'>
+                                            <form onSubmit={simpanRfid}>
+                                                <div className='col-span-2 mb-3'>
+                                                    <hr />
+                                                </div>
+                                                <div>
+                                                    <div className='float-right'>
+                                                        <div className='lg:pl-1'>
+                                                            <button className='btn btn-sm btn-primary capitalize rounded-md'><FaSave /><span className="">Simpan</span></button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                                            </form>
+                                        </div>
+                                    }
                                 </div>
                             }
                         </div>
