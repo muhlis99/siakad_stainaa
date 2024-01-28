@@ -181,39 +181,47 @@ const RekapAbsen = () => {
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                {Rekapitulasi.map((item, index) => (
-                                                                    <tr key={index} className='border'>
-                                                                        <td className='py-2 px-2 border' align='center'>{index + 1}</td>
-                                                                        <td className='py-2 px-2 border'>{item.nim}</td>
-                                                                        <td className='py-2 px-2 border'>{item.mahasiswas[0].nama}</td>
-                                                                        <td className='py-2 px-2 border' align='center'>{item.total_masuk}</td>
-                                                                        <td className='py-2 px-2 border' align='center'>{item.total_izin}</td>
-                                                                        <td className='py-2 px-2 border' align='center'>{item.total_sakit}</td>
-                                                                        <td className='py-2 px-2 border' align='center'>{item.total_alpha}</td>
-                                                                        <td className='py-2 px-2 border' align='center'>
-                                                                            <Link
-                                                                                to="/presensi/detailrekap"
-                                                                                state={{
-                                                                                    kodeThn: location.state.kodeThn,
-                                                                                    kodeSmt: location.state.kodeSmt,
-                                                                                    kodeJen: location.state.kodeJen,
-                                                                                    kodeFkl: location.state.kodeFkl,
-                                                                                    kodePro: location.state.kodePro,
-                                                                                    idProdi: location.state.idProdi,
-                                                                                    kodeJadwal: location.state.kodeJadwal,
-                                                                                    mataKuliah: location.state.mataKuliah,
-                                                                                    jenisMk: location.state.jenisMk,
-                                                                                    kodeMk: location.state.kodeMk,
-                                                                                    bobot: location.state.bobot,
-                                                                                    sks: location.state.sks,
-                                                                                    kodeMk: location.state.kodeMk,
-                                                                                    nim: item.nim
-                                                                                }}
-                                                                                className='bg-[#28A745] py-2 px-2 rounded text-white inline-flex items-center no-underline'
-                                                                            >Detail</Link>
+                                                                {Rekapitulasi.length == 0 ?
+                                                                    <tr className='border'>
+                                                                        <td colSpan={8} align='center'>
+                                                                            <Image src={dataBlank} width={150} />
+                                                                            <p className='fw-bold text-muted'>Tidak ada data</p>
                                                                         </td>
                                                                     </tr>
-                                                                ))}
+                                                                    :
+                                                                    Rekapitulasi.map((item, index) => (
+                                                                        <tr key={index} className='border'>
+                                                                            <td className='py-2 px-2 border' align='center'>{index + 1}</td>
+                                                                            <td className='py-2 px-2 border'>{item.nim}</td>
+                                                                            <td className='py-2 px-2 border'>{item.mahasiswas[0].nama}</td>
+                                                                            <td className='py-2 px-2 border' align='center'>{item.total_masuk}</td>
+                                                                            <td className='py-2 px-2 border' align='center'>{item.total_izin}</td>
+                                                                            <td className='py-2 px-2 border' align='center'>{item.total_sakit}</td>
+                                                                            <td className='py-2 px-2 border' align='center'>{item.total_alpha}</td>
+                                                                            <td className='py-2 px-2 border' align='center'>
+                                                                                <Link
+                                                                                    to="/presensi/detailrekap"
+                                                                                    state={{
+                                                                                        kodeThn: location.state.kodeThn,
+                                                                                        kodeSmt: location.state.kodeSmt,
+                                                                                        kodeJen: location.state.kodeJen,
+                                                                                        kodeFkl: location.state.kodeFkl,
+                                                                                        kodePro: location.state.kodePro,
+                                                                                        idProdi: location.state.idProdi,
+                                                                                        kodeJadwal: location.state.kodeJadwal,
+                                                                                        mataKuliah: location.state.mataKuliah,
+                                                                                        jenisMk: location.state.jenisMk,
+                                                                                        kodeMk: location.state.kodeMk,
+                                                                                        bobot: location.state.bobot,
+                                                                                        sks: location.state.sks,
+                                                                                        kodeMk: location.state.kodeMk,
+                                                                                        nim: item.nim
+                                                                                    }}
+                                                                                    className='bg-[#28A745] py-2 px-2 rounded text-white inline-flex items-center no-underline'
+                                                                                >Detail</Link>
+                                                                            </td>
+                                                                        </tr>
+                                                                    ))}
                                                             </tbody>
                                                         </Table>
                                                     </div>

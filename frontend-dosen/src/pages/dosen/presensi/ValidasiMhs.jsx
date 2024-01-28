@@ -36,7 +36,7 @@ const ValidasiMhs = () => {
     }, [])
 
     useEffect(() => {
-        console.log(location.state);
+        // console.log(location.state);
     }, [location])
 
     useEffect(() => {
@@ -126,7 +126,6 @@ const ValidasiMhs = () => {
 
     const simpanValidasi = async (e) => {
         e.preventDefault()
-        setLoad(true)
         try {
             await axios.put(`v1/presensiMhs/validasiPresensi/${idPresensi}`, {
                 codeThn: location.state.kodeThn,
@@ -138,11 +137,12 @@ const ValidasiMhs = () => {
                 absensi: key,
                 nim: nim
             }).then(function (response) {
-                setLoad(false)
                 handleClose()
                 Swal.fire({
                     title: response.data.message,
                     icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1000
                 }).then(() => {
                     getMhsAvailable()
                     getMhsNotAvailable()
@@ -339,41 +339,50 @@ const ValidasiMhs = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {Available.map((item, index) => (
-                                                            <tr key={item.id_presensi_mahasiswa} className='border'>
-                                                                <td className='py-2'>{index + 1}</td>
-                                                                <td className='py-2'>{item.nim}</td>
-                                                                <td className='py-2'>{item.mahasiswas[0].nama}</td>
-                                                                <td className='py-2'>
-                                                                    {
-                                                                        item.keterangan == 'hadir' || item.keterangan == 'Hadir' ?
-                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
-                                                                            : item.keterangan == 'sakit' || item.keterangan == 'Sakit' ?
-                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#6C757D] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
-                                                                                : item.keterangan == 'izin' || item.keterangan == 'Izin' ?
-                                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
-                                                                                    :
-                                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
-                                                                    }
-                                                                </td>
-                                                                <td className='py-2'>
-                                                                    <button onClick={() => handleShow(item.id_presensi_mahasiswa, item.mahasiswas[0].nama, item.keterangan, item.nim)} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline'><FaCog /></button>
+                                                        {Available.length == 0 ?
+                                                            <tr className='border'>
+                                                                <td colSpan={5} align='center'>
+                                                                    <Image src={dataBlank} width={150} />
+                                                                    <p className='fw-bold text-muted'>Anda belum mengabsen Mahasiswa</p>
                                                                 </td>
                                                             </tr>
-                                                        ))}
-                                                        {NotAvailable.map((item, index) => (
-                                                            <tr key={index} className='border'>
-                                                                <td className='py-2'>{index + 1 + jumlah}</td>
-                                                                <td className='py-2'>{item.nim}</td>
-                                                                <td className='py-2'>{item.mahasiswas[0].nama}</td>
-                                                                <td className='py-2'>
-                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#FFC107] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none capitalize">Tidak Absen</span>
-                                                                </td>
-                                                                <td className='py-2'>
-                                                                    <button onClick={() => handleShow(1, item.mahasiswas[0].nama, '', item.nim)} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline' ><FaCog /></button>
-                                                                </td>
-                                                            </tr>
-                                                        ))}
+                                                            :
+                                                            Available.map((item, index) => (
+                                                                <tr key={item.id_presensi_mahasiswa} className='border'>
+                                                                    <td className='py-2'>{index + 1}</td>
+                                                                    <td className='py-2'>{item.nim}</td>
+                                                                    <td className='py-2'>{item.mahasiswas[0].nama}</td>
+                                                                    <td className='py-2'>
+                                                                        {
+                                                                            item.keterangan == 'hadir' || item.keterangan == 'Hadir' ?
+                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
+                                                                                : item.keterangan == 'sakit' || item.keterangan == 'Sakit' ?
+                                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#6C757D] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
+                                                                                    : item.keterangan == 'izin' || item.keterangan == 'Izin' ?
+                                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
+                                                                                        :
+                                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
+                                                                        }
+                                                                    </td>
+                                                                    <td className='py-2'>
+                                                                        <button onClick={() => handleShow(item.id_presensi_mahasiswa, item.mahasiswas[0].nama, item.keterangan, item.nim)} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline'><FaCog /></button>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                        {Available.length == 0 ? "" :
+                                                            NotAvailable.map((item, index) => (
+                                                                <tr key={index} className='border'>
+                                                                    <td className='py-2'>{index + 1 + jumlah}</td>
+                                                                    <td className='py-2'>{item.nim}</td>
+                                                                    <td className='py-2'>{item.mahasiswas[0].nama}</td>
+                                                                    <td className='py-2'>
+                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#FFC107] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none capitalize">Tidak Absen</span>
+                                                                    </td>
+                                                                    <td className='py-2'>
+                                                                        <button onClick={() => handleShow(1, item.mahasiswas[0].nama, '', item.nim)} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline' ><FaCog /></button>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
                                                     </tbody>
                                                 </Table>
                                             </div>
