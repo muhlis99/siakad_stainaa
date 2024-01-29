@@ -273,7 +273,7 @@ const FormSettingRfid = () => {
                 </div>
             </div>
             <section className='mb-5'>
-                <h1 className='text-2xl font-bold'>Setting RFID</h1>
+                <h1 className='text-2xl font-bold'>RFID Mahasiswa</h1>
             </section>
             <section>
                 <div className="grid grid-cols-3 gap-2">

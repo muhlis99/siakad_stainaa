@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import Layout from "../Layout"
-import FormSettingRfid from '../../components/rfid/FormSettingRfid'
+import FormRfidDosen from '../../components/rfid/FormRfidDosen'
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { getMe } from "../../features/authSlice"
 
-const SettingRfid = () => {
+const RfidDosen = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { isError } = useSelector((state) => state.auth)
@@ -19,8 +19,8 @@ const SettingRfid = () => {
     }
 
     return (
-        <Layout><title>RFID Mahasiswa</title><FormSettingRfid /></Layout>
+        <Layout><title>RFID Dosen</title><FormRfidDosen /></Layout>
     )
 }
 
-export default SettingRfid
+export default RfidDosen
