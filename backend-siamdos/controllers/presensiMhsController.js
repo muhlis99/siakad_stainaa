@@ -274,6 +274,7 @@ module.exports = {
             then(result => {
                 res.status(201).json({
                     message: "Data presensi berhasil disimpan",
+                    data: result.nim
                 })
             }).
             catch(err => {
