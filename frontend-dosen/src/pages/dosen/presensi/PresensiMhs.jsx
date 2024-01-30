@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card, Table, Image } from 'react-bootstrap'
+import { Row, Col, Card, Table, Image, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
 import rfidIcon from "../../../assets/images/rfid.png"
+import noprofil from "../../../assets/images/foto.svg"
 import ProgressBar from "@ramonak/react-progress-bar"
 import axios from 'axios'
 import moment from 'moment'
@@ -20,6 +21,13 @@ const PresensiMhs = () => {
     const [kodeRfid, setKodeRfid] = useState("")
     const [jumlahPresensi, setJumlahPresensi] = useState("")
     const [jumlahMhs, setJumlahMs] = useState("")
+
+    const [nim, setNim] = useState("")
+    const [nama, setNama] = useState("")
+    const [foto, setFoto] = useState("")
+    const [preview, setPreview] = useState("")
+    const [pesan, setPesan] = useState("")
+    const [show, setShow] = useState(false)
 
     useEffect(() => {
         setLoad(true)
@@ -46,6 +54,18 @@ const PresensiMhs = () => {
         getJumlahPresensi()
     }, [location])
 
+    useEffect(() => {
+        getMahasiswaByNim()
+    }, [nim])
+
+    useEffect(() => {
+        prevFoto()
+    }, [foto])
+
+    useEffect(() => {
+        berhasil()
+    }, [nama])
+
 
     const simpanPresensi = async (e) => {
         e.preventDefault()
@@ -59,17 +79,20 @@ const PresensiMhs = () => {
                 codePrd: location.state.kodePro,
                 codeJadper: location.state.kodePert
             }).then(function (response) {
-                Swal.fire({
-                    title: 'Anda berhasil melakukan absen',
-                    icon: 'success',
-                    text: response.data.message,
-                    showConfirmButton: false,
-                    timer: 1000
-                }).then(() => {
-                    setKodeRfid("")
-                    getJumlahPresensi()
-                    document.getElementById('rfid').focus()
-                })
+                setNim(response.data.data)
+                setPesan(response.data.message)
+                setKodeRfid("")
+                // Swal.fire({
+                //     title: 'Anda berhasil melakukan absen',
+                //     icon: 'success',
+                //     text: response.data.message,
+                //     showConfirmButton: false,
+                //     timer: 1000
+                // }).then(() => {
+                //     setKodeRfid("")
+                //     getJumlahPresensi()
+                //     document.getElementById('rfid').focus()
+                // })
             })
         } catch (error) {
             Swal.fire({
@@ -77,7 +100,7 @@ const PresensiMhs = () => {
                 icon: 'error',
                 showConfirmButton: false,
                 timer: 1000
-            }).then(function (result) {
+            }).then(function () {
                 setKodeRfid("")
                 document.getElementById('rfid').focus()
             })
@@ -92,6 +115,55 @@ const PresensiMhs = () => {
             setJumlahPresensi(response.data.data.jumlah_mahasiswa_presensi)
         } catch (error) {
 
+        }
+    }
+
+    const getMahasiswaByNim = async () => {
+        try {
+            if (nim) {
+                const response = await axios.get(`v1/mahasiswa/getByNim/${nim}`)
+                setNama(response.data.data.nama)
+                setFoto(response.data.data.foto_diri)
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const prevFoto = async () => {
+        try {
+            if (foto) {
+                await axios.get(`v1/mahasiswa/public/seeImage/mahasiswa/diri/${foto}`, {
+                    responseType: 'arraybuffer'
+                }).then((response) => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            ''
+                        )
+                    )
+                    setPreview(base64)
+                })
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const berhasil = () => {
+        if (nama) {
+            setShow(true)
+            setTimeout(() => {
+                setShow(false)
+                setKodeRfid("")
+                setNim("")
+                setNama("")
+                setPesan("")
+                setFoto("")
+                setPreview("")
+                getJumlahPresensi()
+                document.getElementById('rfid').focus()
+            }, 1500)
         }
     }
 
@@ -116,6 +188,32 @@ const PresensiMhs = () => {
                         </div>
                         :
                         <div className="content-wrapper">
+                            <Modal
+                                show={show}
+                                // onHide={handleClose}
+                                backdrop="static"
+                                keyboard={false}
+                                size='md'
+                                centered
+                            >
+                                <Modal.Body className='py-5'>
+                                    <Row>
+                                        <Col className='flex justify-center'>
+                                            <Image src={preview ? `data:;base64,${preview}` : noprofil} className='mt-1' width={150} />
+                                        </Col>
+                                    </Row>
+                                    <Row className='mt-4'>
+                                        <Col className='text-center'>
+                                            <h4 className='fw-bold'>{nama}</h4>
+                                        </Col>
+                                    </Row>
+                                    <Row className='mt-1'>
+                                        <Col className='text-center'>
+                                            <span>{pesan}</span>
+                                        </Col>
+                                    </Row>
+                                </Modal.Body>
+                            </Modal>
                             <div className="page-header">
                                 <h2 className='fs-4 font-bold'>Presensi</h2>
                             </div>

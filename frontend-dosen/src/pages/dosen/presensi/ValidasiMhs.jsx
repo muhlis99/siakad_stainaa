@@ -103,10 +103,8 @@ const ValidasiMhs = () => {
             setKey('A')
         } else if (g == 'izin' || g == 'Izin') {
             setKey('B')
-        } else if (g == 'sakit' || g == 'Sakit') {
-            setKey('C')
         } else if (g == 'alpha' || g == 'Alpha') {
-            setKey('D')
+            setKey('C')
         }
         setShow(true)
     }
@@ -227,12 +225,6 @@ const ValidasiMhs = () => {
                                                 <div className="form-check">
                                                     <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" onChange={onValueChange} checked={key === "C"} value="C" />
                                                     <label className="form-check-label" htmlFor="exampleRadios3">
-                                                        Sakit
-                                                    </label>
-                                                </div>
-                                                <div className="form-check">
-                                                    <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios4" onChange={onValueChange} checked={key === "D"} value="D" />
-                                                    <label className="form-check-label" htmlFor="exampleRadios4">
                                                         Alpha
                                                     </label>
                                                 </div>
@@ -356,12 +348,11 @@ const ValidasiMhs = () => {
                                                                         {
                                                                             item.keterangan == 'hadir' || item.keterangan == 'Hadir' ?
                                                                                 <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
-                                                                                : item.keterangan == 'sakit' || item.keterangan == 'Sakit' ?
+                                                                                :
+                                                                                item.keterangan == 'izin' || item.keterangan == 'Izin' ?
                                                                                     <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#6C757D] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
-                                                                                    : item.keterangan == 'izin' || item.keterangan == 'Izin' ?
-                                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
-                                                                                        :
-                                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
+                                                                                    :
+                                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
                                                                         }
                                                                     </td>
                                                                     <td className='py-2'>
