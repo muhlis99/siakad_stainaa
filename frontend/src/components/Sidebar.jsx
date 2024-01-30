@@ -177,9 +177,6 @@ const Sidebar = () => {
                 <li>
                   <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
                 </li>
-                <li>
-                  <Link to="/settingrfid" state={{ collaps: 'kuliah', activ: '/settingrfid' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/settingrfid' || active == '/settingrfid' ? 'active' : ''} even:bg-[#287155]`}><RiRfidFill /> <span className='text-sm'>RFID Mahasiswa</span></Link>
-                </li>
               </ul>
             </details> :
             <details>
@@ -227,9 +224,6 @@ const Sidebar = () => {
                 <li>
                   <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
                 </li>
-                <li>
-                  <Link to="/settingrfid" state={{ collaps: 'kuliah', activ: '/settingrfid' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/settingrfid' || active == '/settingrfid' ? 'active' : ''} even:bg-[#287155]`}><RiRfidFill /> <span className='text-sm'>RFID Mahasiswa</span></Link>
-                </li>
               </ul>
             </details>
           }
@@ -238,16 +232,28 @@ const Sidebar = () => {
           <li>
             {collap == 'user' ?
               <details open>
-                <summary className='text-[#F5F5F5]'><FaUsers />Pengguna</summary>
+                <summary className='text-[#F5F5F5]'><FaUsers />Lainnya</summary>
                 <ul className='gap-2'>
+                  <li>
+                    <Link to="/rfidmahasiswa" state={{ collaps: 'user', activ: '/rfidmahasiswa' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/rfidmahasiswa' || active == '/rfidmahasiswa' ? 'active' : ''} even:bg-[#287155]`}><RiRfidFill /> <span className='text-sm'>RFID Mahasiswa</span></Link>
+                  </li>
+                  <li>
+                    <Link to="/rfiddosen" state={{ collaps: 'user', activ: '/rfiddosen' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/rfiddosen' || active == '/rfiddosen' ? 'active' : ''} even:bg-[#287155]`}><RiRfidFill /> <span className='text-sm'>RFID Dosen</span></Link>
+                  </li>
                   <li>
                     <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-sm'>Users</span></Link>
                   </li>
                 </ul>
               </details> :
               <details>
-                <summary className='text-[#F5F5F5]'><FaUsers />Pengguna</summary>
+                <summary className='text-[#F5F5F5]'><FaUsers />Lainnya</summary>
                 <ul className='gap-2'>
+                  <li>
+                    <Link to="/rfidmahasiswa" state={{ collaps: 'user', activ: '/rfidmahasiswa' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/rfidmahasiswa' || active == '/rfidmahasiswa' ? 'active' : ''} even:bg-[#287155]`}><RiRfidFill /> <span className='text-sm'>RFID Mahasiswa</span></Link>
+                  </li>
+                  <li>
+                    <Link to="/rfiddosen" state={{ collaps: 'user', activ: '/rfiddosen' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/rfiddosen' || active == '/rfiddosen' ? 'active' : ''} even:bg-[#287155]`}><RiRfidFill /> <span className='text-sm'>RFID Dosen</span></Link>
+                  </li>
                   <li>
                     <Link to="/users" state={{ collaps: 'user', activ: '/users' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/users' ? 'active' : ''}`}><FaUsers /> <span className='text-sm'>Users</span></Link>
                   </li>
