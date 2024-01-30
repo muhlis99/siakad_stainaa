@@ -18,6 +18,8 @@ const ListPertemuan = () => {
     const location = useLocation()
     const [Pertemuan, setPertemuan] = useState([])
     const [dosen, setDosen] = useState([])
+    const [kodePertemuan, setKodePertemuan] = useState([])
+    const [StatusAbsen, setStatusAbsen] = useState([])
 
     useEffect(() => {
         setLoad(true)
@@ -58,12 +60,44 @@ const ListPertemuan = () => {
         getJadwalPertemuan()
     }, [location])
 
+    useEffect(() => {
+        getKodePertemuan()
+    }, [Pertemuan])
+
+    useEffect(() => {
+        getStatusAbsen()
+    }, [kodePertemuan])
+
     const getJadwalPertemuan = async () => {
         try {
             const response = await axios.get(`v1/presensiMhs/getPertemuanByDosen/${location.state.kodeJadwal}`)
             setPertemuan(response.data.data)
         } catch (error) {
 
+        }
+    }
+
+    const getKodePertemuan = () => {
+        var i = Pertemuan.map(item => (
+            item.code_jadwal_pertemuan
+        ))
+        setKodePertemuan(i)
+    }
+
+    const getStatusAbsen = async () => {
+        if (kodePertemuan.length > 0) {
+            let statuss = []
+            let promises = []
+            for (let i = 0; i < kodePertemuan.length; i++) {
+                const t = await axios.get('v1/presensiMhs/getStatusAbsen/' + kodePertemuan[i]).then(response => {
+                    statuss.push(response.data.data)
+                })
+                promises.push(t)
+
+            }
+            if (kodePertemuan.length != 0) {
+                Promise.all(promises).then(() => setStatusAbsen(statuss))
+            }
         }
     }
 
@@ -174,7 +208,7 @@ const ListPertemuan = () => {
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Matakuliah</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Tanggal</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Jenis Pertemuan</th>
-                                                            <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Metode</th>
+                                                            <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Status</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Aksi</th>
                                                         </tr>
                                                     </thead>
@@ -186,7 +220,16 @@ const ListPertemuan = () => {
                                                                 <td className='py-2'>{location.state.mataKuliah}</td>
                                                                 <td className='py-2'>{moment(item.tanggal_pertemuan).format('DD MMMM YYYY')}</td>
                                                                 <td className='py-2'><span className='capitalize'>{item.jenis_pertemuan}</span></td>
-                                                                <td className='py-2'><span className='capitalize'>{item.metode_pembelajaran}</span></td>
+                                                                <td className='py-2'>
+                                                                    <span className='capitalize'>
+                                                                        {
+                                                                            StatusAbsen[index] == 'sudah dilakukan' ?
+                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{StatusAbsen[index]}</span>
+                                                                                :
+                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{StatusAbsen[index]}</span>
+                                                                        }
+                                                                    </span>
+                                                                </td>
                                                                 <td className='py-2'>
                                                                     <Link
                                                                         to='/presensi/mahasiswa'

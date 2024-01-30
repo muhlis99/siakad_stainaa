@@ -22128,7 +22128,7 @@ dl li {
 
 @media (max-width: 991px) {
   .page-body-wrapper {
-    padding-top: 70px;
+    /* padding-top: 70px; */
   }
 }
 
@@ -22987,7 +22987,7 @@ dl li {
 
 @media (max-width: 767.98px) {
   .container-scroller .page-body-wrapper {
-    padding-top: 100px;
+    /* padding-top: 100px; */
   }
 
   .horizontal-menu .bottom-navbar.header-toggled {
