@@ -4,6 +4,7 @@ const presensiMhsController = require('../controllers/presensiMhsController.js')
 
 router.get('/getMakulByDosen/:nipy/:thn/:smt/:jnj/:fks/:prd', presensiMhsController.getMakulByDosen)
 router.get('/getPertemuanByDosen/:codeJadkul', presensiMhsController.getPertemuanByDosen)
+router.get('/getStatusAbsen/:codeJadper', presensiMhsController.getStatusAbsen)
 router.get('/getMhsValidasiAvailable/:code/:thn/:smt/:jnj/:fks/:prd', presensiMhsController.getMhsValidasiAvailable)
 router.get('/getMhsValidasiNoAvailable/:code/:makul/:thn/:smt/:jnj/:fks/:prd', presensiMhsController.getMhsValidasiNoAvailable)
 router.get('/progresPresensi/:code/:thn/:smt/:jnj/:fks/:prd', presensiMhsController.progresPresensi)
