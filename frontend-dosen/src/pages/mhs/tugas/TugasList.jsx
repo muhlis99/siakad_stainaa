@@ -81,7 +81,7 @@ const TugasList = () => {
             }
             if (kodeTugas.length != 0) {
                 Promise.all(promises).then(() => setDataTanggal(Tugass))
-                Promise.all(promises).then(() => console.log(Tugass))
+                // Promise.all(promises).then(() => console.log(Tugass))
             }
         }
     }

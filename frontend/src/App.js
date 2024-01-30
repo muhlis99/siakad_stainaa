@@ -66,6 +66,8 @@ import EditPedoman from "./pages/pedoman/EditPedoman"
 import DetailPedoman from "./pages/pedoman/DetailPedoman"
 import SettingRfid from "./pages/rfid/SettingRfid"
 import RfidDosen from "./pages/rfid/RfidDosen"
+import Presensi from "./pages/presensi/Presensi"
+import ProresPresensi from "./pages/presensi/ProresPresensi"
 
 
 function App() {
@@ -137,6 +139,8 @@ function App() {
           <Route path="/detailpedoman" element={<DetailPedoman />} />
           <Route path="/rfidmahasiswa" element={<SettingRfid />} />
           <Route path="/rfiddosen" element={<RfidDosen />} />
+          <Route path="/presensi" element={<Presensi />} />
+          <Route path="/presensi/dosen" element={<ProresPresensi />} />
         </Routes>
       </BrowserRouter>
     </div>

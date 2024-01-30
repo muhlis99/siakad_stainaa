@@ -177,6 +177,9 @@ const Sidebar = () => {
                 <li>
                   <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
                 </li>
+                <li>
+                  <Link to="/presensi" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Presensi</span></Link>
+                </li>
               </ul>
             </details> :
             <details>
@@ -223,6 +226,9 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
+                </li>
+                <li>
+                  <Link to="/presensi" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Presensi</span></Link>
                 </li>
               </ul>
             </details>
