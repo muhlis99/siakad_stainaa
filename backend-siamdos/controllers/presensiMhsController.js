@@ -319,7 +319,7 @@ module.exports = {
             msk = 0
             izn = 1
             alp = 0
-            ket = "Sakit"
+            ket = "Izin"
         } else if (absensi == "C") {
             msk = 0
             izn = 0
