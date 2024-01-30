@@ -52,6 +52,7 @@ const ListSebaran = () => {
     const [isClearable, setIsClearable] = useState(true);
     const [reset, setReset] = useState("")
     const [loading, setLoading] = useState(false)
+    const selectInputRef = useRef()
 
     useEffect(() => {
         setLoading(true)
@@ -234,6 +235,10 @@ const ListSebaran = () => {
         document.getElementById('modal-salin').checked = true
     }
 
+    const onClear = () => {
+        selectInputRef.current.clearValue();
+    }
+
     const simpanSebaran = async (e) => {
         e.preventDefault()
         try {
@@ -293,6 +298,7 @@ const ListSebaran = () => {
                         setKodeNilai("")
                         setPaket(true)
                         sebaranMakul()
+                        onClear()
                     })
                 })
             }
@@ -756,6 +762,7 @@ const ListSebaran = () => {
                                         classNamePrefix="select"
                                         options={select2}
                                         onChange={onchange}
+                                        ref={selectInputRef}
                                         isClearable={isClearable}
                                         id='input-select'
                                     />
@@ -845,7 +852,7 @@ const ListSebaran = () => {
                                                             <td className='px-2 py-2 border'>{item.mataKuliahs[0].nama_mata_kuliah}</td>
                                                             <td className='px-2 py-2 border' align='center'>{item.mataKuliahs[0].sks}</td>
                                                             <td className='px-2 py-2 border' align='center'>
-                                                                <div>
+                                                                <div className='flex gap-1'>
                                                                     <button onClick={() => getMakulById('Detail', item.id_sebaran)} className="btn btn-xs btn-circle text-white btn-info mr-1" title='Detail'><FaInfo /></button>
                                                                     <button onClick={() => getMakulById('Edit', item.id_sebaran)} className="btn btn-xs btn-circle text-white btn-warning" title='Edit'><FaEdit /></button>
                                                                     <button onClick={() => nonaktifkan(item.id_sebaran)} className="btn btn-xs btn-circle text-white btn-error ml-1" title='Hapus'><FaTrash /></button>

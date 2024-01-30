@@ -170,20 +170,20 @@ const RekapAbsen = () => {
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}><span>No</span></th>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}><span>NIM</span></th>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}><span>Nama</span></th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} colSpan={4}><span>Rekapitulasi Kehadiran</span></th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} colSpan={3}><span>Rekapitulasi Kehadiran</span></th>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}><span>Aksi</span></th>
                                                                 </tr>
                                                                 <tr className='border'>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}><span>Total Hadir</span></th>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}><span>Total Izin</span></th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}><span>Total Sakit</span></th>
+                                                                    {/* <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}><span>Total Sakit</span></th> */}
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}><span>Total Alpha</span></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 {Rekapitulasi.length == 0 ?
                                                                     <tr className='border'>
-                                                                        <td colSpan={8} align='center'>
+                                                                        <td colSpan={7} align='center'>
                                                                             <Image src={dataBlank} width={150} />
                                                                             <p className='fw-bold text-muted'>Tidak ada data</p>
                                                                         </td>
@@ -196,7 +196,7 @@ const RekapAbsen = () => {
                                                                             <td className='py-2 px-2 border'>{item.mahasiswas[0].nama}</td>
                                                                             <td className='py-2 px-2 border' align='center'>{item.total_masuk}</td>
                                                                             <td className='py-2 px-2 border' align='center'>{item.total_izin}</td>
-                                                                            <td className='py-2 px-2 border' align='center'>{item.total_sakit}</td>
+                                                                            {/* <td className='py-2 px-2 border' align='center'>{item.total_sakit}</td> */}
                                                                             <td className='py-2 px-2 border' align='center'>{item.total_alpha}</td>
                                                                             <td className='py-2 px-2 border' align='center'>
                                                                                 <Link

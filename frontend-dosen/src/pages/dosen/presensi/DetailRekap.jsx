@@ -160,12 +160,12 @@ const DetailRekap = () => {
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}><span>No</span></th>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}><span>Pertemuan</span></th>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} rowSpan={2}><span>Tanggal</span></th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} colSpan={4}><span>Status Kehadiran</span></th>
+                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }} colSpan={3}><span>Status Kehadiran</span></th>
                                                                 </tr>
                                                                 <tr className='border'>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}><span>Hadir</span></th>
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}><span>Izin</span></th>
-                                                                    <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}><span>Sakit</span></th>
+                                                                    {/* <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}><span>Sakit</span></th> */}
                                                                     <th className='fw-bold py-2 border text-center' style={{ background: '#E9EAE1' }}><span>Alpha</span></th>
                                                                 </tr>
                                                             </thead>
@@ -184,12 +184,6 @@ const DetailRekap = () => {
                                                                         <td className='py-2 px-2 border' align='center'>
                                                                             {item.izin == 1 ?
                                                                                 <span className='text-[#6C757D]'><FaCheck /></span>
-                                                                                : ""
-                                                                            }
-                                                                        </td>
-                                                                        <td className='py-2 px-2 border' align='center'>
-                                                                            {item.sakit == 1 ?
-                                                                                <span className='text-[#17A2B8]'><FaCheck /></span>
                                                                                 : ""
                                                                             }
                                                                         </td>
