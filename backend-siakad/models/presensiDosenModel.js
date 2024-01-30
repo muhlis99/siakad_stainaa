@@ -42,7 +42,10 @@ const presensiDosenModel = db.define('presensiDosen', {
     'tanggal': {
         type: DataTypes.TEXT,
     },
-    'masuk': {
+    'masuk_luring': {
+        type: DataTypes.INTEGER,
+    },
+    'masuk_daring': {
         type: DataTypes.INTEGER,
     },
     'izin': {

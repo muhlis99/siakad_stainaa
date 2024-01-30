@@ -44,7 +44,7 @@ module.exports = {
                 status: "aktif"
             }
         })
-        if (!valDafJadperDosen) return res.status(404).json({ message: "Data Tidak Ditemukan" })
+        if (!valDafJadperDosen) return res.status(404).json({ message: "Data validasi daftar jadwal pertemuan Tidak Ditemukan" })
 
         const duplicateDataUse = await presensiDosenModel.findOne({
             where: {
@@ -94,7 +94,8 @@ module.exports = {
                 code_jadwal_pertemuan: valDafJadperDosen.code_jadwal_pertemuan,
                 nip_ynaa: dataRfid.nip_ynaa,
                 tanggal: tgl,
-                masuk: 1,
+                masuk_luring: 1,
+                masuk_daring: 0,
                 izin: 0,
                 jam_masuk: jam,
                 jam_pulang: "",
