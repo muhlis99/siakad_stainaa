@@ -48,9 +48,6 @@ const presensiMhsModel = db.define('presensiMhs', {
     'izin': {
         type: DataTypes.INTEGER,
     },
-    'sakit': {
-        type: DataTypes.INTEGER,
-    },
     'alpha': {
         type: DataTypes.INTEGER,
     },

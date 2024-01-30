@@ -308,31 +308,21 @@ module.exports = {
         })
         let msk = ""
         let izn = ""
-        let skt = ""
         let alp = ""
         let ket = ""
         if (absensi == "A") {
             msk = 1
             izn = 0
-            skt = 0
             alp = 0
             ket = "Hadir"
         } else if (absensi == "B") {
             msk = 0
             izn = 1
-            skt = 0
             alp = 0
-            ket = "Izin"
+            ket = "Sakit"
         } else if (absensi == "C") {
             msk = 0
             izn = 0
-            skt = 1
-            alp = 0
-            ket = "Sakit"
-        } else if (absensi == "D") {
-            msk = 0
-            izn = 0
-            skt = 0
             alp = 1
             ket = "Alpha"
         }
@@ -349,7 +339,6 @@ module.exports = {
                 tanggal: date,
                 masuk: msk,
                 izin: izn,
-                sakit: skt,
                 alpha: alp,
                 keterangan: ket,
                 status: "aktif",
@@ -366,7 +355,6 @@ module.exports = {
             await presensiMhsModel.update({
                 masuk: msk,
                 izin: izn,
-                sakit: skt,
                 alpha: alp,
                 keterangan: ket,
             }, {
@@ -382,6 +370,26 @@ module.exports = {
                 catch(err => {
                     next(err)
                 })
+        }
+    },
+
+    getStatusAbsen: async (req, res, next) => {
+        const codeJadper = req.params.codeJadper
+        const dataUse = await presensiMhsModel.count({
+            where: {
+                code_jadwal_pertemuan: codeJadper
+            }
+        })
+        if (dataUse > 0) {
+            res.status(201).json({
+                message: "Data absen sudah dilakukan",
+                data: "sudah dilakukan"
+            })
+        } else {
+            res.status(201).json({
+                message: "Data absen belum dilakukan",
+                data: "belum dilakukan"
+            })
         }
     },
 
@@ -404,10 +412,9 @@ module.exports = {
                     model: mahasiswaModel
                 }
             ],
-            attributes: ["masuk", "izin", "sakit", "alpha", "nim",
+            attributes: ["masuk", "izin", "alpha", "nim",
                 [Sequelize.fn('sum', Sequelize.col('masuk')), 'total_masuk'],
                 [Sequelize.fn('sum', Sequelize.col('izin')), 'total_izin'],
-                [Sequelize.fn('sum', Sequelize.col('sakit')), 'total_sakit'],
                 [Sequelize.fn('sum', Sequelize.col('alpha')), 'total_alpha'],
             ],
             where: {
@@ -433,10 +440,9 @@ module.exports = {
     detailRekapPresensi: async (req, res, next) => {
         const { nim, thn, smt, jnj, fks, prd } = req.params
         await presensiMhsModel.findAll({
-            attributes: ["masuk", "izin", "sakit", "alpha",
+            attributes: ["masuk", "izin", "alpha",
                 [Sequelize.fn('sum', Sequelize.col('masuk')), 'total_masuk'],
                 [Sequelize.fn('sum', Sequelize.col('izin')), 'total_izin'],
-                [Sequelize.fn('sum', Sequelize.col('sakit')), 'total_sakit'],
                 [Sequelize.fn('sum', Sequelize.col('alpha')), 'total_alpha'],
             ],
             where: {
