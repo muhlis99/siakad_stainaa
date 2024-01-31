@@ -13,6 +13,124 @@ const rfidosenModel = require('../models/rfidDosenModel.js')
 const { Op, Sequelize, fn, col } = require('sequelize')
 
 module.exports = {
+    getDosenValidasiAvailable: async (req, res, next) => {
+        const { tgl, thn, smt, jnj, fks, prd } = req.params
+
+        await presensiDosenModel.findAll({
+            include: [
+                {
+                    attributes: ["nama"],
+                    model: dosenModel
+                },
+            ],
+            where: {
+                tanggal: tgl,
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnj,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "Data succsess",
+                    data: result
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+    },
+
+    getDosenValidasiNoAvailable: async (req, res, next) => {
+        const { tgl, thn, smt, jnj, fks, prd } = req.params
+        const dataPresensiNipy = await presensiDosenModel.findAll({
+            where: {
+                tanggal: tgl,
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnj,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            }
+        })
+        const dataPresensiNipyUse = dataPresensiNipy.map(el => { return el.nip_ynaa })
+
+        await jadwalPertemuanModel.findAll({
+            attributes: ["code_jadwal_pertemuan", "pertemuan", "tanggal_pertemuan"],
+            include: [
+                {
+                    attributes: ["dosen_pengajar"],
+                    model: jadwalKuliahModel,
+                    where: {
+                        dosen_pengajar: {
+                            [Op.not]: dataPresensiNipyUse
+                        },
+                        code_tahun_ajaran: thn,
+                        code_semester: smt,
+                        code_jenjang_pendidikan: jnj,
+                        code_fakultas: fks,
+                        code_prodi: prd,
+                        status: "aktif"
+                    },
+                    include: [{
+                        attributes: ['nama'],
+                        model: dosenModel,
+                        as: "dosenPengajar"
+                    }]
+                }
+            ],
+            where: {
+                tanggal_pertemuan: tgl,
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "Data success",
+                    data: result
+                })
+            }).
+            catch(err => {
+                console.log(err)
+            })
+    },
+
+    // progresPresensi: async (req, res, next) => {
+    //     const { code, thn, smt, jnj, fks, prd } = req.params
+    //     const jmlMhs = await historyMahasiswa.count({
+    //         where: {
+    //             code_tahun_ajaran: thn,
+    //             code_semester: smt,
+    //             code_jenjang_pendidikan: jnj,
+    //             code_fakultas: fks,
+    //             code_prodi: prd,
+    //             status: "aktif"
+    //         }
+    //     })
+    //     const jmlMhsAbsen = await presensiMhsModel.count({
+    //         where: {
+    //             code_jadwal_pertemuan: code,
+    //             code_tahun_ajaran: thn,
+    //             code_semester: smt,
+    //             code_jenjang_pendidikan: jnj,
+    //             code_fakultas: fks,
+    //             code_prodi: prd,
+    //             status: "aktif"
+    //         }
+    //     })
+    //     res.status(201).json({
+    //         message: "Data progres presensi",
+    //         data: {
+    //             jumlah_mahasiswa: jmlMhs,
+    //             jumlah_mahasiswa_presensi: jmlMhsAbsen
+    //         }
+    //     })
+    // },
+
     presensiByRfid: async (req, res, next) => {
         const { codeRfid, tgl } = req.body
         const date = new Date()
@@ -44,7 +162,7 @@ module.exports = {
                 status: "aktif"
             }
         })
-        if (!valDafJadperDosen) return res.status(404).json({ message: "Data validasi daftar jadwal pertemuan Tidak Ditemukan" })
+        if (!valDafJadperDosen) return res.status(404).json({ message: "Data anda tidak ditemukan dalam daftar jadwal pertemuan Tidak Ditemukan" })
 
         const duplicateDataUse = await presensiDosenModel.findOne({
             where: {
@@ -116,62 +234,72 @@ module.exports = {
 
     validasiPresensi: async (req, res, next) => {
         let randomNumber = Math.floor(100000000000 + Math.random() * 900000000000)
-        const date = new Date().toLocaleDateString('en-CA')
         const id = req.params.id
-        const { absensi, codeThn, codeSmt, codeJnj, codeFks, codePrd, codeJadper, nim } = req.body
-        const dataUse = presensiMhsModel.findOne({
+        const { absensi, codeThn, codeSmt, codeJnj, codeFks,
+            codePrd, tgl, nip_ynaa, codeJadper, jam_masuk, jam_pulang } = req.body
+        const dataUse = presensiDosenModel.findOne({
             where: {
-                id_presensi_mahasiswa: id,
+                id_presensi_dosen: id,
                 status: "aktif"
             }
         })
         if (!dataUse) return res.status(404).json({ message: "Data Tidak Ditemukan" })
-        const dataUseValidasiNim = await presensiMhsModel.findOne({
+        const dataUseValidasiNipy = await presensiDosenModel.findOne({
             where: {
                 code_tahun_ajaran: codeThn,
                 code_semester: codeSmt,
                 code_jenjang_pendidikan: codeJnj,
                 code_fakultas: codeFks,
                 code_prodi: codePrd,
-                code_jadwal_pertemuan: codeJadper,
-                nim: nim,
+                tanggal: tgl,
+                nip_ynaa: nip_ynaa,
                 status: "aktif"
             }
         })
-        let msk = ""
+        let lrg = ""
+        let drg = ""
         let izn = ""
-        let alp = ""
         let ket = ""
+        let jm_msk = ""
+        let jm_plg = ""
         if (absensi == "A") {
-            msk = 1
+            lrg = 1
+            drg = 0
             izn = 0
-            alp = 0
+            jm_msk = jam_masuk
+            jm_plg = jam_pulang
             ket = "Hadir"
         } else if (absensi == "B") {
-            msk = 0
-            izn = 1
-            alp = 0
-            ket = "Sakit"
-        } else if (absensi == "C") {
-            msk = 0
+            lrg = 0
+            drg = 1
             izn = 0
-            alp = 1
-            ket = "Alpha"
+            jm_msk = jam_masuk
+            jm_plg = jam_pulang
+            ket = "Zoom"
+        } else if (absensi == "C") {
+            lrg = 0
+            drg = 0
+            izn = 1
+            jm_msk = ""
+            jm_plg = ""
+            ket = "Izin"
         }
-        if (dataUseValidasiNim == null) {
-            await presensiMhsModel.create({
-                code_presensi_mahasiswa: randomNumber + nim,
+        if (dataUseValidasiNipy == null) {
+            await presensiDosenModel.create({
+                code_presensi_mahasiswa: randomNumber,
                 code_tahun_ajaran: codeThn,
                 code_semester: codeSmt,
                 code_jenjang_pendidikan: codeJnj,
                 code_fakultas: codeFks,
                 code_prodi: codePrd,
                 code_jadwal_pertemuan: codeJadper,
-                nim: nim,
-                tanggal: date,
-                masuk: msk,
+                nip_ynaa: nip_ynaa,
+                tanggal: tgl,
+                masuk_daring: drg,
+                masuk_luring: lrg,
                 izin: izn,
-                alpha: alp,
+                jam_masuk: jm_msk,
+                jam_pulang: jm_plg,
                 keterangan: ket,
                 status: "aktif",
             }).
@@ -184,14 +312,16 @@ module.exports = {
                     next(err)
                 })
         } else {
-            await presensiMhsModel.update({
-                masuk: msk,
+            await presensiDosenModel.update({
+                masuk_luring: lrg,
+                masuk_daring: drg,
                 izin: izn,
-                alpha: alp,
+                jam_masuk: jm_msk,
+                jam_pulang: jm_plg,
                 keterangan: ket,
             }, {
                 where: {
-                    id_presensi_mahasiswa: id
+                    id_presensi_dosen: id
                 }
             }).
                 then(result => {

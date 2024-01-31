@@ -98,7 +98,7 @@ module.exports = {
 
     getMhsValidasiAvailable: async (req, res, next) => {
         const { code, thn, smt, jnj, fks, prd } = req.params
-        const dataUse = jadwalPertemuanModel.findOne({
+        const dataUse = await jadwalPertemuanModel.findOne({
             where: {
                 code_jadwal_pertemuan: code,
                 status: "aktif"
@@ -133,7 +133,7 @@ module.exports = {
 
     getMhsValidasiNoAvailable: async (req, res, next) => {
         const { code, makul, thn, smt, jnj, fks, prd } = req.params
-        const dataUse = jadwalPertemuanModel.findOne({
+        const dataUse = await jadwalPertemuanModel.findOne({
             where: {
                 code_jadwal_pertemuan: code,
                 status: "aktif"
