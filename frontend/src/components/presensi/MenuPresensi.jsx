@@ -6,67 +6,13 @@ import { Calendar } from 'react-date-range'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import * as locales from 'react-date-range'
+import moment from 'moment'
 
 const MenuPresensi = () => {
     const [loading, setLoading] = useState(false)
+    const [tanggal, setTanggal] = useState("")
     const [locale, setLocale] = React.useState('ja')
     const [date, setDate] = useState(null)
-
-    const nameMapper = {
-        ar: 'Arabic',
-        bg: 'Bulgarian',
-        ca: 'Catalan',
-        cs: 'Czech',
-        cy: 'Welsh',
-        da: 'Danish',
-        de: 'German',
-        el: 'Greek',
-        enGB: 'English (United Kingdom)',
-        enUS: 'English (United States)',
-        eo: 'Esperanto',
-        es: 'Spanish',
-        et: 'Estonian',
-        faIR: 'Persian',
-        fi: 'Finnish',
-        fil: 'Filipino',
-        fr: 'French',
-        hi: 'Hindi',
-        hr: 'Croatian',
-        hu: 'Hungarian',
-        hy: 'Armenian',
-        id: 'Indonesian',
-        is: 'Icelandic',
-        it: 'Italian',
-        ja: 'Japanese',
-        ka: 'Georgian',
-        ko: 'Korean',
-        lt: 'Lithuanian',
-        lv: 'Latvian',
-        mk: 'Macedonian',
-        nb: 'Norwegian Bokmål',
-        nl: 'Dutch',
-        pl: 'Polish',
-        pt: 'Portuguese',
-        ro: 'Romanian',
-        ru: 'Russian',
-        sk: 'Slovak',
-        sl: 'Slovenian',
-        sr: 'Serbian',
-        sv: 'Swedish',
-        th: 'Thai',
-        tr: 'Turkish',
-        uk: 'Ukrainian',
-        vi: 'Vietnamese',
-        zhCN: 'Chinese Simplified',
-        zhTW: 'Chinese Traditional'
-    }
-
-    const localeOptions = Object.keys(locales)
-        .map(key => ({
-            value: key,
-            label: `${key} - ${nameMapper[key] || ''}`
-        }))
-        .filter(item => nameMapper[item.value]);
 
     useEffect(() => {
         setLoading(true)
@@ -90,7 +36,7 @@ const MenuPresensi = () => {
                     <div className='card bg-base-100 card-bordered shadow-md mb-2'>
                         <div className="card-body p-4">
                             <div className="grid gap-2">
-                                <input type="date" className='input input-bordered w-full' />
+                                <input type="date" value={tanggal} onChange={(e) => setTanggal(e.target.value)} className='input input-bordered w-full' />
                                 {/* <div className='flex justify-center'>
                                     <div className="dropdown">
                                         <div tabIndex={0} role="button" className="btn btn-sm btn-primary content-center">Click</div>
@@ -113,18 +59,20 @@ const MenuPresensi = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='card bg-base-100 card-bordered shadow-md mb-2'>
-                        <div className="card-body p-4">
-                            <div className="grid gap-2">
-                                <div>
-                                    Anda dapat melakukan absen dosen
-                                </div>
-                                <div>
-                                    <Link to="/presensi/dosen" className="btn btn-success btn-sm"></Link>
+                    {tanggal ?
+                        <div className='card bg-base-100 card-bordered shadow-md mb-2'>
+                            <div className="card-body p-4">
+                                <div className="grid gap-2">
+                                    <div>
+                                        Anda dapat melakukan absen dosen
+                                    </div>
+                                    <div>
+                                        <Link to="/presensi/dosen" state={{ tgl: tanggal, mom: moment(tanggal).format('DD MMMM YYYY') }} className="btn btn-success btn-sm">Absen</Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div> : ""
+                    }
                 </div>
             </section>
         </div>
