@@ -33,6 +33,7 @@ import {
   SiFoursquarecityguide
 } from "react-icons/si"
 import { RiRfidFill } from "react-icons/ri"
+import { FaChalkboardUser } from "react-icons/fa6"
 
 const Sidebar = () => {
   const location = useLocation()
@@ -166,6 +167,9 @@ const Sidebar = () => {
                   <Link to="/jadwalkuliah" state={{ collaps: 'kuliah', activ: '/jadwalkuliah' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/jadwalkuliah' || active == '/jadwalkuliah' ? 'active' : ''}`}><FaBusinessTime /> <span className='text-sm'>Jadwal Kuliah</span></Link>
                 </li>
                 <li>
+                  <Link to="/presensi" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><FaChalkboardUser /> <span className='text-sm'>Presensi</span></Link>
+                </li>
+                <li>
                   <Link to="/penilaian" state={{ collaps: 'kuliah', activ: '/penilaian' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/penilaian' || active == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Penilaian Mahasiswa</span></Link>
                 </li>
                 <li>
@@ -176,9 +180,6 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
-                </li>
-                <li>
-                  <Link to="/presensi" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Presensi</span></Link>
                 </li>
               </ul>
             </details> :
@@ -219,6 +220,9 @@ const Sidebar = () => {
                   <Link to="/penilaian" state={{ collaps: 'kuliah', activ: '/penilaian' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/penilaian' || active == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Penilaian Mahasiswa</span></Link>
                 </li>
                 <li>
+                  <Link to="/presensi" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><FaChalkboardUser /> <span className='text-sm'>Presensi</span></Link>
+                </li>
+                <li>
                   <Link to="/khs" state={{ collaps: 'kuliah', activ: '/khs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/khs' || active == '/khs' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-sm'>Kartu Hasil Studi</span></Link>
                 </li>
                 <li>
@@ -226,9 +230,6 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
-                </li>
-                <li>
-                  <Link to="/presensi" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Presensi</span></Link>
                 </li>
               </ul>
             </details>
