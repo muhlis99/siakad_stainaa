@@ -100,17 +100,13 @@ module.exports = {
     },
 
     progresPresensi: async (req, res, next) => {
-        const { tgl, thn, smt, jnj, fks, prd } = req.params
+        const { tgl, thn } = req.params
         const jmlDosen = await jadwalPertemuanModel.count({
             include: [
                 {
                     model: jadwalKuliahModel,
                     where: {
                         code_tahun_ajaran: thn,
-                        code_semester: smt,
-                        code_jenjang_pendidikan: jnj,
-                        code_fakultas: fks,
-                        code_prodi: prd,
                         status: "aktif"
                     }
                 }
@@ -125,10 +121,6 @@ module.exports = {
             where: {
                 tanggal: tgl,
                 code_tahun_ajaran: thn,
-                code_semester: smt,
-                code_jenjang_pendidikan: jnj,
-                code_fakultas: fks,
-                code_prodi: prd,
                 status: "aktif"
             }
         })

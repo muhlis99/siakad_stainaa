@@ -4,7 +4,7 @@ const presensiDosenController = require('../controllers/presensiDosenController.
 
 router.get('/getDosenValidasiAvailable/:tgl/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.getDosenValidasiAvailable)
 router.get('/getDosenValidasiNoAvailable/:tgl/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.getDosenValidasiNoAvailable)
-router.get('/progresPresensi/:tgl/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.progresPresensi)
+router.get('/progresPresensi/:tgl/:thn', presensiDosenController.progresPresensi)
 router.post('/presensiByRfid', presensiDosenController.presensiByRfid)
 router.put('/validasiPresensi/:id', presensiDosenController.validasiPresensi)
 router.get('/rekapPresensiPersmt/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.rekapPresensiPersmt)
