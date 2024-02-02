@@ -1,25 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import Loading from '../Loading'
-import { Link } from "react-router-dom"
-import { Calendar } from 'react-date-range'
-import 'react-date-range/dist/styles.css'
-import 'react-date-range/dist/theme/default.css'
-import * as locales from 'react-date-range'
+import { Link, useLocation } from "react-router-dom"
 import moment from 'moment'
 
-const MenuPresensi = () => {
+const MenuPresensi = ({ children }) => {
     const [loading, setLoading] = useState(false)
-    const [tanggal, setTanggal] = useState("")
-    const [locale, setLocale] = React.useState('ja')
-    const [date, setDate] = useState(null)
+    const location = useLocation()
 
-    useEffect(() => {
-        setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
-        }, 500)
-    }, [])
+    // useEffect(() => {
+    //     setLoading(true)
+    //     setTimeout(() => {
+    //         setLoading(false)
+    //     }, 500)
+    // }, [])
 
     return (
         <div className='mt-2 container'>
@@ -32,50 +26,35 @@ const MenuPresensi = () => {
                 <h1 className='text-2xl font-bold'>Presensi</h1>
             </section>
             <section>
-                <div className='w-full lg:w-1/2 mx-auto'>
-                    <div className='card bg-base-100 card-bordered shadow-md mb-2'>
-                        <div className="card-body p-4">
-                            <div className="grid gap-2">
-                                <input type="date" value={tanggal} onChange={(e) => setTanggal(e.target.value)} className='input input-bordered w-full' />
-                                {/* <div className='flex justify-center'>
-                                    <div className="dropdown">
-                                        <div tabIndex={0} role="button" className="btn btn-sm btn-primary content-center">Click</div>
-                                        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-96">
-                                            <li>
-                                                <div style={{ display: 'flex', flexFlow: 'column nowrap' }}>
-                                                    <Calendar onChange={item => setDate(item)}
-                                                        locale={locales[locale]} date={date} />
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div> */}
-                                {/* <details className="dropdown">
-                                    <summary className="m-1 btn">Tanggalnya</summary>
-                                    <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-96">
-                                        
-                                    </ul>
-                                </details> */}
-                            </div>
-                        </div>
-                    </div>
-                    {tanggal ?
-                        <div className='card bg-base-100 card-bordered shadow-md mb-2'>
-                            <div className="card-body p-4">
-                                <div className="grid gap-2">
-                                    <div>
-                                        Anda dapat melakukan absen dosen
-                                    </div>
-                                    <div>
-                                        <Link to="/presensi/dosen" state={{ tgl: tanggal, mom: moment(tanggal).format('DD MMMM YYYY') }} className="btn btn-success btn-sm">Absen</Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> : ""
-                    }
+                {/* <div className='card bg-base-100 card-bordered shadow-md mb-2'>
+                    <div className="card-body px-0"> */}
+                <div className='border-b px-2 border-gray-500'>
+                    <ul className="flex flex-wrap">
+                        <li className="mr-2">
+                            <Link to="/presensi/dosen" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`inline-block ${location.pathname == '/presensi/dosen' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Absen</Link>
+                        </li>
+                        <li className="mr-2">
+                            <Link to="/presensi/validasi" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`inline-block ${location.pathname == '/presensi/validasi' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Validasi</Link>
+                        </li>
+                        <li className="mr-2">
+                            <Link to="/presensi/rekapbulanan" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`inline-block ${location.pathname == '/presensi/rekapbulanan' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Rekap Perbulan</Link>
+                        </li>
+                        <li className="mr-2">
+                            <Link to="/presensi/rekappersemester" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`inline-block ${location.pathname == '/presensi/rekappersemester' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Rekap Persemester</Link>
+                        </li>
+                    </ul>
+                </div>
+
+                {/* </div>
+                </div > */}
+
+            </section >
+            <section className='mt-5'>
+                <div className='px-2'>
+                    {children}
                 </div>
             </section>
-        </div>
+        </div >
     )
 }
 

@@ -76,7 +76,7 @@ const FormPresensi = () => {
                     <img src={icon} width={300} alt="" />
                 </div>
                 <div className='flex justify-center'>
-                    <Link to='/presensi' className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center gap-1 no-underline'><FaReply /> Keluar</Link>
+                    <Link to='/presensi/dosen' className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center gap-1 no-underline'><FaReply /> Keluar</Link>
                 </div>
                 <form onSubmit={simpanAbsenDosen}>
                     <input type="text" value={kodeRfid} className='bg-[#EDEDED] focus:outline-none focus:ring-transparent focus:border-transparent caret-transparent text-[#EDEDED]' onChange={(e) => setKodeRfid(e.target.value)} autoFocus />

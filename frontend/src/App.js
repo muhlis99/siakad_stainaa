@@ -68,6 +68,10 @@ import SettingRfid from "./pages/rfid/SettingRfid"
 import RfidDosen from "./pages/rfid/RfidDosen"
 import Presensi from "./pages/presensi/Presensi"
 import ProresPresensi from "./pages/presensi/ProresPresensi"
+import PilihTanggal from "./pages/presensi/PilihTanggal"
+import ValidasiPresensi from "./pages/presensi/ValidasiPresensi"
+import RekapPerbulan from "./pages/presensi/RekapPerbulan"
+import RekapPersemester from "./pages/presensi/RekapPersemester"
 
 
 function App() {
@@ -140,7 +144,11 @@ function App() {
           <Route path="/rfidmahasiswa" element={<SettingRfid />} />
           <Route path="/rfiddosen" element={<RfidDosen />} />
           <Route path="/presensi" element={<Presensi />} />
-          <Route path="/presensi/dosen" element={<ProresPresensi />} />
+          <Route path="/presensi/dosen" element={<PilihTanggal />} />
+          <Route path="/presensi/proses" element={<ProresPresensi />} />
+          <Route path="/presensi/validasi" element={<ValidasiPresensi />} />
+          <Route path="/presensi/rekapbulanan" element={<RekapPerbulan />} />
+          <Route path="/presensi/rekappersemester" element={<RekapPersemester />} />
         </Routes>
       </BrowserRouter>
     </div>
