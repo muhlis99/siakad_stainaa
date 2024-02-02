@@ -99,37 +99,47 @@ module.exports = {
             })
     },
 
-    // progresPresensi: async (req, res, next) => {
-    //     const { code, thn, smt, jnj, fks, prd } = req.params
-    //     const jmlMhs = await historyMahasiswa.count({
-    //         where: {
-    //             code_tahun_ajaran: thn,
-    //             code_semester: smt,
-    //             code_jenjang_pendidikan: jnj,
-    //             code_fakultas: fks,
-    //             code_prodi: prd,
-    //             status: "aktif"
-    //         }
-    //     })
-    //     const jmlMhsAbsen = await presensiMhsModel.count({
-    //         where: {
-    //             code_jadwal_pertemuan: code,
-    //             code_tahun_ajaran: thn,
-    //             code_semester: smt,
-    //             code_jenjang_pendidikan: jnj,
-    //             code_fakultas: fks,
-    //             code_prodi: prd,
-    //             status: "aktif"
-    //         }
-    //     })
-    //     res.status(201).json({
-    //         message: "Data progres presensi",
-    //         data: {
-    //             jumlah_mahasiswa: jmlMhs,
-    //             jumlah_mahasiswa_presensi: jmlMhsAbsen
-    //         }
-    //     })
-    // },
+    progresPresensi: async (req, res, next) => {
+        const { tgl, thn, smt, jnj, fks, prd } = req.params
+        const jmlDosen = await jadwalPertemuanModel.count({
+            include: [
+                {
+                    model: jadwalKuliahModel,
+                    where: {
+                        code_tahun_ajaran: thn,
+                        code_semester: smt,
+                        code_jenjang_pendidikan: jnj,
+                        code_fakultas: fks,
+                        code_prodi: prd,
+                        status: "aktif"
+                    }
+                }
+            ],
+            where: {
+                tanggal_pertemuan: tgl,
+                status: "aktif"
+            }
+        })
+
+        const jmlDosenAbsen = await presensiDosenModel.count({
+            where: {
+                tanggal: tgl,
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnj,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            }
+        })
+        res.status(201).json({
+            message: "Data progres presensi",
+            data: {
+                jumlah_dosen: jmlDosen,
+                jumlah_dosen_presensi: jmlDosenAbsen
+            }
+        })
+    },
 
     presensiByRfid: async (req, res, next) => {
         const { codeRfid, tgl } = req.body
@@ -335,49 +345,19 @@ module.exports = {
         }
     },
 
-    getStatusAbsen: async (req, res, next) => {
-        const codeJadper = req.params.codeJadper
-        const dataUse = await presensiMhsModel.count({
-            where: {
-                code_jadwal_pertemuan: codeJadper
-            }
-        })
-        if (dataUse > 0) {
-            res.status(201).json({
-                message: "Data absen sudah dilakukan",
-                data: "sudah dilakukan"
-            })
-        } else {
-            res.status(201).json({
-                message: "Data absen belum dilakukan",
-                data: "belum dilakukan"
-            })
-        }
-    },
-
-    rekapPresensi: async (req, res, next) => {
-        const { codeJadkul, thn, smt, jnj, fks, prd } = req.params
-        const dataJadPer = await jadwalPertemuanModel.findAll({
-            where: {
-                code_jadwal_kuliah: codeJadkul,
-                status: "aktif"
-            }
-        })
-        const dataJadperUse = dataJadPer.map(el => { return el.code_jadwal_pertemuan })
-        await presensiMhsModel.findAll({
+    rekapPresensiPersmt: async (req, res, next) => {
+        const { thn, smt, jnj, fks, prd } = req.params
+        await presensiDosenModel.findAll({
             include: [
                 {
-                    attributes: ["pertemuan"],
-                    model: jadwalPertemuanModel
-                }, {
-                    attributes: ["nama"],
-                    model: mahasiswaModel
+                    attributes: ['nama'],
+                    model: dosenModel,
                 }
             ],
-            attributes: ["masuk", "izin", "alpha", "nim",
-                [Sequelize.fn('sum', Sequelize.col('masuk')), 'total_masuk'],
+            attributes: ["masuk_luring", "masuk_daring", "izin", "nip_ynaa",
+                [Sequelize.fn('sum', Sequelize.col('masuk_luring')), 'total_masuk_luring'],
+                [Sequelize.fn('sum', Sequelize.col('masuk_daring')), 'total_masuk_daring'],
                 [Sequelize.fn('sum', Sequelize.col('izin')), 'total_izin'],
-                [Sequelize.fn('sum', Sequelize.col('alpha')), 'total_alpha'],
             ],
             where: {
                 code_tahun_ajaran: thn,
@@ -385,10 +365,9 @@ module.exports = {
                 code_jenjang_pendidikan: jnj,
                 code_fakultas: fks,
                 code_prodi: prd,
-                code_jadwal_pertemuan: dataJadperUse,
                 status: "aktif"
             },
-            group: ["nim"]
+            group: ["nip_ynaa"]
         }).then(all => {
             res.status(201).json({
                 message: "Data presensi berhasil diupdate",
@@ -399,13 +378,13 @@ module.exports = {
         })
     },
 
-    detailRekapPresensi: async (req, res, next) => {
-        const { nim, thn, smt, jnj, fks, prd } = req.params
-        await presensiMhsModel.findAll({
-            attributes: ["masuk", "izin", "alpha",
-                [Sequelize.fn('sum', Sequelize.col('masuk')), 'total_masuk'],
+    detailRekapPresensiPersmt: async (req, res, next) => {
+        const { nipy, thn, smt, jnj, fks, prd } = req.params
+        await presensiDosenModel.findAll({
+            attributes: ["masuk_luring", "masuk_daring", "izin", "nip_ynaa",
+                [Sequelize.fn('sum', Sequelize.col('masuk_luring')), 'total_masuk_luring'],
+                [Sequelize.fn('sum', Sequelize.col('masuk_daring')), 'total_masuk_daring'],
                 [Sequelize.fn('sum', Sequelize.col('izin')), 'total_izin'],
-                [Sequelize.fn('sum', Sequelize.col('alpha')), 'total_alpha'],
             ],
             where: {
                 code_tahun_ajaran: thn,
@@ -413,20 +392,20 @@ module.exports = {
                 code_jenjang_pendidikan: jnj,
                 code_fakultas: fks,
                 code_prodi: prd,
-                nim: nim,
+                nip_ynaa: nipy,
                 status: "aktif"
             }
         }).
             then(result => {
                 totalItem = result
-                return presensiMhsModel.findAll({
+                return presensiDosenModel.findAll({
                     include: [
                         {
                             attributes: ["pertemuan"],
                             model: jadwalPertemuanModel
                         }, {
                             attributes: ["nama"],
-                            model: mahasiswaModel
+                            model: dosenModel
                         }
                     ],
                     where: {
@@ -435,7 +414,7 @@ module.exports = {
                         code_jenjang_pendidikan: jnj,
                         code_fakultas: fks,
                         code_prodi: prd,
-                        nim: nim,
+                        nip_ynaa: nipy,
                         status: "aktif"
                     }
                 })
@@ -448,5 +427,122 @@ module.exports = {
             }).catch(err => {
                 next(err)
             })
-    }
+    },
+
+    rekapPresensiPerbln: async (req, res, next) => {
+        const { bln, thn, smt, jnj, fks, prd } = req.params
+        await presensiDosenModel.findAll({
+            include: [
+                {
+                    attributes: ['nama'],
+                    model: dosenModel,
+                }
+            ],
+            attributes: ["masuk_luring", "masuk_daring", "izin", "nip_ynaa", "tanggal",
+                [Sequelize.fn('sum', Sequelize.col('masuk_luring')), 'total_masuk_luring'],
+                [Sequelize.fn('sum', Sequelize.col('masuk_daring')), 'total_masuk_daring'],
+                [Sequelize.fn('sum', Sequelize.col('izin')), 'total_izin'],
+            ],
+            where: {
+                [Op.and]: [
+                    Sequelize.where(Sequelize.fn('MONTH', Sequelize.col('tanggal')), bln),
+                ],
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnj,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            },
+            group: ["nip_ynaa"]
+        }).then(all => {
+            res.status(201).json({
+                message: "Data presensi berhasil diupdate",
+                data: all
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
+    detailRekapPresensiPerbln: async (req, res, next) => {
+        const { nipy, bln, thn, smt, jnj, fks, prd } = req.params
+        await presensiDosenModel.findAll({
+            attributes: ["masuk_luring", "masuk_daring", "izin", "nip_ynaa", "tanggal",
+                [Sequelize.fn('sum', Sequelize.col('masuk_luring')), 'total_masuk_luring'],
+                [Sequelize.fn('sum', Sequelize.col('masuk_daring')), 'total_masuk_daring'],
+                [Sequelize.fn('sum', Sequelize.col('izin')), 'total_izin'],
+            ],
+            where: {
+                [Op.and]: [
+                    Sequelize.where(Sequelize.fn('MONTH', Sequelize.col('tanggal')), bln),
+                ],
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnj,
+                code_fakultas: fks,
+                code_prodi: prd,
+                nip_ynaa: nipy,
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                totalItem = result
+                return presensiDosenModel.findAll({
+                    include: [
+                        {
+                            attributes: ["pertemuan"],
+                            model: jadwalPertemuanModel
+                        }, {
+                            attributes: ["nama"],
+                            model: dosenModel
+                        }
+                    ],
+                    where: {
+                        [Op.and]: [
+                            Sequelize.where(Sequelize.fn('MONTH', Sequelize.col('tanggal')), bln),
+                        ],
+                        code_tahun_ajaran: thn,
+                        code_semester: smt,
+                        code_jenjang_pendidikan: jnj,
+                        code_fakultas: fks,
+                        code_prodi: prd,
+                        nip_ynaa: nipy,
+                        status: "aktif"
+                    }
+                })
+            }).then(all => {
+                res.status(201).json({
+                    message: "Data presensi berhasil diupdate",
+                    data: all,
+                    datas: totalItem
+                })
+            }).catch(err => {
+                next(err)
+            })
+    },
+
+    getbulan: async (req, res, next) => {
+        const { thn, smt, jnj, fks, prd } = req.params
+        await presensiDosenModel.findAll({
+            attributes: [
+                [Sequelize.literal('month(tanggal)'), 'bulan'],
+            ],
+            where: {
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnj,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "Data bulan success",
+                data: result
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+    },
 }

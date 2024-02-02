@@ -4,11 +4,14 @@ const presensiDosenController = require('../controllers/presensiDosenController.
 
 router.get('/getDosenValidasiAvailable/:tgl/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.getDosenValidasiAvailable)
 router.get('/getDosenValidasiNoAvailable/:tgl/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.getDosenValidasiNoAvailable)
-// router.get('/progresPresensi/:code/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.progresPresensi)
+router.get('/progresPresensi/:tgl/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.progresPresensi)
 router.post('/presensiByRfid', presensiDosenController.presensiByRfid)
 router.put('/validasiPresensi/:id', presensiDosenController.validasiPresensi)
-router.get('/rekapPresensi/:codeJadkul/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.rekapPresensi)
-router.get('/detailRekapPresensi/:nim/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.detailRekapPresensi)
+router.get('/rekapPresensiPersmt/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.rekapPresensiPersmt)
+router.get('/detailRekapPresensiPersmt/:nipy/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.detailRekapPresensiPersmt)
+router.get('/rekapPresensiPerbln/:bln/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.rekapPresensiPerbln)
+router.get('/detailRekapPresensiPerbln/:nipy/:bln/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.detailRekapPresensiPerbln)
+router.get('/getbulan/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.getbulan)
 
 
 module.exports = router
