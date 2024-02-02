@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { FaCog } from 'react-icons/fa'
+import { FaCog, FaTimes } from 'react-icons/fa'
+import moment from 'moment'
+import Swal from 'sweetalert2'
 
 const SettingValidasi = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -16,6 +18,11 @@ const SettingValidasi = () => {
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
     const [tanggal, setTanggal] = useState("")
+    const [nipy, setNipy] = useState("")
+    const [nama, setNama] = useState("")
+    const [keterangan, setKeterangan] = useState("")
+    const [kodePertemuan, setKodePertemuan] = useState("")
+    const [idPresensi, setIdPresensi] = useState("")
 
     useEffect(() => {
         getTahunAjaran()
@@ -117,8 +124,150 @@ const SettingValidasi = () => {
         }
     }
 
+    const handleShow = (e, f, g, h, i) => {
+        setNipy(e)
+        setNama(f)
+        setKodePertemuan(h)
+        setIdPresensi(i)
+        if (g == 'hadir' || g == 'Hadir') {
+            setKeterangan('A')
+        } else if (g == 'zoom' || g == 'Zoom') {
+            setKeterangan('B')
+        } else if (g == 'izin' || g == 'Izin') {
+            setKeterangan('C')
+        }
+        document.getElementById('my-modal').checked = true
+    }
+
+    const onValueChange = (e) => {
+        setKeterangan(e.target.value)
+    }
+
+    const handleClose = () => {
+        setNipy("")
+        setKodePertemuan("")
+        setNama("")
+        setKeterangan("")
+        setIdPresensi("")
+        document.getElementById('my-modal').checked = false
+    }
+
+    const simpanValidasi = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.put(`v1/presensiDosen/validasiPresensi/${idPresensi}`, {
+                codeThn: kodeTahun,
+                codeSmt: kodeSemester,
+                codeJnj: kodeJenjang,
+                codeFks: kodeFakultas,
+                codePrd: kodeProdi,
+                codeJadper: kodePertemuan,
+                absensi: keterangan,
+                nip_ynaa: nipy,
+                jam_masuk: '',
+                jam_pulang: '',
+                tgl: tanggal,
+            }).then(function (response) {
+                handleClose()
+                Swal.fire({
+                    title: response.data.message,
+                    icon: 'success',
+                }).then(() => {
+                    getAvailable()
+                    getNotAvailable()
+                })
+            })
+        } catch (error) {
+
+        }
+    }
+
+
     return (
         <>
+            <input type="checkbox" id="my-modal" className="modal-toggle" />
+            <div className="modal">
+                <div className="modal-box grid p-0 rounded-md">
+                    <form onSubmit={simpanValidasi}>
+                        <div className='bg-base-200 border-b-2 p-3 pb-7'>
+                            <button type='button' className="btn btn-xs btn-circle btn-error float-right" onClick={handleClose}><FaTimes /></button>
+                        </div>
+                        <div className='p-3 border-t-2'>
+                            <div className="grid gap-3">
+                                <div>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td className='py-1 px-2'>NIP</td>
+                                                <td className='py-1 px-2'>&nbsp;:&nbsp;</td>
+                                                <td className='py-1 px-2'>{nipy}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className='py-1 px-2'>Nama Dosen</td>
+                                                <td className='py-1 px-2'>&nbsp;:&nbsp;</td>
+                                                <td className='py-1 px-2'>{nama}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className='py-1 px-2'>Tanggal Pertemuan</td>
+                                                <td className='py-1 px-2'>&nbsp;:&nbsp;</td>
+                                                <td className='py-1 px-2'>{moment(tanggal).format('DD MMMM YYYY')}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className='grid'>
+                                    <div className="inline-flex items-center">
+                                        <label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="hadir">
+                                            <input
+                                                name="type"
+                                                type="radio"
+                                                className="radio checked:bg-blue-500"
+                                                checked={keterangan == 'A'}
+                                                onChange={onValueChange}
+                                                value="A"
+                                                id="hadir" />
+                                        </label>
+                                        <label className="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="hadir">
+                                            Hadir
+                                        </label>
+                                    </div>
+                                    <div className="inline-flex items-center">
+                                        <label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="zoom">
+                                            <input
+                                                name="type"
+                                                type="radio"
+                                                className="radio checked:bg-[#28A745]"
+                                                checked={keterangan == 'B'}
+                                                onChange={onValueChange}
+                                                value="B"
+                                                id="zoom" />
+                                        </label>
+                                        <label className="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="zoom">
+                                            Zoom
+                                        </label>
+                                    </div>
+                                    <div className="inline-flex items-center">
+                                        <label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="izin">
+                                            <input
+                                                name="type"
+                                                type="radio"
+                                                className="radio checked:bg-[#6C757D]"
+                                                checked={keterangan == 'C'}
+                                                onChange={onValueChange}
+                                                value="C"
+                                                id="izin" />
+                                        </label>
+                                        <label className="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="izin">
+                                            Izin
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type='submit' className="btn btn-sm btn-primary capitalize float-right mb-3">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div className='card bg-base-100 card-bordered shadow-md mb-2'>
                 <div className='card-body p-4'>
                     <div className="grid grid-cols-5 gap-2">
@@ -189,26 +338,35 @@ const SettingValidasi = () => {
                                     :
                                     <>
                                         {Available.map((item, index) => (
-                                            <tr className='bg-white border-b text-gray-500 border-x'>
+                                            <tr key={index} className='bg-white border-b text-gray-500 border-x'>
                                                 <td className='px-3 py-2 font-semibold'>{index + 1}</td>
                                                 <td className='px-3 py-2 font-semibold'>{item.nip_ynaa}</td>
                                                 <td className='px-3 py-2 font-semibold'>{item.dosens[0].nama}</td>
-                                                <td className='px-3 py-2 font-semibold'>{item.keterangan}</td>
                                                 <td className='px-3 py-2 font-semibold'>
-                                                    <button className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline'><FaCog /></button>
+                                                    {item.keterangan == 'hadir' || item.keterangan == 'Hadir' ?
+                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-blue-500 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
+                                                        : item.keterangan == 'zoom' || item.keterangan == 'Zoom' ?
+                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
+                                                            :
+                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#6C757D] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{item.keterangan}</span>
+
+                                                    }
+                                                </td>
+                                                <td className='px-3 py-2 font-semibold'>
+                                                    <button onClick={() => handleShow(item.nip_ynaa, item.dosens[0].nama, item.keterangan, item.code_jadwal_pertemuan, item.id_presensi_dosen)} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline'><FaCog /></button>
                                                 </td>
                                             </tr>
                                         ))}
                                         {NotAvailable.map((item, index) => (
-                                            <tr className='bg-white border-b text-gray-500 border-x'>
-                                                <td className='px-3 py-2 font-semibold'>{index + 1}</td>
+                                            <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                                <td className='px-3 py-2 font-semibold'>{index + 1 + Available.length}</td>
                                                 <td className='px-3 py-2 font-semibold'>{item.jadwalKuliahs[0].dosen_pengajar}</td>
                                                 <td className='px-3 py-2 font-semibold'>{item.jadwalKuliahs[0].dosenPengajar[0].nama}</td>
                                                 <td className='px-3 py-2 font-semibold'>
                                                     <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">tidak absen</span>
                                                 </td>
                                                 <td className='px-3 py-2 font-semibold'>
-                                                    <button className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline'><FaCog /></button>
+                                                    <button onClick={() => handleShow(item.jadwalKuliahs[0].dosen_pengajar, item.jadwalKuliahs[0].dosenPengajar[0].nama, 'tidak', item.code_jadwal_pertemuan, '0')} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline'><FaCog /></button>
                                                 </td>
                                             </tr>
                                         ))}
