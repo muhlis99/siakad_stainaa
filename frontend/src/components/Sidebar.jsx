@@ -167,7 +167,7 @@ const Sidebar = () => {
                   <Link to="/jadwalkuliah" state={{ collaps: 'kuliah', activ: '/jadwalkuliah' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/jadwalkuliah' || active == '/jadwalkuliah' ? 'active' : ''}`}><FaBusinessTime /> <span className='text-sm'>Jadwal Kuliah</span></Link>
                 </li>
                 <li>
-                  <Link to="/presensi" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><FaChalkboardUser /> <span className='text-sm'>Presensi</span></Link>
+                  <Link to="/presensi/dosen" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi/dosen' || location.pathname == '/presensi/validasi' || location.pathname == '/presensi/rekapbulanan' || location.pathname == '/presensi/rekappersemester' || location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><FaChalkboardUser /> <span className='text-sm'>Presensi</span></Link>
                 </li>
                 <li>
                   <Link to="/penilaian" state={{ collaps: 'kuliah', activ: '/penilaian' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/penilaian' || active == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Penilaian Mahasiswa</span></Link>
@@ -217,10 +217,10 @@ const Sidebar = () => {
                   <Link to="/jadwalkuliah" state={{ collaps: 'kuliah', activ: '/jadwalkuliah' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/jadwalkuliah' || active == '/jadwalkuliah' ? 'active' : ''}`}><FaBusinessTime /> <span className='text-sm'>Jadwal Kuliah</span></Link>
                 </li>
                 <li>
-                  <Link to="/penilaian" state={{ collaps: 'kuliah', activ: '/penilaian' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/penilaian' || active == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Penilaian Mahasiswa</span></Link>
+                  <Link to="/presensi/dosen" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi/dosen' || location.pathname == '/presensi/validasi' || location.pathname == '/presensi/rekapbulanan' || location.pathname == '/presensi/rekappersemester' || location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><FaChalkboardUser /> <span className='text-sm'>Presensi</span></Link>
                 </li>
                 <li>
-                  <Link to="/presensi" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><FaChalkboardUser /> <span className='text-sm'>Presensi</span></Link>
+                  <Link to="/penilaian" state={{ collaps: 'kuliah', activ: '/penilaian' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/penilaian' || active == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Penilaian Mahasiswa</span></Link>
                 </li>
                 <li>
                   <Link to="/khs" state={{ collaps: 'kuliah', activ: '/khs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/khs' || active == '/khs' ? 'active' : ''} even:bg-[#287155]`}><FaAddressBook /> <span className='text-sm'>Kartu Hasil Studi</span></Link>
