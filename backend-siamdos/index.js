@@ -71,6 +71,9 @@ const detailTugas = require('./router/detailTugasRoute.js')
 const pedoman = require('./router/pedomanRoute.js')
 const jadwalPertemuan = require('./router/jadwalPertemuanRoute.js')
 const presensiMhs = require('./router/presensiMhsRoute.js')
+const jurnalDosen = require('./router/jurnalDosenRoute.js')
+
+
 
 
 app.use('/v1/login', login)
@@ -101,6 +104,7 @@ app.use('/v1/detailTugas', detailTugas)
 app.use('/v1/pedoman', pedoman)
 app.use('/v1/jadwalPertemuan', jadwalPertemuan)
 app.use('/v1/presensiMhs', presensiMhs)
+app.use('/v1/jurnalDosen', jurnalDosen)
 
 
 // default index
