@@ -177,89 +177,95 @@ module.exports = {
                 tanggal: tgl
             }
         })
-
-
-        const valDafJadperDosenUse = valDafJadperDosen.map(el => { return el.code_jadwal_pertemuan })
-        const valPresensiDosenUse = valPresensiDosen.map(rs => { return rs.code_jadwal_pertemuan })
-        const filtered = valDafJadperDosenUse.filter(item => !valPresensiDosenUse.includes(item));
-        if (!filtered) return res.status(404).json({ message: "anda tidak mempunyai jadwal mengajar hari ini" })
-        const filter = filtered[0]
-        const duplicateDataUse = await presensiDosenModel.findOne({
+        const validasiJamPulang = await presensiDosenModel.findOne({
             where: {
-                code_jadwal_pertemuan: filter,
-                nip_ynaa: dataRfid.nip_ynaa,
-                tanggal: tgl
-            }
-        })
-        if (duplicateDataUse) {
-            if (duplicateDataUse.jam_pulang == null || duplicateDataUse.jam_pulang == "") {
-                await presensiDosenModel.update({
-                    jam_pulang: jam,
-                }, {
-                    where: {
-                        id_presensi_dosen: duplicateDataUse.id_presensi_dosen,
-                        nip_ynaa: dataRfid.nip_ynaa
-                    }
-                }).
-                    then(result => {
-                        res.status(201).json({
-                            message: "Data presensi berhasil disimpan",
-                            data: result.nip_ynaa
-                        })
-                    }).
-                    catch(err => {
-                        next(err)
-                    })
-            } else {
-                res.status(201).json({
-                    message: "Anda sudah melakukan absen ",
-                })
-            }
-        } else {
-            const dataUse = await jadwalPertemuanModel.findOne({
-                include: [{
-                    model: jadwalKuliahModel,
-                    where: {
-                        dosen_pengajar: dataRfid.nip_ynaa
-                    },
-                    order: [
-                        ["jam_mulai", "ASC"]
-                    ]
-                }],
-                where: {
-                    tanggal_pertemuan: tgl,
-                    code_jadwal_pertemuan: filter,
-                    status: "aktif"
-                }
-            })
-
-            await presensiDosenModel.create({
-                code_presensi_dosen: randomNumber,
-                code_tahun_ajaran: dataUse.jadwalKuliahs[0].code_tahun_ajaran,
-                code_semester: dataUse.jadwalKuliahs[0].code_semester,
-                code_jenjang_pendidikan: dataUse.jadwalKuliahs[0].code_jenjang_pendidikan,
-                code_fakultas: dataUse.jadwalKuliahs[0].code_fakultas,
-                code_prodi: dataUse.jadwalKuliahs[0].code_prodi,
-                code_jadwal_pertemuan: dataUse.code_jadwal_pertemuan,
                 nip_ynaa: dataRfid.nip_ynaa,
                 tanggal: tgl,
-                masuk_luring: 1,
-                masuk_daring: 0,
-                izin: 0,
-                jam_masuk: jam,
                 jam_pulang: "",
-                keterangan: "hadir",
                 status: "aktif"
+            }
+        })
+        if (validasiJamPulang) {
+            await presensiDosenModel.update({
+                jam_pulang: jam,
+            }, {
+                where: {
+                    id_presensi_dosen: duplicateDataUse.id_presensi_dosen,
+                    nip_ynaa: dataRfid.nip_ynaa
+                }
             }).
                 then(result => {
                     res.status(201).json({
                         message: "Data presensi berhasil disimpan",
-                        data: result.nim
+                        data: result.nip_ynaa
                     })
                 }).
                 catch(err => {
                     next(err)
                 })
+        } else {
+            const valDafJadperDosenUse = valDafJadperDosen.map(el => { return el.code_jadwal_pertemuan })
+            const valPresensiDosenUse = valPresensiDosen.map(rs => { return rs.code_jadwal_pertemuan })
+            const filtered = valDafJadperDosenUse.filter(item => !valPresensiDosenUse.includes(item));
+            if (filtered == null) return res.status(404).json({ message: "anda tidak mempunyai jadwal mengajar hari ini" })
+            const filter = filtered[0]
+            const duplicateDataUse = await presensiDosenModel.findOne({
+                where: {
+                    code_jadwal_pertemuan: filter,
+                    nip_ynaa: dataRfid.nip_ynaa,
+                    tanggal: tgl
+                }
+            })
+            if (duplicateDataUse) {
+                res.status(201).json({
+                    message: "Anda sudah melakukan absen ",
+                })
+            } else {
+                const dataUse = await jadwalPertemuanModel.findOne({
+                    include: [{
+                        model: jadwalKuliahModel,
+                        where: {
+                            dosen_pengajar: dataRfid.nip_ynaa
+                        },
+                        order: [
+                            ["jam_mulai", "ASC"]
+                        ]
+                    }],
+                    where: {
+                        tanggal_pertemuan: tgl,
+                        code_jadwal_pertemuan: filter,
+                        status: "aktif"
+                    }
+                })
+
+                await presensiDosenModel.create({
+                    code_presensi_dosen: randomNumber,
+                    code_tahun_ajaran: dataUse.jadwalKuliahs[0].code_tahun_ajaran,
+                    code_semester: dataUse.jadwalKuliahs[0].code_semester,
+                    code_jenjang_pendidikan: dataUse.jadwalKuliahs[0].code_jenjang_pendidikan,
+                    code_fakultas: dataUse.jadwalKuliahs[0].code_fakultas,
+                    code_prodi: dataUse.jadwalKuliahs[0].code_prodi,
+                    code_jadwal_pertemuan: dataUse.code_jadwal_pertemuan,
+                    nip_ynaa: dataRfid.nip_ynaa,
+                    tanggal: tgl,
+                    masuk_luring: 1,
+                    masuk_daring: 0,
+                    izin: 0,
+                    jam_masuk: jam,
+                    jam_pulang: "",
+                    keterangan: "hadir",
+                    status: "aktif"
+                }).
+                    then(result => {
+                        res.status(201).json({
+                            message: "Data presensi berhasil disimpan",
+                            data: result.nim
+                        })
+                    }).
+                    catch(err => {
+                        next(err)
+                    })
+            }
         }
     },
 
