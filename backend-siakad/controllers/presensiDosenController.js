@@ -177,6 +177,8 @@ module.exports = {
                 tanggal: tgl
             }
         })
+
+
         const valDafJadperDosenUse = valDafJadperDosen.map(el => { return el.code_jadwal_pertemuan })
         const valPresensiDosenUse = valPresensiDosen.map(rs => { return rs.code_jadwal_pertemuan })
         const filtered = valDafJadperDosenUse.filter(item => !valPresensiDosenUse.includes(item));
@@ -215,6 +217,15 @@ module.exports = {
             }
         } else {
             const dataUse = await jadwalPertemuanModel.findOne({
+                include: [{
+                    model: jadwalKuliahModel,
+                    where: {
+                        dosen_pengajar: dataRfid.nip_ynaa
+                    },
+                    order: [
+                        ["jam_mulai", "ASC"]
+                    ]
+                }],
                 where: {
                     tanggal_pertemuan: tgl,
                     code_jadwal_pertemuan: filter,
