@@ -39,38 +39,38 @@ const FormPresensi = () => {
                 codeRfid: kodeRfid,
                 tgl: location.state.tgl,
             }).then(function (response) {
-                console.log(response);
-                // if (response.data.message == 'Data presensi berhasil disimpan') {
-                //     Swal.fire({
-                //         title: response.data.message,
-                //         icon: "success",
-                //         showConfirmButton: false,
-                //         timer: 1500
-                //     }).then(() => {
-                //         setKodeRfid("")
-                //         getProgres()
-                //     })
-                // } else {
-                //     Swal.fire({
-                //         title: response.data.message,
-                //         icon: "error",
-                //         showConfirmButton: false,
-                //         timer: 1500
-                //     }).then(() => {
-                //         setKodeRfid("")
-                //         getProgres()
-                //     })
-                // }
+                // console.log(response);
+                if (response.data.message == 'Data presensi berhasil disimpan') {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        setKodeRfid("")
+                        getProgres()
+                    })
+                } else {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        setKodeRfid("")
+                        getProgres()
+                    })
+                }
             })
         } catch (error) {
-            console.log(error.response);
-            // Swal.fire({
-            //     title: 'Tidak dapat melakukan absen',
-            //     icon: 'error',
-            //     text: error.response.data.message,
-            //     showConfirmButton: false,
-            //     timer: 1500
-            // })
+            // console.log(error.response);
+            Swal.fire({
+                title: 'Tidak dapat melakukan absen',
+                icon: 'error',
+                text: error.response.data.message,
+                showConfirmButton: false,
+                timer: 1500
+            })
         }
     }
 
