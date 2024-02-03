@@ -181,15 +181,16 @@ module.exports = {
             where: {
                 nip_ynaa: dataRfid.nip_ynaa,
                 tanggal: tgl,
+                jam_pulang: "",
                 status: "aktif"
             }
         })
-        if (validasiJamPulang.jam_pulang == null || validasiJamPulang.jam_pulang == "") {
+        if (validasiJamPulang) {
             await presensiDosenModel.update({
                 jam_pulang: jam,
             }, {
                 where: {
-                    id_presensi_dosen: duplicateDataUse.id_presensi_dosen,
+                    id_presensi_dosen: validasiJamPulang.id_presensi_dosen,
                     nip_ynaa: dataRfid.nip_ynaa
                 }
             }).
