@@ -6,6 +6,7 @@ import Swal from 'sweetalert2'
 import moment from 'moment'
 import icon from "../../assets/img/wifi.png"
 import { FaReply } from "react-icons/fa"
+import ProgressBar from "@ramonak/react-progress-bar"
 
 const FormPresensi = () => {
     const [loading, setLoading] = useState(false)
@@ -13,6 +14,8 @@ const FormPresensi = () => {
     const [kodeRfid, setKodeRfid] = useState()
     let time = new Date().toLocaleTimeString()
     const [jam, setJam] = useState(time)
+    const [jumlahPresensi, setJumlahPresensi] = useState("")
+    const [jumlahDsn, setJumlahDsn] = useState("")
 
     useEffect(() => {
         setLoading(true)
@@ -21,8 +24,12 @@ const FormPresensi = () => {
         }, 500)
     }, [])
 
+    // useEffect(() => {
+    //     console.log(location.state)
+    // }, [location])
+
     useEffect(() => {
-        console.log(location.state)
+        getProgres()
     }, [location])
 
     const simpanAbsenDosen = async (e) => {
@@ -32,14 +39,27 @@ const FormPresensi = () => {
                 codeRfid: kodeRfid,
                 tgl: location.state.tgl,
             }).then(function (response) {
-                Swal.fire({
-                    title: response.data.message,
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    setKodeRfid("")
-                })
+                if (response.data.message == 'Data presensi berhasil disimpan') {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        setKodeRfid("")
+                        getProgres()
+                    })
+                } else {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        setKodeRfid("")
+                        getProgres()
+                    })
+                }
             })
         } catch (error) {
             Swal.fire({
@@ -49,6 +69,16 @@ const FormPresensi = () => {
                 showConfirmButton: false,
                 timer: 1500
             })
+        }
+    }
+
+    const getProgres = async () => {
+        try {
+            const response = await axios.get(`v1/presensiDosen/progresPresensi/${location.state.tgl}/${location.state.kodeTahun}`)
+            setJumlahDsn(response.data.data.jumlah_dosen)
+            setJumlahPresensi(response.data.data.jumlah_dosen_presensi)
+        } catch (error) {
+
         }
     }
 
@@ -82,15 +112,23 @@ const FormPresensi = () => {
                         </tr>
                     </tbody>
                 </table>
-
-                {/* <h1 className='text-xl font-bold'></h1> */}
             </section>
             <section>
+                <div className='flex justify-center'>
+                    <div className='w-full lg:w-1/2 mx-auto text-center'>
+                        <ProgressBar
+                            completed={`${jumlahPresensi}`}
+                            maxCompleted={jumlahDsn}
+                            bgColor='#17A2B8'
+                        />
+                        <p className='lg:text-xl mt-3 text-muted'>{jumlahPresensi} dari {jumlahDsn} Dosen</p>
+                    </div>
+                </div>
                 <div className='flex justify-center'>
                     <img src={icon} width={300} alt="" />
                 </div>
                 <div className='flex justify-center'>
-                    <Link to='/presensi/dosen' className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center gap-1 no-underline'><FaReply /> Keluar</Link>
+                    <Link to='/presensi/dosen' state={{ select: 'absen' }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center gap-1 no-underline'><FaReply /> Keluar</Link>
                 </div>
                 <form onSubmit={simpanAbsenDosen}>
                     <input type="text" value={kodeRfid} className='bg-[#EDEDED] focus:outline-none focus:ring-transparent focus:border-transparent caret-transparent text-[#EDEDED]' onChange={(e) => setKodeRfid(e.target.value)} autoFocus />
