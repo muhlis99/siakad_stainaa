@@ -21,9 +21,11 @@ const ProresPresensi = () => {
     }, [isError, navigate])
 
     return (
-        <Layout>
+        // <Layout>
+        <>
             <title>Presensi</title><FormPresensi />
-        </Layout>
+        </>
+        // </Layout>
     )
 }
 
