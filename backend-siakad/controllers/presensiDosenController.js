@@ -207,7 +207,7 @@ module.exports = {
             const valDafJadperDosenUse = valDafJadperDosen.map(el => { return el.code_jadwal_pertemuan })
             const valPresensiDosenUse = valPresensiDosen.map(rs => { return rs.code_jadwal_pertemuan })
             const filtered = valDafJadperDosenUse.filter(item => !valPresensiDosenUse.includes(item));
-            if (filtered == null) return res.status(404).json({ message: "anda tidak mempunyai jadwal mengajar hari ini" })
+            if (filtered == "") return res.status(404).json({ message: "anda tidak mempunyai jadwal mengajar hari ini" })
             const filter = filtered[0]
             const duplicateDataUse = await presensiDosenModel.findOne({
                 where: {
