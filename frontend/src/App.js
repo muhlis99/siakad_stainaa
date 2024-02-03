@@ -72,6 +72,8 @@ import PilihTanggal from "./pages/presensi/PilihTanggal"
 import ValidasiPresensi from "./pages/presensi/ValidasiPresensi"
 import RekapPerbulan from "./pages/presensi/RekapPerbulan"
 import RekapPersemester from "./pages/presensi/RekapPersemester"
+import DetailPerbulan from "./pages/presensi/DetailPerbulan"
+import DetailPersemester from "./pages/presensi/DetailPersemester"
 
 
 function App() {
@@ -149,6 +151,8 @@ function App() {
           <Route path="/presensi/validasi" element={<ValidasiPresensi />} />
           <Route path="/presensi/rekapbulanan" element={<RekapPerbulan />} />
           <Route path="/presensi/rekappersemester" element={<RekapPersemester />} />
+          <Route path="/presensi/detailrekapperbulan/:nip/:bulan/:kodeThn/:kodeSmt/:kodeJnj/:kodeFkl/:kodePro/" element={<DetailPerbulan />} />
+          <Route path="/presensi/detailrekappersemester/:nip/:kodeThn/:kodeSmt/:kodeJnj/:kodeFkl/:kodePro/" element={<DetailPersemester />} />
         </Routes>
       </BrowserRouter>
     </div>

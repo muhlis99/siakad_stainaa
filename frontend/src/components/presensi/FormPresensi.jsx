@@ -68,7 +68,21 @@ const FormPresensi = () => {
             </div>
             <section className='mb-5'>
                 <h1 className='text-2xl font-bold'>Presensi</h1>
-                <h1 className='text-xl font-bold'>{location.state.mom} {jam}</h1>
+                <table className='mt-3'>
+                    <tbody>
+                        <tr>
+                            <td><h1 className='text-xl font-bold'>Tanggal</h1></td>
+                            <td>&nbsp;:&nbsp;</td>
+                            <td><h1 className='text-xl font-bold'>{location.state.mom}</h1></td>
+                        </tr>
+                        <tr>
+                            <td><h1 className='text-xl font-bold'>Jam</h1></td>
+                            <td>&nbsp;:&nbsp;</td>
+                            <td><h1 className='text-xl font-bold'>{jam}</h1></td>
+                        </tr>
+                    </tbody>
+                </table>
+
                 {/* <h1 className='text-xl font-bold'></h1> */}
             </section>
             <section>
