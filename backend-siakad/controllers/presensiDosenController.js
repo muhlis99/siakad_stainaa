@@ -152,33 +152,38 @@ module.exports = {
             }
         })
         if (!dataDosen) return res.status(404).json({ message: "Data dosen Tidak Ditemukan" })
-        const valDafJadperDosen = await jadwalPertemuanModel.findOne({
+        const valDafJadperDosen = await jadwalPertemuanModel.findAll({
             include: [{
                 model: jadwalKuliahModel,
                 where: {
                     dosen_pengajar: dataRfid.nip_ynaa
-                }
+                },
+                order: [
+                    ["jam_mulai", "ASC"]
+                ]
             }],
             where: {
                 tanggal_pertemuan: tgl,
                 status: "aktif"
-            }
+            },
+            order: [
+                ["code_jadwal_kuliah", "ASC"]
+            ]
         })
         if (!valDafJadperDosen) return res.status(404).json({ message: "Data anda tidak ditemukan dalam daftar jadwal pertemuan Tidak Ditemukan" })
-
-        const duplicateDataUse = await presensiDosenModel.findOne({
+        const valPresensiDosen = await presensiDosenModel.findAll({
             where: {
-                code_tahun_ajaran: valDafJadperDosen.jadwalKuliahs[0].code_tahun_ajaran,
-                code_semester: valDafJadperDosen.jadwalKuliahs[0].code_semester,
-                code_jenjang_pendidikan: valDafJadperDosen.jadwalKuliahs[0].code_jenjang_pendidikan,
-                code_fakultas: valDafJadperDosen.jadwalKuliahs[0].code_fakultas,
-                code_prodi: valDafJadperDosen.jadwalKuliahs[0].code_prodi,
-                code_jadwal_pertemuan: valDafJadperDosen.code_jadwal_pertemuan,
                 nip_ynaa: dataRfid.nip_ynaa,
                 tanggal: tgl
             }
         })
 
+        const duplicateDataUse = await presensiDosenModel.findOne({
+            where: {
+                nip_ynaa: dataRfid.nip_ynaa,
+                tanggal: tgl
+            }
+        })
         if (duplicateDataUse) {
             if (duplicateDataUse.jam_pulang == null || duplicateDataUse.jam_pulang == "") {
                 await presensiDosenModel.update({
@@ -204,14 +209,37 @@ module.exports = {
                 })
             }
         } else {
+            const valDafJadperDosenUse = valDafJadperDosen.map(el => { return el.code_jadwal_pertemuan })
+            const valPresensiDosenUse = valPresensiDosen.map(rs => { return rs.code_jadwal_pertemuan })
+            const filtered = valDafJadperDosenUse.filter(item => !valPresensiDosenUse.includes(item));
+            if (!filtered) return res.status(404).json({ message: "anda tidak mempunyai jadwal mengajar hari ini" })
+            const dataUse = await jadwalPertemuanModel.findOne({
+                include: [{
+                    model: jadwalKuliahModel,
+                    where: {
+                        dosen_pengajar: dataRfid.nip_ynaa
+                    },
+                    order: [
+                        ["jam_mulai", "ASC"]
+                    ]
+                }],
+                where: {
+                    tanggal_pertemuan: tgl,
+                    status: "aktif"
+                },
+                order: [
+                    ["code_jadwal_kuliah", "ASC"]
+                ]
+            })
+
             await presensiDosenModel.create({
                 code_presensi_dosen: randomNumber,
-                code_tahun_ajaran: valDafJadperDosen.jadwalKuliahs[0].code_tahun_ajaran,
-                code_semester: valDafJadperDosen.jadwalKuliahs[0].code_semester,
-                code_jenjang_pendidikan: valDafJadperDosen.jadwalKuliahs[0].code_jenjang_pendidikan,
-                code_fakultas: valDafJadperDosen.jadwalKuliahs[0].code_fakultas,
-                code_prodi: valDafJadperDosen.jadwalKuliahs[0].code_prodi,
-                code_jadwal_pertemuan: valDafJadperDosen.code_jadwal_pertemuan,
+                code_tahun_ajaran: dataUse.jadwalKuliahs[0].code_tahun_ajaran,
+                code_semester: dataUse.jadwalKuliahs[0].code_semester,
+                code_jenjang_pendidikan: dataUse.jadwalKuliahs[0].code_jenjang_pendidikan,
+                code_fakultas: dataUse.jadwalKuliahs[0].code_fakultas,
+                code_prodi: dataUse.jadwalKuliahs[0].code_prodi,
+                code_jadwal_pertemuan: dataUse.code_jadwal_pertemuan,
                 nip_ynaa: dataRfid.nip_ynaa,
                 tanggal: tgl,
                 masuk_luring: 1,
