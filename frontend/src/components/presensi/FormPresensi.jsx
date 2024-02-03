@@ -92,29 +92,15 @@ const FormPresensi = () => {
     setInterval(updateJam)
 
     return (
-        <div className='bg-[#EDEDED]'>
-            <div className='mt-2 container'>
+        <div className='bg-[#EDEDED] h-full'>
+            <div className='h-screen p-4'>
                 <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
                     <div className='w-[74px] mx-auto mt-72'>
                         <Loading />
                     </div>
                 </div>
-                <section className='mb-5'>
+                <section className='mb-3'>
                     <h1 className='text-2xl font-bold'>Presensi</h1>
-                    <table className='mt-3'>
-                        <tbody>
-                            <tr>
-                                <td><h1 className='text-xl font-bold'>Tanggal</h1></td>
-                                <td>&nbsp;:&nbsp;</td>
-                                <td><h1 className='text-xl font-bold'>{location.state.mom}</h1></td>
-                            </tr>
-                            <tr>
-                                <td><h1 className='text-xl font-bold'>Jam</h1></td>
-                                <td>&nbsp;:&nbsp;</td>
-                                <td><h1 className='text-xl font-bold'>{jam}</h1></td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </section>
                 <section>
                     <div className='flex justify-center'>
@@ -129,6 +115,10 @@ const FormPresensi = () => {
                     </div>
                     <div className='flex justify-center'>
                         <img src={icon} width={300} alt="" />
+                    </div>
+                    <div className='text-center'>
+                        <h1 className='text-xl font-bold'>{location.state.mom}</h1>
+                        <h1 className='text-xl font-bold my-2'>{jam}</h1>
                     </div>
                     <div className='flex justify-center'>
                         <Link to='/presensi/dosen' state={{ select: 'absen' }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center gap-1 no-underline'><FaReply /> Keluar</Link>
