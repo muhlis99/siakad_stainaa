@@ -216,7 +216,7 @@ module.exports = {
                     tanggal: tgl
                 }
             })
-            if (duplicateDataUse) {
+            if (duplicateDataUse.jam_pulang != null) {
                 res.status(201).json({
                     message: "Anda sudah melakukan absen ",
                 })
