@@ -177,9 +177,14 @@ module.exports = {
                 tanggal: tgl
             }
         })
-
+        const valDafJadperDosenUse = valDafJadperDosen.map(el => { return el.code_jadwal_pertemuan })
+        const valPresensiDosenUse = valPresensiDosen.map(rs => { return rs.code_jadwal_pertemuan })
+        const filtered = valDafJadperDosenUse.filter(item => !valPresensiDosenUse.includes(item));
+        if (!filtered) return res.status(404).json({ message: "anda tidak mempunyai jadwal mengajar hari ini" })
+        const filter = filtered[0]
         const duplicateDataUse = await presensiDosenModel.findOne({
             where: {
+                code_jadwal_pertemuan: filter,
                 nip_ynaa: dataRfid.nip_ynaa,
                 tanggal: tgl
             }
@@ -209,27 +214,12 @@ module.exports = {
                 })
             }
         } else {
-            const valDafJadperDosenUse = valDafJadperDosen.map(el => { return el.code_jadwal_pertemuan })
-            const valPresensiDosenUse = valPresensiDosen.map(rs => { return rs.code_jadwal_pertemuan })
-            const filtered = valDafJadperDosenUse.filter(item => !valPresensiDosenUse.includes(item));
-            if (!filtered) return res.status(404).json({ message: "anda tidak mempunyai jadwal mengajar hari ini" })
             const dataUse = await jadwalPertemuanModel.findOne({
-                include: [{
-                    model: jadwalKuliahModel,
-                    where: {
-                        dosen_pengajar: dataRfid.nip_ynaa
-                    },
-                    order: [
-                        ["jam_mulai", "ASC"]
-                    ]
-                }],
                 where: {
                     tanggal_pertemuan: tgl,
+                    code_jadwal_pertemuan: filter,
                     status: "aktif"
-                },
-                order: [
-                    ["code_jadwal_kuliah", "ASC"]
-                ]
+                }
             })
 
             await presensiDosenModel.create({
