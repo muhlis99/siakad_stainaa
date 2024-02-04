@@ -25,6 +25,11 @@ const MakulList = () => {
     const [kodeSemester, setKodeSemester] = useState("")
     const [idProdi, setIdProdi] = useState("")
     const [pendidikan, setPendidikan] = useState("")
+    const [idTahun, setIdTahun] = useState("")
+    const [namaTahun, setNamaTahun] = useState("")
+    const [idSemester, setIdSemester] = useState("")
+    const [namaSemester, setNamaSemester] = useState("")
+    const [namaProdi, setNamaProdi] = useState("")
     const location = useLocation()
 
     useEffect(() => {
@@ -46,6 +51,8 @@ const MakulList = () => {
             setKodeProdi(location.state.kodePro)
             setKodeTahun(location.state.kodeThn)
             setKodeSemester(location.state.kodeSmt)
+            setIdTahun(location.state.idTahun)
+            setIdSemester(location.state.idSemester)
         }
     }, [location])
 
@@ -86,6 +93,14 @@ const MakulList = () => {
     }, [kodeTahun])
 
     useEffect(() => {
+        getTahunAjaranById()
+    }, [idTahun])
+
+    useEffect(() => {
+        getSemesterById()
+    }, [idSemester])
+
+    useEffect(() => {
         getMakulYangDiampu()
     }, [username, kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi])
 
@@ -105,6 +120,7 @@ const MakulList = () => {
                 setKodeProdi(response.data.data.code_prodi)
                 setKodeFakultas(response.data.data.code_fakultas)
                 setKodeJenjang(response.data.data.code_jenjang_pendidikan)
+                setNamaProdi(response.data.data.nama_prodi)
             }
         } catch (error) {
 
@@ -116,9 +132,19 @@ const MakulList = () => {
             const response = await axios.get(`v1/tahunAjaran/all`)
             setTahun(response.data.data)
         } catch (error) {
+        }
+    }
+
+    const getTahunAjaranById = async () => {
+        try {
+            if (idTahun) {
+                const response = await axios.get(`v1/tahunAjaran/getById/${idTahun}`)
+                setKodeTahun(response.data.data.code_tahun_ajaran)
+                setNamaTahun(response.data.data.tahun_ajaran)
+            }
+        } catch (error) {
 
         }
-
     }
 
     const getSemester = async () => {
@@ -126,6 +152,18 @@ const MakulList = () => {
             if (kodeTahun) {
                 const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahun}`)
                 setSemester(response.data.data)
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const getSemesterById = async () => {
+        try {
+            if (idSemester) {
+                const response = await axios.get(`v1/semester/getById/${idSemester}`)
+                setKodeSemester(response.data.data.code_semester)
+                setNamaSemester(response.data.data.semester)
             }
         } catch (error) {
 
@@ -232,10 +270,10 @@ const MakulList = () => {
                                                             <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
                                                         </Col>
                                                         <Col className='p-0'>
-                                                            <select className="form-select form-select-sm" value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                                            <select className="form-select form-select-sm" value={idTahun} onChange={(e) => setIdTahun(e.target.value)}>
                                                                 <option>Periode</option>
                                                                 {Tahun.map((item) => (
-                                                                    <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                                                    <option key={item.id_tahun_ajaran} value={item.id_tahun_ajaran}>{item.tahun_ajaran}</option>
                                                                 ))}
                                                             </select>
                                                         </Col>
@@ -248,10 +286,10 @@ const MakulList = () => {
                                                             <Card.Text className='fw-bold text-uppercase'>:</Card.Text>
                                                         </Col>
                                                         <Col className='p-0'>
-                                                            <select className="form-select form-select-sm" value={kodeSemester} onChange={(e) => setKodeSemester(e.target.value)}>
+                                                            <select className="form-select form-select-sm" value={idSemester} onChange={(e) => setIdSemester(e.target.value)}>
                                                                 <option>Semester</option>
                                                                 {Semester.map((item) => (
-                                                                    <option key={item.id_semester} value={item.code_semester}>Semester {item.semester}</option>
+                                                                    <option key={item.id_semester} value={item.id_semester}>Semester {item.semester}</option>
                                                                 ))}
                                                             </select>
                                                         </Col>
@@ -309,7 +347,15 @@ const MakulList = () => {
                                                                                 kodeFkl: kodeFakultas,
                                                                                 kodePro: kodeProdi,
                                                                                 idProdi: idProdi,
-                                                                                kodeJdl: item.code_jadwal_kuliah
+                                                                                idTahun: idTahun,
+                                                                                idSemester: idSemester,
+                                                                                kodeJdl: item.code_jadwal_kuliah,
+                                                                                namaPro: namaProdi,
+                                                                                namaTahun: namaTahun,
+                                                                                namaSemester: namaSemester,
+                                                                                namaMk: item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah,
+                                                                                totalSks: item.sebaranMataKuliahs[0].mataKuliahs[0].sks,
+                                                                                jenisMk: item.sebaranMataKuliahs[0].mataKuliahs[0].jenis_mata_kuliah
                                                                             }}
                                                                             className='bg-[#28A745] py-2 px-2 rounded text-white inline-flex items-center no-underline'>
                                                                             Jurnal
