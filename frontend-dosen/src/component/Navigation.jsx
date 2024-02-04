@@ -170,6 +170,11 @@ const Navigation = () => {
                                             </Link>
                                         </li>
                                         <li>
+                                            <Link to="/jurnal" className={`dropdown-item ${location.pathname == '/jurnal' ? 'active' : ''}`}>
+                                                <div className="inline-flex gap-2"><FaChalkboardUser className="mt-1 text-[14px]" />  Jurnal</div>
+                                            </Link>
+                                        </li>
+                                        <li>
                                             <Link to="/presensi" className={`dropdown-item ${location.pathname == '/presensi' ? 'active' : ''}`}>
                                                 <div className="inline-flex gap-2"><FaChalkboardUser className="mt-1 text-[14px]" />  Presensi</div>
                                             </Link>
