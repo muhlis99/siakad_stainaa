@@ -8,7 +8,7 @@ const Layout = ({ children }) => {
         <React.Fragment>
             <Navigation />
             <div className="container-scroller">
-                <div className=" page-body-wrapper">
+                <div className="page-body-wrapper mt-14 lg:mt-0">
                     <Container>
                         <div className="main-panel" style={{ color: '#5E7C60' }}>
                             {children}
