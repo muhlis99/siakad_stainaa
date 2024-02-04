@@ -13,6 +13,15 @@ module.exports = {
         const perPage = parseInt(req.query.perPage) || 10
         const search = req.query.search || ""
         const offset = (currentPage - 1) * perPage
+        const { codeJadkul } = req.params
+        const dataJadwalKuliah = await jadwalPertemuanModel.findAll({
+            where: {
+                code_jadwal_kuliah: codeJadkul,
+                status: "aktif"
+            }
+        })
+        const dataJadwalKuliahUse = dataJadwalKuliah.map(rs => { return rs.code_jadwal_pertemuan })
+
         const totalPage = await jurnalDosenModel.count({
             include: [{
                 attributes: ["nama", "nip_ynaa"],
@@ -46,7 +55,8 @@ module.exports = {
                         }
                     }
                 ],
-                status: "aktif"
+                status: "aktif",
+                code_jadwal_pertemuan: dataJadwalKuliahUse
             }
         })
         const totalItems = Math.ceil(totalPage / perPage)
@@ -83,7 +93,8 @@ module.exports = {
                         }
                     }
                 ],
-                status: "aktif"
+                status: "aktif",
+                code_jadwal_pertemuan: dataJadwalKuliahUse
             },
             offset: offset,
             limit: perPage,
