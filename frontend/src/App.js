@@ -74,6 +74,8 @@ import RekapPerbulan from "./pages/presensi/RekapPerbulan"
 import RekapPersemester from "./pages/presensi/RekapPersemester"
 import DetailPerbulan from "./pages/presensi/DetailPerbulan"
 import DetailPersemester from "./pages/presensi/DetailPersemester"
+import MakulJurnal from "./pages/jurnal/MakulJurnal"
+import Jurnal from "./pages/jurnal/Jurnal"
 
 
 function App() {
@@ -153,6 +155,8 @@ function App() {
           <Route path="/presensi/rekappersemester" element={<RekapPersemester />} />
           <Route path="/presensi/detailrekapperbulan/:nip/:bulan/:kodeThn/:kodeSmt/:kodeJnj/:kodeFkl/:kodePro/" element={<DetailPerbulan />} />
           <Route path="/presensi/detailrekappersemester/:nip/:kodeThn/:kodeSmt/:kodeJnj/:kodeFkl/:kodePro/" element={<DetailPersemester />} />
+          <Route path="/jurnal" element={<MakulJurnal />} />
+          <Route path="/detailjurnal" element={<Jurnal />} />
         </Routes>
       </BrowserRouter>
     </div>
