@@ -117,18 +117,34 @@ module.exports = {
             }
         })
 
-        const jmlDosenAbsen = await presensiDosenModel.count({
+        const jmlDosenAbsenMasuk = await presensiDosenModel.count({
             where: {
                 tanggal: tgl,
                 code_tahun_ajaran: thn,
+                jam_masuk: {
+                    [Op.not]: ""
+                },
                 status: "aktif"
             }
         })
+
+        const jmlDosenAbsenPulang = await presensiDosenModel.count({
+            where: {
+                tanggal: tgl,
+                code_tahun_ajaran: thn,
+                jam_pulang: {
+                    [Op.not]: ""
+                },
+                status: "aktif"
+            }
+        })
+
         res.status(201).json({
             message: "Data progres presensi",
             data: {
                 jumlah_dosen: jmlDosen,
-                jumlah_dosen_presensi: jmlDosenAbsen
+                jumlah_dosen_presensi_masuk: jmlDosenAbsenMasuk,
+                jumlah_dosen_presensi_pulang: jmlDosenAbsenPulang
             }
         })
     },
