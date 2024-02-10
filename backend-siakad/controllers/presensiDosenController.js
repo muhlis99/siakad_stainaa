@@ -339,7 +339,7 @@ module.exports = {
         }
         if (dataUseValidasiNipy == null) {
             await presensiDosenModel.create({
-                code_presensi_mahasiswa: randomNumber,
+                code_presensi_dosen: randomNumber,
                 code_tahun_ajaran: codeThn,
                 code_semester: codeSmt,
                 code_jenjang_pendidikan: codeJnj,
