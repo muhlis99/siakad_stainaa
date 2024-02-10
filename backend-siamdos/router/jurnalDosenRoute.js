@@ -5,7 +5,7 @@ const jurnalDosenController = require('../controllers/jurnalDosenController.js')
 // const { validationRequest } = require('../validation/validationRequest.js')
 
 route.get('/all/:codeJadkul', jurnalDosenController.getAll)
-route.get('/getById/:id', jurnalDosenController.getById)
+route.get('/getByCodeJadper/:codeJadper', jurnalDosenController.getByCodeJadper)
 route.post('/create', jurnalDosenController.post)
 route.put('/update/:id', jurnalDosenController.put)
 route.put('/delete/:id', jurnalDosenController.delete)
