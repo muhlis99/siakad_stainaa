@@ -578,7 +578,10 @@ module.exports = {
                 code_fakultas: fks,
                 code_prodi: prd,
                 status: "aktif"
-            }
+            },
+            group: [
+                [Sequelize.literal('month(tanggal)'), 'bulan']
+            ]
         }).then(result => {
             res.status(201).json({
                 message: "Data bulan success",
