@@ -24,7 +24,8 @@ import {
   FaFileAlt,
   FaStackOverflow,
   FaCopy,
-  FaDatabase
+  FaDatabase,
+  FaRegAddressBook
 } from "react-icons/fa"
 import {
   SiLevelsdotfyi,
@@ -170,6 +171,9 @@ const Sidebar = () => {
                   <Link to="/presensi/dosen" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi/dosen' || location.pathname == '/presensi/validasi' || location.pathname == '/presensi/rekapbulanan' || location.pathname == '/presensi/rekappersemester' || location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><FaChalkboardUser /> <span className='text-sm'>Presensi</span></Link>
                 </li>
                 <li>
+                  <Link to="/jurnal" state={{ collaps: 'kuliah', activ: '/jurnal' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/jurnal' || active == '/jurnal' ? 'active' : ''}`}><FaRegAddressBook /> <span className='text-sm'>Jurnal Kehadiran</span></Link>
+                </li>
+                <li>
                   <Link to="/penilaian" state={{ collaps: 'kuliah', activ: '/penilaian' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/penilaian' || active == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Penilaian Mahasiswa</span></Link>
                 </li>
                 <li>
@@ -218,6 +222,9 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link to="/presensi/dosen" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/presensi/dosen' || location.pathname == '/presensi/validasi' || location.pathname == '/presensi/rekapbulanan' || location.pathname == '/presensi/rekappersemester' || location.pathname == '/presensi' || active == '/presensi' ? 'active' : ''} even:bg-[#287155]`}><FaChalkboardUser /> <span className='text-sm'>Presensi</span></Link>
+                </li>
+                <li>
+                  <Link to="/jurnal" state={{ collaps: 'kuliah', activ: '/jurnal' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/jurnal' || active == '/jurnal' ? 'active' : ''}`}><FaRegAddressBook /> <span className='text-sm'>Jurnal Kehadiran</span></Link>
                 </li>
                 <li>
                   <Link to="/penilaian" state={{ collaps: 'kuliah', activ: '/penilaian' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/penilaian' || active == '/penilaian' ? 'active' : ''}`}><FaFileSignature /> <span className='text-sm'>Penilaian Mahasiswa</span></Link>
