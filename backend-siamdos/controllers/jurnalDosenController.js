@@ -307,5 +307,25 @@ module.exports = {
             catch(err => {
                 next(err)
             })
+    },
+
+    getStatusJurnal: async (req, res, next) => {
+        const { codeJadper } = req.params
+        const dataUse = await jurnalDosenModel.count({
+            where: {
+                code_jadwal_pertemuan: codeJadper
+            }
+        })
+        if (dataUse > 0) {
+            res.status(201).json({
+                message: "Data jurnal sudah diisi",
+                data: "sudah diisi"
+            })
+        } else {
+            res.status(201).json({
+                message: "Data jurnal belum diisi",
+                data: "belum diisi"
+            })
+        }
     }
 }
