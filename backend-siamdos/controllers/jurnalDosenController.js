@@ -117,15 +117,15 @@ module.exports = {
             })
     },
 
-    getById: async (req, res, next) => {
-        const id = req.params.id
+    getByCodeJadper: async (req, res, next) => {
+        const codeJadper = req.params.codeJadper
         await jurnalDosenModel.findOne({
             include: [{
                 attributes: ["nama", "nip_ynaa"],
                 model: dosenModel,
             }],
             where: {
-                id_jurnal_dosen: id,
+                code_jadwal_pertemuan: codeJadper,
                 status: "aktif"
             }
         }).
