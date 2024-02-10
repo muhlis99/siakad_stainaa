@@ -14,7 +14,8 @@ const FormPresensi = () => {
     const [kodeRfid, setKodeRfid] = useState()
     let time = new Date().toLocaleTimeString()
     const [jam, setJam] = useState(time)
-    const [jumlahPresensi, setJumlahPresensi] = useState("")
+    const [jumlahPresensiMasuk, setJumlahPresensiMasuk] = useState("")
+    const [jumlahPresensiPulang, setJumlahPresensiPulang] = useState("")
     const [jumlahDsn, setJumlahDsn] = useState("")
 
     useEffect(() => {
@@ -78,7 +79,8 @@ const FormPresensi = () => {
         try {
             const response = await axios.get(`v1/presensiDosen/progresPresensi/${location.state.tgl}/${location.state.kodeTahun}`)
             setJumlahDsn(response.data.data.jumlah_dosen)
-            setJumlahPresensi(response.data.data.jumlah_dosen_presensi)
+            setJumlahPresensiMasuk(response.data.data.jumlah_dosen_presensi_masuk)
+            setJumlahPresensiPulang(response.data.data.jumlah_dosen_presensi_pulang)
         } catch (error) {
 
         }
@@ -104,13 +106,23 @@ const FormPresensi = () => {
                 </section>
                 <section>
                     <div className='flex justify-center'>
-                        <div className='w-full lg:w-1/2 mx-auto text-center'>
+                        <div className='w-full lg:w-1/2 text-center'>
                             <ProgressBar
-                                completed={`${jumlahPresensi}`}
+                                completed={`${jumlahPresensiMasuk}`}
                                 maxCompleted={jumlahDsn}
                                 bgColor='#17A2B8'
                             />
-                            <p className='lg:text-xl mt-3 text-muted'>{jumlahPresensi} dari {jumlahDsn} dosen</p>
+                            <p className='lg:text-xl mt-1 text-muted'>{jumlahPresensiMasuk} dari {jumlahDsn} dosen telah melakukan absen</p>
+                        </div>
+                    </div>
+                    <div className='flex justify-center mt-3'>
+                        <div className='w-full lg:w-1/2 text-center'>
+                            <ProgressBar
+                                completed={`${jumlahPresensiPulang}`}
+                                maxCompleted={jumlahDsn}
+                                bgColor='#DC3545'
+                            />
+                            <p className='lg:text-xl mt-1 text-muted'>{jumlahPresensiPulang} dari {jumlahDsn} dosen telah mengakhiri kelas</p>
                         </div>
                     </div>
                     <div className='flex justify-center'>

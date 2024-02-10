@@ -80,27 +80,24 @@ const ListJurnal = () => {
     const getPertemuan = async () => {
         try {
             const response = await axios.get(`v1/jurnalDosen/getPertemuanByDosen/${location.state.kodeJdl}`)
-            const filter = response.data.data.filter((item) =>
-                !pertemuanTerpilih.includes(item.code_jadwal_pertemuan)
-            )
-            setPertemuan(filter)
+            setPertemuan(response.data.data)
         } catch (error) {
 
         }
     }
 
-    const handleShow = async (e, f) => {
-        try {
-            const response = await axios.get(`v1/jurnalDosen/getById/${e}`)
-            setIdJurnal(response.data.data.id_jurnal_dosen)
-            // setKodePertemuan(response.data.data.code_jadwal_pertemuan)
-            setKeterangan(response.data.data.keterangan)
-            setMateri(response.data.data.materi_pembahasan)
-            setModal(f)
-            setShow(true)
-        } catch (error) {
+    const handleShow = async (e) => {
+        // try {
+        //     const response = await axios.get(`v1/jurnalDosen/getById/${e}`)
+        //     setIdJurnal(response.data.data.id_jurnal_dosen)
+        //     setKeterangan(response.data.data.keterangan)
+        //     setMateri(response.data.data.materi_pembahasan)
+        //     setModal(f)
+        // } catch (error) {
 
-        }
+        // }
+        setKodePertemuan(e)
+        setShow(true)
     }
 
     const handleClose = () => {
@@ -241,7 +238,7 @@ const ListJurnal = () => {
                                 onHide={handleClose}
                                 backdrop="static"
                                 keyboard={false}
-                                size='md'
+                                size='lg'
                                 centered
                             >
                                 <Modal.Header closeButton>
@@ -252,7 +249,7 @@ const ListJurnal = () => {
                                         <form onSubmit={simpanJurnal}>
                                             <Row>
                                                 <Col>
-                                                    <div className='form-group'>
+                                                    {/* <div className='form-group'>
                                                         <label htmlFor="judul" className='h6'>Pertemuan</label>
                                                         <select className='form-select form-select-sm' value={kodePertemuan} onChange={(e) => setKodePertemuan(e.target.value)}>
                                                             <option value="">Pilih Pertemuan</option>
@@ -260,10 +257,18 @@ const ListJurnal = () => {
                                                                 <option key={item.id_jadwal_pertemuan} value={item.code_jadwal_pertemuan}>Pertemuan {item.pertemuan}</option>
                                                             ))}
                                                         </select>
-                                                    </div>
+                                                    </div> */}
                                                     <div className='form-group'>
                                                         <label htmlFor="judul" className='h6'>Materi Pembahasan</label>
-                                                        <input id='judul' value={materi} onChange={(e) => setMateri(e.target.value)} placeholder='Materi Pembahasan' type="text" className='form-control form-control-sm' />
+                                                        <textarea
+                                                            id="deskripsi"
+                                                            cols="30"
+                                                            rows="3"
+                                                            placeholder='Materi Pembahasan'
+                                                            value={materi}
+                                                            onChange={(e) => setMateri(e.target.value)}
+                                                            className='form-control form-control-sm'
+                                                        ></textarea>
                                                     </div>
                                                     <div className='form-group'>
                                                         <label htmlFor="deskripsi" className='h6'>Keterangan</label>
@@ -417,35 +422,31 @@ const ListJurnal = () => {
                                                         idSemester: location.state.idSemester,
                                                     }}
                                                     className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaReply />Kembali</Link>
-                                                <button onClick={() => setShow(true)} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaPlus />Tambah Jurnal</button>
+                                                {/* <button onClick={() => setShow(true)} className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaPlus />Tambah Jurnal</button> */}
                                             </div>
                                             <div className='table-responsive'>
                                                 <Table>
                                                     <thead>
                                                         <tr className='border'>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>No</th>
+                                                            <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Pertemuan</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Tanggal</th>
-                                                            <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Materi Pembahasan</th>
-                                                            <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Keterangan</th>
+                                                            <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Jenis Pertemuan</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {Jurnal.map((item, index) => (
-                                                            <tr key={item.id_jurnal_dosen} className='border'>
+                                                        {Pertemuan.map((item, index) => (
+                                                            <tr key={item.id_jadwal_pertemuan} className='border'>
                                                                 <td className='py-2'>{index + 1}</td>
-                                                                <td className='py-2'>{moment(item.tanggal).format('DD MMMM YYYY')}</td>
-                                                                <td className='py-2'>{item.materi_pembahasan}</td>
-                                                                <td className='py-2'>{item.keterangan}</td>
-                                                                <td className='py-2 flex gap-1'>
+                                                                <td className='py-2'>Pertemuan ke {item.pertemuan}</td>
+                                                                <td className='py-2'>{moment(item.tanggal_pertemuan).format('DD MMMM YYYY')}</td>
+                                                                <td className={`py-2 ${item.jenis_pertemuan == 'uts' || item.jenis_pertemuan == 'uas' ? 'uppercase' : 'capitalize'}`}>{item.jenis_pertemuan}</td>
+                                                                <td className='py-2'>
                                                                     <button
-                                                                        className='btn btn-sm btn-warning'
-                                                                        onClick={() => handleShow(item.id_jurnal_dosen, 'edit')}
-                                                                    >Edit</button>
-                                                                    <button
-                                                                        className='btn btn-sm btn-danger'
-                                                                        onClick={() => hapusJurnal(item.id_jurnal_dosen)}
-                                                                    >Hapus</button>
+                                                                        className='btn btn-sm btn-info'
+                                                                        onClick={() => handleShow(item.code_jadwal_pertemuan)}
+                                                                    >Tambah</button>
                                                                 </td>
                                                             </tr>
                                                         ))}
