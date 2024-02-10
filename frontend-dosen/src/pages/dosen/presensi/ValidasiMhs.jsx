@@ -89,6 +89,7 @@ const ValidasiMhs = () => {
         try {
             const response = await axios.get(`v1/presensiMhs/getMhsValidasiNoAvailable/${location.state.kodePert}/${location.state.kodeMk}/${location.state.kodeThn}/${location.state.kodeSmt}/${location.state.kodeJen}/${location.state.kodeFkl}/${location.state.kodePro}`)
             setNotAvailable(response.data.data)
+            console.log(response.data.data)
         } catch (error) {
 
         }
@@ -331,14 +332,15 @@ const ValidasiMhs = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {Available.length == 0 ?
-                                                            <tr className='border'>
-                                                                <td colSpan={5} align='center'>
-                                                                    <Image src={dataBlank} width={150} />
-                                                                    <p className='fw-bold text-muted'>Anda belum mengabsen Mahasiswa</p>
-                                                                </td>
-                                                            </tr>
-                                                            :
+                                                        {
+                                                            // Available.length == 0 ?
+                                                            //     <tr className='border'>
+                                                            //         <td colSpan={5} align='center'>
+                                                            //             <Image src={dataBlank} width={150} />
+                                                            //             <p className='fw-bold text-muted'>Anda belum mengabsen Mahasiswa</p>
+                                                            //         </td>
+                                                            //     </tr>
+                                                            //     :
                                                             Available.map((item, index) => (
                                                                 <tr key={item.id_presensi_mahasiswa} className='border'>
                                                                     <td className='py-2'>{index + 1}</td>
@@ -360,20 +362,19 @@ const ValidasiMhs = () => {
                                                                     </td>
                                                                 </tr>
                                                             ))}
-                                                        {Available.length == 0 ? "" :
-                                                            NotAvailable.map((item, index) => (
-                                                                <tr key={index} className='border'>
-                                                                    <td className='py-2'>{index + 1 + jumlah}</td>
-                                                                    <td className='py-2'>{item.nim}</td>
-                                                                    <td className='py-2'>{item.mahasiswas[0].nama}</td>
-                                                                    <td className='py-2'>
-                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#FFC107] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none capitalize">Tidak Absen</span>
-                                                                    </td>
-                                                                    <td className='py-2'>
-                                                                        <button onClick={() => handleShow(1, item.mahasiswas[0].nama, '', item.nim)} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline' ><FaCog /></button>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
+                                                        {NotAvailable.map((item, index) => (
+                                                            <tr key={index} className='border'>
+                                                                <td className='py-2'>{index + 1 + jumlah}</td>
+                                                                <td className='py-2'>{item.nim}</td>
+                                                                <td className='py-2'>{item.mahasiswas[0].nama}</td>
+                                                                <td className='py-2'>
+                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#FFC107] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none capitalize">Tidak Absen</span>
+                                                                </td>
+                                                                <td className='py-2'>
+                                                                    <button onClick={() => handleShow(1, item.mahasiswas[0].nama, '', item.nim)} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline' ><FaCog /></button>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
                                                     </tbody>
                                                 </Table>
                                             </div>

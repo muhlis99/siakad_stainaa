@@ -105,7 +105,6 @@ const SettingValidasi = () => {
             if (kodeJenjang && kodeFakultas && kodeProdi && kodeTahun && kodeSemester && tanggal) {
                 const response = await axios.get(`v1/presensiDosen/getDosenValidasiAvailable/${tanggal}/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
                 setAvailable(response.data.data)
-                console.log(response.data.data)
             }
         } catch (error) {
             // console.log(error.response)
@@ -317,7 +316,7 @@ const SettingValidasi = () => {
             <div className='card bg-base-100 card-bordered shadow-md'>
                 <div className="card-body p-4">
                     <div>
-                        <input type="date" value={tanggal} onChange={(e) => setTanggal(e.target.value)} className='input input-bordered input-xs' />
+                        <input type="date" value={tanggal} onChange={(e) => setTanggal(e.target.value)} className='input input-bordered input-sm' />
                     </div>
                     <div className="overflow-x-auto mb-2">
                         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
