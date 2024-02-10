@@ -25,6 +25,7 @@ const ListJurnal = () => {
     const [materi, setMateri] = useState("")
     const [keterangan, setKeterangan] = useState("")
     const [idJurnal, setIdJurnal] = useState("")
+    const [statusJurnal, setStatusJurnal] = useState([])
     const [modal, setModal] = useState("")
 
 
@@ -55,11 +56,15 @@ const ListJurnal = () => {
 
     useEffect(() => {
         getKodePertemuan()
-    }, [Jurnal])
+    }, [Pertemuan])
 
     useEffect(() => {
         getPertemuan()
-    }, [location, pertemuanTerpilih])
+    }, [location])
+
+    useEffect(() => {
+        getStatusJurnal()
+    }, [pertemuanTerpilih])
 
     const getJurnalByJadwalKuliah = async () => {
         try {
@@ -70,19 +75,37 @@ const ListJurnal = () => {
         }
     }
 
-    const getKodePertemuan = () => {
-        var i = Jurnal.map(item => (
-            item.code_jadwal_pertemuan
-        ))
-        setPertemuanTerpilih(i)
-    }
-
     const getPertemuan = async () => {
         try {
             const response = await axios.get(`v1/jurnalDosen/getPertemuanByDosen/${location.state.kodeJdl}`)
             setPertemuan(response.data.data)
         } catch (error) {
 
+        }
+    }
+
+    const getKodePertemuan = () => {
+        var i = Pertemuan.map(item => (
+            item.code_jadwal_pertemuan
+        ))
+        setPertemuanTerpilih(i)
+    }
+
+    const getStatusJurnal = async () => {
+        if (pertemuanTerpilih.length > 0) {
+            let statuss = []
+            let promises = []
+            for (let i = 0; i < pertemuanTerpilih.length; i++) {
+                const t = await axios.get('v1/jurnalDosen/getStatusJurnal/' + pertemuanTerpilih[i]).then(response => {
+                    statuss.push(response.data.data)
+                })
+                promises.push(t)
+
+            }
+            if (pertemuanTerpilih.length != 0) {
+                Promise.all(promises).then(() => setStatusJurnal(statuss))
+                Promise.all(promises).then(() => console.log(statuss))
+            }
         }
     }
 
@@ -143,6 +166,8 @@ const ListJurnal = () => {
                         icon: 'success'
                     }).then(() => {
                         getJurnalByJadwalKuliah()
+                        getStatusJurnal()
+                        getPertemuan()
                     })
                 })
             } catch (error) {
@@ -432,6 +457,7 @@ const ListJurnal = () => {
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Pertemuan</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Tanggal</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Jenis Pertemuan</th>
+                                                            <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Status Jurnal</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Aksi</th>
                                                         </tr>
                                                     </thead>
@@ -442,11 +468,14 @@ const ListJurnal = () => {
                                                                 <td className='py-2'>Pertemuan ke {item.pertemuan}</td>
                                                                 <td className='py-2'>{moment(item.tanggal_pertemuan).format('DD MMMM YYYY')}</td>
                                                                 <td className={`py-2 ${item.jenis_pertemuan == 'uts' || item.jenis_pertemuan == 'uas' ? 'uppercase' : 'capitalize'}`}>{item.jenis_pertemuan}</td>
+                                                                <td className='py-2'>{statusJurnal[index]}</td>
                                                                 <td className='py-2'>
-                                                                    <button
-                                                                        className='btn btn-sm btn-info'
-                                                                        onClick={() => handleShow(item.code_jadwal_pertemuan)}
-                                                                    >Tambah</button>
+                                                                    {statusJurnal[index] == 'belum diisi' ?
+                                                                        <button
+                                                                            className='btn btn-sm btn-info'
+                                                                            onClick={() => handleShow(item.code_jadwal_pertemuan)}
+                                                                        >Tambah</button> : ""
+                                                                    }
                                                                 </td>
                                                             </tr>
                                                         ))}
