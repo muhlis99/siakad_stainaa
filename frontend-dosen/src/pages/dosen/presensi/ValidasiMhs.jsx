@@ -36,7 +36,7 @@ const ValidasiMhs = () => {
     }, [])
 
     useEffect(() => {
-        // console.log(location.state);
+        console.log(location.state);
     }, [location])
 
     useEffect(() => {
@@ -89,7 +89,6 @@ const ValidasiMhs = () => {
         try {
             const response = await axios.get(`v1/presensiMhs/getMhsValidasiNoAvailable/${location.state.kodePert}/${location.state.kodeMk}/${location.state.kodeThn}/${location.state.kodeSmt}/${location.state.kodeJen}/${location.state.kodeFkl}/${location.state.kodePro}`)
             setNotAvailable(response.data.data)
-            console.log(response.data.data)
         } catch (error) {
 
         }
@@ -304,20 +303,41 @@ const ValidasiMhs = () => {
                                         <Card.Body className='shadow p-3'>
                                             <Row className='mb-2'>
                                                 <Col>
-                                                    <Link to='/presensi/pertemuan' state={{
-                                                        kodeThn: location.state.kodeThn,
-                                                        kodeSmt: location.state.kodeSmt,
-                                                        kodeJen: location.state.kodeJen,
-                                                        kodeFkl: location.state.kodeFkl,
-                                                        kodePro: location.state.kodePro,
-                                                        idProdi: location.state.idProdi,
-                                                        kodeJadwal: location.state.kodeJadwal,
-                                                        mataKuliah: location.state.mataKuliah,
-                                                        jenisMk: location.state.jenisMk,
-                                                        bobot: location.state.bobot,
-                                                        sks: location.state.sks,
-                                                        kodeMk: location.state.kodeMk
-                                                    }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaReply /> Kembali</Link>
+                                                    {location.state.hal == 'listPertemuan' ?
+                                                        <Link to='/presensi/pertemuan' state={{
+                                                            kodeThn: location.state.kodeThn,
+                                                            kodeSmt: location.state.kodeSmt,
+                                                            kodeJen: location.state.kodeJen,
+                                                            kodeFkl: location.state.kodeFkl,
+                                                            kodePro: location.state.kodePro,
+                                                            idProdi: location.state.idProdi,
+                                                            kodeJadwal: location.state.kodeJadwal,
+                                                            mataKuliah: location.state.mataKuliah,
+                                                            jenisMk: location.state.jenisMk,
+                                                            bobot: location.state.bobot,
+                                                            sks: location.state.sks,
+                                                            kodeMk: location.state.kodeMk
+                                                        }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaReply /> Kembali</Link>
+                                                        :
+                                                        <Link to='/presensi/mahasiswa' state={{
+                                                            kodeThn: location.state.kodeThn,
+                                                            kodeSmt: location.state.kodeSmt,
+                                                            kodeJen: location.state.kodeJen,
+                                                            kodeFkl: location.state.kodeFkl,
+                                                            kodePro: location.state.kodePro,
+                                                            idProdi: location.state.idProdi,
+                                                            kodeJadwal: location.state.kodeJadwal,
+                                                            mataKuliah: location.state.mataKuliah,
+                                                            jenisMk: location.state.jenisMk,
+                                                            kodeMk: location.state.kodeMk,
+                                                            bobot: location.state.bobot,
+                                                            sks: location.state.sks,
+                                                            kodePert: location.state.kodePert,
+                                                            kodeMk: location.state.kodeMk,
+                                                            tanggal: location.state.tanggal,
+                                                            pertemuan: location.state.pertemuan
+                                                        }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaReply /> Kembali</Link>
+                                                    }
                                                 </Col>
                                             </Row>
                                             <div className='table-responsive'>

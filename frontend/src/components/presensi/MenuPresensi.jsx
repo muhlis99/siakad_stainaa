@@ -31,16 +31,16 @@ const MenuPresensi = ({ children }) => {
                 <div className='border-b px-2 border-gray-500'>
                     <ul className="flex flex-wrap">
                         <li className="mr-2">
-                            <Link to="/presensi/dosen" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`inline-block ${location.pathname == '/presensi/dosen' || location.state.select == 'absen' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Absen</Link>
+                            <Link to="/presensi/dosen" state={{ collaps: 'kuliah', activ: '/presensi', tab: '' }} className={`inline-block ${location.pathname == '/presensi/dosen' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Absen</Link>
                         </li>
                         <li className="mr-2">
-                            <Link to="/presensi/validasi" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`inline-block ${location.pathname == '/presensi/validasi' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Validasi</Link>
+                            <Link to="/presensi/validasi" state={{ collaps: 'kuliah', activ: '/presensi', tab: '' }} className={`inline-block ${location.pathname == '/presensi/validasi' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Validasi</Link>
                         </li>
                         <li className="mr-2">
-                            <Link to="/presensi/rekapbulanan" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`inline-block ${location.pathname == '/presensi/rekapbulanan' || location.state.select == 'perbulan' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Rekap Perbulan</Link>
+                            <Link to="/presensi/rekapbulanan" state={{ collaps: 'kuliah', activ: '/presensi', tab: 'perbulan' }} className={`inline-block ${location.pathname == '/presensi/rekapbulanan' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Rekap Perbulan</Link>
                         </li>
                         <li className="mr-2">
-                            <Link to="/presensi/rekappersemester" state={{ collaps: 'kuliah', activ: '/presensi' }} className={`inline-block ${location.pathname == '/presensi/rekappersemester' || location.state.select == 'persemester' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Rekap Persemester</Link>
+                            <Link to="/presensi/rekappersemester" state={{ collaps: 'kuliah', activ: '/presensi', tab: 'persemester' }} className={`inline-block ${location.pathname == '/presensi/rekappersemester' ? 'bg-gray-300 font-semibold text-blue-600' : 'text-gray-500 hover:text-gray-600 hover:bg-gray-100'} rounded-t-lg py-2 px-4 text-sm font-medium text-center`}>Rekap Persemester</Link>
                         </li>
                     </ul>
                 </div>

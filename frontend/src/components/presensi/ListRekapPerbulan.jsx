@@ -35,6 +35,7 @@ const ListRekapPerbulan = () => {
             setIdProdi(location.state.idProdi)
             setIdTahun(location.state.idTahun)
             setIdSemester(location.state.idSemester)
+            setKeyBulan(location.state.key)
         }
     }, [location])
 
@@ -318,7 +319,7 @@ const ListRekapPerbulan = () => {
                                                     state={{
                                                         collaps: 'kuliah',
                                                         activ: '/presensi',
-                                                        select: 'perbulan',
+                                                        tab: 'perbulan',
                                                         jenjang: jenjangPendidikan,
                                                         fakultas: namaFakultas,
                                                         prodi: namaProdi,
@@ -328,7 +329,8 @@ const ListRekapPerbulan = () => {
                                                         idFakultas: idFakultas,
                                                         idProdi: idProdi,
                                                         idTahun: idTahun,
-                                                        idSemester: idSemester
+                                                        idSemester: idSemester,
+                                                        key: keyBulan
                                                     }}
                                                     className='bg-[#17A2B8] py-1 px-2 rounded-md text-white inline-flex gap-1 items-center no-underline'
                                                 >

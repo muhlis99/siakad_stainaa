@@ -37,7 +37,7 @@ const PresensiMhs = () => {
     }, [])
 
     useEffect(() => {
-        console.log(location.state);
+        console.log(location.state)
     }, [location])
 
     useEffect(() => {
@@ -264,7 +264,7 @@ const PresensiMhs = () => {
                                 </Col>
                             </Row>
                             <Row className='mt-3'>
-                                <Col className='text-center'>
+                                <Col className='flex justify-center gap-1'>
                                     <Link className='btn btn-sm btn-danger' to="/presensi/pertemuan" state={{
                                         kodeThn: location.state.kodeThn,
                                         kodeSmt: location.state.kodeSmt,
@@ -278,7 +278,32 @@ const PresensiMhs = () => {
                                         bobot: location.state.bobot,
                                         sks: location.state.sks,
                                         kodeMk: location.state.kodeMk
-                                    }}>Kembali ke List Pertemuan</Link>
+                                    }}>Kembali</Link>
+                                    <Link className='btn btn-sm btn-info' to="/presensi/validasi"
+                                        state={{
+                                            kodeThn: location.state.kodeThn,
+                                            kodeSmt: location.state.kodeSmt,
+                                            kodeJen: location.state.kodeJen,
+                                            kodeFkl: location.state.kodeFkl,
+                                            kodePro: location.state.kodePro,
+                                            idProdi: location.state.idProdi,
+                                            kodeJadwal: location.state.kodeJadwal,
+                                            mataKuliah: location.state.mataKuliah,
+                                            jenisMk: location.state.jenisMk,
+                                            kodeMk: location.state.kodeMk,
+                                            bobot: location.state.bobot,
+                                            sks: location.state.sks,
+                                            kodePert: location.state.kodePert,
+                                            kodeMk: location.state.kodeMk,
+                                            tanggal: location.state.tanggal,
+                                            pertemuan: location.state.pertemuan,
+                                            hal: 'presensi'
+                                        }}
+                                    >validasi</Link>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
                                     <form onSubmit={simpanPresensi}>
                                         <input
                                             type="text"
