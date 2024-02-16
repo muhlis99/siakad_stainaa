@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { FaCog, FaTimes } from 'react-icons/fa'
+import { FaCog, FaReply, FaTimes } from 'react-icons/fa'
 import moment from 'moment'
 import Swal from 'sweetalert2'
+import { Link, useLocation } from 'react-router-dom'
 
 const SettingValidasi = () => {
     const [Jenjang, setJenjang] = useState([])
@@ -25,6 +26,15 @@ const SettingValidasi = () => {
     const [idPresensi, setIdPresensi] = useState("")
     const [jamMasuk, setJamMasuk] = useState("")
     const [jamPulang, setJamPulang] = useState("")
+    const location = useLocation()
+
+    useEffect(() => {
+        if (location.state != null) {
+            setKodeTahun(location.state.kodeTahun)
+            setTanggal(location.state.tgl)
+        }
+        console.log(location.state);
+    }, [location.state])
 
     useEffect(() => {
         getTahunAjaran()
@@ -360,7 +370,6 @@ const SettingValidasi = () => {
                     </form>
                 </div>
             </div>
-
             <input type="checkbox" id="my-validating" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box grid p-0 rounded-md">
@@ -524,7 +533,20 @@ const SettingValidasi = () => {
             </div>
             <div className='card bg-base-100 card-bordered shadow-md'>
                 <div className="card-body p-4">
-                    <div>
+                    <div className='flex gap-2'>
+                        {location.state.hal == 'formPresensi' ?
+                            <Link
+                                to='/presensi/proses'
+                                state={{
+                                    kodeTahun: location.state.kodeTahun,
+                                    mom: location.state.mom,
+                                    tgl: location.state.tgl,
+                                    hal: location.state.hal
+                                }}
+                                className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaReply />Kembali Ke Absen</Link>
+                            :
+                            ""
+                        }
                         <input type="date" value={tanggal} onChange={(e) => setTanggal(e.target.value)} className='input input-bordered input-sm' />
                     </div>
                     <div className="overflow-x-auto mb-2">

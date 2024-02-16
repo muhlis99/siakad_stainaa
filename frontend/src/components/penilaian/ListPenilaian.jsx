@@ -39,7 +39,7 @@ const ListPenilaian = () => {
             setKodeTahun(location.state.thn)
             setKodeSemester(location.state.smt)
         }
-        console.log(location.state);
+        // console.log(location.state);
     }, [location.state])
 
     useEffect(() => {
