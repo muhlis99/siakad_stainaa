@@ -23,6 +23,7 @@ const Beranda = () => {
     const [prodi, setProdi] = useState("")
     const [Diagram, setDiagram] = useState([])
     const [DiagramDsn, setDiagramDsn] = useState([])
+    const [diagramKehadiran, setDiagramKehadiran] = useState([])
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -40,6 +41,7 @@ const Beranda = () => {
         getProdi()
         getDiagramMhs()
         getDiagramDsn()
+        getDiagramKehadiran()
     }, [])
 
     const getMhsPutera = async () => {
@@ -64,7 +66,7 @@ const Beranda = () => {
 
     const getDiagramMhs = async () => {
         const response = await axios.get('v1/home/diagramMahasiswa')
-        setDiagram(response.data.data);
+        setDiagram(response.data.data)
     }
 
     const labels = Diagram.map(item => (
@@ -134,6 +136,57 @@ const Beranda = () => {
         ],
     }
 
+    const getDiagramKehadiran = async () => {
+        const response = await axios.get(`v1/home/diagramPresensiDosen`)
+        setDiagramKehadiran(response.data.data)
+    }
+
+    const labelPresensi = diagramKehadiran.map(item => (
+        item.tahun
+    ))
+
+    const dataHadir = diagramKehadiran.map(item => (
+        item.jmlHadir
+    ))
+
+    const dataZoom = diagramKehadiran.map(item => (
+        item.jmlZoom
+    ))
+
+    const dataIzin = diagramKehadiran.map(item => (
+        item.jmlIzin
+    ))
+
+    const dataPresensi = {
+        labels: labelPresensi,
+        datasets: [
+            {
+                label: 'Total Hadir',
+                backgroundColor: "rgb(59,130,246, 0.7)",
+                borderColor: "rgb(11, 100, 244)",
+                borderWidth: 2,
+                borderRadius: 5,
+                data: dataHadir,
+            },
+            {
+                label: 'Total Zoom',
+                backgroundColor: "rgb(40, 167, 69, 0.7)",
+                borderColor: "rgb(35, 144, 60)",
+                borderWidth: 2,
+                borderRadius: 5,
+                data: dataZoom,
+            },
+            {
+                label: 'Total Izin',
+                backgroundColor: "rgb(108, 117, 125, 0.7)",
+                borderColor: "rgb(95, 102, 109)",
+                borderWidth: 2,
+                borderRadius: 5,
+                data: dataIzin,
+            },
+        ],
+    }
+
     return (
         <>
             {loading ?
@@ -187,20 +240,34 @@ const Beranda = () => {
                             </div>
                         </div>
                         <div className="grid lg:grid-cols-2 gap-4">
-                            <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
-                                <div className='pl-4 pt-2 pb-2 border-b-2 bg-slate-100 rounded-e-md'>
-                                    <span className='my-auto font-semibold text-slate-500'>Mahasiswa</span>
-                                </div>
-                                <div className="card-body p-4">
-                                    <Line options={options} data={data} className='relative h-60' />
+                            <div>
+                                <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
+                                    <div className='pl-4 pt-2 pb-2 border-b-2 bg-slate-100 rounded-e-md'>
+                                        <span className='my-auto font-semibold text-slate-500'>Mahasiswa</span>
+                                    </div>
+                                    <div className="card-body p-4">
+                                        <Line options={options} data={data} className='relative h-60' />
+                                    </div>
                                 </div>
                             </div>
-                            <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
-                                <div className='pl-4 pt-2 pb-2 border-b-2 bg-slate-100 rounded-e-md'>
-                                    <span className='my-auto font-semibold text-slate-500'>Dosen</span>
+                            <div>
+                                <div className="card bg-base-100 card-bordered shadow-md mb-2 rounded-md">
+                                    <div className='pl-4 pt-2 pb-2 border-b-2 bg-slate-100 rounded-e-md'>
+                                        <span className='my-auto font-semibold text-slate-500'>Dosen</span>
+                                    </div>
+                                    <div className="card-body p-4">
+                                        <Bar options={options} data={dataDsn} className='relative h-60' />
+                                    </div>
                                 </div>
-                                <div className="card-body p-4">
-                                    <Bar options={options} data={dataDsn} className='relative h-60' />
+                            </div>
+                        </div>
+                        <div className='w-full'>
+                            <div className='card bg-base-100 card-bordered shadow-md mb-2 rounded-md'>
+                                <div className='pl-4 pt-2 pb-2 border-b-2 bg-slate-100 rounded-e-md'>
+                                    <span className='my-auto font-semibold text-slate-500'>Grafik Kehadiran Dosen</span>
+                                </div>
+                                <div className="card-body p-4 h-72">
+                                    <Bar options={options} data={dataPresensi} width={'1000'} height={250} />
                                 </div>
                             </div>
                         </div>
