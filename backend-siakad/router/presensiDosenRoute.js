@@ -12,6 +12,7 @@ router.get('/detailRekapPresensiPersmt/:nipy/:thn/:smt/:jnj/:fks/:prd', presensi
 router.get('/rekapPresensiPerbln/:bln/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.rekapPresensiPerbln)
 router.get('/detailRekapPresensiPerbln/:nipy/:bln/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.detailRekapPresensiPerbln)
 router.get('/getbulan/:thn/:smt/:jnj/:fks/:prd', presensiDosenController.getbulan)
+router.get('/getStatusAbsen/:tgl', presensiDosenController.getStatusAbsen)
 
 
 module.exports = router

@@ -9,6 +9,7 @@ const mataKuliahModel = require("../models/mataKuliahModel")
 const historyMahasiswa = require("../models/historyMahasiswaModel")
 const sebaranMataKuliah = require("../models/sebaranMataKuliah")
 const ruangModel = require("../models/ruangModel")
+const presensiDosenModel = require("../models/presensiDosenModel.js")
 
 module.exports = {
     totalMahasiswaPutera: async (req, res, next) => {
@@ -240,5 +241,28 @@ module.exports = {
         }).catch(err => {
             next(err)
         })
-    }
+    },
+
+    diagramPresensiDosen: async (req, res, next) => {
+        await presensiDosenModel.findAll({
+            attributes: [
+                [Sequelize.literal('YEAR(tanggal)'), 'tahun'],
+                [Sequelize.literal('COUNT(masuk_luring)'), 'jmlHadir'],
+                [Sequelize.literal('COUNT(masuk_daring)'), 'jmlZoom'],
+                [Sequelize.literal('COUNT(izin)'), 'jmlIzin']
+            ],
+            where: {
+                // tanggal_mulai: { [Op.ne]: null },
+                status: "aktif",
+            },
+            group: [[Sequelize.literal('YEAR(tanggal)')]]
+        }).then(result => {
+            res.status(200).json({
+                message: "total presensi dosen  succes",
+                data: result,
+            })
+        }).catch(err => {
+            console.log(err);
+        })
+    },
 }

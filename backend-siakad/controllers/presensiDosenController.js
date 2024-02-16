@@ -591,4 +591,24 @@ module.exports = {
             console.log(err)
         })
     },
+
+    getStatusAbsen: async (req, res, next) => {
+        const tgl = req.params.tgl
+        const dataUse = await presensiDosenModel.count({
+            where: {
+                tanggal: tgl
+            }
+        })
+        if (dataUse > 0) {
+            res.status(201).json({
+                message: "Data absen sudah dilakukan",
+                data: "sudah dilakukan"
+            })
+        } else {
+            res.status(201).json({
+                message: "Data absen belum dilakukan",
+                data: "belum dilakukan"
+            })
+        }
+    },
 }
