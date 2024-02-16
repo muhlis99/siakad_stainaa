@@ -13,7 +13,7 @@ const ListRekapPerbulan = () => {
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
-    const [bulan, setBulan] = useState("")
+    const [Bulan, setBulan] = useState([])
     const [RekapPerbulan, setRekapPerbulan] = useState([])
     const [idJenjangPendidikan, setIdJenjangPendidikan] = useState("")
     const [jenjangPendidikan, setJenjangPendidikan] = useState("")
@@ -25,6 +25,7 @@ const ListRekapPerbulan = () => {
     const [namaTahun, setNamaTahun] = useState("")
     const [idSemester, setIdSemester] = useState("")
     const [namaSemester, setNamaSemester] = useState("")
+    const [keyBulan, setKeyBulan] = useState("")
     const location = useLocation()
 
     useEffect(() => {
@@ -34,6 +35,7 @@ const ListRekapPerbulan = () => {
             setIdProdi(location.state.idProdi)
             setIdTahun(location.state.idTahun)
             setIdSemester(location.state.idSemester)
+            setKeyBulan(location.state.key)
         }
     }, [location])
 
@@ -63,7 +65,7 @@ const ListRekapPerbulan = () => {
 
     useEffect(() => {
         getRekapPerbulan()
-    }, [kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi, bulan])
+    }, [kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi, keyBulan])
 
     useEffect(() => {
         getJenjangById()
@@ -200,7 +202,7 @@ const ListRekapPerbulan = () => {
         try {
             if (kodeTahun && kodeSemester && kodeJenjang && kodeFakultas && kodeProdi) {
                 const response = await axios.get(`v1/presensiDosen/getBulan/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
-                setBulan(response.data.data[0].bulan)
+                setBulan(response.data.data)
             }
         } catch (error) {
 
@@ -209,15 +211,19 @@ const ListRekapPerbulan = () => {
 
     const getRekapPerbulan = async () => {
         try {
-            if (kodeTahun && kodeSemester && kodeJenjang && kodeFakultas && kodeProdi && bulan) {
-                const response = await axios.get(`v1/presensiDosen/rekapPresensiPerbln/${bulan}/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+            if (kodeTahun && kodeSemester && kodeJenjang && kodeFakultas && kodeProdi && keyBulan) {
+                const response = await axios.get(`v1/presensiDosen/rekapPresensiPerbln/${keyBulan}/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
                 setRekapPerbulan(response.data.data)
                 // setRekapPerbulan()
+            } else {
+                setRekapPerbulan([])
             }
         } catch (error) {
 
         }
     }
+
+    const namaBulan = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
 
     return (
         <>
@@ -269,6 +275,14 @@ const ListRekapPerbulan = () => {
             </div>
             <div className='card bg-base-100 card-bordered shadow-md mt-3'>
                 <div className='card-body p-4'>
+                    <div>
+                        <select className='select select-sm select-bordered' value={keyBulan} onChange={(e) => setKeyBulan(e.target.value)}>
+                            <option value="">Bulan</option>
+                            {Bulan.map((item, index) => (
+                                <option key={index} value={item.bulan}>{namaBulan[item.bulan]}</option>
+                            ))}
+                        </select>
+                    </div>
                     <div className="overflow-x-auto mb-2">
                         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead className='text-gray-700 bg-[#d4cece]'>
@@ -286,39 +300,45 @@ const ListRekapPerbulan = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {RekapPerbulan.map((item, index) => (
-                                    <tr key={index} className='bg-white border-b text-gray-500 border-x'>
-                                        <td className='px-3 py-2 font-semibold border'>{index + 1}</td>
-                                        <td className='px-3 py-2 font-semibold border'>{item.nip_ynaa}</td>
-                                        <td className='px-3 py-2 font-semibold border'>{item.dosens[0].nama}</td>
-                                        <td className='px-3 py-2 font-semibold border' align='center'>{item.total_masuk_luring}</td>
-                                        <td className='px-3 py-2 font-semibold border' align='center'>{item.total_masuk_daring}</td>
-                                        <td className='px-3 py-2 font-semibold border' align='center'>{item.total_izin}</td>
-                                        <td className='px-3 py-2 font-semibold border' align='center'>
-                                            <Link
-                                                to={`/presensi/detailrekapperbulan/${item.nip_ynaa}/${bulan}/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`}
-                                                state={{
-                                                    collaps: 'kuliah',
-                                                    activ: '/presensi',
-                                                    select: 'perbulan',
-                                                    jenjang: jenjangPendidikan,
-                                                    fakultas: namaFakultas,
-                                                    prodi: namaProdi,
-                                                    tahun: namaTahun,
-                                                    semester: namaSemester,
-                                                    idJenjangPendidikan: idJenjangPendidikan,
-                                                    idFakultas: idFakultas,
-                                                    idProdi: idProdi,
-                                                    idTahun: idTahun,
-                                                    idSemester: idSemester
-                                                }}
-                                                className='bg-[#17A2B8] py-1 px-2 rounded-md text-white inline-flex gap-1 items-center no-underline'
-                                            >
-                                                Detail
-                                            </Link>
-                                        </td>
+                                {RekapPerbulan.length == 0 ?
+                                    <tr className='bg-white border-b border-x text-gray-500'>
+                                        <td className='px-6 py-2 font-semibold' align='center' colSpan='7'>Data Rekap Presensi Kosong</td>
                                     </tr>
-                                ))}
+                                    :
+                                    RekapPerbulan.map((item, index) => (
+                                        <tr key={index} className='bg-white border-b text-gray-500 border-x'>
+                                            <td className='px-3 py-2 font-semibold border'>{index + 1}</td>
+                                            <td className='px-3 py-2 font-semibold border'>{item.nip_ynaa}</td>
+                                            <td className='px-3 py-2 font-semibold border'>{item.dosens[0].nama}</td>
+                                            <td className='px-3 py-2 font-semibold border' align='center'>{item.total_masuk_luring}</td>
+                                            <td className='px-3 py-2 font-semibold border' align='center'>{item.total_masuk_daring}</td>
+                                            <td className='px-3 py-2 font-semibold border' align='center'>{item.total_izin}</td>
+                                            <td className='px-3 py-2 font-semibold border' align='center'>
+                                                <Link
+                                                    to={`/presensi/detailrekapperbulan/${item.nip_ynaa}/${keyBulan}/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`}
+                                                    state={{
+                                                        collaps: 'kuliah',
+                                                        activ: '/presensi',
+                                                        tab: 'perbulan',
+                                                        jenjang: jenjangPendidikan,
+                                                        fakultas: namaFakultas,
+                                                        prodi: namaProdi,
+                                                        tahun: namaTahun,
+                                                        semester: namaSemester,
+                                                        idJenjangPendidikan: idJenjangPendidikan,
+                                                        idFakultas: idFakultas,
+                                                        idProdi: idProdi,
+                                                        idTahun: idTahun,
+                                                        idSemester: idSemester,
+                                                        key: keyBulan
+                                                    }}
+                                                    className='bg-[#17A2B8] py-1 px-2 rounded-md text-white inline-flex gap-1 items-center no-underline'
+                                                >
+                                                    Detail
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>

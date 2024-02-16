@@ -108,7 +108,8 @@ const DetailRekapPersemester = () => {
                                 idFakultas: location.state.idFakultas,
                                 idProdi: location.state.idProdi,
                                 idTahun: location.state.idTahun,
-                                idSemester: location.state.idSemester
+                                idSemester: location.state.idSemester,
+                                tab: 'persemester'
                             }}
                             className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaReply /> Kembali</Link>
                     </div>
@@ -119,6 +120,8 @@ const DetailRekapPersemester = () => {
                                     <th scope="col" className="px-3 py-2 text-sm border" align='center' rowSpan={2}>No</th>
                                     <th scope="col" className="px-3 py-2 text-sm border" align='center' rowSpan={2}>Pertemuan</th>
                                     <th scope="col" className="px-3 py-2 text-sm border" align='center' rowSpan={2}>Tanggal</th>
+                                    <th scope="col" className="px-3 py-2 text-sm border" align='center' rowSpan={2}>Jam Masuk</th>
+                                    <th scope="col" className="px-3 py-2 text-sm border" align='center' rowSpan={2}>Jam Pulang</th>
                                     <th scope="col" className="px-3 py-2 text-sm border" align='center' colSpan={3}>Status Kehadiran</th>
                                 </tr>
                                 <tr>
@@ -133,6 +136,8 @@ const DetailRekapPersemester = () => {
                                         <td className='px-3 py-2 font-semibold border' align='center'>{index + 1}</td>
                                         <td className='px-3 py-2 font-semibold border'>Pertemuan ke {item.jadwalPertemuans[0].pertemuan}</td>
                                         <td className='px-3 py-2 font-semibold border'>{moment(item.tanggal).format('DD MMMM YYYY')}</td>
+                                        <td className='px-3 py-2 font-semibold border' align='center'>{item.jam_masuk}</td>
+                                        <td className='px-3 py-2 font-semibold border' align='center'>{item.jam_pulang}</td>
                                         <td className='px-3 py-2 font-semibold border' align='center'>
                                             {item.masuk_luring == '1' ?
                                                 <span className='text-blue-500'><FaCheck /></span>
@@ -154,26 +159,26 @@ const DetailRekapPersemester = () => {
                                     </tr>
                                 ))}
                                 <tr className='bg-white border-b text-gray-500 border-x'>
-                                    <td className='px-3 py-2 font-semibold border'>
+                                    <td className='px-3 py-2 font-semibold border' colSpan={2}>
                                         Total Hadir
                                     </td>
-                                    <td className='px-3 py-2 font-semibold border' colSpan={5}>
+                                    <td className='px-3 py-2 font-semibold border' colSpan={6}>
                                         {total.length != 0 ? total[0].total_masuk_luring : ""}
                                     </td>
                                 </tr>
                                 <tr className='bg-white border-b text-gray-500 border-x'>
-                                    <td className='px-3 py-2 font-semibold border'>
+                                    <td className='px-3 py-2 font-semibold border' colSpan={2}>
                                         Total Zoom
                                     </td>
-                                    <td className='px-3 py-2 font-semibold border' colSpan={5}>
+                                    <td className='px-3 py-2 font-semibold border' colSpan={6}>
                                         {total.length != 0 ? total[0].total_masuk_daring : ""}
                                     </td>
                                 </tr>
                                 <tr className='bg-white border-b text-gray-500 border-x'>
-                                    <td className='px-3 py-2 font-semibold border'>
+                                    <td className='px-3 py-2 font-semibold border' colSpan={2}>
                                         Total Izin
                                     </td>
-                                    <td className='px-3 py-2 font-semibold border' colSpan={5}>
+                                    <td className='px-3 py-2 font-semibold border' colSpan={6}>
                                         {total.length != 0 ? total[0].total_izin : ""}
                                     </td>
                                 </tr>

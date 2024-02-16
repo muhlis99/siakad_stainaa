@@ -8,7 +8,7 @@ import { SiFoursquarecityguide } from "react-icons/si"
 import { LogOut, reset } from "../features/authSlice"
 import Swal from "sweetalert2"
 import axios from "axios"
-import { FaBullhorn, FaClock, FaFilePdf, FaListUl, FaTh, FaArchive, FaGraduationCap, FaTasks } from "react-icons/fa"
+import { FaBullhorn, FaClock, FaFilePdf, FaListUl, FaTh, FaArchive, FaGraduationCap, FaTasks, FaRegAddressBook } from "react-icons/fa"
 import { FaRegBookmark, FaChalkboardUser } from "react-icons/fa6"
 import "../assets/css/navigasi.css"
 
@@ -171,7 +171,7 @@ const Navigation = () => {
                                         </li>
                                         <li>
                                             <Link to="/jurnal" className={`dropdown-item ${location.pathname == '/jurnal' ? 'active' : ''}`}>
-                                                <div className="inline-flex gap-2"><FaChalkboardUser className="mt-1 text-[14px]" />  Jurnal</div>
+                                                <div className="inline-flex gap-2"><FaRegAddressBook className="mt-1 text-[14px]" />  Jurnal</div>
                                             </Link>
                                         </li>
                                         <li>

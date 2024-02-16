@@ -283,7 +283,7 @@ const ListRekapPersemester = () => {
                                                 state={{
                                                     collaps: 'kuliah',
                                                     activ: '/presensi',
-                                                    select: 'persemester',
+                                                    tab: 'persemester',
                                                     jenjang: jenjangPendidikan,
                                                     fakultas: namaFakultas,
                                                     prodi: namaProdi,

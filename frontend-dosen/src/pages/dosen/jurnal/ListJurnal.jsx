@@ -27,6 +27,9 @@ const ListJurnal = () => {
     const [idJurnal, setIdJurnal] = useState("")
     const [statusJurnal, setStatusJurnal] = useState([])
     const [modal, setModal] = useState("")
+    const [namaPertemuan, setNamaPertemuan] = useState("")
+    const [jenis, setJenis] = useState("")
+    const [tanggal, setTanggal] = useState("")
 
 
     useEffect(() => {
@@ -37,7 +40,7 @@ const ListJurnal = () => {
     }, [])
 
     useEffect(() => {
-        console.log(location.state)
+        // console.log(location.state)
     }, [location])
 
     useEffect(() => {
@@ -104,22 +107,33 @@ const ListJurnal = () => {
             }
             if (pertemuanTerpilih.length != 0) {
                 Promise.all(promises).then(() => setStatusJurnal(statuss))
-                Promise.all(promises).then(() => console.log(statuss))
             }
         }
     }
 
-    const handleShow = async (e) => {
-        // try {
-        //     const response = await axios.get(`v1/jurnalDosen/getById/${e}`)
-        //     setIdJurnal(response.data.data.id_jurnal_dosen)
-        //     setKeterangan(response.data.data.keterangan)
-        //     setMateri(response.data.data.materi_pembahasan)
-        //     setModal(f)
-        // } catch (error) {
-
-        // }
+    const handleShowTambah = async (e, f, g, h, i) => {
         setKodePertemuan(e)
+        setModal(f)
+        setNamaPertemuan(g)
+        setTanggal(h)
+        setJenis(i)
+        setShow(true)
+    }
+
+    const handleShowEdit = async (e, f, g, h, i) => {
+        try {
+            const response = await axios.get(`v1/jurnalDosen/getByCodeJadper/${e}`)
+            setIdJurnal(response.data.data.id_jurnal_dosen)
+            setKeterangan(response.data.data.keterangan)
+            setMateri(response.data.data.materi_pembahasan)
+            setKodePertemuan(e)
+            setModal(f)
+            setNamaPertemuan(g)
+            setTanggal(h)
+            setJenis(i)
+        } catch (error) {
+
+        }
         setShow(true)
     }
 
@@ -129,6 +143,9 @@ const ListJurnal = () => {
         setKeterangan("")
         setModal("")
         setIdJurnal("")
+        setNamaPertemuan("")
+        setTanggal("")
+        setJenis("")
         setShow(false)
     }
 
@@ -226,7 +243,8 @@ const ListJurnal = () => {
                             title: 'Terhapus',
                             icon: "success"
                         }).then(() => {
-                            getJurnalByJadwalKuliah()
+                            getPertemuan()
+                            getStatusJurnal()
                         });
                     })
 
@@ -267,22 +285,35 @@ const ListJurnal = () => {
                                 centered
                             >
                                 <Modal.Header closeButton>
-                                    <Modal.Title></Modal.Title>
+                                    <Modal.Title>
+                                        {/* <span className='capitalize'>{modal}</span> jurnal pertemuan ke {namaPertemuan} */}
+                                    </Modal.Title>
                                 </Modal.Header>
-                                {modal == '' ?
+                                {modal == 'tambah' ?
                                     <Modal.Body>
                                         <form onSubmit={simpanJurnal}>
                                             <Row>
                                                 <Col>
-                                                    {/* <div className='form-group'>
+                                                    <div className='form-group'>
                                                         <label htmlFor="judul" className='h6'>Pertemuan</label>
-                                                        <select className='form-select form-select-sm' value={kodePertemuan} onChange={(e) => setKodePertemuan(e.target.value)}>
-                                                            <option value="">Pilih Pertemuan</option>
-                                                            {Pertemuan.map((item) => (
-                                                                <option key={item.id_jadwal_pertemuan} value={item.code_jadwal_pertemuan}>Pertemuan {item.pertemuan}</option>
-                                                            ))}
-                                                        </select>
-                                                    </div> */}
+                                                        <input type="text" value={`Pertemuan ke ${namaPertemuan}`} className='form-control from-control-sm' disabled />
+                                                    </div>
+                                                </Col>
+                                                <Col>
+                                                    <div className='form-group'>
+                                                        <label htmlFor="judul" className='h6'>Tanggal</label>
+                                                        <input type="text" value={moment(tanggal).format('DD MMMM YYYY')} className='form-control from-control-sm' disabled />
+                                                    </div>
+                                                </Col>
+                                                <Col>
+                                                    <div className='form-group'>
+                                                        <label htmlFor="judul" className='h6'>Jenis Pertemuan</label>
+                                                        <input type="text" value={jenis} className='form-control from-control-sm' disabled />
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col>
                                                     <div className='form-group'>
                                                         <label htmlFor="judul" className='h6'>Materi Pembahasan</label>
                                                         <textarea
@@ -319,34 +350,97 @@ const ListJurnal = () => {
                                     </Modal.Body>
                                     :
                                     <Modal.Body>
-                                        <form onSubmit={updateJurnal}>
-                                            <Row>
-                                                <Col>
-                                                    <div className='form-group'>
-                                                        <label htmlFor="judul" className='h6'>Materi Pembahasan</label>
-                                                        <input id='judul' value={materi} onChange={(e) => setMateri(e.target.value)} placeholder='Materi Pembahasan' type="text" className='form-control form-control-sm' />
-                                                    </div>
-                                                    <div className='form-group'>
-                                                        <label htmlFor="deskripsi" className='h6'>Keterangan</label>
-                                                        <textarea
-                                                            id="deskripsi"
-                                                            cols="30"
-                                                            rows="3"
-                                                            placeholder='Keterangan'
-                                                            value={keterangan}
-                                                            onChange={(e) => setKeterangan(e.target.value)}
-                                                            className='form-control form-control-sm'
-                                                        ></textarea>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                            <hr />
-                                            <Row>
-                                                <Col>
-                                                    <button className='btn btn-sm btn-primary float-right'>Edit</button>
-                                                </Col>
-                                            </Row>
-                                        </form>
+                                        {modal == 'edit' ?
+                                            <form onSubmit={updateJurnal}>
+                                                <Row>
+                                                    <Col>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="judul" className='h6'>Pertemuan</label>
+                                                            <input type="text" value={`Pertemuan ke ${namaPertemuan}`} className='form-control from-control-sm' disabled />
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="judul" className='h6'>Tanggal</label>
+                                                            <input type="text" value={moment(tanggal).format('DD MMMM YYYY')} className='form-control from-control-sm' disabled />
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="judul" className='h6'>Jenis Pertemuan</label>
+                                                            <input type="text" value={jenis} className='form-control from-control-sm' disabled />
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="judul" className='h6'>Materi Pembahasan</label>
+                                                            <textarea
+                                                                id="deskripsi"
+                                                                cols="30"
+                                                                rows="3"
+                                                                placeholder='Materi Pembahasan'
+                                                                value={materi}
+                                                                onChange={(e) => setMateri(e.target.value)}
+                                                                className='form-control form-control-sm'
+                                                            ></textarea>
+                                                        </div>
+                                                        <div className='form-group'>
+                                                            <label htmlFor="deskripsi" className='h6'>Keterangan</label>
+                                                            <textarea
+                                                                id="deskripsi"
+                                                                cols="30"
+                                                                rows="3"
+                                                                placeholder='Keterangan'
+                                                                value={keterangan}
+                                                                onChange={(e) => setKeterangan(e.target.value)}
+                                                                className='form-control form-control-sm'
+                                                            ></textarea>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                                <hr />
+                                                <Row>
+                                                    <Col>
+                                                        <button className='btn btn-sm btn-primary float-right'>Edit</button>
+                                                    </Col>
+                                                </Row>
+                                            </form> :
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className='py-2 px-4'>Pertemuan</td>
+                                                        <td className='py-2'>&nbsp;:&nbsp;</td>
+                                                        <td className='py-2 '>Pertemuan ke {namaPertemuan}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-4'>Tanggal</td>
+                                                        <td className='py-2'>&nbsp;:&nbsp;</td>
+                                                        <td className='py-2 '>{moment(tanggal).format('DD MMMM YYYY')}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-4'>Jenis Pertemuan</td>
+                                                        <td className='py-2'>&nbsp;:&nbsp;</td>
+                                                        <td className={`py-2 ${jenis == 'uas' || jenis == 'uts' ? 'uppercase' : 'capitalize'}`}>{jenis}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-4'>Materi Pembahasan</td>
+                                                        <td className='py-2'>&nbsp;:&nbsp;</td>
+                                                        <td className='py-2 '>
+                                                            {materi}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='py-2 px-4'>Keterangan</td>
+                                                        <td className='py-2'>&nbsp;:&nbsp;</td>
+                                                        <td className='py-2 '>
+                                                            {keterangan}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        }
                                     </Modal.Body>
                                 }
                             </Modal>
@@ -468,13 +562,48 @@ const ListJurnal = () => {
                                                                 <td className='py-2'>Pertemuan ke {item.pertemuan}</td>
                                                                 <td className='py-2'>{moment(item.tanggal_pertemuan).format('DD MMMM YYYY')}</td>
                                                                 <td className={`py-2 ${item.jenis_pertemuan == 'uts' || item.jenis_pertemuan == 'uas' ? 'uppercase' : 'capitalize'}`}>{item.jenis_pertemuan}</td>
-                                                                <td className='py-2'>{statusJurnal[index]}</td>
+                                                                <td className='py-2'>
+                                                                    {
+                                                                        statusJurnal[index] == 'sudah diisi' ?
+                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#28A745] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{statusJurnal[index]}</span>
+                                                                            :
+                                                                            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white capitalize">{statusJurnal[index]}</span>
+                                                                    }
+                                                                </td>
                                                                 <td className='py-2'>
                                                                     {statusJurnal[index] == 'belum diisi' ?
                                                                         <button
-                                                                            className='btn btn-sm btn-info'
-                                                                            onClick={() => handleShow(item.code_jadwal_pertemuan)}
-                                                                        >Tambah</button> : ""
+                                                                            className='btn btn-sm btn-primary'
+                                                                            onClick={() => handleShowTambah(
+                                                                                item.code_jadwal_pertemuan,
+                                                                                'tambah',
+                                                                                item.pertemuan,
+                                                                                item.tanggal_pertemuan,
+                                                                                item.jenis_pertemuan
+                                                                            )}
+                                                                        >Tambah</button> :
+                                                                        <div className='flex gap-1'>
+                                                                            <button
+                                                                                className='btn btn-sm btn-info'
+                                                                                onClick={() => handleShowEdit(
+                                                                                    item.code_jadwal_pertemuan,
+                                                                                    'detail',
+                                                                                    item.pertemuan,
+                                                                                    item.tanggal_pertemuan,
+                                                                                    item.jenis_pertemuan
+                                                                                )}
+                                                                            >Detail</button>
+                                                                            <button
+                                                                                className='btn btn-sm btn-warning'
+                                                                                onClick={() => handleShowEdit(
+                                                                                    item.code_jadwal_pertemuan,
+                                                                                    'edit',
+                                                                                    item.pertemuan,
+                                                                                    item.tanggal_pertemuan,
+                                                                                    item.jenis_pertemuan
+                                                                                )}
+                                                                            >Edit</button>
+                                                                        </div>
                                                                     }
                                                                 </td>
                                                             </tr>

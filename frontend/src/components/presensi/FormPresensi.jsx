@@ -25,9 +25,9 @@ const FormPresensi = () => {
         }, 500)
     }, [])
 
-    // useEffect(() => {
-    //     console.log(location.state)
-    // }, [location])
+    useEffect(() => {
+        console.log(location.state)
+    }, [location])
 
     useEffect(() => {
         getProgres()
@@ -132,8 +132,9 @@ const FormPresensi = () => {
                         <h1 className='text-xl font-bold'>{location.state.mom}</h1>
                         <h1 className='text-xl font-bold my-2'>{jam}</h1>
                     </div>
-                    <div className='flex justify-center'>
-                        <Link to='/presensi/dosen' state={{ select: 'absen' }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center gap-1 no-underline'><FaReply /> Keluar</Link>
+                    <div className='flex gap-1 justify-center'>
+                        <Link to='/presensi/dosen' state={{ select: 'absen' }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex items-center gap-1 no-underline'>Keluar</Link>
+                        <Link className='bg-[#17A2B8] py-1 px-2 rounded text-white inline-flex items-center gap-1 no-underline'>Validasi</Link>
                     </div>
                     <form onSubmit={simpanAbsenDosen}>
                         <input type="text" value={kodeRfid} className='bg-[#EDEDED] focus:outline-none focus:ring-transparent focus:border-transparent caret-transparent text-[#EDEDED]' onChange={(e) => setKodeRfid(e.target.value)} autoFocus />

@@ -272,6 +272,7 @@ const ListPertemuan = () => {
                                                                             kodeMk: location.state.kodeMk,
                                                                             tanggal: moment(item.tanggal_pertemuan).format('DD MMMM YYYY'),
                                                                             pertemuan: item.pertemuan,
+                                                                            hal: 'listPertemuan'
                                                                         }}
                                                                         className='btn btn-sm btn-success ml-1 capitalize'>
                                                                         validasi

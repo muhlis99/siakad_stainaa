@@ -91,7 +91,7 @@ const DetailRekap = () => {
                                     <Card className='mb-3 shadow'>
                                         <Card.Body className='py-3'>
                                             <Row className='shadow-sm py-3 rounded' style={{ background: '#E9EAE1' }}>
-                                                <Col lg="7">
+                                                <Col lg="6">
                                                     <Row className='mb-2'>
                                                         <Col lg="3">
                                                             <a>NIM</a>
@@ -109,7 +109,7 @@ const DetailRekap = () => {
                                                         </Col>
                                                     </Row>
                                                 </Col>
-                                                <Col lg="5">
+                                                <Col lg="6">
                                                     <Row className='mb-2'>
                                                         <Col lg="3">
                                                             <a>Matakuliah</a>
@@ -204,10 +204,6 @@ const DetailRekap = () => {
                                                                 <tr className='border'>
                                                                     <th className='fw-bold py-2 border text-center' colSpan={2}><span>Total Izin</span></th>
                                                                     <th className='fw-bold py-2 border' colSpan={5}><span>{totalIzin}</span></th>
-                                                                </tr>
-                                                                <tr className='border'>
-                                                                    <th className='fw-bold py-2 border text-center' colSpan={2}><span>Total Sakit</span></th>
-                                                                    <th className='fw-bold py-2 border' colSpan={5}><span>{totalSakit}</span></th>
                                                                 </tr>
                                                                 <tr className='border'>
                                                                     <th className='fw-bold py-2 border text-center' colSpan={2}><span>Total Alpha</span></th>

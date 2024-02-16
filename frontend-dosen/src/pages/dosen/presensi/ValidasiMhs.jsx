@@ -36,7 +36,7 @@ const ValidasiMhs = () => {
     }, [])
 
     useEffect(() => {
-        // console.log(location.state);
+        console.log(location.state);
     }, [location])
 
     useEffect(() => {
@@ -303,20 +303,41 @@ const ValidasiMhs = () => {
                                         <Card.Body className='shadow p-3'>
                                             <Row className='mb-2'>
                                                 <Col>
-                                                    <Link to='/presensi/pertemuan' state={{
-                                                        kodeThn: location.state.kodeThn,
-                                                        kodeSmt: location.state.kodeSmt,
-                                                        kodeJen: location.state.kodeJen,
-                                                        kodeFkl: location.state.kodeFkl,
-                                                        kodePro: location.state.kodePro,
-                                                        idProdi: location.state.idProdi,
-                                                        kodeJadwal: location.state.kodeJadwal,
-                                                        mataKuliah: location.state.mataKuliah,
-                                                        jenisMk: location.state.jenisMk,
-                                                        bobot: location.state.bobot,
-                                                        sks: location.state.sks,
-                                                        kodeMk: location.state.kodeMk
-                                                    }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaReply /> Kembali</Link>
+                                                    {location.state.hal == 'listPertemuan' ?
+                                                        <Link to='/presensi/pertemuan' state={{
+                                                            kodeThn: location.state.kodeThn,
+                                                            kodeSmt: location.state.kodeSmt,
+                                                            kodeJen: location.state.kodeJen,
+                                                            kodeFkl: location.state.kodeFkl,
+                                                            kodePro: location.state.kodePro,
+                                                            idProdi: location.state.idProdi,
+                                                            kodeJadwal: location.state.kodeJadwal,
+                                                            mataKuliah: location.state.mataKuliah,
+                                                            jenisMk: location.state.jenisMk,
+                                                            bobot: location.state.bobot,
+                                                            sks: location.state.sks,
+                                                            kodeMk: location.state.kodeMk
+                                                        }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaReply /> Kembali</Link>
+                                                        :
+                                                        <Link to='/presensi/mahasiswa' state={{
+                                                            kodeThn: location.state.kodeThn,
+                                                            kodeSmt: location.state.kodeSmt,
+                                                            kodeJen: location.state.kodeJen,
+                                                            kodeFkl: location.state.kodeFkl,
+                                                            kodePro: location.state.kodePro,
+                                                            idProdi: location.state.idProdi,
+                                                            kodeJadwal: location.state.kodeJadwal,
+                                                            mataKuliah: location.state.mataKuliah,
+                                                            jenisMk: location.state.jenisMk,
+                                                            kodeMk: location.state.kodeMk,
+                                                            bobot: location.state.bobot,
+                                                            sks: location.state.sks,
+                                                            kodePert: location.state.kodePert,
+                                                            kodeMk: location.state.kodeMk,
+                                                            tanggal: location.state.tanggal,
+                                                            pertemuan: location.state.pertemuan
+                                                        }} className='bg-[#DC3545] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'><FaReply /> Kembali</Link>
+                                                    }
                                                 </Col>
                                             </Row>
                                             <div className='table-responsive'>
@@ -331,14 +352,15 @@ const ValidasiMhs = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {Available.length == 0 ?
-                                                            <tr className='border'>
-                                                                <td colSpan={5} align='center'>
-                                                                    <Image src={dataBlank} width={150} />
-                                                                    <p className='fw-bold text-muted'>Anda belum mengabsen Mahasiswa</p>
-                                                                </td>
-                                                            </tr>
-                                                            :
+                                                        {
+                                                            // Available.length == 0 ?
+                                                            //     <tr className='border'>
+                                                            //         <td colSpan={5} align='center'>
+                                                            //             <Image src={dataBlank} width={150} />
+                                                            //             <p className='fw-bold text-muted'>Anda belum mengabsen Mahasiswa</p>
+                                                            //         </td>
+                                                            //     </tr>
+                                                            //     :
                                                             Available.map((item, index) => (
                                                                 <tr key={item.id_presensi_mahasiswa} className='border'>
                                                                     <td className='py-2'>{index + 1}</td>
@@ -360,20 +382,19 @@ const ValidasiMhs = () => {
                                                                     </td>
                                                                 </tr>
                                                             ))}
-                                                        {Available.length == 0 ? "" :
-                                                            NotAvailable.map((item, index) => (
-                                                                <tr key={index} className='border'>
-                                                                    <td className='py-2'>{index + 1 + jumlah}</td>
-                                                                    <td className='py-2'>{item.nim}</td>
-                                                                    <td className='py-2'>{item.mahasiswas[0].nama}</td>
-                                                                    <td className='py-2'>
-                                                                        <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#FFC107] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none capitalize">Tidak Absen</span>
-                                                                    </td>
-                                                                    <td className='py-2'>
-                                                                        <button onClick={() => handleShow(1, item.mahasiswas[0].nama, '', item.nim)} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline' ><FaCog /></button>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
+                                                        {NotAvailable.map((item, index) => (
+                                                            <tr key={index} className='border'>
+                                                                <td className='py-2'>{index + 1 + jumlah}</td>
+                                                                <td className='py-2'>{item.nim}</td>
+                                                                <td className='py-2'>{item.mahasiswas[0].nama}</td>
+                                                                <td className='py-2'>
+                                                                    <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#FFC107] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none capitalize">Tidak Absen</span>
+                                                                </td>
+                                                                <td className='py-2'>
+                                                                    <button onClick={() => handleShow(1, item.mahasiswas[0].nama, '', item.nim)} className='bg-[#17A2B8] py-2 px-2 rounded-full text-white inline-flex gap-1 items-center no-underline' ><FaCog /></button>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
                                                     </tbody>
                                                 </Table>
                                             </div>
