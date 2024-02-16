@@ -14,7 +14,6 @@ const rfidMahasiswaModel = require('../models/rfidMahasiswaModel.js')
 const historyMahasiswa = require('../models/historyMahasiswaModel.js')
 const krsModel = require('../models/krsModel.js')
 const presensiDosenModel = require("../models/presensiDosenModel.js")
-const dosenModel = require("../models/dosenModel.js")
 const { Op, Sequelize, fn, col } = require('sequelize')
 
 module.exports = {
@@ -492,7 +491,7 @@ module.exports = {
 
     getPresensiDosenAvailable: async (req, res, next) => {
         const { code, nipy, thn, smt, jnj, fks, prd } = req.params
-        const dataUse = await jadwalPertemuanModel.findOne({
+        const dataUse = await jadwalPertemuanModel.findAll({
             where: {
                 code_jadwal_kuliah: code,
                 status: "aktif"
@@ -501,10 +500,16 @@ module.exports = {
         if (!dataUse) return res.status(404).json({ message: "Data Tidak Ditemukan" })
         const datause2 = dataUse.map(rs => { return rs.code_jadwal_pertemuan })
         await presensiDosenModel.findAll({
-            include: [{
-                attributes: ["nama"],
-                model: dosenModel
-            }],
+            include: [
+                {
+                    attributes: ["nama"],
+                    model: dosenModel
+                },
+                {
+                    attributes: ["jenis_pertemuan","pertemuan"],
+                    model: jadwalPertemuanModel
+                },
+            ],
             where: {
                 code_jadwal_pertemuan: datause2,
                 code_tahun_ajaran: thn,
@@ -527,54 +532,59 @@ module.exports = {
             })
     },
 
-    // getMhsValidasiNoAvailable: async (req, res, next) => {
-    //     const { code, thn, smt, jnj, fks, prd } = req.params
-    //     const dataUse = await jadwalPertemuanModel.findOne({
-    //         where: {
-    //             code_jadwal_kuliah: code,
-    //             status: "aktif"
-    //         }
-    //     })
-    //     if (!dataUse) return res.status(404).json({ message: "Data Tidak Ditemukan" })
-    //     const datause2 = dataUse.map(rs => { return rs.code_jadwal_pertemuan })
-    //     const dataPresensiDosen = await presensiDosenModel.findAll({
-    //         where: {
-    //             code_jadwal_pertemuan: datause2,
-    //             code_tahun_ajaran: thn,
-    //             code_semester: smt,
-    //             code_jenjang_pendidikan: jnj,
-    //             code_fakultas: fks,
-    //             code_prodi: prd,
-    //             status: "aktif"
-    //         }
-    //     })
-    //     const dataPresensiDosenUse = dataPresensiDosen.map(el => { return el.nim })
-    //     await jadwalKuliahModel.findAll({
-    //         include: [{
-    //             model: mahasiswaModel,
-    //             attributes: ["nama"]
-    //         }],
-    //         attributes: ["nim"],
-    //         where: {
-    //             nim: {
-    //                 [Op.not]: dataPresensiNimUse
-    //             },
-    //             code_tahun_ajaran: thn,
-    //             code_semester: smt,
-    //             code_jenjang_pendidikan: jnj,
-    //             code_fakultas: fks,
-    //             code_prodi: prd,
-    //             status: "aktif"
-    //         }
-    //     }).
-    //         then(result => {
-    //             res.status(201).json({
-    //                 message: "Data success",
-    //                 data: result
-    //             })
-    //         }).
-    //         catch(err => {
-    //             console.log(err)
-    //         })
-    // }
+    getPresensiDosenNoAvailable: async (req, res, next) => {
+        const { code, nipy, thn, smt, jnj, fks, prd } = req.params
+        const dataUse = await jadwalPertemuanModel.findAll({
+            where: {
+                code_jadwal_kuliah: code,
+                status: "aktif"
+            }
+        })
+        if (!dataUse) return res.status(404).json({ message: "Data Tidak Ditemukan" })
+        const datause2 = dataUse.map(rs => { return rs.code_jadwal_pertemuan })
+        const dataPresensiDosen = await presensiDosenModel.findAll({
+            where: {
+                code_jadwal_pertemuan: datause2,
+                code_tahun_ajaran: thn,
+                code_semester: smt,
+                code_jenjang_pendidikan: jnj,
+                code_fakultas: fks,
+                code_prodi: prd,
+                nip_ynaa: nipy,
+                status: "aktif"
+            }
+        })
+        const dataPresensiDosenUse = dataPresensiDosen.map(el => { return el.code_jadwal_pertemuan })
+        await jadwalPertemuanModel.findAndCountAll({
+            include: [
+                {
+                    model: jadwalKuliahModel,
+                    where : {
+                        code_jadwal_kuliah : code,
+                        code_tahun_ajaran: thn,
+                        code_semester: smt,
+                        code_jenjang_pendidikan: jnj,
+                        code_fakultas: fks,
+                        code_prodi: prd,
+                        dosen_pengajar : nipy
+                    }
+                }
+            ],
+            where: {
+                code_jadwal_pertemuan : {
+                    [Op.not]: dataPresensiDosenUse
+                },
+                status: "aktif"
+            }
+        }).
+            then(result => {
+                res.status(201).json({
+                    message: "Data success",
+                    data: result
+                })
+            }).
+            catch(err => {
+                console.log(err)
+            })
+    }
 }

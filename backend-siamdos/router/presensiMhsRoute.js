@@ -13,6 +13,6 @@ router.put('/validasiPresensi/:id', presensiMhsController.validasiPresensi)
 router.get('/rekapPresensi/:codeJadkul/:thn/:smt/:jnj/:fks/:prd', presensiMhsController.rekapPresensi)
 router.get('/detailRekapPresensi/:nim/:thn/:smt/:jnj/:fks/:prd', presensiMhsController.detailRekapPresensi)
 router.get('/getPresensiDosenAvailable/:code/:nipy/:thn/:smt/:jnj/:fks/:prd', presensiMhsController.getPresensiDosenAvailable)
-// router.get('/getPresensiDosenNoAvailable/:code/:makul/:thn/:smt/:jnj/:fks/:prd', presensiMhsController.getMhsValidasiNoAvailable)
+router.get('/getPresensiDosenNoAvailable/:code/:nipy/:thn/:smt/:jnj/:fks/:prd', presensiMhsController.getPresensiDosenNoAvailable)
 
 module.exports = router
