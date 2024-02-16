@@ -271,7 +271,7 @@ const ListMakul = () => {
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Jenis Matakuliah</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>SKS</th>
                                                             <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Status</th>
-                                                            <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}>Aksi</th>
+                                                            <th className='fw-bold py-3 text-center' style={{ background: '#E9EAE1' }}><span>Aksi</span></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -300,7 +300,7 @@ const ListMakul = () => {
                                                                     <td className='py-2'>
                                                                         <span className='capitalize'>{item.sebaranMataKuliahs[0].status_makul}</span>
                                                                     </td>
-                                                                    <td className='py-2'>
+                                                                    <td className='py-2' align='center'>
                                                                         <Link to="/presensi/pertemuan" state={
                                                                             {
                                                                                 kodeThn: kodeTahun,
@@ -336,6 +336,24 @@ const ListMakul = () => {
                                                                             }}
                                                                             className='bg-[#17A2B8] ml-1 py-2 px-2 rounded text-white inline-flex items-center no-underline'>
                                                                             Rekap
+                                                                        </Link>
+                                                                        <Link to="/presensi/kehadiran"
+                                                                            state={{
+                                                                                kodeThn: kodeTahun,
+                                                                                kodeSmt: kodeSemester,
+                                                                                kodeJen: kodeJenjang,
+                                                                                kodeFkl: kodeFakultas,
+                                                                                kodePro: kodeProdi,
+                                                                                idProdi: idProdi,
+                                                                                kodeJadwal: item.code_jadwal_kuliah,
+                                                                                mataKuliah: item.sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah,
+                                                                                jenisMk: item.sebaranMataKuliahs[0].mataKuliahs[0].jenis_mata_kuliah,
+                                                                                bobot: item.sebaranMataKuliahs[0].status_bobot_makul,
+                                                                                sks: item.sebaranMataKuliahs[0].mataKuliahs[0].sks,
+                                                                                kodeMk: item.code_mata_kuliah
+                                                                            }}
+                                                                            className='bg-[#007BFF] ml-1 py-2 px-2 rounded text-white inline-flex items-center no-underline'>
+                                                                            Kehadiran
                                                                         </Link>
                                                                     </td>
                                                                 </tr>

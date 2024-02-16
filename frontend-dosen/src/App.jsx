@@ -47,6 +47,7 @@ import RekapAbsen from "./pages/dosen/presensi/RekapAbsen"
 import DetailRekap from "./pages/dosen/presensi/DetailRekap"
 import MakulList from "./pages/dosen/jurnal/MakulList"
 import ListJurnal from "./pages/dosen/jurnal/ListJurnal"
+import DetailKehadiran from "./pages/dosen/presensi/DetailKehadiran"
 
 function App() {
   return (
@@ -102,6 +103,7 @@ function App() {
           <Route path="/presensi/validasi" element={<ValidasiMhs />} />
           <Route path="/presensi/rekap" element={<RekapAbsen />} />
           <Route path="/presensi/detailrekap" element={<DetailRekap />} />
+          <Route path="/presensi/kehadiran" element={<DetailKehadiran />} />
           <Route path="/jurnal" element={<MakulList />} />
           <Route path="/jurnal/all" element={<ListJurnal />} />
         </Routes>
