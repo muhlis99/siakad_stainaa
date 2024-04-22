@@ -86,7 +86,7 @@ const ListMahasiswa = () => {
     const changePage = (event) => {
         const newOffset = (event.selected + 1);
         setPage(newOffset);
-        if (event.selected === 9) {
+        if (event.selected === 19) {
             setMsg("Jika tidak menemukan data yang dicari, maka lakukan pencarian data secara spesifik!")
         } else {
             setMsg("")
@@ -240,7 +240,7 @@ const ListMahasiswa = () => {
                                 className='justify-center btn-group'
                                 breakLabel={<SlOptions />}
                                 previousLabel={<FaArrowLeft />}
-                                pageCount={Math.min(10, pageCount)}
+                                pageCount={Math.min(20, pageCount)}
                                 onPageChange={changePage}
                                 nextLabel={<FaArrowRight />}
                                 previousLinkClassName={"btn btn-xs btn-success btn-circle btn-outline"}
