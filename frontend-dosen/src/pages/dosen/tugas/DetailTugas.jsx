@@ -75,19 +75,19 @@ const DetailTugas = () => {
         if (lampiranJawaban == null) {
             setUrlDoc('')
         } else {
-            setUrlDoc('http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/wordpdf/' + lampiranJawaban)
+            setUrlDoc('https://api-siamdos.stainaa.ac.id/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/wordpdf/' + lampiranJawaban)
         }
 
         if (jawabanPpt == null) {
             setUrlPpt('')
         } else {
-            setUrlPpt(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/ppt/${jawabanPpt}`)
+            setUrlPpt(`https://api-siamdos.stainaa.ac.id/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/ppt/${jawabanPpt}`)
         }
 
         if (jawabanVideo == null) {
             setUrlVideo('')
         } else {
-            setUrlVideo(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/video/${jawabanVideo}`)
+            setUrlVideo(`https://api-siamdos.stainaa.ac.id/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/video/${jawabanVideo}`)
         }
     }, [lampiranJawaban, jawabanPpt, jawabanVideo])
 
@@ -113,7 +113,7 @@ const DetailTugas = () => {
     ]
 
     const downloadDoc = () => {
-        fetch(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/wordpdf/${lampiranJawaban}`).then((response) => {
+        fetch(`https://api-siamdos.stainaa.ac.id/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/wordpdf/${lampiranJawaban}`).then((response) => {
             response.blob().then((blob) => {
                 const fileURL = window.URL.createObjectURL(blob)
 
@@ -126,7 +126,7 @@ const DetailTugas = () => {
     }
 
     const downloadppt = () => {
-        fetch(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/ppt/${jawabanPpt}`).then((response) => {
+        fetch(`https://api-siamdos.stainaa.ac.id/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/ppt/${jawabanPpt}`).then((response) => {
             response.blob().then((blob) => {
                 const fileURL = window.URL.createObjectURL(blob)
 
@@ -139,7 +139,7 @@ const DetailTugas = () => {
     }
 
     const downloadVideo = () => {
-        fetch(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/video/${jawabanVideo}`).then((response) => {
+        fetch(`https://api-siamdos.stainaa.ac.id/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/video/${jawabanVideo}`).then((response) => {
             response.blob().then((blob) => {
                 const fileURL = window.URL.createObjectURL(blob)
 

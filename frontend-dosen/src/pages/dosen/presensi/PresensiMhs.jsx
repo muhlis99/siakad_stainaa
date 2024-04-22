@@ -1,33 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../../Layout'
-import { Row, Col, Card, Table, Image, Modal } from 'react-bootstrap'
+import { Row, Col, Image, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../../../features/authSlice"
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
+import { Link, Navigate, useLocation } from "react-router-dom"
 import rfidIcon from "../../../assets/images/rfid.png"
 import noprofil from "../../../assets/images/foto.svg"
-import ProgressBar from "@ramonak/react-progress-bar"
 import axios from 'axios'
-import moment from 'moment'
 import { Circles } from 'react-loader-spinner'
 import Swal from 'sweetalert2'
+import ProgresBar from './ProgresBar'
 
 const PresensiMhs = () => {
-    const { isError, user } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
+    const { isError, user } = useSelector((state) => state.auth)
+    // const [username, setUsername] = useState("")
     const [load, setLoad] = useState(false)
-    const [username, setUsername] = useState("")
-    const location = useLocation()
     const [kodeRfid, setKodeRfid] = useState("")
     const [jumlahPresensi, setJumlahPresensi] = useState("")
     const [jumlahMhs, setJumlahMs] = useState("")
-
     const [nim, setNim] = useState("")
     const [nama, setNama] = useState("")
     const [foto, setFoto] = useState("")
     const [preview, setPreview] = useState("")
     const [pesan, setPesan] = useState("")
     const [show, setShow] = useState(false)
+    const [progres, setProgres] = useState("")
+    const location = useLocation()
 
     useEffect(() => {
         setLoad(true)
@@ -37,18 +36,14 @@ const PresensiMhs = () => {
     }, [])
 
     useEffect(() => {
-        console.log(location.state)
-    }, [location])
-
-    useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
 
-    useEffect(() => {
-        if (user) {
-            setUsername(user.data.username)
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (user) {
+    //         setUsername(user.data.username)
+    //     }
+    // }, [user])
 
     useEffect(() => {
         getJumlahPresensi()
@@ -66,6 +61,10 @@ const PresensiMhs = () => {
         berhasil()
     }, [nama])
 
+    useEffect(() => {
+        getPersenAbsen()
+    }, [jumlahMhs, jumlahPresensi])
+
 
     const simpanPresensi = async (e) => {
         e.preventDefault()
@@ -82,6 +81,7 @@ const PresensiMhs = () => {
                 setNim(response.data.data)
                 setPesan(response.data.message)
                 setKodeRfid("")
+                getPersenAbsen()
                 // Swal.fire({
                 //     title: 'Anda berhasil melakukan absen',
                 //     icon: 'success',
@@ -110,9 +110,11 @@ const PresensiMhs = () => {
 
     const getJumlahPresensi = async () => {
         try {
-            const response = await axios.get(`v1/presensiMhs/progresPresensi/${location.state.kodePert}/${location.state.kodeThn}/${location.state.kodeSmt}/${location.state.kodeJen}/${location.state.kodeFkl}/${location.state.kodePro}`)
-            setJumlahMs(response.data.data.jumlah_mahasiswa)
-            setJumlahPresensi(response.data.data.jumlah_mahasiswa_presensi)
+            if (location.state.kodePert, location.state.kodeThn, location.state.kodeSmt, location.state.kodeJen, location.state.kodeFkl, location.state.kodePro) {
+                const response = await axios.get(`v1/presensiMhs/progresPresensi/${location.state.kodePert}/${location.state.kodeThn}/${location.state.kodeSmt}/${location.state.kodeJen}/${location.state.kodeFkl}/${location.state.kodePro}`)
+                setJumlahMs(response.data.data.jumlah_mahasiswa)
+                setJumlahPresensi(response.data.data.jumlah_mahasiswa_presensi)
+            }
         } catch (error) {
 
         }
@@ -165,6 +167,14 @@ const PresensiMhs = () => {
                 document.getElementById('rfid').focus()
             }, 1500)
         }
+    }
+
+    const getPersenAbsen = () => {
+        let jumlahSemuaMhs = jumlahMhs
+        let jumlahAbsen = jumlahPresensi
+        let persen = jumlahAbsen / jumlahSemuaMhs * 100
+        var persenan = persen.toFixed(2)
+        setProgres(persenan);
     }
 
     return (
@@ -243,10 +253,11 @@ const PresensiMhs = () => {
                             <Row>
                                 <Col className=''>
                                     <div className='w-full lg:w-1/2 mx-auto text-center'>
-                                        <ProgressBar
-                                            completed={`${jumlahPresensi}`}
-                                            maxCompleted={jumlahMhs}
-                                            bgColor='#17A2B8'
+                                        <ProgresBar
+                                            bgcolor="#17A2B8"
+                                            progress={`${progres}`}
+                                            height={22}
+                                            jumlahMahasiswaAbsen={jumlahPresensi}
                                         />
                                         <p className='lg:text-xl mt-3 text-muted'>{jumlahPresensi} dari {jumlahMhs} Mahasiswa</p>
                                     </div>
