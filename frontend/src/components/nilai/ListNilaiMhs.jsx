@@ -201,10 +201,10 @@ const ListNilaiMhs = () => {
                                     {Mahasiswa.map((item, index) => (
                                         <tr key={item.id_nilai_kuliah} className='bg-white border-b text-gray-500 border-x'>
                                             <td className='px-6 py-2 font-semibold'>{index + 1}</td>
-                                            <td className='px-6 py-2 font-semibold'>{item.mahasiswas[0].nim}</td>
-                                            <td className='px-6 py-2 font-semibold'>{item.mahasiswas[0].nama}</td>
-                                            <td className='px-6 py-2 font-semibold'>{item.mahasiswas[0].tempat_lahir}</td>
-                                            <td className='px-6 py-2 font-semibold'>{item.nilai_akhir}</td>
+                                            <td className='px-6 py-2 font-semibold'>{item.nim}</td>
+                                            <td className='px-6 py-2 font-semibold'>{item.nama}</td>
+                                            <td className='px-6 py-2 font-semibold'>{item.tmpLahir}</td>
+                                            <td className='px-6 py-2 font-semibold'>{item.nilai}</td>
                                         </tr>
                                     ))}
                                 </tbody>
