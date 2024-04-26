@@ -1,6 +1,7 @@
 const sebaranMakulModel = require('../models/sebaranMataKuliah.js')
 const mataKuliahModel = require('../models/mataKuliahModel.js')
 const nilaiKuliahModel = require('../models/nilaiKuliahModel.js')
+const mahasiswaModel = require('../models/mahasiswaModel.js')
 const { Op } = require('sequelize')
 
 module.exports = {
@@ -15,6 +16,9 @@ module.exports = {
                     code_fakultas : fks,
                     code_prodi : prd,
                     status : "aktif"
+                },
+                order : {
+                    nim : ASC
                 }
             }],
             where : {
@@ -24,7 +28,7 @@ module.exports = {
             }
         }).then(result => {
             res.status(201).json({
-                message: "Data Ruang Ditemukan",
+                message: "Data sebaran mata kuliah",
                 data: result
             })
         }).
@@ -35,26 +39,31 @@ module.exports = {
 
     nilaiAllMhsPermakul: async (req, res, next) => {
         const {thn,smt,jnj,fks,prd,makul} = req.params
-        await ruangModel.findOne({
-            where: {
-                id_ruang: id,
-                status: "aktif"
-            }
-        }).
-            then(getById => {
-                if (!getById) {
-                    return res.status(404).json({
-                        message: "Data Ruang Tidak Ditemukan",
-                        data: null
-                    })
+        await nilaiKuliahModel.findAll({
+            include : [{
+                attributes : ["nim","nama","tempat_lahir"],
+                model : mahasiswaModel,
+                where : {
+                    status : "aktif"
                 }
-                res.status(201).json({
-                    message: "Data Ruang Ditemukan",
-                    data: getById
-                })
-            }).
-            catch(err => {
-                next(err)
+            }],
+            attributes : ["id_nilai_kuliah","code_nilai_kuliah","nilai_akhir"],
+            where: {
+                code_mata_kuliah : makul,
+                code_jenjang_pendidikan : jnj,
+                code_fakultas : fks,
+                code_prodi : prd,
+                code_tahun_ajaran : thn,
+                code_semester : smt,
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "Data nilai seluruh mahasiswa",
+                data: result
             })
+        }).
+        catch(err => {
+            console.log(err)
+        })
     }
 }
