@@ -8,6 +8,7 @@ const ListNilaiMhs = () => {
     const [Prodi, setProdi] = useState([])
     const [Tahun, setTahun] = useState([])
     const [Semester, setSemester] = useState([])
+    const [Sebaran, setSebaran] = useState([])
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
@@ -63,6 +64,14 @@ const ListNilaiMhs = () => {
         if (kodeTahun != 0) {
             const response = await axios.get(`v1/setMahasiswaSmt/smtByThnAjr/${kodeTahun}`)
             setSemester(response.data.data)
+        }
+    }
+
+    const getMataKuliahBySebaran = async () => {
+        try {
+
+        } catch (error) {
+
         }
     }
 
@@ -136,6 +145,11 @@ const ListNilaiMhs = () => {
                                 </select>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div className='grid grid-cols-5'>
+                    <div className="card bg-base-100 card-bordered shadow-md mb-2">
+                        <div className="card-body p-4"></div>
                     </div>
                 </div>
             </section>
