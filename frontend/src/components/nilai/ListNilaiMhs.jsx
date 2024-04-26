@@ -15,7 +15,8 @@ const ListNilaiMhs = () => {
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
-    const [kodeSebaran, setKodeSebaran] = useState("")
+    const [kodeMakul, setKodeMakul] = useState("")
+    const [aktif, setAktif] = useState("")
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -44,7 +45,7 @@ const ListNilaiMhs = () => {
 
     useEffect(() => {
         getMahasiwa()
-    }, [kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi, kodeSebaran])
+    }, [kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi, kodeMakul])
 
     const getJenjangPendidikan = async () => {
         const response = await axios.get('v1/jenjangPendidikan/all')
@@ -81,7 +82,7 @@ const ListNilaiMhs = () => {
         try {
             if (kodeTahun && kodeSemester && kodeJenjang && kodeFakultas && kodeProdi) {
                 const response = await axios.get(`v1/nilai/sebaranMakulToNilai/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
-                console.log(response.data.data)
+                setSebaran(response.data.data)
             }
         } catch (error) {
 
@@ -90,13 +91,18 @@ const ListNilaiMhs = () => {
 
     const getMahasiwa = async () => {
         try {
-            if (kodeTahun && kodeSemester && kodeJenjang && kodeFakultas && kodeProdi && kodeSebaran) {
-                const response = await axios.get(`v1/nilai/nilaiAllMhsPermakul/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${kodeSebaran}`)
+            if (kodeTahun && kodeSemester && kodeJenjang && kodeFakultas && kodeProdi && kodeMakul) {
+                const response = await axios.get(`v1/nilai/nilaiAllMhsPermakul/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${kodeMakul}`)
                 setMahasiswa(response.data.data)
             }
         } catch (error) {
 
         }
+    }
+
+    const pilihMakul = (e, f) => {
+        setKodeMakul(e)
+        setAktif(f)
     }
 
     return (
@@ -171,12 +177,16 @@ const ListNilaiMhs = () => {
                         </div>
                     </div>
                 </div>
-                <div className='grid grid-cols-5'>
-                    <div className="card bg-base-100 card-bordered shadow-md mb-2">
-                        <div className="card-body p-4"></div>
-                    </div>
+                <div className='grid grid-cols-10 gap-2'>
+                    {Sebaran.map((item, index) => (
+                        <div key={index} onClick={() => pilihMakul(item.code_mata_kuliah, item.mataKuliahs[0].nama_mata_kuliah)} className={`card bg-base-100 card-bordered shadow-md mb-2 cursor-pointer ${aktif == item.mataKuliahs[0].nama_mata_kuliah ? 'bg-blue-400' : ''}`}>
+                            <div className="card-body p-4">
+                                <h4 className='text-[12px]'>{item.mataKuliahs[0].nama_mata_kuliah}</h4>
+                            </div>
+                        </div>
+                    ))}
                 </div>
-            </section>
+            </section >
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md mb-2">
                     <div className="card-body p-4">
@@ -185,23 +195,29 @@ const ListNilaiMhs = () => {
                                 <thead className='text-gray-700 bg-[#d4cece]'>
                                     <tr>
                                         <th scope="col" className="px-6 py-2 text-sm">No</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">NIM</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Nama</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Tempat Lahir</th>
                                         <th scope="col" className="px-6 py-2 text-sm">Nilai Akhir</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <td className='px-6 py-2 font-semibold'></td>
-                                    <td className='px-6 py-2 font-semibold'></td>
-                                    <td className='px-6 py-2 font-semibold'></td>
-                                    <td className='px-6 py-2 font-semibold'></td>
+                                    {Mahasiswa.map((item, index) => (
+                                        <tr key={item.id_nilai_kuliah} className='bg-white border-b text-gray-500 border-x'>
+                                            <td className='px-6 py-2 font-semibold'>{index + 1}</td>
+                                            <td className='px-6 py-2 font-semibold'>{item.mahasiswas[0].nim}</td>
+                                            <td className='px-6 py-2 font-semibold'>{item.mahasiswas[0].nama}</td>
+                                            <td className='px-6 py-2 font-semibold'>{item.mahasiswas[0].tempat_lahir}</td>
+                                            <td className='px-6 py-2 font-semibold'>{item.nilai_akhir}</td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </section>
-        </div>
+        </div >
     )
 }
 
