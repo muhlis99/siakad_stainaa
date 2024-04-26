@@ -16,9 +16,6 @@ module.exports = {
                     code_fakultas : fks,
                     code_prodi : prd,
                     status : "aktif"
-                },
-                order : {
-                    nim : ASC
                 }
             }],
             where : {
@@ -45,7 +42,10 @@ module.exports = {
                 model : mahasiswaModel,
                 where : {
                     status : "aktif"
-                }
+                },
+                order: [
+                    ["nim", "DESC"]
+                ]
             }],
             attributes : ["id_nilai_kuliah","code_nilai_kuliah","nilai_akhir"],
             where: {
