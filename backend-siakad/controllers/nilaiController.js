@@ -56,10 +56,18 @@ module.exports = {
                 code_tahun_ajaran : thn,
                 code_semester : smt,
             }
-        }).then(result => {
+        }).then(async result => {
+            const i = result.map(el => {
+                return {
+                    nim : el.nim,
+                    nama : el.nama,
+                    tmpLahir : el.tempat_lahir,
+                    nlAkhir : el.nilai_akhir.toFixed(2)
+                }
+            })
             res.status(201).json({
                 message: "Data nilai seluruh mahasiswa",
-                data: result
+                data: i
             })
         }).
         catch(err => {
