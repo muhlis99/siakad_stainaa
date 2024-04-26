@@ -76,19 +76,19 @@ const TugasDetail = () => {
         if (lampiranJawaban == null) {
             setUrlDoc('')
         } else {
-            setUrlDoc('http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/wordpdf/' + lampiranJawaban)
+            setUrlDoc('https://api-siamdos.stainaa.ac.id/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/wordpdf/' + lampiranJawaban)
         }
 
         if (jawabanPpt == null) {
             setUrlPpt('')
         } else {
-            setUrlPpt(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/ppt/${jawabanPpt}`)
+            setUrlPpt(`https://api-siamdos.stainaa.ac.id/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/ppt/${jawabanPpt}`)
         }
 
         if (jawabanVideo == null) {
             setUrlVideo('')
         } else {
-            setUrlVideo(`http://localhost:4002/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/video/${jawabanVideo}`)
+            setUrlVideo(`https://api-siamdos.stainaa.ac.id/v1/detailTugas/public/seeLampiranJawaban/lampiranJawaban/video/${jawabanVideo}`)
         }
     }, [lampiranJawaban, jawabanPpt, jawabanVideo])
 
@@ -262,11 +262,11 @@ const TugasDetail = () => {
     ]
 
     const lampiran = [
-        { uri: "http://localhost:4002/v1/tugas/public/seeLampiranTugas/lampiranTugas/" + Tugas.file_tugas }
+        { uri: "https://api-siamdos.stainaa.ac.id/v1/tugas/public/seeLampiranTugas/lampiranTugas/" + Tugas.file_tugas }
     ]
 
     const download = () => {
-        fetch(`http://localhost:4002/v1/tugas/public/seeLampiranTugas/lampiranTugas/${Tugas.file_tugas}`).then((response) => {
+        fetch(`https://api-siamdos.stainaa.ac.id/v1/tugas/public/seeLampiranTugas/lampiranTugas/${Tugas.file_tugas}`).then((response) => {
             response.blob().then((blob) => {
                 const fileURL = window.URL.createObjectURL(blob)
 

@@ -46,7 +46,7 @@ const DetailPedoman = () => {
 
     useEffect(() => {
         if (detail) {
-            setUrlDoc('http://localhost:4002/v1/pedoman/public/seeLampiranPedoman/lampiranPedoman/' + detail.file_pedoman)
+            setUrlDoc('https://api-siamdos.stainaa.ac.id/v1/pedoman/public/seeLampiranPedoman/lampiranPedoman/' + detail.file_pedoman)
         } else {
             setUrlDoc('')
         }
@@ -57,7 +57,7 @@ const DetailPedoman = () => {
     ]
 
     const download = () => {
-        fetch(`http://localhost:4002/v1/pedoman/public/seeLampiranPedoman/lampiranPedoman/${detail.file_pedoman}`).then((response) => {
+        fetch(`https://api-siamdos.stainaa.ac.id/v1/pedoman/public/seeLampiranPedoman/lampiranPedoman/${detail.file_pedoman}`).then((response) => {
             response.blob().then((blob) => {
                 const fileURL = window.URL.createObjectURL(blob)
 
