@@ -177,13 +177,9 @@ const ListNilaiMhs = () => {
                         </div>
                     </div>
                 </div>
-                <div className='grid grid-cols-10 gap-2'>
+                <div className='grid grid-cols-5 gap-2'>
                     {Sebaran.map((item, index) => (
-                        <div key={index} onClick={() => pilihMakul(item.code_mata_kuliah, item.mataKuliahs[0].nama_mata_kuliah)} className={`card bg-base-100 card-bordered shadow-md mb-2 cursor-pointer ${aktif == item.mataKuliahs[0].nama_mata_kuliah ? 'bg-blue-400' : ''}`}>
-                            <div className="card-body p-4">
-                                <h4 className='text-[12px]'>{item.mataKuliahs[0].nama_mata_kuliah}</h4>
-                            </div>
-                        </div>
+                        <button key={index} onClick={() => pilihMakul(item.code_mata_kuliah, item.mataKuliahs[0].nama_mata_kuliah)} className={`${aktif == item.mataKuliahs[0].nama_mata_kuliah ? 'bg-blue-400' : 'border border-blue-400 text-black'} py-1 rounded no-underline text-white inline-flex items-center text-[12px] w-full`}><span className='mx-auto'>{item.mataKuliahs[0].nama_mata_kuliah}</span></button>
                     ))}
                 </div>
             </section >
