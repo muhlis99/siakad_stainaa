@@ -62,7 +62,7 @@ module.exports = {
                     nim : el.mahasiswas[0].nim,
                     nama : el.mahasiswas[0].nama,
                     tmpLahir : el.mahasiswas[0].tempat_lahir,
-                    nilai : parseInt(el.nilai_akhir).toFixed(2)
+                    nilai : parseFloat(el.nilai_akhir).toFixed(2)
                 } 
             })
             res.status(201).json({
