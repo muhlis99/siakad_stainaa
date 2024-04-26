@@ -9,11 +9,13 @@ const ListNilaiMhs = () => {
     const [Tahun, setTahun] = useState([])
     const [Semester, setSemester] = useState([])
     const [Sebaran, setSebaran] = useState([])
+    const [Mahasiswa, setMahasiswa] = useState([])
     const [kodeJenjang, setKodeJenjang] = useState("")
     const [kodeFakultas, setKodeFakultas] = useState("")
     const [kodeProdi, setKodeProdi] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
     const [kodeSemester, setKodeSemester] = useState("")
+    const [kodeSebaran, setKodeSebaran] = useState("")
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -35,6 +37,14 @@ const ListNilaiMhs = () => {
     useEffect(() => {
         getProdi()
     }, [kodeFakultas])
+
+    useEffect(() => {
+        getMataKuliahBySebaran()
+    }, [kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi])
+
+    useEffect(() => {
+        getMahasiwa()
+    }, [kodeTahun, kodeSemester, kodeJenjang, kodeFakultas, kodeProdi, kodeSebaran])
 
     const getJenjangPendidikan = async () => {
         const response = await axios.get('v1/jenjangPendidikan/all')
@@ -69,7 +79,21 @@ const ListNilaiMhs = () => {
 
     const getMataKuliahBySebaran = async () => {
         try {
+            if (kodeTahun && kodeSemester && kodeJenjang && kodeFakultas && kodeProdi) {
+                const response = await axios.get(`v1/nilai/sebaranMakulToNilai/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}`)
+                console.log(response.data.data)
+            }
+        } catch (error) {
 
+        }
+    }
+
+    const getMahasiwa = async () => {
+        try {
+            if (kodeTahun && kodeSemester && kodeJenjang && kodeFakultas && kodeProdi && kodeSebaran) {
+                const response = await axios.get(`v1/nilai/nilaiAllMhsPermakul/${kodeTahun}/${kodeSemester}/${kodeJenjang}/${kodeFakultas}/${kodeProdi}/${kodeSebaran}`)
+                setMahasiswa(response.data.data)
+            }
         } catch (error) {
 
         }
@@ -150,6 +174,30 @@ const ListNilaiMhs = () => {
                 <div className='grid grid-cols-5'>
                     <div className="card bg-base-100 card-bordered shadow-md mb-2">
                         <div className="card-body p-4"></div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div className="card bg-base-100 card-bordered shadow-md mb-2">
+                    <div className="card-body p-4">
+                        <div className="overflow-x-auto mb-2">
+                            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead className='text-gray-700 bg-[#d4cece]'>
+                                    <tr>
+                                        <th scope="col" className="px-6 py-2 text-sm">No</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Nama</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Tempat Lahir</th>
+                                        <th scope="col" className="px-6 py-2 text-sm">Nilai Akhir</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td className='px-6 py-2 font-semibold'></td>
+                                    <td className='px-6 py-2 font-semibold'></td>
+                                    <td className='px-6 py-2 font-semibold'></td>
+                                    <td className='px-6 py-2 font-semibold'></td>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
