@@ -57,13 +57,13 @@ module.exports = {
                 code_semester : smt,
             }
         }).then(async result => {
-            const i = result.map(el => {
+            const i = result.map((el) => {
                 return {
-                    nim : el.nim,
-                    nama : el.nama,
-                    tmpLahir : el.tempat_lahir,
-                    nlAkhir : el.nilai_akhir.toFixed(2)
-                }
+                    nim : el.mahasiswas[0].nim,
+                    nama : el.mahasiswas[0].nama,
+                    tmpLahir : el.mahasiswas[0].tempat_lahir,
+                    nilai : parseInt(el.nilai_akhir).toFixed(2)
+                } 
             })
             res.status(201).json({
                 message: "Data nilai seluruh mahasiswa",
