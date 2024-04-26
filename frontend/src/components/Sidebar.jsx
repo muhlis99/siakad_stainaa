@@ -34,7 +34,7 @@ import {
   SiFoursquarecityguide
 } from "react-icons/si"
 import { RiRfidFill } from "react-icons/ri"
-import { FaChalkboardUser } from "react-icons/fa6"
+import { FaChalkboardUser, FaMarker } from "react-icons/fa6"
 
 const Sidebar = () => {
   const location = useLocation()
@@ -185,6 +185,9 @@ const Sidebar = () => {
                 <li>
                   <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
                 </li>
+                <li>
+                  <Link to="/nilaimhs" state={{ collaps: 'kuliah', activ: '/nilaimhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/nilaimhs' || active == '/nilaimhs' ? 'active' : ''} even:bg-[#287155]`}><FaMarker /> <span className='text-sm'>Nilai Mahasiswa</span></Link>
+                </li>
               </ul>
             </details> :
             <details>
@@ -237,6 +240,9 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link to="/pedoman" state={{ collaps: 'kuliah', activ: '/pedoman' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pedoman' || active == '/pedoman' ? 'active' : ''} even:bg-[#287155]`}><SiFoursquarecityguide /> <span className='text-sm'>Pedoman Akademik</span></Link>
+                </li>
+                <li>
+                  <Link to="/nilaimhs" state={{ collaps: 'kuliah', activ: '/nilaimhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/nilaimhs' || active == '/nilaimhs' ? 'active' : ''} even:bg-[#287155]`}><FaMarker /> <span className='text-sm'>Nilai Mahasiswa</span></Link>
                 </li>
               </ul>
             </details>
