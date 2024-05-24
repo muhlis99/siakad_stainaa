@@ -1060,7 +1060,7 @@ module.exports = {
     },
 
     qrcodepmb : async (req, res, next) => {
-        const {nim, kode} = req.params
+        const {nim, dataQrCode} = req.params
 
         async function createQrCode(dataForQRcode, center_image, width, cwidth) {
             const canvas = createCanvas(width, width)
@@ -1099,8 +1099,8 @@ module.exports = {
                     100
                 )
                 const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
-                fs.unlinkSync(`./tmp_siakad/mahasiswa/qrcode/${qrCodeOld}`)
-                let filename = `./tmp_siakad/mahasiswa/qrcode/${data}.png`;
+                fs.unlinkSync(`../tmp_siakad/mahasiswa/qrcode/${qrCodeOld}`)
+                let filename = `../tmp_siakad/mahasiswa/qrcode/${data}.png`;
                 fs.writeFile(filename, base64Data, "base64url", (err) => {
                     if (!err) console.log(`${filename} created successfully!`)
                 })
@@ -1117,14 +1117,22 @@ module.exports = {
                     100
                 )
                 const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
-                let filename = `./tmp_siakad/mahasiswa/qrcode/${data}.png`;
+                let filename = `../tmp_siakad/mahasiswa/qrcode/${data}.png`;
                 fs.writeFile(filename, base64Data, "base64url", (err) => {
                     if (!err) console.log(`${filename} created successfully!`)
                 })
             }
         }
 
-        mainQrCode(nim, kode)
+        try {
+            mainQrCode(nim, dataQrCode)
+            res.status(201).json({
+                message : "successs"
+            })
+            
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
