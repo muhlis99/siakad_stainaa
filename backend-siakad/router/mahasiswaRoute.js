@@ -29,4 +29,8 @@ router.use('/public/seeImage/mahasiswa/qrcode', express.static(path.join('../tmp
 //  user 
 router.get('/getByNim/:nim', mahasiswaController.getByNim)
 
+// pmb
+router.get('/qrcodepmb/:nim/:kode', mahasiswaController.qrcodepmb)
+
+
 module.exports = router

@@ -1058,5 +1058,73 @@ module.exports = {
                 next(err)
             })
     },
+
+    qrcodepmb : async (req, res, next) => {
+        const {nim, kode} = req.params
+
+        async function createQrCode(dataForQRcode, center_image, width, cwidth) {
+            const canvas = createCanvas(width, width)
+            QRCode.toCanvas(
+                canvas,
+                dataForQRcode,
+                {
+                    errorCorrectionLevel: "H",
+                    width: 500,
+                    margin: 1,
+                    color: {
+                        dark: "#000000",
+                        light: "#ffffff",
+                    },
+                }
+            )
+
+            const ctx = canvas.getContext("2d")
+            const img = await loadImage(center_image)
+            const center = (width - cwidth) / 1
+            ctx.drawImage(img, 200, 190, cwidth, cwidth)
+            return canvas.toDataURL("image/png")
+        }
+
+        async function mainQrCode(nim, params, qrCodeOld = "") {
+            if (qrCodeOld) {
+                const data = params
+                const centerImageBase64 = fs.readFileSync(
+                    path.resolve('./stainaa.png')
+                )
+                const dataQrWithLogo = Buffer.from(centerImageBase64).toString('base64url')
+                const qrCode = await createQrCode(
+                    nim,
+                    `data:image/png;base64,${dataQrWithLogo}`,
+                    150,
+                    100
+                )
+                const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
+                fs.unlinkSync(`./tmp_siakad/mahasiswa/qrcode/${qrCodeOld}`)
+                let filename = `./tmp_siakad/mahasiswa/qrcode/${data}.png`;
+                fs.writeFile(filename, base64Data, "base64url", (err) => {
+                    if (!err) console.log(`${filename} created successfully!`)
+                })
+            } else {
+                const data = params
+                const centerImageBase64 = fs.readFileSync(
+                    path.resolve('./stainaa.png')
+                )
+                const dataQrWithLogo = Buffer.from(centerImageBase64).toString('base64url')
+                const qrCode = await createQrCode(
+                    nim,
+                    `data:image/png;base64,${dataQrWithLogo}`,
+                    150,
+                    100
+                )
+                const base64Data = qrCode.replace(/^data:image\/png;base64,/, "");
+                let filename = `./tmp_siakad/mahasiswa/qrcode/${data}.png`;
+                fs.writeFile(filename, base64Data, "base64url", (err) => {
+                    if (!err) console.log(`${filename} created successfully!`)
+                })
+            }
+        }
+
+        mainQrCode(nim, kode)
+    }
 }
 
