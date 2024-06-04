@@ -31,15 +31,10 @@ const FormUpload1 = () => {
             try {
                 const response = await axios.get(`v1/dosen/getById/${idDsn}`)
                 setNamanya(response.data.data.nama)
-                setFoto(response.data.data.foto_diri)
                 setFotos(response.data.data.foto_diri)
-                setKtp(response.data.data.foto_ktp)
                 setKtps(response.data.data.foto_ktp)
-                setSehatRohani(response.data.data.foto_sehat_rohani)
                 setSehatRohanis(response.data.data.foto_sehat_rohani)
-                setSehatJasmani(response.data.data.foto_sehat_jasmani)
                 setSehatJasmanis(response.data.data.foto_sehat_jasmani)
-                setJanjiKerja(response.data.data.foto_surat_perjanjian_kerja)
                 setJanjiKerjas(response.data.data.foto_surat_perjanjian_kerja)
             } catch (error) {
 
@@ -193,40 +188,42 @@ const FormUpload1 = () => {
 
     const simpanBerkas = async (e) => {
         e.preventDefault()
-        const formData = new FormData()
-        formData.append("foto_diri", foto)
-        formData.append("foto_ktp", ktp)
-        formData.append("foto_sehat_rohani", sehatRohani)
-        formData.append("foto_sehat_jasmani", sehatJasmani)
-        formData.append("foto_surat_perjanjian_kerja", janjiKerja)
-        try {
-            if (foto == fotos) {
-                Swal.fire({
-                    title: "Foto Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (ktp == ktps) {
-                Swal.fire({
-                    title: "Foto KTP Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (sehatRohani == sehatRohanis) {
-                Swal.fire({
-                    title: "Scan Surat Sehat Rohani Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (sehatJasmani == sehatJasmanis) {
-                Swal.fire({
-                    title: "Scan Surat Sehat Jasmani Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (janjiKerja == janjiKerjas) {
-                Swal.fire({
-                    title: "Scan Surat Perjanjian Kerja Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else {
-                setLoading(true)
+        setLoading(true)
+        if (foto || ktp || sehatRohani || sehatJasmani || janjiKerja) {
+            const formData = new FormData()
+            formData.append("foto_diri", foto)
+            formData.append("foto_ktp", ktp)
+            formData.append("foto_sehat_rohani", sehatRohani)
+            formData.append("foto_sehat_jasmani", sehatJasmani)
+            formData.append("foto_surat_perjanjian_kerja", janjiKerja)
+            try {
+                // if (foto == fotos) {
+                //     Swal.fire({
+                //         title: "Foto Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else if (ktp == ktps) {
+                //     Swal.fire({
+                //         title: "Foto KTP Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else if (sehatRohani == sehatRohanis) {
+                //     Swal.fire({
+                //         title: "Scan Surat Sehat Rohani Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else if (sehatJasmani == sehatJasmanis) {
+                //     Swal.fire({
+                //         title: "Scan Surat Sehat Jasmani Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else if (janjiKerja == janjiKerjas) {
+                //     Swal.fire({
+                //         title: "Scan Surat Perjanjian Kerja Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else {
+
                 await axios.put(`v1/dosen/createFromUpload1/${idDsn}`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data"
@@ -240,15 +237,24 @@ const FormUpload1 = () => {
                         navigate(`/dosen/upload2/${idDsn}`, { state: { collaps: 'induk', activ: '/dosen' } })
                     });
                 })
+                // }
+            } catch (error) {
+                if (error.response) {
+                    setLoading(false)
+                    Swal.fire({
+                        title: error.response.data.message,
+                        icon: "error"
+                    })
+                }
             }
-        } catch (error) {
-            if (error.response) {
-                setLoading(false)
-                Swal.fire({
-                    title: error.response.data.message,
-                    icon: "error"
-                })
-            }
+        } else {
+            setLoading(false)
+            Swal.fire({
+                title: "Data file dosen berhasil ditambahkan",
+                icon: "success"
+            }).then(() => {
+                navigate(`/dosen/upload2/${idDsn}`, { state: { collaps: 'induk', activ: '/dosen' } })
+            });
         }
     }
 

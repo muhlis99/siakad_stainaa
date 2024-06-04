@@ -34,17 +34,17 @@ const FormUpload = () => {
             try {
                 const response = await axios.get(`v1/mahasiswa/getById/${idMhs}`)
                 setNamanya(response.data.data.nama)
+                // setFoto(response.data.data.foto_diri)
                 setFotos(response.data.data.foto_diri)
-                setFoto(response.data.data.foto_diri)
-                setKk(response.data.data.foto_kk)
                 setKks(response.data.data.foto_kk)
-                setKtp(response.data.data.foto_ktp)
+                // setKk(response.data.data.foto_kk)
+                // setKtp(response.data.data.foto_ktp)
                 setKtps(response.data.data.foto_ktp)
-                setIjazah(response.data.data.foto_ijazah)
+                // setIjazah(response.data.data.foto_ijazah)
                 setIjazahs(response.data.data.foto_ijazah)
-                setKip(response.data.data.foto_kip)
+                // setKip(response.data.data.foto_kip)
                 setKips(response.data.data.foto_kip)
-                setKtm(response.data.data.foto_ktm)
+                // setKtm(response.data.data.foto_ktm)
                 setKtms(response.data.data.foto_ktm)
             } catch (error) {
 
@@ -226,41 +226,43 @@ const FormUpload = () => {
 
     const simpanBerkas = async (e) => {
         e.preventDefault()
-        const formData = new FormData()
-        formData.append("foto_diri", foto)
-        formData.append("foto_kk", kk)
-        formData.append("foto_ktp", ktp)
-        formData.append("foto_ijazah", ijazah)
-        formData.append("foto_kip", kip)
-        formData.append("foto_ktm", ktm)
-        try {
-            if (foto == fotos) {
-                Swal.fire({
-                    title: "Foto Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (kk == kks) {
-                Swal.fire({
-                    title: "Scan Kartu Keluarga Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (ktp == ktps) {
-                Swal.fire({
-                    title: "Scan KTP Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (ijazah == ijazahs) {
-                Swal.fire({
-                    title: "Scan Ijazah Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (ktm == ktms) {
-                Swal.fire({
-                    title: "Scan KTM Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else {
-                setLoading(true)
+        setLoading(true)
+        if (foto || kk || ktp || ijazah || kip || ktm) {
+            const formData = new FormData()
+            formData.append("foto_diri", foto)
+            formData.append("foto_kk", kk)
+            formData.append("foto_ktp", ktp)
+            formData.append("foto_ijazah", ijazah)
+            formData.append("foto_kip", kip)
+            formData.append("foto_ktm", ktm)
+            try {
+                // if (foto == fotos) {
+                //     Swal.fire({
+                //         title: "Foto Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else if (kk == kks) {
+                //     Swal.fire({
+                //         title: "Scan Kartu Keluarga Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else if (ktp == ktps) {
+                //     Swal.fire({
+                //         title: "Scan KTP Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else if (ijazah == ijazahs) {
+                //     Swal.fire({
+                //         title: "Scan Ijazah Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else if (ktm == ktms) {
+                //     Swal.fire({
+                //         title: "Scan KTM Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else {
+                // setLoading(true)
                 await axios.put(`v1/mahasiswa/createFile/${idMhs}`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data"
@@ -274,15 +276,24 @@ const FormUpload = () => {
                         navigate("/mahasiswa", { state: { collaps: 'induk', activ: '/mahasiswa' } })
                     });
                 })
+                // }
+            } catch (error) {
+                setLoading(false)
+                if (error.response) {
+                    Swal.fire({
+                        title: error.response.data.message,
+                        icon: "error"
+                    })
+                }
             }
-        } catch (error) {
+        } else {
             setLoading(false)
-            if (error.response) {
-                Swal.fire({
-                    title: error.response.data.message,
-                    icon: "error"
-                })
-            }
+            Swal.fire({
+                title: "Data file mahasiswa berhasil ditambahkan",
+                icon: "success"
+            }).then(() => {
+                navigate("/mahasiswa", { state: { collaps: 'induk', activ: '/mahasiswa' } })
+            });
         }
 
     }
