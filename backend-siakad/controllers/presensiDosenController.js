@@ -213,7 +213,7 @@ module.exports = {
                 then(result => {
                     res.status(201).json({
                         message: "Data presensi berhasil disimpan",
-                        data: result.nip_ynaa
+                        data: dataDosen.id_dosen
                     })
                 }).
                 catch(err => {
@@ -275,7 +275,7 @@ module.exports = {
                     then(result => {
                         res.status(201).json({
                             message: "Data presensi berhasil disimpan",
-                            data: result.nim
+                            data: dataDosen.id_dosen
                         })
                     }).
                     catch(err => {
