@@ -97,7 +97,7 @@ function App() {
           <Route path="/mahasiswa/form2" element={<Form2 />} />
           <Route path="/mahasiswa/form3" element={<Form3 />} />
           <Route path="/mahasiswa/form4" element={<Form4 />} />
-          <Route path="/mahasiswa/upload/:idMhs" element={<Upload />} />
+          <Route path="/mahasiswa/upload/berkas/:idMhs" element={<Upload />} />
           <Route path="/mahasiswa/detail/:idMhs" element={<Detail />} />
           <Route path="/mahasiswa/print/:idMhs" element={<PrintMhs />} />
           <Route path="/dosen" element={<Dosen />} />

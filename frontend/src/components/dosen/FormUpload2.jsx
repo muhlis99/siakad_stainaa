@@ -28,13 +28,13 @@ const FormUpload2 = () => {
             try {
                 const response = await axios.get(`v1/dosen/getById/${idDsn}`)
                 setNamanya(response.data.data.nama)
-                setSkDosen(response.data.data.foto_sk_dosen)
+                // setSkDosen(response.data.data.foto_sk_dosen)
                 setSkDosens(response.data.data.foto_sk_dosen)
-                setBebasNarkotika(response.data.data.foto_sk_bebas_narkotika)
+                // setBebasNarkotika(response.data.data.foto_sk_bebas_narkotika)
                 setBebasNarkotikas(response.data.data.foto_sk_bebas_narkotika)
-                setSkPt(response.data.data.foto_sk_dari_pimpinan_pt)
+                // setSkPt(response.data.data.foto_sk_dari_pimpinan_pt)
                 setSkPts(response.data.data.foto_sk_dari_pimpinan_pt)
-                setTridma(response.data.data.foto_sk_aktif_melaksanakan_tridma_pt)
+                // setTridma(response.data.data.foto_sk_aktif_melaksanakan_tridma_pt)
                 setTridmas(response.data.data.foto_sk_aktif_melaksanakan_tridma_pt)
             } catch (error) {
 
@@ -63,6 +63,7 @@ const FormUpload2 = () => {
                         )
                     )
                     setPrevSkDosen(`data:;base64,${base64}`)
+                    console.log(`data:;base64,${base64}`)
                 })
 
             }
@@ -154,40 +155,42 @@ const FormUpload2 = () => {
 
     const loadTridma = (e) => {
         const image = e.target.files[0]
+        console.log(image)
         setTridma(image)
         setPrevTridma(URL.createObjectURL(image))
     }
 
     const simpanBerkas = async (e) => {
         e.preventDefault()
-        const formData = new FormData()
-        formData.append("foto_sk_dosen", skDosen)
-        formData.append("foto_sk_bebas_narkotika", bebasNarkotika)
-        formData.append("foto_sk_dari_pimpinan_pt", skPt)
-        formData.append("foto_sk_aktif_melaksanakan_tridma_pt", tridma)
-        try {
-            if (skDosen == skDosens) {
-                Swal.fire({
-                    title: "Scan SK Dosen Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (bebasNarkotika == bebasNarkotikas) {
-                Swal.fire({
-                    title: "Scan SK Bebas Narkotika Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (skPt == skPts) {
-                Swal.fire({
-                    title: "Scan SK Dari Pimpinan PT Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else if (tridma == tridmas) {
-                Swal.fire({
-                    title: "Scan SK Aktif Melaksanakan Tridma PT Tidak Boleh Kosong",
-                    icon: "warning"
-                })
-            } else {
-                setLoading(true)
+        setLoading(true)
+        if (skDosen || bebasNarkotika || skPt || tridma) {
+            const formData = new FormData()
+            formData.append("foto_sk_dosen", skDosen)
+            formData.append("foto_sk_bebas_narkotika", bebasNarkotika)
+            formData.append("foto_sk_dari_pimpinan_pt", skPt)
+            formData.append("foto_sk_aktif_melaksanakan_tridma_pt", tridma)
+            try {
+                // if (skDosen == skDosens) {
+                //     Swal.fire({
+                //         title: "Scan SK Dosen Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else if (bebasNarkotika == bebasNarkotikas) {
+                //     Swal.fire({
+                //         title: "Scan SK Bebas Narkotika Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else if (skPt == skPts) {
+                //     Swal.fire({
+                //         title: "Scan SK Dari Pimpinan PT Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else if (tridma == tridmas) {
+                //     Swal.fire({
+                //         title: "Scan SK Aktif Melaksanakan Tridma PT Tidak Boleh Kosong",
+                //         icon: "warning"
+                //     })
+                // } else {
                 await axios.put(`v1/dosen/createFromUpload2/${idDsn}`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data"
@@ -201,14 +204,23 @@ const FormUpload2 = () => {
                         navigate("/dosen", { state: { collaps: 'induk', activ: '/dosen' } })
                     });
                 })
+                // }
+            } catch (error) {
+                if (error.response) {
+                    Swal.fire({
+                        title: error.response.data.message,
+                        icon: "error"
+                    })
+                }
             }
-        } catch (error) {
-            if (error.response) {
-                Swal.fire({
-                    title: error.response.data.message,
-                    icon: "error"
-                })
-            }
+        } else {
+            setLoading(false)
+            Swal.fire({
+                title: "Data file dosen berhasil ditambahkan",
+                icon: "success"
+            }).then(() => {
+                navigate("/dosen", { state: { collaps: 'induk', activ: '/dosen' } })
+            });
         }
     }
 

@@ -67,7 +67,7 @@ const TanggalPresensi = () => {
                                     className='input input-sm input-bordered w-full' />
                             </div>
                             <div>
-                                {
+                                {/* {
                                     status == false && kodeTahun && tanggal ?
                                         <Link to="/presensi/proses" state={{ tgl: tanggal, mom: moment(tanggal).format('DD MMMM YYYY'), kodeTahun: kodeTahun }}
                                             className="bg-[#17A2B8] mt-3 float-right py-1 px-2 rounded-md text-white inline-flex gap-1 items-center no-underline">Absen</Link>
@@ -76,7 +76,17 @@ const TanggalPresensi = () => {
                                 }
                                 {status && <div className='text-center'>
                                     <span className='text-red-500 text-[12px]'>Anda telah melakukan absen pada tanggal yang anda pilih</span>
-                                </div>}
+                                </div>} */}
+                                {
+                                    kodeTahun && tanggal ?
+                                        <Link to="/presensi/proses" state={{ tgl: tanggal, mom: moment(tanggal).format('DD MMMM YYYY'), kodeTahun: kodeTahun }}
+                                            className="bg-[#17A2B8] mt-3 float-right py-1 px-2 rounded-md text-white inline-flex gap-1 items-center no-underline">Absen</Link>
+                                        :
+                                        ""
+                                }
+                                {/* {status && <div className='text-center'>
+                                    <span className='text-red-500 text-[12px]'>Anda telah melakukan absen pada tanggal yang anda pilih</span>
+                                </div>} */}
                             </div>
                         </div>
                     </div>

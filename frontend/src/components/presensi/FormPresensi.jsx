@@ -46,7 +46,10 @@ const FormPresensi = () => {
                         title: response.data.message,
                         icon: "success",
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
+                        imageUrl: "https://placeholder.pics/svg/300x1500",
+                        imageHeight: 200,
+                        imageWidth: 200,
                     }).then(() => {
                         setKodeRfid("")
                         getProgres()
