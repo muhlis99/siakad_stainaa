@@ -183,7 +183,7 @@ module.exports = {
                 status: "aktif"
             },
             order: [
-                ["code_jadwal_kuliah", "ASC"]
+                ["id_jadwal_pertemuan", "ASC"]
             ]
         })
         if (!valDafJadperDosen) return res.status(404).json({ message: "Data anda tidak ditemukan dalam daftar jadwal pertemuan Tidak Ditemukan" })
@@ -223,6 +223,7 @@ module.exports = {
             const valDafJadperDosenUse = valDafJadperDosen.map(el => { return el.code_jadwal_pertemuan })
             const valPresensiDosenUse = valPresensiDosen.map(rs => { return rs.code_jadwal_pertemuan })
             const filtered = valDafJadperDosenUse.filter(item => !valPresensiDosenUse.includes(item));
+            console.log(filtered);
             if (filtered == "") return res.status(404).json({ message: "anda tidak mempunyai jadwal mengajar hari ini" })
             const filter = filtered[0]
             const duplicateDataUse = await presensiDosenModel.findOne({
@@ -251,7 +252,10 @@ module.exports = {
                         tanggal_pertemuan: tgl,
                         code_jadwal_pertemuan: filter,
                         status: "aktif"
-                    }
+                    },
+                    order: [
+                        ["id_jadwal_pertemuan", "ASC"]
+                    ]
                 })
 
                 await presensiDosenModel.create({
