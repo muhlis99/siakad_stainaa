@@ -171,6 +171,57 @@ module.exports = {
             })
     },
 
+    postByone : async (req,res,next) => {
+        function randomAngka(params) {
+            let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let charLength = chars.length;
+            let result = ''
+            for (let i = 0; i < params; i++) {
+                result += chars.charAt(Math.floor(Math.random() * charLength))
+            }
+            return result
+        }
+        const { 
+            code_kelas,code_mata_kuliah,code_kategori_nilai,
+            code_tahun_ajaran, code_semester,code_jenjang_pendidikan,code_fakultas,
+            code_prodi,nim,nilai_presentasi,nilai_penguasaan_materi,
+            nilai_slide_power_point,nilai_keaktifan,nilai_hadir,
+            nilai_tugas,nilai_uts,nilai_uas,nilai_jumlah, nilai_akhir,
+        } = req.body
+        let randomNumber = randomAngka(5) + Math.floor(100000000000 + Math.random() * 900000000000)
+
+        await nilaiKuliahModel.create({
+            code_nilai_kuliah: randomNumber,
+            code_kelas: code_kelas,
+            code_mata_kuliah: code_mata_kuliah,
+            code_kategori_nilai: code_kategori_nilai,
+            code_tahun_ajaran: code_tahun_ajaran,
+            code_semester: code_semester,
+            code_jenjang_pendidikan: code_jenjang_pendidikan,
+            code_fakultas: code_fakultas,
+            code_prodi: code_prodi,
+            nim: nim,
+            nilai_presentasi: nilai_presentasi,
+            nilai_penguasaan_materi: nilai_penguasaan_materi,
+            nilai_slide_power_point: nilai_slide_power_point,
+            nilai_keaktifan: nilai_keaktifan,
+            nilai_hadir: nilai_hadir,
+            nilai_tugas: nilai_tugas,
+            nilai_uts: nilai_uts,
+            nilai_uas: nilai_uas,
+            nilai_jumlah: nilai_jumlah,
+            nilai_akhir: nilai_akhir,
+            status: "aktif"
+        }).then(result => {
+            res.status(200).json({
+                message: "Data nilai kuliah success Disimpan",
+            })
+        }).
+            catch(err => {
+                next(err)
+            })
+    },
+
     put: async (req, res, next) => {
         const id = req.params.id
         const { code_kategori_nilai, nilai_presentasi, nilai_penguasaan_materi,
