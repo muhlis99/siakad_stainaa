@@ -475,7 +475,7 @@ const InputNilai = () => {
                                     color="#000"
                                     ariaLabel="circles-loading"
                                     wrapperStyle={{}}
-                                    wrapperClass=""
+                                    wrapperclassName=""
                                     visible={true}
                                 />
                             </div>
@@ -564,29 +564,100 @@ const InputNilai = () => {
                                     <form onSubmit={simpanNilai}>
                                         <Card className='mt-3'>
                                             <Card.Body>
+                                                <Row className='mb-3'>
+                                                    <Col>
+                                                        <h5>Sebelum melakukan input nilai mahasiswa, silakan centang pilihan di bawah ini!</h5>
+                                                        <div className="grid grid-cols-2 gap-4 lg:grid-cols-8">
+                                                            <div className="p-2">
+                                                                <div className="form-check">
+                                                                    <input className="form-check-input" type="checkbox" checked value="" id="flexCheckDefault" />
+                                                                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                                                                        Presentasi
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className="p-2">
+                                                                <div className="form-check">
+                                                                    <input className="form-check-input" type="checkbox" checked value="" id="flexCheckDefault" />
+                                                                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                                                                        Materi
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className="p-2">
+                                                                <div className="form-check">
+                                                                    <input className="form-check-input" type="checkbox" checked value="" id="flexCheckDefault" />
+                                                                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                                                                        Power Point
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className="p-2">
+                                                                <div className="form-check">
+                                                                    <input className="form-check-input" type="checkbox" checked value="" id="flexCheckDefault" />
+                                                                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                                                                        Keaktifan
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className="p-2">
+                                                                <div className="form-check">
+                                                                    <input className="form-check-input" type="checkbox" checked value="" id="flexCheckDefault" />
+                                                                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                                                                        Tugas
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className="p-2">
+                                                                <div className="form-check">
+                                                                    <input className="form-check-input" type="checkbox" checked value="" id="flexCheckDefault" />
+                                                                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                                                                        UTS
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className="p-2">
+                                                                <div className="form-check">
+                                                                    <input className="form-check-input" type="checkbox" checked value="" id="flexCheckDefault" />
+                                                                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                                                                        UAS
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className="p-2">
+                                                                <div className="form-check">
+                                                                    <input className="form-check-input" type="checkbox" checked value="" id="flexCheckDefault" />
+                                                                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                                                                        Absen
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
                                                 <Row>
                                                     <Col className='p-0'>
                                                         <div className="table-responsive">
                                                             <Table hover>
                                                                 <thead>
                                                                     <tr className='border'>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>#</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>NIM</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>Nama</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Presentasi</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Materi</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Power Point</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Keaktifan</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Tugas</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>UTS</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>UAS</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }}>Absen</th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>Jumlah</th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>Nilai</th>
-                                                                        <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>Grade</th>
-                                                                        <th className='fw-bold py-1 text-center border-2' style={{ background: '#E9EAE1' }} rowSpan={2}>Status</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>#</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>NIM</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>Nama</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>Presentasi</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>Materi</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>Power Point</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>Keaktifan</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>Tugas</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>UTS</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>UAS</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>Absen</th>
+                                                                        <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>Jumlah</th>
+                                                                        <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>Nilai</th>
+                                                                        <th className='fw-bold py-3 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>Grade</th>
+                                                                        <th className='fw-bold py-3 text-center border-2' style={{ background: '#E9EAE1' }}>Status</th>
                                                                     </tr>
-                                                                    <tr className='border'>
+                                                                    {/* <tr className='border'>
                                                                         <th className='fw-bold py-1 px-1 text-center border-2' style={{ background: '#E9EAE1' }}>
                                                                             <div className="form-check">
                                                                                 <input className="form-check-input"
@@ -651,7 +722,7 @@ const InputNilai = () => {
                                                                                     type="checkbox" />
                                                                             </div>
                                                                         </th>
-                                                                    </tr>
+                                                                    </tr> */}
                                                                 </thead>
                                                                 <tbody>
                                                                     {Mahasiswa.map((mhs, index) => (
