@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import Loading from '../Loading'
 import { Link, useLocation } from "react-router-dom"
@@ -17,6 +17,7 @@ const FormPresensi = () => {
     const [jumlahPresensiMasuk, setJumlahPresensiMasuk] = useState("")
     const [jumlahPresensiPulang, setJumlahPresensiPulang] = useState("")
     const [jumlahDsn, setJumlahDsn] = useState("")
+
 
     useEffect(() => {
         setLoading(true)
@@ -40,16 +41,14 @@ const FormPresensi = () => {
                 codeRfid: kodeRfid,
                 tgl: location.state.tgl,
             }).then(function (response) {
-                // console.log(response);
+                console.log(response.data.data);
                 if (response.data.message == 'Data presensi berhasil disimpan') {
                     Swal.fire({
                         title: response.data.message,
                         icon: "success",
                         showConfirmButton: false,
                         timer: 1500,
-                        imageUrl: "https://placeholder.pics/svg/300x1500",
-                        imageHeight: 200,
-                        imageWidth: 200,
+                        // html: `<img src={data:;base64,${prevKk}} />`,
                     }).then(() => {
                         setKodeRfid("")
                         getProgres()
@@ -97,7 +96,7 @@ const FormPresensi = () => {
     setInterval(updateJam)
 
     return (
-        <div className='bg-[#EDEDED] h-full'>
+        <div className='bg-[#EDEDED] h-full' >
             <div className='h-screen p-4'>
                 <div className={`w-full min-h-screen bg-white fixed top-0 left-0 right-0 bottom-0 z-50 ${loading == true ? '' : 'hidden'}`}>
                     <div className='w-[74px] mx-auto mt-72'>
@@ -153,8 +152,11 @@ const FormPresensi = () => {
                             onChange={(e) => setKodeRfid(e.target.value)}
                             className='bg-[#EDEDED] focus:outline-none focus:ring-transparent focus:border-transparent caret-transparent text-[#EDEDED]'
                             autoFocus
+                            readOnly
+                            inputMode="none"
                         />
                     </form>
+
                 </section>
             </div>
         </div>
