@@ -29,6 +29,16 @@ app.use(cors({
     origin: 'http://localhost:3000',
 }))
 app.use(session({
+    // secret:"abcdefghijklmnopqrstuvwxyz123456789",
+    // resave: false,
+    // saveUninitialized: true,
+    // store: store,
+    // cookie: {
+    //     httpOnly: true,
+    //     secure: 'auto',
+    //     sameSite: 'None'
+    // } 
+
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
