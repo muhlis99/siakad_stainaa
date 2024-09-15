@@ -27,7 +27,6 @@ const Login = () => {
     useEffect(() => {
         setLoading(false)
         if (user || isSuccess) {
-            console.log();
             if (user.role == 'mahasiswa' || user.role == 'dosen') {
                 Swal.fire({
                     title: 'Mohon login dengan akun anda',
@@ -61,7 +60,6 @@ const Login = () => {
         setLoading(true)
         dispatch(LoginUser({ name, password }))
     }
-
 
     const toggle = () => {
         setVisible(!isVisible)
