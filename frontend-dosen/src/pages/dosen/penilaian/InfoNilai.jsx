@@ -204,7 +204,8 @@ const InfoNilai = () => {
                                                                             kodeSmt: location.state.kodeSmt,
                                                                             kodeJen: location.state.kodeJen,
                                                                             kodeFk: location.state.kodeFk,
-                                                                            kodeProd: location.state.kodeProd
+                                                                            kodeProd: location.state.kodeProd,
+                                                                            desti: 'info'
                                                                         }} className='bg-[#28A745] py-2 px-2 rounded-full text-white inline-flex items-center'><FaPencilAlt /></Link>
                                                                     </td>
                                                                 </tr>

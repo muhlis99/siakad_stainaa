@@ -11,7 +11,7 @@ import ProgressBar from "@ramonak/react-progress-bar"
 const FormPresensi = () => {
     const [loading, setLoading] = useState(false)
     const location = useLocation()
-    const [kodeRfid, setKodeRfid] = useState()
+    const [kodeRfid, setKodeRfid] = useState("")
     let time = new Date().toLocaleTimeString()
     const [jam, setJam] = useState(time)
     const [jumlahPresensiMasuk, setJumlahPresensiMasuk] = useState("")
@@ -26,9 +26,9 @@ const FormPresensi = () => {
         }, 500)
     }, [])
 
-    useEffect(() => {
-        console.log(location.state)
-    }, [location])
+    // useEffect(() => {
+    //     console.log(location.state)
+    // }, [location])
 
     useEffect(() => {
         getProgres()
@@ -41,7 +41,7 @@ const FormPresensi = () => {
                 codeRfid: kodeRfid,
                 tgl: location.state.tgl,
             }).then(function (response) {
-                console.log(response.data.data);
+                // console.log(response.data.data);
                 if (response.data.message == 'Data presensi berhasil disimpan') {
                     Swal.fire({
                         title: response.data.message,
@@ -66,7 +66,6 @@ const FormPresensi = () => {
                 }
             })
         } catch (error) {
-            // console.log(error.response);
             Swal.fire({
                 title: 'Tidak dapat melakukan absen',
                 icon: 'error',
@@ -152,8 +151,7 @@ const FormPresensi = () => {
                             onChange={(e) => setKodeRfid(e.target.value)}
                             className='bg-[#EDEDED] focus:outline-none focus:ring-transparent focus:border-transparent caret-transparent text-[#EDEDED]'
                             autoFocus
-                            readOnly
-                            inputMode="none"
+                        // inputMode="none"
                         />
                     </form>
 

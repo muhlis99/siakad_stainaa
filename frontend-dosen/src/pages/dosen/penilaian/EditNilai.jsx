@@ -55,6 +55,11 @@ const EditNilai = () => {
     }
 
     useEffect(() => {
+        console.log(location);
+
+    }, [location])
+
+    useEffect(() => {
         getKelasById()
     }, [location])
 
@@ -326,20 +331,37 @@ const EditNilai = () => {
                         title: response.data.message,
                         icon: "success"
                     }).then(() => {
-                        navigate(`/detailnilai`, {
-                            state:
-                            {
-                                idNilai: location.state.idNilai,
-                                kodeMk: location.state.kodeMk,
-                                idKelas: location.state.idKelas,
-                                kodeKls: location.state.kodeKls,
-                                kodeThn: location.state.kodeThn,
-                                kodeSmt: location.state.kodeSmt,
-                                kodeJen: location.state.kodeJen,
-                                kodeFk: location.state.kodeFk,
-                                kodeProd: location.state.kodeProd
-                            }
-                        })
+                        if (location.state.desti == 'info') {
+                            navigate(`/detailnilai`, {
+                                state:
+                                {
+                                    idNilai: location.state.idNilai,
+                                    kodeMk: location.state.kodeMk,
+                                    idKelas: location.state.idKelas,
+                                    kodeKls: location.state.kodeKls,
+                                    kodeThn: location.state.kodeThn,
+                                    kodeSmt: location.state.kodeSmt,
+                                    kodeJen: location.state.kodeJen,
+                                    kodeFk: location.state.kodeFk,
+                                    kodeProd: location.state.kodeProd
+                                }
+                            })
+                        } else {
+                            navigate(`/inputnilai`, {
+                                state:
+                                {
+                                    idNilai: location.state.idNilai,
+                                    kodeMk: location.state.kodeMk,
+                                    idKelas: location.state.idKelas,
+                                    kodeKls: location.state.kodeKls,
+                                    kodeThn: location.state.kodeThn,
+                                    kodeSmt: location.state.kodeSmt,
+                                    kodeJen: location.state.kodeJen,
+                                    kodeFk: location.state.kodeFk,
+                                    kodeProd: location.state.kodeProd,
+                                }
+                            })
+                        }
                     });
                 })
         } catch (error) {
@@ -596,7 +618,7 @@ const EditNilai = () => {
                                             <Card.Footer>
                                                 <Row>
                                                     <Col>
-                                                        <Link to='/detailnilai' state={{
+                                                        <Link to={location.state.desti == 'info' ? '/detailnilai' : '/inputnilai'} state={{
                                                             idNilai: location.state.idNilai,
                                                             kodeMk: location.state.kodeMk,
                                                             idKelas: location.state.idKelas,

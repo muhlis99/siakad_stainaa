@@ -7,15 +7,15 @@ exports.validationForm1 = [
         .withMessage('nidn tidak boleh kosong')
         .isInt()
         .withMessage('nidn harus berupa angka')
-        .isLength({ min: 8, max: 8 })
-        .withMessage('nidn yang anda masukkan harus  8 digit'),
+        .isLength({ min: 10, max: 10 })
+        .withMessage('nidn yang anda masukkan harus  10 digit'),
     check('nip_ynaa')
         .notEmpty()
         .withMessage('nip ynaa tidak boleh kosong')
         .isInt()
-        .withMessage('nip ynaa harus berupa angka')
-        .isLength({ min: 8, max: 8 })
-        .withMessage('nip ynaa yang anda masukkan harus  8 digit'),
+        .withMessage('nip ynaa harus berupa angka'),
+    // .isLength({ min: 15, max: 15 })
+    // .withMessage('nip ynaa yang anda masukkan harus   digit'),
     check('nama')
         .notEmpty()
         .withMessage('nama tidak boleh kosong'),
