@@ -120,9 +120,11 @@ const ValidasiMhs = () => {
 
     function onValueChange(event) {
         setKey(event.target.value)
+        simpanValidasi(event,event.target.value); // yang dirubah MUHLIS
     }
+    
 
-    const simpanValidasi = async (e) => {
+    const simpanValidasi = async (e,key) => {
         e.preventDefault()
         try {
             await axios.put(`v1/presensiMhs/validasiPresensi/${idPresensi}`, {
@@ -232,8 +234,9 @@ const ValidasiMhs = () => {
                                         </Row>
                                     </Modal.Body>
                                     <Modal.Footer>
-                                        <button className='bg-[#0069D9] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'>Simpan</button>
-                                    </Modal.Footer>
+                                        {/*  YANG DIRUBAH MUHLIS */}
+                                        {/* <button className='bg-[#0069D9] py-1 px-2 rounded text-white inline-flex gap-1 items-center no-underline'>Simpan</button> */}
+                                    </Modal.Footer> 
                                 </form>
                             </Modal>
                             <div className="page-header">
