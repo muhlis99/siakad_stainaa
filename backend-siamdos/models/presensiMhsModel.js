@@ -7,6 +7,7 @@ const tahunAjaranModel = require('./tahunAjaranModel.js')
 const semesterModel = require('./semesterModel.js')
 const jadwalPertemuanModel = require('./jadwalPertemuanModel.js')
 const mahasiswaModel = require('./mahasiswaModel.js')
+const historyMahasiswa = require('./historyMahasiswaModel.js') // tambhan
 
 
 const presensiMhsModel = db.define('presensiMhs', {
@@ -86,5 +87,8 @@ presensiMhsModel.hasMany(jadwalPertemuanModel, { sourceKey: 'code_jadwal_pertemu
 
 mahasiswaModel.belongsTo(presensiMhsModel, { foreignKey: 'nim' })
 presensiMhsModel.hasMany(mahasiswaModel, { sourceKey: 'nim', foreignKey: 'nim' })
+
+historyMahasiswa.belongsTo(presensiMhsModel, { foreignKey: 'nim' })
+presensiMhsModel.hasMany(historyMahasiswa, { sourceKey: 'nim', foreignKey: 'nim' })
 
 module.exports = presensiMhsModel

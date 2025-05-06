@@ -110,6 +110,11 @@ module.exports = {
             include: [{
                 attributes: ["nama"],
                 model: mahasiswaModel
+            }, {
+                model : historyMahasiswa,
+                where : {
+                    pembayaran : "lunas"
+                }
             }],
             where: {
                 code_jadwal_pertemuan: code,
@@ -145,6 +150,11 @@ module.exports = {
             include: [{
                 attributes: ["nama"],
                 model: mahasiswaModel
+            },{
+                model : historyMahasiswa,
+                where : {
+                    pembayaran : "lunas"
+                }
             }],
             where: {
                 code_jadwal_pertemuan: code,
@@ -196,6 +206,7 @@ module.exports = {
                 code_jenjang_pendidikan: jnj,
                 code_fakultas: fks,
                 code_prodi: prd,
+                pembayaran : "lunas",
                 status: "aktif"
             }
         })
@@ -238,7 +249,8 @@ module.exports = {
                 code_fakultas: codeFks,
                 code_prodi: codePrd,
                 nim: dataRfid.nim,
-                status: "aktif"
+                status: "aktif",
+                pembayaran : "lunas" // tambahan
             }
         })
         if (!dataHistoryUse) return res.status(404).json({ message: "Data mahasiswa Tidak Ditemukan" })

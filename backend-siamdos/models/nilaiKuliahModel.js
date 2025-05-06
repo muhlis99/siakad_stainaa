@@ -10,6 +10,7 @@ const jenjangPendidikanModel = require('./jenjangPendidikanModel.js')
 const fakultasModel = require('./fakultasModel.js')
 const prodiModel = require('./prodiModel.js')
 const sebaranMataKuliah = require('./sebaranMataKuliah.js')
+const historyMahasiswa =  require('./historyMahasiswaModel.js')
 
 const nilaiKuliahModel = db.define('nilaiKuliah', {
     'id_nilai_kuliah': {
@@ -117,5 +118,8 @@ nilaiKuliahModel.hasMany(fakultasModel, { sourceKey: 'code_fakultas', foreignKey
 prodiModel.belongsTo(nilaiKuliahModel, { foreignKey: 'code_prodi' })
 nilaiKuliahModel.hasMany(prodiModel, { sourceKey: 'code_prodi', foreignKey: 'code_prodi' })
 
+
+historyMahasiswa.belongsTo(nilaiKuliahModel, { foreignKey: 'nim' })
+nilaiKuliahModel.hasMany(historyMahasiswa, { sourceKey: 'nim', foreignKey: 'nim' })
 
 module.exports = nilaiKuliahModel

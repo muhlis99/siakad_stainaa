@@ -88,6 +88,7 @@ const rfidMahasiswa = require('./router/rfidMahasiswaRoute.js')
 const presensiDosen = require('./router/presensiDosenRoute.js')
 const jurnalDosen = require('./router/jurnalDosenRoute.js')
 const nilai = require('./router/nilaiRoute.js')
+const pembayaranMhs = require('./router/pembayaranMhsRoute.js')
 
 app.use('/v1/login', login)
 app.use('/v1/home', home)
@@ -124,6 +125,7 @@ app.use('/v1/rfidMahasiswa', rfidMahasiswa)
 app.use('/v1/presensiDosen', presensiDosen)
 app.use('/v1/jurnalDosen', jurnalDosen)
 app.use('/v1/nilai', nilai)
+app.use('/v1/pembayaranMhs', pembayaranMhs)
 
 // default index
 app.get('/', (req, res) => {

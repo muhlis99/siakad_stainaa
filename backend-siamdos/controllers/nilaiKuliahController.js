@@ -11,7 +11,7 @@ const semesterModel = require('../models/semesterModel.js')
 const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
-
+const historyMahasiswa = require('../models/historyMahasiswaModel.js')
 
 module.exports = {
     get: async (req, res, next) => {
@@ -29,6 +29,14 @@ module.exports = {
                     attributes: ['nim', 'nama'],
                     model: mahasiswaModel,
                     where: { status: "aktif" }
+                },
+                {
+                    attributes: ['nim', 'pembayaran'],
+                    model : historyMahasiswa,
+                    where : {
+                        code_tahun_ajaran: codeThnAjr,
+                        pembayaran : "lunas"
+                    }
                 }
             ],
             where: {
@@ -67,6 +75,14 @@ module.exports = {
                     attributes: ['nim', 'nama'],
                     model: mahasiswaModel,
                     where: { status: "aktif" }
+                },
+                {
+                    attributes: ['nim', 'pembayaran'],
+                    model : historyMahasiswa,
+                    where : {
+                        code_tahun_ajaran: codeThnAjr,
+                        pembayaran : "lunas"
+                    }
                 }
             ],
             where: {
@@ -109,7 +125,6 @@ module.exports = {
 
     deteksiIndexNilai: async (req, res, next) => {
         const { nilaiAkhir, codeThnAjr } = req.params
-        console.log(codeThnAjr);
         const nilai = Math.floor(nilaiAkhir)
         const i = await sequelize.query(`SELECT * FROM tb_kategori_nilai WHERE IF(${nilai} >= nilai_bawah AND ${nilai} <= nilai_atas, 1,0) AND code_tahun_ajaran = "${codeThnAjr} "AND status = "aktif";`
             , {

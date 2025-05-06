@@ -38,6 +38,10 @@ const historyMahasiswa = db.define('historyMahasiswa', {
         type: DataTypes.ENUM,
         values: ['aktif', 'tidak']
     },
+    'pembayaran': {
+        type: DataTypes.ENUM,
+        values: ['lunas', 'tidak']
+    },
     'lastId': {
         type: DataTypes.VIRTUAL,
         get() {

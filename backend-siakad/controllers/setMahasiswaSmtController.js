@@ -142,9 +142,12 @@ module.exports = {
                 code_jenjang_pendidikan: codeJnjPen,
                 code_fakultas: codeFks,
                 code_prodi: codePrd,
-                status: "aktif"
+                status: "aktif",
+                pembayaran : "tidak",
             }
         })
+        console.log(dataMhsSMtNew);
+        
 
         const dataUpdateMhsSMtOld = dataMhsSMtOld.map(el => {
             return {
@@ -157,7 +160,7 @@ module.exports = {
 
 
         const updateData = await historyMahasiswa.bulkCreate(dataUpdateMhsSMtOld, {
-            updateOnDuplicate: ["status"],
+            updateOnDuplicate: ["status","pembayaran"],
         })
 
         const createData = await historyMahasiswa.bulkCreate(dataMhsSMtNew)
