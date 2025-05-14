@@ -15,6 +15,7 @@ import moment from "moment"
 const Dashboard = () => {
     const [Prodi, SetProdi] = useState([])
     const [Jadwal, setJadwal] = useState([])
+    const [makulTidakLolos, setMakulTidakLolos] = useState([])
     const [ListNilai, setListNilai] = useState([])
     const [Tahun, setTahun] = useState([])
     const [page, setPage] = useState(0)
@@ -102,6 +103,10 @@ const Dashboard = () => {
                 if (level == 'mahasiswa') {
                     const response = await axios.get(`v1/home/jadwalKuliahNowMahasiswa/${user.data.username}`)
                     setJadwal(response.data.data)
+                } else {
+                    const response = await axios.get(`v1/home/jadwalKuliahNowDosen/${user.data.username}`)
+                    setJadwal(response.data.data)
+                    
                 }
             } catch (error) {
 
@@ -109,6 +114,22 @@ const Dashboard = () => {
         }
         getJadwalNow()
     }, [user, level])
+
+    useEffect(() => {
+        const getMakulTidakLolos = async () => {
+            try {
+                if (level == 'mahasiswa') {
+                    const response = await axios.get(`v1/home/makulTidakLolosMahasiswa/${user.data.username}`)
+                    setMakulTidakLolos(response.data.data)
+                } 
+            } catch (error) {
+
+            }
+        }
+        getMakulTidakLolos()
+    }, [user, level])
+
+    
 
     useEffect(() => {
         getKategoriNilai()
@@ -241,70 +262,43 @@ const Dashboard = () => {
                                             </Card>
                                         </Col>
                                     </Row>
-                                </>
-                                :
-                                <>
-                                    <Row className='justify-content-center'>
-                                        <Col lg="8">
-                                            <div className="bg-white mb-2 rounded-lg shadow-md p-3">
-                                                <h3 className='text-[#5E7C60] text-[20px]'>Hai {nama}, Selamat Datang</h3>
-                                                <p className='text-base'>
-                                                    Aplikasi ini membantu anda dalam mengelola Perkuliahan meliputi Pengumuman kampus, Rencana Studi Mahasiswa, Jadwal Kuliah, Pengajuan Studi dan lain-lain.
-                                                </p>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <Row className='justify-content-center'>
-                                        <Col lg="8">
-                                            <Card className='shadow-md'>
-                                                <Card.Body className="px-2">
-                                                    <Row className='mb-2'>
-                                                        <Col className='flex justify-center'>
-                                                            <div>
-                                                                <select className='form-select form-select-sm' value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
-                                                                    {Tahun.map((item) => (
-                                                                        <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
-                                                                    ))}
-                                                                </select>
-                                                            </div>
-                                                        </Col>
-                                                    </Row>
-                                                    <div className='table-responsive'>
-                                                        <Table hover>
+                                    <Row className='mt-3'>
+                                        <Col lg="12">
+                                            <Card className='shadow-sm'>
+                                                <Card.Header className='fw-bold'>
+                                                    <Card.Title className='mt-2' style={{ color: '#5E7C60' }}>
+                                                        Makul Yang tidak Lolos
+                                                    </Card.Title>
+                                                </Card.Header>
+                                                <Card.Body className='p-3'>
+                                                    <div className="table-responsive">
+                                                        <Table>
                                                             <thead>
-                                                                <tr className='border'>
-                                                                    <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>No</span></th>
-                                                                    <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Periode</span></th>
-                                                                    <th className='py-2 fw-bold text-center border' colSpan={2} style={{ background: '#D5D6C6' }}><span>Nilai</span></th>
-                                                                    <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Kategori</span></th>
-                                                                    <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Ket</span></th>
-                                                                </tr>
-                                                                <tr className='border'>
-                                                                    <th className='py-2 fw-bold text-center border' style={{ background: '#D5D6C6' }}><span>Huruf</span></th>
-                                                                    <th className='py-2 fw-bold text-center border' style={{ background: '#D5D6C6' }}><span>Angka</span></th>
+                                                                <tr className='border' style={{ background: '#E9EAE1' }}>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>No</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Kode MK</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Mata Kuliah</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Nilai</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Grade</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Semester</span></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                {ListNilai.length > 0 ? ListNilai.map((item, index) => (
-                                                                    <tr key={item.id_kategori_nilai} className='border'>
-                                                                        <th scope='row' className='py-2 border text-center'><span>{index + 1}</span></th>
-                                                                        <td className='py-2 border text-center' ><span>{item.tahunAjarans[0].tahun_ajaran}</span></td>
-                                                                        <td className='py-2 border text-center'><span>{item.nilai_huruf}</span></td>
-                                                                        <td className='py-2 border text-center'><span>{item.nilai_bawah + ' - ' + item.nilai_atas}</span></td>
-                                                                        <td className='py-2 border'><span>{item.kategori}</span></td>
-                                                                        <td className='py-2 border text-center'>
-                                                                            {item.keterangan == 'LULUS' ?
-                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.keterangan}</span>
-                                                                                :
-                                                                                <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.keterangan}</span>
-                                                                            }
-                                                                        </td>
-                                                                    </tr>
-                                                                )) :
+                                                                {makulTidakLolos.length != 0 ?
+                                                                    makulTidakLolos.map((item, index) => (
+                                                                        <tr key={item.id_nilai_kuliah} className='border'>
+                                                                            <th scope='row' className='py-3'><span className='text-[#5E7C60]'>{index + 1}</span></th>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.code_mata_kuliah}</span></td>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.mataKuliahs[0].nama_mata_kuliah}</span></td>
+                                                                            <td className='py-3'><span className='text-[red]'>{item.nilai_akhir}</span></td>
+                                                                            <td className='py-3'><span className='text-[red]'>{item.kategoriNilais[0].nilai_huruf}</span></td>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.semesters[0].semester}</span></td>
+                                                                        </tr>
+                                                                    )) :
                                                                     <tr className='border'>
-                                                                        <td className='py-2' colSpan={6} align='center'>
+                                                                        <td colSpan={8} align='center'>
                                                                             <Image src={dataBlank} thumbnail width={150} />
-                                                                            <p className='fw-bold text-muted'>Tidak Ada Data</p>
+                                                                            <p className='fw-bold text-muted'>Makul Anda Lolos Semua</p>
                                                                         </td>
                                                                     </tr>
                                                                 }
@@ -315,7 +309,144 @@ const Dashboard = () => {
                                             </Card>
                                         </Col>
                                     </Row>
+                                </>
+                                :
+                                // <>
+                                //     <Row className='justify-content-center'>
+                                //         <Col lg="8">
+                                //             <div className="bg-white mb-2 rounded-lg shadow-md p-3">
+                                //                 <h3 className='text-[#5E7C60] text-[20px]'>Hai {nama}, Selamat Datang</h3>
+                                //                 <p className='text-base'>
+                                //                     Aplikasi ini membantu anda dalam mengelola Perkuliahan meliputi Pengumuman kampus, Rencana Studi Mahasiswa, Jadwal Kuliah, Pengajuan Studi dan lain-lain.
+                                //                 </p>
+                                //             </div>
+                                //         </Col>
+                                //     </Row>
+                                //     <Row className='justify-content-center'>
+                                //         <Col lg="8">
+                                //             <Card className='shadow-md'>
+                                //                 <Card.Body className="px-2">
+                                //                     <Row className='mb-2'>
+                                //                         <Col className='flex justify-center'>
+                                //                             <div>
+                                //                                 {/* <select className='form-select form-select-sm' value={kodeTahun} onChange={(e) => setKodeTahun(e.target.value)}>
+                                //                                     {Tahun.map((item) => (
+                                //                                         <option key={item.id_tahun_ajaran} value={item.code_tahun_ajaran}>{item.tahun_ajaran}</option>
+                                //                                     ))}
+                                //                                 </select> */}
+                                //                             </div>
+                                //                         </Col>
+                                //                     </Row>
+                                //                     <div className='table-responsive'>
+                                //                         <Table hover>
+                                //                             <thead>
+                                //                                 <tr className='border'>
+                                //                                     <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>No</span></th>
+                                //                                     <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Periode</span></th>
+                                //                                     <th className='py-2 fw-bold text-center border' colSpan={2} style={{ background: '#D5D6C6' }}><span>Nilai</span></th>
+                                //                                     <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Kategori</span></th>
+                                //                                     <th className='py-2 fw-bold text-center border' rowSpan={2} style={{ background: '#D5D6C6' }}><span>Ket</span></th>
+                                //                                 </tr>
+                                //                                 <tr className='border'>
+                                //                                     <th className='py-2 fw-bold text-center border' style={{ background: '#D5D6C6' }}><span>Huruf</span></th>
+                                //                                     <th className='py-2 fw-bold text-center border' style={{ background: '#D5D6C6' }}><span>Angka</span></th>
+                                //                                 </tr>
+                                //                             </thead>
+                                //                             <tbody>
+                                //                                 {ListNilai.length > 0 ? ListNilai.map((item, index) => (
+                                //                                     <tr key={item.id_kategori_nilai} className='border'>
+                                //                                         <th scope='row' className='py-2 border text-center'><span>{index + 1}</span></th>
+                                //                                         <td className='py-2 border text-center' ><span>{item.tahunAjarans[0].tahun_ajaran}</span></td>
+                                //                                         <td className='py-2 border text-center'><span>{item.nilai_huruf}</span></td>
+                                //                                         <td className='py-2 border text-center'><span>{item.nilai_bawah + ' - ' + item.nilai_atas}</span></td>
+                                //                                         <td className='py-2 border'><span>{item.kategori}</span></td>
+                                //                                         <td className='py-2 border text-center'>
+                                //                                             {item.keterangan == 'LULUS' ?
+                                //                                                 <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#17A2B8] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.keterangan}</span>
+                                //                                                 :
+                                //                                                 <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-[#DC3545] px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-white">{item.keterangan}</span>
+                                //                                             }
+                                //                                         </td>
+                                //                                     </tr>
+                                //                                 )) :
+                                //                                     <tr className='border'>
+                                //                                         <td className='py-2' colSpan={6} align='center'>
+                                //                                             <Image src={dataBlank} thumbnail width={150} />
+                                //                                             <p className='fw-bold text-muted'>Tidak Ada Data</p>
+                                //                                         </td>
+                                //                                     </tr>
+                                //                                 }
+                                //                             </tbody>
+                                //                         </Table>
+                                //                     </div>
+                                //                 </Card.Body>
+                                //             </Card>
+                                //         </Col>
+                                //     </Row>
 
+                                // </>
+                                <>
+                                    <Row>
+                                        <Col >
+                                            <div className="lg:12 gap-3">
+                                                <div className="basis-1/2 bg-white mb-2 rounded-lg shadow-md p-3">
+                                                    <h3 className='text-[#5E7C60] text-[20px]'>Hai {nama}, Selamat Datang</h3>
+                                                    <p className='text-base'>
+                                                        Aplikasi ini membantu anda dalam mengelola Perkuliahan meliputi Pengumuman kampus, Rencana Studi Mahasiswa, Jadwal Kuliah, Pengajuan Studi dan lain-lain.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row className='mt-3'>
+                                        <Col lg="12">
+                                            <Card className='shadow-sm'>
+                                                <Card.Header className='fw-bold'>
+                                                    <Card.Title className='mt-2' style={{ color: '#5E7C60' }}>
+                                                        Jadwal Kuliah Hari ini
+                                                    </Card.Title>
+                                                </Card.Header>
+                                                <Card.Body className='p-3'>
+                                                    <div className="table-responsive">
+                                                        <Table>
+                                                            <thead>
+                                                                <tr className='border' style={{ background: '#E9EAE1' }}>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>No</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Hari</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Tanggal</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Jam</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Mata Kuliah</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Pembelejaran</span></th>
+                                                                    <th className='fw-bold py-3' style={{ background: '#E9EAE1' }}><span className='text-[#5E7C60]'>Ruang</span></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {Jadwal.length != 0 ?
+                                                                    Jadwal.map((item, index) => (
+                                                                        <tr key={item.id_jadwal_pertemuan} className='border'>
+                                                                            <th scope='row' className='py-3'><span className='text-[#5E7C60]'>{index + 1}</span></th>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.jadwalKuliahs[0].hari}</span></td>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{moment(item.tanggal_pertemuan).format('DD MMMM YYYY')}</span></td>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.jadwalKuliahs[0].jam_mulai + ' - ' + item.jadwalKuliahs[0].jam_selesai}</span></td>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.jadwalKuliahs[0].sebaranMataKuliahs[0].mataKuliahs[0].nama_mata_kuliah}</span></td>
+                                                                            <td className='py-3 text-capitalize'><span className='text-[#5E7C60]'>{item.metode_pembelajaran}</span></td>
+                                                                            <td className='py-3'><span className='text-[#5E7C60]'>{item.jadwalKuliahs[0].ruangs[0].nama_ruang}</span></td>
+                                                                        </tr>
+                                                                    )) :
+                                                                    <tr className='border'>
+                                                                        <td colSpan={8} align='center'>
+                                                                            <Image src={dataBlank} thumbnail width={150} />
+                                                                            <p className='fw-bold text-muted'>Tidak Ada Jadwal Hari Ini</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </Table>
+                                                    </div>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    </Row>
                                 </>
                             }
                         </div>

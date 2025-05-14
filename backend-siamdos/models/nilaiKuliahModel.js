@@ -90,7 +90,7 @@ const nilaiKuliahModel = db.define('nilaiKuliah', {
     paranoid: true,
 })
 
-// mata kuliah
+// sebaran mata kuliah
 sebaranMataKuliah.belongsTo(nilaiKuliahModel, { foreignKey: 'code_mata_kuliah' })
 nilaiKuliahModel.hasMany(sebaranMataKuliah, { sourceKey: 'code_mata_kuliah', foreignKey: 'code_mata_kuliah' })
 // mahasiswa
@@ -121,5 +121,9 @@ nilaiKuliahModel.hasMany(prodiModel, { sourceKey: 'code_prodi', foreignKey: 'cod
 
 historyMahasiswa.belongsTo(nilaiKuliahModel, { foreignKey: 'nim' })
 nilaiKuliahModel.hasMany(historyMahasiswa, { sourceKey: 'nim', foreignKey: 'nim' })
+
+//  mata kuliah
+mataKuliahModel.belongsTo(nilaiKuliahModel, { foreignKey: 'code_mata_kuliah' })
+nilaiKuliahModel.hasMany(mataKuliahModel, { sourceKey: 'code_mata_kuliah', foreignKey: 'code_mata_kuliah' })
 
 module.exports = nilaiKuliahModel

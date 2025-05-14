@@ -9,6 +9,9 @@ const mataKuliahModel = require("../models/mataKuliahModel")
 const historyMahasiswa = require("../models/historyMahasiswaModel")
 const sebaranMataKuliah = require("../models/sebaranMataKuliah")
 const ruangModel = require("../models/ruangModel")
+const nilaiKuliahModel = require("../models/nilaiKuliahModel")
+const kategoriNilaiModel = require("../models/kategoriNilaiModel")
+const semesterModel = require("../models/semesterModel")
 
 module.exports = {
 
@@ -85,6 +88,114 @@ module.exports = {
         }).then(result => {
             res.status(200).json({
                 message: "data jadwal kuliah now mahasiswa",
+                data: result,
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
+    jadwalKuliahNowDosen : async (req, res, next) => {
+        const date = new Date().toLocaleDateString('en-CA')
+        const nipy = req.params.nipy
+        const dataJadwalKuliah = await jadwalKuliahModel.findAll({
+            where: {
+                dosen_pengajar: nipy,
+                status: "aktif"
+            }
+        })
+        if (!dataJadwalKuliah) return res.status(404).json({ message: "data tidak ditemukan" })
+        const dataCodeJadwalKuliah = dataJadwalKuliah.map(n => { return n.code_jadwal_kuliah })
+        await jadwalPertemuanModel.findAll({
+            include: [
+                {
+                    attributes: ['id_jadwal_kuliah',
+                        'code_jadwal_kuliah', 'code_kelas',
+                        'code_ruang', 'hari', 'jam_mulai', 'jam_selesai',
+                        'dosen_pengajar', 'dosen_pengganti'],
+                    model: jadwalKuliahModel,
+                    status: "aktif",
+                    include: [{
+                        attributes: ['id_sebaran',
+                            'code_sebaran', 'status_makul',
+                            'status_bobot_makul'],
+                        model: sebaranMataKuliah,
+                        status: "aktif",
+                        include: [{
+                            model: mataKuliahModel
+                        }]
+                    }, {
+                        model: ruangModel,
+                        status: "aktif"
+                    }]
+                },
+
+            ],
+            where: {
+                tanggal_pertemuan: date,
+                code_jadwal_kuliah: dataCodeJadwalKuliah,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(200).json({
+                message: "data jadwal kuliah now mahasiswa",
+                data: result,
+            })
+        }).catch(err => {
+            next(err)
+        })
+    },
+
+    makulTidakLolosMahasiswa : async (req, res, next) => {
+        const nim = req.params.nim
+        const code = await nilaiKuliahModel.findAll({
+            include : [
+                {
+                    model : kategoriNilaiModel,
+                    attributes : ["code_kategori_nilai","keterangan"],
+                    where : {
+                        keterangan : "TIDAK LULUS",
+                        status : "aktif"
+                    }
+                }
+            ],
+            where : {
+                nim : nim
+            }
+        })
+
+        const i =  code.map(i => { return i.code_kategori_nilai })
+        
+
+        await nilaiKuliahModel.findAll({
+            include: [
+                {
+                    model : mataKuliahModel,
+                    attributes : ["code_mata_kuliah", "nama_mata_kuliah"],
+                    where : {
+                        status : "aktif"
+                    }
+                }, 
+                {
+                    model : semesterModel,
+                    attributes : ["semester"],
+                    where : {
+                        status : "aktif"
+                    }
+                }, 
+                {
+                    model : kategoriNilaiModel,
+                    attributes : ["code_kategori_nilai","nilai_huruf","kategori","keterangan"],
+                }
+            ],
+            where: {
+                code_kategori_nilai : i,
+                nim: nim,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(200).json({
+                message: "data mata kuliah mahasiswa tidak lolos",
                 data: result,
             })
         }).catch(err => {
