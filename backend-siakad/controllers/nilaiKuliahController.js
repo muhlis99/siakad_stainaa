@@ -12,6 +12,8 @@ const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const historyMahasiswa = require('../models/historyMahasiswaModel.js')
+const settingJadwalNilaiModel = require('../models/settingJadwalNilai.js')
+const virtualKategoriNilai = require('../models/virtualKategoriNilai.js')
 
 
 module.exports = {
@@ -225,6 +227,101 @@ module.exports = {
             catch(err => {
                 next(err)
             })
+    },
+
+    //  jadwal penilaian
+    getJadwalPenilaian : async (req, res, next) => {
+        await settingJadwalNilaiModel.findAll({
+            include: [
+                {
+                    attributes: ['tahun_ajaran'],
+                    model: tahunAjaranModel,
+                }, {
+                    attributes: ['semester'],
+                    model : semesterModel,
+                }
+            ],
+            order: [
+                ["id_setting", "ASC"]
+            ]
+        }).
+            then(result => {
+                res.status(200).json({
+                    message: "Get All setting jadwal nilai kuliah Success",
+                    data: result,
+                })
+            }).
+            catch(err => {    
+                next(err)
+            })
+    },
+
+    postJadwalPenilaian : async (req, res, next) => {
+        const {code_tahun_ajaran, code_semester, tanggal_mulai, tanggal_akhir} = req.body
+        await settingJadwalNilaiModel.create({
+            code_tahun_ajaran: code_tahun_ajaran,
+            code_semester: code_semester,
+            tanggal_mulai: tanggal_mulai,
+            tanggal_akhir: tanggal_akhir,
+        }).
+        then(async result => {
+                const data = await kategoriNilaiModel.findAll({
+                where : {
+                    code_tahun_ajaran : code_tahun_ajaran
+                }
+                }) 
+                const dataVirtual = data.map(async i => {
+                    await virtualKategoriNilai.bulkCreate([{
+                        id_setting : result.id_setting,
+                        code_kategori_nilai : i.code_kategori_nilai,
+                        nilai_atas : i.nilai_atas,
+                        nilai_bawah : i.nilai_bawah,
+                        nilai_huruf : i.nilai_huruf,
+                        keterangan : i.keterangan
+                    }])
+                })
+                
+                res.status(201).json({
+                    message: "Data jadwal penilaian success Ditambahkan",
+                })
+        }).
+        catch(err => {
+            next(err)
+        })
+    },
+
+    deleteJadwalPenilaian : async (req, res, next) => {
+
+        const i = await settingJadwalNilaiModel.findAll()
+        const o = i.map(o => {return o.tanggal_akhir})
+        const idS = i.map(id => {return id.id_setting})
+        const tgl_akhir = new Date(o).toLocaleDateString('en-CA')
+        const tgl_now = new Date().toLocaleDateString('en-CA')
+
+        if (tgl_now === tgl_akhir) {
+            await settingJadwalNilaiModel.destroy({
+                where : {
+                    tanggal_akhir : tgl_akhir
+                }
+            })
+            await virtualKategoriNilai.destroy({
+                where : {
+                    id_setting : idS
+                }
+            })
+            .then(result => {
+                res.status(201).json({
+                    message: "Data jadwal penilaian berhasil DIHAPUS",
+                })
+            }).
+            catch(err => {
+                next(err)
+            })
+        } else {
+            res.status(201).json({
+                message: "Data jadwal penilaian tidak berjalan atau tanggal belum sampai masa expayed",
+            })
+        }
     }
 
 }

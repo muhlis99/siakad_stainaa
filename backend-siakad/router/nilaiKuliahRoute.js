@@ -9,6 +9,10 @@ router.get('/deteksiIndexNilai/:nilaiAkhir/:codeThnAjr', nilaiKuliahController.d
 router.post('/create', nilaiKuliahController.post)
 router.put('/update/:id', nilaiKuliahController.put)
 
+//  setting jadwal penilaian
+router.get('/jadwalPenilaian', nilaiKuliahController.getJadwalPenilaian)
+router.post('/jadwalPenilaianCreate', nilaiKuliahController.postJadwalPenilaian)
+router.delete('/jadwalPenilaianDelete', nilaiKuliahController.deleteJadwalPenilaian)
 
 
 
