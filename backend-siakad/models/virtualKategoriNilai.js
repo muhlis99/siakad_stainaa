@@ -36,6 +36,7 @@ const virtualKategoriNilai = db.define('virtualKategoriNilai', {
     paranoid: true,
 })
 
+
 settingJadwalNilaiModel.belongsTo(virtualKategoriNilai, { foreignKey: 'id_setting' })
 virtualKategoriNilai.hasMany(settingJadwalNilaiModel, { sourceKey: 'id_setting', foreignKey: 'id_setting' })
 

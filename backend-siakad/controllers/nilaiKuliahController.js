@@ -16,6 +16,7 @@ const settingJadwalNilaiModel = require('../models/settingJadwalNilai.js')
 const virtualKategoriNilai = require('../models/virtualKategoriNilai.js')
 
 
+
 module.exports = {
     get: async (req, res, next) => {
         const { codeMakul, codeKls, codeThnAjr } = req.query

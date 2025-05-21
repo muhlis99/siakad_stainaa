@@ -12,6 +12,9 @@ const jenjangPendidikanModel = require('../models/jenjangPendidikanModel.js')
 const fakultasModel = require('../models/fakultasModel.js')
 const prodiModel = require('../models/prodiModel.js')
 const historyMahasiswa = require('../models/historyMahasiswaModel.js')
+const settingJadwalNilaiModel = require('../models/settingJadwalNilai.js')
+const dosenModel = require("../models/dosenModel.js")
+const jadwalKuliahModel = require('../models/jadwalKuliahModel.js')
 
 module.exports = {
     get: async (req, res, next) => {
@@ -124,9 +127,9 @@ module.exports = {
     },
 
     deteksiIndexNilai: async (req, res, next) => {
-        const { nilaiAkhir, codeThnAjr } = req.params
+        const { nilaiAkhir } = req.params
         const nilai = Math.floor(nilaiAkhir)
-        const i = await sequelize.query(`SELECT * FROM tb_kategori_nilai WHERE IF(${nilai} >= nilai_bawah AND ${nilai} <= nilai_atas, 1,0) AND code_tahun_ajaran = "${codeThnAjr} "AND status = "aktif";`
+        const i = await sequelize.query(`SELECT * FROM tb_virtual_kat_nilai WHERE IF(${nilai} >= nilai_bawah AND ${nilai} <= nilai_atas, 1,0);`
             , {
                 nest: true,
                 type: QueryTypes.SELECT
@@ -275,6 +278,42 @@ module.exports = {
             catch(err => {
                 next(err)
             })
+    },
+
+    // untuk membatasi access dosen
+    // ketika sudah tanggal input nilai expayet
+    jadwalKuliahPenilaianDosen: async (req, res, next) => {
+        const { thnAjr, smt, jenjPen, fks, prd, nipy } = req.params
+        const dataDosenUse = await dosenModel.findOne({
+            where: {
+                nip_ynaa: nipy,
+                status: "aktif"
+            }
+        })
+        if (!dataDosenUse) return res.status(404).json({ message: "data tidak ditemukan" })
+        const access = await settingJadwalNilaiModel.count();
+        if (access => 0 ) return res.status(404).json({ message: "mohon maaf waktu input nilai sudah habis" })
+
+        await jadwalKuliahModel.findAll({
+            attributes: ["id_jadwal_kuliah", "code_jadwal_kuliah", "code_mata_kuliah", "code_jenjang_pendidikan",
+                "code_fakultas", "code_prodi", "code_semester", "code_tahun_ajaran", "code_kelas", "code_ruang", "status"],
+            where: {
+                dosen_pengajar: nipy,
+                code_tahun_ajaran: thnAjr,
+                code_semester: smt,
+                code_jenjang_pendidikan: jenjPen,
+                code_fakultas: fks,
+                code_prodi: prd,
+                status: "aktif"
+            }
+        }).then(result => {
+            res.status(201).json({
+                message: "Data jadwal kuliah Dosen successfuly",
+                data: result
+            })
+        }).catch(err => {
+            next(err)
+        })
     }
 
 }
