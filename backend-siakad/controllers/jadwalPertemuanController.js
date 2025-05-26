@@ -120,62 +120,74 @@ module.exports = {
     },
 
     put: async (req, res, next) => {
-    const {codeJadkul} = req.params.codeJadkul
-        const dataJadwalKuliah = await jadwalKuliahModel.findOne({
+        const { id } = req.params
+        const jadawalPertemuanUse = await jadwalPertemuanModel.findOne({
+            include: [{
+                model: jadwalKuliahModel,
+                where: { status: "aktif" }
+            }],
             where: {
-                code_jadwal_kuliah: codeJadkul,
+                id_jadwal_pertemuan: id,
                 status: "aktif"
             }
         })
-        if (!dataJadwalKuliah) return res.status(404).json({ message: "Data jadwal kuliah tidak ada" })
+        if (!jadawalPertemuanUse) return res.status(401).json({ message: "Data jadwal pertemuan tidak ditemukan" })
 
-        const dataJadwalPertemuan = await jadwalPertemuanModel.findAll({
-            where: {
-                code_jadwal_kuliah: codeJadkul,
-                status: "aktif"
+        let fileNameLampiranMateri = ""
+        if (req.files != null) {
+            if (jadawalPertemuanUse.lampiran_materi === "") {
+                const file = req.files.lampiran_materi
+                const fileSize = file.data.length
+                const ext = path.extname(file.name)
+                fileNameLampiranMateri = "lampiran_materi" + id + file.md5 + ext
+                const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls']
+                if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
+                if (fileSize > 5000000) return res.status(422).json({ msg: "lampiran materi diri yang anda upload tidak boleh lebih dari 5 mb" })
+                file.mv(`../tmp_siakad/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
+                    if (err) return res.status(500).json({ message: err.message })
+                })
+            } else {
+                const file = req.files.lampiran_materi
+                const fileSize = file.data.length
+                const ext = path.extname(file.name)
+                fileNameLampiranMateri = "lampiran_materi" + id + file.md5 + ext
+                const allowedType = ['.rtf', '.doc', '.docx', '.pdf', '.xlsx', '.xls']
+                if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ message: "lampiran materi yang anda upload tidak valid" })
+                if (fileSize > 5000000) return res.status(422).json({ message: "lampiran materi yang anda upload tidak boleh lebih dari 5 mb" })
+                const filepath = `../tmp_siakad/lampiranMateri/${jadawalPertemuanUse.lampiran_materi}`
+                fs.unlinkSync(filepath)
+                file.mv(`../tmp_siakad/lampiranMateri/${fileNameLampiranMateri}`, (err) => {
+                    if (err) return res.status(500).json({ message: err.message })
+                })
             }
-        })
+        } else {
+            fileNameLampiranMateri = ""
+        }
 
-        const jmlPert = dataJadwalKuliah.jumlah_pertemuan
-        const hari = dataJadwalKuliah.hari
-        const tanggalMulai = dataJadwalKuliah.tanggal_mulai
+        const { jenis_pertemuan, metode_pembelajaran,
+            url_online, rencana_materi, status_pertemuan } = req.body
 
-        const HR = ["minggu", "sennin", "selasa", "rabu", "kamis", "jum'at", "sabtu"]
-        const indexHari = HR.indexOf(hari)
-
-        let day = new Date(tanggalMulai)
-
-        const dataUpdate = dataJadwalPertemuan.map(o => {
-            let days = 7 - day.getDay() + indexHari;
-            let nextDay = new Date(day.setDate(day.getDate() + days))
-            return {
-                id_jadwal_pertemuan : o.id_jadwal_pertemuan,
-                tanggal_pertemuan : nextDay.toISOString().slice(0, 10)
-            }
-        })
-
-        const update = await historyMahasiswa.bulkCreate(dataUpdate, {
-            updateOnDuplicate: ["tanggal_pertemuan"],
-        })
-
-        // for (let i = 1; i <= jmlPert; i++) {
-
-
-        //     let days = 7 - day.getDay() + indexHari;
-        //     let nextDay = new Date(day.setDate(day.getDate() + days))
-
-        //     await jadwalPertemuanModel.bulkCreate([{
-        //         pertemuan: i,
-        //         tanggal_pertemuan: nextDay.toISOString().slice(0, 10),
-        //         jenis_pertemuan: "kuliah",
-        //         metode_pembelajaran: "offline",
-        //         url_online: "",
-        //         rencana_materi: "",
-        //         lampiran_materi: "",
-        //         status_pertemuan: "terjadwal",
-        //         status: "aktif"
-        //     }])
-        // }
+        try {
+            await jadwalPertemuanModel.update({
+                jenis_pertemuan: jenis_pertemuan,
+                metode_pembelajaran: metode_pembelajaran,
+                url_online: url_online,
+                rencana_materi: rencana_materi,
+                lampiran_materi: fileNameLampiranMateri,
+                status_pertemuan: status_pertemuan,
+            }, {
+                where: {
+                    id_jadwal_pertemuan: id
+                }
+            })
+                .then(result => {
+                    res.status(200).json({
+                        message: "data jadwal pertemuan berhasil diupdate",
+                    })
+                })
+        } catch (error) {
+            next(error)
+        }
     },
 
     deleteStatus: async (req, res, next) => {
@@ -238,6 +250,53 @@ module.exports = {
         }).catch(err => {
             next(err)
         })
+    },
+
+    updatePertemuan : async (req, res, next) => {
+        const {codeJadkul} = req.params
+        const dataJadwalKuliah = await jadwalKuliahModel.findOne({
+            where: {
+                code_jadwal_kuliah: codeJadkul,
+                status: "aktif"
+            }
+        })
+        if (!dataJadwalKuliah) return res.status(404).json({ message: "Data jadwal kuliah tidak ada" })
+
+        const dataJadwalPertemuan = await jadwalPertemuanModel.findAll({
+            where: {
+                code_jadwal_kuliah: codeJadkul,
+                status: "aktif"
+            }
+        })
+
+        const jmlPert = dataJadwalKuliah.jumlah_pertemuan
+        const hari = dataJadwalKuliah.hari
+        const tanggalMulai = dataJadwalKuliah.tanggal_mulai
+
+        const HR = ["minggu", "sennin", "selasa", "rabu", "kamis", "jum'at", "sabtu"]
+        const indexHari = HR.indexOf(hari)
+
+        let day = new Date(tanggalMulai)
+
+        const dataUpdate = dataJadwalPertemuan.map(o => {
+            let days = 7 - day.getDay() + indexHari;
+            let nextDay = new Date(day.setDate(day.getDate() + days))
+            return {
+                id_jadwal_pertemuan : o.id_jadwal_pertemuan,
+                tanggal_pertemuan : nextDay.toISOString().slice(0, 10)
+            }
+        })
+
+        const update = await jadwalPertemuanModel.bulkCreate(dataUpdate, {
+            updateOnDuplicate: ["tanggal_pertemuan"],
+        }).then(all => {
+            res.status(200).json({
+                message: "ssuccess diedit",
+            })
+        }).catch(err => {
+            next(err)
+        })
+        
     }
 
 }
