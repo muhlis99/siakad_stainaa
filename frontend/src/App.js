@@ -77,6 +77,7 @@ import DetailPersemester from "./pages/presensi/DetailPersemester"
 import MakulJurnal from "./pages/jurnal/MakulJurnal"
 import Jurnal from "./pages/jurnal/Jurnal"
 import NilaiMhs from "./pages/nilai/NilaiMhs"
+import MhsAll from "./pages/pembayaran/MhsAll"
 
 function App() {
   return (
@@ -158,6 +159,7 @@ function App() {
           <Route path="/jurnal" element={<MakulJurnal />} />
           <Route path="/detailjurnal" element={<Jurnal />} />
           <Route path="/nilaimhs" element={<NilaiMhs />} />
+          <Route path="/pembayaranMhs" element={<MhsAll />} />
         </Routes>
       </BrowserRouter>
     </div>

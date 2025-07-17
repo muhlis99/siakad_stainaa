@@ -283,6 +283,28 @@ const Sidebar = () => {
           </li> : ""
         }
 
+        <li>
+          {collap == 'bayar' ?
+            <details open>
+              <summary className='text-[#F5F5F5]'><FaUsers />Pembayaran</summary>
+              <ul className='gap-2'>
+                <li>
+                  <Link to="/pembayaranMhs" state={{ collaps: 'bayar', activ: '/pembayaranMhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pembayaranMhs' || active == '/pembayaranMhs' ? 'active' : ''} even:bg-[#287155]`}><RiRfidFill /> <span className='text-sm'>Pembayaran MHS</span></Link>
+                </li>
+              </ul>
+            </details>
+            :
+            <details >
+              <summary className='text-[#F5F5F5]'><FaUsers />Pembayaran</summary>
+              <ul className='gap-2'>
+                <li>
+                  <Link to="/pembayaranMhs" state={{ collaps: 'bayar', activ: '/pembayaranMhs' }} className={`text-[#F5F5F5] rounded-md text-sm ${location.pathname == '/pembayaranMhs' || active == '/pembayaranMhs' ? 'active' : ''} even:bg-[#287155]`}><RiRfidFill /> <span className='text-sm'>Pembayaran MHS</span></Link>
+                </li>
+              </ul>
+            </details>
+          }
+        </li>
+
       </ul>
     </div>
   )
