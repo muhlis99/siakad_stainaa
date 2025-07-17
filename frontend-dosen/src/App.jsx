@@ -48,6 +48,8 @@ import DetailRekap from "./pages/dosen/presensi/DetailRekap"
 import MakulList from "./pages/dosen/jurnal/MakulList"
 import ListJurnal from "./pages/dosen/jurnal/ListJurnal"
 import DetailKehadiran from "./pages/dosen/presensi/DetailKehadiran"
+import AllRps from "./pages/dosen/RPS/AllRps"
+import DetailRps from "./pages/dosen/RPS/DetailRps"
 
 function App() {
   return (
@@ -106,6 +108,8 @@ function App() {
           <Route path="/presensi/kehadiran" element={<DetailKehadiran />} />
           <Route path="/jurnal" element={<MakulList />} />
           <Route path="/jurnal/all" element={<ListJurnal />} />
+          <Route path="/listRps" element={<AllRps />} />
+          <Route path="/detailRps" element={<DetailRps />} />
         </Routes>
 
       </BrowserRouter>

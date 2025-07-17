@@ -78,7 +78,7 @@ rpsModel.hasMany(semesterModel, { sourceKey: 'code_semester', foreignKey: 'code_
 mataKuliahModel.belongsTo(rpsModel, { foreignKey: 'code_mata_kuliah' })
 rpsModel.hasMany(mataKuliahModel, { sourceKey: 'code_mata_kuliah', foreignKey: 'code_mata_kuliah' })
 
-dosenModel.belongsTo(rpsModel, { foreignKey: 'code_dosen' })
-rpsModel.hasMany(dosenModel, { sourceKey: 'code_dosen', foreignKey: 'code_dosen' })
+dosenModel.belongsTo(rpsModel, { foreignKey: 'nip_ynaa' })
+rpsModel.hasMany(dosenModel, { sourceKey: 'code_dosen', foreignKey: 'nip_ynaa' })
 
 module.exports = rpsModel

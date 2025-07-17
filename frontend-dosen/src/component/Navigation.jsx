@@ -196,6 +196,11 @@ const Navigation = () => {
                                                 <div className="inline-flex gap-2"><SiFoursquarecityguide className="mt-1 text-[14px]" />  Pedoman</div>
                                             </Link>
                                         </li>
+                                        <li>
+                                            <Link to="/listRps" className={`dropdown-item ${location.pathname == '/listRps' || location.pathname == '/listRps' ? 'active' : ''}`}>
+                                                <div className="inline-flex gap-2"><FaFilePdf className="mt-1 text-[14px]" />  RPS</div>
+                                            </Link>
+                                        </li>
                                     </ul>
                                 </li>
                                 <Link to="/chat" className={`nav-link my-3 text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link>

@@ -53,21 +53,21 @@ module.exports = {
     getByNipy: async (req, res, next) => {
         const nipy = req.params.nipy
         await dosen.findOne({
-            include: [{
-                model: pendidikan
-            }, {
-                model: alatTransportasi
-            }, {
-                model: negara
-            }, {
-                model: provinsi
-            }, {
-                model: kabupaten
-            }, {
-                model: kecamatan
-            }, {
-                model: desa
-            }],
+            // include: [{
+            //     model: pendidikan
+            // }, {
+            //     model: alatTransportasi
+            // }, {
+            //     model: negara
+            // }, {
+            //     model: provinsi
+            // }, {
+            //     model: kabupaten
+            // }, {
+            //     model: kecamatan
+            // }, {
+            //     model: desa
+            // }],
             where: {
                 nip_ynaa: nipy,
                 status: 'aktif'
@@ -86,7 +86,7 @@ module.exports = {
                 })
             }).
             catch(err => {
-                next(err)
+                console.log(err);
             })
     },
 }
