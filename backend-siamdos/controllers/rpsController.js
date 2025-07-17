@@ -64,6 +64,9 @@ module.exports = {
             },{
                 model: semesterModel,
                 where: { status: "aktif" }
+            }, {
+                model : mataKuliahModel,
+                attributes : ["code_mata_kuliah","nama_mata_kuliah"]
             }],
             where: {
                 [Op.or]: [
@@ -346,8 +349,6 @@ module.exports = {
 
     getbyId : async (req, res, next) => {
         const id = req.params.id
-        console.log(id);
-        
         const rpsUse = await rpsModel.findOne({
             include: [{
                 model: jenjangPendidikanModel,
@@ -355,6 +356,9 @@ module.exports = {
             }, {
                 model: fakultasModel,
                 where: { status: "aktif" }
+            }, {
+                model : mataKuliahModel,
+                attributes : ["code_mata_kuliah","nama_mata_kuliah"]
             }],
             where: {
                 id_rps: id,
