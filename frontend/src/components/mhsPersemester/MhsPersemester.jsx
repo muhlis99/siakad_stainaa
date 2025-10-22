@@ -183,13 +183,14 @@ const MhsPersemester = () => {
                                         </label>
                                         <select className="select select-sm select-bordered w-full mb-2" value={kodeSemesterNew} onChange={(e) => setKodeSemesterNew(e.target.value)}>
                                             <option value="">Semester</option>
-                                            {SemesterNew.map((item, index) => {
-                                                return item.semester - smt === 1 ? (
-                                                    <option key={index} value={item.code_semester}>Semester {item.semester}</option>
-                                                ) : (
-                                                    <option key={index} disabled hidden value={item.code_semester}>Semester {item.semester}</option>
-                                                )
-                                            })}
+                                            {SemesterNew.map((item, index) => (
+                                                <option key={index} value={item.code_semester}>Semester {item.semester}</option>
+                                                // return item.semester - smt === 1 ? (
+                                                //     <option key={index} value={item.code_semester}>Semester {item.semester}</option>
+                                                // ) : (
+                                                //     <option key={index} disabled hidden value={item.code_semester}>Semester {item.semester}</option>
+                                                // )
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
@@ -207,7 +208,7 @@ const MhsPersemester = () => {
                 </div>
             </div>
             <section className='mb-5'>
-                <h1 className='text-2xl font-bold'>Set Mahasiswa Persemester</h1>
+                <h1 className='text-2xl font-bold'>Set Mahasiswa Persemester {smt}</h1>
             </section>
             <section>
                 <div className="card bg-base-100 card-bordered shadow-md">

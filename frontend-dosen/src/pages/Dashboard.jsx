@@ -5,12 +5,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { getMe } from "../features/authSlice"
 import { LogOut, reset } from "../features/authSlice"
 import dataBlank from "../assets/images/noData.svg"
-import { Navigate, useNavigate } from "react-router-dom"
+import { Navigate, useNavigate, Link } from "react-router-dom"
 import axios from 'axios'
-import { FaFileContract } from 'react-icons/fa'
-import { FaGraduationCap } from "react-icons/fa6"
+import { FaFileContract, FaBullhorn, FaListUl, FaClock, FaTasks, FaRegAddressBook, FaRegBookmark, FaFilePdf, FaArchive } from 'react-icons/fa'
+import { FaChalkboardUser, FaGraduationCap } from "react-icons/fa6"
 import { Circles } from "react-loader-spinner"
 import moment from "moment"
+import '../assets/css/Dash.css'
+import { SiFoursquarecityguide } from 'react-icons/si'
 
 const Dashboard = () => {
     const [Prodi, SetProdi] = useState([])
@@ -26,6 +28,7 @@ const Dashboard = () => {
     const [keyword, setKeyword] = useState("")
     const [level, setLevel] = useState("")
     const [kodeTahun, setKodeTahun] = useState("")
+    const [dosen, setDosen] = useState([])
     const dispatch = useDispatch()
     const { isError, user } = useSelector((state) => state.auth)
     const navigate = useNavigate()
@@ -106,7 +109,7 @@ const Dashboard = () => {
                 } else {
                     const response = await axios.get(`v1/home/jadwalKuliahNowDosen/${user.data.username}`)
                     setJadwal(response.data.data)
-                    
+
                 }
             } catch (error) {
 
@@ -121,7 +124,7 @@ const Dashboard = () => {
                 if (level == 'mahasiswa') {
                     const response = await axios.get(`v1/home/makulTidakLolosMahasiswa/${user.data.username}`)
                     setMakulTidakLolos(response.data.data)
-                } 
+                }
             } catch (error) {
 
             }
@@ -129,7 +132,21 @@ const Dashboard = () => {
         getMakulTidakLolos()
     }, [user, level])
 
-    
+    useEffect(() => {
+        const getVerifikasiDosen = async () => {
+            try {
+                if (user) {
+                    if (user.data.role == 'dosen') {
+                        const response = await axios.get(`v1/pembimbingAkademik/verifikasiDosenPembimbing/${user.data.username}`)
+                        setDosen(response.data.data)
+                    }
+                }
+            } catch (error) {
+
+            }
+        }
+        getVerifikasiDosen()
+    }, [user])
 
     useEffect(() => {
         getKategoriNilai()
@@ -165,7 +182,7 @@ const Dashboard = () => {
                                     color="#000"
                                     ariaLabel="circles-loading"
                                     wrapperStyle={{}}
-                                    wrapperClass=""
+                                    wrapperclassName=""
                                     visible={true}
                                 />
                             </div>
@@ -387,7 +404,82 @@ const Dashboard = () => {
                                 // </>
                                 <>
                                     <Row>
-                                        <Col >
+                                        <Col lg="12">
+                                            <Row className='g-0'>
+                                                <div className="col-4 col-md-3 shadow col-lg-1 d-flex align-items-stretch">
+                                                    <Link to="/pengumuman" className="square-col bg-secondary text-white w-100 d-flex flex-column justify-content-center align-items-center rounded-0 text-decoration-none">
+                                                        <FaBullhorn size={32} className='mb-2' />
+                                                        <span className='small' style={{ fontSize: '0.7rem' }}>Pengumuman</span>
+                                                    </Link>
+                                                </div>
+                                                {dosen &&
+                                                    <>
+                                                        <div className="col-4 col-md-3 shadow col-lg-1 d-flex align-items-stretch">
+                                                            <Link to="/mhsasuh" className="square-col bg-secondary text-white w-100 d-flex flex-column justify-content-center align-items-center rounded-0 text-decoration-none">
+                                                                <FaGraduationCap size={32} className='mb-2' />
+                                                                <span className='small' style={{ fontSize: '0.7rem' }}>MHS Asuh</span>
+                                                            </Link>
+                                                        </div>
+                                                        <div className="col-4 col-md-3 shadow col-lg-1 d-flex align-items-stretch">
+                                                            <Link to="/krsmhs" className="square-col bg-secondary text-white w-100 d-flex flex-column justify-content-center align-items-center rounded-0 text-decoration-none">
+                                                                <FaListUl size={32} className='mb-2' />
+                                                                <span className='small' style={{ fontSize: '0.7rem' }}>KRS</span>
+                                                            </Link>
+                                                        </div>
+                                                    </>
+                                                }
+                                                <div className="col-4 col-md-3 shadow col-lg-1 d-flex align-items-stretch">
+                                                    <Link to="/jadwal" className="square-col bg-secondary text-white w-100 d-flex flex-column justify-content-center align-items-center rounded-0 text-decoration-none">
+                                                        <FaClock size={32} className='mb-2' />
+                                                        <span className='small' style={{ fontSize: '0.7rem' }}>Jadwal</span>
+                                                    </Link>
+                                                </div>
+                                                <div className="col-4 col-md-3 shadow col-lg-1 d-flex align-items-stretch">
+                                                    <Link to="/tugas" className="square-col bg-secondary text-white w-100 d-flex flex-column justify-content-center align-items-center rounded-0 text-decoration-none">
+                                                        <FaTasks size={32} className='mb-2' />
+                                                        <span className='small' style={{ fontSize: '0.7rem' }}>Tugas</span>
+                                                    </Link>
+                                                </div>
+                                                <div className="col-4 col-md-3 shadow col-lg-1 d-flex align-items-stretch">
+                                                    <Link to="/jurnal" className="square-col bg-secondary text-white w-100 d-flex flex-column justify-content-center align-items-center rounded-0 text-decoration-none">
+                                                        <FaRegAddressBook size={32} className='mb-2' />
+                                                        <span className='small' style={{ fontSize: '0.7rem' }}>Jurnal</span>
+                                                    </Link>
+                                                </div>
+                                                <div className="col-4 col-md-3 shadow col-lg-1 d-flex align-items-stretch">
+                                                    <Link to="/presensi" className="square-col bg-secondary text-white w-100 d-flex flex-column justify-content-center align-items-center rounded-0 text-decoration-none">
+                                                        <FaChalkboardUser size={32} className='mb-2' />
+                                                        <span className='small' style={{ fontSize: '0.7rem' }}>Presensi</span>
+                                                    </Link>
+                                                </div>
+                                                <div className="col-4 col-md-3 shadow col-lg-1 d-flex align-items-stretch">
+                                                    <Link to="/penilaian" className="square-col bg-secondary text-white w-100 d-flex flex-column justify-content-center align-items-center rounded-0 text-decoration-none">
+                                                        <FaRegBookmark size={32} className='mb-2' />
+                                                        <span className='small' style={{ fontSize: '0.7rem' }}>Penilaian</span>
+                                                    </Link>
+                                                </div>
+                                                <div className="col-4 col-md-3 shadow col-lg-1 d-flex align-items-stretch">
+                                                    <Link to="/listRps" className="square-col bg-secondary text-white w-100 d-flex flex-column justify-content-center align-items-center rounded-0 text-decoration-none">
+                                                        <FaFilePdf size={32} className='mb-2' />
+                                                        <span className='small' style={{ fontSize: '0.7rem' }}>RPS</span>
+                                                    </Link>
+                                                </div>
+                                                <div className="col-4 col-md-3 shadow col-lg-1 d-flex align-items-stretch">
+                                                    <Link to="/listPedoman" className="square-col bg-secondary text-white w-100 d-flex flex-column justify-content-center align-items-center rounded-0 text-decoration-none">
+                                                        <SiFoursquarecityguide size={32} className='mb-2' />
+                                                        <span className='small' style={{ fontSize: '0.7rem' }}>Pedoman</span>
+                                                    </Link>
+                                                </div>
+                                                {dosen &&
+                                                    <div className="col-4 col-md-3 shadow col-lg-1 d-flex align-items-stretch">
+                                                        <Link to="/studimhs" className="square-col bg-secondary text-white w-100 d-flex flex-column justify-content-center align-items-center rounded-0 text-decoration-none">
+                                                            <FaArchive size={32} className='mb-2' />
+                                                            <span className='small' style={{ fontSize: '0.7rem' }}>Studi MHS</span>
+                                                        </Link>
+                                                    </div>}
+                                            </Row>
+                                        </Col>
+                                        {/* <Col lg="6">
                                             <div className="lg:12 gap-3">
                                                 <div className="basis-1/2 bg-white mb-2 rounded-lg shadow-md p-3">
                                                     <h3 className='text-[#5E7C60] text-[20px]'>Hai {nama}, Selamat Datang</h3>
@@ -396,7 +488,7 @@ const Dashboard = () => {
                                                     </p>
                                                 </div>
                                             </div>
-                                        </Col>
+                                        </Col> */}
                                     </Row>
                                     <Row className='mt-3'>
                                         <Col lg="12">
