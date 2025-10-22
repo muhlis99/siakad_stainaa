@@ -73,6 +73,7 @@ const jadwalPertemuan = require('./router/jadwalPertemuanRoute.js')
 const presensiMhs = require('./router/presensiMhsRoute.js')
 const jurnalDosen = require('./router/jurnalDosenRoute.js')
 const rps = require('./router/rpsRoute.js')
+const monitorAbsensiDosen = require('./router/monitorAbsensiDosenRoute.js')
 
 
 
@@ -107,6 +108,7 @@ app.use('/v1/jadwalPertemuan', jadwalPertemuan)
 app.use('/v1/presensiMhs', presensiMhs)
 app.use('/v1/jurnalDosen', jurnalDosen)
 app.use('/v1/rps', rps)
+app.use('/v1/monitorAbsensiDosen', monitorAbsensiDosen)
 
 
 // default index

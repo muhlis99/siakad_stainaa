@@ -286,6 +286,9 @@ module.exports = {
                 // IPS: ipSemester
 
             })
+
+            console.log(ipSemester.toFixed(2));
+            
         }).catch(err => {
             console.log(err)
         })
@@ -467,6 +470,7 @@ module.exports = {
                     IPS: ipSemester.toFixed(2)
 
                 },
+                
                 data: result,
 
             })
