@@ -17,6 +17,7 @@ const DetailRps = () => {
     const [detail, setDetail] = useState([])
     const [Jenjang, setJenjang] = useState("")
     const [Fakultas, setFakultas] = useState("")
+    const [makul, setMakul] = useState("")
 
     useEffect(() => {
         setLoad(true)
@@ -63,6 +64,7 @@ const DetailRps = () => {
                 setDetail(response.data.data)
                 setJenjang(response.data.data.jenjangPendidikans[0].nama_jenjang_pendidikan)
                 setFakultas(response.data.data.fakultas[0].nama_fakultas)
+                setMakul(response.data.data.mataKuliahs[0].nama_mata_kuliah)
             }
         } catch (error) {
 
@@ -117,10 +119,18 @@ const DetailRps = () => {
                                                 <tr>
                                                     <td>Mata Kuliah</td>
                                                     <td>&nbsp;:&nbsp;</td>
-                                                    <td>{detail.code_mata_kuliah}</td>
+                                                    <td>{makul}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>File RPS</td>
+                                                    <td>&nbsp;:&nbsp;</td>
+                                                    <td>{detail.rps}</td>
                                                 </tr>
                                             </table>
                                         </Card.Body>
+                                        <Card.Footer>
+                                            <Link to="/listRps" className='btn btn-sm btn-danger'>Kembali</Link>
+                                        </Card.Footer>
                                     </Card>
                                 </Col>
                             </Row>

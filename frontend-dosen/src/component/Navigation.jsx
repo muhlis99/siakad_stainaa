@@ -139,7 +139,7 @@ const Navigation = () => {
                         : level == 'dosen' ?
                             <Nav className="me-auto">
                                 <Link to="/dashboard" className={`text-light nav-link my-3 ${location.pathname == '/dashboard' ? 'active fw-bold' : ''} `}>Dashboard</Link>
-                                <li className="nav-item dropdown drop1  absolute">
+                                {/* <li className="nav-item dropdown drop1  absolute">
                                     <a className="nav-link dropdown-toggle text-light my-3" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Perkuliahan</a>
                                     <ul className="dropdown-menu top-14" id="drop-item-1">
                                         <li>
@@ -202,8 +202,8 @@ const Navigation = () => {
                                             </Link>
                                         </li>
                                     </ul>
-                                </li>
-                                <Link to="/chat" className={`nav-link my-3 text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link>
+                                </li> */}
+                                {/* <Link to="/chat" className={`nav-link my-3 text-light ${location.pathname == '/chat' ? 'active fw-bold' : ''} `}>Konsultasi</Link> */}
                             </Nav>
                             : <Nav className="me-auto h-8">
 
