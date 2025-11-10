@@ -129,6 +129,17 @@ module.exports = {
             }
         })
 
+        const totalMakul = await nilaiKuliahModel.count({
+            where: {
+                code_tahun_ajaran: codeThnAjr,
+                code_semester: codeSmt,
+                code_jenjang_pendidikan: codeJnjPen,
+                code_fakultas: codeFks,
+                code_prodi: codePrd,
+                nim: nim,
+                status: "aktif"
+            }
+        })
         // const queryTotalSksIndex = await db.query(`SELECT SUM( tb_mata_kuliah.sks*tb_kategori_nilai.interfal_skor) AS total FROM tb_nilai_kuliah
         // INNER JOIN tb_sebaran_mata_kuliah ON tb_nilai_kuliah.code_mata_kuliah=tb_sebaran_mata_kuliah.code_mata_kuliah INNER JOIN tb_kategori_nilai ON
         // tb_nilai_kuliah.code_kategori_nilai=tb_kategori_nilai.code_kategori_nilai INNER JOIN tb_mata_kuliah ON tb_sebaran_mata_kuliah.code_mata_kuliah=tb_mata_kuliah.code_mata_kuliah
@@ -140,7 +151,78 @@ module.exports = {
         //     type: QueryTypes.SELECT
         // })
 
-        const datasQueryTotalSksIndex = await nilaiKuliahModel.findAll({
+        // const datasQueryTotalSksIndex = await nilaiKuliahModel.findAll({
+        //     include: [
+        //         {
+        //             model: sebaranMataKuliah,
+        //             where: {
+        //                 code_tahun_ajaran: codeThnAjr,
+        //                 code_semester: codeSmt,
+        //                 status: "aktif"
+        //             },
+        //             include: [{
+        //                 model: mataKuliahModel,
+        //                 code_jenjang_pendidikan: codeJnjPen,
+        //                 code_fakultas: codeFks,
+        //                 code_prodi: codePrd,
+        //             }]
+        //         },
+        //         {
+        //             attributes: ["id_kategori_nilai", "nilai_huruf", "interfal_skor"],
+        //             model: kategoriNilaiModel,
+        //             where: { status: "aktif", code_tahun_ajaran: codeThnAjr }
+        //         },
+        //         {
+        //             attributes: ['nim', 'nama'],
+        //             model: mahasiswaModel,
+        //             where: { status: "aktif" }
+        //         },
+        //         {
+        //             model: tahunAjaranModel,
+        //             attributes: ['code_tahun_ajaran', 'tahun_ajaran'],
+        //             where: { status: "aktif" }
+        //         }, {
+        //             model: semesterModel,
+        //             attributes: ['code_semester', 'semester'],
+        //             where: { status: "aktif" }
+        //         }, {
+        //             attributes: ['code_jenjang_pendidikan', 'nama_jenjang_pendidikan'],
+        //             model: jenjangPendidikanModel,
+        //             where: { status: "aktif" }
+        //         }, {
+        //             model: fakultasModel,
+        //             attributes: ['code_fakultas', 'nama_fakultas',],
+        //             where: { status: "aktif" }
+        //         }, {
+        //             attributes: ['code_prodi', 'nama_prodi'],
+        //             model: prodiModel,
+        //             where: { status: "aktif" }
+        //         }
+        //     ],
+        //     attributes: [
+        //         'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
+        //         [Sequelize.fn('ROUND', Sequelize.literal('(sks*interfal_skor)'), 2), 'sksIndexs']
+        //     ],
+        //     where: {
+        //         code_tahun_ajaran: codeThnAjr,
+        //         code_semester: codeSmt,
+        //         code_jenjang_pendidikan: codeJnjPen,
+        //         code_fakultas: codeFks,
+        //         code_prodi: codePrd,
+        //         nim: nim,
+        //         status: 'aktif'
+        //     },
+        // })
+
+        // const datasQueryTotalSksIndexs = datasQueryTotalSksIndex.map(el => { return el.get("sksIndexs") })
+        // const queryTotalSksIndex = datasQueryTotalSksIndexs.reduce((i, e) => {
+        //     return i + e
+        // })
+        // const totalSksIndex = queryTotalSksIndex
+        // const ipSemester = totalSksIndex / totalSks
+
+
+        const datasQueryTotalIndex = await nilaiKuliahModel.sum('interfal_skor',{
             include: [
                 {
                     model: sebaranMataKuliah,
@@ -189,8 +271,8 @@ module.exports = {
                 }
             ],
             attributes: [
-                'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
-                [Sequelize.fn('ROUND', Sequelize.literal('(sks*interfal_skor)'), 2), 'sksIndexs']
+                'id_nilai_kuliah', 'nim', 'nilai_akhir', 'nilai_jumlah',
+                [Sequelize.literal('(interfal_skor)') ,'indexs']
             ],
             where: {
                 code_tahun_ajaran: codeThnAjr,
@@ -200,15 +282,10 @@ module.exports = {
                 code_prodi: codePrd,
                 nim: nim,
                 status: 'aktif'
-            },
+            }
         })
-
-        const datasQueryTotalSksIndexs = datasQueryTotalSksIndex.map(el => { return el.get("sksIndexs") })
-        const queryTotalSksIndex = datasQueryTotalSksIndexs.reduce((i, e) => {
-            return i + e
-        })
-        const totalSksIndex = queryTotalSksIndex
-        const ipSemester = totalSksIndex / totalSks
+        const totalIndex = datasQueryTotalIndex
+        const ipSemester = totalIndex / totalMakul
         await nilaiKuliahModel.findAll({
             include: [
                 {
@@ -258,8 +335,8 @@ module.exports = {
                 }
             ],
             attributes: [
-                'id_nilai_kuliah', 'code_nilai_kuliah', 'code_kelas', 'code_mata_kuliah', 'code_kategori_nilai', 'nim', 'nilai_akhir', 'nilai_jumlah',
-                [Sequelize.fn('ROUND', Sequelize.literal('(sks*interfal_skor)'), 2), 'sksIndexs']
+                'id_nilai_kuliah', 'nim', 'nilai_akhir', 'nilai_jumlah',
+                [ Sequelize.literal('(interfal_skor)') ,'indexs']
             ],
             where: {
                 code_tahun_ajaran: codeThnAjr,
@@ -281,13 +358,15 @@ module.exports = {
                 semester: smt.semester,
                 tahunAjaran: thnAjr.tahun_ajaran,
                 jumlahSks: totalSks,
-                jumlahSksIndex: totalSksIndex.toFixed(2),
+                jumlahMakul : totalMakul,
+                // jumlahSksIndex: totalSksIndex.toFixed(2),
+                jumlahIndex : totalIndex,
                 IPS: ipSemester.toFixed(2)
                 // IPS: ipSemester
 
             })
 
-            console.log(ipSemester.toFixed(2));
+            // console.log(ipSemester.toFixed(2));
             
         }).catch(err => {
             console.log(err)
