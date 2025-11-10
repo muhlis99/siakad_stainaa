@@ -336,7 +336,7 @@ module.exports = {
             ],
             attributes: [
                 'id_nilai_kuliah', 'nim', 'nilai_akhir', 'nilai_jumlah',
-                [ Sequelize.literal('(interfal_skor)') ,'indexs']
+               [Sequelize.fn('ROUND', Sequelize.literal('(sks*interfal_skor)'), 2), 'sksIndexs']
             ],
             where: {
                 code_tahun_ajaran: codeThnAjr,
