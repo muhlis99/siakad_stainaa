@@ -110,11 +110,6 @@ module.exports = {
             include: [{
                 attributes: ["nama"],
                 model: mahasiswaModel
-            }, {
-                model : historyMahasiswa,
-                where : {
-                    pembayaran : "lunas"
-                }
             }],
             where: {
                 code_jadwal_pertemuan: code,
@@ -138,7 +133,7 @@ module.exports = {
     },
 
     getMhsValidasiNoAvailable: async (req, res, next) => {
-        const { code, makul, thn, smt, jnj, fks, prd } = req.params
+    const { code, makul, thn, smt, jnj, fks, prd } = req.params
         const dataUse = await jadwalPertemuanModel.findOne({
             where: {
                 code_jadwal_pertemuan: code,
@@ -150,11 +145,6 @@ module.exports = {
             include: [{
                 attributes: ["nama"],
                 model: mahasiswaModel
-            },{
-                model : historyMahasiswa,
-                where : {
-                    pembayaran : "lunas"
-                }
             }],
             where: {
                 code_jadwal_pertemuan: code,
@@ -171,6 +161,11 @@ module.exports = {
             include: [{
                 model: mahasiswaModel,
                 attributes: ["nama"]
+            }, {
+                 model : historyMahasiswa,
+                 where : {
+                    pembayaran : "lunas"
+                }
             }],
             attributes: ["nim"],
             where: {
@@ -183,7 +178,9 @@ module.exports = {
                 code_fakultas: fks,
                 code_prodi: prd,
                 code_mata_kuliah: makul,
-                status: "aktif"
+                status: "aktif",
+                status_krs :"setuju",
+                status_pengajuan_krs :"diajukan"
             }
         }).
             then(result => {

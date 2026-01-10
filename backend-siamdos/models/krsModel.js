@@ -8,6 +8,7 @@ const semesterModel = require('./semesterModel.js')
 const tahunAjaranModel = require('./tahunAjaranModel.js')
 const mahasiswaModel = require('./mahasiswaModel.js')
 const sebaranMataKuliah = require('./sebaranMataKuliah.js')
+const historyMahasiswa = require('./historyMahasiswaModel.js')
 
 const krsModel = db.define('krs', {
     'id_krs': {
@@ -80,5 +81,8 @@ krsModel.hasMany(tahunAjaranModel, { sourceKey: 'code_tahun_ajaran', foreignKey:
 // nim
 mahasiswaModel.belongsTo(krsModel, { foreignKey: 'nim' })
 krsModel.hasMany(mahasiswaModel, { sourceKey: 'nim', foreignKey: 'nim' })
+// history mahasiswa
+historyMahasiswa.belongsTo(krsModel, { foreignKey: 'nim' })
+krsModel.hasMany(historyMahasiswa, { sourceKey: 'nim', foreignKey: 'nim' })
 
 module.exports = krsModel
